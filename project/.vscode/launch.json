@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch game (BepInEx + plugin)",
+      "type": "clr",
+      "request": "launch",
+      "program": "E:\\迅雷云盘\\manosaba.game-STEAM.CHS\\manosaba_game\\manosaba.exe",
+      "cwd": "E:\\迅雷云盘\\manosaba.game-STEAM.CHS\\manosaba_game",
+      "console": "internalConsole",
+      "preLaunchTask": "build solution"
+    },
+    {
+      "name": "Launch game (no debugger)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}\\..\\launch_game.ps1",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "build solution"
+    },
+    {
+      "name": "Attach to game (Unity debugger)",
+      "type": "unity",
+      "request": "attach"
+    }
+  ]
+}

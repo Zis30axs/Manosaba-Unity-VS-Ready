@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>GigaCreation.Essentials.UI</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Deterministic>true</Deterministic>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>$(NoWarn);CS0436;CS0433;CS0108;CS0114</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(ManosabaSrc)\GigaCreation.Essentials.UI\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GigaCreation.Essentials.AddressablesUtils\GigaCreation.Essentials.AddressablesUtils.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Input\GigaCreation.Essentials.Input.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Localization\GigaCreation.Essentials.Localization.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Toggleables\GigaCreation.Essentials.Toggleables.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.UI\GigaCreation.Tools.UI.csproj" />
+    <ProjectReference Include="..\Il2CppDummyDll\Il2CppDummyDll.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LitMotion">
+      <HintPath>$(ManosabaRefs)\LitMotion.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MPUIKit">
+      <HintPath>$(ManosabaRefs)\MPUIKit.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UniRx">
+      <HintPath>$(ManosabaRefs)\UniRx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>$(ManosabaRefs)\UniTask.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>$(ManosabaRefs)\Unity.Addressables.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>$(ManosabaRefs)\Unity.InputSystem.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(ManosabaRefs)\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(ManosabaRefs)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

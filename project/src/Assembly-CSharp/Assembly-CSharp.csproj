@@ -1,0 +1,118 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Deterministic>true</Deterministic>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>$(NoWarn);CS0436;CS0433;CS0108;CS0114</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(ManosabaSrc)\Assembly-CSharp\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elringus.Naninovel.Runtime\Elringus.Naninovel.Runtime.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.AddressablesUtils\GigaCreation.Essentials.AddressablesUtils.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Dialogs\GigaCreation.Essentials.Dialogs.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Input\GigaCreation.Essentials.Input.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Localization\GigaCreation.Essentials.Localization.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.MasterData\GigaCreation.Essentials.MasterData.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Overlays\GigaCreation.Essentials.Overlays.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.UI\GigaCreation.Essentials.UI.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.WebRequestUtils\GigaCreation.Essentials.WebRequestUtils.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.Audio\GigaCreation.NaninovelExtender.Audio.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.Cameras\GigaCreation.NaninovelExtender.Cameras.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.Common\GigaCreation.NaninovelExtender.Common.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.Core\GigaCreation.NaninovelExtender.Core.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.ExtendedActors\GigaCreation.NaninovelExtender.ExtendedActors.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.Localization\GigaCreation.NaninovelExtender.Localization.csproj" />
+    <ProjectReference Include="..\GigaCreation.NaninovelExtender.UI\GigaCreation.NaninovelExtender.UI.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.BuildTimestampDisplay\GigaCreation.Tools.BuildTimestampDisplay.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Debugging.General\GigaCreation.Tools.Debugging.General.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Debugging.TextDisplays\GigaCreation.Tools.Debugging.TextDisplays.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Debugging.UI\GigaCreation.Tools.Debugging.UI.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Service\GigaCreation.Tools.Service.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.UI\GigaCreation.Tools.UI.csproj" />
+    <ProjectReference Include="..\Il2CppDummyDll\Il2CppDummyDll.csproj" />
+    <ProjectReference Include="..\Naninovel.Common\Naninovel.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LeTai.TrueShadow">
+      <HintPath>$(ManosabaRefs)\LeTai.TrueShadow.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="LitMotion">
+      <HintPath>$(ManosabaRefs)\LitMotion.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MPUIKit">
+      <HintPath>$(ManosabaRefs)\MPUIKit.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(ManosabaRefs)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UniRx">
+      <HintPath>$(ManosabaRefs)\UniRx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>$(ManosabaRefs)\UniTask.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>$(ManosabaRefs)\Unity.Addressables.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>$(ManosabaRefs)\Unity.InputSystem.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(ManosabaRefs)\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.DirectorModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(ManosabaRefs)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="com.rlabrecque.steamworks.net">
+      <HintPath>$(ManosabaRefs)\com.rlabrecque.steamworks.net.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
