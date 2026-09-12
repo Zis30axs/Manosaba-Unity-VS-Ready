@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build solution",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "${workspaceFolder}\\Manosaba.sln", "-v", "minimal", "--nologo"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build + deploy plugin",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "${workspaceFolder}\\src\\Manosaba.Plugin\\Manosaba.Plugin.csproj", "--nologo"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "launch game",
+      "command": "powershell",
+      "type": "process",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\launch_game.ps1"],
+      "problemMatcher": []
+    },
+    {
+      "label": "install BepInEx",
+      "command": "powershell",
+      "type": "process",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\install_bepinex.ps1"],
+      "problemMatcher": []
+    },
+    {
+      "label": "uninstall BepInEx",
+      "command": "powershell",
+      "type": "process",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\install_bepinex.ps1", "-Uninstall"],
+      "problemMatcher": []
+    },
+    {
+      "label": "build (clean, all)",
+      "command": "powershell",
+      "type": "process",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\..\\build.ps1", "-Clean"],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

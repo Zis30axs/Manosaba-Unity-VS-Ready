@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>GigaCreation.Tools.Debugging.TextDisplays.BuildTimestamps</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Deterministic>true</Deterministic>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>$(NoWarn);CS0436;CS0433;CS0108;CS0114</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(ManosabaSrc)\GigaCreation.Tools.Debugging.TextDisplays.BuildTimestamps\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GigaCreation.Tools.BuildTimestampDisplay\GigaCreation.Tools.BuildTimestampDisplay.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Debugging.TextDisplays\GigaCreation.Tools.Debugging.TextDisplays.csproj" />
+    <ProjectReference Include="..\Il2CppDummyDll\Il2CppDummyDll.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

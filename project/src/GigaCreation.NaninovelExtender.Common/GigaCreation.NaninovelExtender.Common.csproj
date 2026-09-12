@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>GigaCreation.NaninovelExtender.Common</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Deterministic>true</Deterministic>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>$(NoWarn);CS0436;CS0433;CS0108;CS0114</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(ManosabaSrc)\GigaCreation.NaninovelExtender.Common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elringus.Naninovel.Runtime\Elringus.Naninovel.Runtime.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.SaveLoad\GigaCreation.Essentials.SaveLoad.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.UI\GigaCreation.Essentials.UI.csproj" />
+    <ProjectReference Include="..\Il2CppDummyDll\Il2CppDummyDll.csproj" />
+    <ProjectReference Include="..\Naninovel.Common\Naninovel.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UniTask">
+      <HintPath>$(ManosabaRefs)\UniTask.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

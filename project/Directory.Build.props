@@ -1,0 +1,21 @@
+<Project>
+
+  <!-- Central settings for the whole Manosaba reverse-engineering workspace.
+       Everything (sources, reference assemblies, NuGet cache) lives on E:. -->
+
+  <PropertyGroup>
+    <ManosabaRoot>$(MSBuildThisFileDirectory)..</ManosabaRoot>
+    <ManosabaSrc>$(MSBuildThisFileDirectory)..\src\decompiled</ManosabaSrc>
+    <ManosabaRefs>$(MSBuildThisFileDirectory)..\src\il2cpp\DummyDll</ManosabaRefs>
+    <NuGetPackageRoot Condition="'$(NUGET_PACKAGES)' != ''">$(NUGET_PACKAGES)</NuGetPackageRoot>
+  </PropertyGroup>
+
+  <!-- decompiled IL2CPP code is full of warnings we do not care about -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS0108;CS0114;CS0169;CS0414;CS0649;CS1591;CS0628;CS0824;CS0067;CS0282;CS0660;CS0661;CS3001;CS3002;CS3003</NoWarn>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    <Deterministic>true</Deterministic>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+</Project>

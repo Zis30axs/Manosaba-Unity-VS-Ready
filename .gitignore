@@ -1,0 +1,31 @@
+# Extracted game assets (10 GiB, regenerable from bundles) — never track
+/res/
+
+# Third-party tooling, venv, nuget cache, BepInEx payloads
+/tools/
+
+# Build output
+/dist/
+**/bin/
+**/obj/
+
+# Large regenerable IL2CPP dump inputs (read-only analysis sources)
+/src/il2cpp/dump.cs
+/src/il2cpp/script.json
+/src/il2cpp/il2cpp.h
+/src/il2cpp/stringliteral.json
+/src/il2cpp/DummyDll/
+
+# Reference decompilation of Unity/System/third-party libs (not our target)
+/src/decompiled_external/
+
+# Bulk extraction manifests/logs from the asset-ripping phase
+/work/manifest_*.jsonl
+/work/*.log
+/work/*.txt
+/work/__pycache__/
+/work/done_*/
+/work/claims_audio/
+/work/probe_out/
+
+.idea/

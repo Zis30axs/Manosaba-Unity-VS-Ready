@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- BepInEx 6 (IL2CPP) 插件工程。
+       构建产物 = BepInEx\plugins\Manosaba.Plugin.dll
+       启动配置见 ..\..\.vscode\launch.json（直接启动游戏）
+
+       引用来源优先级：游戏内 BepInEx 生成的代理程序集（首次运行游戏后出现）
+                      -> 否则退回 Il2CppDumper 的 DummyDll（API 面相同，保证随时可编译） -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>Manosaba.Plugin</AssemblyName>
+    <RootNamespace>Manosaba.Plugin</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <NoWarn>$(NoWarn);CS0436;CS0433</NoWarn>
+    <GameDir Condition="'$(GameDir)' == ''">E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game</GameDir>
+    <BepInExCore>$(GameDir)\BepInEx\core</BepInExCore>
+    <ProxyAssemblies>$(GameDir)\BepInEx\Il2CppAssemblies</ProxyAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Plugin.cs" />
+    <Compile Include="Plugin.cs" />
+  </ItemGroup>
+
+  <!-- BepInEx 运行时 -->
+  <ItemGroup Condition="Exists('$(BepInExCore)\BepInEx.Core.dll')">
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(BepInExCore)\BepInEx.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx.IL2CPP">
+      <HintPath>$(BepInExCore)\BepInEx.IL2CPP.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(BepInExCore)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 游戏程序集：BepInEx 生成的代理优先，否则用 DummyDll -->
+  <ItemGroup Condition="Exists('$(ProxyAssemblies)\Assembly-CSharp.dll')">
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ProxyAssemblies)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ProxyAssemblies)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="!Exists('$(ProxyAssemblies)\Assembly-CSharp.dll')">
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManosabaRefs)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 构建后自动部署到插件目录 -->
+  <Target Name="DeployPlugin" AfterTargets="Build" Condition="Exists('$(GameDir)\BepInEx\plugins')">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GameDir)\BepInEx\plugins" />
+    <Message Importance="high" Text="deployed -> $(GameDir)\BepInEx\plugins\$(TargetFileName)" />
+  </Target>
+
+</Project>
