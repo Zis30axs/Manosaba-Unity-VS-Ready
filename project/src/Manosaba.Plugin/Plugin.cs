@@ -1,18 +1,28 @@
 using BepInEx;
-using BepInEx.IL2CPP;
+using BepInEx.Unity.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using WitchTrials.Models;
 
 namespace Manosaba.Plugin;
 
 /// <summary>
-/// manosaba 插件骨架（BepInEx 6 IL2CPP）。
+/// manosaba 插件骨架（BepInEx 6.0.0-be.788+，Il2CppInterop 后端，CoreCLR 宿主）。
 ///   * 构建：dotnet build src\Manosaba.Plugin\Manosaba.Plugin.csproj
 ///   * 部署：构建后自动复制到 &lt;游戏&gt;\BepInEx\plugins\
 ///   * 启动：VS Code → Run and Debug → "Launch game (BepInEx)"，或直接运行 manosaba.exe
 ///
-/// 注意：方法体在 IL2CPP 里是原生代码，改写逻辑要用 Harmony 补丁（见 PatchExample 注释）。
+/// 已验证 2026-09-13：装 BepInEx（tools/install_bepinex.ps1）→ 启动游戏 → 本插件成功加载，
+/// LogOutput.log 里能看到 "Loading [Manosaba Plugin 1.0.0]" 到 "Chainloader startup complete"
+/// 全程无异常。见 work/reversing/README.md「运行时验证通道」一节。
+///
+/// 注意：方法体在 IL2CPP 里是原生代码，`BepInEx\interop\*.dll` 里看到的是 Il2CppInterop
+/// 生成的调用封装（marshal 参数 -> il2cpp_runtime_invoke -> marshal 返回值），
+/// **不是**反编译出来的真实逻辑——那些方法体仍然只能通过 Ghidra/IDA/capstone 静态分析
+/// （见 RECONSTRUCTION.md）复原。这条 Harmony 通道的价值是反过来的：
+/// 用它验证"已经静态复原的方法"在真实运行时是否表现一致（打印真实参数/字段值），
+/// 而不是用它替代静态复原。
 /// </summary>
 [BepInPlugin(Guid, "Manosaba Plugin", "1.0.0")]
 public class Plugin : BasePlugin
@@ -30,15 +40,44 @@ public class Plugin : BasePlugin
         // var gl = new GameObject("ManosabaPlugin");
         // Object.DontDestroyOnLoad(gl);
 
-        // Harmony 补丁示例（取消注释并改成你想挂的方法）：
-        // var h = new Harmony(Guid);
-        // h.PatchAll(typeof(PatchExample));
+        var h = new Harmony(Guid);
+        h.PatchAll(typeof(TrialStateManagerVerification));
     }
 }
 
-// [HarmonyPatch(typeof(WitchTrials.Views.SomeClass), "SomeMethod")]
-// internal static class PatchExample
-// {
-//     [HarmonyPrefix]
-//     private static bool Prefix() => true;      // 返回 false 表示跳过原方法
-// }
+/// <summary>
+/// 验证 RECONSTRUCTION.md 里 TrialStateManager 的静态复原结果（Confidence A 的几个方法）。
+/// Postfix 打印真实参数和复原时用到的字段，能直接和静态分析里写的注释对照。
+/// 想验证其他方法时复制这个模式即可：换 [HarmonyPatch] 的类型/方法名，
+/// 在 Postfix 里读 __instance 的字段（Traverse 或反射，因为字段是 private）。
+/// </summary>
+[HarmonyPatch(typeof(TrialStateManager), nameof(TrialStateManager.InitializeService))]
+internal static class TrialStateManagerVerification
+{
+    // InitializeService 是 Naninovel IEngineService 生命周期方法，引擎启动时自动调用一次，
+    // 不需要玩家做任何操作就能触发——用它做首个验证目标，比要等玩家进庭审的
+    // RegisterCurrentStage 更适合"启动就看结果"。
+    //
+    // RECONSTRUCTION.md 对 RVA 0x39D3A0 的声称：
+    //   _stageManager = ServiceLocator.Get<IPerspectiveStageManager>(includeDerivedType: true);
+    //   _cameraStates = new List<CameraState>();
+    //   _screenStates = new List<ScreenState>();
+    [HarmonyPostfix]
+    private static void Postfix(TrialStateManager __instance)
+    {
+        // NOTE: Il2CppInterop wraps every IL2CPP field (private or not) as a public C#
+        // property with hand-written get/set doing pointer arithmetic into native
+        // memory -- there is no real backing field, so Traverse.Field("_x") silently
+        // finds nothing and .GetValue() returns null without throwing. First attempt
+        // at this used Traverse.Field and printed "null" for all three; that was a bug
+        // in the verification code, not evidence against the reconstruction. Direct
+        // property access is both simpler and correct here.
+        var stageManager = __instance._stageManager;
+        var cameraStates = __instance._cameraStates;
+        var screenStates = __instance._screenStates;
+        Plugin.Log.LogInfo(
+            $"[verify] InitializeService() -> _stageManager={(stageManager == null ? "null" : stageManager.GetType().Name)} "
+            + $"_cameraStates={(cameraStates == null ? "null" : "non-null")} "
+            + $"_screenStates={(screenStates == null ? "null" : "non-null")}");
+    }
+}

@@ -1,11 +1,14 @@
 ﻿param(
     [switch]$Uninstall,
     [string]$GameDir = 'E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game',
-    [string]$PayloadDir = 'E:\manosaba_re\tools\bepinex'
+    [string]$PayloadDir = 'E:\Manosaba-VSCodeReady\tools\bepinex'
 )
 
 $ErrorActionPreference = 'Stop'
-$items = @('winhttp.dll', 'doorstop_config.ini', '.doorstop_version', 'changelog.txt', 'BepInEx', 'mono')
+# BepInEx 6.0.0-be.788+ (CoreCLR host) ships 'dotnet\' instead of the old
+# Mono-hosted build's 'mono\'. Both are listed; whichever is absent from
+# $PayloadDir is silently skipped, so this works for either generation.
+$items = @('winhttp.dll', 'doorstop_config.ini', '.doorstop_version', 'changelog.txt', 'BepInEx', 'mono', 'dotnet')
 
 if ($Uninstall) {
     foreach ($i in $items) {

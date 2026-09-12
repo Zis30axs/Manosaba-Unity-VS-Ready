@@ -83,6 +83,95 @@ cd E:\Manosaba-VSCodeReady\work\reversing
 * `lea r8,[obj+off]` → `shr/and` → `bts` + `lock cmpxchg [rdx+0x462e0]`：GC 写屏障（card table）。
 * `cmp byte ptr [rip+X],0` / `jne` 包住一串 `initialize_runtime_metadata`：类型初始化一次性守卫。
 
+## 运行时验证通道（BepInEx 6 + Il2CppInterop）
+
+2026-09-13 验证：这游戏（Unity 6000.0.48f1，metadata v31）**可以**用 BepInEx 6 挂 Harmony，
+但工程里原来打包的 `tools/bepinex.zip`（约 2022 年的 BepInEx 6 bleeding-edge，用老一代
+**Unhollower** 后端）完全不兼容——启动即崩：
+
+```
+System.TypeInitializationException: The type initializer for
+'UnhollowerBaseLib.Runtime.UnityVersionHandler' threw an exception.
+---> Could not load file or assembly 'Il2Cppmscorlib, Version=3.7.1.6...'
+```
+
+Unhollower 已经停止维护，新版本的 BepInEx 6 全面转向 **Il2CppInterop** 后端
+（CoreCLR 宿主，不再是 Mono）。修复：从 <https://builds.bepinex.dev/projects/bepinex_be>
+下载最新 `BepInEx-Unity.IL2CPP-win-x64-*.zip`（当前用的是 `6.0.0-be.788+5b766a3`），
+替换 `tools/bepinex/` 整个目录。
+
+### 关键认识：这不是"免费的反编译"
+
+第一次看到日志里的
+
+```
+[Info   :Il2CppInteropGen] Unstripping method bodies...
+[Info   :Il2CppInteropGen] IL unstrip statistics: 10712 successful, 1478 failed
+```
+
+以为 Cpp2IL/Il2CppInterop 批量恢复了上万个方法体，**这个判断是错的**，已经反编译验证过：
+
+`BepInEx/interop/Assembly-CSharp.dll` 里的 `TrialStateManager` 每个方法都是这种形状——
+
+```csharp
+public unsafe virtual void RegisterCurrentStage(PerspectiveStageKind kind)
+{
+    System.IntPtr* ptr = stackalloc System.IntPtr[1];
+    *ptr = (nint)(&kind);
+    IL2CPP.il2cpp_runtime_invoke(NativeMethodInfoPtr_RegisterCurrentStage_..., ..., (void**)ptr, ref intPtr);
+}
+```
+
+纯粹是参数封送 + `il2cpp_runtime_invoke` 转发，**没有一行游戏逻辑**。
+"IL unstrip" 针对的是 Unity/BCL 类型（靠下载的官方参考库对比恢复），
+跟 `Assembly-CSharp`/`Naninovel` 这些自研代码完全无关。
+
+方法体依然只能靠 capstone/Ghidra 静态分析（本目录其余工具）+ Harmony 做经验验证。
+
+### 这条通道真正的价值：验证已恢复的方法
+
+装好之后 `project/src/Manosaba.Plugin` 能正常编译加载，可以写 Harmony postfix
+读游戏运行时的真实字段值，跟静态复原的结论对照。已经用它验证过一条：
+
+```csharp
+[HarmonyPatch(typeof(TrialStateManager), nameof(TrialStateManager.InitializeService))]
+private static void Postfix(TrialStateManager __instance) { ... }
+```
+
+结果（游戏启动后自动触发，不需要玩家操作）：
+
+```
+[verify] InitializeService() -> _stageManager=IPerspectiveStageManager _cameraStates=non-null _screenStates=non-null
+```
+
+跟 `RECONSTRUCTION.md` 里对 RVA `0x39D3A0` 的静态复原结论完全一致——
+`_stageManager = ServiceLocator.Get<IPerspectiveStageManager>(true)`、
+两个 List 各自 `new` 出来。这是目前工程里**唯一**一条从 Confidence A（静态）
+升级到"静态 + 运行时双重确认"的方法。
+
+**坑：`Traverse.Field("_x")` 对 Il2CppInterop 类型不起作用，会静默返回 null。**
+第一次测试就中招——interop 代理把每个字段（哪怕原来是 private）都实现成
+手写 get/set 的**属性**，直接做指针运算读原生内存，压根没有真正的 CLR 字段。
+`Traverse.Field` 找不到字段会静默失败而不是抛异常，看起来像"复原错了"，
+其实是验证代码本身的 bug。**要读字段直接用属性访问（`__instance._x`），
+不要用 `Traverse.Field`。**
+
+### 复现步骤
+
+```powershell
+# 换成新版 BepInEx（tools/bepinex 已经是修好的版本，直接装）
+E:\Manosaba-VSCodeReady\install_bepinex.ps1
+
+# 首次启动会跑 Cpp2IL + 生成 interop 程序集，大约 1~2 分钟；之后的启动是秒开
+E:\Manosaba-VSCodeReady\tools\launch_game.ps1
+
+# 卸载，游戏恢复原样
+E:\Manosaba-VSCodeReady\install_bepinex.ps1 -Uninstall
+```
+
+日志：`<游戏目录>\BepInEx\LogOutput.log`；崩在 doorstop 阶段的话看
+`<游戏目录>\preloader_*.log`（这个不在 `BepInEx\` 目录下，容易漏看）。
+
 ## 三个必须记住的坑
 
 1. **`RVA 0x30C000` 是共享空函数体**（`ret 0`，已反汇编确认）。
