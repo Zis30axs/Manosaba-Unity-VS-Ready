@@ -5,7 +5,12 @@
        启动配置见 ..\..\.vscode\launch.json（直接启动游戏）
 
        引用来源优先级：游戏内 BepInEx 生成的代理程序集（首次运行游戏后出现）
-                      -> 否则退回 Il2CppDumper 的 DummyDll（API 面相同，保证随时可编译） -->
+                      -> 否则退回 Il2CppDumper 的 DummyDll（API 面相同，保证随时可编译）
+
+       2026-09-13: 换成 BepInEx 6.0.0-be.788（Il2CppInterop 后端，CoreCLR 宿主）后更新：
+       旧 Unhollower 代把代理程序集放在 BepInEx\Il2CppAssemblies，新版放在 BepInEx\interop；
+       核心库文件名也从 BepInEx.IL2CPP.dll 改成了 BepInEx.Unity.IL2CPP.dll。
+       见 work/reversing/README.md「运行时验证通道」一节。 -->
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -14,10 +19,16 @@
     <RootNamespace>Manosaba.Plugin</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <NoWarn>$(NoWarn);CS0436;CS0433</NoWarn>
+    <!-- MSB3277: netstandard2.1 pulling in BepInEx's net6.0-targeted assemblies via bare
+         HintPath references triggers assembly-unification notices (FileVersionInfo,
+         System.Net.Requests, System.IO.MemoryMappedFiles, etc). Cosmetic here: this
+         plugin is loaded directly by BepInEx's CoreCLR host, not through normal .NET
+         app binding redirects, confirmed by an actual launch where the plugin loaded
+         and ran with zero exceptions (see work/reversing/README.md, "运行时验证通道"). -->
+    <NoWarn>$(NoWarn);CS0436;CS0433;MSB3277</NoWarn>
     <GameDir Condition="'$(GameDir)' == ''">E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game</GameDir>
     <BepInExCore>$(GameDir)\BepInEx\core</BepInExCore>
-    <ProxyAssemblies>$(GameDir)\BepInEx\Il2CppAssemblies</ProxyAssemblies>
+    <ProxyAssemblies>$(GameDir)\BepInEx\interop</ProxyAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,12 +42,20 @@
       <HintPath>$(BepInExCore)\BepInEx.Core.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="BepInEx.IL2CPP">
-      <HintPath>$(BepInExCore)\BepInEx.IL2CPP.dll</HintPath>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>$(BepInExCore)\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx.Unity.Common">
+      <HintPath>$(BepInExCore)\BepInEx.Unity.Common.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(BepInExCore)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(BepInExCore)\Il2CppInterop.Runtime.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
@@ -49,6 +68,16 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(ProxyAssemblies)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Il2CppInterop 代理类型的基类链（Il2CppSystem.Object 等）落在这两个程序集里，
+         引用 Assembly-CSharp 的任何类型都会传递用到，必须显式引用（CS0012）。 -->
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(ProxyAssemblies)\Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem">
+      <HintPath>$(ProxyAssemblies)\Il2CppSystem.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

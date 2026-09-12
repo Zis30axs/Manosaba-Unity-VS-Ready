@@ -10,7 +10,8 @@
 
 | 项目 | 结果 |
 |---|---|
-| 分析通道 | 已打通：`GameAssembly.dll` → capstone → 带语义标注的反汇编（见 `work/reversing/`） |
+| 静态分析通道 | 已打通：`GameAssembly.dll` → capstone → 带语义标注的反汇编（见 `work/reversing/`） |
+| 运行时验证通道 | 已打通：BepInEx 6（Il2CppInterop）+ Harmony，能挂已复原方法读真实字段值（见 `work/reversing/README.md`）——**不是**免费反编译，interop 代理只是参数封送壳 |
 | 二进制身份 | 已校验，并排除了一个同名的 demo 版误配风险 |
 | 游戏自身代码规模 | `WitchTrials.*` 共 **224 个类型 / 1212 个方法**，其中 **929 个是独立函数体** |
 | 试点子系统 | `TrialStateManager`（TrialState）— **已完成**，11/12 个成员达到 Confidence A |
@@ -171,7 +172,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 |---|---|---|---|
 | `RegisterCurrentStage` | `0x39DA30` | `_currentStageKind = kind; _isLoaded = true;` | **A** |
 | `UnregisterCurrentStage` | `0x39DA40` | `_currentStageKind = default; _isLoaded = false;` | **A** |
-| `InitializeService` | `0x39D3A0` | 取 `IPerspectiveStageManager`，建两个 List，返回空 UniTask | **A** |
+| `InitializeService` | `0x39D3A0` | 取 `IPerspectiveStageManager`，建两个 List，返回空 UniTask | **A + 运行时确认** |
 | `SaveServiceState` | `0x39D5C0` | 打包 `GameState` 四个字段 → `stateMap.SetState` | **A** |
 | `RegisterScreenVisibilityState` | `0x39DF80` | 补齐列表长度后写 `Visible` | **A** |
 | `RegisterScreenSplitState` | `0x39E120` | 补齐后写三个字段（每次重新取元素） | **A** |
@@ -241,6 +242,23 @@ for (int i = _screenStates.Count; i < index + 1; i++)
 
 > **教训**：`dotnet build` 通过不代表恢复正确——方法体写什么都能编译。
 > 编译只保证不引入语法/类型错误，控制流的正确性只能靠反汇编本身交叉验证。
+
+### 运行时验证：`InitializeService` 已经过双重确认
+
+2026-09-13：把 `tools/bepinex.zip` 换成兼容 Unity 6 的新版（BepInEx 6.0.0-be.788，
+Il2CppInterop 后端）后，游戏能正常启动、`project/src/Manosaba.Plugin` 能正常加载。
+用 Harmony postfix 挂 `InitializeService`，游戏启动时自动触发（不需要玩家操作），
+读到的真实字段值：
+
+```
+_stageManager=IPerspectiveStageManager  _cameraStates=non-null  _screenStates=non-null
+```
+
+跟上面的静态复原结论完全一致。这是本工程目前唯一一个"静态分析 + 真实运行时行为"
+双重确认的方法，其余仍然只是静态分析（Confidence A 但未经运行时验证）。
+
+详细的坑（尤其是 `Traverse.Field` 对 Il2CppInterop 类型会静默失效）记在
+`work/reversing/README.md`「运行时验证通道」一节，不重复贴。
 
 ### 刻意没有做的事
 
