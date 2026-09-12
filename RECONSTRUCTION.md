@@ -209,6 +209,39 @@ rotation.ElementAtOrDefault(i) ?? _cameraStates[index].Rotation[i]
 依据是 `Enumerable.ElementAtOrDefault<float?>` → `HasValue` 分支 →
 `GetValueOrDefault()`，否则走 `Vector3.get_Item`（作用在 `CameraState+0x14`）。
 
+### 一个可复用的判别法：`for` 还是 `while`
+
+三个 `Register*State` 都有"把列表补齐到 `index + 1` 长"的循环。
+第一版写成了 `while (_screenStates.Count < index + 1)`，**是错的**。
+
+判别依据是 `get_Count` 被调用了几次：
+
+```
+0x39DFFD  call get_Count      ; 只在循环外调用一次
+0x39E00F  mov  esi, eax       ; 存进局部变量
+0x39E011  cmp  eax, r14d
+0x39E014  jge  exit
+0x39E020  loop: ... Add(new ScreenState())
+0x39E0A5  inc  esi            ; 递增局部变量，Count 不再读
+0x39E0AA  jl   0x39E020
+```
+
+`Count` 被提升到循环外，只读一次。Roslyn **不会**把一个接口属性调用提升到
+`Add()` 之外（无法证明 `Add` 不改变 `Count`），所以这个提升来自源码结构本身：
+
+```csharp
+for (int i = _screenStates.Count; i < index + 1; i++)
+    _screenStates.Add(new ScreenState());
+```
+
+两种写法在 `Add` 每次只加一个元素时行为等价——但这恰好是 Harmony patch
+会打破的假设，而这几个方法被标为 Confidence A，所以必须写对。
+
+三处（`0x39DFFD` / `0x39E1B0` / `0x39DC04`）都是同一形态，已全部修正。
+
+> **教训**：`dotnet build` 通过不代表恢复正确——方法体写什么都能编译。
+> 编译只保证不引入语法/类型错误，控制流的正确性只能靠反汇编本身交叉验证。
+
 ### 刻意没有做的事
 
 `MoveNext`（3,420 B）没有恢复。从静态调用清单可以看出它"读回 GameState 并把

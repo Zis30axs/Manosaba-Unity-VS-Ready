@@ -29,8 +29,14 @@ HELPERS = {
     0x2466E0: ('il2cpp_codegen_object_new (thunk)', False),
     0x24CE60: ('interface/virtual dispatch resolve', False),
     0x243A20: ('resolve interface method slot', False),
-    0x22E0:   ('interface call thunk', False),
-    0x7EC0:   ('generic interface call thunk', False),
+    0x22E0:   ('interface call thunk (get_Count sites)', False),
+    # Per-instantiation IList<T>.get_Item thunks. Identified from usage, not
+    # from a symbol: called as (r8 = list, r9d = index) -> element pointer in
+    # rax, whose fields are then written. Observed element types below; the
+    # 0x7EC0/0x7F50 split tracks the instantiation but is not perfectly clean,
+    # so treat the element type as a hint, not a guarantee.
+    0x7EC0:   ('IList<T>.get_Item thunk (seen: ScreenState)', False),
+    0x7F50:   ('IList<T>.get_Item thunk (seen: CameraState)', False),
     0x246570: ('il2cpp_value_box', False),
 }
 
