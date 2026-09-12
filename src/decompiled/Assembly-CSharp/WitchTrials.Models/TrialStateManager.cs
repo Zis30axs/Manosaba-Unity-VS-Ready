@@ -216,8 +216,11 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	//   0x39D5B3  xor eax, eax / ret            ; returns a zeroed UniTask
 	// (The interleaved `bts`/`lock cmpxchg` blocks are GC write barriers.)
 	//
-	// `default` is used rather than `UniTask.CompletedTask` because the native
-	// code returns an all-zero struct; both are observationally identical here.
+	// `default` vs `UniTask.CompletedTask`: observationally identical (both are
+	// an all-zero struct), so this is a spelling choice, not a behaviour claim.
+	// Mild evidence favours `UniTask.CompletedTask`: there is a UniTask_TypeInfo
+	// class-init guard at 0x39D599, and reading a static property is what would
+	// require the cctor to have run. Not enough to assert, so `default` stays.
 	[Token(Token = "0x60006A1")]
 	[Address(RVA = "0x39D3A0", Offset = "0x39BDA0", VA = "0x18039D3A0", Slot = "9")]
 	public Naninovel.UniTask InitializeService()
@@ -327,9 +330,15 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	// Native evidence:
 	//   0x39DB23  object_new <>c__DisplayClass12_0; captures
 	//             +0x10 = rotation, +0x18 = this, +0x20 = index
-	//   0x39DC10  loop: while (_cameraStates.Count < index + 1)
-	//                       _cameraStates.Add(new CameraState());
-	//             (ICollection<CameraState>.get_Count / .Add via interface slot)
+	//   0x39DC04  edi = ICollection<CameraState>.get_Count(_cameraStates)
+	//   0x39DC10  loop, re-reading the captured index each pass:
+	//               for (int i = _cameraStates.Count; i < index + 1; i++)
+	//                   _cameraStates.Add(new CameraState());
+	//             get_Count is called ONCE, before the loop (0x39DC04), and the
+	//             counter is a local incremented at 0x39DC95 -- Roslyn cannot
+	//             hoist an interface property across Add(), so the hoist is the
+	//             source's own `for` initialiser, not an optimisation. A
+	//             `while (Count < index + 1)` would re-read Count each pass.
 	//   0x39DCBB  Nullable<float>.get_HasValue(height)
 	//             -> _cameraStates[index].Height = height.Value   ([rbx+0x10])
 	//   0x39DD59  if (rotation != null):
@@ -355,7 +364,7 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	[Address(RVA = "0x39DA50", Offset = "0x39C450", VA = "0x18039DA50", Slot = "6")]
 	public void RegisterCameraState(int index, float? height, float?[] rotation, float? distance)
 	{
-		while (_cameraStates.Count < index + 1)
+		for (int i = _cameraStates.Count; i < index + 1; i++)
 		{
 			_cameraStates.Add(new CameraState());
 		}
@@ -381,7 +390,11 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	// Native evidence:
 	//   0x39DFD7  r8 = _screenStates ([rsi/rbp+0x28]); null -> NullReferenceException
 	//   0x39DFFD  esi = ICollection<ScreenState>.get_Count(_screenStates)
-	//   0x39E011  compare against index + 1, loop while less
+	//             -- called ONCE, before the loop; esi is then a local counter
+	//             incremented at 0x39E0A5. Count is never re-read, so the source
+	//             is a `for` with Count as its initialiser, not a `while` on
+	//             Count (Roslyn cannot hoist that property across Add()).
+	//   0x39E011  cmp esi, index + 1 / jge -> skip loop
 	//   0x39E020  loop body: object_new ScreenState (ctor inlined: Visible = 1,
 	//             Direction = 1) then ICollection<ScreenState>.Add
 	//   0x39E0B0  rax = IList<ScreenState>.get_Item(_screenStates, index)
@@ -390,7 +403,7 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	[Address(RVA = "0x39DF80", Offset = "0x39C980", VA = "0x18039DF80", Slot = "7")]
 	public void RegisterScreenVisibilityState(int index, bool visible)
 	{
-		while (_screenStates.Count < index + 1)
+		for (int i = _screenStates.Count; i < index + 1; i++)
 		{
 			_screenStates.Add(new ScreenState());
 		}
@@ -399,7 +412,8 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x39E120 (0x1F4 bytes)
 	//
-	// Native evidence: identical padding loop to the method above, then three
+	// Native evidence: identical padding loop to the method above -- get_Count
+	// hoisted once into ebp at 0x39E1B0, incremented at 0x39E259 -- then three
 	// IList<ScreenState>.get_Item(index) calls, each storing one field:
 	//   0x39E286  movss dword ptr [rax+0x14], xmm6  ; NormalizedPosX
 	//   0x39E2A1  movss dword ptr [rax+0x18], xmm7  ; Roll
@@ -411,7 +425,7 @@ public class TrialStateManager : ITrialStateManager, IEngineService, IStatefulSe
 	[Address(RVA = "0x39E120", Offset = "0x39CB20", VA = "0x18039E120", Slot = "8")]
 	public void RegisterScreenSplitState(int index, float normalizedPosX, float roll, ScreenSplitDirection direction)
 	{
-		while (_screenStates.Count < index + 1)
+		for (int i = _screenStates.Count; i < index + 1; i++)
 		{
 			_screenStates.Add(new ScreenState());
 		}
