@@ -255,12 +255,124 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x384B50 (680 B, entry) + 0x3850A0 (4319 B, MoveNext)
+	//
+	// Public entry (0x384B50) is the standard compiler-generated
+	// `AsyncUniTaskMethodBuilder.Start<...>()` kickoff -- no logic of its own.
+	// All behavior below comes from `<ModifyCameraAsync>d__10.MoveNext()`
+	// (0x3850A0), which has exactly ONE await point (confirmed: the init
+	// block declares a single `AwaitUnsafeOnCompleted<UniTask.Awaiter,
+	// ...d__10>()`), making the 4319-byte size mostly straight-line setup
+	// rather than branching complexity.
+	//
+	// Evidence chain, in execution order:
+	// - Bounds check: `cameraIndex < 0` (`jl`) OR `>= _cameraContainers.Length`
+	//   (`jge`) both branch to the same LogWarning+return block, which builds
+	//   the exact literal `'Camera index {0} is out of range.'` via
+	//   `String.FormatHelper`+`ParamsArray..ctor` with one boxed int arg --
+	//   i.e. `$"Camera index {cameraIndex} is out of range."`.
+	// - `TrialStateManager` access at this call site is byte-identical to the
+	//   just-reconstructed getter (0x384600): same null-check-then-
+	//   `GetServiceOrErr<ITrialStateManager>()`-then-cache shape, confirming
+	//   it's a plain property read, not a separate inlined lookup.
+	// - `RegisterCameraState(int, float?, float?[], float?)` identified by
+	//   exact signature match against `ITrialStateManager` (only member with
+	//   this parameter shape) AND vtable-slot arithmetic (`mov r8d, 2` selects
+	//   the 3rd declared interface member, 0-indexed -- `RegisterCameraState`
+	//   is declared 3rd in `ITrialStateManager.cs`). Each nullable argument's
+	//   construction matches `x?.To` exactly: height/distance tweens store a
+	//   plain `float To` (confirmed against `ModifyCameraHeightTween`/
+	//   `ModifyCameraDistanceTween`'s reconstructed `_to` field at +0x10, so
+	//   `heightTween?.To`/`distanceTween?.To` compile to a null-check +
+	//   `new Nullable<float>(...)`, seen verbatim); rotation's `To` is already
+	//   a reference-typed `float?[]` (confirmed against
+	//   `ModifyCameraRotationTween`'s `_to` field, also +0x10, an object
+	//   reference not a struct), so `rotationTween?.To` compiles to a plain
+	//   null-check + 8-byte reference load, also seen verbatim -- this
+	//   asymmetry in codegen shape is what confirmed the field's real type
+	//   before this method was ever disassembled.
+	// - `_tokenSources[cameraIndex]`: cancel+dispose the previous source (if
+	//   any, re-checked null independently for each of the two calls -- same
+	//   "no caching across statements" convention already documented in
+	//   `Awake()`), replace with a fresh `CancellationTokenSource`, then
+	//   `CancellationTokenSource.CreateLinkedTokenSource(...Token, ct)`.
+	// - Three tween-task launches into `_modifyCameraTasks[cameraIndex]`,
+	//   confirmed against the row's own bounds-check literals (`cmp
+	//   [row+0x18], 0/1/2; jbe <range-check>`) paired with 16-byte (`UniTask`
+	//   struct size) writes at `row+0x20/+0x30/+0x40`: slot 0 = height, slot 1
+	//   = rotation, slot 2 = distance. Each container call's arguments
+	//   (`To`/`Ease`/`Duration`) were verified against the already-
+	//   reconstructed record property getters' own field offsets, and each
+	//   call's parameter ORDER against `StageCameraContainer`'s own
+	//   `ModifyHeightAsync`/`ModifyRotationAsync`/`ModifyDistanceAsync`
+	//   signatures (height/distance calls are inlined `Start<>()` kickoffs at
+	//   this call site rather than plain calls, unlike rotation's; this is
+	//   the same "trivial-wrapper inlining is inconsistent per-instantiation"
+	//   pattern already seen for `Gosub`/`Dismiss` trampolines elsewhere in
+	//   this session -- confirmed via each callee's own struct field offsets
+	//   in `StageCameraContainer.cs`, not assumed from the inlining shape).
+	// - The single await targets `UniTaskExtensions.GetAwaiter(UniTask[]
+	//   tasks)` -- independently disassembled at RVA 0x18203F0 and confirmed
+	//   via its own `dump.cs` signature to take ONLY the array (no index),
+	//   which is what makes `await _modifyCameraTasks[cameraIndex];` valid
+	//   C# at all (the array becomes directly awaitable through this
+	//   extension). Slot 3 of the row is never written anywhere in this
+	//   method -- it stays `default(UniTask)` (already-completed, inert in
+	//   the combined await) for the lifetime of this controller. Why the row
+	//   is sized 4 rather than exactly 3 remains UNKNOWN; `_shakeCameraTasks`
+	//   (3 slots, consumed by `ShakeCameraAsync`, RVA 0x384E00) has not yet
+	//   been examined and may or may not shed further light on it.
+	// - Post-await, `_tokenSources[cameraIndex].Dispose(); ... = null;` run
+	//   BEFORE `linkedCts` is disposed -- both directly observed in
+	//   instruction order at 0x180385da5-e32. `linkedCts`'s dispose there
+	//   (and at two further gated copies of the same call at 0x180385f9f and
+	//   0x180385fd0, one per MoveNext re-entry path) goes through an explicit
+	//   `IDisposable`-interface call thunk rather than a direct
+	//   `CancellationTokenSource.Dispose()` dispatch, and each copy is gated
+	//   behind a `state < 0` check -- the signature of a compiler-emitted
+	//   `finally` reached from multiple entry points (normal fallthrough
+	//   plus exception unwind). This establishes (a) the statement order
+	//   and (b) that the dispose is finally-dispatched through `IDisposable`
+	//   -- CONFIDENCE B: it does NOT by itself distinguish a `using
+	//   (linkedCts) { ...; ...Dispose(); ... = null; }` block from a
+	//   hand-written `try { ...; ...Dispose(); ... = null; } finally {
+	//   ((IDisposable)linkedCts).Dispose(); }`, since `CancellationTokenSource`
+	//   is a non-sealed type with a virtual `Dispose()`, and Roslyn emits the
+	//   same `IDisposable`-cast dispatch for `using` on such a type. The
+	//   `using` form is written below because it reproduces the observed
+	//   order and dispatch exactly and is the idiomatic choice; the
+	//   alternative would compile identically at this level of detail.
 	[Token(Token = "0x600053A")]
 	[Address(RVA = "0x384B50", Offset = "0x383550", VA = "0x180384B50", Slot = "4")]
 	[AsyncStateMachine(typeof(_003CModifyCameraAsync_003Ed__10))]
-	public UniTask ModifyCameraAsync(int cameraIndex, ModifyCameraHeightTween heightTween, ModifyCameraRotationTween rotationTween, ModifyCameraDistanceTween distanceTween, [Optional] CancellationToken ct)
+	public async UniTask ModifyCameraAsync(int cameraIndex, ModifyCameraHeightTween heightTween, ModifyCameraRotationTween rotationTween, ModifyCameraDistanceTween distanceTween, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (cameraIndex < 0 || cameraIndex >= _cameraContainers.Length)
+		{
+			UnityEngine.Debug.LogWarning($"Camera index {cameraIndex} is out of range.");
+			return;
+		}
+
+		TrialStateManager.RegisterCameraState(cameraIndex, heightTween?.To, rotationTween?.To, distanceTween?.To);
+
+		if (_tokenSources[cameraIndex] != null)
+		{
+			_tokenSources[cameraIndex].Cancel();
+			_tokenSources[cameraIndex].Dispose();
+		}
+		_tokenSources[cameraIndex] = new CancellationTokenSource();
+		CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_tokenSources[cameraIndex].Token, ct);
+
+		_modifyCameraTasks[cameraIndex][0] = (heightTween != null) ? _cameraContainers[cameraIndex].ModifyHeightAsync(heightTween.To, heightTween.Ease, heightTween.Duration, linkedCts.Token) : default(UniTask);
+		_modifyCameraTasks[cameraIndex][1] = (rotationTween != null) ? _cameraContainers[cameraIndex].ModifyRotationAsync(rotationTween.To, rotationTween.Ease, rotationTween.Duration, linkedCts.Token) : default(UniTask);
+		_modifyCameraTasks[cameraIndex][2] = (distanceTween != null) ? _cameraContainers[cameraIndex].ModifyDistanceAsync(distanceTween.To, distanceTween.Ease, distanceTween.Duration, linkedCts.Token) : default(UniTask);
+
+		using (linkedCts)
+		{
+			await _modifyCameraTasks[cameraIndex];
+			_tokenSources[cameraIndex].Dispose();
+			_tokenSources[cameraIndex] = null;
+		}
 	}
 
 	[Token(Token = "0x600053B")]
