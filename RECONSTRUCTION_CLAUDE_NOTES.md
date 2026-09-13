@@ -75,3 +75,16 @@ disassemblies -- same "unconditional NRE-throwing dereference" pattern already l
 for `DebateUi`/`Court`. Worth confirming prefab wiring for the `PerspectiveStagePresenter`
 and `StageScreenController` components if anyone hits a runtime NRE in the
 PerspectiveStage flow.
+
+## `WitchTrials.Views.StageCameraController`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/StageCameraController.cs`
+
+- `[SerializeField] private StageCameraContainer[] _cameraContainers;` -- dereferenced
+  unconditionally (explicit inlined NRE throw, THREE separate times) in `Awake()` to
+  size the `_modifyCameraTasks`/`_shakeCameraTasks`/`_tokenSources` arrays via
+  `.Length`. An empty-but-non-null array on the prefab would NOT throw here -- it would
+  silently produce zero-length task/token-source tables, which is a distinct failure
+  mode from the usual "unassigned field throws NRE" pattern logged elsewhere in this
+  file: worth flagging separately if the camera subsystem ever silently no-ops instead
+  of throwing.

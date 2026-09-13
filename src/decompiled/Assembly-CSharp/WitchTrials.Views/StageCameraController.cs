@@ -171,10 +171,58 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3846C0, 840 B
+	//
+	// Pre-allocates the two per-camera task-slot tables this controller
+	// uses to track in-flight `ModifyCameraAsync`/`ShakeCameraAsync`
+	// operations, one row per camera container, plus a matching
+	// `CancellationTokenSource[]` (left as an array of `null`s here --
+	// individual sources are created lazily elsewhere, not in `Awake`).
+	//
+	// Every `new T[n]`-shaped allocation here (5 of them: the two outer
+	// jagged arrays, one inner row per iteration of each of the two
+	// loops, and the token-source array) resolves to the SAME native
+	// helper, `sub_297400(TYPE array, int length)` -- independently
+	// disassembled and confirmed to be a generic array-allocation routine
+	// (computes `elementSize * length + header`, calls the GC allocator,
+	// stores the array TypeInfo and length) called with the exact
+	// `TYPE=..., length=...` shape at every site, not a specialized
+	// per-type constructor -- i.e. this is IL2CPP's shared codegen for
+	// the `newarr`/`new T[n]` IL instruction, not five different named
+	// APIs. The row lengths (4 for `_modifyCameraTasks`, 3 for
+	// `_shakeCameraTasks`) are literal immediates (`mov edx, 4`/
+	// `mov edx, 3`) at the respective call sites, not derived from
+	// anything -- and do NOT obviously match either async method's own
+	// parameter count (`ModifyCameraAsync` takes exactly three tween
+	// arguments, `ShakeCameraAsync` takes none structured that way), so
+	// what each of the 4/3 row slots actually indexes is UNKNOWN from
+	// this method alone; left unexplained rather than guessed. Next
+	// natural target: `ModifyCameraAsync`/`ShakeCameraAsync` themselves
+	// (RVA 0x384B50/0x384E00) are what actually INDEX into these rows,
+	// and reconstructing either resolves this.
+	//
+	// `_cameraContainers` (a `[SerializeField]`) is read fresh, with its
+	// own explicit NRE-throwing null check, THREE separate times (once
+	// per outer-array allocation) rather than cached into a local once --
+	// confirmed deliberately, not a simplification opportunity: the
+	// disassembly performs three independent `test+je` sequences on three
+	// independent reloads of `[this+0x20]`, not one check reused three
+	// times.
 	[Token(Token = "0x6000537")]
 	[Address(RVA = "0x3846C0", Offset = "0x3830C0", VA = "0x1803846C0")]
 	private void Awake()
 	{
+		_modifyCameraTasks = new UniTask[_cameraContainers.Length][];
+		for (int i = 0; i < _modifyCameraTasks.Length; i++)
+		{
+			_modifyCameraTasks[i] = new UniTask[4];
+		}
+		_shakeCameraTasks = new UniTask[_cameraContainers.Length][];
+		for (int i = 0; i < _shakeCameraTasks.Length; i++)
+		{
+			_shakeCameraTasks[i] = new UniTask[3];
+		}
+		_tokenSources = new CancellationTokenSource[_cameraContainers.Length];
 	}
 
 	[Token(Token = "0x6000538")]
