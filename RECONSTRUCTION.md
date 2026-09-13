@@ -122,7 +122,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 5 | Boot/Init | `EntrySequence::ResetDebugVariables` | `0x38A660` ✅ | 571 | 8 | 2 | 1 | 5 | 1 | medium |
 | 6 | Boot/Init | `GameInitializer::Start` | `0x30FB70` ✅🎮 | 560 | 11 | 0 | 0 | 0 | 1 | medium |
 | 7 | TrialState | `TrialStateManager::RegisterCameraState` | `0x39DA50` ✅ | 1323 | 30 | 0 | 0 | 1 | 5 | hard |
-| 8 | TrialState | `WitchTrialsNaninovelManager::ChangeTrialPauseMode` | `0x399BE0` | 626 | 21 | 0 | 1 | 1 | 1 | hard |
+| 8 | TrialState | `WitchTrialsNaninovelManager::ChangeTrialPauseMode` | `0x399BE0` ✅ | 626 | 21 | 0 | 1 | 1 | 1 | hard |
 | 9 | TrialState | `TrialStateManager::SaveServiceState` | `0x39D5C0` ✅ | 746 | 14 | 0 | 0 | 2 | 4 | medium |
 | 10 | TrialState | `TrialStateManager::InitializeService` | `0x39D3A0` ✅🎮 | 544 | 9 | 0 | 0 | 0 | 3 | medium |
 | 11 | TrialState | `TrialStateManager::RegisterScreenSplitState` | `0x39E120` ✅ | 500 | 14 | 0 | 0 | 0 | 0 | medium |
