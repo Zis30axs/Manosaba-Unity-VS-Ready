@@ -138,7 +138,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 21 | Naninovel-glue | `WitchTrialsNaninovelManager::StartTrial` | `0x39A1D0` | 574 | 6 | 0 | 3 | 4 | 2 | medium |
 | 22 | Naninovel-glue | `GosubResetWitchBook::CheckEvidenceState` | `0x328D20` | 1103 | 17 | 1 | 0 | 0 | 8 | hard |
 | 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` | 736 | 7 | 0 | 0 | 5 | 5 | medium |
-| 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` | 227 | 4 | 0 | 1 | 0 | 1 | easy |
+| 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
 | 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
 | 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
 | 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
@@ -157,7 +157,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 40 | Map | `MapFloor::get_Areas` | `0x36EC40` | 791 | 15 | 2 | 0 | 0 | 3 | medium |
 | 41 | Input | `DebugTextPreferenceNaninovelInputState::BuildText` | `0x3B43B0` | 899 | 22 | 0 | 1 | 7 | 0 | hard |
 | 42 | Input | `OptionsUi::get_InputManager` | `0x352860` ✅ | 202 | 5 | 13 | 0 | 0 | 1 | easy |
-| 43 | Input | `WitchTrialsInputPresenter::Awake` | `0x38EC50` | 368 | 7 | 0 | 0 | 0 | 2 | medium |
+| 43 | Input | `WitchTrialsInputPresenter::Awake` | `0x38EC50` ✅ | 368 | 7 | 0 | 0 | 0 | 2 | medium |
 | 44 | Input | `DebugCommandButtons::get_InputManager` | `0x3A7BD0` ✅ | 186 | 5 | 7 | 0 | 0 | 1 | easy |
 
 完整排序在 `work/reversing/ranked.json`（929 条）。
