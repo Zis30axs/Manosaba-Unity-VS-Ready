@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using FastEnumUtility;
+using GigaCreation.NaninovelExtender.Cameras;
 using Il2CppDummyDll;
 using YieldAwaitable = Naninovel.YieldAwaitable;
 using JetBrains.Annotations;
@@ -485,10 +487,116 @@ public class PrintDebateText : PrintText
 		return default(UniTask);
 	}
 
+	// RECONSTRUCTED (previously deferred as "very hard") | Confidence: A |
+	// RVA: 0x322B40, 1590 B
+	//
+	// `NullableFloat -> float` conversions below use the two-step
+	// `((float?)x).Value` cast established elsewhere in this codebase: a bare
+	// `(float)x` is CS0457-ambiguous between `NullableFloat.implicit operator
+	// float?(NullableFloat)` and `Nullable<float>.implicit operator
+	// float(Nullable<float>)`; routing through `float?` first resolves it
+	// unambiguously, matching exactly the two-step unwrap the disassembly
+	// itself performs (`NullableFloat`'s own conversion, then a separate
+	// `Nullable<float>.op_Implicit`/`.Value`-shaped step).
+	//
+	// Three independent `if (Assigned(...))` blocks (each guard confirmed
+	// byte-for-byte against an independent disassembly of `Command.Assigned`
+	// -- same null-check + `ICommandParameter.get_HasValue()` (dump.cs Slot 0)
+	// shape, and the SAME `data_30DC164` type-init flag shared across all
+	// three, confirming they are genuinely the same inlined static call, not
+	// three separately-written checks):
+	//
+	//   - `ScenePosition` (a `DecimalListParameter` = `ParameterList<
+	//     NullableFloat>`): X/Y are percentages (0-100) of the current scene
+	//     rect when explicitly given, falling back to the printer's own
+	//     current position component when not; Z is used as a plain value
+	//     with no scaling. X and Y each compile to TWO separate calls on
+	//     `ScenePosition` -- `ElementAtOrNull(i)` for the null test
+	//     (`sub_25D0`) and, only when non-null, a SEPARATE `get_Item(i)`
+	//     call for the value (`ParameterList<NullableFloat>.get_Item`) --
+	//     so the faithful source-level shape is `ElementAtOrNull(i) != null
+	//     ? ... ScenePosition[i] ... : printer.Position.<c>`, not a single
+	//     bound-and-reused pattern match. Z is the one case that genuinely
+	//     reuses a single `ElementAtOrNull(2)` result via `??` (the result
+	//     flows straight into `Nullable<float>.op_Implicit` with no second
+	//     `get_Item` call) -- confirmed by this asymmetry between the X/Y
+	//     bytes and the Z bytes, not assumed from source-level style. The
+	//     scene rect comes from `CameraConfigurationUtility.
+	//     EvaluateSceneRect(true)` -- the single-arg `Nullable<bool>`
+	//     overload (dump.cs confirms this exact overload exists), called
+	//     with literal `true` (a `Nullable<bool>(true)` is constructed at
+	//     the call site, matching "match screen width"). `Rect`'s field
+	//     layout (x/y/width/height at 0x0/0x4/0x8/0xC, dump.cs) is what the
+	//     `shufps` component-broadcasts key off of (0xaa=width for X,
+	//     0xff=height and 0x55=y for Y). Every `printer.Position.<c>`
+	//     fallback read dispatches through `IActor.get_Position`, dump.cs
+	//     Slot 5, via the generic getter trampoline `sub_39F0` (slot passed
+	//     dynamically in `edx`, confirmed by disassembling the trampoline --
+	//     it is NOT IActor-specific). The final `printer.Position = new
+	//     Vector3(x, y, z);` assignment dispatches through `IActor.
+	//     set_Position`, dump.cs Slot 6, via a FULLY INLINED
+	//     interface-offset-cache scan directly at THIS call site (scan the
+	//     callee's own cached interface-offset table at `[r10+0x12e]`, and
+	//     only on a cache miss fall back to `mov r8d, 6` + `call sub_243A20`
+	//     to resolve the slot, then `call r9` on the resolved pointer) --
+	//     there is NO shared trampoline involved for this particular call,
+	//     unlike `Roll` below. The `printer.Position`/`.Rotation`
+	//     reads/writes below use the same interface (`IDebateTextPrinterActor
+	//     : ITextPrinterActor, IActor`), so no cast is needed at the source
+	//     level.
+	//   - `Roll`: `printer.Rotation = Quaternion.Euler(0f, 0f, Roll);` --
+	//     confirmed by reading the cached-icall name string at the resolved
+	//     call target: `"UnityEngine.Quaternion::Internal_FromEulerRad_
+	//     Injected(...)"`, called after multiplying by a data-section
+	//     constant that reads back as exactly `Mathf.Deg2Rad`
+	//     (0.017453292...) -- i.e. `Quaternion.Euler`'s own public
+	//     degrees-to-radians conversion, inlined. Unlike `set_Position`
+	//     above, this write genuinely goes through a SHARED runtime
+	//     trampoline: `call sub_38B0` (RVA 0x38B0), independently
+	//     disassembled and confirmed to have `IActor.set_Rotation`'s slot
+	//     (dump.cs Slot 8) hardcoded into its own machine code (`mov r8d,
+	//     8`) rather than taking it as a parameter -- Position and Rotation
+	//     use genuinely different dispatch mechanisms here, not the same
+	//     mechanism with a different slot constant.
+	//   - `AnimationKind`: `FastEnum.TryParse<DebateTextAnimationKind>(
+	//     AnimationKind, true, out var animationKind)` (dump.cs confirms this
+	//     exact `TryParse<T>(string, bool, out T)` overload) either sets
+	//     `printer.AnimationKind` (dump.cs `IDebateTextPrinterActor.
+	//     set_AnimationKind`, Slot 1) on success, or calls `Warn(...)` (dump.cs
+	//     `Command.Warn`, Slot 7) with the exact literal format string read
+	//     from the data section (`"Invalid animation kind: {0}"`) on failure
+	//     -- the parse result is never used un-checked.
 	[Token(Token = "0x600011C")]
 	[Address(RVA = "0x322B40", Offset = "0x321540", VA = "0x180322B40")]
 	private void ModifyDebatePrinter(IDebateTextPrinterActor printer)
 	{
+		if (Assigned(ScenePosition))
+		{
+			Rect sceneRect = CameraConfigurationUtility.EvaluateSceneRect(true);
+			float x = (ScenePosition.ElementAtOrNull(0) != null)
+				? sceneRect.x + ((float?)ScenePosition[0]).Value / 100f * sceneRect.width
+				: printer.Position.x;
+			float y = (ScenePosition.ElementAtOrNull(1) != null)
+				? sceneRect.y + ((float?)ScenePosition[1]).Value / 100f * sceneRect.height
+				: printer.Position.y;
+			float z = ((float?)(ScenePosition.ElementAtOrNull(2) ?? (NullableFloat)printer.Position.z)).Value;
+			printer.Position = new Vector3(x, y, z);
+		}
+		if (Assigned(Roll))
+		{
+			printer.Rotation = Quaternion.Euler(0f, 0f, Roll);
+		}
+		if (Assigned(AnimationKind))
+		{
+			if (FastEnum.TryParse<DebateTextAnimationKind>(AnimationKind, true, out DebateTextAnimationKind animationKind))
+			{
+				printer.AnimationKind = animationKind;
+			}
+			else
+			{
+				Warn(string.Format("Invalid animation kind: {0}", AnimationKind));
+			}
+		}
 	}
 
 	// RECONSTRUCTED (from the `<WaitForDebate>d__25.MoveNext` state machine,
