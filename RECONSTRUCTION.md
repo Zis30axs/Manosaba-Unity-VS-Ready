@@ -20,6 +20,72 @@
 
 ---
 
+## 0.5 恢复范围边界：43 个程序集里哪些是"游戏本体"，哪些是"引擎/中间件"
+
+**结论先行**：43 个反编译程序集里，**只有 `Assembly-CSharp`（`WitchTrials.*`）是这个游戏自己的代码**。
+其余全部是第三方中间件——跟 Minecraft 和 LWJGL 的关系完全一致：LWJGL 提供窗口/OpenGL/输入
+绑定，Mojang 自己的 `net.minecraft.*` 才是模组关心的对象，MCP 只反编译后者。这里也一样：
+其余程序集提供服务定位器/存档抽象/UI 组件/Naninovel 扩展等能力，但**不编码任何"审判/辩论/
+证据"这些 Manosaba 特有的游戏规则**——那些规则 100% 在 `WitchTrials.*` 里，靠调用这些中间件的
+公开 API 实现。
+
+**证据不是靠代码风格猜的，是游戏自带的第三方授权文件说的**（`<游戏目录>\LICENSE.md`，
+206 行，游戏自己随正式版一起发布，用于满足 MIT 协议的署名要求）：
+
+| 授权文件里的条目 | 版权方 | 对应到反编译出的程序集 |
+|---|---|---|
+| Naninovel Extender | GIGA CREATION (2025) | `GigaCreation.NaninovelExtender.*`（10 个子程序集） |
+| Service Locator for Unity | GIGA CREATION (2024) | `GigaCreation.Tools.Service` |
+| Unity Undo Extensions | Gigacee / GIGA CREATION (2023) | `GigaCreation.Tools.UndoExtensions` |
+| UnityTools | Gigacee / GIGA CREATION (2023) | `GigaCreation.Essentials.*`、`GigaCreation.Tools.*` 其余部分 |
+| Build Timestamp Display for Unity | Gigacee / GIGA CREATION (2023) | `GigaCreation.Tools.BuildTimestampDisplay` |
+| SpriteDicing | Artyom Sovetnikov / Elringus (2018) | `Elringus.SpriteDicing.Runtime` |
+| Steamworks.NET | Riley Labrecque (2013-2022) | 纯引用 DLL，未反编译 |
+| UniRx | Yoshifumi Kawai (2018) | 纯引用 DLL，未反编译 |
+| UniTask | Yoshifumi Kawai / Cysharp, Inc. (2019) | 纯引用 DLL，未反编译 |
+| LitMotion | Yusuke Nakada (2023) | 纯引用 DLL，未反编译 |
+| FastEnum | Takaaki Suzuki (2019) | （被上述库内部引用） |
+
+**关键发现：`GIGA CREATION`（含"Gigacee"个人身份）是第三方 Unity 工具作者，不是 Manosaba
+的开发商。** 这几个库全部 MIT 协议、免费开源——意味着它们的真实源码大概率能直接在
+Gigacee 的 GitHub 上找到，逆向它们不仅没必要，还不如直接找原始仓库（如果需要对照）。
+
+**`Naninovel`（`Elringus.Naninovel.Runtime` + `Naninovel.Common`，789+176=965 个文件，
+是整个工程里最大的一块）没有出现在这份 MIT 授权列表里**——因为它是付费商业资产
+（Unity Asset Store 在售，naninovel.com 有完整公开文档），走的是商业 EULA 而不是 MIT 署名。
+但结论一样：**第三方、有公开文档、不需要逆向**。
+
+**用代码本身也能独立验证这个结论**（不止依赖授权文件）：
+- 在全部 `GigaCreation.*` 源码里 grep "trial/debate/witch/evidence" 等 Manosaba 专属词汇，
+  零命中（两个看似命中的全是"Switch"/"Industrial"之类的子串误报）。
+- 类名全部是通用能力：`ServiceLocator`、`MasterDataProvider`、`DialogManager`、
+  `InputManager`、`TweeningButton`、`Pagination`、`CameraManagerExtended`——没有一个
+  和"witch trial"的具体规则相关，都是"提供能力"而不是"实现规则"。
+- `CustomInspector` / `CustomInspector.Helpers`（114 个文件）全部类都标了
+  `[Conditional("UNITY_EDITOR")]`——**发布版游戏里这些代码根本不会执行**，比"低优先级"
+  更进一步：是完全无关。
+- `ppt-noise`（`Noise.cs`/`Perlin.cs`）是通用 Perlin 噪声算法，公开算法，逆向价值也低。
+
+**项目结构本身也已经体现了这条边界**：`project/src/*/*.csproj` 里，UniRx/UniTask/
+Steamworks.NET/LitMotion/Newtonsoft.Json/MPUIKit/LeTai.TrueShadow 以及全部 `UnityEngine.*`
+官方模块，从一开始就只以编译好的 DummyDll 二进制形式被引用（`<Reference HintPath=...>`），
+**从未被反编译成源码**——工程本身早就没有把这些当"游戏代码"处理。真正被反编译成 43 个
+可编译源码工程的，只是因为 IL2CPP 编译时会把所有静态链接的程序集（包括第三方资产）一起
+打包进 `GameAssembly.dll`，Il2CppDumper 没法在"反编译"阶段区分"谁的代码"——这个区分
+只能靠上面这些外部证据（授权文件、公开文档、代码语义）来做。
+
+**对本工程恢复范围的实际结论**：
+1. 本文件第 4/6/7 节列的优先级表、以及后续所有方法体恢复工作，**范围仅限
+   `WitchTrials.*`（Assembly-CSharp）**——这从一开始就是对的，不需要调整。
+2. 引用 Naninovel / GigaCreation.* 的 API 时（`Engine.GetServiceOrErr<T>()`、
+   `ServiceLocator.Get<T>()`、`NaniVarManager.TrySetVariableValue(...)` 等），
+   按其**公开签名语义**当已知黑盒使用即可，不需要也不应该去逆向这些库自己的方法体。
+3. 唯一的例外情形：如果发现某个 `GigaCreation.*` 或 `Naninovel` 方法在这份游戏里的
+   RVA 反汇编出来的行为，跟其公开文档/开源版本明显不一致（怀疑被 Manosaba 开发商
+   自己打了补丁/魔改），那一处才值得单独逆向确认——目前没有发现任何这种情况的证据。
+
+---
+
 ## 1. 关键校准发现（都会影响后续判断）
 
 ### 1.1 必须用哪个二进制
