@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -294,12 +295,119 @@ public class PrintDebateText : PrintText
 		return null;
 	}
 
+	// RECONSTRUCTED (from `<Print>d__21.MoveNext`, RVA 0x324180, 3290 B, 3
+	// await points -> state 0/1/2) | Confidence: A | wrapper RVA: 0x322810
+	//
+	// Restored to structured `async`/`await`/`if` form, not a state-machine
+	// translation. Native evidence, one await at a time:
+	//
+	//   1. `await base.Print(printer, token);` -- the very first call in the
+	//      state machine's main body is a DIRECT call to `0x1804fd430`, which
+	//      dump.cs identifies exactly as `PrintText.Print(ITextPrinterActor,
+	//      AsyncToken)` (Slot 26 -- the same slot/signature this override
+	//      itself has), called with `this` as receiver: i.e. `base.Print(...)`.
+	//      Its `UniTask` result's `IsCompleted`/`GetResult` are checked/called
+	//      through `Naninovel.Async.IAwaiter` with raw `ecx` selectors 1 and 2
+	//      -- confirmed against dump.cs's `IAwaiter` declaration itself
+	//      (`Slot 0 = get_Status`, `Slot 1 = get_IsCompleted`, `Slot 2 =
+	//      GetResult`), not assumed from naming. State==0 is this await's
+	//      resume point; it rejoins the same "GetResult then continue" code
+	//      the synchronous-completion path also uses, so resuming here
+	//      continues into the `IsEnabledDebugSkip` check below -- confirmed by
+	//      tracing both paths to the same merge address (0x1803244AE).
+	//      (Await #2 below checks `IsCompleted` via a direct, non-interface
+	//      call instead -- that's `UniTask.Awaiter.get_IsCompleted` itself
+	//      getting inlined at that one call site, not a different await
+	//      mechanism; `Naninovel.UniTask` is a struct wrapping a single
+	//      reference, and the `test r8,r8` null guard seen at every one of
+	//      these await sites is that wrapper's own null-forwarding, not a
+	//      source-level null check, so it is correctly omitted here.)
+	//
+	//   2. The `IsEnabledDebugSkip` gate, and inside it, the link-id
+	//      extraction: `s_linkIdRegex.Matches(Text)` (same `Text` ->
+	//      `Nullable<LocalizableText>.get_Value()` -> `LocalizableText.
+	//      op_Implicit` conversion chain already established elsewhere in
+	//      this file for the bare `Text` field) piped through `.Where(...)`
+	//      and `.Select(...)` using the two compiler-cached lambdas
+	//      `PrintDebateText.<>c.<Print>b__21_0`/`b__21_1` (RVA 0x3239A0/
+	//      0x3239F0; ILSpy's stub omits the `<>c` cache class entirely, the
+	//      same kind of scaffolding drop already seen once for this type's
+	//      `.cctor`). Both lambda bodies were verified BYTE-FOR-BYTE against
+	//      independent disassemblies of named BCL members:
+	//        - `b__21_0(Match match)`'s field chain (`match.Groups` via the
+	//          virtual call at dump.cs `Match.get_Groups()` Slot 5, then
+	//          `[+0x10]`/`[+0x68]`/`[+0x18]`) is IDENTICAL to
+	//          `GroupCollection.get_Count()`'s own 35-byte body -- so this is
+	//          `match.Groups.Count == 2`, not a hand-inlined field walk.
+	//        - `b__21_1(Match match)` calls `GroupCollection.GetGroup(1, 0)`
+	//          by name (the public indexer `Groups[1]` is an 8-byte tail-jump
+	//          into this same method, confirmed by an independent
+	//          disassembly of `get_Item`), then its tail
+	//          (`[+0x18]`/`[+0x14]`/`[+0x10]` -> `String.Substring`) is
+	//          IDENTICAL to `Capture.get_Value()`'s 40-byte body -- so this is
+	//          `match.Groups[1].Value`.
+	//      `s_linkIdRegex` is, per this file's own already-reconstructed
+	//      `.cctor`, `new Regex("<link=\"(\\w+?)\">", RegexOptions.Compiled)`
+	//      -- exactly one capturing group -- so `match.Groups.Count == 2`
+	//      (group 0 + that one group) is a TAUTOLOGY for every match this
+	//      specific regex can ever produce. Written faithfully as-is rather
+	//      than "simplified away": it is genuinely inert defensive code in
+	//      the original, not a misreading here.
+	//      `linkIds` ends up the list of ids inside `<link="id">` tags in the
+	//      debate text.
+	//
+	//   3. `if (linkIds.Length != 0)`: resets `debateWaitTime` to 0 (a direct
+	//      `TrySetVariableValue<float>(DebateWaitTimeVarName, 0f)` call, mirror
+	//      of the pattern already established in `WaitForDebate`), then
+	//      `await WitchTrialsScriptPlayer.ProcessAutoObjectionAsync(linkIds);`
+	//      and returns immediately. The interface member itself is confirmed
+	//      by dump.cs: `IWitchTrialsScriptPlayer.ProcessAutoObjectionAsync
+	//      (string[] objectionIds)` is exactly Slot 0, `string[]`-in/
+	//      `UniTask`-out, matching the call's `rdx = linkIds` argument and
+	//      `UniTask`-typed result. State==1 (this await's resume point) jumps
+	//      straight into the same "GetResult then SetResult" tail the
+	//      synchronous-completion path also reaches -- i.e. the method really
+	//      does end here, it does not fall through into step 4. Confirmed by
+	//      tracing the resume label's unconditional jump to 0x18032496e and
+	//      from there straight to the final `SetResult` block, bypassing the
+	//      `CalculateWaitTime`/`WaitForDebate` code entirely.
+	//      Read together with the debug-skip auto-processing this gates,
+	//      `ProcessAutoObjectionAsync`/`CancelGosub` (the interface's only two
+	//      members) read as: when `enableDebugSkip` is on, this bypasses
+	//      waiting for a human to click each `<link="id">` evidence prompt and
+	//      programmatically resolves them all at once.
+	//
+	//   4. Otherwise (not debug-skip, or no links found):
+	//      `await WaitForDebate(CalculateWaitTime(), token);` -- the
+	//      disassembly literally constructs a fresh `<WaitForDebate>d__25`
+	//      value on the stack (`<>4__this`/`time`/`token` fields set directly,
+	//      `<>1__state = -1`) and calls
+	//      `AsyncUniTaskMethodBuilder.Start<...>` + `.get_Task` on it -- the
+	//      standard codegen shape for "call and await your own private async
+	//      method", written here as the plain call it represents. State==2 is
+	//      this await's resume point, rejoining the same final
+	//      "GetResult then SetResult" tail -- i.e. the method ends right after
+	//      this await, with no further logic.
 	[Token(Token = "0x6000119")]
 	[Address(RVA = "0x322810", Offset = "0x321210", VA = "0x180322810", Slot = "26")]
 	[AsyncStateMachine(typeof(_003CPrint_003Ed__21))]
-	protected override UniTask Print(ITextPrinterActor printer, AsyncToken token)
+	protected override async UniTask Print(ITextPrinterActor printer, AsyncToken token)
 	{
-		return default(UniTask);
+		await base.Print(printer, token);
+		if (IsEnabledDebugSkip)
+		{
+			string[] linkIds = s_linkIdRegex.Matches(Text)
+				.Where((Match match) => match.Groups.Count == 2)
+				.Select((Match match) => match.Groups[1].Value)
+				.ToArray();
+			if (linkIds.Length != 0)
+			{
+				NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, 0f);
+				await WitchTrialsScriptPlayer.ProcessAutoObjectionAsync(linkIds);
+				return;
+			}
+		}
+		await WaitForDebate(CalculateWaitTime(), token);
 	}
 
 	[Token(Token = "0x600011A")]
