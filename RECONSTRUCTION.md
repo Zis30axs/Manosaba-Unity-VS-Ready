@@ -130,7 +130,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 13 | SaveLoad | `SaveLoadUi::Awake` | `0x359AB0` | 1073 | 18 | 0 | 0 | 1 | 4 | hard |
 | 14 | SaveLoad | `SaveLoadUi::FindFocusObject` | `0x35B0F0` | 1479 | 47 | 0 | 0 | 0 | 3 | hard |
 | 15 | SaveLoad | `SaveLoadUi::get_NaniStateManager` | `0x3597E0` ✅ | 202 | 5 | 6 | 0 | 0 | 1 | easy |
-| 16 | SaveLoad | `SaveLoadUi::OnEndToDismiss` | `0x35AE50` | 570 | 12 | 0 | 0 | 0 | 6 | medium |
+| 16 | SaveLoad | `SaveLoadUi::OnEndToDismiss` | `0x35AE50` ✅ | 570 | 12 | 0 | 0 | 0 | 6 | medium |
 | 17 | SaveLoad | `SaveLoadUi::OnShow` | `0x35ABB0` ✅ | 508 | 6 | 0 | 0 | 0 | 7 | medium |
 | 18 | SaveLoad | `ControlPanel::get_SaveLoadUi` | `0x337590` ✅ | 191 | 5 | 2 | 1 | 0 | 1 | easy |
 | 19 | Naninovel-glue | `ScriptHelper::TryParseScenarioName` | `0x39B040` | 1446 | 38 | 3 | 0 | 1 | 3 | hard |
