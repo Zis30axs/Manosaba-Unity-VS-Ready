@@ -172,7 +172,7 @@ E:\Manosaba-VSCodeReady\install_bepinex.ps1 -Uninstall
 日志：`<游戏目录>\BepInEx\LogOutput.log`；崩在 doorstop 阶段的话看
 `<游戏目录>\preloader_*.log`（这个不在 `BepInEx\` 目录下，容易漏看）。
 
-## 三个必须记住的坑
+## 四个必须记住的坑
 
 1. **`RVA 0x30C000` 是共享空函数体**（`ret 0`，已反汇编确认）。
    所有指向它的托管方法都是**真的空方法**，可以直接判定 Confidence A，不需要再分析。
@@ -183,3 +183,13 @@ E:\Manosaba-VSCodeReady\install_bepinex.ps1 -Uninstall
 3. **`MethodInfo*` 是最后一个参数，不是隐藏的第一个参数**。
    实例方法 `__this` 在 RCX；静态方法没有 `__this`，第一个实参就在 RCX。
    参数多时 `MethodInfo*` 落在栈上，不要把它当成真实参数。
+4. **`dotnet build` 的增量缓存会掩盖警告**。只改了少数几个文件后跑
+   `dotnet build`，MSBuild 只重新编译并报告"这次实际重新编译的项目"的警告，
+   已经是最新状态的项目（哪怕它们本来就有一堆 `CS8632` 之类的历史警告）不会
+   重新打印——很容易被"0 个警告"骗过去，以为自己的改动是干净的。
+   踩过一次：加一行 `using System;` 时没注意到文件开头已经有一行（BOM 后面），
+   造成 `CS0105` 重复 using 警告，但当时的增量构建报的是"0 个警告"，
+   直到后来跑了一次 `dotnet build ... --no-incremental` 做全量检查才暴露出来。
+   **要确认自己改动没有引入新警告，必须 `--no-incremental` 全量重建一次**，
+   而且要接受全量重建下 100+ 个警告是这个工程的正常基线（其他 42 个程序集里
+   还有大量未触碰的 `CS8632` 历史警告），只需要抓自己碰过的文件有没有新增的。

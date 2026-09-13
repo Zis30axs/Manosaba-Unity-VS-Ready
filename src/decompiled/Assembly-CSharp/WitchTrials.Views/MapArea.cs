@@ -70,13 +70,14 @@ public class MapArea : MonoBehaviour
 	private MapAreaKind _areaKind;
 
 	[Token(Token = "0x17000085")]
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36DB50 (`mov eax,[rcx+0x30]; ret`)
 	public MapAreaKind AreaKind
 	{
 		[Token(Token = "0x60003DD")]
 		[Address(RVA = "0x36DB50", Offset = "0x36C550", VA = "0x18036DB50")]
 		get
 		{
-			return default(MapAreaKind);
+			return _areaKind;
 		}
 	}
 
