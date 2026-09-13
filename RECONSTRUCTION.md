@@ -108,10 +108,13 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 
 按子系统分组，取每组价值最高的若干个。
 "被调用"= 调用图入度；"虚/接口"= 需要靠 metadata 解析的间接调用点数（难度的主要来源）。
+**RVA 后带 ✅ 的已经恢复并通过编译**（#1、12、15、18、42、44——都是"惰性缓存的服务查找"
+这一种模式：`_field ??= Engine.GetServiceOrErr<T>()` / `ServiceLocator.Get<T>(true)` /
+`NaniUiManager.GetUI<T>()`，详见对应源文件里的 `// RECONSTRUCTED` 注释）。
 
 | # | 系统 | 类型::方法 | RVA | 大小 | 分支 | 被调用 | 调用游戏方法 | 字符串 | 虚/接口 | 难度 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | Boot/Init | `DefaultLocaleSelector::set_AvailableTextLanguages` | `0x36C200` | 82 | 2 | 41 | 0 | 0 | 0 | easy |
+| 1 | Boot/Init | `DefaultLocaleSelector::set_AvailableTextLanguages` | `0x36C200` ✅ | 82 | 2 | 41 | 0 | 0 | 0 | easy |
 | 2 | Boot/Init | `SteamManager::Awake` | `0x3891E0` | 1446 | 33 | 0 | 0 | 5 | 1 | hard |
 | 3 | Boot/Init | `SteamManager::OnEnable` | `0x389790` | 841 | 20 | 0 | 0 | 0 | 1 | medium |
 | 4 | Boot/Init | `SteamManager::OnDestroy` | `0x389AE0` | 1177 | 19 | 0 | 0 | 0 | 0 | hard |
@@ -122,13 +125,13 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 9 | TrialState | `TrialStateManager::SaveServiceState` | `0x39D5C0` | 746 | 14 | 0 | 0 | 2 | 4 | medium |
 | 10 | TrialState | `TrialStateManager::InitializeService` | `0x39D3A0` | 544 | 9 | 0 | 0 | 0 | 3 | medium |
 | 11 | TrialState | `TrialStateManager::RegisterScreenSplitState` | `0x39E120` | 500 | 14 | 0 | 0 | 0 | 0 | medium |
-| 12 | TrialState | `StageScreenController::get_TrialStateManager` | `0x387A50` | 186 | 5 | 2 | 0 | 0 | 1 | easy |
+| 12 | TrialState | `StageScreenController::get_TrialStateManager` | `0x387A50` ✅ | 186 | 5 | 2 | 0 | 0 | 1 | easy |
 | 13 | SaveLoad | `SaveLoadUi::Awake` | `0x359AB0` | 1073 | 18 | 0 | 0 | 1 | 4 | hard |
 | 14 | SaveLoad | `SaveLoadUi::FindFocusObject` | `0x35B0F0` | 1479 | 47 | 0 | 0 | 0 | 3 | hard |
-| 15 | SaveLoad | `SaveLoadUi::get_NaniStateManager` | `0x3597E0` | 202 | 5 | 6 | 0 | 0 | 1 | easy |
+| 15 | SaveLoad | `SaveLoadUi::get_NaniStateManager` | `0x3597E0` ✅ | 202 | 5 | 6 | 0 | 0 | 1 | easy |
 | 16 | SaveLoad | `SaveLoadUi::OnEndToDismiss` | `0x35AE50` | 570 | 12 | 0 | 0 | 0 | 6 | medium |
 | 17 | SaveLoad | `SaveLoadUi::OnShow` | `0x35ABB0` | 508 | 6 | 0 | 0 | 0 | 7 | medium |
-| 18 | SaveLoad | `ControlPanel::get_SaveLoadUi` | `0x337590` | 191 | 5 | 2 | 1 | 0 | 1 | easy |
+| 18 | SaveLoad | `ControlPanel::get_SaveLoadUi` | `0x337590` ✅ | 191 | 5 | 2 | 1 | 0 | 1 | easy |
 | 19 | Naninovel-glue | `ScriptHelper::TryParseScenarioName` | `0x39B040` | 1446 | 38 | 3 | 0 | 1 | 3 | hard |
 | 20 | Naninovel-glue | `GosubResetWitchBook::TryGetScriptPathAndLabel` | `0x3286B0` | 1643 | 40 | 0 | 0 | 3 | 4 | hard |
 | 21 | Naninovel-glue | `WitchTrialsNaninovelManager::StartTrial` | `0x39A1D0` | 574 | 6 | 0 | 3 | 4 | 2 | medium |
@@ -152,9 +155,9 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 39 | Map | `MapFloor::Show` | `0x36F100` | 784 | 21 | 1 | 1 | 0 | 2 | hard |
 | 40 | Map | `MapFloor::get_Areas` | `0x36EC40` | 791 | 15 | 2 | 0 | 0 | 3 | medium |
 | 41 | Input | `DebugTextPreferenceNaninovelInputState::BuildText` | `0x3B43B0` | 899 | 22 | 0 | 1 | 7 | 0 | hard |
-| 42 | Input | `OptionsUi::get_InputManager` | `0x352860` | 202 | 5 | 13 | 0 | 0 | 1 | easy |
+| 42 | Input | `OptionsUi::get_InputManager` | `0x352860` ✅ | 202 | 5 | 13 | 0 | 0 | 1 | easy |
 | 43 | Input | `WitchTrialsInputPresenter::Awake` | `0x38EC50` | 368 | 7 | 0 | 0 | 0 | 2 | medium |
-| 44 | Input | `DebugCommandButtons::get_InputManager` | `0x3A7BD0` | 186 | 5 | 7 | 0 | 0 | 1 | easy |
+| 44 | Input | `DebugCommandButtons::get_InputManager` | `0x3A7BD0` ✅ | 186 | 5 | 7 | 0 | 0 | 1 | easy |
 
 完整排序在 `work/reversing/ranked.json`（929 条）。
 

@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
 using GigaCreation.Essentials.Input;
 using GigaCreation.Tools.Debugging.Ui;
+using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using Naninovel;
 using UnityEngine;
@@ -135,11 +136,13 @@ public class DebugCommandButtons : MonoBehaviour
 	[Token(Token = "0x17000137")]
 	private GigaCreation.Essentials.Input.IInputManager InputManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A7BD0 (same lazily-cached
+		// ServiceLocator pattern as OptionsUi.InputManager)
 		[Token(Token = "0x6000759")]
 		[Address(RVA = "0x3A7BD0", Offset = "0x3A65D0", VA = "0x1803A7BD0")]
 		get
 		{
-			return null;
+			return _inputManager ??= ServiceLocator.Get<GigaCreation.Essentials.Input.IInputManager>(includeDerivedType: true);
 		}
 	}
 
