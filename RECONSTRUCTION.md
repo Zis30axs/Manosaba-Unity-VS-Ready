@@ -19,7 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：27/82 个函数体、9,391/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate` 已复原成真正的 `async`/`await`/`while`，不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正" |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：30/82 个函数体、12,848/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()` 均已复原成真正的 `async`/`await`（含 `Print()` 的 3 个 await 点），不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正"；顺带修复了一处阻塞性第三方引用桩缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表） |
 
 ---
 
@@ -778,11 +778,11 @@ private void Start()
 
 ---
 
-## 7.5 `Debate/Court` 子系统：本轮攻坚，27 个原生方法体 / 9,391 B（独立 worktree
+## 7.5 `Debate/Court` 子系统：本轮攻坚，30 个原生方法体 / 12,848 B（独立 worktree
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
-**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **27 个 /
-9,391 B（约 33% 方法数、29% 字节数）**，全部 Confidence A。（初次提交时有 2 处
+**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **30 个 /
+12,848 B（约 37% 方法数、40% 字节数）**，全部 Confidence A。（初次提交时有 2 处
 被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——已在外部复核
 后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫遗漏和 1 处
 多余语句，详见下方"本轮修正"。）
@@ -793,7 +793,7 @@ private void Start()
 | `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
 | `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
 | `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
-| `PrintDebateText.cs` | 8 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——见下方详述，`Execute`/`Print`/`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
+| `PrintDebateText.cs` | 11 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Print()` 已复原成结构化 `async`/`await`（见下方详述）；`Execute`/`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
 
 ### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
 
@@ -885,6 +885,58 @@ private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
    版本和这个方法自己反汇编出来的版本完全一致，才敢确认成具名调用而不是保留在
    raw 状态机层面。
 
+### `Print()` — 3 个 await 点，第一次打通"调试跳过自动举证"分支
+
+`<Print>d__21.MoveNext`（RVA `0x324180`，3290 B，本轮单个最大的复原目标）**结构化
+复原**成：
+
+```csharp
+protected override async UniTask Print(ITextPrinterActor printer, AsyncToken token)
+{
+    await base.Print(printer, token);
+    if (IsEnabledDebugSkip)
+    {
+        string[] linkIds = s_linkIdRegex.Matches(Text)
+            .Where((Match match) => match.Groups.Count == 2)
+            .Select((Match match) => match.Groups[1].Value)
+            .ToArray();
+        if (linkIds.Length != 0)
+        {
+            NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, 0f);
+            await WitchTrialsScriptPlayer.ProcessAutoObjectionAsync(linkIds);
+            return;
+        }
+    }
+    await WaitForDebate(CalculateWaitTime(), token);
+}
+```
+
+关键发现：**`enableDebugSkip` 打开时，`Print()` 完全跳过正常的计时等待**，改成用
+`s_linkIdRegex`（`<link="(\w+?)">`）从台词里抠出所有 `<link="id">` 标记的 id，一次性
+交给 `IWitchTrialsScriptPlayer.ProcessAutoObjectionAsync(string[] objectionIds)`（dump.cs
+确认为该接口 Slot 0，和该接口仅有的另一成员 `CancelGosub()` 放在一起看，读作"QA/调试
+模式下自动化处理证据链接式举证，不必等真人逐个点击"）。这条分支被证实**立即
+`return`**（state==1 的 resume label 直接跳到 `SetResult` 收尾，不会落入第 4 步）——
+不是靠语义推测，是靠追踪 resume label 的跳转目标验证的。三个 await 点分别在状态机
+里对应 state 0/1/2，全部通过"resume 路径落到与同步完成路径相同的合并点"这一方式
+交叉验证了控制流，不是逐状态直译。
+
+两个被 ILSpy 完全省略的编译器缓存 lambda（`PrintDebateText.<>c.<Print>b__21_0`/
+`b__21_1`，和本文件的 `.cctor` 一样属于"ILSpy 认为不值得渲染的纯样板代码"）逐字节
+比对确认为 `match.Groups.Count == 2`（`GroupCollection.get_Count()` 的 35 字节体
+完全相同）和 `match.Groups[1].Value`（`Capture.get_Value()` 的 40 字节体完全相同）——
+由于 `s_linkIdRegex` 只有一个捕获组，前者对这个正则永远为真，是"忠实但语义上多余"
+的防御性代码，如实保留，不做"优化"。
+
+**副产品：修了一个阻塞性的第三方桩代码缺口**——`Naninovel.UniTask.Awaiter`（编译期
+引用桩 `src/decompiled/Elringus.Naninovel.Runtime/Naninovel/UniTask.cs`）完全没有声明
+基接口列表（应为 `: IAwaiter, ICriticalNotifyCompletion, INotifyCompletion`，dump.cs
+和二进制 DummyDll 都确认了这一点），导致任何对裸 `UniTask` 表达式的 `await`
+都会报 `CS4027`。这是本轮第一次真正尝试在别处 `await` 一个 `UniTask`（`WaitForDebate`
+自己等待的是另一种 `YieldAwaitable.Awaiter`），所以之前没暴露。已按 dump.cs 逐字段
+核实后补回接口列表；顺带检查了同一参考树里所有其他 `struct Awaiter` 声明（含
+`<Execute>d__19` 会用到的泛型 `UniTask<T>.Awaiter`），确认只有这一处缺失。
+
 ### 本轮修正（外部复核发现，已核实并修复——见 commit `d457070`）
 
 在把这批代码标为"完成"之后，外部复核（advisor）指出并经独立反汇编+dump.cs
@@ -927,23 +979,20 @@ private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
    涉及 `ScenePosition`（3 分量，逐分量走"要么用显式坐标要么退回 `IActor`/相机场景矩形
    计算当前位置"的分支逻辑）、`Roll` 旋转、`AnimationKind` 的 `FastEnum.TryParse`
    解析。是这一批里唯一被判定"值得单独排更高优先级/更多预算再啃"而不是仓促做完的。
-3. **`Execute`/`Print` 两个异步状态机还没做**——`Print` 的 `MoveNext`（RVA `0x324180`）
-   已确认内部直接 `AsyncUniTaskMethodBuilder.Start<...WaitForDebate.d__25>`（即
-   `await WaitForDebate(...)` 是 `Print` 调用链的一部分），并用 LINQ
-   （`Where`/`Select`/`ToArray`）配合 `s_linkIdRegex` 从台词文本里抽取 `<link="id">`
-   标记的 id 列表——这很可能是"可点击查证据链接"机制的入口，值得作为下一批的
-   最高优先级项。
-4. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
+2. **`Execute` 的异步状态机还没做**——`<Execute>d__19.MoveNext`（RVA `0x323A90`）
+   + 其闭包 `_003CExecute_003Eb__0`（RVA `0x323A50`，`<>c__DisplayClass19_0` 的 ILSpy
+   桩已存在，等着填体）还没开始排查；`Print()` 已经做完，`Execute` 是本文件最后一个
+   未复原的大块异步逻辑。
+3. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
    优先级表 #33，跟 `PrintDebateText` 同一个"打字机效果"流程但目前还没排查。
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `PrintDebateText::<Print>d__21.MoveNext`（0x324180，主流程，含 `s_linkIdRegex`
-   证据链接抽取 + 调用 `WaitForDebate`）
-2. `PrintDebateText::<Execute>d__19.MoveNext`（0x323A90）+ 其闭包 `b__0`（0x323A50）
-3. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）
-4. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
-5. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
+1. `PrintDebateText::<Execute>d__19.MoveNext`（0x323A90）+ 其闭包 `b__0`（0x323A50）——
+   `PrintDebateText.cs` 里最后一块未复原的异步逻辑
+2. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）
+3. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
+4. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
    `GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`
    两个 2000+ B 的 `Execute` 是下一个自然的攻坚对象）
 
