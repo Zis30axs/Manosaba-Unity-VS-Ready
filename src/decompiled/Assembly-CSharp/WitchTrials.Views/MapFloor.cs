@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
 using UnityEngine;
@@ -37,13 +38,24 @@ public class MapFloor : MonoBehaviour
 	private IReadOnlyDictionary<MapAreaKind, MapArea> _areas;
 
 	[Token(Token = "0x17000086")]
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36EC40
+	//
+	// Lazily-cached: `_areas ??= _mapAreas.ToDictionary(m => m.AreaKind, m => m);`.
+	// As with WitchBookScreen.PageData, most of the 791-byte body is Roslyn's
+	// standard "cache a non-capturing lambda in a static field of the
+	// compiler-generated <>c class" boilerplate, not meaningful logic.
+	// The element selector `Func<MapArea, MapArea>` (same in/out type, no other
+	// MapArea property it could plausibly be) is the identity lambda `m => m`,
+	// which is why the source needed the two-selector ToDictionary overload
+	// (METHODINFO confirms `ToDictionary<MapArea, MapAreaKind, MapArea>`)
+	// rather than the more common single-selector one.
 	public IReadOnlyDictionary<MapAreaKind, MapArea> Areas
 	{
 		[Token(Token = "0x60003F3")]
 		[Address(RVA = "0x36EC40", Offset = "0x36D640", VA = "0x18036EC40")]
 		get
 		{
-			return null;
+			return _areas ??= _mapAreas.ToDictionary(m => m.AreaKind, m => m);
 		}
 	}
 

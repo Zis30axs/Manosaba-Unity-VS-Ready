@@ -154,7 +154,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 37 | Map | `ChoiceMapArea::GetRestrictionAreas` | `0x327030` | 1029 | 25 | 1 | 1 | 1 | 8 | hard |
 | 38 | Map | `MapPage::InitializeAreas` | `0x36FB30` | 1092 | 21 | 1 | 0 | 1 | 6 | hard |
 | 39 | Map | `MapFloor::Show` | `0x36F100` | 784 | 21 | 1 | 1 | 0 | 2 | hard |
-| 40 | Map | `MapFloor::get_Areas` | `0x36EC40` | 791 | 15 | 2 | 0 | 0 | 3 | medium |
+| 40 | Map | `MapFloor::get_Areas` | `0x36EC40` ✅ | 791 | 15 | 2 | 0 | 0 | 3 | medium |
 | 41 | Input | `DebugTextPreferenceNaninovelInputState::BuildText` | `0x3B43B0` | 899 | 22 | 0 | 1 | 7 | 0 | hard |
 | 42 | Input | `OptionsUi::get_InputManager` | `0x352860` ✅ | 202 | 5 | 13 | 0 | 0 | 1 | easy |
 | 43 | Input | `WitchTrialsInputPresenter::Awake` | `0x38EC50` ✅ | 368 | 7 | 0 | 0 | 0 | 2 | medium |
