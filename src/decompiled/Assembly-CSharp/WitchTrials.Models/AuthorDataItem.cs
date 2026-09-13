@@ -23,22 +23,28 @@ public class AuthorDataItem
 	[Token(Token = "0x1700012B")]
 	public string Id
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (generic reference-field getter)
+		// 466 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_id` (+0x10, string).
 		[Token(Token = "0x600071A")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		get
 		{
-			return null;
+			return _id;
 		}
 	}
 
 	[Token(Token = "0x1700012C")]
 	public IReadOnlyList<LocalizedText> TaggedText
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (generic reference-field getter)
+		// 601 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_taggedText` (+0x18, LocalizedText[]).
 		[Token(Token = "0x600071B")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _taggedText;
 		}
 	}
 

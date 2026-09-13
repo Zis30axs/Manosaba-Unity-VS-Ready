@@ -23,22 +23,27 @@ public class PerspectiveStageData
 	[Token(Token = "0x170000B6")]
 	public PerspectiveStageKind Kind
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x331650 (shared thunk: `mov eax,[rcx+0x10]; ret`,
+		// 143+ unrelated methods across the project fold to this same body -- it is the generic
+		// "return the 4-byte field at +0x10" getter, correct here because _kind sits at +0x10.)
 		[Token(Token = "0x600058E")]
 		[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
 		get
 		{
-			return default(PerspectiveStageKind);
+			return _kind;
 		}
 	}
 
 	[Token(Token = "0x170000B7")]
 	public AssetReferenceGameObject Stage
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared thunk: `mov rax,[rcx+0x18]; ret`,
+		// the generic "return the reference-typed field at +0x18" getter; _stage sits at +0x18.)
 		[Token(Token = "0x600058F")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _stage;
 		}
 	}
 

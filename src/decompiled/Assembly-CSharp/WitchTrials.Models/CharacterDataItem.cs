@@ -43,11 +43,14 @@ public class CharacterDataItem
 	[Token(Token = "0x170000B9")]
 	public string Id
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (generic reference-field getter)
+		// 466 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_id` (+0x10, string).
 		[Token(Token = "0x6000599")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		get
 		{
-			return null;
+			return _id;
 		}
 	}
 
@@ -65,11 +68,14 @@ public class CharacterDataItem
 	[Token(Token = "0x170000BB")]
 	public IReadOnlyList<LocalizedText> FamilyName
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x377910 (generic reference-field getter)
+		// 292 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_familyName` (+0x20, LocalizedText[]).
 		[Token(Token = "0x600059B")]
 		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
 		get
 		{
-			return null;
+			return _familyName;
 		}
 	}
 

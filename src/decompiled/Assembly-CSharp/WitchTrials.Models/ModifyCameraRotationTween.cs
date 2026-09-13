@@ -9,6 +9,14 @@ namespace WitchTrials.Models;
 [Token(Token = "0x200018E")]
 public record ModifyCameraRotationTween
 {
+	// RECONSTRUCTED | Confidence: A
+	// Positional-record backing fields (see ScenarioInfo.cs for why these are
+	// added rather than named `<X>k__BackingField`, and why not `readonly`
+	// despite dump.cs's tag: real `set` accessors exist below).
+	private float?[] _to;
+	private float _duration;
+	private Ease _ease;
+
 	[Token(Token = "0x17000120")]
 	[CompilerGenerated]
 	protected virtual Type EqualityContract
@@ -25,61 +33,79 @@ public record ModifyCameraRotationTween
 	[Token(Token = "0x17000121")]
 	public float?[] To
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (shared generic
+		// reference-field getter, +0x10 -- same thunk used by 460+ unrelated
+		// methods project-wide; see work/reversing/README.md)
 		[Token(Token = "0x60006CF")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		[CompilerGenerated]
 		get
 		{
-			return null;
+			return _to;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x30C0D0 (generic reference-field
+		// setter with GC write barrier, +0x10)
 		[Token(Token = "0x60006D0")]
 		[Address(RVA = "0x30C0D0", Offset = "0x30AAD0", VA = "0x18030C0D0")]
 		[CompilerGenerated]
 		set
 		{
+			_to = value;
 		}
 	}
 
 	[Token(Token = "0x17000122")]
 	public float Duration
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x39FB70 (`movss xmm0,[rcx+0x18]; ret`)
 		[Token(Token = "0x60006D1")]
 		[Address(RVA = "0x39FB70", Offset = "0x39E570", VA = "0x18039FB70")]
 		[CompilerGenerated]
 		get
 		{
-			return default(float);
+			return _duration;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x39FB80 (`movss [rcx+0x18],xmm1; ret`)
 		[Token(Token = "0x60006D2")]
 		[Address(RVA = "0x39FB80", Offset = "0x39E580", VA = "0x18039FB80")]
 		[CompilerGenerated]
 		set
 		{
+			_duration = value;
 		}
 	}
 
 	[Token(Token = "0x17000123")]
 	public Ease Ease
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x38F5A0 (shared generic 4-byte getter, +0x1C)
 		[Token(Token = "0x60006D3")]
 		[Address(RVA = "0x38F5A0", Offset = "0x38DFA0", VA = "0x18038F5A0")]
 		[CompilerGenerated]
 		get
 		{
-			return default(Ease);
+			return _ease;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x39B790 (`mov [rcx+0x1C],edx; ret`)
 		[Token(Token = "0x60006D4")]
 		[Address(RVA = "0x39B790", Offset = "0x39A190", VA = "0x18039B790")]
 		[CompilerGenerated]
 		set
 		{
+			_ease = value;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39FA80
+	// Positional record's primary constructor: stores all three params into the
+	// matching backing fields (array param via the standard GC write barrier).
 	[Token(Token = "0x60006CD")]
 	[Address(RVA = "0x39FA80", Offset = "0x39E480", VA = "0x18039FA80")]
 	public ModifyCameraRotationTween(float?[] To, float Duration, Ease Ease)
 	{
+		_to = To;
+		_duration = Duration;
+		_ease = Ease;
 	}
 
 	[Token(Token = "0x60006D5")]
@@ -114,11 +140,19 @@ public record ModifyCameraRotationTween
 		return default(bool);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A02C0
+	// Compiler-generated record copy constructor: field-by-field copy (array
+	// field via GC write barrier), null-checked (throws NullReferenceException
+	// via the shared IL2CPP helper if `original` is null -- reproduced here by
+	// the implicit null-deref on `original._to`).
 	[Token(Token = "0x60006DD")]
 	[Address(RVA = "0x3A02C0", Offset = "0x39ECC0", VA = "0x1803A02C0")]
 	[CompilerGenerated]
 	protected ModifyCameraRotationTween(ModifyCameraRotationTween original)
 	{
+		_to = original._to;
+		_duration = original._duration;
+		_ease = original._ease;
 	}
 
 	[Token(Token = "0x60006DE")]

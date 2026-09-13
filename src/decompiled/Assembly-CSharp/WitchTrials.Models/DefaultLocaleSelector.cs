@@ -15,6 +15,14 @@ namespace WitchTrials.Models;
 [Token(Token = "0x200016C")]
 public class DefaultLocaleSelector : IDefaultLocaleSelector, IService
 {
+	// RECONSTRUCTED | Confidence: A
+	// Backing fields for the two auto-properties below. dump.cs shows these as
+	// e.g. `<DefaultLocale>k__BackingField`, a metadata-only name that isn't
+	// valid C# source syntax, so ILSpy rendered the properties as get/set method
+	// pairs with no field declaration at all. Offsets confirmed by disassembly.
+	private LocaleKind _defaultLocale;
+	private IList<string> _availableTextLanguages;
+
 	[Token(Token = "0x200016D")]
 	public class ConfigJson
 	{
@@ -85,36 +93,43 @@ public class DefaultLocaleSelector : IDefaultLocaleSelector, IService
 	[Token(Token = "0x170000FD")]
 	public LocaleKind DefaultLocale
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x331650 (shared generic 4-byte getter, +0x10)
 		[Token(Token = "0x6000628")]
 		[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650", Slot = "4")]
 		[CompilerGenerated]
 		get
 		{
-			return default(LocaleKind);
+			return _defaultLocale;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x397FF0 (shared generic 4-byte setter, +0x10)
 		[Token(Token = "0x6000629")]
 		[Address(RVA = "0x397FF0", Offset = "0x3969F0", VA = "0x180397FF0")]
 		[CompilerGenerated]
 		private set
 		{
+			_defaultLocale = value;
 		}
 	}
 
 	[Token(Token = "0x170000FE")]
 	public IList<string> AvailableTextLanguages
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18)
 		[Token(Token = "0x600062A")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0", Slot = "5")]
 		[CompilerGenerated]
 		get
 		{
-			return null;
+			return _availableTextLanguages;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x36C200 (shared generic reference-field
+		// setter with GC write barrier, +0x18)
 		[Token(Token = "0x600062B")]
 		[Address(RVA = "0x36C200", Offset = "0x36AC00", VA = "0x18036C200")]
 		[CompilerGenerated]
 		private set
 		{
+			_availableTextLanguages = value;
 		}
 	}
 

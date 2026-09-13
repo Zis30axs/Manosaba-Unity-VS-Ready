@@ -15,11 +15,14 @@ public class RuleData : WitchBookDataBase<RuleDataItem>
 	[Token(Token = "0x170000C9")]
 	public override IList<VersionedItem<RuleDataItem>> Items
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (generic reference-field getter)
+		// 601 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_items` (+0x18, List<VersionedItem<RuleDataItem>>).
 		[Token(Token = "0x60005B2")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0", Slot = "4")]
 		get
 		{
-			return null;
+			return _items;
 		}
 	}
 

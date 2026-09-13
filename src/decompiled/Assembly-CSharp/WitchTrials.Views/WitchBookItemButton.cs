@@ -59,11 +59,14 @@ public class WitchBookItemButton : MonoBehaviour
 	[Token(Token = "0x17000092")]
 	public RectTransform RectTransform
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x377910 (generic reference-field getter)
+		// 292 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_rectTransform` (+0x20, RectTransform).
 		[Token(Token = "0x6000473")]
 		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
 		get
 		{
-			return null;
+			return _rectTransform;
 		}
 	}
 

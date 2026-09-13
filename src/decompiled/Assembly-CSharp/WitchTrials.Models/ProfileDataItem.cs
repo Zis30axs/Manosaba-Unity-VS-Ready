@@ -18,11 +18,14 @@ public class ProfileDataItem
 	[Token(Token = "0x170000C8")]
 	public IReadOnlyList<LocalizedText> Description
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (generic reference-field getter)
+		// 466 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_description` (+0x10, LocalizedText[]).
 		[Token(Token = "0x60005B0")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		get
 		{
-			return null;
+			return _description;
 		}
 	}
 

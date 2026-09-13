@@ -269,17 +269,70 @@ _stageManager=IPerspectiveStageManager  _cameraStates=non-null  _screenStates=no
 
 ---
 
-## 6. 下一步
+## 6. 批量定案：205 个折叠访问器（进行中，已完成约 40 个）
 
-1. **批量定案 205 个折叠访问器**——一次反汇编定多个方法，是性价比最高的一批。
+`work/reversing/patch_accessor.py`：按 RVA 定位 `[Address(RVA="0x...")]` 标注的
+accessor，替换方法体并插入置信度注释——用于批量处理"同一份原生代码被几十上百个
+无关方法共用"的情形（body folding，见 `work/reversing/README.md`）。用法：
+
+```powershell
+# 先建 job 列表（每条 {path, rva, kind, body, comment}），再:
+python patch_accessor.py jobs.json --dry   # 预览
+python patch_accessor.py jobs.json         # 落盘
+```
+
+### 已完成（27 个文件，约 40 处方法体）
+
+**普通字段 getter/setter**（偏移直接对应一个已声明字段，机械替换）：
+`PerspectiveStageData`、`CharacterData(Item)`、`ClueData(Item)`、`MapData(Item)`、
+`NoteData(Item)`、`ProfileData(Item)`、`RuleData(Item)`、`SpecialThanksData(Item)`、
+`MasterData`、`AuthorData(Item)`、`WitchBookItemButton`、`WitchBookItemList`、
+`TextSizeByCourse`——`get_Items`/`get_Name`/`get_Id`/`get_RectTransform` 等
+18 组共 32 处，全部 Confidence A。
+
+**Positional record 的定位属性**（`ScenarioInfo`、`ModifyCameraHeightTween`、
+`ModifyCameraDistanceTween`、`ModifyCameraRotationTween`）——这类记录的属性
+在 dump.cs 里只有一个形如 `<Act>k__BackingField` 的元数据名，**不是合法 C# 标识符**，
+所以 ILSpy 把它们反编译成没有对应字段声明的裸 get/set 方法对。逐个补上私有字段
+声明后，把 get/set 方法体、主构造函数、record 的拷贝构造函数（`with` 表达式用到的
+那个）一并复原。全部 Confidence A，依据是反汇编直接确认的字段读写序列。
+
+**一个需要小心的坑**：`dump.cs` 把这些字段标成 `readonly`，但反汇编证实每个属性
+都有一个真正会写这个字段的 `set` 方法——C# 的 `readonly` 字段不允许在构造函数之外
+被赋值，所以这个 `readonly` 标注本身就是不可信的（大概率是 Il2CppDumper 把 record
+的 `init` 访问器误标成了字段级 readonly）。按证据（有 setter）而不是按 dump.cs 的
+标签来定，字段声明成普通 `private`，不是 `readonly`。
+
+**一个例外**：`WitchTrialsActions.asset` 的字段名是推测出来的（Confidence B，不是 A）——
+这个类是 Unity Input System 从 `.inputactions` 资源自动生成的包装类（嵌套 struct 里的
+`m_Wrapper` 反向引用是 Unity 生成器的标志性写法），不是手写游戏逻辑，`m_Asset` 这个
+名字来自 Unity 生成器的通用命名习惯，不是反汇编直接给出的。
+
+### 发现但刻意没有动的：record 的 `==`/`!=` 运算符整个不存在于骨架里
+
+反汇编找到了 `op_Equality`/`op_Inequality` 的共享实现（标准的编译器生成 record
+相等运算符：引用相等短路 → 空引用检查 → 调 `Equals`），Confidence A 级别的证据。
+但搜索发现 `WitchTrials.Models` 下**没有任何一个** record 类型的 .cs 文件声明了
+`operator ==`/`operator !=`——这不是"stub 写错了"，是 Il2CppDumper 的 DummyDll
+生成器根本没有把这两个方法产出到骨架里。补上它们等于给类新增公开 API，
+超出了"修复已声明成员的方法体"这个批次的范围，所以先记录在这里，不在本批次处理。
+
+### 还没做的折叠组
+
+`.ctor()` 空构造函数组（RVA `0x318720`/`0x336F70`/`0x3A22F0`，共 34 个 WitchTrials.*
+方法）——反汇编确认是 `xor edx,edx; jmp 基类..ctor`，而 dump.cs 生成的骨架本来就是
+`{ }`空方法体，这**已经是正确的**（C# 隐式默认构造函数就是"调用 base()，方法体为空"），
+不需要改代码，只是还没有逐个补 Confidence 注释。
+
+---
+
+## 7. 下一步
+
+1. **继续批量定案剩余折叠组**——`.ctor()` 空构造确认（低优先级，代码已经对，只差注释）、
+   `op_Equality`/`op_Inequality` 的缺失方法补齐（需要先决定是否值得新增 API 面）。
 2. **恢复 `<LoadServiceState>d__9.MoveNext`**，把 async 状态机的工作流验证出来
    （这是唯一还没验证过的机制，之后 Naninovel-glue 和 PerspectiveStage 大量依赖它）。
 3. 然后按第 4 节的表推进 Boot/Init → SaveLoad → Naninovel-glue。
-
-另有一条**尚未验证**的增强通道：工程里已经备好 BepInEx 6 (IL2CPP) 插件工程和
-`launch_game.ps1`。如果它在 Unity 6000.0.48 下能正常加载，就可以 hook 已恢复的方法、
-打印真实参数与字段变化——那是比任何静态推断都强的经验证据。
-**但 BepInEx 对 Unity 6 IL2CPP 的支持状况没有实测过，不能假定可用。**
 
 ---
 

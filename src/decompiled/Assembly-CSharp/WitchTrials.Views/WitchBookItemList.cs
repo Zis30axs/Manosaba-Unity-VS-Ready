@@ -78,11 +78,14 @@ public class WitchBookItemList : MonoBehaviour
 	[Token(Token = "0x17000094")]
 	public RectTransform ContentRoot
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x377910 (generic reference-field getter)
+		// 292 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_contentRoot` (+0x20, RectTransform).
 		[Token(Token = "0x6000481")]
 		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
 		get
 		{
-			return null;
+			return _contentRoot;
 		}
 	}
 
