@@ -1,8 +1,14 @@
 # Extracted game assets (10 GiB, regenerable from bundles) — never track
 /res/
 
-# Third-party tooling, venv, nuget cache, BepInEx payloads
-/tools/
+# Third-party tooling, venv, nuget cache, BepInEx payloads (audit tooling is tracked)
+/tools/*
+!/tools/audit/
+
+# Unity reconstruction audit: regenerable bulk outputs
+/tools/audit/out/a03_cache/
+/tools/audit/out/containers_by_kind.csv
+/tools/audit/*.log
 
 # Build output
 /dist/
