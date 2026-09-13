@@ -38,11 +38,20 @@ public class PrintDebateText : PrintText
 		{
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x323A50
+		//
+		// Native evidence: body-folded with `Naninovel.Commands.PrintText.
+		// <>c__DisplayClass31_0.<Execute>b__0` (identical 62-byte body at this
+		// same address, dump.cs lists both managed names for it). Dispatches
+		// through this type's own vtable (dump.cs `PrintText.Print`, Slot 26 --
+		// the same slot/signature `PrintDebateText.Print` overrides), so on a
+		// `PrintDebateText` instance this correctly resolves to the override
+		// reconstructed above, not `PrintText`'s own base implementation.
 		[Token(Token = "0x6000128")]
 		[Address(RVA = "0x323A50", Offset = "0x322450", VA = "0x180323A50")]
 		internal UniTask _003CExecute_003Eb__0(AsyncToken asyncToken)
 		{
-			return default(UniTask);
+			return _003C_003E4__this.Print(printer, asyncToken);
 		}
 	}
 
@@ -280,12 +289,64 @@ public class PrintDebateText : PrintText
 		}
 	}
 
+	// RECONSTRUCTED (from `<Execute>d__19.MoveNext`, RVA 0x323A90, 1762 B, 2
+	// await points -> state 0/1) | Confidence: A | wrapper RVA: 0x322480
+	//
+	// Native evidence:
+	//   - `GetOrAddPrinter(token)` (dump.cs `PrinterCommand.GetOrAddPrinter`,
+	//     Slot 20, `UniTask<ITextPrinterActor>`) is called through this type's
+	//     own vtable -- PrintDebateText does not override it, so this is a
+	//     plain inherited virtual call, not a `base.` call.
+	//   - `if (printer is IDebateTextPrinterActor debateTextPrinterActor)
+	//     ModifyDebatePrinter(debateTextPrinterActor);` is a real IL2Cpp
+	//     `isinst` check (klass-depth + ancestor-array compare, same shape
+	//     used elsewhere in this file), not a guess: the call is skipped
+	//     entirely when the cast fails.
+	//   - `WaitOrForget(fn, wait, token)` (dump.cs `Command.WaitOrForget`,
+	//     Slot 13, `UniTask WaitOrForget(Func<AsyncToken, UniTask> fn,
+	//     BooleanParameter wait, AsyncToken token)`) is confirmed the same
+	//     way -- another inherited, unoverridden virtual call -- with `wait`
+	//     constructed from the literal `true` via `BooleanParameter`'s own
+	//     implicit-bool-conversion operator (`mov cl, 1` immediately before
+	//     the call to `op_Implicit`).
+	//   - Only the closure LAMBDA is body-folded with `Naninovel.Commands.
+	//     PrintText`'s own `<>c__DisplayClass31_0.<Execute>b__0` (same RVA
+	//     0x323A50, same 62-byte body, dump.cs lists both managed names for
+	//     that one address). The enclosing `MoveNext` bodies are NOT
+	//     folded -- `PrintText.<Execute>d__31.MoveNext` is a separate,
+	//     similarly-sized function at its own RVA (0x4FF740, 1672 B) --
+	//     but an independent disassembly of it shows the exact same
+	//     `GetOrAddPrinter` -> await -> `WaitOrForget(lambda, true, token)`
+	//     -> await shape, with NO isinst check and no call to
+	//     `ModifyDebatePrinter`/anything actor-type-specific anywhere in it.
+	//     So `PrintDebateText.Execute()` is not "PrintText's Execute reused
+	//     verbatim" -- it is that exact same two-await shape with ONE debate-
+	//     specific step (the `IDebateTextPrinterActor` configuration hook)
+	//     inserted in between. `PrintText`'s own Slots 27-41 (`ShowPrinter`,
+	//     `PlayAutoVoice`, `WaitInput`, `AddBacklog`, etc.) are called from
+	//     neither this `Execute` nor its base -- that machinery lives one
+	//     level deeper, inside `Print()` (Slot 26/35), which is exactly where
+	//     this file's own `Print()` override (reconstructed above) plugs in.
+	//   - State==0 (after `GetOrAddPrinter`) and state==1 (after
+	//     `WaitOrForget`) were each confirmed by tracing their resume labels
+	//     to the same merge points the synchronous-completion paths use;
+	//     state==1's resume leads straight to `SetResult`, confirming the
+	//     method truly ends right after the `WaitOrForget` await.
 	[Token(Token = "0x6000117")]
 	[Address(RVA = "0x322480", Offset = "0x320E80", VA = "0x180322480", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CExecute_003Ed__19))]
-	public override UniTask Execute([Optional] AsyncToken token)
+	public override async UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		_003C_003Ec__DisplayClass19_0 _003C_003E8__1 = new _003C_003Ec__DisplayClass19_0
+		{
+			_003C_003E4__this = this
+		};
+		_003C_003E8__1.printer = await GetOrAddPrinter(token);
+		if (_003C_003E8__1.printer is IDebateTextPrinterActor debateTextPrinterActor)
+		{
+			ModifyDebatePrinter(debateTextPrinterActor);
+		}
+		await WaitOrForget(new Func<AsyncToken, UniTask>(_003C_003E8__1._003CExecute_003Eb__0), true, token);
 	}
 
 	[Token(Token = "0x6000118")]
