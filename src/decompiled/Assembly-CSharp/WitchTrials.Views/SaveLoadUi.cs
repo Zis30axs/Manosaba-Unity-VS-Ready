@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -626,10 +627,50 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		return default(Naninovel.UniTask<GameStateMap>);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35ABB0
+	//
+	// Native evidence:
+	//   0x35AC6F  _loadingSlotCount?.Dispose()   (skip-on-null: real `?.`, code
+	//             continues normally either way -- not the throw-on-null shape
+	//             seen for the two checks below)
+	//   0x35AC87  _loadingSlotCount = new ReactiveProperty<int>(0)
+	//   0x35AD01..0x35AD50  _loadingSlotCount.Subscribe(<OnShow>b__52_0).AddTo(this)
+	//   0x35AD55  _panels[_presentationMode].Present()   (both null checks here
+	//             land on the shared NullReferenceException throw, i.e. IL2CPP's
+	//             standard implicit-null-check-before-dispatch boilerplate for a
+	//             plain indexer + interface call -- not a `?.` operator)
 	[Token(Token = "0x6000321")]
 	[Address(RVA = "0x35ABB0", Offset = "0x3595B0", VA = "0x18035ABB0")]
 	public void OnShow()
 	{
+		_loadingSlotCount?.Dispose();
+		_loadingSlotCount = new ReactiveProperty<int>(0);
+		_loadingSlotCount.Subscribe(OnShowSlotCountChanged).AddTo(this);
+		_panels[_presentationMode].Present();
+	}
+
+	// PARTIALLY RECONSTRUCTED | Confidence: D (behavioral summary only, body not
+	// verified) | RVA: 0x35B6C0
+	//
+	// This method (`<OnShow>b__52_0` in dump.cs -- a compiler-generated lambda
+	// backing method) is entirely ABSENT from the decompiled skeleton, even
+	// though OnShow() genuinely subscribes to it (see above). This is a
+	// DummyDll-generation gap, not a deliberate omission -- added here only
+	// because OnShow's own reconstruction requires a real callable target.
+	// Renamed from the compiler's `<OnShow>b__52_0` to a readable name since the
+	// original can't be spelled as a C# identifier anyway.
+	//
+	// Native evidence gathered but NOT fully traced: branches on the `cnt`
+	// parameter and `_loadingScreenOnPaginate`, calls
+	// `GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(...)`
+	// storing the result back into `_loadingScreenOnPaginate`, and elsewhere
+	// disposes and clears that same field. Reads as "show a loading indicator
+	// while a page of save slots is loading, hide it once done" but the exact
+	// condition on `cnt` (loading-count reaching zero vs. some other check) is
+	// UNVERIFIED -- do not treat the summary as the implementation.
+	private void OnShowSlotCountChanged(int cnt)
+	{
+		throw new NotImplementedException();
 	}
 
 	[Token(Token = "0x6000322")]
