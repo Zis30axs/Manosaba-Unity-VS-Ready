@@ -131,11 +131,14 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 	[Token(Token = "0x17000111")]
 	private IAudioManager NaniAudioManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3995C0
+		// Lazily-cached engine service lookup, same pattern used throughout
+		// this codebase: `_naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();`
 		[Token(Token = "0x6000660")]
 		[Address(RVA = "0x3995C0", Offset = "0x397FC0", VA = "0x1803995C0")]
 		get
 		{
-			return null;
+			return _naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();
 		}
 	}
 
@@ -196,10 +199,73 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A (structure and field writes), B (one call)
+	// RVA: 0x399BE0
+	//
+	// Native evidence for the overall shape:
+	//   enable branch:  _pauseRequestCount++; _canFastForwardDebate.Value = false;
+	//                   if (IsInDebate) { <freeze-time block, value 0f> }
+	//                   if (!processTimer) return;
+	//                   _trialTimer.Speed = 0f;
+	//   disable branch: _pauseRequestCount = Math.Max(_pauseRequestCount - 1, 0);
+	//                   if (_pauseRequestCount > 0) return;
+	//                   _canFastForwardDebate.Value = IsInDebate;
+	//                   <freeze-time block, value 1f>   -- unconditional here,
+	//                   unlike the enable branch's IsInDebate-gated version
+	//                   if (!processTimer) return;
+	//                   _trialTimer.Speed = 1f;
+	//   (_trialTimer.Speed is a direct field write in the disassembly, at the
+	//   exact offset (+0x28) of Timer's own set_Speed -- which is itself a
+	//   trivial one-line setter, confirmed by disassembling it separately, so
+	//   `_trialTimer.Speed = ...` reproduces it exactly either way.)
+	//
+	// The "freeze-time block" (Confidence B, not A): resolves and calls a
+	// cached delegate/function pointer via a helper taking the literal string
+	// "UnityEngine.Time" (confirmed by reading the raw bytes at that data
+	// address), passing a float (1.0f in the disable branch, 0.0f in the
+	// enable branch, both confirmed by reading the raw float constants) --
+	// and the resolve-or-throw pattern matches the shape IL2CPP generates
+	// elsewhere for exception-on-missing-member. This is written below as
+	// `Time.timeScale = <value>` because the evidence (target type name +
+	// numeric value 1.0/0.0, the conventional "restore/freeze time" values)
+	// strongly implies that specific well-known API, but the precise
+	// call mechanism (looks reflection-based rather than a direct property
+	// set) was not fully traced, hence B rather than A on this one line only.
 	[Token(Token = "0x6000668")]
 	[Address(RVA = "0x399BE0", Offset = "0x3985E0", VA = "0x180399BE0", Slot = "17")]
 	public void ChangeTrialPauseMode(bool enable, bool processTimer)
 	{
+		if (enable)
+		{
+			_pauseRequestCount++;
+			_canFastForwardDebate.Value = false;
+			if (IsInDebate)
+			{
+				UnityEngine.Time.timeScale = 0f;
+				NaniAudioManager.AudioMixer.SetFloat("Voice Pitch", 0f);
+			}
+			if (!processTimer)
+			{
+				return;
+			}
+			_trialTimer.Speed = 0f;
+		}
+		else
+		{
+			_pauseRequestCount = Math.Max(_pauseRequestCount - 1, 0);
+			if (_pauseRequestCount > 0)
+			{
+				return;
+			}
+			_canFastForwardDebate.Value = IsInDebate;
+			UnityEngine.Time.timeScale = 1f;
+			NaniAudioManager.AudioMixer.SetFloat("Voice Pitch", 1f);
+			if (!processTimer)
+			{
+				return;
+			}
+			_trialTimer.Speed = 1f;
+		}
 	}
 
 	[Token(Token = "0x6000669")]

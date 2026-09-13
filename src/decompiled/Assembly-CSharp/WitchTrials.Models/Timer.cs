@@ -76,32 +76,43 @@ public class Timer : IDisposable
 	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
 	private CancellationTokenSource _runningCts;
 
+	// RECONSTRUCTED | Confidence: A
+	// Backing field for the Speed auto-property below. dump.cs shows it as
+	// `<Speed>k__BackingField`, a metadata-only name that isn't valid C#
+	// source syntax, so ILSpy rendered Speed as get/set methods with no field
+	// declaration at all (see ScenarioInfo.cs for the same situation).
+	private float _speed;
+
 	[Token(Token = "0x17000134")]
 	public IReadOnlyReactiveProperty<TimeSpan> RemainingTime
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18)
 		[Token(Token = "0x600074F")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _remainingTime;
 		}
 	}
 
 	[Token(Token = "0x17000135")]
 	public float Speed
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x398CF0 (`movss xmm0,[rcx+0x28]; ret`)
 		[Token(Token = "0x6000750")]
 		[Address(RVA = "0x398CF0", Offset = "0x3976F0", VA = "0x180398CF0")]
 		[CompilerGenerated]
 		private get
 		{
-			return default(float);
+			return _speed;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A6BA0 (`movss [rcx+0x28],xmm1; ret`)
 		[Token(Token = "0x6000751")]
 		[Address(RVA = "0x3A6BA0", Offset = "0x3A55A0", VA = "0x1803A6BA0")]
 		[CompilerGenerated]
 		set
 		{
+			_speed = value;
 		}
 	}
 
