@@ -679,10 +679,28 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35AE50
+	//
+	// Iterates `_panels.Values` and calls `.Dismiss()` on each. The
+	// disassembly does not show a plain `call` to
+	// PageableGridPanel<GameStateSlotsGridExtended, GameStateSlotExtended>.Dismiss()
+	// -- instead it shows what looks like that method's own field manipulation
+	// (CanvasGroup.set_alpha/interactable/blocksRaycasts, Pagination.Dismiss(),
+	// disposing a subscription) sitting directly inside this loop. That is
+	// Dismiss()'s fully-shared-generic body appearing inline at the call site,
+	// not logic written by hand in OnEndToDismiss itself -- the MethodInfo slot
+	// initialized at the top of this function names that exact method. Reproducing
+	// those field pokes here would misattribute PageableGridPanel's own
+	// implementation as SaveLoadUi's; calling the named public method is the
+	// correct altitude.
 	[Token(Token = "0x6000323")]
 	[Address(RVA = "0x35AE50", Offset = "0x359850", VA = "0x18035AE50")]
 	public void OnEndToDismiss()
 	{
+		foreach (SaveLoadPanel panel in _panels.Values)
+		{
+			panel.Dismiss();
+		}
 	}
 
 	[Token(Token = "0x6000324")]
