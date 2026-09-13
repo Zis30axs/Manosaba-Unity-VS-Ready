@@ -40,22 +40,28 @@ public class MasterData : MasterDataBase, IMasterData, IAddressablesMasterData, 
 	[Token(Token = "0x17000102")]
 	public IEnumerable<string> AssetKeyNames
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (generic reference-field getter)
+		// 601 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_assetKeyNames` (+0x18, string[]).
 		[Token(Token = "0x6000638")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0", Slot = "7")]
 		get
 		{
-			return null;
+			return _assetKeyNames;
 		}
 	}
 
 	[Token(Token = "0x17000103")]
 	public IReadOnlyList<AdditionalCatalogData> AdditionalCatalogDataList
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x377910 (generic reference-field getter)
+		// 292 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_additionalCatalogDataList` (+0x20, AdditionalCatalogData[]).
 		[Token(Token = "0x6000639")]
 		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910", Slot = "8")]
 		get
 		{
-			return null;
+			return _additionalCatalogDataList;
 		}
 	}
 

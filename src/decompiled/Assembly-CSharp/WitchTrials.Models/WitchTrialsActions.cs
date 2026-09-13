@@ -11,6 +11,16 @@ namespace WitchTrials.Models;
 [Token(Token = "0x2000166")]
 public class WitchTrialsActions
 {
+	// RECONSTRUCTED | Confidence: B | offset 0x10
+	// This class is Unity Input System's generated wrapper for a .inputactions
+	// asset (confirm via the nested-struct `m_Wrapper` back-reference pattern
+	// below, identical to Unity's own C# code generator output) -- not
+	// hand-written game logic. `m_Asset` is Unity's own conventional name for
+	// this field in that generated pattern; dump.cs only shows the anonymous
+	// `<asset>k__BackingField`, so the specific name is inferred from the known
+	// generator template rather than confirmed byte-for-byte (hence B, not A).
+	private InputActionAsset m_Asset;
+
 	[Token(Token = "0x2000167")]
 	public struct NaninovelActions
 	{
@@ -604,12 +614,14 @@ public class WitchTrialsActions
 	[Token(Token = "0x170000D9")]
 	public InputActionAsset asset
 	{
+		// RECONSTRUCTED | Confidence: A (body) / B (field name -- see above)
+		// RVA: 0x33FBC0 (shared generic reference-field getter, +0x10)
 		[Token(Token = "0x60005CD")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		[CompilerGenerated]
 		get
 		{
-			return null;
+			return m_Asset;
 		}
 	}
 

@@ -28,33 +28,42 @@ public class RuleDataItem
 	[Token(Token = "0x170000CA")]
 	public string Numbering
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (generic reference-field getter)
+		// 466 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_numbering` (+0x10, string).
 		[Token(Token = "0x60005B4")]
 		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 		get
 		{
-			return null;
+			return _numbering;
 		}
 	}
 
 	[Token(Token = "0x170000CB")]
 	public IReadOnlyList<LocalizedText> Subtitle
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (generic reference-field getter)
+		// 601 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_subtitle` (+0x18, LocalizedText[]).
 		[Token(Token = "0x60005B5")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _subtitle;
 		}
 	}
 
 	[Token(Token = "0x170000CC")]
 	public IReadOnlyList<LocalizedText> Description
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x377910 (generic reference-field getter)
+		// 292 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_description` (+0x20, LocalizedText[]).
 		[Token(Token = "0x60005B6")]
 		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
 		get
 		{
-			return null;
+			return _description;
 		}
 	}
 

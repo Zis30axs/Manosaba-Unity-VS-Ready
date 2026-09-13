@@ -15,11 +15,14 @@ public class CharacterData : ScriptableObject
 	[Token(Token = "0x170000B8")]
 	public IList<CharacterDataItem> Items
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (generic reference-field getter)
+		// 601 project-wide methods fold to this same native body; the offset determines
+		// which field each one reads. Here that is `_items` (+0x18, List<CharacterDataItem>).
 		[Token(Token = "0x6000597")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _items;
 		}
 	}
 
