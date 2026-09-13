@@ -19,7 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：32/82 个函数体、14,672/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正"；顺带修复了一处阻塞性第三方引用桩缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表） |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：33/82 个函数体、16,262/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 1 处提交前发现并订正的注释错误（混淆了 `set_Position`/`set_Rotation` 两种不同的接口分派机制），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
 
 ---
 
@@ -563,7 +563,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` ✅ | 807 | 15 | 14 | 0 | 0 | 3 | medium |
 | 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` | 1322 | 36 | 1 | 0 | 3 | 5 | hard |
 | 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` ✅ | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
-| 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` | 1590 | 34 | 1 | 0 | 1 | 7 | hard |
+| 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` ✅ | 1590 | 34 | 1 | 0 | 1 | 7 | hard |
 | 36 | Debate/Court | `DebateUi::TimeSpanToText` | `0x36A900` ✅ | 1156 | 29 | 1 | 1 | 3 | 1 | hard |
 | 37 | Map | `ChoiceMapArea::GetRestrictionAreas` | `0x327030` | 1029 | 25 | 1 | 1 | 1 | 8 | hard |
 | 38 | Map | `MapPage::InitializeAreas` | `0x36FB30` | 1092 | 21 | 1 | 0 | 1 | 6 | hard |
@@ -778,14 +778,14 @@ private void Start()
 
 ---
 
-## 7.5 `Debate/Court` 子系统：本轮攻坚，32 个原生方法体 / 14,672 B（独立 worktree
+## 7.5 `Debate/Court` 子系统：本轮攻坚，33 个原生方法体 / 16,262 B（独立 worktree
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
-**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **32 个 /
-14,672 B（约 39% 方法数、46% 字节数）**，全部 Confidence A。（初次提交时有 2 处
-被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——已在外部复核
-后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫遗漏和 1 处
-多余语句，详见下方"本轮修正"。）
+**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **33 个 /
+16,262 B（约 40% 方法数、约 51% 字节数——首次过半）**，全部 Confidence A。（初次
+提交时有 2 处被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——
+已在外部复核后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫
+遗漏和 1 处多余语句，详见下方"本轮修正"。）
 
 | 文件 | 完成 / 总数 | 说明 |
 |---|---|---|
@@ -793,7 +793,7 @@ private void Start()
 | `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
 | `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
 | `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
-| `PrintDebateText.cs` | 13 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做。**未闭合的依赖**：`Execute()` 现在会调用 `ModifyDebatePrinter`，但那个方法体本身还是空桩——"入口链"要等它做完才算真正打通，`Execute()`"做完"不等于这条链"做完" |
+| `PrintDebateText.cs` | 14 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`（场景位置/旋转/动画种类配置）已复原，**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合**；`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
 
 ### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
 
@@ -972,6 +972,93 @@ public override async UniTask Execute(AsyncToken token)
 里，也不在 `PrintText` 自己的 `Execute()` 里被调用——那些是 `Print()`
 （Slot 26/35）内部的事，正好就是这个文件里 `Print()` 覆写要接管的那一层。
 
+### `ModifyDebatePrinter` — 此前判定"very hard"暂缓的目标，现已复原
+
+`PrintDebateText::ModifyDebatePrinter`（RVA `0x322B40`，1590 B）**结构化复原**成：
+
+```csharp
+private void ModifyDebatePrinter(IDebateTextPrinterActor printer)
+{
+    if (Assigned(ScenePosition))
+    {
+        Rect sceneRect = CameraConfigurationUtility.EvaluateSceneRect(true);
+        float x = (ScenePosition.ElementAtOrNull(0) != null)
+            ? sceneRect.x + ((float?)ScenePosition[0]).Value / 100f * sceneRect.width
+            : printer.Position.x;
+        float y = (ScenePosition.ElementAtOrNull(1) != null)
+            ? sceneRect.y + ((float?)ScenePosition[1]).Value / 100f * sceneRect.height
+            : printer.Position.y;
+        float z = ((float?)(ScenePosition.ElementAtOrNull(2) ?? (NullableFloat)printer.Position.z)).Value;
+        printer.Position = new Vector3(x, y, z);
+    }
+    if (Assigned(Roll))
+    {
+        printer.Rotation = Quaternion.Euler(0f, 0f, Roll);
+    }
+    if (Assigned(AnimationKind))
+    {
+        if (FastEnum.TryParse<DebateTextAnimationKind>(AnimationKind, true, out DebateTextAnimationKind animationKind))
+        {
+            printer.AnimationKind = animationKind;
+        }
+        else
+        {
+            Warn(string.Format("Invalid animation kind: {0}", AnimationKind));
+        }
+    }
+}
+```
+
+三个独立的 `if (Assigned(...))` 块，每处守卫都逐字节比对 `Command.Assigned`
+（`parameter != null && parameter.HasValue`）的独立反汇编，并且共享同一个
+`data_30DC164` 类型初始化标志——证实这三处确实是同一个内联静态调用，不是
+三段各写各的检查：
+
+- **`ScenePosition`**（`DecimalListParameter` = `ParameterList<NullableFloat>`）：
+  X/Y 是当前场景矩形的百分比（显式给出时），否则退回 printer 当前位置对应分量；
+  Z 是不带缩放的原始值。X/Y 各自编译成**两次独立调用**——`ElementAtOrNull(i)`
+  只做判空，真正取值另有一次单独的 `get_Item(i)` 调用；只有 Z 才是真正复用同一次
+  `ElementAtOrNull(2)` 结果（经 `??` 直接送进 `Nullable<float>.op_Implicit`，没有
+  第二次 `get_Item`）——这个不对称是靠反汇编字节确认的，不是凭源码风格猜的。场景
+  矩形来自 `CameraConfigurationUtility.EvaluateSceneRect(true)`（dump.cs 确认的单参
+  `Nullable<bool>` 重载，调用点内联构造了一个 `Nullable<bool>(true)`）。`printer.
+  Position` 的读（回退分支）走 `IActor.get_Position`（Slot 5）经通用 getter 蹦床
+  `sub_39F0`（槽位号经 `edx` 动态传入，不是 `IActor` 专属蹦床）；最终 `printer.
+  Position = new Vector3(x, y, z)` 的写走 `IActor.set_Position`（Slot 6），但这次
+  是**完全内联在调用点自身**的接口偏移缓存扫描（先查 `[r10+0x12e]` 处缓存的接口
+  偏移表，未命中才 `mov r8d, 6` + `call sub_243A20` 解出槽位，再 `call` 解出的函数
+  指针）——**没有经过任何共享蹦床**，这一点和下面的 `Roll` 不同。
+- **`Roll`**：`printer.Rotation = Quaternion.Euler(0f, 0f, Roll)`——靠读出解析目标
+  地址处缓存的 icall 名字符串 `"UnityEngine.Quaternion::Internal_FromEulerRad_
+  Injected(...)"` 确认，乘的常量读回来正好是 `Mathf.Deg2Rad`（`0.017453292...`）。
+  和 `set_Position` 不同，这次写**确实**经过一个共享运行时蹦床（`call sub_38B0`，
+  RVA `0x38B0`）——独立反汇编这个蹦床本体，确认它把 `IActor.set_Rotation` 的槽位号
+  （dump.cs Slot 8）硬编码进了自己的机器码（`mov r8d, 8`），而不是像 `sub_39F0` 那样
+  作为运行时参数动态传入。**`Position` 和 `Rotation` 这两次写用的是两种完全不同的
+  分派机制，不是同一机制换了个槽位常量**——初稿注释曾把两者的蹦床归属写反（说
+  `Position` 也走 `sub_38B0`），提交前由外部复核比对反汇编原始记录后指出并订正，
+  未进入已提交历史。
+- **`AnimationKind`**：`FastEnum.TryParse<DebateTextAnimationKind>(AnimationKind,
+  true, out var animationKind)`（dump.cs 确认存在这个确切的 `TryParse<T>(string,
+  bool, out T)` 重载）成功则设置 `printer.AnimationKind`（dump.cs
+  `IDebateTextPrinterActor.set_AnimationKind`，Slot 1，经通用 setter 蹦床
+  `sub_36F0`，槽位号同样是运行时参数动态传入），失败则调用 `Warn(...)`（dump.cs
+  `Command.Warn`，Slot 7），格式字符串 `"Invalid animation kind: {0}"` 直接从数据段
+  读出——解析结果没有被无检查地使用过。
+
+**编译期额外需要的两处基础设施修复**：
+- `NullableFloat -> float` 的隐式转换在三处触发 CS0457（`NullableFloat.implicit
+  operator float?(NullableFloat)` 和 `Nullable<float>.implicit operator
+  float(Nullable<float>)` 两个候选歧义）——沿用本项目已有的两步转换写法
+  `((float?)x).Value`，与反汇编里真实的两步展开（先 `NullableFloat` 自己的转换，
+  再一次独立的 `Nullable<float>.op_Implicit`/`.Value`）完全对应。
+- `Assembly-CSharp.csproj` 完全没有 `FastEnum.dll` 的 `<Reference>` 条目——DLL 本身
+  一直存在于 `src/il2cpp/DummyDll/FastEnum.dll`，只是此前没有任何已复原代码用到过
+  它，所以从未暴露。已按现有 `<Reference>` 条目的写法补一条。
+
+**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链
+现已完全闭合**——这是本轮以"系统级连贯性"而非孤立方法数为目标的一个完整闭环。
+
 ### 本轮修正（外部复核发现，已核实并修复——见 commit `d457070`）
 
 在把这批代码标为"完成"之后，外部复核（advisor）指出并经独立反汇编+dump.cs
@@ -1010,24 +1097,22 @@ public override async UniTask Execute(AsyncToken token)
 
 ### 尚未解决的问题（诚实记录，不是回避）
 
-1. **`ModifyDebatePrinter`（RVA `0x322B40`，1590 B，"very hard"）已反汇编但未复原**——
-   涉及 `ScenePosition`（3 分量，逐分量走"要么用显式坐标要么退回 `IActor`/相机场景矩形
-   计算当前位置"的分支逻辑）、`Roll` 旋转、`AnimationKind` 的 `FastEnum.TryParse`
-   解析。是这一批里唯一被判定"值得单独排更高优先级/更多预算再啃"而不是仓促做完的。
-   **现在是唯一阻塞"入口链闭合"的一环**——`Execute()` 已经在调用它了，但它自己还是
-   空桩，所以"辩论文字打印入口 → 取 printer → 配置 debate printer → 打印" 这条链
-   还没有真正连通到底。
-2. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
+1. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
    优先级表 #33，跟 `PrintDebateText` 同一个"打字机效果"流程但目前还没排查。
+2. **`PrintDebateText.cs` 剩余尾巴**——`CompleteOnContinue`（Slot 15 空桩）、
+   `ShouldPlayAutoVoice`（Slot 33 空桩）、`WaitAutoVoice`（Slot 40 空桩）、实例构造函数
+   （`0x323690`）都还没排查，是这个文件收尾的最后一批。
+3. **`ModifyDebatePrinter` 已复原，`Execute()` 入口链已闭合**——`Execute → GetOrAddPrinter
+   → ModifyDebatePrinter → Print → WaitForDebate` 现在完整连通，不再是阻塞项（记录在这里
+   是为了明确此前"尚未解决"列表里的第 1 条已经解决，不是悄悄消失）。
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）——
-   现在是唯一阻塞 `Execute()` 入口链闭合的一环
-2. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
-3. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
+1. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33，`PrintDebateText` 同流程）
+2. PerspectiveStage 子系统（本轮完全未触碰，用户优先级第 2 位，65 个函数体 / 27,784 B，
    `GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`
    两个 2000+ B 的 `Execute` 是下一个自然的攻坚对象）
+3. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
 
 ---
 
