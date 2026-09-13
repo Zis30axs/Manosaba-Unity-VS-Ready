@@ -163,11 +163,18 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	[Token(Token = "0x170000A9")]
 	private ITrialStateManager TrialStateManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x384600, 186 B
+		// Lazily-cached engine service lookup: `_trialStateManager ??=
+		// Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();`. Byte-for-byte
+		// identical shape to `StageScreenController.TrialStateManager` (RVA
+		// 0x387A50): null check on `[this+0x28]`, then a call whose MethodInfo
+		// slot resolves to `Method$Naninovel.Engine.GetServiceOrErr<ITrialStateManager>()`,
+		// result stored back into the field before returning it.
 		[Token(Token = "0x6000536")]
 		[Address(RVA = "0x384600", Offset = "0x383000", VA = "0x180384600")]
 		get
 		{
-			return null;
+			return _trialStateManager ??= Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();
 		}
 	}
 
@@ -192,14 +199,25 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	// APIs. The row lengths (4 for `_modifyCameraTasks`, 3 for
 	// `_shakeCameraTasks`) are literal immediates (`mov edx, 4`/
 	// `mov edx, 3`) at the respective call sites, not derived from
-	// anything -- and do NOT obviously match either async method's own
-	// parameter count (`ModifyCameraAsync` takes exactly three tween
-	// arguments, `ShakeCameraAsync` takes none structured that way), so
-	// what each of the 4/3 row slots actually indexes is UNKNOWN from
-	// this method alone; left unexplained rather than guessed. Next
-	// natural target: `ModifyCameraAsync`/`ShakeCameraAsync` themselves
-	// (RVA 0x384B50/0x384E00) are what actually INDEX into these rows,
-	// and reconstructing either resolves this.
+	// anything.
+	//
+	// RESOLVED (see `ModifyCameraAsync` below for the full reconstruction):
+	// `_modifyCameraTasks[cameraIndex]`'s row is indexed by fixed
+	// per-tween-kind constants, confirmed by three independent bounds-check
+	// literals against the row's `.Length` (`cmp [row+0x18], 0/1/2; jbe
+	// <out-of-range>`) paired with 16-byte (`UniTask` struct size) element
+	// writes at matching offsets: slot 0 (`row+0x20`) = height-tween task,
+	// slot 1 (`row+0x30`) = rotation-tween, slot 2 (`row+0x40`) =
+	// distance-tween (each populated only if its tween parameter is
+	// non-null, else `default(UniTask)`). Slot 3 (`row+0x50`) is never
+	// written anywhere in `ModifyCameraAsync` -- it stays `default(UniTask)`
+	// permanently, inert in the `await tasks;` combinator (confirmed
+	// `UniTaskExtensions.GetAwaiter(UniTask[])`, RVA 0x18203F0, awaits the
+	// whole array). Why the row is allocated at length 4 instead of exactly
+	// 3 is still UNKNOWN -- `_shakeCameraTasks`'s 3 slots have NOT been
+	// examined yet (would require disassembling
+	// `<ShakeCameraAsync>d__11.MoveNext()`, RVA 0x386190) and may or may not
+	// shed further light on it.
 	//
 	// `_cameraContainers` (a `[SerializeField]`) is read fresh, with its
 	// own explicit NRE-throwing null check, THREE separate times (once
