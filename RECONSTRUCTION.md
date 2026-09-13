@@ -19,6 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：27/82 个函数体、9,391/32,044 B 完成，全部 Confidence A（2 处子表达式降级 B 并注明）；`DebateUi.cs` 整个文件完成；`WaitForDebate` 已复原成真正的 `async`/`await`/`while`，不是 MoveNext 逐状态翻译；详见 §7.5 |
 
 ---
 
@@ -561,9 +562,9 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 31 | WitchBook/Data | `WitchBookScreen::InitializePages` | `0x37A880` | 1408 | 31 | 0 | 5 | 0 | 5 | hard |
 | 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` ✅ | 807 | 15 | 14 | 0 | 0 | 3 | medium |
 | 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` | 1322 | 36 | 1 | 0 | 3 | 5 | hard |
-| 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
+| 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` ✅ | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
 | 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` | 1590 | 34 | 1 | 0 | 1 | 7 | hard |
-| 36 | Debate/Court | `DebateUi::TimeSpanToText` | `0x36A900` | 1156 | 29 | 1 | 1 | 3 | 1 | hard |
+| 36 | Debate/Court | `DebateUi::TimeSpanToText` | `0x36A900` ✅ | 1156 | 29 | 1 | 1 | 3 | 1 | hard |
 | 37 | Map | `ChoiceMapArea::GetRestrictionAreas` | `0x327030` | 1029 | 25 | 1 | 1 | 1 | 8 | hard |
 | 38 | Map | `MapPage::InitializeAreas` | `0x36FB30` | 1092 | 21 | 1 | 0 | 1 | 6 | hard |
 | 39 | Map | `MapFloor::Show` | `0x36F100` | 784 | 21 | 1 | 1 | 0 | 2 | hard |
@@ -774,6 +775,140 @@ private void Start()
 `match=True`——静态复原的布尔表达式在真实运行时算出了跟 `SteamManager.gameObject`
 实际的 `activeSelf` 完全一致的结果。这是继 `TrialStateManager.InitializeService`
 之后第二个"静态 + 运行时"双重确认的方法。
+
+---
+
+## 7.5 `Debate/Court` 子系统：本轮攻坚，27 个原生方法体 / 9,391 B（独立 worktree
+`recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
+
+**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **27 个 /
+9,391 B（约 33% 方法数、29% 字节数）**，全部 Confidence A（另有 2 处子表达式因
+证据本身有多解降级为 Confidence B，均已在注释里写明原因，不冒充 A）。
+
+| 文件 | 完成 / 总数 | 说明 |
+|---|---|---|
+| `DebateUi.cs` | **14 / 14（整个文件）** | 辩论 UI：倒计时文本、跳过按钮、HP 变化钩子 |
+| `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
+| `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
+| `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
+| `PrintDebateText.cs` | 8 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——见下方详述，`Execute`/`Print`/`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
+
+### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
+
+```
+Initialize()
+  -> _skipDebateButton.SetIconShadowEnabled(false)      // 初始外观：跳过图标暗淡
+
+ChangeVisibility(visible, duration, token)               // CustomUI 显示/隐藏总入口
+  -> OnVisibilityChangedByCustomUi(visible)
+  -> base.ChangeVisibility(...)                          // 交给 Naninovel 处理淡入淡出动画
+
+OnVisibilityChangedByCustomUi(true)                      // 辩论 UI 出现时
+  -> _disposables = new CompositeDisposable()
+  -> WitchTrialsNaninovelManager.OnRemainingTimeChangedAsObservable()
+       .Subscribe(b__18_0).AddTo(_disposables)           // 每次倒计时变化：刷新文本 + 归零时触发 Goto("TimeIsUp")
+  -> WitchTrialsNaninovelManager.OnDebateSkippableChangedAsObservable()
+       .Subscribe(b__18_1).AddTo(_disposables)           // 是否可跳过变化：跳过按钮 Present()/Dismiss()
+  -> _skipDebateButton.OnPointerDownAsObservable()
+       .Subscribe(b__18_2).AddTo(_disposables)           // 按下：NaniScriptPlayer.SetSkipEnabled(true)
+  -> _skipDebateButton.OnPointerUpAsObservable()
+       .Subscribe(b__18_3).AddTo(_disposables)           // 松开：SetSkipEnabled(false)（长按跳过）
+  -> NaniScriptPlayer.OnSkip += _skipDebateButton.SetIconShadowEnabled   // 跳过状态 <-> 图标外观双向同步
+
+OnVisibilityChangedByCustomUi(false)                      // 辩论 UI 隐藏时
+  -> _disposables.Clear(); _disposables.Dispose(); _disposables = null   // 全部取消订阅
+  -> NaniScriptPlayer.OnSkip -= _skipDebateButton.SetIconShadowEnabled
+
+b__18_0(TimeSpan remaining)                               // 倒计时归零时的关键发现
+  -> _label.SetText(TimeSpanToText(remaining))
+  -> if (remaining > TimeSpan.Zero) return;
+  -> new Goto { Path = "System/System_Subroutine.TimeIsUp", ResetState = ["-"] }.Execute().Forget();
+     // 计时器不是纯 UI 效果：倒计时归零会直接跳转执行脚本的 TimeIsUp 分支
+```
+
+这条链路证实：**辩论倒计时是真正的游戏规则耦合点**，不是装饰性 UI——`TimeIsUp`
+标签的具体内容（大概率是"举证失败/超时惩罚"分支）还没有单独反查，列进下面的
+下一步。
+
+### `PrintDebateText::CalculateWaitTime` — 一个此前完全不透明的调用链，现已打通
+
+```
+CalculateWaitTime()
+  -> IsEnabledDebugSkip ? return 0.1f
+  -> ShouldPlayAutoVoice()?
+       -> AudioManager.GetVoiceTrack(BuildAutoVoicePath())     // IAudioManager dump.cs Slot 31
+       -> is AudioTrack audioTrack ? return audioTrack.Clip.length   // 有真实语音：等待时长=语音时长
+  -> 否则 CalculateWaitTimeFromMessage(Text)
+       -> 剥离空白/日文括号引号标点 + 富文本标签（两个静态 Regex，原文本已从数据段
+          直接读出，不是猜的）
+       -> return cleanedLength * 0.15f + 0.6f                  // 阅读速度估算公式
+```
+
+**`PrintDebateText` 的静态构造函数（`.cctor`）是原始 ILSpy 桩代码里完全缺失的一个
+真实原生方法**——它有自己的 RVA（`0x3236A0`），但 ILSpy 生成 `.cs` 桩文件时把它
+漏掉了（大概率认为这类"纯字段初始化"构造函数不值得单独渲染）。这是本轮流程上的
+一个提醒：**符号库（`il2cpp_db.py`/`sweep.py`）比 ILSpy 桩文件更权威**，遇到
+"这个类应该有 cctor 但 `.cs` 里没有" 的情况，直接查符号库能找到。
+
+### `WaitForDebate` — 完整恢复成 `async`/`await`/`while`，不是 MoveNext 逐状态翻译
+
+已按用户要求把 `<WaitForDebate>d__25.MoveNext`（824 B 状态机）**结构化复原**成：
+
+```csharp
+private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
+{
+    float elapsedTime = 0f;
+    while (elapsedTime < time)
+    {
+        token.ThrowIfCanceled();
+        if (token.Completed) break;
+        NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, time - elapsedTime);
+        await AsyncUtils.WaitEndOfFrame(token);
+        token.ThrowIfCanceled();
+        elapsedTime += Time.deltaTime;
+    }
+}
+```
+
+确认技巧记录下来供后续状态机复原复用：
+1. **`sub_XXXXX(cached icall)` 模式可以直接读出 icall 名字符串**——被调用地址附近
+   的数据段里存着形如 `"UnityEngine.Time::get_deltaTime()"` 的纯 ASCII 字符串，
+   `il2cpp_pe.PE().read(rva, n)` 直接读出来即可，不需要靠猜测/模式匹配。
+2. **`AsyncUtils.WaitEndOfFrame(token)` 的识别靠独立反汇编逐字节对比**——常量
+   `PlayerLoopTiming.PostLateUpdate`（`0xc`）和构造出的结构体形状，在调用点内联的
+   版本和这个方法自己反汇编出来的版本完全一致，才敢确认成具名调用而不是保留在
+   raw 状态机层面。
+
+### 尚未解决的问题（诚实记录，不是回避）
+
+1. **`CalculateWaitTime` 里 `BuildAutoVoicePath()` 的具体调用目标只有 Confidence B**——
+   通过虚表槽位算术反推（跟 `ShouldPlayAutoVoice`（Slot 33）相差 18 个槽位）没能
+   对上 `PrintDebateText`/`PrintText` 任何一个已知重写方法的槽位号；`BuildAutoVoicePath()`
+   是按**签名匹配**（零参数、返回可空 `string`、语义上正是"构造自动配音路径"）选出来的
+   最佳候选，不是算术确认的。如果以后要在这个方法上做运行时验证，这是第一个该核实的点。
+2. **`ModifyDebatePrinter`（RVA `0x322B40`，1590 B，"very hard"）已反汇编但未复原**——
+   涉及 `ScenePosition`（3 分量，逐分量走"要么用显式坐标要么退回 `IActor`/相机场景矩形
+   计算当前位置"的分支逻辑）、`Roll` 旋转、`AnimationKind` 的 `FastEnum.TryParse`
+   解析。是这一批里唯一被判定"值得单独排更高优先级/更多预算再啃"而不是仓促做完的。
+3. **`Execute`/`Print` 两个异步状态机还没做**——`Print` 的 `MoveNext`（RVA `0x324180`）
+   已确认内部直接 `AsyncUniTaskMethodBuilder.Start<...WaitForDebate.d__25>`（即
+   `await WaitForDebate(...)` 是 `Print` 调用链的一部分），并用 LINQ
+   （`Where`/`Select`/`ToArray`）配合 `s_linkIdRegex` 从台词文本里抽取 `<link="id">`
+   标记的 id 列表——这很可能是"可点击查证据链接"机制的入口，值得作为下一批的
+   最高优先级项。
+4. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
+   优先级表 #33，跟 `PrintDebateText` 同一个"打字机效果"流程但目前还没排查。
+
+### 下一批最高价值目标（按价值排序，供下一轮直接开始）
+
+1. `PrintDebateText::<Print>d__21.MoveNext`（0x324180，主流程，含 `s_linkIdRegex`
+   证据链接抽取 + 调用 `WaitForDebate`）
+2. `PrintDebateText::<Execute>d__19.MoveNext`（0x323A90）+ 其闭包 `b__0`（0x323A50）
+3. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）
+4. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
+5. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
+   `GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`
+   两个 2000+ B 的 `Execute` 是下一个自然的攻坚对象）
 
 ---
 
