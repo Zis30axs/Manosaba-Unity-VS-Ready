@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -366,10 +367,104 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x367E20, 1322 B
+	//
+	// Every third-party API surface touched below (Behaviour.enabled,
+	// TMP_Text.alpha, the text setter) is confirmed by independently
+	// disassembling that exact member and matching bytes -- not inferred
+	// from a plausible-sounding name -- per this project's inlining
+	// discipline:
+	//
+	//   - `string.IsNullOrWhiteSpace(text)`: the inlined null-check +
+	//     char-by-char `System.Char.IsWhiteSpace` loop at the top of this
+	//     function is structurally identical (down to sharing the SAME
+	//     `data_30D76D8` class-init flag) to an independent disassembly of
+	//     `System.String.IsNullOrWhiteSpace` itself (RVA 0xE25060).
+	//   - `text.Split("<br>")`: not just an overload-signature match --
+	//     the call site is a COMPLETE inlining of `String.Split(string
+	//     separator, StringSplitOptions options = 0)` (RVA 0xE29360)
+	//     itself, confirmed by disassembling that wrapper and finding the
+	//     exact same instruction sequence, including its (here dead, since
+	//     "<br>" is a non-null literal) internal null-separator guard --
+	//     which resolved what `data_30D76E0 + 0xb8` actually is (see the
+	//     `text` line below).
+	//   - `_labels.Where(label => !label.enabled).ToArray()`: the
+	//     `.Where` predicate delegate is cached in the standard compiler
+	//     `<>c.<>9__34_0` static-field pattern (same shape as `PrintDebateText
+	//     .<Print>b__21_0/1` from this same round). Its body,
+	//     `<AddText>b__34_0(DebateText label)` (RVA 0x368A20), is confirmed
+	//     byte-for-byte identical (same `data_2604C08` cached-icall
+	//     descriptor, same `MarshalNotNull<Behaviour>` class-init flag) to
+	//     an independent disassembly of `UnityEngine.Behaviour.get_enabled`
+	//     (RVA 0x2060B80), followed by a `sete al` negation -- i.e. this
+	//     collects the currently-DISABLED labels (the "free" slots this
+	//     call is about to repurpose), not the visible ones.
+	//   - If the incoming message has more lines than there are free label
+	//     slots, this logs a warning (using the exact literal string read
+	//     from the data section: "渡されたメッセージの行数が未使用ラベル数を
+	//     超えています。" -- "the number of lines in the received message
+	//     exceeds the number of unused labels") and returns without
+	//     touching any label.
+	//   - Otherwise, for `i` in `[0, availableLabels.Length)` -- **indexing
+	//     `_labels[i]` directly, not `availableLabels[i]`, per the
+	//     disassembly (`0x36813F`/`0x368221` both reload `this._labels`,
+	//     never the `[rsp+0x98]` `ToArray()` result, inside the loop body;
+	//     only the loop BOUND at `0x368130` comes from
+	//     `availableLabels.Length`)**. This is a genuine mismatch between
+	//     "how many free slots exist" and "which slots get written," not a
+	//     misread on my part -- if the free (disabled) labels are not a
+	//     `_labels[0..count)` prefix, this call would silently overwrite a
+	//     label that's currently showing text. Whether that can actually
+	//     happen depends on whether every caller resets all of `_labels`
+	//     to disabled before repopulating (plausible for the sibling
+	//     `SetText`, still a stub) -- unverified, so this is recorded as a
+	//     bytes-confirmed behavioral finding, not explained away. Three
+	//     writes happen UNCONDITIONALLY each iteration (the apparent `if`s
+	//     around them in the disassembly are internal to the inlined
+	//     setters below, not source-level branches on `hasLine`):
+	//       - `_labels[i].enabled = hasLine` (`hasLine = i < lines.Length`)
+	//         -- confirmed byte-for-byte against an independent
+	//         disassembly of `Behaviour.set_enabled(bool)` (RVA 0x2060C20;
+	//         same `MarshalNotNull<Behaviour>`/`data_30E84C6`/
+	//         `data_30E84D0`/`data_2604C50` flags throughout).
+	//       - `_labels[i].alpha = 0f` -- confirmed byte-for-byte against an
+	//         independent disassembly of `TMP_Text.set_alpha(float)` (RVA
+	//         0x1EFFDE0); that setter's OWN internal no-op guard (skip if
+	//         the field already equals the new value) is exactly the
+	//         `ucomiss`/`jp`/`je` shape seen at this call site, so no
+	//         separate source-level `if` is needed here.
+	//       - `_labels[i].text = hasLine ? lines[i] : string.Empty` -- the
+	//         write dispatches through vtable Slot 66, which is
+	//         `NaninovelTMProText`'s own `text` setter override (this
+	//         file's neighbor `NaninovelTMProText.cs`, Slot 66). The
+	//         "no line for this slot" fallback reads through
+	//         `data_30D76E0 + 0xb8` -- the SAME address confirmed above to
+	//         be `String.Split`'s own internal null-separator substitute,
+	//         i.e. a generic "the empty string" static reference, not a
+	//         reuse of the "<br>" literal (an earlier pass misread this as
+	//         "<br>" reuse before checking `Split`'s own bytes).
+	//   - `.enabled`/`.alpha` are left at "on, invisible" for filled slots;
+	//     the actual fade-in is presumably owned by this class's own
+	//     `RevealMessages`/`WatAndRevealAsync` (still stubs), not by this
+	//     method.
 	[Token(Token = "0x6000382")]
 	[Address(RVA = "0x367E20", Offset = "0x366820", VA = "0x180367E20")]
 	private void AddText(string text)
 	{
+		string[] lines = string.IsNullOrWhiteSpace(text) ? Array.Empty<string>() : text.Split("<br>");
+		DebateText[] availableLabels = _labels.Where((DebateText label) => !label.enabled).ToArray();
+		if (lines.Length > availableLabels.Length)
+		{
+			UnityEngine.Debug.LogWarning("渡されたメッセージの行数が未使用ラベル数を超えています。");
+			return;
+		}
+		for (int i = 0; i < availableLabels.Length; i++)
+		{
+			bool hasLine = i < lines.Length;
+			_labels[i].enabled = hasLine;
+			_labels[i].alpha = 0f;
+			_labels[i].text = hasLine ? lines[i] : string.Empty;
+		}
 	}
 
 	[Token(Token = "0x6000383")]
