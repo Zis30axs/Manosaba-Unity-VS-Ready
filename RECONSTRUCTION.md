@@ -18,7 +18,7 @@
 | 第一批 44 个方法 | **27/44 已完成**（Boot/Init、TrialState 两个子系统全部完成；SaveLoad/Input/Naninovel-glue/WitchBook-Data/Map 部分完成） |
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
-| Naninovel 兼容层可行性 | 已审计（§0.6）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）——最小兼容层范围可枚举，不需要先转 Yarn Spinner |
+| Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
 
 ---
 
@@ -335,15 +335,16 @@ Naninovel 内置表达式函数的完整清单见 0.6.3。
    `ITrialStateManager`）——不是整个 Naninovel 引擎服务定位器体系。
 4. **6 个参数包装类型**（`BooleanParameter` 等）+ `Named<T>`/`NamedString` 家族——纯数据
    结构，机械可实现。
-5. **表达式求值器**：变量读写 + 15 个内置函数 + 基本比较/逻辑运算符——规模很小，
-   **完全不需要实现行级 `@if` 条件执行语义**（语料库证实零使用）。
+5. **表达式求值器**：变量读写 + 15 个内置函数（实测只用到 1 个，`max`）+ 基本比较/逻辑
+   运算符——规模很小，**完全不需要实现行级 `@if` 条件执行语义**（语料库证实零使用）。
+   **但求值器必须能在任意参数字段上被调用**，不能只挂在 `Expression`/
+   `ConditionalExpression` 这两个具名字段上——见 0.6.4 第 2 条修正。
 6. **`IManagedUI`/`CustomUI` UI 生命周期契约**，支撑 10 个自定义 UI 类。
 7. **11 个特性**（`CommandAlias`/`ParameterAlias`/`RequiredParameter` 等）——主要影响
    编辑器序列化/校验，不影响运行时语义，可以先做最简实现（甚至先忽略部分编辑器专用行为）。
-8. `GigaCreation.NaninovelExtender.*` 的 5+4+2+3=14 个 distinct 命令类型——**待确认**：
-   这个库本身是否对商业 `Naninovel.Runtime` 有硬编译期依赖（大概率是，因为它的命令类
-   基类如 `AnimateActorExtended` 本身可能就派生自 Naninovel 的内置 Actor/Command 类型），
-   如果是，则这部分类型也要折算进上面的兼容层契约里，而不是独立处理。
+8. `GigaCreation.NaninovelExtender.*` 的 5+4+2+3=14 个 distinct 命令类型，**外加它们
+   直接派生的一批 Naninovel 内置 actor/manager/state 基类**——已确认（见 0.6.4 第 3 条
+   修正），不是独立库，必须折算进兼容层契约。
 
 **明确拒绝的方向**：现在就把全部内容转成 Yarn Spinner。语料库已经完全绑定在 Naninovel
 的命令词汇表/序列化契约上（304,280 条命令实例、43 个自定义命令类都是照着 Naninovel 的
@@ -351,6 +352,83 @@ Naninovel 内置表达式函数的完整清单见 0.6.3。
 可以**零改动**复用现有全部内容；换成 Yarn Spinner 意味着要重新编写或者机械转换全部
 304,280 条命令实例——工作量和风险都严格大于实现这个兼容层。**优先级：先把兼容层范围
 钉死到可执行的清单（本节 1-8），有余力再评估是否要往 Yarn Spinner 迁移，而不是反过来。**
+
+### 0.6.4 复核修正（针对 0.6.1/0.6.2 的三处更正 + 一个新发现的独立风险）
+
+本节初稿提交后做了一轮复核（用真实数据反查，而不是相信第一遍脚本的输出）。发现三处
+需要更正的具体结论，以及一个跟 Naninovel 完全无关、但直接影响"→ Unity Editor → Play
+Mode"这条目标管线能否走通的独立风险。按本工程一贯的证据纪律，更正记录在这里，不覆盖
+上面的原始数字（表格数字本身没错，是"解读"错了）。
+
+**修正 1：`nextScenario`(410 次) 不是生产关卡的分支变量，是调试菜单专用**。
+逐文件定位后发现，`nextScenario` 和它对应的 `.GoToChosenScenario` 标签**100% 只出现在
+一个文件**——`Scenarios/Debug/Debug_Home.asset.json`（一个 3.3 MB 的调试用"跳转到任意
+关卡"菜单，410 大概率对应 440 个正式关卡里可供调试直跳的那一部分）。**真正的生产关卡
+分支变量**是 `chosenEvidenceId`（400 次出现，分布在 59 个文件）、
+`isDebugDirectJump`(546 次，368 个文件——这个虽然名字也带 debug，但它是嵌在几乎所有
+正式关卡文件开头的一个调试直跳放行判断，本身是发布内容的一部分，不是纯调试专属文件）、
+`courtStandCount`(253 次，54 个文件)、`chosenAreaFlag`/`chosenAreaId`(212+116 次，
+24+12 个文件)——这些才是 0.6.1 表格里应该被当作"高频生产变量"读的条目。
+
+**修正 2：表达式插值不止发生在 `Expression`/`ConditionalExpression` 两个具名字段上**。
+0.6.1 最初只扫了这两个字段，遗漏了 Naninovel "任意参数值都可以内嵌表达式"这条通用
+语法——同一个 `raw.parts[].expression` 结构在其他参数字段里同样出现，逐字段复核后
+统计到 **26 组 (命令类, 参数名) 组合、约 3,400+ 处**非空表达式插值，例如：
+
+| 命令.参数 | 次数 | 表达式样例 |
+|---|---:|---|
+| `ModifyBackgroundExtended.Scale` | 736 | `g_backgroundDefaultScale`、`g_backgroundDefaultScale * 3` |
+| `ModifyCharacterExtended.Position` | 706 | `hiddenCharacterPositionY` |
+| `Wait.WaitMode` | 649 | `debateWaitTime` |
+| `ModifyCharacterExtended.Scale` | 402 | `characterScale` |
+| `ModifyCharacterExtended.Rotation` | 201 | `hiroRotationY` |
+| `ModifyPerspectiveStageCamera.Rotation` | 199 | `(2.2 / courtStandCount * 360)` |
+| `GosubResetWitchBook.IsDebugDirectJump` | 196 | `isDebugDirectJump` |
+| `AddChoice.ChoiceSummary` / `UpdateAudioPlayerUi.TrackName` | 各 58 | `bgm_1_1`（动态拼出资源名，不是台词文本） |
+| `GotoModified.Path` | 3 | `nextScenario`、`commonBadEndId`（Debug 菜单专用的动态跳转，见修正 1） |
+
+**这直接改变兼容层的设计约束**：表达式求值器不能只挂在两个具名字段的反序列化路径上，
+必须作为**所有参数类型通用的反序列化步骤**（每个参数值在读出时都要检查
+`raw.parts[].expression` 是否非空，非空则求值后替换），因为真正大量使用插值的地方
+（背景缩放、角色位置/旋转、等待时长）全部是数值/资源名参数，不是 `Expression` 那种
+"整段就是一句赋值语句"的字段。好消息是：0.6.3 里"15 个内置函数只用到 `max`"的统计
+是对全文件文本做的正则扫描（不区分字段来源），这条结论本身不受这处遗漏影响，仍然成立。
+
+**修正 3：`GigaCreation.NaninovelExtender.*` 对 Naninovel 有硬编译期继承依赖，不是独立库**。
+0.6.3 原文把这个留作"待确认"，现已用源码直接确认——**确认为真**：
+`AnimateActorExtended : AnimateActor`、`ModifyCharacterExtended : ModifyCharacter`、
+`ModifyBackgroundExtended : ModifyBackground`、`BackgroundManagerExtended :
+BackgroundManager`、`BackgroundStateExtended : BackgroundState`、
+`CharacterManagerExtended : CharacterManager`、`CharacterStateExtended : CharacterState`、
+`DicedSpriteCharacterExtended : DicedSpriteCharacter`、`LayeredCharacterExtended :
+LayeredCharacter`、`SpriteBackgroundExtended : SpriteBackground`、`GotoModified : Goto`、
+`Quit : Stop`、`GameStateMapExtended : GameStateMap`、`StateManagerExtended :
+StateManager`、`DestroySpawnedExtended : DestroySpawned`、`MultipliableSpawn :
+SpawnManager`、`SpawnExtended : Spawn`——**16 个 GigaCreation 类直接继承 Naninovel 自己
+的 actor/manager/state 基类**，还实现了 `IEngineService<T>`/`IStatefulService<T>`/
+`IMultipliableActor`/`IPivotChangeableActor`/`IMaskabilityChangeableActor` 等 Naninovel
+接口。**结论**：兼容层不能只实现 0.6.3 第 2 条里"脚本里直接出现的 ~38 个命令类"，还要
+连带实现这 16 个基类代表的 actor/manager 子系统（角色/背景渲染抽象、状态管理、生成物
+管理）——范围比最初估计的大，但依然是**可枚举**的（上面这 16 个类名就是完整列表），
+没有变成"重写整个引擎"。
+
+**独立风险（跟 Naninovel 无关，但同样卡在"→ Unity Editor → Play Mode"这条目标管线上）**：
+`res/Assets/` 下**没有任何 `.prefab`/`.unity`/`.meta` 文件**（全部搜索命中 0）。目录结构
+是 `res/Uncategorized/<UnityObjectType>/`（`GameObject`/`MonoBehaviour`/`Transform`/
+`Canvas`/`Material`/`Shader`/...）+ `res/_serialized/`，这是 AssetRipper 一类工具"按
+Unity 对象类型平铺导出"的中间产物特征，**不是** Unity Editor 能直接识别、带 GUID 引用
+关系的工程结构（Editor 需要 `.meta` 文件的 GUID 才能把 `MonoBehaviour` 序列化数据跟
+具体脚本类型、把 `Transform` 挂回具体 `GameObject`、把场景/预制体重新拼成层级树）。
+**这意味着 0.6.2 第 7 项（"序列化在场景/预制体里的 Naninovel 组件类型"）目前不是"需要
+额外交叉比对"这么简单，而是连场景/预制体本身的 Editor 可用形式都还没有生成**——这可能
+是比"实现 Naninovel 兼容层"更大、更优先的一块工作（AssetRipper 通常有场景/预制体重建
+功能，需要确认是否跑过、跑到哪一步、产物在哪），**留作独立的下一轮审计题目，本轮不
+展开**。
+
+**本轮审计的诚实边界**：用户要求的 10 项（Part A）里，第 3 项（唯一方法/属性计数）和
+第 10 项（机械 vs. 独特调用的精细分类）**没有做**——审计脚本声明了 `member_calls`
+计数器但从未填充，属于遗留的未完成项，不是"数据显示为零"。第 7 项如上，因为场景/预制体
+本身不是 Editor 可用格式而被阻塞，不是简单的遗漏。
 
 ---
 
