@@ -19,7 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：30/82 个函数体、12,848/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()` 均已复原成真正的 `async`/`await`（含 `Print()` 的 3 个 await 点），不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正"；顺带修复了一处阻塞性第三方引用桩缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表） |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：32/82 个函数体、14,672/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正"；顺带修复了一处阻塞性第三方引用桩缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表） |
 
 ---
 
@@ -778,11 +778,11 @@ private void Start()
 
 ---
 
-## 7.5 `Debate/Court` 子系统：本轮攻坚，30 个原生方法体 / 12,848 B（独立 worktree
+## 7.5 `Debate/Court` 子系统：本轮攻坚，32 个原生方法体 / 14,672 B（独立 worktree
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
-**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **30 个 /
-12,848 B（约 37% 方法数、40% 字节数）**，全部 Confidence A。（初次提交时有 2 处
+**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **32 个 /
+14,672 B（约 39% 方法数、46% 字节数）**，全部 Confidence A。（初次提交时有 2 处
 被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——已在外部复核
 后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫遗漏和 1 处
 多余语句，详见下方"本轮修正"。）
@@ -793,7 +793,7 @@ private void Start()
 | `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
 | `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
 | `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
-| `PrintDebateText.cs` | 11 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Print()` 已复原成结构化 `async`/`await`（见下方详述）；`Execute`/`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
+| `PrintDebateText.cs` | 13 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`/`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做。**未闭合的依赖**：`Execute()` 现在会调用 `ModifyDebatePrinter`，但那个方法体本身还是空桩——"入口链"要等它做完才算真正打通，`Execute()`"做完"不等于这条链"做完" |
 
 ### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
 
@@ -937,6 +937,41 @@ protected override async UniTask Print(ITextPrinterActor printer, AsyncToken tok
 核实后补回接口列表；顺带检查了同一参考树里所有其他 `struct Awaiter` 声明（含
 `<Execute>d__19` 会用到的泛型 `UniTask<T>.Awaiter`），确认只有这一处缺失。
 
+### `Execute()` — 2 个 await 点，纠正了一次"逐字节折叠"的过度断言
+
+`<Execute>d__19.MoveNext`（RVA `0x323A90`，1762 B）**结构化复原**成：
+
+```csharp
+public override async UniTask Execute(AsyncToken token)
+{
+    ITextPrinterActor printer = await GetOrAddPrinter(token);
+    if (printer is IDebateTextPrinterActor debateTextPrinterActor)
+    {
+        ModifyDebatePrinter(debateTextPrinterActor);
+    }
+    await WaitOrForget(new Func<AsyncToken, UniTask>(displayClass.b__0), true, token);
+}
+```
+
+其中 `GetOrAddPrinter`（dump.cs `PrinterCommand` Slot 20）和 `WaitOrForget`（dump.cs
+`Command` Slot 13）都是继承自基类、本类型未重写的虚方法。闭包 lambda
+（`_003CExecute_003Eb__0`，RVA `0x323A50`）确认与 `Naninovel.Commands.PrintText` 自己的
+`<>c__DisplayClass31_0.<Execute>b__0` **完全共享同一地址**（dump.cs 对这一个地址列出了
+两个不同的托管名字）。
+
+**记录一次自我纠正**：第一版注释把这条"lambda 共享地址"的事实过度推广成了
+"整个 `Execute()` 方法体和 `PrintText.Execute()` 逐字节折叠、行为完全一样"——这是
+外部复核直接指出的错误，凭证据一查就能证伪：`PrintText.<Execute>d__31.MoveNext`
+在 dump.cs 里是**另一个地址**（`0x4FF740`），根本没有被折叠。独立反汇编这个地址后
+确认：`PrintText` 自己的 `Execute()` 也是同样的"`GetOrAddPrinter` → await →
+`WaitOrForget(lambda, true, token)` → await"两段式结构，但**完全没有** isinst 检查、
+完全没有调用任何 actor 类型相关的东西。所以准确的结论是：`PrintDebateText.Execute()`
+不是"照抄基类"，而是在基类同一个两段式骨架里**插入了恰好一步**辩论专属逻辑
+（`IDebateTextPrinterActor` 配置钩子）；`PrintText` 自己 Slot 27–41 的
+`ShowPrinter`/`PlayAutoVoice`/`WaitInput`/`AddBacklog` 等等既不在这个 `Execute()`
+里，也不在 `PrintText` 自己的 `Execute()` 里被调用——那些是 `Print()`
+（Slot 26/35）内部的事，正好就是这个文件里 `Print()` 覆写要接管的那一层。
+
 ### 本轮修正（外部复核发现，已核实并修复——见 commit `d457070`）
 
 在把这批代码标为"完成"之后，外部复核（advisor）指出并经独立反汇编+dump.cs
@@ -979,20 +1014,18 @@ protected override async UniTask Print(ITextPrinterActor printer, AsyncToken tok
    涉及 `ScenePosition`（3 分量，逐分量走"要么用显式坐标要么退回 `IActor`/相机场景矩形
    计算当前位置"的分支逻辑）、`Roll` 旋转、`AnimationKind` 的 `FastEnum.TryParse`
    解析。是这一批里唯一被判定"值得单独排更高优先级/更多预算再啃"而不是仓促做完的。
-2. **`Execute` 的异步状态机还没做**——`<Execute>d__19.MoveNext`（RVA `0x323A90`）
-   + 其闭包 `_003CExecute_003Eb__0`（RVA `0x323A50`，`<>c__DisplayClass19_0` 的 ILSpy
-   桩已存在，等着填体）还没开始排查；`Print()` 已经做完，`Execute` 是本文件最后一个
-   未复原的大块异步逻辑。
-3. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
+   **现在是唯一阻塞"入口链闭合"的一环**——`Execute()` 已经在调用它了，但它自己还是
+   空桩，所以"辩论文字打印入口 → 取 printer → 配置 debate printer → 打印" 这条链
+   还没有真正连通到底。
+2. **`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）没有动**——第 4 节
    优先级表 #33，跟 `PrintDebateText` 同一个"打字机效果"流程但目前还没排查。
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `PrintDebateText::<Execute>d__19.MoveNext`（0x323A90）+ 其闭包 `b__0`（0x323A50）——
-   `PrintDebateText.cs` 里最后一块未复原的异步逻辑
-2. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）
-3. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
-4. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
+1. `PrintDebateText::ModifyDebatePrinter`（0x322B40，场景位置/旋转/动画种类）——
+   现在是唯一阻塞 `Execute()` 入口链闭合的一环
+2. `DebateTextPrinterPanel::AddText`（0x367E20，优先级表 #33）
+3. PerspectiveStage 子系统（本轮完全未触碰，65 个函数体 / 27,784 B，
    `GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`
    两个 2000+ B 的 `Execute` 是下一个自然的攻坚对象）
 
