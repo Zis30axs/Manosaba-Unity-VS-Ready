@@ -138,7 +138,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 20 | Naninovel-glue | `GosubResetWitchBook::TryGetScriptPathAndLabel` | `0x3286B0` | 1643 | 40 | 0 | 0 | 3 | 4 | hard |
 | 21 | Naninovel-glue | `WitchTrialsNaninovelManager::StartTrial` | `0x39A1D0` | 574 | 6 | 0 | 3 | 4 | 2 | medium |
 | 22 | Naninovel-glue | `GosubResetWitchBook::CheckEvidenceState` | `0x328D20` | 1103 | 17 | 1 | 0 | 0 | 8 | hard |
-| 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` | 736 | 7 | 0 | 0 | 5 | 5 | medium |
+| 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` ✅ | 736 | 7 | 0 | 0 | 5 | 5 | medium |
 | 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
 | 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
 | 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
