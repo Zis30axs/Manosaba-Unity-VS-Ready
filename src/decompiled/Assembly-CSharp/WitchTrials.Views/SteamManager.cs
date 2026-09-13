@@ -68,10 +68,39 @@ public class SteamManager : MonoBehaviour
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x389790
+	//
+	// Native evidence:
+	//   0x38988C  `if (s_instance == null) s_instance = this;` -- Unity's
+	//             overloaded UnityEngine.Object null check inlined (tests both
+	//             a real C# null and the native "destroyed object" pointer at
+	//             +0x10, IL2CPP's standard idiom for `UnityEngine.Object == null`)
+	//   0x180389919  if (!_bInitialized || _steamAPIWarningMessageHook != null) return;
+	//             i.e. only proceed once Awake() has already initialized Steam
+	//             AND the warning hook hasn't been installed yet.
+	//   0x18038992E  cache-and-create pattern for a non-capturing method-group
+	//             conversion (`SteamManager.<>O.<0>__SteamAPIDebugTextHook`,
+	//             Roslyn's usual "cache the delegate" boilerplate) ->
+	//             `_steamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);`
+	//   0x180389A6F  Steamworks.SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook)
+	//             -- confirmed by disassembling that method separately (RVA
+	//             0x3B87A0): identical TestIfAvailableClient + CSteamAPIContext
+	//             + ISteamClient_SetWarningMessageHook sequence, byte-for-byte,
+	//             i.e. it is that call inlined here, not hand-written logic.
 	[Token(Token = "0x600055A")]
 	[Address(RVA = "0x389790", Offset = "0x388190", VA = "0x180389790")]
 	private void OnEnable()
 	{
+		if (s_instance == null)
+		{
+			s_instance = this;
+		}
+		if (!_bInitialized || _steamAPIWarningMessageHook != null)
+		{
+			return;
+		}
+		_steamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);
+		SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook);
 	}
 
 	[Token(Token = "0x600055B")]
