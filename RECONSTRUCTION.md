@@ -20,6 +20,7 @@
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
 | Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：35/82 个函数体、17,741/32,044 B 完成（约 43% 方法数、约 55% 字节数），全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
+| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：1/65 个函数体、2,520/27,784 B——`GosubToModifyPerspectiveStageCamera::Execute`，Confidence A；不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节，不是猜测）；揭示了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定，供下一个 `GosubTo*` 目标复用验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题），详见 §7.6 |
 
 ---
 
@@ -553,7 +554,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 22 | Naninovel-glue | `GosubResetWitchBook::CheckEvidenceState` | `0x328D20` | 1103 | 17 | 1 | 0 | 0 | 8 | hard |
 | 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` ✅ | 736 | 7 | 0 | 0 | 5 | 5 | medium |
 | 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
-| 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
+| 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` ✅ | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
 | 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
 | 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
 | 28 | PerspectiveStage | `StageCameraController::Awake` | `0x3846C0` | 840 | 24 | 0 | 0 | 0 | 0 | hard |
@@ -1188,12 +1189,78 @@ Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此�
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. PerspectiveStage 子系统（本轮完全未触碰，用户优先级第 2 位，65 个函数体 / 27,784 B，
-   `GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`
-   两个 2000+ B 的 `Execute` 是下一个自然的攻坚对象）
+1. `GosubToSplitPerspectiveStageScreens::Execute`（`0x31E250`，2338 B）——与
+   `GosubToModifyPerspectiveStageCamera::Execute` 大概率同一种"计算 subroutine 标签
+   后缀 → Gosub 到 System_Subroutine"调用约定（见 §7.6），验证一次就能定下整个
+   PerspectiveStage 桶的通用形状，比逐个硬啃更省
 2. `DebateTextPrinterPanel.cs` 收尾（`SetText`/`AppendText`/`RevealMessages`/
    `WatAndRevealAsync`/`Gosub`）——顺带能解释清楚 `AddText` 那处尚未解决的行为疑点
 3. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
+
+## 7.6 `PerspectiveStage` 子系统：本轮启动，1 个原生方法体 / 2,520 B（用户优先级第 2 位）
+
+**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **1 个 /
+2,520 B**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
+#25），Confidence A。这是本轮第一次真正进入这个子系统（此前完全未触碰）。
+
+### `GosubToModifyPerspectiveStageCamera::Execute` — 揭示了 PerspectiveStage 的一种通用调用约定
+
+```csharp
+public override UniTask Execute([Optional] AsyncToken token)
+{
+    int index = ((int?)Index).Value;
+    string targetCharIdxVarName = LookCharacterId.Value.ToLowerInvariant() + "Idx";
+    ICustomVariableManager customVariableManager = Engine.GetServiceOrErr<ICustomVariableManager>();
+    if (!customVariableManager.TryGetVariableValue<int>(targetCharIdxVarName, out int targetCharIdx))
+    {
+        Warn("Variable " + targetCharIdxVarName + " does not exist.");
+        return default(UniTask);
+    }
+    StringBuilder stringBuilder = new StringBuilder("ModifyCamera");
+    // ...(Composition/RollDirection/ZoomLevel/LabelNameParams 逐个 Append 到 stringBuilder)...
+    customVariableManager.TrySetVariableValue("cameraIdx", index);
+    customVariableManager.TrySetVariableValue("targetCharIdx", targetCharIdx);
+    Gosub gosub = new Gosub
+    {
+        Path = new NamedString(SubroutineScriptPath, stringBuilder.ToString())
+    };
+    return gosub.Execute(default(AsyncToken));
+}
+```
+
+**不是 async 状态机**——没有 `[AsyncStateMachine]`，没有嵌套 `<Execute>d__` 结构体；
+反汇编直接证实了这一点：整个方法同步运行，以一次纯粹的尾调用
+`return gosub.Execute(default(AsyncToken));` 结束——**自己收到的 `token` 参数在
+函数体内完全没被读取过**，调用点现场清零构造了一个全新的 16 字节结构体传进去
+（`xorps`+`movdqa` 清零的宽度，逐字节对照 dump.cs 里 `AsyncToken`（两个
+`CancellationToken` 字段，各 8 字节，共 16 字节）的真实大小，不是"猜测清零宽度
+等于整个结构体"）——也就是说这条 Command 自己的取消令牌被静默丢弃，不会传给它
+派发出去的 `Gosub`。
+
+**推测出的通用调用约定**（供下一个 PerspectiveStage 目标验证）：这类
+`GosubTo*PerspectiveStage*` Command 不直接操作摄像机/舞台状态，而是：
+1. 读一个"每角色命名"的脚本变量（这里是 `<小写look>Idx`）拿到目标索引；
+2. 把参数拼成一段固定前缀+参数序列的字符串（这里是
+   `"ModifyCamera-<comp>-<rollDir>-Lvl<n>[-<param>...]"`）；
+3. 把索引以两个固定名字（`cameraIdx`/`targetCharIdx`）重新发布成脚本变量，供
+   `System/System_Subroutine` 里的具体分支读取；
+4. `new Gosub { Path = ... }` 跳转到 `"System/System_Subroutine"`，用第 2 步拼出的
+   字符串作为标签后缀，`Execute()` 同步完成、`token` 不转发。
+
+`GosubToSplitPerspectiveStageScreens::Execute`（`0x31E250`）大概率是同一种形状，
+换了不同的字段/前缀——下一轮验证这一点比逐条硬啃更高效，命中即可确定整个
+`PerspectiveStage` 桶里所有 `GosubTo*` 命令共享的骨架。
+
+**本轮第三处基础设施修复**：`Naninovel/ParameterList.cs`（第三方引用桩）的类声明
+完全没有基接口列表（`ParameterList<TItem> : CommandParameter<List<TItem>>`），而
+dump.cs 显示真实类型是 `..., IEnumerable<TItem>, IEnumerable`——和本轮已修复的
+`UniTask.Awaiter` 缺失基接口列表是同一类问题。桩文件里已经有两个私有的
+"乱码命名"占位方法（`System_002ECollections_002E...GetEnumerator`），只是没有
+声明成真正的显式接口实现——补上接口列表 + 把这两个方法改写成
+`IEnumerable.GetEnumerator()`/`IEnumerable<TItem>.GetEnumerator()` 的显式接口实现
+语法即可，不用改动方法体。这一修复让 `foreach (NullableString x in
+LabelNameParams)` 不再需要额外的 `(IEnumerable<NullableString>)` 强制转换，直接
+匹配反汇编里朴素的 `IEnumerable<NullableString>.GetEnumerator()` 调用。
 
 ---
 
