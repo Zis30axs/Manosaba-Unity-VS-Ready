@@ -48,9 +48,16 @@ public class ClueDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36C0D0
+	// Generic "store two reference-typed constructor params into fields at
+	// +0x10/+0x18" thunk (63+ unrelated methods project-wide share this exact
+	// body -- see work/reversing/README.md on body folding): `_name = name;
+	// _description = description;`, GC write barrier on each store, no other logic.
 	[Token(Token = "0x60005A4")]
 	[Address(RVA = "0x36C0D0", Offset = "0x36AAD0", VA = "0x18036C0D0")]
 	public ClueDataItem(LocalizedText[] name, LocalizedText[] description)
 	{
+		_name = name;
+		_description = description;
 	}
 }
