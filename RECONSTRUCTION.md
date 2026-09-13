@@ -111,6 +111,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 **RVA 后带 ✅ 的已经恢复并通过编译**（#1、12、15、18、42、44——都是"惰性缓存的服务查找"
 这一种模式：`_field ??= Engine.GetServiceOrErr<T>()` / `ServiceLocator.Get<T>(true)` /
 `NaniUiManager.GetUI<T>()`，详见对应源文件里的 `// RECONSTRUCTED` 注释）。
+**带 🎮 的额外经过运行时验证**（#6，游戏启动入口，见下方第 7 节）。
 
 | # | 系统 | 类型::方法 | RVA | 大小 | 分支 | 被调用 | 调用游戏方法 | 字符串 | 虚/接口 | 难度 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -119,7 +120,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 3 | Boot/Init | `SteamManager::OnEnable` | `0x389790` | 841 | 20 | 0 | 0 | 0 | 1 | medium |
 | 4 | Boot/Init | `SteamManager::OnDestroy` | `0x389AE0` | 1177 | 19 | 0 | 0 | 0 | 0 | hard |
 | 5 | Boot/Init | `EntrySequence::ResetDebugVariables` | `0x38A660` | 571 | 8 | 2 | 1 | 5 | 1 | medium |
-| 6 | Boot/Init | `GameInitializer::Start` | `0x30FB70` | 560 | 11 | 0 | 0 | 0 | 1 | medium |
+| 6 | Boot/Init | `GameInitializer::Start` | `0x30FB70` ✅🎮 | 560 | 11 | 0 | 0 | 0 | 1 | medium |
 | 7 | TrialState | `TrialStateManager::RegisterCameraState` | `0x39DA50` | 1323 | 30 | 0 | 0 | 1 | 5 | hard |
 | 8 | TrialState | `WitchTrialsNaninovelManager::ChangeTrialPauseMode` | `0x399BE0` | 626 | 21 | 0 | 1 | 1 | 1 | hard |
 | 9 | TrialState | `TrialStateManager::SaveServiceState` | `0x39D5C0` | 746 | 14 | 0 | 0 | 2 | 4 | medium |
@@ -329,7 +330,41 @@ python patch_accessor.py jobs.json         # 落盘
 
 ---
 
-## 7. 下一步
+## 7. `GameInitializer::Start` — 游戏启动入口，已恢复并经运行时验证
+
+原始任务说明把"游戏启动入口"列为第一优先级，这是它。
+
+```csharp
+private void Start()
+{
+    _steamManager.gameObject.SetActive(!DebugOptions.IsDebugMode || DebugOptions.EnableSteamworks);
+    InitializeAsync(destroyCancellationToken).Forget();
+}
+```
+
+依据（RVA `0x30FB70`）：`_steamManager` 判空 → 取其 `gameObject` → 调用
+`DebugOptionsBase.get_IsDebugMode()` → 短路布尔判断（不在调试模式直接为 true，
+在调试模式则读 `DebugOptions` 静态存储偏移 0 处的字段——对照 dump.cs 字段表，
+偏移 0 正是 `s_enableSteamworks`，即公开属性 `EnableSteamworks` 的底层存储）
+→ `SetActive` → 取 `this.destroyCancellationToken`（Unity 内置属性）→
+启动 `InitializeAsync` 的编译器生成状态机 → 对返回的 `UniTask` 调用 `Forget()`
+（fire-and-forget，`Start()` 本身不 await）。
+
+**运行时验证**（Harmony postfix，`project/src/Manosaba.Plugin/Plugin.cs`
+的 `GameInitializerVerification`）：游戏启动、不做任何操作，日志立即打印
+
+```
+[verify] GameInitializer.Start() -> IsDebugMode=False EnableSteamworks=True
+         expectedSteamManagerActive=True actualSteamManagerActive=True match=True
+```
+
+`match=True`——静态复原的布尔表达式在真实运行时算出了跟 `SteamManager.gameObject`
+实际的 `activeSelf` 完全一致的结果。这是继 `TrialStateManager.InitializeService`
+之后第二个"静态 + 运行时"双重确认的方法。
+
+---
+
+## 8. 下一步
 
 1. **继续批量定案剩余折叠组**——`.ctor()` 空构造确认（低优先级，代码已经对，只差注释）、
    `op_Equality`/`op_Inequality` 的缺失方法补齐（需要先决定是否值得新增 API 面）。
