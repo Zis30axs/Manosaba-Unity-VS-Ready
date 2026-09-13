@@ -17,6 +17,8 @@
 | 试点子系统 | `TrialStateManager`（TrialState）— **已完成**，11/12 个成员达到 Confidence A |
 | 第一批 44 个方法 | **27/44 已完成**（Boot/Init、TrialState 两个子系统全部完成；SaveLoad/Input/Naninovel-glue/WitchBook-Data/Map 部分完成） |
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
+| 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
+| Naninovel 兼容层可行性 | 已审计（§0.6）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）——最小兼容层范围可枚举，不需要先转 Yarn Spinner |
 
 ---
 
@@ -83,6 +85,272 @@ Steamworks.NET/LitMotion/Newtonsoft.Json/MPUIKit/LeTai.TrueShadow 以及全部 `
 3. 唯一的例外情形：如果发现某个 `GigaCreation.*` 或 `Naninovel` 方法在这份游戏里的
    RVA 反汇编出来的行为，跟其公开文档/开源版本明显不一致（怀疑被 Manosaba 开发商
    自己打了补丁/魔改），那一处才值得单独逆向确认——目前没有发现任何这种情况的证据。
+
+---
+
+## 0.6 Naninovel 兼容层可行性审计（脚本数据面 + 代码 API 面）
+
+**目标架构澄清（本轮审计的前提）**：本工程的目标**不是**把恢复后的 C# 重新塞回原版
+`GameAssembly.dll`，也**不是**把 BepInEx/Harmony runtime patch 当成最终架构——Harmony
+从始至终只是"拿真实运行时行为核对恢复是否正确"的验证工具。真正的目标管线是：
+
+```
+恢复的 WitchTrials.* C# + 合法可得的外部依赖（Unity/UniTask/UniRx/Steamworks.NET/
+LitMotion/SpriteDicing/GigaCreation.* 等）+ 现有工程资产 + 重建的工程配置
+  → Unity Editor 编译 → Play Mode
+```
+
+Unity 本身（引擎/渲染/物理/IL2CPP 运行时）在这个框架里跟 MCP 场景下的 JVM/LWJGL
+地位一样：是正常安装的开发平台，不是需要逆向或重新实现的对象。原版 `GameAssembly.dll`
+的角色也降级为"恢复证据来源"，不是最终运行时的必需依赖。
+
+**唯一的真实缺口**：`Elringus.Naninovel.Runtime` + `Naninovel.Common`（965 个文件）虽然
+按 §0.5 的结论"不需要逆向"，但它是**商业付费资产**，本工程没有采购许可证、也不打算购买，
+所以不能把它的真实实现塞进 Unity 工程——`src/decompiled/` 下现有的 965 个文件全部是
+IL2CPP 反编译出来的**空壳**（方法体是 `return null;`），无法直接编译运行。本节审计的目的
+就是精确回答：**WitchTrials.\* 实际用到了 Naninovel 的哪一小部分 API/语义，够不够写一个
+"最小兼容层"来替代整个商业包**，而不是先估算"多少文件耦合"就下结论要不要全量重写。
+
+方法论：**一律用真实数据源逐字段解析，不按文件大小/文件数估算**——脚本数据面直接解析
+440 个 `.asset.json` 的 `references.RefIds`（每条都带精确的 `{asm, ns, class}` 出处标签，
+零歧义）；代码 API 面以本地已反编译的 Naninovel 源码树（965 个文件，含完整类型签名/基类/
+接口/特性声明，只是方法体是空的）作为**真值字典**，再去匹配 `WitchTrials.*` 227 个源文件的
+实际引用，而不是单纯数 `using` 语句或裸词 grep 命中数（后者已发现多个假阳性，见 0.6.2）。
+
+### 0.6.1 脚本数据面（对 440 个 `.asset.json` 的精确统计）
+
+**文件格式**：每个 `.asset.json` 是 Unity `[SerializeReference]` 序列化出的
+`ScriptableObject`，不是 Naninovel 的 `.nani` 纯文本脚本格式。关键字段：
+`textMap.idToText`（可本地化文本，按行 ID 索引）、`playlist.commands`（顺序命令流，
+`{"rid": N}` 引用指针）、`references.RefIds`（真正的命令对象数组，每条形如
+`{"rid", "type": {"class","ns","asm"}, "data": {...}}`）。**这意味着游戏出货时脚本已经是
+"编译产物"，不是需要重新解析的源文本**——兼容层不需要重新实现 Naninovel 的 `.nani`
+词法/语法分析器，只需要一个能把这份 JSON 反序列化成命令对象、并按 `playlist.commands`
+顺序执行的播放器。
+
+| 统计项 | 结果 |
+|---|---|
+| 脚本文件数 | 440 个（`Act01_Chapter01` ~ `Act02_Chapter06` + `Common`/`Debug`/`System`） |
+| 命令实例总数 | 304,280 条 |
+| 命令实例的 distinct (asm, ns, class) 类型 | 95 种 |
+| 平均每文件命令数 | 254.5 |
+| 可本地化文本行数 | 34,823 行，共 ~1,004 KiB 日文文本 |
+| `Scenarios/` 目录总大小 | 398.9 MiB（440 个 `.asset.json`） |
+| 目录内是否嵌有 base64/二进制数据 | **否**——抽样文件里最长字符串字段只有 93 字符（带
+  `<ruby>` 标记的日文台词），398.9 MiB 几乎全部是**结构化 JSON 本身的冗余**（每个参数
+  不论是否被使用，都固定携带 `value`/`hasValue`/`raw`/`spot` 四个子字段），跟"剧本复杂度"
+  没有正比关系 |
+
+**命令来源占比**（按 asm 分组，95 个 distinct 类型分布）：
+
+| 程序集 | 命令实例数 | 占比 | distinct 类型数 |
+|---|---:|---:|---:|
+| `Elringus.Naninovel.Runtime`（Naninovel 内置） | 212,631 | 69.9% | 38 |
+| `Assembly-CSharp`（`WitchTrials.*` 自定义） | 59,869 | 19.7% | 43 |
+| `GigaCreation.NaninovelExtender.ExtendedActors` | 27,304 | 9.0% | 5 |
+| `GigaCreation.NaninovelExtender.Common` | 3,464 | 1.1% | 4 |
+| `GigaCreation.NaninovelExtender.ExtendedSpawn` | 994 | 0.3% | 2 |
+| `GigaCreation.NaninovelExtender.Effects` / `.Localization` | 18 | ~0% | 3 |
+
+注意：`Naninovel.CommandScriptLine`(80,446)/`EmptyScriptLine`(62,434)/
+`GenericTextScriptLine`(31,554)/`CommentScriptLine`(15,322)/`LabelScriptLine`(2,524)
+这 5 种"脚本行包装类型"占了 Naninovel 内置命令数的大头——它们对应原始 `.nani` 源文本里
+**每一行**（含空行、纯注释行）被编译后留下的占位记录，不是"游戏逻辑"，兼容层里可以用
+一个统一的行结构表示，不需要 5 个独立类。真正代表游戏逻辑密度的是下面这张表。
+
+**`WitchTrials.*` 全部 43 个自定义命令类**（按脚本内出现频次）：
+
+| 频次 | 类名 | 频次 | 类名 |
+|---:|---|---:|---|
+| 31,575 | `PrintTextModified` | 22 | `SetBadId` |
+| 16,542 | `GosubToModifyPerspectiveStageCamera` | 19 | `EmoteJumpDouble` |
+| 2,621 | `PlaySfxModified` | 16 | `ReturnToTitle` |
+| 2,159 | `ChangeTrialPauseMode` | 14 | `EmoteJump` |
+| 2,003 | `PrintDebateText` | 13 | `ChoiceMapArea` |
+| 963 | `UpdateWitchBook` | 11 | `ClearWitchBook` |
+| 698 | `Damage` | 6 | `SplitPerspectiveStageScreen` |
+| 693 | `StopForChoice` | 5 | `ChangeTrialMode` |
+| 677 | `CancelGosub` | 4 | `ShowCreditsUi` / `HideCreditsUi` / `ChangeCourtFireFxActivity` |
+| 461 | `HidePerspectiveStageScreen` | 3 | `EmoteShake` / `ChangeDebateMode` / `ShowLoadingUiForDebug` |
+| 373 | `GosubResetWitchBook` | 2 | `EmoteNod` / `UnloadPerspectiveStage` / `BlockInteraction` |
+| 213 | `ModifyPerspectiveStageCamera` | 1 | `EmoteFall` / `ShowWitchBookUi` / `QuickLoad` / `LoadPerspectiveStage` |
+| 194 | `GosubToObjectionCutIn` | | |
+| 148 | `SetTrialTimer` | | |
+| 101 | `GosubToSplitPerspectiveStageScreens` | | |
+| 89 | `ChoiceEvidence` | | |
+| 59 | `UpdateAudioPlayerUi` | | |
+| 46 | `ShowPerspectiveStageScreen` | | |
+| 41 | `ShakePerspectiveStageCamera` | | |
+| 26 | `QuickSave` | | |
+| 25 | `RecordCorrectChoice` / `ProcessBadEnd` | | |
+
+**控制流**：`Gosub`(3,110 次)/`Return`(752 次) 是子程序跳转的主力，目标绝大多数集中在
+9 个 `System/System_Subroutine.*` 固定入口（`EndDebate-Last/First`、`EndDebate-Effect`、
+`BeginDebate-Last/First/Effect`、`BeginAdv`、`EndAdv`、`BeginTrial`、`EndTrial`）——
+这是一个**很规整的状态机骨架**，不是任意跳转的意大利面代码。此外
+`GigaCreation.NaninovelExtender.Common.GotoModified`（3,158 次）是 GigaCreation 扩展的
+无返回跳转（对应标准 Naninovel `Goto`/`@goto` 语义的自定义替代实现）。
+
+**条件分支——一个反直觉但确定的发现**：Naninovel 给几乎每个命令都预留了
+`ConditionalExpression` 参数槽位（用于内联 `@if` 条件执行单条命令），语料库里这个字段
+**出现了 112,000 次，但全部 440 个文件里没有一次被实际赋值**（`hasValue` 全部为 0，
+已对全部 112,000 处做了逐条验证，非抽样）。**这说明 Manosaba 的分支/审判逻辑完全不依赖
+Naninovel 内置的行级 `@if` 语义**，而是通过"自定义 Command 类 + `SetCustomVariable` 写状态
+变量 + Gosub 按变量值跳转不同子程序"这条路径实现的——对兼容层来说是好消息：**行级条件
+执行语义可以完全不实现**，选择/分支相关的真正逻辑全部封装在上面表格里的
+`ChoiceEvidence`/`ChoiceMapArea`/`RecordCorrectChoice`/`StopForChoice`/`AddChoice` 等
+命令类本身，只要那些类实现对，条件分支就跟着对。
+
+**变量**：`SetCustomVariable` 共 917 次赋值，语法是 Naninovel 的裸标识符表达式
+（**不是** `{var}` 插值），例如：
+```
+g_gameProgress = max(1, g_gameProgress)
+hasWitchBook = false
+chosenAreaId=="Library"
+chosenAreaFlag == 15
+```
+高频变量：`nextScenario`(410)、`chosenEvidenceId`(200)、`isDebugDirectJump`(175)、
+`courtStandCount`(83)、`chosenAreaId`(58)/`chosenAreaFlag`(36)、
+`characterDistance`(33)/`cameraYaw`(19)（运镜相关）、`g_gameProgress`/`g_moviePlayed`/
+`g_pi`（全局存档进度）、以及一批 `xxxIdx` 后缀的角色索引变量（`emaIdx`/`ananIdx`/
+`miriaIdx`/`hiroIdx`/`meruruIdx`/`hannaIdx`/`sherryIdx`/`leiaIdx`/`cocoIdx`/`margoIdx`/
+`noahIdx`/`nanokaIdx`/`alisaIdx`/`yukiIdx`/`wardenIdx`/`jailerIdx`，各 16 次，明显是给
+16 个固定角色分配舞台位置索引的机制）。表达式里出现的函数目前确认至少有 `max`；
+Naninovel 内置表达式函数的完整清单见 0.6.3。
+
+**本地化结构**：`res/Assets/#WitchTrials/Localization/zh-Hans/` 下只有一种语言（简中），
+分两块：
+- `Text/Scripts/`：440 个 `.txt`，与 440 个 `.asset.json` **一一对应**，格式是 Naninovel
+  标准的"managed text document"——`# 行ID` + `; 原文注释` + 译文，纯文本、按行 ID 对齐，
+  跟 `.asset.json` 里预编译的命令流是两条独立的数据轨（脚本结构 vs 台词翻译），互不耦合。
+  这部分文本一共只有 6.6 MiB。
+- `Text/`：另外 4 个全局文档——`CharacterNames.txt`（角色名对照）、`CustomUI.txt`、
+  `DefaultUI.txt`、`Locales.txt`（语言列表）。
+- `Movies/`：2 个 `.m4v`（`Act01_Opening.m4v`、`Act02_Opening.m4v`），**311.8 MiB**，
+  占 `Localization/` 目录总大小（318.5 MiB）的 **98%**。**这是之前"717 MiB 文件体积"
+  印象的真正来源之一**——真正的翻译文本只有 6.6 MiB，剩下几乎全是两个片头动画。
+
+### 0.6.2 代码 API 面（对 227 个 `Assembly-CSharp` 源文件的精确统计）
+
+以本地反编译的 `Elringus.Naninovel.Runtime`(789 文件) + `Naninovel.Common`(176 文件) +
+10 个 `GigaCreation.NaninovelExtender.*` 子程序集作为真值类型字典（共 1,782 个已知类型名），
+扫描 227 个 `WitchTrials.*` 源文件里对这些类型的实际引用。
+
+**方法论修正（重要）**：纯按裸标识符做正则匹配会产生假阳性——已发现并排除 5 个：
+`Token`（其实是 `Il2CppDummyDll.Token` 反射令牌特性，跟 Naninovel 自己名为 `Token` 的
+表达式词法单元类型撞名）、`Dictionary`/`Nullable`（`System.Collections.Generic`/
+`System` 的裸标识符，跟 Naninovel 同名类型撞名）、`Compiler`（`System.CodeDom.Compiler`
+命名空间引用 + "Compiler-generated" 注释文本撞词）、`Wait`（`public BooleanParameter Wait;`
+是字段名撞了 `Naninovel.Commands.Wait` 类名，逐处核对后确认 227 个文件里**零处**真正
+`new Wait`/`: Wait`/`<Wait>` 用法）。修正后：
+
+| 统计项 | 结果 |
+|---|---|
+| 有 `Naninovel*`/`GigaCreation.NaninovelExtender*` using 指令的文件 | 114 / 227 |
+| 修正后 distinct 引用类型数 | ~151（原始裸词命中 156，减去上述 5 个确认假阳性） |
+| 按种类分布 | class 78 / interface 37 / struct 31 / enum 5 |
+| `Engine.GetServiceOrErr<T>`/`GetService<T>` 请求的 distinct 服务接口数 | **仅 6 个** |
+
+**Engine 服务面**（`Engine.GetServiceOrErr<T>()` 请求的全部 6 个服务接口）：
+`ICustomVariableManager`(6)、`IScriptPlayer`(3)、`ITrialStateManager`(3，WitchTrials 自定义
+接口)、`IAudioManager`(2)、`IUIManager`(2)、`IStateManager`(2)。**这是整个引擎级 API 面里
+真正被直接调用的部分，规模很小。**
+
+**类型引用里排名最高的其实不是"Naninovel 业务 API"，而是异步基础设施**：`UniTask`(103
+文件)/`AsyncUniTaskMethodBuilder`(76)/`Awaiter`(75)/`AsyncToken`(52) 排在裸引用频次最前面，
+但这是 Cysharp `UniTask` 库的异步编译器基础设施（`Naninovel` 项目里重新导出了 UniTask 的
+命名空间别名），本来就已经在 §0.5 里被归类为"正常免费外部依赖"，兼容层不需要为此单独
+做任何事——直接引用真正的 UniTask 包即可。
+
+**真正的 Naninovel 业务类型**（排除异步基础设施后）：
+`BooleanParameter`/`IntegerParameter`/`DecimalParameter`/`StringParameter`/
+`StringListParameter`/`DecimalListParameter`（18/14/13/12/5/3 个文件）—— Naninovel 的
+"脚本参数包装类型"家族，全部是简单的值+`hasValue`可空封装，机械易实现；
+`IManagedUI`(17)/`CustomUI`(10)——UI 生命周期契约；
+`IInputManager`/`IScriptPlayer`/`IAudioManager`/`ICustomVariableManager`——引擎服务接口
+（即上面 Engine 服务表的另一侧）。
+
+**继承关系（`class X : Y` 精确匹配，无歧义，这是本次审计里置信度最高的一组数字）**：
+
+| 基类 | 派生的 WitchTrials 类数 |
+|---|---:|
+| `Command`（`Naninovel.Commands.Command`） | 29 |
+| `CustomUI` | 10 |
+| `AnimateActorExtended`（GigaCreation） | 5 |
+| `ChoiceHandlerButton` / `PrintText` / `SetCustomVariableAsFlag` / `Stop` | 各 2 |
+| `Gosub`、`ScriptPlayer`、`InputManager`、`Configuration`、`NaninovelManager`、
+  `NaninovelPresenter`、`BackgroundMatcher`、`NaninovelTMProText`、`UITextPrinter`、
+  `UITextPrinterPanel`、`EngineInitializationUI`、`CGGalleryGridSlot/Panel/Grid`、
+  `LoadingIndicatorBase`、`PlaySfx`、`ChoiceHandlerPanelModified`、`NaninovelScreen`、
+  `SpriteBackgroundExtended`、`BacklogMessageUI`、`BacklogPanelModified`、
+  `ChoiceHandlerManager` | 各 1 |
+
+跟 0.6.1 的"43 个自定义命令类"基本对得上——大部分命令类直接 `: Command`，少数（如
+`GosubResetWitchBook : Gosub`）直接继承某个具体内置命令类而不是抽象基类，
+`GosubToObjectionCutIn`/`GosubToModifyPerspectiveStageCamera`/
+`GosubToSplitPerspectiveStageScreens` 虽然类名带 "Gosub" 但实际都 `: Command`（自己实现
+逻辑，内部再 `new Gosub{...}.Execute()`，属于"调用" Gosub 而非"继承" Gosub）。
+
+**特性（attribute）使用面**：Naninovel 自己一共声明了 35 种可用特性（`ActorContext`、
+`Branch`、`CommandAlias`、`ConditionContext`、`ExpressionFunction` 等），`WitchTrials.*`
+只用到其中 **11 种**：`ParameterAlias`(52)、`CommandAlias`(31)、
+`ParameterDefaultValue`(20)、`RequiredParameter`(20)、`ResourcePopup`(13)、
+`InitializeAtRuntime`(3)、`ActorResources`(2)、`Branch`(2)、`VectorContext`(2)、
+`EditInProjectSettings`(1)、`ConstantContext`(1)——不到三分之一。
+
+**尚未完成的子项（本轮审计的已知空白）**：
+- 序列化在场景/预制体里的 Naninovel 组件类型（第 7 项）——Unity 的 `.prefab`/`.unity`
+  YAML 靠脚本 GUID 而非类名引用 `MonoBehaviour`，要精确回答这一项需要额外做
+  "`.meta` GUID ↔ 类名"的交叉比对，本轮未做，留作后续。
+- ~~Naninovel 内置表达式函数的实际使用频率~~——已补充，见 0.6.3：15 个内置函数里
+  **语料库实际只用到 1 个**（`max`，28 次）。
+
+### 0.6.3 综合结论：最小兼容层范围，直接回答"够不够"
+
+**Naninovel 内置表达式函数完整清单**（来自 `ExpressionFunctions.cs` 的
+`[ExpressionFunction("...")]` 声明，共 15 个函数名/18 个重载）：
+`random`(×3 重载)、`calculateProgress`、`isUnlocked`、`hasPlayed`(×2)、`getName`、
+`pow`、`sqrt`、`cos`、`sin`、`log`、`abs`、`max`、`min`、`round`、`approx`。
+这是 Naninovel 表达式求值器的**全部**内置函数——不是一个大型脚本语言，是一个只有
+15 个数学/存档相关函数的表达式求值器，加变量读写、`==`/`!=`/`&&`/`||` 等运算符。
+
+**实测使用频率**（对全部 440 个 `.asset.json` 按函数名逐一 grep 计数）：15 个内置函数
+**语料库里只用到 1 个**——`max`，28 次（即 §0.6.1 样例里的
+`g_gameProgress = max(1, g_gameProgress)` 这类"进度只增不减"写法）。其余 14 个
+（`random`/`calculateProgress`/`isUnlocked`/`hasPlayed`/`getName`/`pow`/`sqrt`/`cos`/
+`sin`/`log`/`abs`/`min`/`round`/`approx`）**零使用**。这进一步收窄了兼容层的表达式求值器
+范围：变量读写 + `==`/`&&` 等基本运算符 + 一个 `max` 函数，就能跑通语料库里全部 917 处
+`SetCustomVariable` 表达式——不需要实现完整的 15 函数表。
+
+**结论**：为了让 `WitchTrials.*` 在没有商业 Naninovel package 的情况下运行，需要实现的
+最小兼容层范围是**可枚举、可界定的**，不需要重写整个 Naninovel 引擎，也不需要先把内容
+转换成 Yarn Spinner 这类新格式：
+
+1. **脚本加载器**：反序列化现有 440 个 `.asset.json`（`playlist`/`references.RefIds`/
+   `textMap` 三个字段），不需要重新实现 `.nani` 纯文本编译器——出货的脚本已经是编译产物。
+2. **~38 个 Naninovel 内置命令类**（`Elringus.Naninovel.Runtime` 语料库实际用到的
+   distinct 类型数）+ 5 种脚本行包装类型（可以合并成 1 种通用行结构）。
+3. **6 个 Engine 服务接口**及其被实际调用的成员（`ICustomVariableManager`/
+   `IScriptPlayer`/`IAudioManager`/`IUIManager`/`IStateManager` + WitchTrials 自定义的
+   `ITrialStateManager`）——不是整个 Naninovel 引擎服务定位器体系。
+4. **6 个参数包装类型**（`BooleanParameter` 等）+ `Named<T>`/`NamedString` 家族——纯数据
+   结构，机械可实现。
+5. **表达式求值器**：变量读写 + 15 个内置函数 + 基本比较/逻辑运算符——规模很小，
+   **完全不需要实现行级 `@if` 条件执行语义**（语料库证实零使用）。
+6. **`IManagedUI`/`CustomUI` UI 生命周期契约**，支撑 10 个自定义 UI 类。
+7. **11 个特性**（`CommandAlias`/`ParameterAlias`/`RequiredParameter` 等）——主要影响
+   编辑器序列化/校验，不影响运行时语义，可以先做最简实现（甚至先忽略部分编辑器专用行为）。
+8. `GigaCreation.NaninovelExtender.*` 的 5+4+2+3=14 个 distinct 命令类型——**待确认**：
+   这个库本身是否对商业 `Naninovel.Runtime` 有硬编译期依赖（大概率是，因为它的命令类
+   基类如 `AnimateActorExtended` 本身可能就派生自 Naninovel 的内置 Actor/Command 类型），
+   如果是，则这部分类型也要折算进上面的兼容层契约里，而不是独立处理。
+
+**明确拒绝的方向**：现在就把全部内容转成 Yarn Spinner。语料库已经完全绑定在 Naninovel
+的命令词汇表/序列化契约上（304,280 条命令实例、43 个自定义命令类都是照着 Naninovel 的
+`Command`/`Engine.GetServiceOrErr<T>()` API 写的），实现一个范围明确的兼容层（above 1-8）
+可以**零改动**复用现有全部内容；换成 Yarn Spinner 意味着要重新编写或者机械转换全部
+304,280 条命令实例——工作量和风险都严格大于实现这个兼容层。**优先级：先把兼容层范围
+钉死到可执行的清单（本节 1-8），有余力再评估是否要往 Yarn Spinner 迁移，而不是反过来。**
 
 ---
 
