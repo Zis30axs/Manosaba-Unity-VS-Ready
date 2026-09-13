@@ -146,7 +146,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 29 | WitchBook/Data | `ClueDataItem::.ctor` | `0x36C0D0` ✅ | 170 | 4 | 72 | 0 | 0 | 0 | easy |
 | 30 | WitchBook/Data | `MapDataItem::.ctor` | `0x30C0D0` ✅ | 82 | 2 | 56 | 0 | 0 | 0 | easy |
 | 31 | WitchBook/Data | `WitchBookScreen::InitializePages` | `0x37A880` | 1408 | 31 | 0 | 5 | 0 | 5 | hard |
-| 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` | 807 | 15 | 14 | 0 | 0 | 3 | medium |
+| 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` ✅ | 807 | 15 | 14 | 0 | 0 | 3 | medium |
 | 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` | 1322 | 36 | 1 | 0 | 3 | 5 | hard |
 | 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
 | 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` | 1590 | 34 | 1 | 0 | 1 | 7 | hard |

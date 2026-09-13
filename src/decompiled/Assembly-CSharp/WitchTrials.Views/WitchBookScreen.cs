@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -40,22 +41,24 @@ public class WitchBookScreen : NaninovelScreen
 		[Token(Token = "0x170000A5")]
 		public WitchBookCategory Category
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x331650 (shared generic 4-byte getter, +0x10)
 			[Token(Token = "0x60004E9")]
 			[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
 			get
 			{
-				return default(WitchBookCategory);
+				return _category;
 			}
 		}
 
 		[Token(Token = "0x170000A6")]
 		public PageDataItem Item
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18)
 			[Token(Token = "0x60004EA")]
 			[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 			get
 			{
-				return null;
+				return _item;
 			}
 		}
 
@@ -83,22 +86,24 @@ public class WitchBookScreen : NaninovelScreen
 		[Token(Token = "0x170000A7")]
 		public WitchTrialsTabToggle Tab
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (shared generic reference-field getter, +0x10)
 			[Token(Token = "0x60004EC")]
 			[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 			get
 			{
-				return null;
+				return _tab;
 			}
 		}
 
 		[Token(Token = "0x170000A8")]
 		public WitchBookPageBase Page
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18)
 			[Token(Token = "0x60004ED")]
 			[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 			get
 			{
-				return null;
+				return _page;
 			}
 		}
 
@@ -399,13 +404,22 @@ public class WitchBookScreen : NaninovelScreen
 	private CompositeDisposable _disposables;
 
 	[Token(Token = "0x1700009D")]
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3799B0
+	//
+	// Lazily-cached: `_pageData ??= _pageDataMap.ToDictionary(m => m.Category,
+	// m => m.Item);`. Most of this 807-byte function is Roslyn's standard
+	// "cache the static lambda in a field of the compiler-generated <>c class"
+	// boilerplate for the two non-capturing lambdas passed to ToDictionary
+	// (`<>9__15_0`/`<>9__15_1`, allocated once and reused on subsequent calls)
+	// -- not meaningful logic in its own right, just how C# compiles a
+	// LINQ call with lambda arguments that capture nothing.
 	private IDictionary<WitchBookCategory, PageDataItem> PageData
 	{
 		[Token(Token = "0x60004CD")]
 		[Address(RVA = "0x3799B0", Offset = "0x3783B0", VA = "0x1803799B0")]
 		get
 		{
-			return null;
+			return _pageData ??= _pageDataMap.ToDictionary(m => m.Category, m => m.Item);
 		}
 	}
 
