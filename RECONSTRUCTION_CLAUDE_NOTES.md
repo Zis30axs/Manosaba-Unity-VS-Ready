@@ -39,3 +39,39 @@ None of these fields have a fallback/null-check path in the disassembly -- if an
 them are unassigned on the prefab, the corresponding method throws a
 `NullReferenceException` the first time it runs. Worth confirming prefab wiring for
 all five if anyone hits a runtime NRE in the Debate/Court flow.
+
+## `WitchTrials.Presenters.PerspectiveStagePresenter`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Presenters/PerspectiveStagePresenter.cs`
+
+- `[SerializeField] private Transform _stageParent;` -- dereferenced unconditionally
+  (explicit inlined NRE throw) in `Awake()` to read `.position` for the
+  `PerspectiveStageManager`'s `stageOffset` constructor argument.
+- `[SerializeField] private StageScreenController _screenController;` -- dereferenced
+  unconditionally (explicit inlined NRE throw) in `Awake()`, both directly (`.Dismiss()`)
+  and as a constructor argument to `PerspectiveStageManager`.
+- `[SerializeField] private StageCameraController _cameraController;` -- same pattern as
+  `_screenController`: unconditional NRE-throwing dereference in `Awake()`, both
+  directly (`.Dismiss()`) and as a `PerspectiveStageManager` constructor argument.
+- `[SerializeField] private PerspectiveStageData[] _stageData;` -- passed directly into
+  `Enumerable.ToDictionary(...)` in `Awake()` with no inlined guard of its own (the
+  guard, if any, is `ToDictionary`'s own internal `ArgumentNullException` check, not
+  visible in this method's disassembly). Each element's `.Kind`/`.Stage` sub-fields
+  (a `PerspectiveStageKind` and an `AssetReferenceGameObject`, both `[SerializeField]`
+  on `PerspectiveStageData`) are read via property getters with no defensive checks.
+
+## `WitchTrials.Views.StageScreenController`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/StageScreenController.cs`
+
+- `[SerializeField] private GeneralScreen _generalScreen;` -- dereferenced unconditionally
+  (explicit inlined NRE throw) inside `Dismiss()`, which is itself inlined at multiple
+  call sites (including `PerspectiveStagePresenter::Awake`) -- so this field being unset
+  on the prefab would surface as an NRE at whatever call site happened to trigger first,
+  not necessarily inside `StageScreenController` itself.
+
+All five fields above have no fallback/null-check path in their respective
+disassemblies -- same "unconditional NRE-throwing dereference" pattern already logged
+for `DebateUi`/`Court`. Worth confirming prefab wiring for the `PerspectiveStagePresenter`
+and `StageScreenController` components if anyone hits a runtime NRE in the
+PerspectiveStage flow.
