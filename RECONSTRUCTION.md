@@ -19,7 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：27/82 个函数体、9,391/32,044 B 完成，全部 Confidence A（2 处子表达式降级 B 并注明）；`DebateUi.cs` 整个文件完成；`WaitForDebate` 已复原成真正的 `async`/`await`/`while`，不是 MoveNext 逐状态翻译；详见 §7.5 |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：27/82 个函数体、9,391/32,044 B 完成，全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate` 已复原成真正的 `async`/`await`/`while`，不是 MoveNext 逐状态翻译；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），详见 §7.5"本轮修正" |
 
 ---
 
@@ -782,8 +782,10 @@ private void Start()
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
 **进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **27 个 /
-9,391 B（约 33% 方法数、29% 字节数）**，全部 Confidence A（另有 2 处子表达式因
-证据本身有多解降级为 Confidence B，均已在注释里写明原因，不冒充 A）。
+9,391 B（约 33% 方法数、29% 字节数）**，全部 Confidence A。（初次提交时有 2 处
+被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——已在外部复核
+后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫遗漏和 1 处
+多余语句，详见下方"本轮修正"。）
 
 | 文件 | 完成 / 总数 | 说明 |
 |---|---|---|
@@ -835,14 +837,18 @@ b__18_0(TimeSpan remaining)                               // 倒计时归零时�
 ```
 CalculateWaitTime()
   -> IsEnabledDebugSkip ? return 0.1f
-  -> ShouldPlayAutoVoice()?
-       -> AudioManager.GetVoiceTrack(BuildAutoVoicePath())     // IAudioManager dump.cs Slot 31
+  -> IsPlayingAutoVoice()?
+       -> AudioManager.GetVoiceTrack(AutoVoicePath)            // IAudioManager dump.cs Slot 31
        -> is AudioTrack audioTrack ? return audioTrack.Clip.length   // 有真实语音：等待时长=语音时长
   -> 否则 CalculateWaitTimeFromMessage(Text)
        -> 剥离空白/日文括号引号标点 + 富文本标签（两个静态 Regex，原文本已从数据段
           直接读出，不是猜的）
        -> return cleanedLength * 0.15f + 0.6f                  // 阅读速度估算公式
 ```
+
+（此调用链最初误判为 `ShouldPlayAutoVoice()` + `BuildAutoVoicePath()`；见下方
+"本轮修正" 一节——由外部复核发现并经反汇编+dump.cs 独立核实后更正为
+`IsPlayingAutoVoice()`/`get_AutoVoicePath()`，现为 Confidence A。）
 
 **`PrintDebateText` 的静态构造函数（`.cctor`）是原始 ILSpy 桩代码里完全缺失的一个
 真实原生方法**——它有自己的 RVA（`0x3236A0`），但 ILSpy 生成 `.cs` 桩文件时把它
@@ -879,14 +885,45 @@ private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
    版本和这个方法自己反汇编出来的版本完全一致，才敢确认成具名调用而不是保留在
    raw 状态机层面。
 
+### 本轮修正（外部复核发现，已核实并修复——见 commit `d457070`）
+
+在把这批代码标为"完成"之后，外部复核（advisor）指出并经独立反汇编+dump.cs
+交叉验证确认了四处问题；记录在这里而不是悄悄改写历史，因为这正是"B/C 不能
+冒充 A"纪律应该覆盖、但这次在提交前没做到的地方：
+
+1. **`CalculateWaitTime` 的两处虚表槽位号原本都错了**——最初的算法是"假设其中
+   一次调用是 `ShouldPlayAutoVoice`（Slot 33），再反推另一次的槽位差"，这是循环
+   论证。改为从同一文件里另外两处调用独立锚定虚表基址：`Naninovel.Commands.Goto.Execute`
+   （dump.cs Slot 5）在 `[klass+0x188]`被分派，`StringBuilder.ToString()`（Object
+   的 Slot 3）在 `TimeSpanToText` 里于 `[klass+0x168]` 被分派——两者都给出基址
+   `0x138`（`offset = 0x138 + 16*slot`）。代入后：`[klass+0x3d8]` 实际是 Slot 42
+   = `IsPlayingAutoVoice()`，`[klass+0x2b8]` 实际是 Slot 24 = `get_AutoVoicePath()`。
+   `ShouldPlayAutoVoice()`（Slot 33）和原先标 Confidence B 的 `BuildAutoVoicePath()`
+   （Slot 29）都不是真正调用目标——两者分别偏差 9 个和 5 个槽位。已改为
+   `IsPlayingAutoVoice()`/`AutoVoicePath` 属性，Confidence A。
+2. **`DebateUi::OnVisibilityChangedByCustomUi` 丢了两处守卫**——`visible=false`
+   分支原来无条件执行 `NaniScriptPlayer.OnSkip -=`，而反汇编里 `_disposables==null`
+   时会直接跳到函数尾（整个 teardown including `-=` 都跳过）；`visible=true` 分支
+   原来无条件 `new CompositeDisposable()` 再订阅四个流，反汇编里其实有一个
+   `_disposables != null` 时直接返回的幂等守卫——没有它，第二次 `visible=true`
+   会重复订阅全部四个流并泄漏上一个 `CompositeDisposable`。这是一个已提交为
+   "14/14 完成"的文件里的真实行为偏差，`dotnet build` 完全测不出来。已按反汇编
+   补回两处 `if` 守卫。
+3. **`WaitForDebate` 里多写了一行不存在的 `token.ThrowIfCanceled()`**——`await`
+   之后那次调用实际操作的是 `[rsp+0x48]`（本地恢复出来的 awaiter 副本内部），不是
+   `this.token`（`[rbx+0x28]`，循环顶部那次真正的调用用的是这个）；前者就是
+   `await` 自带的 `awaiter.GetResult()`，不是源码里第二次显式调用。已删除多余行。
+4. **`TimeSpanToText` 的分钟计算和分隔符写法都不精确**——分钟用的辅助函数
+   （`sub_37E2B0`）经独立反汇编 `UnityEngine.Mathf.FloorToInt`（RVA `0x2053640`）
+   逐字节比对，92/92 字节完全一致（含内部同一个 `Math.Floor` helper），应写成
+   `Mathf.FloorToInt((float)timeSpan.TotalMinutes)` 而不是
+   `(int)Math.Floor(timeSpan.TotalMinutes)`；两个 `:` 分隔符走的是
+   `StringBuilder.Append(string)` 重载（调用点 `rdx` 里是 `STR ':'` 指针，不是裸
+   char 值），应写成 `Append(":")` 而不是 `Append(':')`。
+
 ### 尚未解决的问题（诚实记录，不是回避）
 
-1. **`CalculateWaitTime` 里 `BuildAutoVoicePath()` 的具体调用目标只有 Confidence B**——
-   通过虚表槽位算术反推（跟 `ShouldPlayAutoVoice`（Slot 33）相差 18 个槽位）没能
-   对上 `PrintDebateText`/`PrintText` 任何一个已知重写方法的槽位号；`BuildAutoVoicePath()`
-   是按**签名匹配**（零参数、返回可空 `string`、语义上正是"构造自动配音路径"）选出来的
-   最佳候选，不是算术确认的。如果以后要在这个方法上做运行时验证，这是第一个该核实的点。
-2. **`ModifyDebatePrinter`（RVA `0x322B40`，1590 B，"very hard"）已反汇编但未复原**——
+1. **`ModifyDebatePrinter`（RVA `0x322B40`，1590 B，"very hard"）已反汇编但未复原**——
    涉及 `ScenePosition`（3 分量，逐分量走"要么用显式坐标要么退回 `IActor`/相机场景矩形
    计算当前位置"的分支逻辑）、`Roll` 旋转、`AnimationKind` 的 `FastEnum.TryParse`
    解析。是这一批里唯一被判定"值得单独排更高优先级/更多预算再啃"而不是仓促做完的。
