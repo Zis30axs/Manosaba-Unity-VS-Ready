@@ -15,7 +15,8 @@
 | 二进制身份 | 已校验，并排除了一个同名的 demo 版误配风险 |
 | 游戏自身代码规模 | `WitchTrials.*` 共 **224 个类型 / 1212 个方法**，其中 **929 个是独立函数体** |
 | 试点子系统 | `TrialStateManager`（TrialState）— **已完成**，11/12 个成员达到 Confidence A |
-| 编译状态 | `dotnet build Manosaba.sln` = **0 error / 0 warning** |
+| 第一批 44 个方法 | **25/44 已完成**（Boot/Init、TrialState 两个子系统全部完成；SaveLoad/Input/Naninovel-glue/WitchBook-Data/Map 部分完成） |
+| 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 
 ---
 
