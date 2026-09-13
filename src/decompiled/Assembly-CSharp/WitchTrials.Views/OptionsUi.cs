@@ -12,6 +12,7 @@ using GigaCreation.Essentials.Ui;
 using GigaCreation.NaninovelExtender.Cameras;
 using GigaCreation.NaninovelExtender.Core;
 using GigaCreation.NaninovelExtender.Localization;
+using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using Naninovel;
 using Naninovel.Async.CompilerServices;
@@ -346,11 +347,14 @@ public class OptionsUi : CustomUI, ISettingsUI, IManagedUI
 	[Token(Token = "0x17000055")]
 	private GigaCreation.Essentials.Input.IInputManager InputManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352860
+		// Lazily-cached ServiceLocator lookup: `_inputManager ??=
+		// ServiceLocator.Get<IInputManager>(includeDerivedType: true);`
 		[Token(Token = "0x60002D3")]
 		[Address(RVA = "0x352860", Offset = "0x351260", VA = "0x180352860")]
 		get
 		{
-			return null;
+			return _inputManager ??= ServiceLocator.Get<GigaCreation.Essentials.Input.IInputManager>(includeDerivedType: true);
 		}
 	}
 

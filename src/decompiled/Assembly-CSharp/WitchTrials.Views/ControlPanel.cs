@@ -259,44 +259,53 @@ public class ControlPanel : MonoBehaviour
 	[Token(Token = "0x17000030")]
 	private IUIManager NaniUiManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x337330
+		// Lazily-cached engine service lookup: `_naniUiManager ??=
+		// Naninovel.Engine.GetServiceOrErr<IUIManager>();`
 		[Token(Token = "0x60001C6")]
 		[Address(RVA = "0x337330", Offset = "0x335D30", VA = "0x180337330")]
 		get
 		{
-			return null;
+			return _naniUiManager ??= Engine.GetServiceOrErr<IUIManager>();
 		}
 	}
 
 	[Token(Token = "0x17000031")]
 	private IScriptPlayer NaniScriptPlayer
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x337400 (same lazily-cached
+		// GetServiceOrErr pattern as NaniUiManager above)
 		[Token(Token = "0x60001C7")]
 		[Address(RVA = "0x337400", Offset = "0x335E00", VA = "0x180337400")]
 		get
 		{
-			return null;
+			return _naniScriptPlayer ??= Engine.GetServiceOrErr<IScriptPlayer>();
 		}
 	}
 
 	[Token(Token = "0x17000032")]
 	private IBacklogUI LogUi
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3374D0
+		// Lazily-cached lookup through the local UI manager, not the engine
+		// directly: `_logUi ??= NaniUiManager.GetUI<IBacklogUI>();`
 		[Token(Token = "0x60001C8")]
 		[Address(RVA = "0x3374D0", Offset = "0x335ED0", VA = "0x1803374D0")]
 		get
 		{
-			return null;
+			return _logUi ??= NaniUiManager.GetUI<IBacklogUI>();
 		}
 	}
 
 	[Token(Token = "0x17000033")]
 	private ISaveLoadUI SaveLoadUi
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x337590 (same pattern as LogUi above)
 		[Token(Token = "0x60001C9")]
 		[Address(RVA = "0x337590", Offset = "0x335F90", VA = "0x180337590")]
 		get
 		{
-			return null;
+			return _saveLoadUi ??= NaniUiManager.GetUI<ISaveLoadUI>();
 		}
 	}
 

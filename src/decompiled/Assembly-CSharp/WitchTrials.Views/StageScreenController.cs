@@ -95,11 +95,17 @@ public class StageScreenController : MonoBehaviour, IPerspectiveStageScreenModif
 	[Token(Token = "0x170000AA")]
 	private ITrialStateManager TrialStateManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x387A50
+		// Lazily-cached engine service lookup: `_trialStateManager ??=
+		// Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();`. Confirmed by
+		// disassembly: null check on the field, then a call whose MethodInfo slot
+		// resolves to `Method$Naninovel.Engine.GetServiceOrErr<ITrialStateManager>()`,
+		// then the result is stored back into the field before returning it.
 		[Token(Token = "0x600054A")]
 		[Address(RVA = "0x387A50", Offset = "0x386450", VA = "0x180387A50")]
 		get
 		{
-			return null;
+			return _trialStateManager ??= Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();
 		}
 	}
 

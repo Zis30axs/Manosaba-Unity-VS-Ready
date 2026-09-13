@@ -504,11 +504,15 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	[Token(Token = "0x17000064")]
 	private IStateManager NaniStateManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3597E0
+		// Lazily-cached engine service lookup, same pattern as
+		// StageScreenController.TrialStateManager: `_naniStateManager ??=
+		// Naninovel.Engine.GetServiceOrErr<IStateManager>();`
 		[Token(Token = "0x6000312")]
 		[Address(RVA = "0x3597E0", Offset = "0x3581E0", VA = "0x1803597E0")]
 		get
 		{
-			return null;
+			return _naniStateManager ??= Engine.GetServiceOrErr<IStateManager>();
 		}
 	}
 
