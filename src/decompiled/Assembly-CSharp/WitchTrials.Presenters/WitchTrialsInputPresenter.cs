@@ -1,6 +1,8 @@
 using GigaCreation.Essentials.Input;
+using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using UnityEngine;
+using WitchTrials.Models;
 
 namespace WitchTrials.Presenters;
 
@@ -16,16 +18,31 @@ public class WitchTrialsInputPresenter : MonoBehaviour
 	[FieldOffset(Offset = "0x28")]
 	private IInputManager _inputManager;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38EC50
+	//
+	// Native evidence: allocates a WitchTrialsInputManager, calls the *base*
+	// InputManager<WitchTrialsActions> parameterless ctor, then writes
+	// `_naninovelActionMapName` directly at +0x20 -- exactly what
+	// WitchTrialsInputManager's own one-arg constructor does (RVA 0x397C20,
+	// confirmed by disassembling it separately: identical base-ctor-call +
+	// single-field-store shape, and both share the *same* class-init guard
+	// flag address, data_30D9504 -- proof this is that constructor inlined at
+	// the call site, not independently-written duplicate logic). So the
+	// source is simply `new WitchTrialsInputManager(_naninovelActionMapName)`.
 	[Token(Token = "0x6000591")]
 	[Address(RVA = "0x38EC50", Offset = "0x38D650", VA = "0x18038EC50")]
 	private void Awake()
 	{
+		_inputManager = new WitchTrialsInputManager(_naninovelActionMapName);
+		ServiceLocator.Register(_inputManager);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38EDC0 (mirror of Awake())
 	[Token(Token = "0x6000592")]
 	[Address(RVA = "0x38EDC0", Offset = "0x38D7C0", VA = "0x18038EDC0")]
 	private void OnDestroy()
 	{
+		ServiceLocator.Unregister(_inputManager);
 	}
 
 	[Token(Token = "0x6000593")]
