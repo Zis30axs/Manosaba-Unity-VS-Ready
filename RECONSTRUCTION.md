@@ -119,13 +119,13 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 2 | Boot/Init | `SteamManager::Awake` | `0x3891E0` | 1446 | 33 | 0 | 0 | 5 | 1 | hard |
 | 3 | Boot/Init | `SteamManager::OnEnable` | `0x389790` | 841 | 20 | 0 | 0 | 0 | 1 | medium |
 | 4 | Boot/Init | `SteamManager::OnDestroy` | `0x389AE0` | 1177 | 19 | 0 | 0 | 0 | 0 | hard |
-| 5 | Boot/Init | `EntrySequence::ResetDebugVariables` | `0x38A660` | 571 | 8 | 2 | 1 | 5 | 1 | medium |
+| 5 | Boot/Init | `EntrySequence::ResetDebugVariables` | `0x38A660` ✅ | 571 | 8 | 2 | 1 | 5 | 1 | medium |
 | 6 | Boot/Init | `GameInitializer::Start` | `0x30FB70` ✅🎮 | 560 | 11 | 0 | 0 | 0 | 1 | medium |
-| 7 | TrialState | `TrialStateManager::RegisterCameraState` | `0x39DA50` | 1323 | 30 | 0 | 0 | 1 | 5 | hard |
+| 7 | TrialState | `TrialStateManager::RegisterCameraState` | `0x39DA50` ✅ | 1323 | 30 | 0 | 0 | 1 | 5 | hard |
 | 8 | TrialState | `WitchTrialsNaninovelManager::ChangeTrialPauseMode` | `0x399BE0` | 626 | 21 | 0 | 1 | 1 | 1 | hard |
-| 9 | TrialState | `TrialStateManager::SaveServiceState` | `0x39D5C0` | 746 | 14 | 0 | 0 | 2 | 4 | medium |
-| 10 | TrialState | `TrialStateManager::InitializeService` | `0x39D3A0` | 544 | 9 | 0 | 0 | 0 | 3 | medium |
-| 11 | TrialState | `TrialStateManager::RegisterScreenSplitState` | `0x39E120` | 500 | 14 | 0 | 0 | 0 | 0 | medium |
+| 9 | TrialState | `TrialStateManager::SaveServiceState` | `0x39D5C0` ✅ | 746 | 14 | 0 | 0 | 2 | 4 | medium |
+| 10 | TrialState | `TrialStateManager::InitializeService` | `0x39D3A0` ✅🎮 | 544 | 9 | 0 | 0 | 0 | 3 | medium |
+| 11 | TrialState | `TrialStateManager::RegisterScreenSplitState` | `0x39E120` ✅ | 500 | 14 | 0 | 0 | 0 | 0 | medium |
 | 12 | TrialState | `StageScreenController::get_TrialStateManager` | `0x387A50` ✅ | 186 | 5 | 2 | 0 | 0 | 1 | easy |
 | 13 | SaveLoad | `SaveLoadUi::Awake` | `0x359AB0` | 1073 | 18 | 0 | 0 | 1 | 4 | hard |
 | 14 | SaveLoad | `SaveLoadUi::FindFocusObject` | `0x35B0F0` | 1479 | 47 | 0 | 0 | 0 | 3 | hard |
@@ -143,8 +143,8 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
 | 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
 | 28 | PerspectiveStage | `StageCameraController::Awake` | `0x3846C0` | 840 | 24 | 0 | 0 | 0 | 0 | hard |
-| 29 | WitchBook/Data | `ClueDataItem::.ctor` | `0x36C0D0` | 170 | 4 | 72 | 0 | 0 | 0 | easy |
-| 30 | WitchBook/Data | `MapDataItem::.ctor` | `0x30C0D0` | 82 | 2 | 56 | 0 | 0 | 0 | easy |
+| 29 | WitchBook/Data | `ClueDataItem::.ctor` | `0x36C0D0` ✅ | 170 | 4 | 72 | 0 | 0 | 0 | easy |
+| 30 | WitchBook/Data | `MapDataItem::.ctor` | `0x30C0D0` ✅ | 82 | 2 | 56 | 0 | 0 | 0 | easy |
 | 31 | WitchBook/Data | `WitchBookScreen::InitializePages` | `0x37A880` | 1408 | 31 | 0 | 5 | 0 | 5 | hard |
 | 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` | 807 | 15 | 14 | 0 | 0 | 3 | medium |
 | 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` | 1322 | 36 | 1 | 0 | 3 | 5 | hard |

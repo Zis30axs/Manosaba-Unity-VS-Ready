@@ -48,9 +48,13 @@ public class AuthorDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36C0D0 (shared body with
+	// ClueDataItem's constructor -- see ClueDataItem.cs for the evidence)
 	[Token(Token = "0x600071C")]
 	[Address(RVA = "0x36C0D0", Offset = "0x36AAD0", VA = "0x18036C0D0")]
 	public AuthorDataItem(string id, LocalizedText[] taggedText)
 	{
+		_id = id;
+		_taggedText = taggedText;
 	}
 }

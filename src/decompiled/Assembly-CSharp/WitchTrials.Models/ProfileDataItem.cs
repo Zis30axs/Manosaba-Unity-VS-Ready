@@ -29,9 +29,12 @@ public class ProfileDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x30C0D0 (shared body with
+	// MapDataItem's constructor -- see MapDataItem.cs for the evidence)
 	[Token(Token = "0x60005B1")]
 	[Address(RVA = "0x30C0D0", Offset = "0x30AAD0", VA = "0x18030C0D0")]
 	public ProfileDataItem(LocalizedText[] description)
 	{
+		_description = description;
 	}
 }

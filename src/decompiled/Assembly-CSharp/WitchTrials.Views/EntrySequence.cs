@@ -10,6 +10,7 @@ using Il2CppDummyDll;
 using Naninovel;
 using UniRx;
 using UnityEngine;
+using WitchTrials.Debugging;
 using WitchTrials.Models;
 
 namespace WitchTrials.Views;
@@ -225,11 +226,15 @@ public class EntrySequence : MonoBehaviour
 	[Token(Token = "0x170000B1")]
 	private ICustomVariableManager NaniVarManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x38A330
+		// Lazily-cached engine service lookup, same pattern as
+		// StageScreenController.TrialStateManager: `_naniVarManager ??=
+		// Naninovel.Engine.GetServiceOrErr<ICustomVariableManager>();`
 		[Token(Token = "0x6000564")]
 		[Address(RVA = "0x38A330", Offset = "0x388D30", VA = "0x18038A330")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
@@ -252,10 +257,37 @@ public class EntrySequence : MonoBehaviour
 		return default(Cysharp.Threading.Tasks.UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38A660
+	//
+	// Native evidence: five calls to the extension method
+	// `ICustomVariableManager.TrySetVariableValue<bool>(name, value)` on
+	// NaniVarManager, each setting one Naninovel custom variable used to drive
+	// debug-only branches in the .nani scripts:
+	//
+	//   "allowRollback"        = DebugOptionsBase.IsDebugMode
+	//   "allowContinueDebate"  = DebugOptionsBase.IsDebugMode && DebugOptions.AllowContinueDebate
+	//   "isDebugDirectJump"    = DebugOptions.StartGameScenario != null
+	//   "enableDebugSkip"      = DebugOptionsBase.IsDebugMode && DebugOptions.DebugSkip
+	//   "isDemo"               = false  (constant, no computation at all)
+	//
+	// The middle three read DebugOptions' private static field storage directly
+	// ([TypeInfo+0xb8] then a fixed byte offset) rather than calling the public
+	// property getters -- almost certainly the property getters were inlined at
+	// this call site. Confirmed for `isDebugDirectJump` specifically: disassembling
+	// DebugOptions.get_StartGameScenario (RVA 0x3AA370) shows it implements
+	// exactly `return IsDebugMode && s_overrideStartGameScenario ? s_startGameScenario
+	// : null;`, i.e. byte-identical to the inlined sequence seen here. So
+	// `DebugOptions.StartGameScenario != null` is written using the real public
+	// API a hand-written caller would have used, not the private field directly.
 	[Token(Token = "0x6000567")]
 	[Address(RVA = "0x38A660", Offset = "0x389060", VA = "0x18038A660")]
 	private void ResetDebugVariables()
 	{
+		NaniVarManager.TrySetVariableValue("allowRollback", DebugOptions.IsDebugMode);
+		NaniVarManager.TrySetVariableValue("allowContinueDebate", DebugOptions.IsDebugMode && DebugOptions.AllowContinueDebate);
+		NaniVarManager.TrySetVariableValue("isDebugDirectJump", DebugOptions.StartGameScenario != null);
+		NaniVarManager.TrySetVariableValue("enableDebugSkip", DebugOptions.IsDebugMode && DebugOptions.DebugSkip);
+		NaniVarManager.TrySetVariableValue("isDemo", false);
 	}
 
 	[Token(Token = "0x6000568")]
