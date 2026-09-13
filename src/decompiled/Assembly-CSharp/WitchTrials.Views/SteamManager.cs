@@ -103,10 +103,36 @@ public class SteamManager : MonoBehaviour
 		SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x389AE0
+	//
+	// Native evidence:
+	//   0x389BA2..0x389C09  Unity-overloaded `!=` between s_instance and this
+	//             (handles the native "destroyed object" pointer on both sides),
+	//             i.e. `if (s_instance != this) return;`
+	//   0x389C0F  s_instance = null;
+	//   0x389C73  if (!_bInitialized) return;
+	//   0x389C9D..0x389F5F  Steamworks.SteamAPI.Shutdown() inlined verbatim --
+	//             confirmed by disassembling that method separately (RVA
+	//             0x432BF0): identical CallbackDispatcher class-init guard
+	//             (data_30DB68C), identical cached-delegate lookup
+	//             (data_30D97D8) and data blob references (data_251F310/
+	//             data_251F350), i.e. this is that call inlined here, the same
+	//             cross-check technique used for OnEnable's
+	//             SteamClient.SetWarningMessageHook.
 	[Token(Token = "0x600055B")]
 	[Address(RVA = "0x389AE0", Offset = "0x3884E0", VA = "0x180389AE0")]
 	private void OnDestroy()
 	{
+		if (s_instance != this)
+		{
+			return;
+		}
+		s_instance = null;
+		if (!_bInitialized)
+		{
+			return;
+		}
+		SteamAPI.Shutdown();
 	}
 
 	[Token(Token = "0x600055C")]
