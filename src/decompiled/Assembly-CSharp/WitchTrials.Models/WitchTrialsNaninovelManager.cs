@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using GigaCreation.Essentials.MasterData;
 using GigaCreation.NaninovelExtender.Core;
 using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
@@ -120,11 +121,13 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 	[Token(Token = "0x17000110")]
 	private IPerspectiveStageManager PerspectiveStageManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x399500
+		// `_perspectiveStageManager ??= ServiceLocator.Get<IPerspectiveStageManager>(includeDerivedType: true);`
 		[Token(Token = "0x600065F")]
 		[Address(RVA = "0x399500", Offset = "0x397F00", VA = "0x180399500")]
 		get
 		{
-			return null;
+			return _perspectiveStageManager ??= ServiceLocator.Get<IPerspectiveStageManager>(includeDerivedType: true);
 		}
 	}
 
@@ -145,33 +148,44 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 	[Token(Token = "0x17000112")]
 	private IScriptPlayer NaniScriptPlayer
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x399680
+		// `_naniScriptPlayer ??= Engine.GetServiceOrErr<IScriptPlayer>();`
 		[Token(Token = "0x6000661")]
 		[Address(RVA = "0x399680", Offset = "0x398080", VA = "0x180399680")]
 		get
 		{
-			return null;
+			return _naniScriptPlayer ??= Engine.GetServiceOrErr<IScriptPlayer>();
 		}
 	}
 
 	[Token(Token = "0x17000113")]
 	private ICustomVariableManager NaniVarManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x399740
+		// `_naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();`
 		[Token(Token = "0x6000662")]
 		[Address(RVA = "0x399740", Offset = "0x398140", VA = "0x180399740")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
 	[Token(Token = "0x17000114")]
 	private IMasterData MasterData
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x399800
+		// Different resolution path than the other services here: reads
+		// `GigaCreation.Essentials.MasterData.MasterDataProvider.Data` (a static
+		// IMasterDataBase property) and casts to IMasterData. The disassembly's
+		// cast helper tolerates a null result without throwing (the possibly-null
+		// value is cached and returned either way), matching a safe `as` cast
+		// rather than a hard cast that would throw on an incompatible type.
 		[Token(Token = "0x6000663")]
 		[Address(RVA = "0x399800", Offset = "0x398200", VA = "0x180399800")]
 		get
 		{
-			return null;
+			return _masterData ??= MasterDataProvider.Data as IMasterData;
 		}
 	}
 
@@ -295,10 +309,33 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 		return null;
 	}
 
+	// RECONSTRUCTED | Confidence: A (structure), B (MaxHp property identity)
+	// RVA: 0x39A1D0
+	//
+	// Native evidence: sets _isTrialMode, then seeds four Naninovel custom
+	// variables from real game state (using this class's own already-declared
+	// *VarName constants, whose string values match the disassembly's STR
+	// literals exactly). NaniVarManager.TrySetVariableValue is called fresh
+	// for every one of the four values (not cached in a local first), and
+	// PerspectiveStageManager.StageOffset is likewise re-fetched three separate
+	// times (once per X/Y/Z component) rather than cached in a local Vector3 --
+	// reproduced exactly as evidenced rather than "cleaned up" into fewer calls.
+	//
+	// MasterData's float property is graded B, not A: the interface dispatch
+	// itself doesn't name the method (shared thunk), but IMasterData exposes
+	// exactly one float property whose name plausibly matches "maxHp" --
+	// DefaultHp -- with no other candidate on the interface, so used it while
+	// flagging it's inferred from naming/uniqueness rather than a resolved
+	// MethodInfo slot.
 	[Token(Token = "0x600066D")]
 	[Address(RVA = "0x39A1D0", Offset = "0x398BD0", VA = "0x18039A1D0")]
 	private void StartTrial()
 	{
+		_isTrialMode.Value = true;
+		NaniVarManager.TrySetVariableValue(MaxHpVarName, MasterData.DefaultHp);
+		NaniVarManager.TrySetVariableValue(PerspectiveStageOffsetXVarName, PerspectiveStageManager.StageOffset.x);
+		NaniVarManager.TrySetVariableValue(PerspectiveStageOffsetYVarName, PerspectiveStageManager.StageOffset.y);
+		NaniVarManager.TrySetVariableValue(PerspectiveStageOffsetZVarName, PerspectiveStageManager.StageOffset.z);
 	}
 
 	[Token(Token = "0x600066E")]

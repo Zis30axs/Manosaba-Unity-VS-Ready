@@ -136,7 +136,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 18 | SaveLoad | `ControlPanel::get_SaveLoadUi` | `0x337590` ✅ | 191 | 5 | 2 | 1 | 0 | 1 | easy |
 | 19 | Naninovel-glue | `ScriptHelper::TryParseScenarioName` | `0x39B040` | 1446 | 38 | 3 | 0 | 1 | 3 | hard |
 | 20 | Naninovel-glue | `GosubResetWitchBook::TryGetScriptPathAndLabel` | `0x3286B0` | 1643 | 40 | 0 | 0 | 3 | 4 | hard |
-| 21 | Naninovel-glue | `WitchTrialsNaninovelManager::StartTrial` | `0x39A1D0` | 574 | 6 | 0 | 3 | 4 | 2 | medium |
+| 21 | Naninovel-glue | `WitchTrialsNaninovelManager::StartTrial` | `0x39A1D0` ✅ | 574 | 6 | 0 | 3 | 4 | 2 | medium |
 | 22 | Naninovel-glue | `GosubResetWitchBook::CheckEvidenceState` | `0x328D20` | 1103 | 17 | 1 | 0 | 0 | 8 | hard |
 | 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` ✅ | 736 | 7 | 0 | 0 | 5 | 5 | medium |
 | 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
