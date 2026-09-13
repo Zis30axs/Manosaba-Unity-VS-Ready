@@ -3,7 +3,9 @@ using BepInEx.Unity.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using WitchTrials.Debugging;
 using WitchTrials.Models;
+using WitchTrials.Views;
 
 namespace Manosaba.Plugin;
 
@@ -42,6 +44,7 @@ public class Plugin : BasePlugin
 
         var h = new Harmony(Guid);
         h.PatchAll(typeof(TrialStateManagerVerification));
+        h.PatchAll(typeof(GameInitializerVerification));
     }
 }
 
@@ -79,5 +82,30 @@ internal static class TrialStateManagerVerification
             $"[verify] InitializeService() -> _stageManager={(stageManager == null ? "null" : stageManager.GetType().Name)} "
             + $"_cameraStates={(cameraStates == null ? "null" : "non-null")} "
             + $"_screenStates={(screenStates == null ? "null" : "non-null")}");
+    }
+}
+
+/// <summary>
+/// 验证 RECONSTRUCTION.md 里 GameInitializer::Start（游戏启动入口）的静态复原结果。
+/// RVA 0x30FB70 声称：
+///   _steamManager.gameObject.SetActive(!DebugOptions.IsDebugMode || DebugOptions.EnableSteamworks);
+///   InitializeAsync(destroyCancellationToken).Forget();
+/// 这条 Start() 是私有方法，Harmony 一样能挂（GetMethod 时带 NonPublic）。
+/// </summary>
+[HarmonyPatch(typeof(GameInitializer), "Start")]
+internal static class GameInitializerVerification
+{
+    [HarmonyPostfix]
+    private static void Postfix(GameInitializer __instance)
+    {
+        bool isDebugMode = DebugOptions.IsDebugMode;
+        bool enableSteamworks = DebugOptions.EnableSteamworks;
+        bool expected = !isDebugMode || enableSteamworks;
+        var steamManager = __instance._steamManager;
+        bool? actualActive = steamManager?.gameObject?.activeSelf;
+        Plugin.Log.LogInfo(
+            $"[verify] GameInitializer.Start() -> IsDebugMode={isDebugMode} EnableSteamworks={enableSteamworks} "
+            + $"expectedSteamManagerActive={expected} actualSteamManagerActive={actualActive} "
+            + $"match={(actualActive.HasValue && actualActive.Value == expected)}");
     }
 }

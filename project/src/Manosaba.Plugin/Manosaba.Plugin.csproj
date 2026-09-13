@@ -80,6 +80,14 @@
       <HintPath>$(ProxyAssemblies)\Il2CppSystem.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- WitchTrials.Debugging.DebugOptions derives from
+         GigaCreation.Tools.Debugging.General.DebugOptionsBase and inherits its
+         static IsDebugMode: referencing the derived type transitively needs
+         the base type's own assembly too (CS0012). -->
+    <Reference Include="GigaCreation.Tools.Debugging.General">
+      <HintPath>$(ProxyAssemblies)\GigaCreation.Tools.Debugging.General.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition="!Exists('$(ProxyAssemblies)\Assembly-CSharp.dll')">
     <Reference Include="Assembly-CSharp">
