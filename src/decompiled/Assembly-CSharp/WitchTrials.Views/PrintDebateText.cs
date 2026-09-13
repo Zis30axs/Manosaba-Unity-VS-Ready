@@ -344,6 +344,14 @@ public class PrintDebateText : PrintText
 	//     0x547300): identical `PlayerLoopTiming.PostLateUpdate` (`0xc`)
 	//     constant and struct-construction shape, so it is written as a call
 	//     to that named helper rather than the raw inlined form.
+	//   - On resume (state == 0), the `ThrowIfCanceled()` immediately after
+	//     restoring the awaiter (0x180324F1A) operates on `[rsp+0x48]`, an
+	//     address INSIDE the local copy of the restored `<>u__1` awaiter
+	//     struct -- not on `this.token` (`[rbx+0x28]`, used by the real,
+	//     source-level `ThrowIfCanceled()` at the top of the loop body,
+	//     0x180324F73). That first one is the awaiter's own `GetResult()`,
+	//     which `await` already emits; it is not a second source-level call
+	//     and is intentionally not written out separately.
 	[Token(Token = "0x600011D")]
 	[Address(RVA = "0x323180", Offset = "0x321B80", VA = "0x180323180")]
 	[AsyncStateMachine(typeof(_003CWaitForDebate_003Ed__25))]
@@ -356,33 +364,41 @@ public class PrintDebateText : PrintText
 			if (token.Completed) break;
 			NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, time - elapsedTime);
 			await AsyncUtils.WaitEndOfFrame(token);
-			token.ThrowIfCanceled();
 			elapsedTime += Time.deltaTime;
 		}
 	}
 
-	// RECONSTRUCTED | Confidence: A (overall shape), B (`BuildAutoVoicePath()` as
-	// the exact source of the voice path -- see note) | RVA: 0x323330
+	// RECONSTRUCTED | Confidence: A | RVA: 0x323330
 	//
 	// Native evidence:
 	//   - debug-skip short-circuits to a flat 0.1f wait.
-	//   - otherwise, if `ShouldPlayAutoVoice()` (a virtual call through this
-	//     type's own vtable slot, matching its dump.cs Slot 33), looks up
+	//   - otherwise, if `IsPlayingAutoVoice()` is true, looks up
 	//     `AudioManager.GetVoiceTrack(path)` (dump.cs `IAudioManager` Slot 31,
-	//     `IAudioTrack GetVoiceTrack(string path)`) unconditionally (throws if
-	//     `AudioManager` is null, not a graceful skip) and, if the returned
-	//     track `is AudioTrack` (a real IL2Cpp inline isinst-check, not a
-	//     guess -- klass-depth compare then ancestor-array compare), returns
+	//     `IAudioTrack GetVoiceTrack(string path)`, confirmed via the raw `ecx
+	//     = 0x1f` selector loaded immediately before the dispatch) unconditionally
+	//     (throws if `AudioManager` is null, not a graceful skip) and, if the
+	//     returned track `is AudioTrack` (a real IL2Cpp inline isinst-check, not
+	//     a guess -- klass-depth compare then ancestor-array compare), returns
 	//     `audioTrack.Clip.length` -- i.e. the reveal wait syncs to the actual
 	//     voice clip's duration when one is available.
-	//   - The `path` argument comes from a zero-argument virtual call on `this`
-	//     whose exact vtable slot didn't line up arithmetically with any single
-	//     slot number this file could otherwise confirm (its offset differs
-	//     from `ShouldPlayAutoVoice`'s by 18 slots, which matched no override
-	//     listed for this type). `PrintText.BuildAutoVoicePath()` is used here
-	//     as the best signature match (zero args, nullable string, exists
-	//     specifically to build the auto-voice lookup path) but the slot
-	//     number itself is unconfirmed -- Confidence B on this one call only.
+	//   - Both virtual calls in this method dispatch through `this`'s own
+	//     vtable at offsets that were originally misidentified (as
+	//     `ShouldPlayAutoVoice()`/`BuildAutoVoicePath()`) by assuming one of
+	//     them and back-solving the slot delta, which is circular. The vtable
+	//     base was instead anchored independently from two other call sites in
+	//     this same file/type family: `Naninovel.Commands.Goto.Execute` is
+	//     dump.cs Slot 5 and is dispatched here at `[klass+0x188]`, and
+	//     `StringBuilder.ToString()` (Object's Slot 3) is dispatched at
+	//     `[klass+0x168]` in `TimeSpanToText` -- both give vtable base
+	//     `0x138` (`offset = 0x138 + 16*slot`). Applying that base:
+	//       * `[klass+0x3d8]` -> slot 42 = `PrintText.IsPlayingAutoVoice()`
+	//         (dump.cs confirms Slot 42 on that exact signature; Slot 33,
+	//         previously assumed here, is `ShouldPlayAutoVoice()` and is
+	//         semantically wrong for this call site anyway -- this check is
+	//         gating a voice-track lookup, not a "should we" policy check).
+	//       * `[klass+0x2b8]` -> slot 24 = `PrintText.get_AutoVoicePath()`
+	//         (dump.cs Slot 24 on that exact getter; Slot 29,
+	//         `BuildAutoVoicePath()`, previously guessed here, is 5 slots off).
 	//   - Falls back to `CalculateWaitTimeFromMessage(Text)` when there is no
 	//     voice track to sync to.
 	[Token(Token = "0x600011E")]
@@ -390,9 +406,9 @@ public class PrintDebateText : PrintText
 	private float CalculateWaitTime()
 	{
 		if (IsEnabledDebugSkip) return 0.1f;
-		if (ShouldPlayAutoVoice())
+		if (IsPlayingAutoVoice())
 		{
-			IAudioTrack voiceTrack = AudioManager.GetVoiceTrack(BuildAutoVoicePath());
+			IAudioTrack voiceTrack = AudioManager.GetVoiceTrack(AutoVoicePath);
 			if (voiceTrack is AudioTrack audioTrack)
 			{
 				return audioTrack.Clip.length;

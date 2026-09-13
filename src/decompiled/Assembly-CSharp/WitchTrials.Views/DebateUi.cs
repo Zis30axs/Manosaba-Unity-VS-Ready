@@ -127,12 +127,28 @@ public class DebateUi : CustomUI, IDebateUi, IManagedUI
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x36A100
 	//
-	// Native evidence:
-	//   - visible == false: `_disposables.Clear(); _disposables.Dispose();
-	//     _disposables = null;` then `NaniScriptPlayer.OnSkip -=
-	//     _skipDebateButton.SetIconShadowEnabled;` -- `IScriptPlayer.OnSkip`'s
-	//     add/remove pair is dump.cs Slot 8/9 exactly (confirmed against
-	//     `src/il2cpp/dump.cs` line ~171692, not guessed from declaration order).
+	// Native evidence (re-verified against a fresh disassembly of RVA 0x36A100,
+	// 331 lines, after an earlier pass here had dropped both guards below):
+	//   - `rax = this._disposables` is loaded ONCE before the `visible` branch
+	//     (0x18036A223) and reused as the guard on BOTH sides:
+	//       * visible == false, `_disposables == null`: `je 0x18036a321` jumps
+	//         straight to the epilogue -- the whole teardown, INCLUDING the
+	//         `OnSkip -=` unsubscribe, is skipped. Only when non-null does it
+	//         run `_disposables.Clear(); _disposables.Dispose();
+	//         _disposables = null;` followed by the `-=`.
+	//       * visible == true, `_disposables != null`: `jne 0x18036a321` jumps
+	//         straight to the epilogue too -- an idempotency guard. Only when
+	//         already null does it allocate a fresh `CompositeDisposable` and
+	//         subscribe.
+	//     (An earlier version of this method ran the `-=` unconditionally and
+	//     always re-subscribed on `visible == true`, which double-subscribes
+	//     all four streams and leaks the previous `CompositeDisposable` on a
+	//     second `visible=true` call -- confirmed wrong and corrected here.)
+	//   - `IScriptPlayer.OnSkip`'s add/remove pair is dump.cs Slot 8/9 exactly
+	//     (confirmed against `src/il2cpp/dump.cs`, not guessed from declaration
+	//     order); both `+=` and `-=` jump into the same dispatch site at
+	//     0x18036A30F, differing only in the `ecx` selector loaded just before
+	//     the jump (8 for add, 9 for remove).
 	//   - visible == true: fresh `CompositeDisposable`, then three `.Subscribe(...)
 	//     .AddTo(_disposables)` chains and one `+=` subscription:
 	//       * `WitchTrialsNaninovelManager.OnRemainingTimeChangedAsObservable()`
@@ -150,10 +166,18 @@ public class DebateUi : CustomUI, IDebateUi, IManagedUI
 	{
 		if (!visible)
 		{
-			_disposables?.Clear();
-			_disposables?.Dispose();
+			if (_disposables == null)
+			{
+				return;
+			}
+			_disposables.Clear();
+			_disposables.Dispose();
 			_disposables = null;
 			NaniScriptPlayer.OnSkip -= _skipDebateButton.SetIconShadowEnabled;
+			return;
+		}
+		if (_disposables != null)
+		{
 			return;
 		}
 		_disposables = new CompositeDisposable();
@@ -252,24 +276,31 @@ public class DebateUi : CustomUI, IDebateUi, IManagedUI
 	//
 	// Native evidence: builds "mm:ss:fff" into `_builder`, appending every digit
 	// through `AppendSpriteTag` (so digits render as `<sprite name="N">` glyphs)
-	// and the `:` separators as plain text. The minutes segment is
-	// `(int)Math.Floor(timeSpan.TotalMinutes)` (confirmed: multiplies raw ticks
-	// by the double constant `1.0/600000000` = `1.0/TimeSpan.TicksPerMinute`,
-	// which is exactly .NET's own `TotalMinutes` formula, then floors and
-	// truncates via a `Math.Floor`+`(int)` helper). The seconds/milliseconds
-	// segments are computed directly from ticks via the standard magic-multiply
-	// division sequences .NET emits for `TimeSpan.Seconds`/`.Milliseconds`
-	// (D2/D3 padding matches). Ends with a tail-call to `_builder.ToString()`.
+	// and the `:` separators as plain text. The minutes segment multiplies raw
+	// ticks by the double constant `1.0/600000000` = `1.0/TimeSpan.TicksPerMinute`
+	// (read directly from the data section: exactly 1.6666666666666667e-9) --
+	// .NET's own `TotalMinutes` formula -- then narrows to `float` (`cvtpd2ps`,
+	// an explicit cast in source) and passes that to a helper that was verified
+	// BYTE-FOR-BYTE identical (92/92 bytes, same inner `Math.Floor` call) to an
+	// independent disassembly of `UnityEngine.Mathf.FloorToInt(float)` (RVA
+	// 0x2053640) -- so this is `Mathf.FloorToInt((float)timeSpan.TotalMinutes)`,
+	// not a plain `(int)Math.Floor(...)`. Both `:` separators are appended via
+	// the `StringBuilder.Append(string)` overload (target address 0x180e34ef0
+	// called with a `STR ':'` pointer in `rdx`, not a raw char value), so they
+	// are written as `Append(":")`. The seconds/milliseconds segments are
+	// computed directly from ticks via the standard magic-multiply division
+	// sequences .NET emits for `TimeSpan.Seconds`/`.Milliseconds` (D2/D3 padding
+	// matches). Ends with a tail-call to `_builder.ToString()`.
 	[Token(Token = "0x600039F")]
 	[Address(RVA = "0x36A900", Offset = "0x369300", VA = "0x18036A900")]
 	private string TimeSpanToText(TimeSpan timeSpan)
 	{
 		_builder.Length = 0;
-		int totalMinutes = (int)Math.Floor(timeSpan.TotalMinutes);
+		int totalMinutes = Mathf.FloorToInt((float)timeSpan.TotalMinutes);
 		foreach (char c in totalMinutes.ToString("D2")) AppendSpriteTag(c);
-		_builder.Append(':');
+		_builder.Append(":");
 		foreach (char c in timeSpan.Seconds.ToString("D2")) AppendSpriteTag(c);
-		_builder.Append(':');
+		_builder.Append(":");
 		foreach (char c in timeSpan.Milliseconds.ToString("D3")) AppendSpriteTag(c);
 		return _builder.ToString();
 	}
