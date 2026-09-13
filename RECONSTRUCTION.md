@@ -20,7 +20,7 @@
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
 | Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：35/82 个函数体、17,741/32,044 B 完成（约 43% 方法数、约 55% 字节数），全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
-| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：2/65 个函数体、4,858/27,784 B——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`，全部 Confidence A。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。两者都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题），详见 §7.6 |
+| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：3/65 个函数体、6,416/27,784 B——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`，全部 Confidence A。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 
 ---
 
@@ -556,7 +556,7 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
 | 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` ✅ | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
 | 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` ✅ | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
-| 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
+| 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` ✅ | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
 | 28 | PerspectiveStage | `StageCameraController::Awake` | `0x3846C0` | 840 | 24 | 0 | 0 | 0 | 0 | hard |
 | 29 | WitchBook/Data | `ClueDataItem::.ctor` | `0x36C0D0` ✅ | 170 | 4 | 72 | 0 | 0 | 0 | easy |
 | 30 | WitchBook/Data | `MapDataItem::.ctor` | `0x30C0D0` ✅ | 82 | 2 | 56 | 0 | 0 | 0 | easy |
@@ -1189,23 +1189,25 @@ Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此�
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `GosubToObjectionCutIn`（dump.cs TypeDefIndex 附近，194 次脚本调用）——
-   `: Command`（不是 `: Gosub`），大概率是第三个同形状的 `GosubTo*` 目标，验证一次
-   即可判断"计算标签后缀 → Gosub"约定是否覆盖了整个 `GosubTo*` 家族
-2. PerspectiveStage 桶剩余目标：`PerspectiveStagePresenter::Awake`（`0x38D8D0`，
-   1558 B）、`StageCameraController::Awake`（`0x3846C0`，840 B）——这两个是
-   `Awake`，形状会完全不同于 `GosubTo*` 系列，是了解这个子系统"常驻状态"一侧
-   （而不是"命令调用"一侧）的入口
+1. `StageCameraController::Awake`（`0x3846C0`，840 B）——`PerspectiveStagePresenter
+   ::Awake` 的直接搭档，大概率会补全 `_cameraContainers`/`_modifyCameraTasks`/
+   `_shakeCameraTasks`/`_tokenSources` 这些还没碰过的字段的初始化逻辑；同类还有
+   `StageScreenController::Awake`（尚未排优先级，字段结构非常相似，值得一起做）
+2. PerspectiveStage 桶里 `PerspectiveStageManager` 自身的方法（`LoadStageAsync`/
+   `ChangeScreenVisibilityAsync`/`ModifyCameraAsync`/`ShakeCameraAsync` 等）——
+   `Awake()` 已经证实这是子系统真正的"大脑"，这些方法是它的核心行为，比继续在
+   presenter/controller 外围打转更高价值
 3. `DebateTextPrinterPanel.cs` 收尾（`SetText`/`AppendText`/`RevealMessages`/
    `WatAndRevealAsync`/`Gosub`）——顺带能解释清楚 `AddText` 那处尚未解决的行为疑点
 4. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
 
-## 7.6 `PerspectiveStage` 子系统：本轮启动，2 个原生方法体 / 4,858 B（用户优先级第 2 位）
+## 7.6 `PerspectiveStage` 子系统：本轮启动，3 个原生方法体 / 6,416 B（用户优先级第 2 位）
 
-**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **2 个 /
-4,858 B**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
-#25）和 `GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，优先级表
-#26），全部 Confidence A。这是本轮第一次真正进入这个子系统（此前完全未触碰）。
+**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **3 个 /
+6,416 B**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
+#25）、`GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，优先级表
+#26）、`PerspectiveStagePresenter::Awake`（RVA `0x38D8D0`，优先级表 #27），全部
+Confidence A。这是本轮第一次真正进入这个子系统（此前完全未触碰）。
 
 **这不只是"打开了一个新子系统"**：第 4 节频次统计显示 `GosubToModifyPerspectiveStageCamera`
 在脚本里出现 **16,542 次**——是全部 43 个 `WitchTrials.*` 自定义命令类里频次
@@ -1295,6 +1297,52 @@ dump.cs 显示真实类型是 `..., IEnumerable<TItem>, IEnumerable`——和本
 语法即可，不用改动方法体。这一修复让 `foreach (NullableString x in
 LabelNameParams)` 不再需要额外的 `(IEnumerable<NullableString>)` 强制转换，直接
 匹配反汇编里朴素的 `IEnumerable<NullableString>.GetEnumerator()` 调用。
+
+### `PerspectiveStagePresenter::Awake` — 子系统"常驻状态"一侧的接线图
+
+前两个目标是"命令调用"一侧（脚本触发的 `GosubTo*` Command）；`Awake()`（RVA
+`0x38D8D0`，1558 B）是"常驻状态"一侧——揭示了整个 `PerspectiveStage` 子系统在运行时
+是怎么接线的：
+
+```csharp
+private void Awake()
+{
+    _screenController.Dismiss();
+    _cameraController.Dismiss();
+    _stageReferences = _stageData.ToDictionary((PerspectiveStageData data) => data.Kind, (PerspectiveStageData data) => data.Stage);
+    _perspectiveStageManager = new PerspectiveStageManager(this, _screenController, _cameraController, this, _stageParent.position);
+    ServiceLocator.Register(_perspectiveStageManager);
+}
+```
+
+**子系统模型**：`PerspectiveStagePresenter` 自己同时实现 `IPerspectiveStageLoader`
+和 `ICourtModifier` 两个接口，`_screenController`（`StageScreenController`）实现
+`IPerspectiveStageScreenModifier`，`_cameraController`（`StageCameraController`）实现
+`IPerspectiveStageCameraModifier`——`Awake()` 把这四个角色一起打包，构造出唯一一个
+`PerspectiveStageManager`（同时实现 `IPerspectiveStageManager`/`IPerspectiveStageLoader`/
+`IPerspectiveStageScreenModifier`/`IPerspectiveStageCameraModifier`/`ICourtModifier`/
+`IService` 六个接口），注册进 `ServiceLocator`。也就是说：**`PerspectiveStagePresenter`
+本身不是这个子系统的"大脑"，只是个组装 MonoBehaviour**——真正的状态和行为都封装在
+`PerspectiveStageManager` 里，脚本层通过 `ServiceLocator`/`Engine.GetServiceOrErr<
+IPerspectiveStageManager>()` 拿到的也是这一个实例。
+
+**复原过程中抓到一次"看起来像跨类访问私有成员"的假象**：`_screenController.Dismiss()`/
+`_cameraController.Dismiss()` 在反汇编里表现为直接读取 `StageScreenController.
+_generalScreen` 字段、直接调用 `StageCameraController.SetCameraEnabled`——但这两个
+成员在 dump.cs 里都标记为 `private`，跨类直接访问在 C# 里根本编译不过。独立反汇编
+`StageScreenController.Dismiss()`（RVA `0x3881E0`）后确认它的方法体逐字节等于这里
+内联的序列；`StageCameraController.Dismiss()`/`Present()`（RVA `0x385010`/
+`0x385000`）是一对 10 字节的尾调用蹦床，分别把 `SetCameraEnabled(false)`/
+`SetCameraEnabled(true)` 包成公开的 0 参数方法——所以源码层面写的是这两个公开的
+`Dismiss()`，只是它们自己的小函数体又被内联回了调用点，不是真的绕过了访问控制。
+`PerspectiveStageManager` 的构造同理：`il2cpp_codegen_object_new` 后直接摆字段，
+不是漏看了构造函数调用——独立反汇编它自己的 `.ctor`（RVA `0x3A0B50`）逐字节确认
+字段写入顺序和偏移完全一致，构造函数体本身就小到会被内联。
+
+**新发现的 `[SerializeField]` 无守卫解引用**：`_stageParent`/`_screenController`/
+`_cameraController`/`_stageData`（`PerspectiveStagePresenter`）和 `_generalScreen`
+（`StageScreenController`）共五处，已记入 `RECONSTRUCTION_CLAUDE_NOTES.md` 供并行的
+`audit/unity-assets` agent 参考。
 
 ---
 
