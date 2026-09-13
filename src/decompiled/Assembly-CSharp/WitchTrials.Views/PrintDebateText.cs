@@ -227,6 +227,7 @@ public class PrintDebateText : PrintText
 	[Il2CppDummyDll.FieldOffset(Offset = "0xB0")]
 	private IWitchTrialsScriptPlayer _witchTrialsScriptPlayer;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322230
 	[Token(Token = "0x17000018")]
 	protected override string AssignedPrinterId
 	{
@@ -234,10 +235,11 @@ public class PrintDebateText : PrintText
 		[Address(RVA = "0x322230", Offset = "0x320C30", VA = "0x180322230", Slot = "16")]
 		get
 		{
-			return null;
+			return DebatePrinterId;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322270
 	[Token(Token = "0x17000019")]
 	private ICustomVariableManager NaniVarManager
 	{
@@ -245,10 +247,11 @@ public class PrintDebateText : PrintText
 		[Address(RVA = "0x322270", Offset = "0x320C70", VA = "0x180322270")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322340
 	[Token(Token = "0x1700001A")]
 	private IWitchTrialsScriptPlayer WitchTrialsScriptPlayer
 	{
@@ -256,10 +259,14 @@ public class PrintDebateText : PrintText
 		[Address(RVA = "0x322340", Offset = "0x320D40", VA = "0x180322340")]
 		get
 		{
-			return null;
+			return _witchTrialsScriptPlayer ??= Engine.GetServiceOrErr<IWitchTrialsScriptPlayer>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322410
+	// `TryGetVariableValue` seeds its out-param to `false` before the call (seen
+	// directly in the disassembly), so a missing/unset variable reads as "off"
+	// rather than throwing or defaulting to "on".
 	[Token(Token = "0x1700001B")]
 	private bool IsEnabledDebugSkip
 	{
@@ -267,7 +274,7 @@ public class PrintDebateText : PrintText
 		[Address(RVA = "0x322410", Offset = "0x320E10", VA = "0x180322410")]
 		get
 		{
-			return default(bool);
+			return NaniVarManager.TryGetVariableValue<bool>(EnableDebugSkipVarName, out bool value) && value;
 		}
 	}
 
@@ -322,18 +329,77 @@ public class PrintDebateText : PrintText
 		return default(UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A (overall shape), B (`BuildAutoVoicePath()` as
+	// the exact source of the voice path -- see note) | RVA: 0x323330
+	//
+	// Native evidence:
+	//   - debug-skip short-circuits to a flat 0.1f wait.
+	//   - otherwise, if `ShouldPlayAutoVoice()` (a virtual call through this
+	//     type's own vtable slot, matching its dump.cs Slot 33), looks up
+	//     `AudioManager.GetVoiceTrack(path)` (dump.cs `IAudioManager` Slot 31,
+	//     `IAudioTrack GetVoiceTrack(string path)`) unconditionally (throws if
+	//     `AudioManager` is null, not a graceful skip) and, if the returned
+	//     track `is AudioTrack` (a real IL2Cpp inline isinst-check, not a
+	//     guess -- klass-depth compare then ancestor-array compare), returns
+	//     `audioTrack.Clip.length` -- i.e. the reveal wait syncs to the actual
+	//     voice clip's duration when one is available.
+	//   - The `path` argument comes from a zero-argument virtual call on `this`
+	//     whose exact vtable slot didn't line up arithmetically with any single
+	//     slot number this file could otherwise confirm (its offset differs
+	//     from `ShouldPlayAutoVoice`'s by 18 slots, which matched no override
+	//     listed for this type). `PrintText.BuildAutoVoicePath()` is used here
+	//     as the best signature match (zero args, nullable string, exists
+	//     specifically to build the auto-voice lookup path) but the slot
+	//     number itself is unconfirmed -- Confidence B on this one call only.
+	//   - Falls back to `CalculateWaitTimeFromMessage(Text)` when there is no
+	//     voice track to sync to.
 	[Token(Token = "0x600011E")]
 	[Address(RVA = "0x323330", Offset = "0x321D30", VA = "0x180323330")]
 	private float CalculateWaitTime()
 	{
-		return default(float);
+		if (IsEnabledDebugSkip) return 0.1f;
+		if (ShouldPlayAutoVoice())
+		{
+			IAudioTrack voiceTrack = AudioManager.GetVoiceTrack(BuildAutoVoicePath());
+			if (voiceTrack is AudioTrack audioTrack)
+			{
+				return audioTrack.Clip.length;
+			}
+		}
+		return CalculateWaitTimeFromMessage(Text);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3234E0
+	//
+	// Native evidence: strips (in order) `s_pattern1` = `[ 　「」『』【】]`
+	// (spaces and Japanese bracket/quote punctuation) and `s_pattern2` =
+	// `<.+?>` (any rich-text tag) via the standard 3-arg `Regex.Replace(input,
+	// "", -1)` overload (the 4-arg form visible in the disassembly -- with an
+	// explicit `startat` computed from `RightToLeft` -- is that overload's own
+	// well-known inlined body, not separate logic written here), then computes
+	// `cleanedLength * 0.15f + 0.6f` (both constants read directly from the
+	// data section) -- a base 0.6s plus 0.15s per remaining character.
 	[Token(Token = "0x600011F")]
 	[Address(RVA = "0x3234E0", Offset = "0x321EE0", VA = "0x1803234E0")]
 	private static float CalculateWaitTimeFromMessage(string message)
 	{
-		return default(float);
+		string cleaned = s_pattern2.Replace(s_pattern1.Replace(message, "", -1), "", -1);
+		return cleaned.Length * 0.15f + 0.6f;
+	}
+
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3236A0
+	// `.cctor` -- not present in the original ILSpy-generated stub (ILSpy
+	// dropped it), but it is a real native method with its own RVA, found via
+	// the symbol DB rather than the dump.cs excerpt rendered for this type.
+	// Pattern text extracted directly from the data section (not guessed):
+	// s_pattern1 matches spaces/Japanese bracket-quote punctuation, s_pattern2
+	// matches any rich-text tag, s_linkIdRegex extracts a `<link="id">` id.
+	// `RegexOptions.Compiled` (== 8) confirmed from the constructor argument.
+	static PrintDebateText()
+	{
+		s_pattern1 = new Regex("[ 　「」『』【】]", RegexOptions.Compiled);
+		s_pattern2 = new Regex("<.+?>", RegexOptions.Compiled);
+		s_linkIdRegex = new Regex("<link=\"(\\w+?)\">", RegexOptions.Compiled);
 	}
 
 	[Token(Token = "0x6000120")]
