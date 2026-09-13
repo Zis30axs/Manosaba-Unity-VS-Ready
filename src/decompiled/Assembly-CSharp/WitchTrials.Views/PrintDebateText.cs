@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using Naninovel;
 using Naninovel.Async.CompilerServices;
 using Naninovel.Commands;
+using UnityEngine;
 using WitchTrials.Models;
 
 namespace WitchTrials.Views;
@@ -321,12 +322,43 @@ public class PrintDebateText : PrintText
 	{
 	}
 
+	// RECONSTRUCTED (from the `<WaitForDebate>d__25.MoveNext` state machine,
+	// RVA 0x324E60) | Confidence: A | wrapper RVA: 0x323180
+	//
+	// Restored to structured `async`/`await`/`while` form rather than left as
+	// a state-machine translation. Native evidence:
+	//   - `elapsedTime` starts at 0f (the state machine's pre-state-check
+	//     `xorps xmm0,xmm0`) and, on every resume, is recomputed as
+	//     `elapsedTime + UnityEngine.Time.deltaTime` -- confirmed via the
+	//     data-section icall name string at the helper's target address
+	//     (`"UnityEngine.Time::get_deltaTime()"`, read directly, not guessed).
+	//   - Loop condition is `elapsedTime < time` (native: `time <= elapsedTime`
+	///    exits).
+	//   - Per iteration: `token.ThrowIfCanceled()`, an early `break` if
+	//     `token.Completed`, an unconditional (non-null-conditional --
+	//     confirmed by the NRE-throwing null check on `this`) write of the
+	//     remaining time into the `debateWaitTime` variable, then one frame's
+	//     wait.
+	//   - The awaited call was verified byte-for-byte against an independent
+	//     disassembly of `AsyncUtils.WaitEndOfFrame(AsyncToken)` (RVA
+	//     0x547300): identical `PlayerLoopTiming.PostLateUpdate` (`0xc`)
+	//     constant and struct-construction shape, so it is written as a call
+	//     to that named helper rather than the raw inlined form.
 	[Token(Token = "0x600011D")]
 	[Address(RVA = "0x323180", Offset = "0x321B80", VA = "0x180323180")]
 	[AsyncStateMachine(typeof(_003CWaitForDebate_003Ed__25))]
-	private UniTask WaitForDebate(float time, [Optional] AsyncToken token)
+	private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		float elapsedTime = 0f;
+		while (elapsedTime < time)
+		{
+			token.ThrowIfCanceled();
+			if (token.Completed) break;
+			NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, time - elapsedTime);
+			await AsyncUtils.WaitEndOfFrame(token);
+			token.ThrowIfCanceled();
+			elapsedTime += Time.deltaTime;
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A (overall shape), B (`BuildAutoVoicePath()` as
