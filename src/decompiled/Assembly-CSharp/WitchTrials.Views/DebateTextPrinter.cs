@@ -29,9 +29,14 @@ public class DebateTextPrinter : UITextPrinter, IDebateTextPrinterActor, ITextPr
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x313960, 8 B
+	// `xor r9d, r9d; jmp Naninovel.UITextPrinter..ctor` with rdx/r8 (id, meta)
+	// passed through untouched: only the base-constructor call, no field
+	// initializers.
 	[Token(Token = "0x600008E")]
 	[Address(RVA = "0x313960", Offset = "0x312360", VA = "0x180313960")]
 	public DebateTextPrinter(string id, TextPrinterMetadata meta)
+		: base(id, meta)
 	{
 	}
 }
