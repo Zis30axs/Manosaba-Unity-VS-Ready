@@ -201,23 +201,30 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	// `mov edx, 3`) at the respective call sites, not derived from
 	// anything.
 	//
-	// RESOLVED (see `ModifyCameraAsync` below for the full reconstruction):
-	// `_modifyCameraTasks[cameraIndex]`'s row is indexed by fixed
-	// per-tween-kind constants, confirmed by three independent bounds-check
-	// literals against the row's `.Length` (`cmp [row+0x18], 0/1/2; jbe
-	// <out-of-range>`) paired with 16-byte (`UniTask` struct size) element
-	// writes at matching offsets: slot 0 (`row+0x20`) = height-tween task,
-	// slot 1 (`row+0x30`) = rotation-tween, slot 2 (`row+0x40`) =
+	// RESOLVED (see `ModifyCameraAsync`/`ShakeCameraAsync` below for the full
+	// reconstructions): both rows are indexed by fixed per-purpose constants,
+	// confirmed by independent bounds-check literals against each row's
+	// `.Length` (`cmp [row+0x18], N; jbe <out-of-range>`) paired with 16-byte
+	// (`UniTask` struct size) element writes at matching offsets.
+	// `_modifyCameraTasks[cameraIndex]`: slot 0 (`row+0x20`) = height-tween
+	// task, slot 1 (`row+0x30`) = rotation-tween, slot 2 (`row+0x40`) =
 	// distance-tween (each populated only if its tween parameter is
-	// non-null, else `default(UniTask)`). Slot 3 (`row+0x50`) is never
-	// written anywhere in `ModifyCameraAsync` -- it stays `default(UniTask)`
-	// permanently, inert in the `await tasks;` combinator (confirmed
-	// `UniTaskExtensions.GetAwaiter(UniTask[])`, RVA 0x18203F0, awaits the
-	// whole array). Why the row is allocated at length 4 instead of exactly
-	// 3 is still UNKNOWN -- `_shakeCameraTasks`'s 3 slots have NOT been
-	// examined yet (would require disassembling
-	// `<ShakeCameraAsync>d__11.MoveNext()`, RVA 0x386190) and may or may not
-	// shed further light on it.
+	// non-null, else `default(UniTask)`). `_shakeCameraTasks[cameraIndex]`:
+	// slot 0/1/2 = the X/Y/Z per-axis shake tasks (always populated --
+	// `Vector3 force` is a mandatory struct, unlike the optional tweens).
+	// Both rows are awaited as a whole via `UniTaskExtensions.GetAwaiter
+	// (UniTask[])` (independently disassembled, RVA 0x18203F0), which is
+	// what makes plain `await tasks;` valid on either array.
+	//
+	// `_modifyCameraTasks`'s slot 3 (`row+0x50`) is never written by either
+	// method that indexes this table, and the field is `private` with no
+	// other reader/writer anywhere in the decompiled tree (grep-confirmed) --
+	// so no third consumer exists to check. It stays `default(UniTask)`
+	// (already-completed, inert in the combined await) for the life of the
+	// controller. Whether the spare slot was intentional (e.g. headroom for
+	// a tween kind that was never added) or just an off-by-one in the
+	// original allocation is UNKNOWABLE from code alone; this is as
+	// resolved as the evidence permits, not a guess dressed up as an answer.
 	//
 	// `_cameraContainers` (a `[SerializeField]`) is read fresh, with its
 	// own explicit NRE-throwing null check, THREE separate times (once
@@ -318,10 +325,12 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	//   C# at all (the array becomes directly awaitable through this
 	//   extension). Slot 3 of the row is never written anywhere in this
 	//   method -- it stays `default(UniTask)` (already-completed, inert in
-	//   the combined await) for the lifetime of this controller. Why the row
-	//   is sized 4 rather than exactly 3 remains UNKNOWN; `_shakeCameraTasks`
-	//   (3 slots, consumed by `ShakeCameraAsync`, RVA 0x384E00) has not yet
-	//   been examined and may or may not shed further light on it.
+	//   the combined await) for the lifetime of this controller. `_modifyCameraTasks`
+	//   is `private` with no other reader/writer anywhere in the decompiled
+	//   tree (grep-confirmed, including `ShakeCameraAsync` below, which only
+	//   touches the separate `_shakeCameraTasks` field), so there is no third
+	//   consumer left to check -- slot 3's spare capacity is as resolved as
+	//   the evidence permits: unused, not merely unexamined.
 	// - Post-await, `_tokenSources[cameraIndex].Dispose(); ... = null;` run
 	//   BEFORE `linkedCts` is disposed -- both directly observed in
 	//   instruction order at 0x180385da5-e32. `linkedCts`'s dispose there
@@ -375,12 +384,74 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x384E00 (505 B, entry) + 0x386190 (3960 B, MoveNext)
+	//
+	// Same family shape as `ModifyCameraAsync` (see its comment for the shared
+	// conventions this reuses verbatim): trivial `Start<>()` entry, single
+	// await point in MoveNext, same bounds check / `_tokenSources` cancel+
+	// dispose+replace+link sequence (byte-identical control flow, only the
+	// state-machine field offsets differ), same `await tasks;` via
+	// `UniTaskExtensions.GetAwaiter(UniTask[])` (RVA 0x18203F0, same call
+	// site as `ModifyCameraAsync`'s), same post-await `_tokenSources[...]
+	// .Dispose(); ... = null;` inside a `using (linkedCts)` (dispose order +
+	// `IDisposable`-dispatch directly observed, same Confidence-B caveat on
+	// the `using` vs `try/finally` sugar choice as `ModifyCameraAsync`).
+	//
+	// Two differences from `ModifyCameraAsync`:
+	// - No `TrialStateManager`/`RegisterCameraState` call anywhere -- the
+	//   one-time init block never references `ITrialStateManager_TypeInfo`,
+	//   confirming shaking never touches persisted per-camera trial state
+	//   (only the height/rotation/distance "where is the camera" state does).
+	// - **Resolves `_shakeCameraTasks`'s 3-slot mystery completely**: unlike
+	//   the optional tweens, `force` is a mandatory `Vector3` (a struct, can't
+	//   be null), so all three per-axis calls run unconditionally every time
+	//   (no ternary/null-guard branch, unlike `_modifyCameraTasks`'s three
+	//   `Assigned(...)`-style checks). The three axis reads are confirmed by
+	//   field offset (`force.x`/`.y`/`.z` at state-machine offsets
+	//   0x30/0x34/0x38, matching `Vector3`'s own layout) feeding three
+	//   distinct per-axis container methods --
+	//   `StageCameraContainer.ShakeCameraXAsync`/`ShakeCameraYAsync`/
+	//   `ShakeCameraZAsync` (confirmed against each method's own real
+	//   signature and state-machine field offsets in `StageCameraContainer.cs`)
+	//   -- stored into `_shakeCameraTasks[cameraIndex][0]`/`[1]`/`[2]`
+	//   respectively (same bounds-check-literal + 16-byte-write-offset
+	//   evidence shape as `_modifyCameraTasks`). Row length 3 needs no filler
+	//   slot because there are exactly 3 axes, all always populated -- this
+	//   table is now fully accounted for. `_modifyCameraTasks`'s table was
+	//   sized independently by the same author (3 optional tweens, 4
+	//   allocated) and is a separate, unrelated choice, not a shared-constant
+	//   coincidence with this one; see `Awake()`'s comment for where that
+	//   slot-3 headroom stands after this method confirmed it has no other
+	//   consumer.
 	[Token(Token = "0x600053B")]
 	[Address(RVA = "0x384E00", Offset = "0x383800", VA = "0x180384E00", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CShakeCameraAsync_003Ed__11))]
-	public UniTask ShakeCameraAsync(int cameraIndex, Vector3 force, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
+	public async UniTask ShakeCameraAsync(int cameraIndex, Vector3 force, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (cameraIndex < 0 || cameraIndex >= _cameraContainers.Length)
+		{
+			UnityEngine.Debug.LogWarning($"Camera index {cameraIndex} is out of range.");
+			return;
+		}
+
+		if (_tokenSources[cameraIndex] != null)
+		{
+			_tokenSources[cameraIndex].Cancel();
+			_tokenSources[cameraIndex].Dispose();
+		}
+		_tokenSources[cameraIndex] = new CancellationTokenSource();
+		CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_tokenSources[cameraIndex].Token, ct);
+
+		_shakeCameraTasks[cameraIndex][0] = _cameraContainers[cameraIndex].ShakeCameraXAsync(force.x, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+		_shakeCameraTasks[cameraIndex][1] = _cameraContainers[cameraIndex].ShakeCameraYAsync(force.y, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+		_shakeCameraTasks[cameraIndex][2] = _cameraContainers[cameraIndex].ShakeCameraZAsync(force.z, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+
+		using (linkedCts)
+		{
+			await _shakeCameraTasks[cameraIndex];
+			_tokenSources[cameraIndex].Dispose();
+			_tokenSources[cameraIndex] = null;
+		}
 	}
 
 	[Token(Token = "0x600053C")]
