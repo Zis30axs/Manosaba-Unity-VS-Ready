@@ -165,3 +165,40 @@ File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/ObjectionCutIn.cs`
   `@spawn` command fills that list is third-party behavior and was not examined.
 - When the director's `playableGraph` is already valid (a re-spawn), `AwaitSpawn`
   rewinds `time` to 0 and resumes; otherwise it plays from the start.
+
+## `WitchTrials.Presenters.PerspectiveStagePresenter`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Presenters/PerspectiveStagePresenter.cs`
+
+- `[SerializeField] private PerspectiveStageData[] _stageData;` -- becomes the
+  `_stageReferences` dictionary in `Awake`. `LoadStageAsync` indexes it with
+  `IReadOnlyDictionary[kind]`, so a `PerspectiveStageKind` with no row on the prefab
+  throws `KeyNotFoundException` at load time (after `RegisterCurrentStage(kind)` has
+  already been called). A duplicate kind throws `ArgumentException` in `Awake`.
+- `[SerializeField] private Transform _stageParent;` -- parent passed to
+  `AssetReference.InstantiateAsync`; also read (`position`) in `Awake`.
+- `[SerializeField] private StageScreenController _screenController;` /
+  `[SerializeField] private StageCameraController _cameraController;` --
+  unconditional NRE-throwing dereferences in `Awake`, `LoadStageAsync` and
+  `UnloadStage`. The editor `Reset` finds both with `includeInactive: true`.
+- `LoadStageAsync` is a no-op (apart from showing both layers) while a stage
+  instance is still alive, so loading a different kind requires `UnloadStage`
+  first.
+- `ChangeFireFxActivity` needs a `Court` component on the root of the
+  instantiated stage prefab (`GameObject.TryGetComponent`, not a children search);
+  otherwise it only logs "Court を取得できませんでした。". Its stage null test is a
+  plain reference compare, so a destroyed-but-referenced stage would reach
+  `TryGetComponent` (unlike Load/Unload, which use the Unity liveness test).
+
+## `WitchTrials.Views.StageCameraContainer` / `StageScreenContainer`
+
+Files: `src/decompiled/Assembly-CSharp/WitchTrials.Views/StageCameraContainer.cs`,
+`src/decompiled/Assembly-CSharp/WitchTrials.Views/StageScreenContainer.cs`
+
+- Camera container `_transform`, `_camera`, `_cameraTransform` and screen container
+  `_canvasGroup`, `_quadrilateral` are all dereferenced unconditionally. The editor
+  `Reset` of the camera container throws if no child `Camera` exists.
+- Height and distance tweens overwrite the other local-position axes with 0: the
+  container's local x/z and the camera's local x/y are expected to be 0 in the
+  prefab.
+- Screen split geometry assumes a 16:9 aspect (`AspectRatio = 1.7777778f`).

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -102,11 +102,13 @@ public class PerspectiveStagePresenter : MonoBehaviour, IPerspectiveStageLoader,
 	[Token(Token = "0x170000B5")]
 	private ITrialStateManager TrialStateManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x38D810, 186 B
+		// Lazy cache in +0x48 via `Naninovel.Engine.GetServiceOrErr<ITrialStateManager>()`.
 		[Token(Token = "0x6000580")]
 		[Address(RVA = "0x38D810", Offset = "0x38C210", VA = "0x18038D810")]
 		get
 		{
-			return null;
+			return _trialStateManager ??= Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();
 		}
 	}
 
@@ -191,36 +193,107 @@ public class PerspectiveStagePresenter : MonoBehaviour, IPerspectiveStageLoader,
 		ServiceLocator.Register(_perspectiveStageManager);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38DEF0, 104 B
+	// A tail jump to `ServiceLocator.Unregister<IPerspectiveStageManager>`
+	// with the field value (+0x40). dump.cs lists the GigaCreation overload as
+	// `Unregister<TService>(TService service)`, taking the service by value.
+	// Mirrors `Awake`'s `Register`.
 	[Token(Token = "0x6000582")]
 	[Address(RVA = "0x38DEF0", Offset = "0x38C8F0", VA = "0x18038DEF0")]
 	private void OnDestroy()
 	{
+		ServiceLocator.Unregister(_perspectiveStageManager);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38DF60, 308 B
+	// Editor-only wiring: `GetComponentInChildren<StageScreenController>(true)`
+	// -> +0x30, then `GetComponentInChildren<StageCameraController>(true)` ->
+	// +0x38 (`dl = 1`: includeInactive).
 	[Token(Token = "0x6000583")]
 	[Address(RVA = "0x38DF60", Offset = "0x38C960", VA = "0x18038DF60")]
 	private void Reset()
 	{
+		_screenController = GetComponentInChildren<StageScreenController>(true);
+		_cameraController = GetComponentInChildren<StageCameraController>(true);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (the `ToUniTask` argument spelling) | RVA: 0x38E0A0, 443 B (entry) + MoveNext 0x38E6A0
+	// - Shows both layers every time: a direct call to
+	//   `StageScreenController.Present()`, and the inlined
+	//   `StageCameraController.Present()` (`SetCameraEnabled(true)`).
+	// - If a stage is already loaded (`_currentStage` +0x58 passes the inlined
+	//   UnityEngine.Object liveness test: non-null and `m_CachedPtr != 0`), it
+	//   stops there and does not reload or register anything.
+	// - Otherwise `ITrialStateManager` slot 0 `RegisterCurrentStage(kind)`
+	//   (`sub_36F0`, ecx = 0), then `_stageReferences[kind]`
+	//   (IReadOnlyDictionary slot 2 = `get_Item`, which throws for a kind with
+	//   no entry).
+	// - Then vtable +0x238 = AssetReference slot 16
+	//   `InstantiateAsync(_stageParent, instantiateInWorldSpace: false)`, and
+	//   `AddressablesAsyncExtensions.ToUniTask<GameObject>(handle, progress:
+	//   null, timing: 8 = Update, ct, cancelImmediately: false,
+	//   autoReleaseWhenCanceled: false)`.
+	// - The single await's result is stored to `_currentStage`.
 	[Token(Token = "0x6000584")]
 	[Address(RVA = "0x38E0A0", Offset = "0x38CAA0", VA = "0x18038E0A0", Slot = "4")]
 	[AsyncStateMachine(typeof(_003CLoadStageAsync_003Ed__13))]
-	public UniTask LoadStageAsync(PerspectiveStageKind kind, [Optional] CancellationToken ct)
+	public async UniTask LoadStageAsync(PerspectiveStageKind kind, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		_screenController.Present();
+		_cameraController.Present();
+		if (_currentStage != null)
+		{
+			return;
+		}
+		TrialStateManager.RegisterCurrentStage(kind);
+		_currentStage = await _stageReferences[kind].InstantiateAsync(_stageParent).ToUniTask(null, PlayerLoopTiming.Update, ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38E260, 513 B
+	// - The inlined `StageScreenController.Dismiss()` (`_generalScreen.DismissAsync(false,
+	//   destroyCancellationToken).Forget()`, using the controller's own token),
+	//   then `StageCameraController.Dismiss()` as a direct
+	//   `SetCameraEnabled(false)` call.
+	// - When `_currentStage` passes the Unity liveness test:
+	//   `ITrialStateManager` slot 1 `UnregisterCurrentStage()` (`sub_22E0`,
+	//   ecx = 1), `Addressables.ReleaseInstance(_currentStage)` (bool result
+	//   ignored), then `_currentStage = null`.
 	[Token(Token = "0x6000585")]
 	[Address(RVA = "0x38E260", Offset = "0x38CC60", VA = "0x18038E260", Slot = "5")]
 	public void UnloadStage()
 	{
+		_screenController.Dismiss();
+		_cameraController.Dismiss();
+		if (_currentStage != null)
+		{
+			TrialStateManager.UnregisterCurrentStage();
+			Addressables.ReleaseInstance(_currentStage);
+			_currentStage = null;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (`is not null` spelling) | RVA: 0x38E470, 395 B
+	// - `_currentStage` is tested with a plain reference compare (`cmp
+	//   [rbx+0x58], 0`), not the Unity liveness test used in
+	//   `LoadStageAsync`/`UnloadStage`.
+	// - Then `GameObject.TryGetComponent<Court>(out court)`. On success, the
+	//   inlined `Court.ChangeFireFxActivity(active)`: `_fireVfx.SetActive`,
+	//   then `_light.color = active ? _fireLightColor : _initialFireLightColor`
+	//   through icall `Light::set_color_Injected`.
+	// - Otherwise, `Debug.LogWarning` with the literal (stringliteral.json
+	//   0x2E5B258) "Court を取得できませんでした。".
 	[Token(Token = "0x6000586")]
 	[Address(RVA = "0x38E470", Offset = "0x38CE70", VA = "0x18038E470", Slot = "6")]
 	public void ChangeFireFxActivity(bool active)
 	{
+		if (_currentStage is not null && _currentStage.TryGetComponent(out Court court))
+		{
+			court.ChangeFireFxActivity(active);
+		}
+		else
+		{
+			UnityEngine.Debug.LogWarning("Court を取得できませんでした。");
+		}
 	}
 
 	[Token(Token = "0x6000587")]
