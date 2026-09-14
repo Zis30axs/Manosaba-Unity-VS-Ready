@@ -656,12 +656,65 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		HandleSaveSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (using-declaration vs using-block spelling) | RVA: 0x35A1C0, 394 B (entry) + MoveNext 0x35D830
+	// Hoisted fields:
+	//   +0x30 slotId, +0x38 blocker (INaninovelInteractionBlocker), +0x40 linkedCts,
+	//   +0x48 / +0x50 the two unnamed usings, +0x58 saveGameTask, +0x68 dialog.
+	// Steps:
+	// 1. `InputManager` slot 0 `PlayResponseSfx(ResponseKind.Submit)`. This comes
+	//    first, before the slot id is computed.
+	// 2. `slotId` = `NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber)`.
+	// 3. `using` the blocker `new NaninovelInteractionBlocker(_naninovelScreen)`.
+	// 4. When `SlotManager.SaveSlotExists(slotId)`, use `DialogProvider.GetOrAddDialog()`:
+	//    - `blocker.SetSortingOrder(dialog.SortingOrder - 1)`.
+	//    - Await `ConfirmAsync(_overwriteSaveSlotDialogData (+0x120), null, ct)`
+	//      (state 0).
+	//    - A `Cancel` result returns from inside the dialog using.
+	// 5. `NaniAudioManager.PlaySfx(_saveSfxPath (+0x110)).Forget()`.
+	// 6. `linkedCts` = `CancellationTokenSource.CreateLinkedTokenSource(new[] { ct })`.
+	// 7. `using` Cysharp `linkedCts.CancelAfterSlim(TimeSpan.FromSeconds(_saveGameTimeout
+	//    (+0x108)), DelayType.DeltaTime (0), PlayerLoopTiming.Update (8))`.
+	// 8. `using` `NaninovelLoadingScreen.Show(LoadingMode.Short, true)`.
+	// 9. `saveGameTask` = `NaniStateManager` slot 28 `SaveGame(slotId)`. While
+	//    `!saveGameTask.IsCompleted`, await `Naninovel.UniTask.Yield(PlayerLoopTiming.Update,
+	//    linkedCts.Token)` (state 1). That awaiter's GetResult is
+	//    `AsyncToken.ThrowIfCanceled`, so the save timeout surfaces as a cancellation.
+	// 10. `state` = await `saveGameTask` (state 2).
+	// 11. `foreach (panel in _panels.Values) panel.Grid.BindSlot(slotNumber, state)`.
+	// Disposal order is loading screen, then CancelAfter, then linkedCts, then blocker.
 	[Token(Token = "0x600031B")]
 	[Address(RVA = "0x35A1C0", Offset = "0x358BC0", VA = "0x18035A1C0")]
 	[AsyncStateMachine(typeof(_003CHandleSaveSlotClickedAsync_003Ed__46))]
-	private Naninovel.UniTask HandleSaveSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
+	private async Naninovel.UniTask HandleSaveSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
 	{
-		return default(Naninovel.UniTask);
+		InputManager.PlayResponseSfx(ResponseKind.Submit);
+		string slotId = NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber);
+		using INaninovelInteractionBlocker blocker = new NaninovelInteractionBlocker(_naninovelScreen);
+		if (SlotManager.SaveSlotExists(slotId))
+		{
+			using ProvidableDialog dialog = DialogProvider.GetOrAddDialog();
+			blocker.SetSortingOrder(dialog.SortingOrder - 1);
+			if (await dialog.ConfirmAsync(_overwriteSaveSlotDialogData, null, ct) == ResponseKind.Cancel)
+			{
+				return;
+			}
+		}
+		NaniAudioManager.PlaySfx(_saveSfxPath).Forget();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+		using (linkedCts.CancelAfterSlim(TimeSpan.FromSeconds(_saveGameTimeout)))
+		using (NaninovelLoadingScreen.Show(LoadingMode.Short, true))
+		{
+			Naninovel.UniTask<GameStateMap> saveGameTask = NaniStateManager.SaveGame(slotId);
+			while (!saveGameTask.IsCompleted)
+			{
+				await Naninovel.UniTask.Yield(Naninovel.PlayerLoopTiming.Update, linkedCts.Token);
+			}
+			GameStateMap state = await saveGameTask;
+			foreach (SaveLoadPanel panel in _panels.Values)
+			{
+				panel.Grid.BindSlot(slotNumber, state);
+			}
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x35A350, 435 B
@@ -674,12 +727,57 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		HandleLoadSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (TryGetUI / using spellings) | RVA: 0x35A510, 410 B (entry) + MoveNext 0x35C490
+	// - `slotId` (hoisted +0x30) = `NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber)`.
+	// - `SlotManager` (the same get_NaniStateManager + IStateManager slot 19 bytes)
+	//   `.SaveSlotExists(slotId)`; when false, return.
+	// - `NaniAudioManager` (called) slot 19 `PlaySfx(_loadSfxPath (+0x118), 1f
+	//   (float at 0x2AE2820), 0f, false, null, default)`, then Naninovel
+	//   `ForgetCore`.
+	// - `using` `new NaninovelInteractionBlocker(_naninovelScreen (+0xE0))`,
+	//   hoisted +0x38 and disposed when state < 0:
+	//   1. Await (Cysharp) `OverlayFader` slot 2 `FadeOutAsync(_fadeOutDurationOnLoad
+	//      (+0xF0), new Color?(_fadeColorOnLoad (+0xF8)), ct)`.
+	//   2. `_naninovelScreen.DismissAsync(new float?(0f), ct).Forget()`, with the
+	//      Nullable ctor called with 0.
+	//   3. The lazy `NaniUiManager` getter (inlined) and `UIManagerExtensions
+	//      .TryGetUI<ITitleUI>` (inlined: GetUI when the manager is non-null).
+	//      When the UI is found and IManagedUI slot 2 `Visible` is true:
+	//      `ManagedUiExtensions.DismissAsync(titleUi, new float?(0f), ct).Forget()`.
+	//   4. The lazy `WitchTrialsNaninovelManager` getter (inlined) slot 3
+	//      `SetTitleScreenShown(false)`.
+	//   5. Await `Naninovel.UniTask.Delay(TimeSpan.FromSeconds(_loadDelay (+0x10C)),
+	//      false, PlayerLoopTiming.Update (8), ct)`.
+	//   6. Await `NaniStateManager` slot 30 `LoadGame(slotId)`.
+	//   7. Await `OverlayFader` slot 4 `FadeInAsync(_fadeInDurationOnLoad (+0xF4),
+	//      new Color?(_fadeColorOnLoad), ct)`.
+	//   8. `Engine.GetServiceOrErr<Naninovel.IInputManager>()` slot 3
+	//      `ProcessInput = true`.
 	[Token(Token = "0x600031D")]
 	[Address(RVA = "0x35A510", Offset = "0x358F10", VA = "0x18035A510")]
 	[AsyncStateMachine(typeof(_003CHandleLoadSlotClickedAsync_003Ed__48))]
-	private Naninovel.UniTask HandleLoadSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
+	private async Naninovel.UniTask HandleLoadSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
 	{
-		return default(Naninovel.UniTask);
+		string slotId = NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber);
+		if (!SlotManager.SaveSlotExists(slotId))
+		{
+			return;
+		}
+		NaniAudioManager.PlaySfx(_loadSfxPath).Forget();
+		using (new NaninovelInteractionBlocker(_naninovelScreen))
+		{
+			await OverlayFader.FadeOutAsync(_fadeOutDurationOnLoad, _fadeColorOnLoad, ct);
+			_naninovelScreen.DismissAsync(0f, ct).Forget();
+			if (NaniUiManager.TryGetUI<ITitleUI>(out ITitleUI titleUi) && titleUi.Visible)
+			{
+				titleUi.DismissAsync(0f, ct).Forget();
+			}
+			WitchTrialsNaninovelManager.SetTitleScreenShown(false);
+			await Naninovel.UniTask.Delay(TimeSpan.FromSeconds(_loadDelay), false, Naninovel.PlayerLoopTiming.Update, ct);
+			await NaniStateManager.LoadGame(slotId);
+			await OverlayFader.FadeInAsync(_fadeInDurationOnLoad, _fadeColorOnLoad, ct);
+			Engine.GetServiceOrErr<Naninovel.IInputManager>().ProcessInput = true;
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x35A6B0, 419 B
@@ -692,12 +790,47 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		HandleDeleteSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35A860, 410 B (entry) + MoveNext 0x35B8F0
+	// - `slotId` (hoisted +0x30) = `NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber)`.
+	// - `SlotManager.SaveSlotExists(slotId)` (inlined getter bytes); when false, return.
+	// - `InputManager` (GigaCreation) slot 0 `PlayResponseSfx(ResponseKind.Submit (1))`.
+	// - `using INaninovelInteractionBlocker blocker = new NaninovelInteractionBlocker(_naninovelScreen)`
+	//   (hoisted +0x38, typed as the interface):
+	//   - `using ProvidableDialog dialog = DialogProvider` IDialogProvider slot 0
+	//     `GetOrAddDialog()` (via `sub_5DA0`, hoisted +0x40):
+	//     - `blocker` slot 0 `SetSortingOrder(dialog.SortingOrder - 1)`.
+	//     - Await (Cysharp) `dialog.ConfirmAsync(_deleteSaveSlotDialogData
+	//       (+0x128), null, ct)`.
+	//     - A result of `ResponseKind.Cancel` (0) returns from **inside** the
+	//       dialog using: that path disposes both without clearing +0x40.
+	//   - Otherwise the dialog is disposed, +0x40 is cleared, and then:
+	//     - `SlotManager` ISaveSlotManager slot 20 `DeleteSaveSlot(slotId)`.
+	//     - `foreach (panel in _panels.Values) panel.Grid.BindSlot(slotNumber, null)`.
 	[Token(Token = "0x600031F")]
 	[Address(RVA = "0x35A860", Offset = "0x359260", VA = "0x18035A860")]
 	[AsyncStateMachine(typeof(_003CHandleDeleteSlotClickedAsync_003Ed__50))]
-	private Naninovel.UniTask HandleDeleteSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
+	private async Naninovel.UniTask HandleDeleteSlotClickedAsync(int slotNumber, [Optional] CancellationToken ct)
 	{
-		return default(Naninovel.UniTask);
+		string slotId = NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber);
+		if (!SlotManager.SaveSlotExists(slotId))
+		{
+			return;
+		}
+		InputManager.PlayResponseSfx(ResponseKind.Submit);
+		using INaninovelInteractionBlocker blocker = new NaninovelInteractionBlocker(_naninovelScreen);
+		using (ProvidableDialog dialog = DialogProvider.GetOrAddDialog())
+		{
+			blocker.SetSortingOrder(dialog.SortingOrder - 1);
+			if (await dialog.ConfirmAsync(_deleteSaveSlotDialogData, null, ct) == ResponseKind.Cancel)
+			{
+				return;
+			}
+		}
+		SlotManager.DeleteSaveSlot(slotId);
+		foreach (SaveLoadPanel panel in _panels.Values)
+		{
+			panel.Grid.BindSlot(slotNumber, null);
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x35AA00, 417 B (entry) + MoveNext 0x35F870
