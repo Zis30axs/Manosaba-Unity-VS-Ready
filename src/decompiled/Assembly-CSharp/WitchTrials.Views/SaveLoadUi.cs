@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -444,49 +445,63 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	[Token(Token = "0x1700005F")]
 	public SaveLoadUIPresentationMode PresentationMode
 	{
+		// Shares the getter body 0x359350 (+0x168 read, folded) with `GetLastLoadMode`.
 		[Token(Token = "0x600030C")]
 		[Address(RVA = "0x359350", Offset = "0x357D50", VA = "0x180359350", Slot = "95")]
 		get
 		{
-			return default(SaveLoadUIPresentationMode);
+			return _presentationMode;
 		}
+		// RECONSTRUCTED | Confidence: A (behavior), B (forwarding spelling) | RVA: 0x359360, 308 B
+		// The same native body as `SetPresentationMode` (dump.cs lists both names
+		// for 0x359360). Whether the setter forwards to it or duplicates it cannot
+		// be told from the bytes.
 		[Token(Token = "0x600030D")]
 		[Address(RVA = "0x359360", Offset = "0x357D60", VA = "0x180359360", Slot = "96")]
 		set
 		{
+			SetPresentationMode(value);
 		}
 	}
 
 	[Token(Token = "0x17000060")]
 	private GigaCreation.Essentials.Input.IInputManager InputManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3594A0, 202 B
+		// A lazy cache in +0x130, filled with `ServiceLocator.Get<IInputManager>(true)` (`cl = 1`).
 		[Token(Token = "0x600030E")]
 		[Address(RVA = "0x3594A0", Offset = "0x357EA0", VA = "0x1803594A0")]
 		get
 		{
-			return null;
+			return _inputManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<GigaCreation.Essentials.Input.IInputManager>(true);
 		}
 	}
 
 	[Token(Token = "0x17000061")]
 	private IOverlayFader OverlayFader
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x359570, 202 B
+		// A lazy cache in +0x138, filled with `ServiceLocator.Get<IOverlayFader>(true)`.
 		[Token(Token = "0x600030F")]
 		[Address(RVA = "0x359570", Offset = "0x357F70", VA = "0x180359570")]
 		get
 		{
-			return null;
+			return _overlayFader ??= GigaCreation.Tools.Service.ServiceLocator.Get<IOverlayFader>(true);
 		}
 	}
 
 	[Token(Token = "0x17000062")]
 	private IDialogProvider DialogProvider
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x359640, 202 B
+		// A lazy cache in +0x140 (typed IDialogProvider). The method metadata is
+		// `ServiceLocator.Get<IDialogManager>(true)`: the service is looked up as
+		// the manager interface, and the result is stored as the provider.
 		[Token(Token = "0x6000310")]
 		[Address(RVA = "0x359640", Offset = "0x358040", VA = "0x180359640")]
 		get
 		{
-			return null;
+			return _dialogProvider ??= GigaCreation.Tools.Service.ServiceLocator.Get<IDialogManager>(true);
 		}
 	}
 
@@ -522,67 +537,123 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	[Token(Token = "0x17000065")]
 	private IAudioManager NaniAudioManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3598B0, 202 B
+		// A lazy cache in +0x158, filled with `Engine.GetServiceOrErr<IAudioManager>()`.
 		[Token(Token = "0x6000313")]
 		[Address(RVA = "0x3598B0", Offset = "0x3582B0", VA = "0x1803598B0")]
 		get
 		{
-			return null;
+			return _naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();
 		}
 	}
 
 	[Token(Token = "0x17000066")]
 	private IUIManager NaniUiManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x359980, 202 B
+		// A lazy cache in +0x160, filled with `Engine.GetServiceOrErr<IUIManager>()`.
 		[Token(Token = "0x6000314")]
 		[Address(RVA = "0x359980", Offset = "0x358380", VA = "0x180359980")]
 		get
 		{
-			return null;
+			return _naniUiManager ??= Engine.GetServiceOrErr<IUIManager>();
 		}
 	}
 
 	[Token(Token = "0x17000067")]
 	private ISaveSlotManager<GameStateMap> SlotManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x359A50, 87 B
+		// Calls `get_NaniStateManager` (0x3597E0, not inlined), then tail-calls
+		// `sub_22E0` with ecx = 0x13 = IStateManager slot 19 `get_GameSlotManager`.
+		// It has no cache field.
 		[Token(Token = "0x6000315")]
 		[Address(RVA = "0x359A50", Offset = "0x358450", VA = "0x180359A50")]
 		get
 		{
-			return null;
+			return NaniStateManager.GameSlotManager;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x359AB0, 1073 B
+	// - `_panels` (+0x170) =
+	//   `Enumerable.ToDictionary(_panelReferences (+0xE8), <>c.<Awake>b__41_0,
+	//   <>c.<Awake>b__41_1)`. Both lambdas are cached in the static `<>c` slots
+	//   +8/+0x10. Their bodies are folded with shared field getters: +0x10
+	//   (int-sized `_mode`, read via `Mode`) and +0x18 (`_panel`, read via `Panel`).
+	// - The inlined `SetPresentationMode(SaveLoadUIPresentationMode.Load)` (value
+	//   1, same ContainsKey / LogWarning shape as 0x359360).
+	// - Tail jump to `CustomUI.Awake`, i.e. `base.Awake()` last.
 	[Token(Token = "0x6000316")]
 	[Address(RVA = "0x359AB0", Offset = "0x3584B0", VA = "0x180359AB0", Slot = "4")]
 	protected override void Awake()
 	{
+		_panels = _panelReferences.ToDictionary(reference => reference.Mode, reference => reference.Panel);
+		SetPresentationMode(SaveLoadUIPresentationMode.Load);
+		base.Awake();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x359EF0, 281 B (entry) + MoveNext 0x35EFC0
+	// For each panel in turn, Save (2) then Load (1):
+	// - `_panels[mode]`, then +0x28 `Grid` (the `get_Grid` getter inlined).
+	// - `get_NaniStateManager` (called fresh for each panel), then `sub_70C0`
+	//   IEngineService<StateConfiguration> slot 0 `Configuration`, then +0x40
+	//   `SaveSlotLimit`.
+	// - `GameStateSlotsGridExtended.InitializeAsync(limit, onSlotClicked,
+	//   onDeleteClicked = HandleDeleteSlotClicked, loadStateAt = LoadSaveSlotAsync)`.
+	//   `onSlotClicked` is `HandleSaveSlotClicked` for Save and
+	//   `HandleLoadSlotClicked` for Load.
+	// Then `foreach (panel in _panels.Values)` runs the inlined
+	// `PageableGridPanel.Dismiss()` (method metadata present; the +0x40 disposable,
+	// CanvasGroup, and Pagination pokes are Dismiss's own body).
+	// Finally `await UniTask.WhenAll(new[] { saveInit, loadInit })`. There is no
+	// `base.Initialize()` call.
 	[Token(Token = "0x6000317")]
 	[Address(RVA = "0x359EF0", Offset = "0x3588F0", VA = "0x180359EF0", Slot = "83")]
 	[AsyncStateMachine(typeof(_003CInitialize_003Ed__42))]
-	public override Naninovel.UniTask Initialize()
+	public override async Naninovel.UniTask Initialize()
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.UniTask saveInitializeTask = _panels[SaveLoadUIPresentationMode.Save].Grid.InitializeAsync(NaniStateManager.Configuration.SaveSlotLimit, HandleSaveSlotClicked, HandleDeleteSlotClicked, LoadSaveSlotAsync);
+		Naninovel.UniTask loadInitializeTask = _panels[SaveLoadUIPresentationMode.Load].Grid.InitializeAsync(NaniStateManager.Configuration.SaveSlotLimit, HandleLoadSlotClicked, HandleDeleteSlotClicked, LoadSaveSlotAsync);
+		foreach (SaveLoadPanel panel in _panels.Values)
+		{
+			panel.Dismiss();
+		}
+		await Naninovel.UniTask.WhenAll(saveInitializeTask, loadInitializeTask);
 	}
 
+	// Folded with the `PresentationMode` getter (0x359350): returns +0x168.
 	[Token(Token = "0x6000318")]
 	[Address(RVA = "0x359350", Offset = "0x357D50", VA = "0x180359350", Slot = "97")]
 	public SaveLoadUIPresentationMode GetLastLoadMode()
 	{
-		return default(SaveLoadUIPresentationMode);
+		return _presentationMode;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x359360, 308 B (shared with set_PresentationMode)
+	// When `_panels` (+0x170, no null guard) does not `ContainsKey(value)`, it calls
+	// `Debug.LogWarning(string.Format("The panel for {0} does not exists.", (boxed)
+	// value))`. `_presentationMode` (+0x168) is assigned `value` either way.
 	[Token(Token = "0x6000319")]
 	[Address(RVA = "0x359360", Offset = "0x357D60", VA = "0x180359360")]
 	private void SetPresentationMode(SaveLoadUIPresentationMode value)
 	{
+		if (!_panels.ContainsKey(value))
+		{
+			UnityEngine.Debug.LogWarning(string.Format("The panel for {0} does not exists.", value));
+		}
+		_presentationMode = value;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35A010, 419 B
+	// `MonoBehaviour.destroyCancellationToken`, then the inlined
+	// `HandleSaveSlotClickedAsync` kickoff (same bytes as 0x35A1C0), then a tail jump to
+	// `Naninovel.UniTaskExtensions.ForgetCore`, i.e. the inlined `.Forget()`.
 	[Token(Token = "0x600031A")]
 	[Address(RVA = "0x35A010", Offset = "0x358A10", VA = "0x18035A010")]
 	private void HandleSaveSlotClicked(int slotNumber)
 	{
+		HandleSaveSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
 	[Token(Token = "0x600031B")]
@@ -593,10 +664,14 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		return default(Naninovel.UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35A350, 435 B
+	// `destroyCancellationToken`, the inlined `HandleLoadSlotClickedAsync` kickoff,
+	// then a tail jump to `UniTaskExtensions.ForgetCore`.
 	[Token(Token = "0x600031C")]
 	[Address(RVA = "0x35A350", Offset = "0x358D50", VA = "0x18035A350")]
 	private void HandleLoadSlotClicked(int slotNumber)
 	{
+		HandleLoadSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
 	[Token(Token = "0x600031D")]
@@ -607,10 +682,14 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		return default(Naninovel.UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35A6B0, 419 B
+	// `destroyCancellationToken`, the inlined `HandleDeleteSlotClickedAsync` kickoff,
+	// then a tail jump to `UniTaskExtensions.ForgetCore`.
 	[Token(Token = "0x600031E")]
 	[Address(RVA = "0x35A6B0", Offset = "0x3590B0", VA = "0x18035A6B0")]
 	private void HandleDeleteSlotClicked(int slotNumber)
 	{
+		HandleDeleteSlotClickedAsync(slotNumber, destroyCancellationToken).Forget();
 	}
 
 	[Token(Token = "0x600031F")]
@@ -621,12 +700,43 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		return default(Naninovel.UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35AA00, 417 B (entry) + MoveNext 0x35F870
+	// - `slotId` = `NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber)`.
+	//   It is an unhoisted local, since it is only used before the first await.
+	// - `SlotManager` then `sub_3140` ecx = 0x12 = ISaveSlotManager slot 18
+	//   `SaveSlotExists(slotId)`; when false, SetResult(null).
+	// - When `_loadingSlotCount` (+0x178) is null: await
+	//   `ISaveSlotManager<GameStateMap>` slot 1 `Load(slotId)` (via `sub_7000`) and
+	//   return the result (state 0).
+	// - Otherwise `_loadingSlotCount.Value++` (get_Value into a local, then
+	//   set_Value + 1), and the same await (state 1) runs inside try/finally.
+	//   The finally helper 0x35FE20 runs only when the state is not suspended
+	//   and does `_loadingSlotCount.Value--`, with no null guard (NRE if cleared
+	//   meanwhile).
+	// The counter drives the pagination loading screen in OnShow's subscription.
 	[Token(Token = "0x6000320")]
 	[Address(RVA = "0x35AA00", Offset = "0x359400", VA = "0x18035AA00")]
 	[AsyncStateMachine(typeof(_003CLoadSaveSlotAsync_003Ed__51))]
-	private Naninovel.UniTask<GameStateMap> LoadSaveSlotAsync(int slotNumber)
+	private async Naninovel.UniTask<GameStateMap> LoadSaveSlotAsync(int slotNumber)
 	{
-		return default(Naninovel.UniTask<GameStateMap>);
+		string slotId = NaniStateManager.Configuration.IndexToSaveSlotId(slotNumber);
+		if (!SlotManager.SaveSlotExists(slotId))
+		{
+			return null;
+		}
+		if (_loadingSlotCount == null)
+		{
+			return await SlotManager.Load(slotId);
+		}
+		_loadingSlotCount.Value++;
+		try
+		{
+			return await SlotManager.Load(slotId);
+		}
+		finally
+		{
+			_loadingSlotCount.Value--;
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x35ABB0
@@ -641,44 +751,51 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	//             land on the shared NullReferenceException throw, i.e. IL2CPP's
 	//             standard implicit-null-check-before-dispatch boilerplate for a
 	//             plain indexer + interface call -- not a `?.` operator)
+	//
+	// RECONSTRUCTED | Confidence: A (behavior), B (two sequential `if`s spelling) | RVA: 0x35B6C0, 395 B
+	// The subscribed lambda `<OnShow>b__52_0(int cnt)` is an instance method,
+	// since it captures `this`. The previous Confidence D placeholder
+	// `OnShowSlotCountChanged` is replaced by the lambda written inline.
+	// - Vtable +0x2F8 = ScriptableUIBehaviour slot 28 `get_Visible`.
+	// - When visible, `_loadingScreenOnPaginate` (+0x180) is null, and `cnt > 0`:
+	//   `NaninovelLoadingScreen.Show(LoadingMode.Short (1), haltInput: true,
+	//   params [ _naninovelScreen (+0xE0) ])`. The one-element
+	//   ICancelEventBlockable[] has the covariant array-store type check, and the
+	//   result is stored in the field.
+	// - Then, independently: when the field is non-null and `cnt <= 0`,
+	//   `IDisposable.Dispose()` and the field is cleared.
+	// The loading overlay therefore stays up while any slot page is loading
+	// (see `LoadSaveSlotAsync`'s counter).
 	[Token(Token = "0x6000321")]
 	[Address(RVA = "0x35ABB0", Offset = "0x3595B0", VA = "0x18035ABB0")]
 	public void OnShow()
 	{
 		_loadingSlotCount?.Dispose();
 		_loadingSlotCount = new ReactiveProperty<int>(0);
-		_loadingSlotCount.Subscribe(OnShowSlotCountChanged).AddTo(this);
+		_loadingSlotCount.Subscribe(cnt =>
+		{
+			if (Visible && _loadingScreenOnPaginate == null && cnt > 0)
+			{
+				_loadingScreenOnPaginate = NaninovelLoadingScreen.Show(LoadingMode.Short, true, _naninovelScreen);
+			}
+			if (_loadingScreenOnPaginate != null && cnt <= 0)
+			{
+				_loadingScreenOnPaginate.Dispose();
+				_loadingScreenOnPaginate = null;
+			}
+		}).AddTo(this);
 		_panels[_presentationMode].Present();
 	}
 
-	// PARTIALLY RECONSTRUCTED | Confidence: D (behavioral summary only, body not
-	// verified) | RVA: 0x35B6C0
-	//
-	// This method (`<OnShow>b__52_0` in dump.cs -- a compiler-generated lambda
-	// backing method) is entirely ABSENT from the decompiled skeleton, even
-	// though OnShow() genuinely subscribes to it (see above). This is a
-	// DummyDll-generation gap, not a deliberate omission -- added here only
-	// because OnShow's own reconstruction requires a real callable target.
-	// Renamed from the compiler's `<OnShow>b__52_0` to a readable name since the
-	// original can't be spelled as a C# identifier anyway.
-	//
-	// Native evidence gathered but NOT fully traced: branches on the `cnt`
-	// parameter and `_loadingScreenOnPaginate`, calls
-	// `GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(...)`
-	// storing the result back into `_loadingScreenOnPaginate`, and elsewhere
-	// disposes and clears that same field. Reads as "show a loading indicator
-	// while a page of save slots is loading, hide it once done" but the exact
-	// condition on `cnt` (loading-count reaching zero vs. some other check) is
-	// UNVERIFIED -- do not treat the summary as the implementation.
-	private void OnShowSlotCountChanged(int cnt)
-	{
-		throw new NotImplementedException();
-	}
-
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35ADB0, 152 B
+	// When +0x178 `_loadingSlotCount` is non-null, `ReactiveProperty<int>.Dispose()`
+	// runs; then the field is cleared to null unconditionally.
 	[Token(Token = "0x6000322")]
 	[Address(RVA = "0x35ADB0", Offset = "0x3597B0", VA = "0x18035ADB0")]
 	public void OnHide()
 	{
+		_loadingSlotCount?.Dispose();
+		_loadingSlotCount = null;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x35AE50
@@ -705,17 +822,56 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35B090, 90 B
+	// When +0x178 `_loadingSlotCount` is non-null, `ReactiveProperty<int>.set_Value(0)`.
 	[Token(Token = "0x6000324")]
 	[Address(RVA = "0x35B090", Offset = "0x359A90", VA = "0x18035B090")]
 	public void ResetLoadingSlotCount()
 	{
+		if (_loadingSlotCount != null)
+		{
+			_loadingSlotCount.Value = 0;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (Unity bool-vs-`== null` spelling) | RVA: 0x35B0F0, 1479 B
+	// - `grid` = `_panels[_presentationMode]` (+0x170 / +0x168), then +0x28
+	//   `Grid`. A null or destroyed grid (`m_CachedPtr` == 0) returns null.
+	// - Vtable +0x538 = ScriptableGrid slot 64 `get_Slots`, called separately
+	//   for the null check, for `IReadOnlyCollection.Count` (0 returns null), and
+	//   for the `foreach` (GetEnumerator / MoveNext / Current, then Dispose in
+	//   finally).
+	// - Per slot: `slot.gameObject` followed by the cached icall
+	//   "UnityEngine.GameObject::get_activeInHierarchy_Injected" (PE string at
+	//   0x2605870). Inactive slots are skipped.
+	//   - When `best` is not alive, `best = slot`.
+	//   - Otherwise vtable +0x618 = GameStateSlot slot 78 `get_LastSelectTime`
+	//     on both; `comiss` / `jbe` means strictly greater replaces `best`, and
+	//     NaN does not.
+	// - Returns `best.gameObject` when `best` is alive, else null. The result is
+	//   the most recently selected visible slot on the current page.
 	[Token(Token = "0x6000325")]
 	[Address(RVA = "0x35B0F0", Offset = "0x359AF0", VA = "0x18035B0F0", Slot = "92")]
 	protected override GameObject FindFocusObject()
 	{
-		return null;
+		GameStateSlotsGridExtended grid = _panels[_presentationMode].Grid;
+		if (!grid)
+		{
+			return null;
+		}
+		if (grid.Slots == null || grid.Slots.Count == 0)
+		{
+			return null;
+		}
+		GameStateSlotExtended focusSlot = null;
+		foreach (GameStateSlotExtended slot in grid.Slots)
+		{
+			if (slot.gameObject.activeInHierarchy && (!focusSlot || slot.LastSelectTime > focusSlot.LastSelectTime))
+			{
+				focusSlot = slot;
+			}
+		}
+		return focusSlot ? focusSlot.gameObject : null;
 	}
 
 	[Token(Token = "0x6000326")]

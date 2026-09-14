@@ -63,28 +63,61 @@ public class QuickLoad : Command
 	[UsedImplicitly]
 	public BooleanParameter Wait;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31A060, 171 B
+	// `new Func<AsyncToken, UniTask>(DoQuickLoadAsync)`, then vtable +0x208 =
+	// slot 13 `Command.WaitOrForget(fn, Wait (+0x38), token)`.
 	[Token(Token = "0x60000C1")]
 	[Address(RVA = "0x31A060", Offset = "0x318A60", VA = "0x18031A060", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		return WaitOrForget(DoQuickLoadAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31A110, 281 B (entry) + MoveNext 0x31A370
+	// (The `Array.Empty<ICancelEventBlockable>()` in the bytes is the lowering of
+	// `Show`'s omitted `params` argument.)
+	// - The inlined `TryGetSlotNumber(out slotNumber)` (same bytes as 0x31A230).
+	//   On false, vtable +0x1A8 = slot 7 `Warn("No quick save slot number
+	//   found.")`, and execution **continues** with the out value (0 when the
+	//   variable is missing).
+	// - `using` `NaninovelLoadingScreen.Show(LoadingMode.Long (2), haltInput: true,
+	//   Array.Empty<ICancelEventBlockable>())`: await
+	//   `Engine.GetServiceOrErr<IStateManagerExtended>()` slot 4
+	//   `QuickLoadAsync(slotNumber)`; the result is discarded.
+	// - `token` is not used.
 	[Token(Token = "0x60000C2")]
 	[Address(RVA = "0x31A110", Offset = "0x318B10", VA = "0x18031A110")]
 	[AsyncStateMachine(typeof(_003CDoQuickLoadAsync_003Ed__3))]
-	private UniTask DoQuickLoadAsync(AsyncToken token)
+	private async UniTask DoQuickLoadAsync(AsyncToken token)
 	{
-		return default(UniTask);
+		if (!TryGetSlotNumber(out int slotNumber))
+		{
+			Warn("No quick save slot number found.");
+		}
+		using (GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(GigaCreation.NaninovelExtender.Common.LoadingMode.Long, true))
+		{
+			await Engine.GetServiceOrErr<GigaCreation.NaninovelExtender.Common.IStateManagerExtended>().QuickLoadAsync(slotNumber);
+		}
 	}
 
 	[Token(Token = "0x60000C3")]
 	[Address(RVA = "0x31A230", Offset = "0x318C30", VA = "0x18031A230")]
 	private bool TryGetSlotNumber(out int slotNumber)
 	{
-		slotNumber = default;
-		slotNumber = default;
-		return default(bool);
+		// RECONSTRUCTED | Confidence: A (behavior), B (const-vs-literal spelling) | RVA: 0x31A230, 313 B
+		// When `SlotNumber` (+0x30) is assigned (ICommandParameter slot 0), the result
+		// is `Nullable<int>.get_Value` into `slotNumber`, and it returns true.
+		// Otherwise it tail-jumps to `CustomVariableManagerExtensions
+		// .TryGetVariableValue<int>(Engine.GetServiceOrErr<ICustomVariableManager>(),
+		// "lastQuickSaveSlotNumber", out slotNumber)`. The literal equals
+		// `QuickSave.LastQuickSaveSlotNumberVarName`, but a const reference would
+		// be folded into the same literal, so the bytes cannot tell the two apart.
+		if (Assigned(SlotNumber))
+		{
+			slotNumber = SlotNumber.Value;
+			return true;
+		}
+		return Engine.GetServiceOrErr<ICustomVariableManager>().TryGetVariableValue(QuickSave.LastQuickSaveSlotNumberVarName, out slotNumber);
 	}
 
 	[Token(Token = "0x60000C4")]

@@ -67,19 +67,42 @@ public class QuickSave : Command
 	[UsedImplicitly]
 	public BooleanParameter Wait;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31AA60, 171 B
+	// `new Func<AsyncToken, UniTask>(DoQuickSaveAsync)`, then vtable +0x208 =
+	// slot 13 `Command.WaitOrForget(fn, Wait (+0x38), token)`.
 	[Token(Token = "0x60000C7")]
 	[Address(RVA = "0x31AA60", Offset = "0x319460", VA = "0x18031AA60", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		return WaitOrForget(DoQuickSaveAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31AB10, 281 B (entry) + MoveNext 0x31AC30
+	// `Show`'s last parameter is `params ICancelEventBlockable[]`, so the
+	// `Array.Empty<ICancelEventBlockable>()` in the bytes is the compiler's
+	// lowering of an omitted params argument.
+	// - `Engine.GetServiceOrErr<ICustomVariableManager>().TrySetVariableValue<int>
+	//   ("lastQuickSaveSlotNumber", SlotNumber)`, using the `Nullable<int>.op_Implicit`
+	//   conversion of the parameter object.
+	// - `using` (IDisposable at +0x20, disposed only when state < 0)
+	//   `NaninovelLoadingScreen.Show(LoadingMode.Subtle (0), haltInput: false,
+	//   Array.Empty<ICancelEventBlockable>())`:
+	//   - `Engine.GetServiceOrErr<IUIManager>().GetUI<IClickThroughPanelExtended>()`
+	//     slot 1 `DontBlockInteractionOnNext()`, with no null guard.
+	//   - Await `Engine.GetServiceOrErr<IStateManagerExtended>()` slot 3
+	//     `QuickSaveAsync(SlotNumber.Value)`; the result is discarded.
+	// - `token` is not used.
 	[Token(Token = "0x60000C8")]
 	[Address(RVA = "0x31AB10", Offset = "0x319510", VA = "0x18031AB10")]
 	[AsyncStateMachine(typeof(_003CDoQuickSaveAsync_003Ed__4))]
-	private UniTask DoQuickSaveAsync(AsyncToken token)
+	private async UniTask DoQuickSaveAsync(AsyncToken token)
 	{
-		return default(UniTask);
+		Engine.GetServiceOrErr<ICustomVariableManager>().TrySetVariableValue(LastQuickSaveSlotNumberVarName, (int)(Naninovel.Nullable<int>)SlotNumber);
+		using (GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(GigaCreation.NaninovelExtender.Common.LoadingMode.Subtle, false))
+		{
+			Engine.GetServiceOrErr<IUIManager>().GetUI<GigaCreation.NaninovelExtender.Common.IClickThroughPanelExtended>().DontBlockInteractionOnNext();
+			await Engine.GetServiceOrErr<GigaCreation.NaninovelExtender.Common.IStateManagerExtended>().QuickSaveAsync(SlotNumber.Value);
+		}
 	}
 
 	[Token(Token = "0x60000C9")]

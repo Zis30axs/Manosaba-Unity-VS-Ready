@@ -372,11 +372,15 @@ public class TitleUi : CustomUI, ITitleUI, IManagedUI
 	[Token(Token = "0x17000073")]
 	private ISaveLoadUI SaveLoadUi
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x361F80, 191 B
+		// A lazy cache in +0x170 `_saveLoadUi`, filled by calling `get_NaniUiManager`
+		// (0x361EB0, not inlined) and then `IUIManager.GetUI<ISaveLoadUI>()`. A
+		// null manager throws NullReferenceException (no `?.`).
 		[Token(Token = "0x600034D")]
 		[Address(RVA = "0x361F80", Offset = "0x360980", VA = "0x180361F80")]
 		get
 		{
-			return null;
+			return _saveLoadUi ??= NaniUiManager.GetUI<ISaveLoadUI>();
 		}
 	}
 
