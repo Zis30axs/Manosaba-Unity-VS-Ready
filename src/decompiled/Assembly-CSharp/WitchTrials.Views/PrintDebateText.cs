@@ -351,11 +351,40 @@ public class PrintDebateText : PrintText
 		await WaitOrForget(new Func<AsyncToken, UniTask>(_003C_003E8__1._003CExecute_003Eb__0), true, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322610, 496 B
+	// - `Engine.GetServiceOrErr<IInputManager>()`, then `IInputManager`
+	//   interface index 6 (`GetSampler(string)`, dump.cs) with the string
+	//   literal "Continue".
+	// - No sampler: returns a boxed `Naninovel.EmptyDisposable` (a struct,
+	//   dump.cs) and leaves `token` untouched.
+	// - Otherwise: `IInputSampler` index 16 (`GetNext()`, returns a
+	//   `CancellationToken`), then the 2-argument
+	//   `CancellationTokenSource.CreateLinkedTokenSource(token1, token2)`
+	//   (RVA 0x10A37E0, not the `params` overload) over
+	//   `token.CompletionToken` (`[token+8]`) and that token. `GetNext()` is
+	//   called before `[token+8]` is read; a read through the `ref` can't be
+	//   moved past a call that could write through it, so the call is a
+	//   separate statement.
+	// - **Writes through `ref token`**: `token = new AsyncToken(
+	//   token.CancellationToken, cts.Token)`. The native call target is the
+	//   folded 2-reference struct constructor at RVA 0x457060, which is
+	//   `AsyncToken(CancellationToken, CancellationToken)`. The caller's
+	//   token keeps its cancellation token but its completion token now
+	//   also fires on the next "Continue" input.
+	// - Returns the linked source, so the caller's `using`/`Dispose` owns it.
 	[Token(Token = "0x6000118")]
 	[Address(RVA = "0x322610", Offset = "0x321010", VA = "0x180322610", Slot = "15")]
 	protected override IDisposable CompleteOnContinue(ref AsyncToken token)
 	{
-		return null;
+		IInputSampler sampler = Engine.GetServiceOrErr<IInputManager>().GetSampler("Continue");
+		if (sampler == null)
+		{
+			return new EmptyDisposable();
+		}
+		System.Threading.CancellationToken continueToken = sampler.GetNext();
+		System.Threading.CancellationTokenSource cts = System.Threading.CancellationTokenSource.CreateLinkedTokenSource(token.CompletionToken, continueToken);
+		token = new AsyncToken(token.CancellationToken, cts.Token);
+		return cts;
 	}
 
 	// RECONSTRUCTED (from `<Print>d__21.MoveNext`, RVA 0x324180, 3290 B, 3
@@ -473,18 +502,37 @@ public class PrintDebateText : PrintText
 		await WaitForDebate(CalculateWaitTime(), token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x322A00, 238 B
+	// `Engine.GetServiceOrErr<IAudioManager>()`, then
+	// `IEngineService<AudioConfiguration>` index 0 (`Configuration`), then
+	// the bool at `+0x40`, which dump.cs names `EnableAutoVoicing`. If that
+	// is set, the 16-byte `PlaybackSpot` at `Command+0x18` is copied and its
+	// first field (`scriptPath`) is tested for null and for a zero length
+	// (`[str+0x10]`, `jbe`) -- an inlined `string.IsNullOrEmpty`. This is
+	// NOT `PlaybackSpot.Valid`: that getter (RVA 0x5BD6F0, disassembled)
+	// tests `lineIndex`/`inlineIndex`, not the path. `Command.PlaybackSpot`
+	// is an auto-property over that field, so property vs. field access is
+	// not discriminable; the property is written.
 	[Token(Token = "0x600011A")]
 	[Address(RVA = "0x322A00", Offset = "0x321400", VA = "0x180322A00", Slot = "33")]
 	protected override bool ShouldPlayAutoVoice()
 	{
-		return default(bool);
+		return Engine.GetServiceOrErr<IAudioManager>().Configuration.EnableAutoVoicing && !string.IsNullOrEmpty(PlaybackSpot.ScriptPath);
 	}
 
+	// RECONSTRUCTED | Confidence: A (spelling: B) | RVA: 0x322AF0, 65 B
+	// Runtime class-init check for `Naninovel.UniTask`, then `xor eax, eax`:
+	// returns an already-completed task, so a debate line never waits for
+	// its auto-voice clip and `token` is ignored. `Naninovel.UniTask
+	// .get_CompletedTask` is itself a shared `xor eax, eax; ret` body, so
+	// `CompletedTask` and `default(UniTask)` return the same value. The
+	// class-init check is what a static-member access emits and a bare
+	// `default` doesn't need, which is why `CompletedTask` is written.
 	[Token(Token = "0x600011B")]
 	[Address(RVA = "0x322AF0", Offset = "0x3214F0", VA = "0x180322AF0", Slot = "40")]
 	protected override UniTask WaitAutoVoice(AsyncToken token)
 	{
-		return default(UniTask);
+		return UniTask.CompletedTask;
 	}
 
 	// RECONSTRUCTED (previously deferred as "very hard") | Confidence: A |
@@ -727,6 +775,11 @@ public class PrintDebateText : PrintText
 		s_linkIdRegex = new Regex("<link=\"(\\w+?)\">", RegexOptions.Compiled);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x323690, 7 B
+	// FOLDED BODY shared with `PrintTextModified..ctor`: `xor edx, edx; jmp
+	// Naninovel.Commands.PrintText..ctor`. The constructor does nothing but
+	// chain to the base, so there are no instance field initializers.
+	// Counted once (RECONSTRUCTION.md folded-body convention).
 	[Token(Token = "0x6000120")]
 	[Address(RVA = "0x323690", Offset = "0x322090", VA = "0x180323690")]
 	public PrintDebateText()
