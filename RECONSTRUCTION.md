@@ -19,8 +19,8 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：49/82 个函数体、27,405/32,044 B 完成（约 60% 方法数、约 85.5% 字节数），行为全部 Confidence A；最近一批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`OnDestroy`/3 个 getter）与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
-| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：19/65 个函数体、23,203/27,784 B（约 83.5% 字节数）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：51/82 个函数体、21,918/32,044 B 完成（约 62% 方法数、约 68% 字节数，`work/reversing/progress.py` 测得；此前手工累加的"49/82、27,405 B、85.5%"口径错误已作废，见 §7.5 更正），行为全部 Confidence A；最近几批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`SetMessages`/`AddMessage`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`Awake`/`Initialize`/`SetFont`/`OnDestroy`/3 个 getter）与 `DebateText` 链接点击链与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
+| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：17/65 个函数体、11,705/27,784 B（约 26% 方法数、约 42% 字节数，`progress.py` 测得；此前手工累加的"19/65、23,203 B、83.5%"把 `MoveNext` 字节与 `TrialState` 桶的 getter 计入了本桶，已作废，见 §7.6 更正）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 
 ---
 
@@ -514,6 +514,9 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 
 难度分布：trivial 233 / easy 540 / medium 374 / hard 53 / very hard 2。
 
+各桶当前复原进度用 `work/reversing/progress.py` 测量（与本表同口径；计数规则见 §7.6
+"进度计数约定"），不要手工累加。
+
 **Naninovel（789 个类型）暂不作为恢复目标**——那是有公开文档的商业中间件，
 它的已知语义更适合当作交叉验证的旁证（B 级证据），而不是恢复对象。
 
@@ -779,19 +782,25 @@ private void Start()
 
 ---
 
-## 7.5 `Debate/Court` 子系统：本轮攻坚，49 个原生方法体 / 27,405 B（独立 worktree
+## 7.5 `Debate/Court` 子系统：本轮攻坚，51/82 个函数体 / 21,918/32,044 B（独立 worktree
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
-**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **49 个 /
-27,405 B（约 60% 方法数、约 85.5% 字节数）**，行为全部 Confidence A（个别无法从
-字节区分的 C# 写法选择记为 B，逐处在源码注释里标明）。（初次
+**进度（`work/reversing/progress.py` 测得，口径与 §3 桶总数一致）**：`Debate/Court` 桶
+82 个独立函数体 / 32,044 B，已标记复原 **51 个 / 21,918 B（约 62% 方法数、约 68% 字节数）**，
+行为全部 Confidence A（个别无法从字节区分的 C# 写法选择记为 B，逐处在源码注释里标明）。
+**更正**：本节此前写的"49 个 / 27,405 B（约 85.5%）"是手工累加的，与桶总数口径不一致，
+已作废——它把异步方法的 `MoveNext` 字节计入了分子（`MoveNext` 所在的 `<X>d__N` 嵌套类型
+在 dump.cs 里命名空间为空，`rank2.py` 按 `WitchTrials.` 前缀过滤时就不在任何桶里），把按
+`rank2.py` 规则归入 Naninovel-glue 的 `DebateTextPrinterPanel::Gosub` 算进了本桶，还把 7 B
+的折叠平凡构造体（`ranked.json` 的 `aliased`，不在任何桶里）算作一个体。以后进度一律以
+`progress.py` 为准，不再手工累加。（初次
 提交时有 2 处被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——
 已在外部复核后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫
-遗漏和 1 处多余语句，详见下方"本轮修正"。）最近一批 +14 个 / +9,664 B：
-`DebateTextPrinterPanel` 的 `SetText`/`AppendText`/`RevealMessages`（含其谓词
-lambda）/`WatAndRevealAsync`/`Gosub`/`OnDestroy` 及 3 个属性 getter，`PrintDebateText`
-的 `CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数（与
-`PrintTextModified` 折叠，按折叠体约定字节只计一次），见下方"显示管线"小节。
+遗漏和 1 处多余语句，详见下方"本轮修正"。）最近几批：`DebateTextPrinterPanel` 的
+`SetText`/`AppendText`/`RevealMessages`（含其谓词 lambda）/`WatAndRevealAsync`/`Gosub`/
+`OnDestroy`/`SetMessages`/`AddMessage`/`Awake`/`Initialize`/`SetFont`/构造函数及 3 个属性
+getter，`PrintDebateText` 的 `CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/
+构造函数，`DebateText` 的链接点击链，见下方"显示管线"小节。
 
 | 文件 | 完成 / 总数 | 说明 |
 |---|---|---|
@@ -1266,10 +1275,15 @@ helper，比 `StageCameraController::Awake` 简单（没有任务槽表要预分
 系统 Python 没装；必须用 `E:/Manosaba-VSCodeReady/tools/venv/Scripts/python.exe`
 调用，否则会报 `ModuleNotFoundError: No module named 'capstone'`。
 
-## 7.6 `PerspectiveStage` 子系统：本轮启动，19 个原生方法体 / 23,203 B（用户优先级第 2 位）
+## 7.6 `PerspectiveStage` 子系统：本轮启动，17/65 个函数体 / 11,705/27,784 B（用户优先级第 2 位）
 
-**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **19 个 /
-23,203 B（约 83.5% 字节数）**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
+**进度（`work/reversing/progress.py` 测得）**：`PerspectiveStage` 桶 65 个独立函数体 /
+27,784 B，已标记复原 **17 个 / 11,705 B（约 26% 方法数、约 42% 字节数）**。**更正**：
+此前写的"19 个 / 23,203 B（约 83.5%）"作废——那是按下面已废弃的两条手工约定累加的：
+把两个异步方法的 `MoveNext` 字节（不在桶里）计入分子，把 `get_TrialStateManager`
+（`rank2.py` 归入 `TrialState` 桶）算进本桶，并把折叠的 `OnDestroy` 算作 2 个体。下面
+列举的各条目及其字节数作为"原生代码规模"的叙述性数字保留，但**不能**与桶总数相加比较。
+已复原条目：`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
 #25）、`GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，优先级表
 #26）、`PerspectiveStagePresenter::Awake`（RVA `0x38D8D0`，优先级表 #27）、
 `StageCameraController::Awake`（RVA `0x3846C0`，优先级表 #28）、
@@ -1285,19 +1299,25 @@ MoveNext，4,465 B，同样不在原始表里）、`PerspectiveStageManager` 整
 异步方法收尾的 `using`/`try-finally` 写法选择均为 B，见各自小节）。这是本轮第一次
 真正进入这个子系统（此前完全未触碰）。
 
-**字节计数约定**：一个 `async` 方法算一个"函数体"，字节数 = 入口壳（纯
-`Start<>()` kickoff）+ 对应 `MoveNext()` 两者之和——上面 `ModifyCameraAsync`/
-`ShakeCameraAsync`（两个类各一份）都是这样计的，下面新写的
-`PerspectiveStageManager` 三个异步方法同样如此，全篇保持一致。
+**进度计数约定（更正版，取代此前的两条手工约定）**：进度只以
+`work/reversing/progress.py` 的输出为准，它与 §3 桶总数（`rank2.py` → `ranked.json`）
+用同一口径：
 
-**折叠体（folded body）计数约定**：当同一个原生函数因为两个类在同一
-`FieldOffset` 上持有相同布局（本例是 `_tokenSources`）而被 IL2CPP 编译器共享
-时——字节数只算一次（这是同一份原生代码，重复计入会虚增"已复原字节"的
-分母/分子），但"函数体"个数按它在原始 65 桶里关闭的独立 stub 数计（本例是
-2：`StageCameraController::OnDestroy` 和 `StageScreenController::OnDestroy`
-在原始清单里是两个分别声明的空方法），因为原始桶总数正是按每个类各自的
-声明方法数统计的。也就是说一次反汇编 + 一份源码写两份（各自类文件里一份，
-内容逐字节相同）可以关闭 2 个函数体，只消耗 1 份字节预算。
+- **异步方法只计入口壳**。`MoveNext` 属于编译器生成的嵌套类型 `<X>d__N`，dump.cs 里
+  它的 `// Namespace:` 为空，全名不带 `WitchTrials.` 前缀，`rank2.py` 从不把它放进任何桶；
+  静态 lambda 容器 `<>c` 同理。把 `MoveNext` 字节加进分子会让百分比虚高（此前
+  PerspectiveStage 的 83.5% 实际为 42%）。
+- **折叠体按 RVA 去重，只算一行**。`rank2.py` 遇到已见过的 RVA 直接跳过，所以
+  `0x384A10`（两个 `OnDestroy` 共享）在 65 个体里只占 1 行，归属列出的第一个类。
+- **别名数 > 1 且 ≤ 0x40 B 的共享平凡体不在任何桶里**（`ranked.json` 的 `aliased`），
+  复原它们对进度贡献为 0（例如 `PrintDebateText`/`PrintTextModified` 共享的 7 B 构造函数）。
+  超过 0x40 B 的共享体仍在 `rows` 里，照常计 1 行（例如 `0x366370`
+  `DebateTextPrinterPanel::set_Appearance`，82 B，Debate/Court）。
+- **归桶按 `rank2.py` 的首个匹配正则**，不按"它在哪个功能里被用到"：
+  `DebateTextPrinterPanel::Gosub` 归 Naninovel-glue，`StageCameraController::get_TrialStateManager`
+  归 TrialState。
+- 一个体算"已完成"，当且仅当其 RVA 出现在 `src/decompiled/Assembly-CSharp` 某个
+  `// RECONSTRUCTED` 标记行或其下一行。
 
 **这不只是"打开了一个新子系统"**：第 4 节频次统计显示 `GosubToModifyPerspectiveStageCamera`
 在脚本里出现 **16,542 次**——是全部 43 个 `WitchTrials.*` 自定义命令类里频次
