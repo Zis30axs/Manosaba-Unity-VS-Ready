@@ -160,12 +160,54 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (AsyncToken spelling) | RVA: 0x39C560, 404 B (entry) + MoveNext 0x39CAE0
+	// Two await points: state 0 is the Gosub `UniTask.Awaiter`; state 1 is
+	// `YieldAwaitable.Awaiter`, whose inlined GetResult is
+	// `AsyncToken.ThrowIfCanceled(null)` on the awaiter's token.
+	// - The `_cts` (+0x118) cancel/dispose block as in `DestroyService`, but
+	//   without clearing the field. Then `_cts = new CancellationTokenSource()`
+	//   with its ctor inlined (+0x24 = -1, +0x20 = 1).
+	// - The hoisted `asyncToken` (+0x28) is `{ _cts.Token, default }`. That
+	//   matches both the implicit conversion and `new AsyncToken(ct)`, so the
+	//   spelling is B.
+	// - `foreach` over the array (wrap2 = array, wrap3 = index). For each id:
+	//   - `new Gosub()` (Command ctor), with the `NamedString(null, id)` ctor
+	//     inlined (Named<NullableString>(null, (NullableString)id)).
+	//   - `Path` (+0x30) = the implicit NamedStringParameter conversion.
+	//   - Await vtable +0x188 = slot 5 `Execute(asyncToken)`.
+	//   - After GetResult, an explicit `asyncToken.ThrowIfCanceled(null)`
+	//     (0x39D0A9).
+	//   - `YieldAwaitable { timing = 0xC, token = asyncToken }`, which is the
+	//     Naninovel `UniTask.Yield(PlayerLoopTiming.PostLateUpdate, asyncToken)`
+	//     (enum value 12 per dump.cs).
+	// - After the loop: `_cts.Dispose()` with no null check (NRE when null) and
+	//   `_cts = null`, then SetResult.
+	// - No try/finally: when cancelled, the exception goes straight to
+	//   SetException and `_cts` is left for whoever cancelled it to dispose.
+	// Each Gosub is a bare command with no PlaybackSpot or other fields set.
 	[Token(Token = "0x6000695")]
 	[Address(RVA = "0x39C560", Offset = "0x39AF60", VA = "0x18039C560", Slot = "113")]
 	[AsyncStateMachine(typeof(_003CProcessAutoObjectionAsync_003Ed__9))]
-	public UniTask ProcessAutoObjectionAsync(string[] objectionIds)
+	public async UniTask ProcessAutoObjectionAsync(string[] objectionIds)
 	{
-		return default(UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		AsyncToken asyncToken = _cts.Token;
+		foreach (string objectionId in objectionIds)
+		{
+			await new Naninovel.Commands.Gosub
+			{
+				Path = new NamedString(null, objectionId)
+			}.Execute(asyncToken);
+			asyncToken.ThrowIfCanceled();
+			await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, asyncToken);
+		}
+		_cts.Dispose();
+		_cts = null;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x39C700, 324 B
