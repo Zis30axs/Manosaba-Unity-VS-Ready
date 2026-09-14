@@ -43,11 +43,13 @@ public class AdvChoiceHandlerButton : ChoiceHandlerButton
 	[Token(Token = "0x17000029")]
 	private IWitchTrialsChoiceHandlerManager WitchTrialsChoiceHandlerManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x336060, 202 B
+		// Lazy cache in +0x120 via `Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>()`.
 		[Token(Token = "0x60001B3")]
 		[Address(RVA = "0x336060", Offset = "0x334A60", VA = "0x180336060")]
 		get
 		{
-			return null;
+			return _witchTrialsChoiceHandlerManager ??= Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>();
 		}
 	}
 
