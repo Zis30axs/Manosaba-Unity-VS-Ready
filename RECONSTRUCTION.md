@@ -20,7 +20,7 @@
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
 | Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：35/82 个函数体、17,741/32,044 B 完成（约 43% 方法数、约 55% 字节数），全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
-| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：16/65 个函数体、22,878/27,784 B（约 82% 字节数）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
+| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：19/65 个函数体、23,203/27,784 B（约 83.5% 字节数）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 
 ---
 
@@ -1189,12 +1189,9 @@ Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此�
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `StageScreenController::Awake`（尚未排优先级，字段结构与 `StageCameraController
-   ::Awake` 非常相似，同一遍手法可以直接复用；做完这个，`PerspectiveStage`
-   桶里"入口+接线"这一层就基本收尾了）
-2. `DebateTextPrinterPanel.cs` 收尾（`SetText`/`AppendText`/`RevealMessages`/
+1. `DebateTextPrinterPanel.cs` 收尾（`SetText`/`AppendText`/`RevealMessages`/
    `WatAndRevealAsync`/`Gosub`）——顺带能解释清楚 `AddText` 那处尚未解决的行为疑点
-3. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
+2. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
 
 （`StageCameraController::ShakeCameraAsync` 已复原——见下方 §7.6，`_shakeCameraTasks`
 的 3 槽已完全解释清楚，`_modifyCameraTasks` 的空闲第 4 槽也已 grep 穷尽排查
@@ -1204,16 +1201,22 @@ Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此�
 见下方 §7.6，不再是待办项；`PerspectiveStagePresenter::Awake` 早先揭示的"接线图"
 现在有了完整的双端证据：`ModifyCameraAsync`/`ShakeCameraAsync` 这两条调用链已经
 从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，
-不是推测。）
+不是推测。`StageScreenController::Awake` 已复原——同一个 `sub_297400` 数组分配
+helper，比 `StageCameraController::Awake` 简单（没有任务槽表要预分配）；
+`StageCameraController::OnDestroy`/`StageScreenController::OnDestroy` 也已复原——
+两个类共享同一个原生函数（folded body，同一 RVA，因为 `_tokenSources` 在两个类
+里都在偏移 0x40），遍历 `_tokenSources` 逐个 `Cancel()`/`Dispose()`/置空，是
+`Awake()` 分配那张表的生命周期另一端。`PerspectiveStage` 桶里"入口+接线"这一层
+现在已经收尾。）
 
 **约定备忘**：`work/reversing/` 下的 `disas.py` 等脚本依赖 `capstone`，这个环境的
 系统 Python 没装；必须用 `E:/Manosaba-VSCodeReady/tools/venv/Scripts/python.exe`
 调用，否则会报 `ModuleNotFoundError: No module named 'capstone'`。
 
-## 7.6 `PerspectiveStage` 子系统：本轮启动，16 个原生方法体 / 22,878 B（用户优先级第 2 位）
+## 7.6 `PerspectiveStage` 子系统：本轮启动，19 个原生方法体 / 23,203 B（用户优先级第 2 位）
 
-**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **16 个 /
-22,878 B（约 82% 字节数）**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
+**进度**：`PerspectiveStage` 桶原本 65 个独立函数体 / 27,784 B，本轮完成 **19 个 /
+23,203 B（约 83.5% 字节数）**——`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
 #25）、`GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，优先级表
 #26）、`PerspectiveStagePresenter::Awake`（RVA `0x38D8D0`，优先级表 #27）、
 `StageCameraController::Awake`（RVA `0x3846C0`，优先级表 #28）、
@@ -1221,16 +1224,27 @@ Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此�
 44 个优先级表里，是跟随调用图顺带发现的）、`StageCameraController::ModifyCameraAsync`
 （RVA `0x384B50` 入口 + `0x3850A0` MoveNext，4,999 B，同样不在原始表里）、
 `StageCameraController::ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190`
-MoveNext，4,465 B，同样不在原始表里）、以及 `PerspectiveStageManager` 整个类
+MoveNext，4,465 B，同样不在原始表里）、`PerspectiveStageManager` 整个类
 （构造函数 358 B + `StageOffset` 属性 19 B + 7 个接口方法共 5,595 B，共 5,972 B，
-全部不在原始表里），全部 Confidence A（三个异步方法收尾的 `using`/`try-finally`
-写法选择均为 B，见各自小节）。这是本轮第一次真正进入这个子系统（此前完全未
-触碰）。
+全部不在原始表里）、`StageScreenController::Awake`（RVA `0x387B10`，156 B，不在
+原始表里）、以及 `StageCameraController::OnDestroy`/`StageScreenController::OnDestroy`
+（folded body，RVA `0x384A10`，169 B，同样不在原始表里），全部 Confidence A（三个
+异步方法收尾的 `using`/`try-finally` 写法选择均为 B，见各自小节）。这是本轮第一次
+真正进入这个子系统（此前完全未触碰）。
 
 **字节计数约定**：一个 `async` 方法算一个"函数体"，字节数 = 入口壳（纯
 `Start<>()` kickoff）+ 对应 `MoveNext()` 两者之和——上面 `ModifyCameraAsync`/
 `ShakeCameraAsync`（两个类各一份）都是这样计的，下面新写的
 `PerspectiveStageManager` 三个异步方法同样如此，全篇保持一致。
+
+**折叠体（folded body）计数约定**：当同一个原生函数因为两个类在同一
+`FieldOffset` 上持有相同布局（本例是 `_tokenSources`）而被 IL2CPP 编译器共享
+时——字节数只算一次（这是同一份原生代码，重复计入会虚增"已复原字节"的
+分母/分子），但"函数体"个数按它在原始 65 桶里关闭的独立 stub 数计（本例是
+2：`StageCameraController::OnDestroy` 和 `StageScreenController::OnDestroy`
+在原始清单里是两个分别声明的空方法），因为原始桶总数正是按每个类各自的
+声明方法数统计的。也就是说一次反汇编 + 一份源码写两份（各自类文件里一份，
+内容逐字节相同）可以关闭 2 个函数体，只消耗 1 份字节预算。
 
 **这不只是"打开了一个新子系统"**：第 4 节频次统计显示 `GosubToModifyPerspectiveStageCamera`
 在脚本里出现 **16,542 次**——是全部 43 个 `WitchTrials.*` 自定义命令类里频次
@@ -1626,6 +1640,58 @@ presenter 自己。所以 `PerspectiveStageManager.ModifyCameraAsync` →
 `StageCameraController.ShakeCameraAsync` 这两条调用链，从脚本层一路到
 相机控制器的真实实现，现在是逐字节追踪确认过的完整闭环，不是"结构相似所以
 大概率是它"。
+
+### `StageScreenController::Awake` — 同一个数组分配 helper，但没有任务槽表
+
+`StageScreenController::Awake`（RVA `0x387B10`，156 B）比
+`StageCameraController::Awake` 简单得多：同一个共享 `sub_297400(TYPE, length)`
+数组分配 helper（调用形状完全一致），但这个控制器没有 `_modifyCameraTasks`/
+`_shakeCameraTasks` 那种按屏幕预分配的任务槽表要建，只有：
+
+```csharp
+private void Awake()
+{
+    _tokenSources = new CancellationTokenSource[_screenContainers.Length];
+}
+```
+
+`_screenContainers`（`[SerializeField]`）被无条件解引用取 `.Length`（内联的
+NRE 抛出桩），已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`。
+
+### `StageCameraController::OnDestroy` / `StageScreenController::OnDestroy` — 折叠体，`Awake` 分配的表在这里被回收
+
+两个类的 `OnDestroy` 是同一个原生函数（RVA `0x384A10`，169 B）——反汇编的
+`managed:` 行同时列出两个类名，这是 §1.3 讲过的函数体折叠现象，成立的前提是
+两个类在这个函数唯一访问的字段（`_tokenSources`）上共享同一个
+`FieldOffset`（都是 `0x40`，已在两份 `FieldOffset` 表里逐一核对）。逐字节复原为：
+
+```csharp
+private void OnDestroy()
+{
+    for (int i = 0; i < _tokenSources.Length; i++)
+    {
+        if (_tokenSources[i] != null)
+        {
+            _tokenSources[i].Cancel();
+            _tokenSources[i].Dispose();
+            _tokenSources[i] = null;
+        }
+    }
+}
+```
+
+判别式证据：循环边界（`_tokenSources.Length`）在每次迭代前都重新从
+`this` 取字段并重新判空，不是循环外缓存到局部变量一次——这排除了
+`int n = _tokenSources.Length;` 提到循环外的写法，坐实了"每次都走属性/索引器"
+这一形状。`Cancel()`/`Dispose()` 是两次独立的索引器读取，不是缓存同一个引用两次
+调用：两者之间反汇编重新加载并重新判空了一次该槽位（编译器无法证明
+`Cancel()` 没有把槽位置空，所以必须再判一次）。清零槽位调用的
+`sub_2390(array, index, value)`——这个引用数组元素带 GC 写屏障的存储 helper——
+在 `ModifyCameraAsync` 自己的 MoveNext 里独立交叉确认了两次（`new
+CancellationTokenSource()` 存入槽位、以及末尾存 `null`，两处的寄存器摆法都是
+`rcx`=数组、`rdx`=下标、`r8`=值），不是凭印象假设的。这是 `Awake()` 分配
+`_tokenSources` 表的生命周期另一端：组件销毁时把还没完成的每个 token source
+取消、释放、清空引用。
 
 ---
 
