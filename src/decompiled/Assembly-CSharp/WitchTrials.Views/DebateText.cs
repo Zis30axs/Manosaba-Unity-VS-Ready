@@ -30,18 +30,31 @@ public class DebateText : NaninovelTMProText
 	[Token(Token = "0x17000077")]
 	private IInputManager InputManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x364FC0, 202 B
+		// Lazy cache on `+0x828`: `ServiceLocator.Get<IInputManager>(true)`.
+		// Unlike `DebateTextPrinterPanel.LocalizationProvider`, the first
+		// argument here is `mov cl, 1`, i.e. `includeDerivedType: true` rather
+		// than the default. `IInputManager` is GigaCreation's (this file
+		// imports `GigaCreation.Essentials.Input`, not `Naninovel`).
 		[Token(Token = "0x6000367")]
 		[Address(RVA = "0x364FC0", Offset = "0x3639C0", VA = "0x180364FC0")]
 		get
 		{
-			return null;
+			return _inputManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>(true);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x365090, 89 B
+	// `base.OnDestroy()` (the direct call lands in `TextMeshProUGUI.OnDestroy`,
+	// the nearest base override), then, if `_disposable` (`+0x838`) is
+	// non-null, a tail call to `IDisposable.Dispose` on it. No method
+	// reconstructed so far writes `_disposable`.
 	[Token(Token = "0x6000368")]
 	[Address(RVA = "0x365090", Offset = "0x363A90", VA = "0x180365090", Slot = "8")]
 	protected override void OnDestroy()
 	{
+		base.OnDestroy();
+		_disposable?.Dispose();
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x3650F0, 150 B
@@ -69,11 +82,17 @@ public class DebateText : NaninovelTMProText
 		return null;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3133E0 (shared 4-byte body)
+	// `mov rax, rdx; ret`: returns `content` unchanged, in place of whatever
+	// the base `NaninovelTMProText.ProcessRubyTags` does (not examined). The
+	// native body is folded with unrelated "return the first argument"
+	// methods (e.g. `Exception.StripFileInfo`), so it is not counted as
+	// progress.
 	[Token(Token = "0x600036B")]
 	[Address(RVA = "0x3133E0", Offset = "0x311DE0", VA = "0x1803133E0", Slot = "160")]
 	protected override string ProcessRubyTags(string content)
 	{
-		return null;
+		return content;
 	}
 
 	[Token(Token = "0x600036C")]
