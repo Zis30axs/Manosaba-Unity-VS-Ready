@@ -17,6 +17,7 @@ using Naninovel;
 using Naninovel.Async.CompilerServices;
 using Naninovel.UI;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,22 +43,29 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		[Token(Token = "0x1700007D")]
 		public LocaleKind LocaleKind
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x331650 (shared 4-byte body)
+			// `mov eax, [rcx+0x10]; ret`: returns `_localeKind`. The native body
+			// is folded with 140+ unrelated int getters (e.g.
+			// `String.get_Length`), so it is not counted as progress.
 			[Token(Token = "0x6000386")]
 			[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
 			get
 			{
-				return default(LocaleKind);
+				return _localeKind;
 			}
 		}
 
 		[Token(Token = "0x1700007E")]
 		public float Space
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x3686E0 (shared 6-byte body)
+			// `movss xmm0, [rcx+0x14]; ret`: returns `_space`. Folded with
+			// unrelated float getters; not counted as progress.
 			[Token(Token = "0x6000387")]
 			[Address(RVA = "0x3686E0", Offset = "0x3670E0", VA = "0x1803686E0")]
 			get
 			{
-				return default(float);
+				return _space;
 			}
 		}
 
@@ -329,10 +337,23 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3663D0, 786 B
+	// `base.Awake()` (direct call to `UITextPrinterPanel.Awake`), then
+	// `_labelSpaces = _labelSpaceData.ToDictionary(keySelector,
+	// elementSelector)`. `_labelSpaceData` (`+0x158`) is loaded before the
+	// two cached-lambda checks, so this is one assignment statement. The
+	// native call passes a null fourth argument, the comparer that the
+	// 3-argument `ToDictionary` overload forwards. `<Awake>b__24_0` (RVA
+	// 0x312620, folded with an unrelated `LocalizeImage` lambda) reads
+	// `data+0x10` and `<Awake>b__24_1` (RVA 0x368790) reads `data+0x14`:
+	// the `LabelSpaceData.LocaleKind`/`Space` getters inlined. This is where
+	// the `_labelSpaces` dictionary read by `RevealMessages` comes from.
 	[Token(Token = "0x6000378")]
 	[Address(RVA = "0x3663D0", Offset = "0x364DD0", VA = "0x1803663D0", Slot = "4")]
 	protected override void Awake()
 	{
+		base.Awake();
+		_labelSpaces = _labelSpaceData.ToDictionary((LabelSpaceData data) => data.LocaleKind, (LabelSpaceData data) => data.Space);
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x3666F0, 229 B
@@ -359,11 +380,34 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3667E0, 830 B
+	// `base.Initialize()` is called first and its task is returned at the
+	// very end, so it is held in a local. In between:
+	// `_labels.Select(label => label.OnLinkClickedAsObservable()).Merge()
+	// .Subscribe(id => Gosub(id).Forget()).AddTo(this)` -- UniRx
+	// `Observable.Merge<T>(IEnumerable<IObservable<T>>)`,
+	// `ObservableExtensions.Subscribe<T>(IObservable<T>, Action<T>)` and
+	// `DisposableExtensions.AddTo<T>(T, Component)`, all `[Extension]` per
+	// dump.cs.
+	// - `<Initialize>b__26_0` (RVA 0x3687B0) is a null check plus a body
+	//   byte-identical to `DebateText.OnLinkClickedAsObservable()` (RVA
+	//   0x365EB0, disassembled: same `data_30D93D8` flag, same `+0x820`
+	//   load, same tail-jump into `AsObservable<string>`). `+0x820` is
+	//   `DebateText`'s private `_onLinkClickedSubject`, which this class
+	//   cannot read, so it is that public accessor inlined.
+	// - `<Initialize>b__26_1` (RVA 0x368830) is the `Gosub` entry shell
+	//   inlined, followed by a jump into
+	//   `Naninovel.UniTaskExtensions.ForgetCore`: `Gosub(id).Forget()`.
+	// So a link click in any debate label Gosubs to the label named by the
+	// link id (see `Gosub`), fire-and-forget, with the subscription tied to
+	// this component through `AddTo(this)`.
 	[Token(Token = "0x600037A")]
 	[Address(RVA = "0x3667E0", Offset = "0x3651E0", VA = "0x1803667E0", Slot = "83")]
 	public override Naninovel.UniTask Initialize()
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.UniTask task = base.Initialize();
+		_labels.Select((DebateText label) => label.OnLinkClickedAsObservable()).Merge().Subscribe((string id) => Gosub(id).Forget()).AddTo(this);
+		return task;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x366B20, 1415 B
@@ -585,10 +629,31 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A (base-call spelling: B) | RVA: 0x367720, 907 B
+	// - Starts with `FontChanger.ChangeFont(font, FontChangeConfigurations)`
+	//   (`FontChangeConfigurations` = `CustomUI` Slot 79 at `klass+0x628`).
+	//   That is the entire body of `CustomUI.SetFont` (RVA 0x619440,
+	//   disassembled), so this is `base.SetFont(font)` inlined; an explicit
+	//   copy of those two calls would compile the same, hence B for the
+	//   spelling only.
+	// - Then a `foreach` over `FontChangeConfigurations.SelectMany(config =>
+	//   config.Components)` (`<SetFont>b__32_0`, RVA 0x368A00, reads
+	//   `config+0x28`, which dump.cs names `Components`), with the enumerator
+	//   disposed via `IDisposable`. Per text component: `_fontMaterialChanger`
+	//   (`+0x138`) is loaded, then `destroyCancellationToken`, then
+	//   `FontMaterialChanger.ChangeFontMaterialAsync(TMP_Text,
+	//   CancellationToken)`, whose Cysharp `UniTask` goes straight into
+	//   Cysharp `UniTaskExtensions.Forget` (RVA 0x181F300). The material swaps
+	//   are started per component and not awaited.
 	[Token(Token = "0x6000380")]
 	[Address(RVA = "0x367720", Offset = "0x366120", VA = "0x180367720", Slot = "84")]
 	public override void SetFont(TMP_FontAsset font)
 	{
+		base.SetFont(font);
+		foreach (TMP_Text text in FontChangeConfigurations.SelectMany((CustomUI.FontChangeConfiguration config) => config.Components))
+		{
+			_fontMaterialChanger.ChangeFontMaterialAsync(text, destroyCancellationToken).Forget();
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x367AB0, 865 B

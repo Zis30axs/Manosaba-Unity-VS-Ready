@@ -13,7 +13,7 @@ public class DebateText : NaninovelTMProText
 {
 	[Token(Token = "0x4000446")]
 	[FieldOffset(Offset = "0x820")]
-	private readonly ISubject<string> _onLinkClickedSubject;
+	private readonly ISubject<string> _onLinkClickedSubject = new Subject<string>();
 
 	[Token(Token = "0x4000447")]
 	[FieldOffset(Offset = "0x828")]
@@ -44,10 +44,22 @@ public class DebateText : NaninovelTMProText
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3650F0, 150 B
+	// `base.OnLinkClicked(linkInfo)` (direct call to
+	// `NaninovelTMProText.OnLinkClicked`, the `TMP_LinkInfo` copied by
+	// value), then `_onLinkClickedSubject` (`+0x820`) is loaded, then
+	// `linkInfo.GetLinkID()`, then a tail jump through the interface-slot
+	// helper to `IObserver<string>` index 0, which dump.cs lists as
+	// `OnNext`. The subject is loaded before the `GetLinkID()` call, matching
+	// receiver-first evaluation. This is the source end of the link-click
+	// chain whose sink is `DebateTextPrinterPanel.Initialize`'s subscription
+	// (link id -> `Gosub`).
 	[Token(Token = "0x6000369")]
 	[Address(RVA = "0x3650F0", Offset = "0x363AF0", VA = "0x1803650F0", Slot = "156")]
 	protected override void OnLinkClicked(TMP_LinkInfo linkInfo)
 	{
+		base.OnLinkClicked(linkInfo);
+		_onLinkClickedSubject.OnNext(linkInfo.GetLinkID());
 	}
 
 	[Token(Token = "0x600036A")]
@@ -70,13 +82,23 @@ public class DebateText : NaninovelTMProText
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x365EB0, 107 B
+	// Loads `_onLinkClickedSubject` (`+0x820`) and tail-calls UniRx
+	// `Observable.AsObservable<string>`. The same body is inlined verbatim
+	// into `DebateTextPrinterPanel.<Initialize>b__26_0`.
 	[Token(Token = "0x600036D")]
 	[Address(RVA = "0x365EB0", Offset = "0x3648B0", VA = "0x180365EB0")]
 	public IObservable<string> OnLinkClickedAsObservable()
 	{
-		return null;
+		return _onLinkClickedSubject.AsObservable();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x365F20, 234 B
+	// Allocates a `UniRx.Subject<string>`, stores it to `_onLinkClickedSubject`
+	// (`+0x820`), and only then tail-jumps into `NaninovelTMProText..ctor`.
+	// The store precedes the base constructor call, so it is the
+	// `= new Subject<string>()` field initializer; the constructor body is
+	// empty and no other field has an initializer.
 	[Token(Token = "0x600036E")]
 	[Address(RVA = "0x365F20", Offset = "0x364920", VA = "0x180365F20")]
 	public DebateText()
