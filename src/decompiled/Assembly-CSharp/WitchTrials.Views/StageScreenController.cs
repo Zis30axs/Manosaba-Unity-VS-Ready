@@ -147,36 +147,107 @@ public class StageScreenController : MonoBehaviour, IPerspectiveStageScreenModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x387BB0, 388 B
+	// Editor-only wiring, in store order: `GetComponentInChildren<GeneralScreen>()`
+	// -> +0x20, `GetComponentsInChildren<StageScreenContainer>()` -> +0x28,
+	// `GetComponentsInChildren<StageCameraContainer>()` -> +0x30.
 	[Token(Token = "0x600054D")]
 	[Address(RVA = "0x387BB0", Offset = "0x3865B0", VA = "0x180387BB0")]
 	private void Reset()
 	{
+		_generalScreen = GetComponentInChildren<GeneralScreen>();
+		_screenContainers = GetComponentsInChildren<StageScreenContainer>();
+		_cameraContainers = GetComponentsInChildren<StageCameraContainer>();
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (using vs try/finally sugar) | RVA: 0x387D40, 475 B (entry) + MoveNext 0x388240
+	// Same family as `StageCameraController.ModifyCameraAsync`:
+	// - Bounds check (`jl` on < 0, `jge` against `_screenContainers.Length`)
+	//   -> `Debug.LogWarning` of the formatted literal "Screen index {0} is out
+	//   of range." and return.
+	// - `TrialStateManager` interface slot 3 (`mov r8d, 3`) =
+	//   `ITrialStateManager.RegisterScreenVisibilityState(index, visible)`.
+	// - `_tokenSources[index]` cancel + dispose when non-null, replaced by a new
+	//   source (stored through the array-store helper `sub_2390`), linked with
+	//   `ct`.
+	// - Before the single await, the inlined
+	//   `StageCameraContainer.SetCameraEnabled(true)` on
+	//   `_cameraContainers[index]` (+0x28 `_camera`). The await is
+	//   `_screenContainers[index].ModifyAlphaAsync(visible ? 1f : 0f, duration,
+	//   linkedCts.Token)`, whose kickoff is inlined.
+	// - After it: when `!visible`, the camera is disabled again, then
+	//   `_tokenSources[index].Dispose(); _tokenSources[index] = null;`.
+	//   `linkedCts` is disposed through IDisposable, gated on `state < 0`, on
+	//   every exit (the using/finally shape; B, as for the camera controller).
+	// So a screen's camera is switched on for the fade-in and off only after a
+	// completed fade-out.
 	[Token(Token = "0x600054E")]
 	[Address(RVA = "0x387D40", Offset = "0x386740", VA = "0x180387D40", Slot = "4")]
 	[AsyncStateMachine(typeof(_003CChangeScreenVisibilityAsync_003Ed__10))]
-	public UniTask ChangeScreenVisibilityAsync(int screenIndex, bool visible, float duration, [Optional] CancellationToken ct)
+	public async UniTask ChangeScreenVisibilityAsync(int screenIndex, bool visible, float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (screenIndex < 0 || screenIndex >= _screenContainers.Length)
+		{
+			UnityEngine.Debug.LogWarning($"Screen index {screenIndex} is out of range.");
+			return;
+		}
+
+		TrialStateManager.RegisterScreenVisibilityState(screenIndex, visible);
+
+		if (_tokenSources[screenIndex] != null)
+		{
+			_tokenSources[screenIndex].Cancel();
+			_tokenSources[screenIndex].Dispose();
+		}
+		_tokenSources[screenIndex] = new CancellationTokenSource();
+		CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_tokenSources[screenIndex].Token, ct);
+
+		using (linkedCts)
+		{
+			_cameraContainers[screenIndex].SetCameraEnabled(true);
+			await _screenContainers[screenIndex].ModifyAlphaAsync(visible ? 1f : 0f, duration, linkedCts.Token);
+			if (!visible)
+			{
+				_cameraContainers[screenIndex].SetCameraEnabled(false);
+			}
+			_tokenSources[screenIndex].Dispose();
+			_tokenSources[screenIndex] = null;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x387F20, 217 B
+	// `sub_3E00` with ecx = 4 on ITrialStateManager = slot 4
+	// `RegisterScreenSplitState(index, normalizedPosX, roll, direction)`, then
+	// `_screenContainers[index]` (+0x28, bounds-checked) and a tail jump to
+	// `StageScreenContainer.ModifyQuadrilateral(normalizedPosX, roll, direction)`.
+	// Unlike `ChangeScreenVisibilityAsync` there is no explicit range warning.
 	[Token(Token = "0x600054F")]
 	[Address(RVA = "0x387F20", Offset = "0x386920", VA = "0x180387F20", Slot = "5")]
 	public void SplitScreen(int screenIndex, float normalizedPosX, float roll, ScreenSplitDirection direction)
 	{
+		TrialStateManager.RegisterScreenSplitState(screenIndex, normalizedPosX, roll, direction);
+		_screenContainers[screenIndex].ModifyQuadrilateral(normalizedPosX, roll, direction);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x388000, 464 B
+	// `_generalScreen` (+0x20) and `destroyCancellationToken` feed the inlined
+	// `GeneralScreen.PresentAsync(instantly: false, ct)` kickoff (state machine
+	// field `instantly` stored 0). The resulting task goes to Cysharp `Forget`.
 	[Token(Token = "0x6000550")]
 	[Address(RVA = "0x388000", Offset = "0x386A00", VA = "0x180388000")]
 	public void Present()
 	{
+		_generalScreen.PresentAsync(false, destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3881E0, 81 B
+	// `GeneralScreen.DismissAsync(instantly: false (r8 = 0), destroyCancellationToken)`
+	// (0xCE7510), then `Forget`.
 	[Token(Token = "0x6000551")]
 	[Address(RVA = "0x3881E0", Offset = "0x386BE0", VA = "0x1803881E0")]
 	public void Dismiss()
 	{
+		_generalScreen.DismissAsync(false, destroyCancellationToken).Forget();
 	}
 
 	[Token(Token = "0x6000552")]
