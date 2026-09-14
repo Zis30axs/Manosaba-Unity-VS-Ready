@@ -108,11 +108,14 @@ public class ReturnToTitle : Stop
 	[Token(Token = "0x1700000C")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x31B7B0, 186 B
+		// Lazy cache in +0x50 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>()`
+		// with the default `includeDerivedType` (`xor ecx, ecx`).
 		[Token(Token = "0x60000D1")]
 		[Address(RVA = "0x31B7B0", Offset = "0x31A1B0", VA = "0x18031B7B0")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>();
 		}
 	}
 

@@ -315,11 +315,13 @@ public class TitleUi : CustomUI, ITitleUI, IManagedUI
 	[Token(Token = "0x1700006E")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x361B70, 202 B
+		// Lazy cache in +0x148 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`.
 		[Token(Token = "0x6000348")]
 		[Address(RVA = "0x361B70", Offset = "0x360570", VA = "0x180361B70")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 

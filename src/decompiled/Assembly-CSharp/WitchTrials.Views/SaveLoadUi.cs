@@ -493,11 +493,14 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 	[Token(Token = "0x17000063")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x359710, 202 B
+		// Lazy cache in +0x148 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>()`
+		// with the default `includeDerivedType` (`xor ecx, ecx`).
 		[Token(Token = "0x6000311")]
 		[Address(RVA = "0x359710", Offset = "0x358110", VA = "0x180359710")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>();
 		}
 	}
 

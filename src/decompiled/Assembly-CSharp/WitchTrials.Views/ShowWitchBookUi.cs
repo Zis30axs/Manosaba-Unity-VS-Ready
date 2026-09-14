@@ -146,11 +146,14 @@ public class ShowWitchBookUi : Command
 	[Token(Token = "0x1700001E")]
 	protected IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32B760, 186 B
+		// Lazy cache in +0x48 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`
+		// (`mov cl, 1`: includeDerivedType).
 		[Token(Token = "0x6000164")]
 		[Address(RVA = "0x32B760", Offset = "0x32A160", VA = "0x18032B760")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 

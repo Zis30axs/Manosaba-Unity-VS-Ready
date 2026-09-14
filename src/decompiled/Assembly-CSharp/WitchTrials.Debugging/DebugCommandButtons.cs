@@ -149,11 +149,13 @@ public class DebugCommandButtons : MonoBehaviour
 	[Token(Token = "0x17000138")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A7C90, 186 B
+		// Lazy cache in +0x70 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`.
 		[Token(Token = "0x600075A")]
 		[Address(RVA = "0x3A7C90", Offset = "0x3A6690", VA = "0x1803A7C90")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 
