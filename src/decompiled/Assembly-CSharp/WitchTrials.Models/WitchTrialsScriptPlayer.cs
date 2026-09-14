@@ -112,10 +112,35 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 		_stateManagerExtended = extended;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C1C0, 676 B
+	// - The `_cts` cancel/dispose/null block, as in `DestroyService`.
+	// - `_dontDisableAutoPlayAndSkip` (+0x110) =
+	//   `_stateManagerExtended.IsSoftResetting` (IStateManagerExtended slot 0,
+	//   `sub_22E0` ecx = 0).
+	// - The next stretch (0x39C30F-0x39C432) is byte-identical to the base
+	//   `ScriptPlayer.ResetService` (RVA 0x5C4AE0, disassembled for comparison):
+	//   Stop (slot 87), CancelCommands (slot 112), PlayedIndex = -1,
+	//   PlayedScript = ScriptLoader.Juggle(PlayedScript, this), the two
+	//   command bools cleared, then DisableWaitingForInput/DisableAutoPlay/
+	//   DisableSkip (slots 103/100/97). So that stretch is the inlined
+	//   `base.ResetService()`, which dispatches to this class's own
+	//   `DisableSkip`/`DisableAutoPlay` overrides.
+	// - Finally the flag is reset to false.
+	// Net effect: during a soft reset, the base reset does not turn skip or auto
+	// play off.
 	[Token(Token = "0x6000693")]
 	[Address(RVA = "0x39C1C0", Offset = "0x39ABC0", VA = "0x18039C1C0", Slot = "73")]
 	public override void ResetService()
 	{
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+			_cts = null;
+		}
+		_dontDisableAutoPlayAndSkip = _stateManagerExtended.IsSoftResetting;
+		base.ResetService();
+		_dontDisableAutoPlayAndSkip = false;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x39C470, 230 B
@@ -188,10 +213,40 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C890, 579 B
+	// No base call. Returns true when any of these holds, in byte order:
+	// - The inlined `DebugOptions.DebugSkip`: `DebugOptionsBase.IsDebugMode` and
+	//   the DebugOptions static byte +0x18 `s_debugSkip`, the same shape as its
+	//   own getter at 0x3AA3D0.
+	// - The lazy `WitchTrialsNaninovelManager` getter (inlined) and
+	//   IWitchTrialsNaninovelManager slot 0 `IsInDebate`: skip is always
+	//   allowed during a debate.
+	// - Vtable +0x518 = slot 62 `SkipMode` == 1 (`PlayerSkipMode.Everything`).
+	// Otherwise:
+	// - `PlayedScript` (slot 64) null -> false.
+	// - Else vtable +0x708 = slot 93 `HasPlayed(PlayedScript.Path (+0x18),
+	//   PlayedIndex (slot 69) + 1)` with the index wrapped by `Nullable<int>..ctor`: only
+	//   already-seen lines can be skipped in read-only mode.
 	[Token(Token = "0x6000699")]
 	[Address(RVA = "0x39C890", Offset = "0x39B290", VA = "0x18039C890", Slot = "104")]
 	protected override bool GetSkipAllowed()
 	{
-		return default(bool);
+		if (WitchTrials.Debugging.DebugOptions.DebugSkip)
+		{
+			return true;
+		}
+		if (WitchTrialsNaninovelManager.IsInDebate)
+		{
+			return true;
+		}
+		if (SkipMode == PlayerSkipMode.Everything)
+		{
+			return true;
+		}
+		if (PlayedScript == null)
+		{
+			return false;
+		}
+		return HasPlayed(PlayedScript.Path, PlayedIndex + 1);
 	}
 }
