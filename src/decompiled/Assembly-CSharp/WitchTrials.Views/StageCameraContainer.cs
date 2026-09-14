@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -7,6 +8,7 @@ using Cysharp.Threading.Tasks.CompilerServices;
 using Il2CppDummyDll;
 using LitMotion;
 using LitMotion.Adapters;
+using LitMotion.Extensions;
 using UnityEngine;
 
 namespace WitchTrials.Views;
@@ -384,66 +386,166 @@ public class StageCameraContainer : MonoBehaviour
 		_camera.enabled = enable;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x381110, 475 B (entry) + MoveNext 0x382770
+	// Single await.
+	// - `from` is `_transform.localPosition` (+0x20): the resolved icall
+	//   `Transform::get_localPosition_Injected` (name string at 0x26098D0).
+	// - `to` is `(0f, height, 0f)`: x and z are hard zero, so x/z drift on the
+	//   container transform is not preserved.
+	// - The tween is `LMotion.Create<Vector3,...>(from, to, duration)` ->
+	//   `WithEase(ease)` -> `BindToLocalPosition(_transform)` ->
+	//   `MotionHandleExtensions.AddTo(handle, this)` -> `ToUniTask(ct)`.
 	[Token(Token = "0x6000521")]
 	[Address(RVA = "0x381110", Offset = "0x37FB10", VA = "0x180381110")]
 	[AsyncStateMachine(typeof(_003CModifyHeightAsync_003Ed__5))]
-	public UniTask ModifyHeightAsync(float height, Ease ease, float duration, [Optional] CancellationToken ct)
+	public async UniTask ModifyHeightAsync(float height, Ease ease, float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		await LMotion.Create(_transform.localPosition, new Vector3(0f, height, 0f), duration)
+			.WithEase(ease)
+			.BindToLocalPosition(_transform)
+			.AddTo(this)
+			.ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3812F0, 555 B (entry) + MoveNext 0x382C10
+	// The rotation is split across the two transforms.
+	// - Yaw goes to the container: component 1 of `rotation` (via
+	//   `ElementAtOrDefault`), or when unset `_transform.localRotation` (icall
+	//   `Transform::get_localRotation_Injected`) `.eulerAngles.y`. It becomes
+	//   `Quaternion.Euler(0f, yaw, 0f)`: the inlined body is a multiply by rdata
+	//   0x2AE25B4 = 0.0174533 (Deg2Rad) feeding icall
+	//   `Quaternion::Internal_FromEulerRad_Injected`.
+	// - Pitch (component 0) and roll (component 2) go to the camera, each
+	//   falling back to the matching `_cameraTransform.localRotation.eulerAngles`
+	//   component, as `Quaternion.Euler(pitch, 0f, roll)`.
+	// - Two tweens are built in that order, each `LMotion.Create<Quaternion>(
+	//   current localRotation, target, duration).WithEase(ease)
+	//   .BindToLocalRotation(transform).AddTo(this).ToUniTask(ct)`, on
+	//   `_transform` then `_cameraTransform`.
+	// - They are packed into a `ValueTuple<UniTask, UniTask>` and awaited once
+	//   through Cysharp `UniTaskExtensions.GetAwaiter((UniTask, UniTask))`.
 	[Token(Token = "0x6000522")]
 	[Address(RVA = "0x3812F0", Offset = "0x37FCF0", VA = "0x1803812F0")]
 	[AsyncStateMachine(typeof(_003CModifyRotationAsync_003Ed__6))]
-	public UniTask ModifyRotationAsync(float?[] rotation, Ease ease, float duration, [Optional] CancellationToken ct)
+	public async UniTask ModifyRotationAsync(float?[] rotation, Ease ease, float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		Quaternion containerRotation = Quaternion.Euler(0f, rotation.ElementAtOrDefault(1) ?? _transform.localRotation.eulerAngles.y, 0f);
+		Quaternion cameraRotation = Quaternion.Euler(
+			rotation.ElementAtOrDefault(0) ?? _cameraTransform.localRotation.eulerAngles.x,
+			0f,
+			rotation.ElementAtOrDefault(2) ?? _cameraTransform.localRotation.eulerAngles.z);
+		UniTask containerTask = LMotion.Create(_transform.localRotation, containerRotation, duration)
+			.WithEase(ease)
+			.BindToLocalRotation(_transform)
+			.AddTo(this)
+			.ToUniTask(ct);
+		UniTask cameraTask = LMotion.Create(_cameraTransform.localRotation, cameraRotation, duration)
+			.WithEase(ease)
+			.BindToLocalRotation(_cameraTransform)
+			.AddTo(this)
+			.ToUniTask(ct);
+		await (containerTask, cameraTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x381520, 475 B (entry) + MoveNext 0x3822D0
+	// Byte-for-byte the same shape as `ModifyHeightAsync`, but on
+	// `_cameraTransform` (+0x30) with `to = (0f, 0f, distance)`: the dolly is the
+	// camera's local z, again with hard-zero x/y.
 	[Token(Token = "0x6000523")]
 	[Address(RVA = "0x381520", Offset = "0x37FF20", VA = "0x180381520")]
 	[AsyncStateMachine(typeof(_003CModifyDistanceAsync_003Ed__7))]
-	public UniTask ModifyDistanceAsync(float distance, Ease ease, float duration, [Optional] CancellationToken ct)
+	public async UniTask ModifyDistanceAsync(float distance, Ease ease, float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		await LMotion.Create(_cameraTransform.localPosition, new Vector3(0f, 0f, distance), duration)
+			.WithEase(ease)
+			.BindToLocalPosition(_cameraTransform)
+			.AddTo(this)
+			.ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x381700, 508 B (entry) + MoveNext 0x3838E0
+	// Single await.
+	// - `_cameraTransform.localPosition.x` is the motion's start value
+	//   (localPosition via the same `get_localPosition_Injected` icall).
+	// - `randomly` (+0x20 in the state machine) selects
+	//   `CreateShakeMotion(start, x, duration, frequency, dampingRatio)` bound
+	//   with `BindToLocalPositionX<ShakeOptions, FloatShakeMotionAdapter>`, else
+	//   `CreatePunchMotion(...)` with the same arguments and the Punch binding.
+	//   Both bind to `_cameraTransform`.
+	// - The resulting handle then goes through `AddTo(this)` and `ToUniTask(ct)`.
+	// The two builder types differ, so each branch binds on its own.
 	[Token(Token = "0x6000524")]
 	[Address(RVA = "0x381700", Offset = "0x380100", VA = "0x180381700")]
 	[AsyncStateMachine(typeof(_003CShakeCameraXAsync_003Ed__8))]
-	public UniTask ShakeCameraXAsync(float x, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
+	public async UniTask ShakeCameraXAsync(float x, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		float start = _cameraTransform.localPosition.x;
+		MotionHandle handle = randomly
+			? CreateShakeMotion(start, x, duration, frequency, dampingRatio).BindToLocalPositionX(_cameraTransform)
+			: CreatePunchMotion(start, x, duration, frequency, dampingRatio).BindToLocalPositionX(_cameraTransform);
+		await handle.AddTo(this).ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x381900, 508 B (entry) + MoveNext 0x383D40
+	// Same as `ShakeCameraXAsync` on the y axis: start from localPosition +4
+	// (`movss xmm1, [rsp+0x54]`), bound with `BindToLocalPositionY`.
 	[Token(Token = "0x6000525")]
 	[Address(RVA = "0x381900", Offset = "0x380300", VA = "0x180381900")]
 	[AsyncStateMachine(typeof(_003CShakeCameraYAsync_003Ed__9))]
-	public UniTask ShakeCameraYAsync(float y, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
+	public async UniTask ShakeCameraYAsync(float y, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		float start = _cameraTransform.localPosition.y;
+		MotionHandle handle = randomly
+			? CreateShakeMotion(start, y, duration, frequency, dampingRatio).BindToLocalPositionY(_cameraTransform)
+			: CreatePunchMotion(start, y, duration, frequency, dampingRatio).BindToLocalPositionY(_cameraTransform);
+		await handle.AddTo(this).ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x381B00, 508 B (entry) + MoveNext 0x3841A0
+	// Same as `ShakeCameraXAsync` on the z axis: start from localPosition +8
+	// (`movss xmm1, [rsp+0x58]`), bound with `BindToLocalPositionZ`.
 	[Token(Token = "0x6000526")]
 	[Address(RVA = "0x381B00", Offset = "0x380500", VA = "0x180381B00")]
 	[AsyncStateMachine(typeof(_003CShakeCameraZAsync_003Ed__10))]
-	public UniTask ShakeCameraZAsync(float z, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
+	public async UniTask ShakeCameraZAsync(float z, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		float start = _cameraTransform.localPosition.z;
+		MotionHandle handle = randomly
+			? CreateShakeMotion(start, z, duration, frequency, dampingRatio).BindToLocalPositionZ(_cameraTransform)
+			: CreatePunchMotion(start, z, duration, frequency, dampingRatio).BindToLocalPositionZ(_cameraTransform);
+		await handle.AddTo(this).ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior) | RVA: 0x381D00, 664 B
+	// A direct call to `LMotion.Shake.Create(start, strength, duration)`, then
+	// the inlined `MotionBuilderExtensions.WithFrequency<float,
+	// FloatShakeMotionAdapter>` and `WithDampingRatio<...>`. Those inlined bodies
+	// write `frequency` and then `dampingRatio` into the builder's pooled
+	// options buffer.
 	[Token(Token = "0x6000527")]
 	[Address(RVA = "0x381D00", Offset = "0x380700", VA = "0x180381D00")]
 	private static MotionBuilder<float, ShakeOptions, FloatShakeMotionAdapter> CreateShakeMotion(float start, float strength, float duration, int frequency, float dampingRatio)
 	{
-		return default(MotionBuilder<float, ShakeOptions, FloatShakeMotionAdapter>);
+		return LMotion.Shake.Create(start, strength, duration)
+			.WithFrequency(frequency)
+			.WithDampingRatio(dampingRatio);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (Punch.Create spelling) | RVA: 0x381FA0, 814 B
+	// `LMotion.Create<float, PunchOptions, FloatPunchMotionAdapter>(from, to,
+	// duration)`, then `WithOptions` with the literal options {Frequency = 10,
+	// DampingRatio = 1f} (`mov [rsp+0xa0], 0xA` / `mov [rsp+0xa4], 0x3f800000`).
+	// That pair is the inlined body of `LMotion.Punch.Create`, which applies
+	// the default punch options, so the source spelling is B. After it, the
+	// inlined `WithFrequency(frequency)` and `WithDampingRatio(dampingRatio)`
+	// overwrite both defaults, exactly as in `CreateShakeMotion`.
 	[Token(Token = "0x6000528")]
 	[Address(RVA = "0x381FA0", Offset = "0x3809A0", VA = "0x180381FA0")]
 	private static MotionBuilder<float, PunchOptions, FloatPunchMotionAdapter> CreatePunchMotion(float from, float to, float duration, int frequency, float dampingRatio)
 	{
-		return default(MotionBuilder<float, PunchOptions, FloatPunchMotionAdapter>);
+		return LMotion.Punch.Create(from, to, duration)
+			.WithFrequency(frequency)
+			.WithDampingRatio(dampingRatio);
 	}
 
 	[Token(Token = "0x6000529")]
