@@ -119,11 +119,14 @@ public class ReturnToTitle : Stop
 	[Token(Token = "0x1700000D")]
 	private IPerspectiveStageManager PerspectiveStageManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x31B870, 186 B
+		// Lazy cache in +0x58 via `ServiceLocator.Get<IPerspectiveStageManager>()`
+		// with the default `includeDerivedType` (`xor ecx, ecx`).
 		[Token(Token = "0x60000D2")]
 		[Address(RVA = "0x31B870", Offset = "0x31A270", VA = "0x18031B870")]
 		get
 		{
-			return null;
+			return _perspectiveStageManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IPerspectiveStageManager>();
 		}
 	}
 
