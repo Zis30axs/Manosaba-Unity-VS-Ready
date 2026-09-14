@@ -335,10 +335,28 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3666F0, 229 B
+	// `base.OnDestroy()` (direct call to `UITextPrinterPanel.OnDestroy`),
+	// then, if `_revealCts` (`+0x180`) is non-null: `Cancel()`, `Dispose()`,
+	// null. The `Cancel()` is inlined: same `data_30DEB5A` class-init flag,
+	// same `+0x28` disposed check into `ThrowObjectDisposedException`, same
+	// `NotifyCancellation(false)` as an independent disassembly of
+	// `CancellationTokenSource.Cancel()` (RVA 0x10A23C0). `RevealMessages`
+	// overwrites `_revealCts` without cancelling or disposing the previous
+	// one; among the methods examined so far, this is the only cleanup.
+	// (`Awake`/`Initialize`/`SetMessages`/`AddMessage`/`SetFont` are still
+	// unexamined.)
 	[Token(Token = "0x6000379")]
 	[Address(RVA = "0x3666F0", Offset = "0x3650F0", VA = "0x1803666F0", Slot = "8")]
 	protected override void OnDestroy()
 	{
+		base.OnDestroy();
+		if (_revealCts != null)
+		{
+			_revealCts.Cancel();
+			_revealCts.Dispose();
+			_revealCts = null;
+		}
 	}
 
 	[Token(Token = "0x600037A")]
