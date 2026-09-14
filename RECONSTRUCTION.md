@@ -22,6 +22,7 @@
 | Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：**已完成**：82/82 个函数体、32,044/32,044 B（100%，`work/reversing/progress.py` 测得；最近几批补完 `ExecutionButtonScreen`/`SkipDebateButton`/`ObjectionCutIn` 三个整类、`ChoiceEvidence::Execute`（`@evidence`）、`Damage::Execute`（原生为空操作）、`DebugOptions.AllowContinueDebate`，以及收尾的 `DebateText::ProcessText`/`ModifyLinkedTextColor`（链接悬停高亮）；此前手工累加的"49/82、27,405 B、85.5%"口径错误已作废，见 §7.5 更正），行为全部 Confidence A；最近几批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`SetMessages`/`AddMessage`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`Awake`/`Initialize`/`SetFont`/`OnDestroy`/3 个 getter）与 `DebateText` 链接点击链与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
 | PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：**已完成**：65/65 个函数体、27,784/27,784 B（100%，`progress.py` 测得；收尾覆盖全部舞台命令、`StageCameraContainer`/`StageScreenContainer`/`StageScreenController` 全部方法与 `PerspectiveStagePresenter`，见 §7.6；此前手工累加的"19/65、23,203 B、83.5%"口径错误已作废）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
+| Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 
 ---
 
@@ -1864,6 +1865,53 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 **编译基线变化**：警告数 144 → **143**，差值是旧 `ScenarioInfo` 桩里 `Equals(ScenarioInfo? other)`
 的 CS8632，改成位置记录后由编译器合成、不再有该注解；0 error 不变。
+
+
+## 7.8 `Save/Load` 子系统：已完成，31/31 个函数体 / 10,941/10,941 B（用户优先级第 4 位）
+
+`progress.py SaveLoad` 测得 31/31、10,941/10,941 B（100%）；全部 `WitchTrials.*` 合计 278/929、104,318/316,778 B。
+
+**命令**
+- `@quickSave`（`QuickSave`）：先写自定义变量 `lastQuickSaveSlotNumber`，再在
+  `NaninovelLoadingScreen.Show(LoadingMode.Subtle, haltInput: false)` 期间调用
+  `IClickThroughPanelExtended.DontBlockInteractionOnNext()` 并等待
+  `IStateManagerExtended.QuickSaveAsync(SlotNumber)`；`Wait` 参数经 `WaitOrForget` 决定是否阻塞脚本。
+- `@quickLoad`（`QuickLoad`）：槽位优先取参数，否则读变量 `lastQuickSaveSlotNumber`；
+  **两者都没有时只 `Warn("No quick save slot number found.")` 然后照常用 0 号槽继续**；
+  `Show(LoadingMode.Long, haltInput: true)` 期间等待 `QuickLoadAsync`。
+- `@openLoadUi`（`OpenLoadUi`）：取 `ISaveLoadUI`，`PresentationMode = Load`，再等待 Cysharp
+  `ManagedUiExtensions.PresentAsync(ui, null, token.CancellationToken)`。
+- 字节里的 `Array.Empty<ICancelEventBlockable>()` 是 `Show(..., params ICancelEventBlockable[])`
+  省略 params 实参的编译器降级，源码不写第三个实参。
+
+**`SaveLoadUi` 结构**
+- `Awake`：`_panels = _panelReferences.ToDictionary(r => r.Mode, r => r.Panel)`，
+  `SetPresentationMode(Load)`，最后 `base.Awake()`。`PresentationMode` setter 与
+  `SetPresentationMode` 是同一个原生函数体（缺面板时 `Debug.LogWarning("The panel for {0} does not exists.")`，但仍然赋值）。
+- `Initialize`：分别以 `SaveSlotLimit` 初始化 Save/Load 两个面板的网格
+  （Save 面板点击→`HandleSaveSlotClicked`，Load 面板点击→`HandleLoadSlotClicked`，删除和取档回调共用），
+  `Dismiss` 所有面板，`await UniTask.WhenAll(...)`；不调用 `base.Initialize()`。
+- `OnShow` 订阅的 lambda（`<OnShow>b__52_0`）：UI 可见且计数 >0 时显示 `LoadingMode.Short` 遮罩
+  （以 `_naninovelScreen` 作为 blockable），计数回到 ≤0 时释放。**此前这里是一个 Confidence D 的占位方法
+  `OnShowSlotCountChanged`（`throw NotImplementedException`），本轮已按字节复原并内联回 lambda。**
+- `LoadSaveSlotAsync`：槽位不存在返回 null；计数器存在时 `Value++`，`try { await Load } finally { Value-- }`
+  （finally 无判空）。
+- `FindFocusObject`：当前模式面板网格里 `activeInHierarchy` 的槽位中取 `LastSelectTime` 最大者的
+  `gameObject`（严格大于才替换）。
+
+**三条 async 流程**
+- 读档 `HandleLoadSlotClickedAsync`：播放读档音效 → `NaninovelInteractionBlocker` 期间：淡出 →
+  `_naninovelScreen.DismissAsync(0f)`（不等待）→ 标题 UI 若可见则 `DismissAsync(0f)`（不等待）→
+  `SetTitleScreenShown(false)` → `UniTask.Delay(_loadDelay)` → `IStateManager.LoadGame(slotId)` →
+  淡入 → `IInputManager.ProcessInput = true`。
+- 存档 `HandleSaveSlotClickedAsync`：先播放确认音效；槽位已存在时弹覆盖确认（取消即返回）；
+  播放存档音效；`CreateLinkedTokenSource(ct)` + `CancelAfterSlim(_saveGameTimeout)`；
+  `LoadingMode.Short` 遮罩期间启动 `SaveGame(slotId)`，并以
+  `UniTask.Yield(Update, linkedCts.Token)` 轮询完成——**Yield 的 GetResult 会抛取消异常，所以存档超时表现为整个流程被取消**；
+  完成后把新状态 `BindSlot` 到所有面板。
+- 删档 `HandleDeleteSlotClickedAsync`：确认音效 → 弹删除确认（取消即返回）→ `DeleteSaveSlot` →
+  所有面板 `BindSlot(slotNumber, null)`。
+- 三个 `HandleXxxClicked` 同步入口都是 `HandleXxxClickedAsync(slotNumber, destroyCancellationToken).Forget()`。
 
 
 ---
