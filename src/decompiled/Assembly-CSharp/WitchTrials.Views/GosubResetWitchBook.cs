@@ -191,6 +191,10 @@ public class GosubResetWitchBook : Gosub
 		{
 			return;
 		}
+		// RECONSTRUCTED | Confidence: A | <>n__0 base-call accessor, RVA: 0x329360, 301 B
+		// Compiler-generated for the `base.Execute` call inside this async method.
+		// Its body is the base `Gosub.Execute` (0x4EFC80) inlined into the accessor,
+		// with the same slot 16-19 calls and LoadAndPlay/LoadAndPlayAtLabel.
 		await base.Execute(token);
 	}
 

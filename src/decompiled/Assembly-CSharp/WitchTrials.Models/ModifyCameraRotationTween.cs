@@ -10,9 +10,11 @@ namespace WitchTrials.Models;
 public record ModifyCameraRotationTween
 {
 	// RECONSTRUCTED | Confidence: A
-	// Positional-record backing fields (see ScenarioInfo.cs for why these are
-	// added rather than named `<X>k__BackingField`, and why not `readonly`
-	// despite dump.cs's tag: real `set` accessors exist below).
+	// Record property storage. dump.cs names these `<X>k__BackingField` and tags
+	// them `readonly`: the properties are init-only, and the accessors below are
+	// their `init` accessors rendered by ILSpy as `set`. This file keeps the
+	// non-positional rendering, so the storage is declared as plain fields.
+	// ScenarioInfo.cs shows the equivalent positional form.
 	private float?[] _to;
 	private float _duration;
 	private Ease _ease;

@@ -21,6 +21,7 @@
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
 | Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：**已完成**：82/82 个函数体、32,044/32,044 B（100%，`work/reversing/progress.py` 测得；最近几批补完 `ExecutionButtonScreen`/`SkipDebateButton`/`ObjectionCutIn` 三个整类、`ChoiceEvidence::Execute`（`@evidence`）、`Damage::Execute`（原生为空操作）、`DebugOptions.AllowContinueDebate`，以及收尾的 `DebateText::ProcessText`/`ModifyLinkedTextColor`（链接悬停高亮）；此前手工累加的"49/82、27,405 B、85.5%"口径错误已作废，见 §7.5 更正），行为全部 Confidence A；最近几批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`SetMessages`/`AddMessage`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`Awake`/`Initialize`/`SetFont`/`OnDestroy`/3 个 getter）与 `DebateText` 链接点击链与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
 | PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：**已完成**：65/65 个函数体、27,784/27,784 B（100%，`progress.py` 测得；收尾覆盖全部舞台命令、`StageCameraContainer`/`StageScreenContainer`/`StageScreenController` 全部方法与 `PerspectiveStagePresenter`，见 §7.6；此前手工累加的"19/65、23,203 B、83.5%"口径错误已作废）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
+| Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 
 ---
 
@@ -1800,6 +1801,70 @@ CancellationTokenSource()` 存入槽位、以及末尾存 `null`，两处的寄�
 `rcx`=数组、`rdx`=下标、`r8`=值），不是凭印象假设的。这是 `Awake()` 分配
 `_tokenSources` 表的生命周期另一端：组件销毁时把还没完成的每个 token source
 取消、释放、清空引用。
+
+## 7.7 `Naninovel-glue` 子系统：已完成，66/66 个函数体 / 21,262/21,262 B（用户优先级第 3 位）
+
+`work/reversing/progress.py Naninovel-glue` 测得 66/66、21,262/21,262 B（100%）。全部
+`WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B。本节只记本轮新增部分；此前已完成的
+`StartTrial`/`ChangeTrialPauseMode`/`GosubToObjectionCutIn`/`WitchTrialsNaninovelPresenter`
+等见前文各节。
+
+**`WitchTrialsScriptPlayer`**
+- `ResetService`（`0x39C1C0`）：中段与基类 `ScriptPlayer.ResetService`（`0x5C4AE0`）逐字节相同，
+  即内联的 `base.ResetService()`；前后用 `_dontDisableAutoPlayAndSkip = IsSoftResetting` 包住，
+  于是**软重置期间基类重置不会关掉 skip/auto play**（本类的 `DisableSkip`/`DisableAutoPlay`
+  覆写在该标志为真时什么都不做）。
+- `GetSkipAllowed`（`0x39C890`）：`DebugOptions.DebugSkip` → 辩论中（`IsInDebate`）→
+  `SkipMode == Everything` → 否则只允许跳过已读行 `HasPlayed(PlayedScript.Path, PlayedIndex + 1)`。
+- `ProcessAutoObjectionAsync`（`0x39C560` + MoveNext `0x39CAE0`）：先取消旧 `_cts`、新建 `_cts`；
+  对每个异议 id 依次 `await new Gosub { Path = new NamedString(null, id) }.Execute(token)`，
+  随后 `ThrowIfCanceled` 并 `await UniTask.Yield(PostLateUpdate, token)`；循环结束
+  `_cts.Dispose(); _cts = null`（**无判空**）。没有 try/finally：被取消时异常直接进
+  SetException，`_cts` 由取消方负责释放。
+
+**`WitchTrialsChoiceHandlerManager`**：构造函数内联了基类 `ChoiceHandlerManager` 构造
+（`PickedChoices` 字段初始化器 + `ActorManager` 构造 + `resources`/`l10n`）；
+`SaveServiceState`/`LoadServiceState` 用 `SettingsWitchTrials` 存取"关键选项提示"开关，
+读不到状态时回落到 `Configuration.DefaultCriticalChoiceHintEnabled`；
+`SetCriticalChoiceHintEnabled` 写字段后同步触发 `OnCriticalChoiceHintChanged`。
+
+**`WitchTrialsNaninovelManager` 余下成员**：`StartGameScenarioName` =
+`DebugOptions.StartGameScenario ?? base.StartGameScenarioName`（尾段与基类 getter `0xD026C0`
+逐字节相同）；`OnEnterTitleScreenAsObservable` =
+`_isInTitleScreen.SkipLatestValueOnSubscribe().Where(x => x).AsUnitObservable()`；
+构造函数只有四个字段初始化器（`_isInTitleScreen` 显式传 `false`，`_trialTimer = new Timer(true)`）。
+
+**`ScriptHelper`**：正则 `^[A-Z][a-z]*(\d+)_[A-Z][a-z]*(\d+)_([A-Z][a-z]*)(\d+)$`（`Compiled`）；
+`TryParseScenarioName` 四个分组**无短路地全部解析**后再无分支地 AND，成功才构造 `ScenarioInfo`。
+
+**`GosubResetWitchBook`（`@gosubResetBook`）整类**：
+- `Execute`：从 `PlaybackSpot.ScriptPath` 末段解析场景名，失败则 `Warn`（"魔女図鑑リセットが
+  想定されていないシナリオで実行されました。"）并结束；调试选项 `CheckWitchBookState` 开启且证据
+  状态有变化时导出脚本，若 `Part == Trial` 则到此结束；`IsDebugDirectJump` **显式为 false 时结束**；
+  其余交给内联的 `base.Execute`（`Gosub.Execute`，`0x4EFC80` 对照）。
+- `TryGetScriptPathAndLabel`：标签为 `Reset{Act}-{Chapter}-{Part}` 或加上 `Version` 参数对象本身
+  （`{3}` 走参数对象的 ToString），其余与基类一致。
+- `CheckEvidenceState`：按类别取魔女图鉴当前生效证据（按 Id 排序）做快照，与上次快照比较长度与
+  逐项 `IdVersionPair.Equals`（lambda 与 `0x3A2E80` 逐字节一致）；首次调用恒为 true；无论结果都会
+  覆盖快照。
+- `ExportScriptFile`：调试用，向桌面 `ResetWitchBook.nani` 追加一段能重建当前图鉴状态的脚本
+  （`# 场景名`、`@clearBook`、每项 `@update {id} category:{cat} version:{ver}`、`@return`），
+  `await using StreamWriter`。
+- `<>n__0`（`0x329360`）是 async 方法里 `base.Execute` 的编译器访问器。
+
+**`ScenarioInfo` 改回位置记录（更正）**：8 个合成成员（`EqualityContract`/`ToString`/
+`PrintMembers`/`GetHashCode`/两个 `Equals`/`<Clone>$`/`Deconstruct`）逐一与 Roslyn 记录降级形态
+核对一致，原声明是 `public record ScenarioInfo(int Act, int Chapter, ScenarioPartKind Part, int Section);`。
+此前注释称"存在真实 `set` 访问器，所以 backing field 不是 readonly"是错的：那是 `init` 访问器，
+dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保留非位置写法，只更正了指向
+`ScenarioInfo.cs` 的注释。
+
+**顺带复原**：`DebugOptions.DebugSkip`/`StartGameScenario`/`CheckWitchBookState`（均为
+`IsDebugMode && s_x` 形状）。
+
+**编译基线变化**：警告数 144 → **143**，差值是旧 `ScenarioInfo` 桩里 `Equals(ScenarioInfo? other)`
+的 CS8632，改成位置记录后由编译器合成、不再有该注解；0 error 不变。
+
 
 ---
 
