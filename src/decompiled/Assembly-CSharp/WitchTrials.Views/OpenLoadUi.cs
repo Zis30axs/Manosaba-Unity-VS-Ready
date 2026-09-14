@@ -48,12 +48,21 @@ public class OpenLoadUi : Command
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (explicit `null` duration spelling) | RVA: 0x319550, 283 B (entry) + MoveNext 0x319670
+	// - `Engine.GetServiceOrErr<IUIManager>().GetUI<ISaveLoadUI>()`, with no null
+	//   guard.
+	// - `sub_36F0` ISaveLoadUI slot 1 `set_PresentationMode(1 = Load)`.
+	// - Await the Cysharp `ManagedUiExtensions.PresentAsync(ui, duration: null
+	//   (all-zero Nullable<float>), ct: token.CancellationToken)`; this is the
+	//   CancellationToken overload, passed the AsyncToken's first field.
 	[Token(Token = "0x60000B9")]
 	[Address(RVA = "0x319550", Offset = "0x317F50", VA = "0x180319550", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CExecute_003Ed__0))]
-	public override Naninovel.UniTask Execute([Optional] AsyncToken token)
+	public override async Naninovel.UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.UI.ISaveLoadUI saveLoadUi = Engine.GetServiceOrErr<IUIManager>().GetUI<Naninovel.UI.ISaveLoadUI>();
+		saveLoadUi.PresentationMode = Naninovel.UI.SaveLoadUIPresentationMode.Load;
+		await GigaCreation.NaninovelExtender.Ui.ManagedUiExtensions.PresentAsync(saveLoadUi, null, token.CancellationToken);
 	}
 
 	[Token(Token = "0x60000BA")]
