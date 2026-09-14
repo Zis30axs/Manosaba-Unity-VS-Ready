@@ -21,7 +21,8 @@ public class PrintTextModified : PrintText
 	// FOLDED BODY shared with `PrintDebateText..ctor`: `xor edx, edx; jmp
 	// Naninovel.Commands.PrintText..ctor`. The constructor does nothing but
 	// chain to the base, so there are no instance field initializers.
-	// Counted once (RECONSTRUCTION.md folded-body convention).
+	// Not counted as progress: `ranked.json` lists this 7-byte shared body
+	// under `aliased` (alias 2, <= 0x40), outside every subsystem bucket.
 	[Token(Token = "0x6000130")]
 	[Address(RVA = "0x323690", Offset = "0x322090", VA = "0x180323690")]
 	public PrintTextModified()

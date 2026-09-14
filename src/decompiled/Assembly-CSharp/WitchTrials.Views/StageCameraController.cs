@@ -293,9 +293,9 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 	// actual control flow since the loop condition itself already bounds
 	// `i < Length`.
 	//
-	// Counted once against the shared byte total (169 B; see
-	// RECONSTRUCTION.md's folded-body convention), reconstructed for both
-	// classes in this one round.
+	// `ranked.json` dedups by RVA, so this shared body is a single row
+	// (169 B, PerspectiveStage, attributed to this class); the identical
+	// `StageScreenController` copy adds nothing further to progress.
 	[Token(Token = "0x6000538")]
 	[Address(RVA = "0x384A10", Offset = "0x383410", VA = "0x180384A10")]
 	private void OnDestroy()
