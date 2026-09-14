@@ -250,10 +250,65 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 		_tokenSources = new CancellationTokenSource[_cameraContainers.Length];
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x384A10, 169 B
+	// FOLDED BODY: this exact RVA is shared verbatim with
+	// `StageScreenController.OnDestroy` (disassembly lists both managed
+	// names against the one native function) -- valid because both classes
+	// hold `_tokenSources` (a `CancellationTokenSource[]`) at the same
+	// `FieldOffset` (0x40), the only field this method touches.
+	//
+	// Byte-traced as `for (int i = 0; i < _tokenSources.Length; i++)`: the
+	// loop BOUND itself is re-read every iteration -- `this._tokenSources`
+	// is reloaded from `[this+0x40]` and re-null-checked immediately before
+	// each `i < Length` compare (not just before element access), which
+	// rules out a hoisted `int n = _tokenSources.Length;` local and confirms
+	// the C# indexer/`.Length` property is accessed fresh each pass, same
+	// "no local caching of a field-accessed array" shape seen throughout
+	// this class's other methods. `edi`/`rdi` is a strength-reduced pointer
+	// into the array's element storage (`+0x20` base, `+8` per iteration)
+	// used for the reads; `ebx` is the parallel index used for the
+	// bounds-check compares and for `sub_2390`'s index argument -- both
+	// track the same `i`, consistent with a single loop variable.
+	//
+	// Per-element: null-checked (`cmp qword ptr [elem], 0`, no separate
+	// dereference), then `Cancel()`/`Dispose()` as two independent indexer
+	// reads (confirmed by a second, distinct null-check emitted between them
+	// on the freshly-reloaded slot before `Dispose()` -- the compiler can't
+	// prove `Cancel()` didn't null it, so it re-checks; this matches
+	// `_tokenSources[i].Cancel(); _tokenSources[i].Dispose();` as written,
+	// not a single cached reference), then the slot is nulled via `sub_2390`.
+	//
+	// `sub_2390(array, index, value)` cross-confirmed at two independent
+	// call sites in `ModifyCameraAsync`'s own MoveNext (this file): the
+	// `_tokenSources[cameraIndex] = new CancellationTokenSource();` store
+	// (rcx=array, rdx=index, r8=new instance) and the
+	// `_tokenSources[cameraIndex] = null;` store (rcx=array, rdx=index,
+	// r8d=0) both pass arguments in this exact (array, index, value) shape --
+	// this is a reference-array-element-store-with-GC-write-barrier helper,
+	// not a name carried over from an earlier session's notes.
+	// `sub_246740` at the `jae` bounds-check targets is inferred (not
+	// independently documented elsewhere in this tree) to be an
+	// IndexOutOfRangeException throw helper, from its position as the sole
+	// target of an `index >= Length` branch; unreachable in this loop's
+	// actual control flow since the loop condition itself already bounds
+	// `i < Length`.
+	//
+	// Counted once against the shared byte total (169 B; see
+	// RECONSTRUCTION.md's folded-body convention), reconstructed for both
+	// classes in this one round.
 	[Token(Token = "0x6000538")]
 	[Address(RVA = "0x384A10", Offset = "0x383410", VA = "0x180384A10")]
 	private void OnDestroy()
 	{
+		for (int i = 0; i < _tokenSources.Length; i++)
+		{
+			if (_tokenSources[i] != null)
+			{
+				_tokenSources[i].Cancel();
+				_tokenSources[i].Dispose();
+				_tokenSources[i] = null;
+			}
+		}
 	}
 
 	[Token(Token = "0x6000539")]

@@ -124,10 +124,27 @@ public class StageScreenController : MonoBehaviour, IPerspectiveStageScreenModif
 		_tokenSources = new CancellationTokenSource[_screenContainers.Length];
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x384A10, 169 B
+	// FOLDED BODY: this exact RVA is shared verbatim with
+	// `StageCameraController.OnDestroy` (disassembly lists both managed
+	// names against the one native function) -- valid because both classes
+	// hold `_tokenSources` (a `CancellationTokenSource[]`) at the same
+	// `FieldOffset` (0x40), the only field this method touches. See
+	// `StageCameraController.OnDestroy`'s comment for the full byte-level
+	// trace; identical body reconstructed here for the same reason.
 	[Token(Token = "0x600054C")]
 	[Address(RVA = "0x384A10", Offset = "0x383410", VA = "0x180384A10")]
 	private void OnDestroy()
 	{
+		for (int i = 0; i < _tokenSources.Length; i++)
+		{
+			if (_tokenSources[i] != null)
+			{
+				_tokenSources[i].Cancel();
+				_tokenSources[i].Dispose();
+				_tokenSources[i] = null;
+			}
+		}
 	}
 
 	[Token(Token = "0x600054D")]
