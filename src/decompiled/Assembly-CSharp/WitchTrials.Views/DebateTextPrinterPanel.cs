@@ -335,10 +335,81 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x367170, 1069 B
+	//
+	// `Messages` (the base `UITextPrinterPanel` property this reads/writes
+	// throughout, `protected virtual List<PrintedMessage> Messages { get; }`,
+	// `[CompilerGenerated]`, a trivial field-read getter -- see
+	// `UITextPrinterPanel.cs`) is dispatched through FOUR separate `call`
+	// instructions in this function. That count does not map 1:1 onto
+	// source-level occurrences of `Messages`: because the getter is a
+	// trivial `[CompilerGenerated]` field read, IL2CPP's C++ backend (MSVC)
+	// is free to elide/merge redundant dispatches within a basic block, so
+	// the call count is a codegen artifact, not evidence for how many times
+	// (or into how many locals) the original source referenced `Messages`.
+	// Confidence A covers the BEHAVIOR below; the exact number of source-level
+	// `Messages` references is not discriminable from these bytes and isn't
+	// asserted.
+	//
+	// - `if (Messages.Count == 0)`: if there are no existing messages yet,
+	//   this dispatches straight to this same class's own `AddMessage`
+	//   override (vtable Slot 108, confirmed via the `klass+0x7f8/+0x800`
+	//   VirtualInvokeData offsets = `0x138 + 108*16`) with a freshly
+	//   constructed `PrintedMessage` -- confirmed by the inlined
+	//   struct-construction pattern (three 8-byte fields written directly:
+	//   `text`, `author.id`, `author.label`, matching `PrintedMessage`'s
+	//   `{LocalizableText text; MessageAuthor author;}` layout and
+	//   `MessageAuthor`'s `{string id; LocalizableText label;}`), no `.ctor`
+	//   call (trivial constructors are inlined project-wide).
+	// - Otherwise: rents a pooled `List<PrintedMessage>` (`using
+	//   (CollectionPool<List<PrintedMessage>, PrintedMessage>.Rent(out ...))`
+	//   -- the `Rent(out TCollection)` overload confirmed by signature in
+	//   `CollectionPool.cs`, its `PooledObject<T>` disposal confirmed by the
+	//   static-init block's `PooledObject<List<PrintedMessage>>.System
+	//   .IDisposable.Dispose()` MethodInfo reference plus the `lea rcx,
+	//   [rsp+0x30]` receiver address matching the `PooledObject` struct's own
+	//   stack slot -- order+dispatch is Confidence A, whether the C# is a
+	//   `using` statement or hand-written `try/finally` is Confidence B, same
+	//   caveat as `StageCameraController.ModifyCameraAsync`). Inside:
+	//     - Reads the last message (`Messages[Messages.Count - 1]`) and
+	//       replaces it with `new PrintedMessage(lastMessage.Text + text)`
+	//       (`Naninovel.LocalizableText$$op_Addition`, confirmed by name).
+	//       **The replacement message's `author` fields are explicitly
+	//       zeroed** (`[rsp+0x58]`/`[rsp+0x60]` both set from a zero
+	//       register before the struct copy, matching `PrintedMessage`'s
+	//       `author.id`/`author.label` slots) -- i.e. appending text to a
+	//       message DISCARDS its author, same as the `Count == 0` branch's
+	//       fresh message (`[Optional] MessageAuthor author` defaulting to
+	//       `default(MessageAuthor)` in both branches, confirmed by the
+	//       identical zero-fill pattern at both call sites). If the printer
+	//       renders a speaker label from `PrintedMessage.Author`, appending
+	//       text to an existing message would visibly drop that label.
+	//     - Copies the (now-updated) `Messages` into the pooled list
+	//       (`Naninovel.LinqUtils.ReplaceWith<PrintedMessage>()`, an
+	//       `ICollection<T>.ReplaceWith(IEnumerable<T>)` extension confirmed
+	//       by signature in `LinqUtils.cs`) and passes that pooled list to
+	//       `SetMessages` (this class's own override, Slot 107, `klass+0x7e8`
+	//       confirmed) -- i.e. `Messages` is mutated in place and then
+	//       resubmitted as a whole via `SetMessages`, presumably to trigger
+	//       whatever change-notification `SetMessages` (still to examine
+	//       elsewhere in the base class) performs, avoiding an extra
+	//       allocation for the temporary copy via the pool.
 	[Token(Token = "0x600037D")]
 	[Address(RVA = "0x367170", Offset = "0x365B70", VA = "0x180367170", Slot = "109")]
 	public override void AppendText(Naninovel.LocalizableText text)
 	{
+		if (Messages.Count == 0)
+		{
+			AddMessage(new PrintedMessage(text));
+			return;
+		}
+		using (CollectionPool<List<PrintedMessage>, PrintedMessage>.Rent(out List<PrintedMessage> pooledList))
+		{
+			PrintedMessage lastMessage = Messages[Messages.Count - 1];
+			Messages[Messages.Count - 1] = new PrintedMessage(lastMessage.Text + text);
+			pooledList.ReplaceWith(Messages);
+			SetMessages(pooledList);
+		}
 	}
 
 	[Token(Token = "0x600037E")]
@@ -361,10 +432,70 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x367AB0, 865 B
+	//
+	// Shares its opening shape with `AddText` below (same inlined
+	// `IsNullOrWhiteSpace` + `Split("<br>")` sequence, byte-identical), but
+	// diverges in two confirmed ways:
+	//
+	//   - The bounds check compares `lines.Length` against `_labels.Length`
+	//     directly (`[r13+0x150]`, this class's raw `_labels` field) --
+	//     there is no `.Where`/LINQ call here at all (no `<>c` cached-lambda
+	//     class-init check anywhere in this function, unlike `AddText`), so
+	//     this method does NOT filter for currently-disabled labels; it
+	//     always walks the full `_labels` array.
+	//   - The warning string is a DIFFERENT interned `System.String` object
+	//     than `AddText`'s (confirmed: the two `lea rcx, [rip+...]`
+	//     references resolve to distinct data-section RVAs, 0x2E59640 here
+	//     vs. 0x2E59610 in `AddText`, extracted via the project's own
+	//     `il2cpp_db` string table -- not eyeballed from the disassembler's
+	//     raw/garbled terminal rendering of the UTF-16 bytes). The text is
+	//     "渡されたメッセージの行数がラベル数を超えています。" ("the number of
+	//     lines in the received message exceeds the number of labels") --
+	//     notably missing `AddText`'s "未使用" ("unused") qualifier, which is
+	//     independent confirmation that this method reasons about the total
+	//     label count, not the free-slot count.
+	//
+	// The per-index body is byte-identical in shape to `AddText`'s (same
+	// `Behaviour.set_enabled`/`TMP_Text.set_alpha`/vtable-Slot-66 `text`
+	// setter dispatches, same "empty string" fallback via `data_30D76E0+0xb8`
+	// for `i >= lines.Length`), but the loop here runs over ALL of
+	// `_labels`, not a `.Where`-filtered subset -- `hasLine = i <
+	// lines.Length` decides per-slot enable/fill instead of a prefix cutoff.
+	//
+	// **Cross-method observation** (not asserted as a live bug -- no caller
+	// evidence yet for either method): if `SetText` runs first with fewer
+	// lines than `_labels.Length`, it leaves `_labels[0..lines.Length)`
+	// enabled and `_labels[lines.Length..)` disabled -- i.e. the
+	// currently-free (disabled) labels after a `SetText` call are a SUFFIX
+	// of the array, not a prefix. `AddText`'s loop, however, writes to
+	// `_labels[0]`, `_labels[1]`, ... in order regardless of where the
+	// `.Where(!enabled)`-filtered slots actually live. If `AddText` is ever
+	// called against a `_labels` array left in that post-`SetText` state,
+	// its writes would land on the WRONG (already-enabled, in-use) slots
+	// instead of the free suffix. This is exactly the mismatch flagged as
+	// "unverified" in `AddText`'s own comment; reconstructing `SetText` did
+	// not resolve whether it happens in practice (that needs `SetText`'s
+	// and `AddText`'s actual call sites), but it does show the two methods'
+	// index conventions are NOT compatible with each other's, not just with
+	// AddText's own loop bound.
 	[Token(Token = "0x6000381")]
 	[Address(RVA = "0x367AB0", Offset = "0x3664B0", VA = "0x180367AB0")]
 	private void SetText(string text)
 	{
+		string[] lines = string.IsNullOrWhiteSpace(text) ? Array.Empty<string>() : text.Split("<br>");
+		if (lines.Length > _labels.Length)
+		{
+			UnityEngine.Debug.LogWarning("渡されたメッセージの行数がラベル数を超えています。");
+			return;
+		}
+		for (int i = 0; i < _labels.Length; i++)
+		{
+			bool hasLine = i < lines.Length;
+			_labels[i].enabled = hasLine;
+			_labels[i].alpha = 0f;
+			_labels[i].text = hasLine ? lines[i] : string.Empty;
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x367E20, 1322 B
