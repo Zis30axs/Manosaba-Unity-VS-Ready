@@ -109,10 +109,19 @@ public class StageScreenController : MonoBehaviour, IPerspectiveStageScreenModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x387B10, 156 B
+	// Much simpler than `StageCameraController::Awake` (same shared
+	// `sub_297400(TYPE, length)` array-allocation helper, confirmed same
+	// call shape): this controller has no per-screen task-slot tables to
+	// pre-allocate (unlike the camera controller's `_modifyCameraTasks`/
+	// `_shakeCameraTasks`), just the token-source array, sized off
+	// `_screenContainers.Length` (a `[SerializeField]`, unconditionally
+	// NRE-throwing dereference).
 	[Token(Token = "0x600054B")]
 	[Address(RVA = "0x387B10", Offset = "0x386510", VA = "0x180387B10")]
 	private void Awake()
 	{
+		_tokenSources = new CancellationTokenSource[_screenContainers.Length];
 	}
 
 	[Token(Token = "0x600054C")]
