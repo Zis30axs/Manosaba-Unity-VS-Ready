@@ -100,10 +100,16 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C140, 126 B
+	// A direct call to `ScriptPlayer..ctor(cfg, input, scripts, state)` (dump.cs
+	// signature) with `extended` passed as the `IStateManager state` argument,
+	// then `extended` stored to +0x100.
 	[Token(Token = "0x6000692")]
 	[Address(RVA = "0x39C140", Offset = "0x39AB40", VA = "0x18039C140")]
 	public WitchTrialsScriptPlayer(ScriptPlayerConfiguration cfg, IInputManager input, IScriptManager scripts, IStateManagerExtended extended)
+		: base(cfg, input, scripts, extended)
 	{
+		_stateManagerExtended = extended;
 	}
 
 	[Token(Token = "0x6000693")]
@@ -112,10 +118,21 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C470, 230 B
+	// When `_cts` (+0x118) is non-null: the inlined `CancellationTokenSource.Cancel()`
+	// (disposed-flag check at +0x28 -> ObjectDisposedException, then
+	// `NotifyCancellation(false)`), `Dispose()`, then `_cts = null`.
+	// There is no call to `base.DestroyService()`.
 	[Token(Token = "0x6000694")]
 	[Address(RVA = "0x39C470", Offset = "0x39AE70", VA = "0x18039C470", Slot = "74")]
 	public override void DestroyService()
 	{
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+			_cts = null;
+		}
 	}
 
 	[Token(Token = "0x6000695")]
@@ -126,22 +143,49 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 		return default(UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C700, 324 B
+	// The same `_cts` cancel/dispose/null block as `DestroyService`. Then
+	// vtable +0x598 = ScriptPlayer slot 70 `get_GosubReturnSpots` (dump.cs),
+	// and `Stack<PlaybackSpot>.Pop()` with its result discarded: the most recent
+	// gosub return spot is dropped, so the script does not return there.
 	[Token(Token = "0x6000696")]
 	[Address(RVA = "0x39C700", Offset = "0x39B100", VA = "0x18039C700", Slot = "114")]
 	public void CancelGosub()
 	{
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+			_cts = null;
+		}
+		GosubReturnSpots.Pop();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C850, 32 B
+	// Unless `_dontDisableAutoPlayAndSkip` (+0x110) is set, a tail call through
+	// vtable +0x6C8 = ScriptPlayer slot 89 `SetSkipEnabled(false)`. This does
+	// not call `base.DisableSkip()` (slot 97).
 	[Token(Token = "0x6000697")]
 	[Address(RVA = "0x39C850", Offset = "0x39B250", VA = "0x18039C850", Slot = "97")]
 	protected override void DisableSkip()
 	{
+		if (!_dontDisableAutoPlayAndSkip)
+		{
+			SetSkipEnabled(false);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x39C870, 32 B
+	// Unless `_dontDisableAutoPlayAndSkip` is set, a tail call through vtable
+	// +0x6D8 = ScriptPlayer slot 90 `SetAutoPlayEnabled(false)`.
 	[Token(Token = "0x6000698")]
 	[Address(RVA = "0x39C870", Offset = "0x39B270", VA = "0x18039C870", Slot = "100")]
 	protected override void DisableAutoPlay()
 	{
+		if (!_dontDisableAutoPlayAndSkip)
+		{
+			SetAutoPlayEnabled(false);
+		}
 	}
 
 	[Token(Token = "0x6000699")]
