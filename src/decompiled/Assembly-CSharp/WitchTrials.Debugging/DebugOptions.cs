@@ -149,6 +149,9 @@ public class DebugOptions : DebugOptionsBase
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA370, 84 B
+	// `IsDebugMode`, then the static byte +0xA `s_overrideStartGameScenario`;
+	// when both are set it returns +0x10 `s_startGameScenario`, otherwise null.
 	[Token(Token = "0x1700013F")]
 	public static string StartGameScenario
 	{
@@ -156,7 +159,7 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA370", Offset = "0x3A8D70", VA = "0x1803AA370")]
 		get
 		{
-			return null;
+			return IsDebugMode && s_overrideStartGameScenario ? s_startGameScenario : null;
 		}
 	}
 
@@ -190,6 +193,8 @@ public class DebugOptions : DebugOptionsBase
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA470, 76 B
+	// `IsDebugMode`, then the static byte +0x1A `s_checkWitchBookState`.
 	[Token(Token = "0x17000142")]
 	public static bool CheckWitchBookState
 	{
@@ -197,7 +202,7 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA470", Offset = "0x3A8E70", VA = "0x1803AA470")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_checkWitchBookState;
 		}
 	}
 
