@@ -303,6 +303,10 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// Getter (RVA 0x366350, 9 B, shared body) is `movss xmm0, [0x2AE2820];
+	// ret`, and that constant reads `0000803f` = 1.0f; the setter is the
+	// shared empty thunk 0x30C000. Not counted as progress: both are in
+	// ranked.json's `aliased` list or are the empty thunk.
 	[Token(Token = "0x1700007B")]
 	public override float RevealProgress
 	{
@@ -310,7 +314,7 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		[Address(RVA = "0x366350", Offset = "0x364D50", VA = "0x180366350", Slot = "96")]
 		get
 		{
-			return default(float);
+			return 1f;
 		}
 		[Token(Token = "0x6000375")]
 		[Address(RVA = "0x30C000", Offset = "0x30AA00", VA = "0x18030C000", Slot = "97")]
@@ -319,22 +323,23 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x366370, 82 B (setter)
+	// Auto-property. dump.cs declares `private string
+	// <Appearance>k__BackingField; // 0x188` on this type; the setter is a
+	// plain store to +0x188 plus the GC write barrier (body shared with other
+	// types' auto-setters at the same offset), and the getter (RVA 0x366360,
+	// 8 B, `aliased`, uncounted) is `mov rax, [rcx+0x188]; ret`.
 	[Token(Token = "0x1700007C")]
 	public override string Appearance
 	{
 		[Token(Token = "0x6000376")]
 		[Address(RVA = "0x366360", Offset = "0x364D60", VA = "0x180366360", Slot = "98")]
 		[CompilerGenerated]
-		get
-		{
-			return null;
-		}
+		get;
 		[Token(Token = "0x6000377")]
 		[Address(RVA = "0x366370", Offset = "0x364D70", VA = "0x180366370", Slot = "99")]
 		[CompilerGenerated]
-		set
-		{
-		}
+		set;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x3663D0, 786 B

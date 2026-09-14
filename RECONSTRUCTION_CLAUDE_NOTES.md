@@ -109,9 +109,43 @@ File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/DebateTextPrinterPanel.c
 - `[SerializeField] private AutoLayoutSupporter _autoLayoutSupporter;` --
   unconditional NRE-throwing dereference in `RevealMessages`
   (`ExecuteRebuildingAsync`).
-- `[SerializeField] private LabelSpaceData[] _labelSpaceData;` -- not read by any
-  method reconstructed so far. `RevealMessages` reads the runtime `_labelSpaces`
-  dictionary instead (presumably built from this array in the still-unreconstructed
-  `Awake`; unverified). A locale with no entry silently gets spacing `0f`, not an
-  error, so a missing `LabelSpaceData` row on the prefab would show up as zero line
-  spacing rather than a crash.
+- `[SerializeField] private LabelSpaceData[] _labelSpaceData;` -- read only in
+  `Awake`, which builds the runtime `_labelSpaces` dictionary from it with
+  `ToDictionary(LocaleKind, Space)` (now reconstructed; this replaces the earlier
+  "presumably built in Awake, unverified" wording). A null array throws LINQ's
+  `ArgumentNullException`; two rows with the same `LocaleKind` throw
+  `ArgumentException` from `ToDictionary`. `RevealMessages` then gives a locale with
+  no entry spacing `0f`, not an error, so a missing row on the prefab shows up as
+  zero line spacing rather than a crash.
+
+## `WitchTrials.Views.SkipDebateButton`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/SkipDebateButton.cs`
+
+- `_canvasGroup`, `_selectable`, `_iconImage`, `_iconShadow` (all `[SerializeField]`)
+  -- each has an explicit inlined NRE throw on dereference: `_iconImage`/`_iconShadow`
+  in `Awake` and `SetIconShadowEnabled`, `_canvasGroup` in `Present`/`Dismiss`.
+  `_selectable` is passed to UniRx `OnPointerDown/UpAsObservable` without a null check
+  in this class; what UniRx does with a null there was not examined.
+- The editor-only `Reset()` fills all four from the button's own hierarchy, so a
+  prefab set up via Reset has them wired automatically; `_iconImage` is the first
+  child `Image` with a non-null `sprite`.
+
+## `WitchTrials.Views.ExecutionButtonScreen`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/ExecutionButtonScreen.cs`
+
+- `_blood` (Image) and `_checkIcon` (CanvasGroup): unconditional NRE-throwing
+  dereferences in `Awake`, `Ready`, `Dispose`, the per-frame update lambda and
+  `OnFullFillAsync`.
+- `_button`: dereferenced by `Ready` for the pointer triggers.
+- `_buttonContainer`: passed to LitMotion `BindToLocalScaleXY` in `PressAsync` and
+  `ReleaseAsync`.
+- `_chargingSfx` / `_completeSfx`: passed straight to Naninovel `PlaySfx`/`StopSfx`
+  with no empty check.
+- `_increaseSpeed` / `_decreaseSpeed` are applied **per frame** (no `Time.deltaTime`
+  in the update lambda), so the fill time depends on the frame rate. While pressed,
+  every frame also floors the fill at 0.1 (`max(fill + _increaseSpeed, 0.1)`), so it
+  jumps to at least 10% as soon as pressing starts.
+- `_delayAfterFullFill`: seconds, waited with `DelayType.DeltaTime`, i.e. scaled by
+  `Time.timeScale`.
