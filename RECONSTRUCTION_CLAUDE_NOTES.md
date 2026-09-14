@@ -149,3 +149,19 @@ File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/ExecutionButtonScreen.cs
   jumps to at least 10% as soon as pressing starts.
 - `_delayAfterFullFill`: seconds, waited with `DelayType.DeltaTime`, i.e. scaled by
   `Time.timeScale`.
+
+## `WitchTrials.Views.ObjectionCutIn`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/ObjectionCutIn.cs`
+
+- `[SerializeField] private PlayableDirector _playableDirector;` -- unconditional
+  NRE-throwing dereference in `AwaitSpawn` (`playableGraph`, `time`, `Evaluate`).
+- `[SerializeField] private ActivationGameObjects[] _objectLibrary;` -- `AwaitSpawn`
+  NRE-throws on a null array, a null entry, or an entry whose `Objects` array is null.
+  A null `GameObject` inside `Objects` also throws. The first element of the list
+  passed to `SetSpawnParameters` (parsed as an invariant int, 0 when missing or
+  unparsable) picks which entry is shown; every other entry is hidden. An index
+  outside the array silently hides all of them rather than erroring. How Naninovel's
+  `@spawn` command fills that list is third-party behavior and was not examined.
+- When the director's `playableGraph` is already valid (a re-spawn), `AwaitSpawn`
+  rewinds `time` to 0 and resumes; otherwise it plays from the start.

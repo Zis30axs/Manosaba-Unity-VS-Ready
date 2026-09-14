@@ -17,7 +17,12 @@ public class ChangeCourtFireFxActivity : Command
 	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
 	[ParameterAlias("")]
 	[ParameterDefaultValue("true")]
-	public BooleanParameter Enable;
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x31D800, 112 B
+	// Field initializer. The constructor body (folded with
+	// `Naninovel.Commands.Skip..ctor` and `ChangeAutoPlayMode..ctor`) calls
+	// `BooleanParameter.op_Implicit(true)` (`mov cl, 1`), stores the result to
+	// +0x30 with a write barrier, then tail-jumps to `Command..ctor`.
+	public BooleanParameter Enable = true;
 
 	[Token(Token = "0x40000CA")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
