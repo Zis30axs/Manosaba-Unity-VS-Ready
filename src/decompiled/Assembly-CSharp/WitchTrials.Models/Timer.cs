@@ -80,7 +80,7 @@ public class Timer : IDisposable
 	// Backing field for the Speed auto-property below. dump.cs shows it as
 	// `<Speed>k__BackingField`, a metadata-only name that isn't valid C#
 	// source syntax, so ILSpy rendered Speed as get/set methods with no field
-	// declaration at all (see ScenarioInfo.cs for the same situation).
+	// declaration at all.
 	private float _speed;
 
 	[Token(Token = "0x17000134")]
