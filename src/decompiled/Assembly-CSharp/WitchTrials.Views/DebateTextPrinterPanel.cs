@@ -11,6 +11,8 @@ using GigaCreation.Essentials.Localization;
 using GigaCreation.Essentials.Ui;
 using GigaCreation.Tools.Ui;
 using Il2CppDummyDll;
+using LitMotion;
+using LitMotion.Extensions;
 using Naninovel;
 using Naninovel.Async.CompilerServices;
 using Naninovel.UI;
@@ -240,33 +242,56 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 	[Token(Token = "0x17000078")]
 	private ILocalizationProvider LocalizationProvider
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x366090, 202 B
+		// Lazy cache on `+0x168`: null check, then `GigaCreation.Tools.Service
+		// .ServiceLocator.Get<GigaCreation.Essentials.Localization
+		// .ILocalizationManager>()` (the zeroed first argument is
+		// `includeDerivedType`, whose declared default is `false`), store
+		// back, return. The lookup type is `ILocalizationManager` (which
+		// extends `ILocalizationProvider`), not the field's own type. Both
+		// names are fully qualified because `Naninovel.ILocalizationManager`
+		// is also in scope. This exact body is also inlined in
+		// `RevealMessages`.
 		[Token(Token = "0x6000371")]
 		[Address(RVA = "0x366090", Offset = "0x364A90", VA = "0x180366090")]
 		get
 		{
-			return null;
+			return _localizationProvider ??= GigaCreation.Tools.Service.ServiceLocator.Get<GigaCreation.Essentials.Localization.ILocalizationManager>();
 		}
 	}
 
 	[Token(Token = "0x17000079")]
 	private ICustomVariableManager NaniVarManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x366160, 202 B
+		// Lazy cache on `+0x170` via `Naninovel.Engine
+		// .GetServiceOrErr<ICustomVariableManager>()` -- same shape as
+		// `StageScreenController.TrialStateManager`.
 		[Token(Token = "0x6000372")]
 		[Address(RVA = "0x366160", Offset = "0x364B60", VA = "0x180366160")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Naninovel.Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
 	[Token(Token = "0x1700007A")]
 	private bool IsEnabledDebugSkip
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x366230, 275 B
+		// `NaniVarManager` (inlined in full), then
+		// `CustomVariableManagerExtensions.TryGetVariableValue<bool>(
+		// "enableDebugSkip", out value)` with the out local pre-zeroed, and
+		// the result is `returned & value` (`and al, [rsp+0x30]`). With a
+		// side-effect-free pre-zeroed local, `&&` and `&` are the same
+		// behavior; `&&` is written. The literal equals this class's
+		// `EnableDebugSkipVarName` const; a const compiles to the literal, so
+		// using the const name is Confidence B (the value is A).
 		[Token(Token = "0x6000373")]
 		[Address(RVA = "0x366230", Offset = "0x364C30", VA = "0x180366230")]
 		get
 		{
-			return default(bool);
+			return NaniVarManager.TryGetVariableValue<bool>(EnableDebugSkipVarName, out bool enabled) && enabled;
 		}
 	}
 
@@ -412,12 +437,62 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3675A0 (383 B, entry) + 0x368E80 (2411 B, MoveNext)
+	//
+	// Entry is the standard `AsyncUniTaskMethodBuilder.Start<>()` kickoff.
+	// `<RevealMessages>d__30` hoists only `<>4__this` and `token` -- there is
+	// NO `delay` field, so **the `delay` argument is never read**: the
+	// per-label stagger below is a hard-coded `i * 0.2f` (constant
+	// `data_2AE2670`, read from the PE as the float 0.2). One await point
+	// (`AwaitUnsafeOnCompleted<Cysharp...UniTask.Awaiter, ...>`).
+	//
+	// - `_revealCts` (`+0x180`) = `CreateLinkedTokenSource` over a freshly
+	//   allocated 1-element `CancellationToken[]` holding
+	//   `token.CancellationToken` (the state machine's `token+0x0`, the
+	//   `AsyncToken` getter being a first-field read) -- i.e. the
+	//   `params CancellationToken[]` overload. The previous `_revealCts` is
+	//   overwritten with no `Cancel()`/`Dispose()` in this method.
+	// - `_layoutGroup.spacing` = per-locale spacing: `_labelSpaces`
+	//   (`IDictionary<LocaleKind, float>`) interface method index 7
+	//   (`TryGetValue`) keyed by `LocalizationProvider.CurrentLocale`
+	//   (`ILocalizationProvider` index 1 = `get_CurrentLocale`, per
+	//   dump.cs), explicit `0f` when the key is missing. The
+	//   `LayoutGroup.SetProperty<float>(ref [+0x60], value)` call is a
+	//   byte-for-byte inlining of `HorizontalOrVerticalLayoutGroup
+	//   .set_spacing(float)` (RVA 0x247FD50, disassembled). `_layoutGroup`
+	//   is loaded before the provider/dictionary calls, so this is one
+	//   assignment statement, not a precomputed local.
+	// - `await _autoLayoutSupporter.ExecuteRebuildingAsync(_revealCts.Token)`
+	//   (GigaCreation `AutoLayoutSupporter`, returns a Cysharp `UniTask`).
+	// - After resuming: `_labels.Where(b__30_0).ToArray()`, where
+	//   `<RevealMessages>b__30_0` (RVA 0x368960, disassembled) is a straight
+	//   tail-jump into the `Behaviour.get_enabled` icall (same
+	//   `data_2604C08` descriptor as `AddText`'s lambda) with NO negation --
+	//   the opposite filter from `AddText`: this reveals the labels that are
+	//   currently ENABLED.
+	// - Per label: `IsEnabledDebugSkip` (inlined, re-evaluated every
+	//   iteration) chooses `0f` vs `i * 0.2f`; that value is computed before
+	//   the array element is read, so it's a separate local. Then
+	//   `WatAndRevealAsync(label, labelDelay, _revealCts.Token)` is
+	//   fire-and-forget: the call goes straight into
+	//   `Naninovel.UniTaskExtensions.ForgetCore`, which is exactly what
+	//   `Naninovel...Forget(UniTask)` (RVA 0x51AD40, 7 bytes: `xor edx,edx;
+	//   jmp ForgetCore`) inlines to. So this method's own task finishes as
+	//   soon as every label's reveal has been STARTED, not when they end.
 	[Token(Token = "0x600037E")]
 	[Address(RVA = "0x3675A0", Offset = "0x365FA0", VA = "0x1803675A0", Slot = "111")]
 	[AsyncStateMachine(typeof(_003CRevealMessages_003Ed__30))]
-	public override Naninovel.UniTask RevealMessages(float delay, AsyncToken token)
+	public override async Naninovel.UniTask RevealMessages(float delay, AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		_revealCts = CancellationTokenSource.CreateLinkedTokenSource(token.CancellationToken);
+		_layoutGroup.spacing = _labelSpaces.TryGetValue(LocalizationProvider.CurrentLocale, out float space) ? space : 0f;
+		await _autoLayoutSupporter.ExecuteRebuildingAsync(_revealCts.Token);
+		DebateText[] labels = _labels.Where((DebateText label) => label.enabled).ToArray();
+		for (int i = 0; i < labels.Length; i++)
+		{
+			float labelDelay = IsEnabledDebugSkip ? 0f : i * 0.2f;
+			WatAndRevealAsync(labels[i], labelDelay, _revealCts.Token).Forget();
+		}
 	}
 
 	[Token(Token = "0x600037F")]
@@ -598,20 +673,62 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x368350 (427 B, entry) + 0x3697F0 (1409 B, MoveNext)
+	//
+	// Two await points: state 0 holds a Naninovel `UniTask.Awaiter`
+	// (`<>u__1`), state 1 a Cysharp `UniTask.Awaiter` (`<>u__2`). All three
+	// parameters are hoisted and used.
+	// - `Naninovel.UniTask.Delay(TimeSpan.FromSeconds(delay), ...)`: the call
+	//   passes `ignoreTimeScale = false` (edx=0), `delayTiming = 8`
+	//   (`Naninovel.PlayerLoopTiming.Update`, the 9th member) and `ct`. The
+	//   first two are that overload's declared defaults, so only
+	//   `cancellationToken:` is written.
+	// - Then a 0 -> 1 alpha tween: `LMotion.Create(0f, 1f, 0.4f)`. The call
+	//   site hits the generic `Create<float, NoOptions, FloatMotionAdapter>
+	//   (in from, in to, duration)`, which is exactly what the non-generic
+	//   `LMotion.Create(float, float, float)` forwards to (RVA 0xDA06B0,
+	//   disassembled). `from` = 0f, `to` = 1f, duration `data_2AE26EC` read
+	//   from the PE as 0.4. Then `.BindToColorA(label)` (the `TMP_Text`
+	//   overload per the MethodInfo; its native body is folded with
+	//   `BindToFontSize` and others) and `.ToUniTask(ct)` (the 2-parameter
+	//   overload, RVA 0xD83990 exactly). `BindToColorA` lives in
+	//   `LitMotion.Extensions.dll`, which this project did not reference
+	//   until now.
+	// Each label therefore waits its stagger, then fades in over 0.4 s; the
+	// caller (`RevealMessages`) forgets the returned task.
 	[Token(Token = "0x6000383")]
 	[Address(RVA = "0x368350", Offset = "0x366D50", VA = "0x180368350")]
 	[AsyncStateMachine(typeof(_003CWatAndRevealAsync_003Ed__35))]
-	private static Naninovel.UniTask WatAndRevealAsync(DebateText label, float delay, [Optional] CancellationToken ct)
+	private static async Naninovel.UniTask WatAndRevealAsync(DebateText label, float delay, [Optional] CancellationToken ct)
 	{
-		return default(Naninovel.UniTask);
+		await Naninovel.UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: ct);
+		await LMotion.Create(0f, 1f, 0.4f).BindToColorA(label).ToUniTask(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x368500 (281 B, entry) + 0x368AC0 (953 B, MoveNext)
+	//
+	// One await point. Same `Gosub` construction already established in
+	// `GosubToObjectionCutIn`/`GosubToModifyPerspectiveStageCamera`:
+	// allocate plus inlined base `Command..ctor`, `NamedString` built via its
+	// inlined `: base(name, value)` into `Named<NullableString>..ctor`,
+	// stored to `Gosub.Path` (`+0x30`), then a vtable dispatch at
+	// `klass+0x188` (Slot 5, `Execute(AsyncToken)`) with a zeroed 16-byte
+	// `AsyncToken`. Differences from those commands: the `name` argument is
+	// null (`xor edx, edx` into the first parameter) with `id` as the
+	// `value`, rather than a `System/System_Subroutine` path; and this
+	// helper is itself `async` and awaits the Gosub instead of tail-calling
+	// it. (A null name conventionally means "the current script" in
+	// Naninovel; that part is not verified from these bytes.)
 	[Token(Token = "0x6000384")]
 	[Address(RVA = "0x368500", Offset = "0x366F00", VA = "0x180368500")]
 	[AsyncStateMachine(typeof(_003CGosub_003Ed__36))]
-	private static Naninovel.UniTask Gosub(string id)
+	private static async Naninovel.UniTask Gosub(string id)
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.Commands.Gosub gosub = new Naninovel.Commands.Gosub
+		{
+			Path = new NamedString(null, id)
+		};
+		await gosub.Execute(default(AsyncToken));
 	}
 
 	[Token(Token = "0x6000385")]
