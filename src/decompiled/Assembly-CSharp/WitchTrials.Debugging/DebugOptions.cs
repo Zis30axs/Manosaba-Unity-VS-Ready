@@ -160,6 +160,10 @@ public class DebugOptions : DebugOptionsBase
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA3D0, 76 B
+	// `DebugOptionsBase.get_IsDebugMode`; if false its result is returned,
+	// otherwise the DebugOptions static byte +0x18 = `s_debugSkip`. Same shape as
+	// `AllowContinueDebate`.
 	[Token(Token = "0x17000140")]
 	public static bool DebugSkip
 	{
@@ -167,7 +171,7 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA3D0", Offset = "0x3A8DD0", VA = "0x1803AA3D0")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_debugSkip;
 		}
 	}
 
