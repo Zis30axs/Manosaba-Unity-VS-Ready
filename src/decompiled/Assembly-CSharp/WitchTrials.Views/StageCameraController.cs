@@ -311,10 +311,14 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x384AC0, 135 B
+	// Editor-only wiring: `GetComponentsInChildren<StageCameraContainer>()`
+	// stored to `_cameraContainers` (+0x20).
 	[Token(Token = "0x6000539")]
 	[Address(RVA = "0x384AC0", Offset = "0x3834C0", VA = "0x180384AC0")]
 	private void Reset()
 	{
+		_cameraContainers = GetComponentsInChildren<StageCameraContainer>();
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x384B50 (680 B, entry) + 0x3850A0 (4319 B, MoveNext)
@@ -509,22 +513,39 @@ public class StageCameraController : MonoBehaviour, IPerspectiveStageCameraModif
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x385000, 10 B
+	// `mov dl, 1; jmp SetCameraEnabled`.
 	[Token(Token = "0x600053C")]
 	[Address(RVA = "0x385000", Offset = "0x383A00", VA = "0x180385000")]
 	public void Present()
 	{
+		SetCameraEnabled(true);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x385010, 10 B
+	// `xor edx, edx; jmp SetCameraEnabled`.
 	[Token(Token = "0x600053D")]
 	[Address(RVA = "0x385010", Offset = "0x383A10", VA = "0x180385010")]
 	public void Dismiss()
 	{
+		SetCameraEnabled(false);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x385020, 121 B
+	// `_cameraContainers` (+0x20) is loaded once and walked by index against its
+	// cached length (foreach over an array). Each element's +0x28 `_camera` gets
+	// `Behaviour.set_enabled(active)`: that is the inlined 30-byte
+	// `StageCameraContainer.SetCameraEnabled` (RVA 0x3407C0, folded with
+	// `CreditRoll.SetCanvasEnabled`), not a cross-class field access. A null
+	// element or a null camera throws NRE.
 	[Token(Token = "0x600053E")]
 	[Address(RVA = "0x385020", Offset = "0x383A20", VA = "0x180385020")]
 	private void SetCameraEnabled(bool active)
 	{
+		foreach (StageCameraContainer container in _cameraContainers)
+		{
+			container.SetCameraEnabled(active);
+		}
 	}
 
 	[Token(Token = "0x600053F")]

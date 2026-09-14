@@ -359,16 +359,29 @@ public class StageCameraContainer : MonoBehaviour
 	[SerializeField]
 	private Transform _cameraTransform;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x380FA0, 361 B
+	// Editor-only wiring, in store order: `transform` -> +0x20 `_transform`,
+	// `GetComponentInChildren<Camera>()` -> +0x28 `_camera`, then the camera's
+	// `transform` -> +0x30 `_cameraTransform`. The last read reloads +0x28 with
+	// an explicit NRE throw, so Reset fails if no child Camera exists.
 	[Token(Token = "0x600051F")]
 	[Address(RVA = "0x380FA0", Offset = "0x37F9A0", VA = "0x180380FA0")]
 	private void Reset()
 	{
+		_transform = transform;
+		_camera = GetComponentInChildren<Camera>();
+		_cameraTransform = _camera.transform;
 	}
 
+	// Body (RVA 0x3407C0, 30 B, folded with `CreditRoll.SetCanvasEnabled`) is
+	// `[rcx+0x28]` (`_camera`) null-checked, then a tail jump to
+	// `Behaviour.set_enabled(enable)`. A shared tiny body in ranked.json's
+	// `aliased` list, so not counted as progress.
 	[Token(Token = "0x6000520")]
 	[Address(RVA = "0x3407C0", Offset = "0x33F1C0", VA = "0x1803407C0")]
 	public void SetCameraEnabled(bool enable)
 	{
+		_camera.enabled = enable;
 	}
 
 	[Token(Token = "0x6000521")]
