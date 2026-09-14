@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
+using FastEnumUtility;
+using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using Naninovel;
@@ -73,27 +75,46 @@ public class LoadPerspectiveStage : Command
 	[Token(Token = "0x17000012")]
 	private IPerspectiveStageManager PerspectiveStageManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x31F320, 186 B
+		// Lazy cache in +0x40. Unlike the screen and camera commands, the first
+		// argument here is `xor ecx, ecx`, so `includeDerivedType` is false (the
+		// default).
 		[Token(Token = "0x60000F2")]
 		[Address(RVA = "0x31F320", Offset = "0x31DD20", VA = "0x18031F320")]
 		get
 		{
-			return null;
+			return _perspectiveStageManager ??= ServiceLocator.Get<IPerspectiveStageManager>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31F3E0, 171 B
+	// `WaitOrForget` (vtable +0x208, slot 13) over `LoadAsync` with `Wait` (+0x38).
 	[Token(Token = "0x60000F3")]
 	[Address(RVA = "0x31F3E0", Offset = "0x31DDE0", VA = "0x18031F3E0", Slot = "5")]
 	public override Naninovel.UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		return WaitOrForget(LoadAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31F490, 383 B (entry) + MoveNext 0x31F610
+	// `Id` goes through the inlined StringParameter -> string conversion into
+	// `FastEnum.TryParse<PerspectiveStageKind>(value, ignoreCase: true, out kind)`
+	// (`dl = 1`; `kind` is a zero-initialized local). On failure the method goes
+	// straight to SetResult: no warning, no load.
+	// On success, the inlined getter feeds `sub_3D50` with the IPerspectiveStageLoader
+	// TypeInfo and arguments (kind, token's CancellationToken). Of that
+	// interface's two slots, only slot 0 `LoadStageAsync(PerspectiveStageKind,
+	// CancellationToken)` takes arguments (slot 1 `UnloadStage()` takes none), so
+	// the call is identified by elimination.
 	[Token(Token = "0x60000F4")]
 	[Address(RVA = "0x31F490", Offset = "0x31DE90", VA = "0x18031F490")]
 	[AsyncStateMachine(typeof(_003CLoadAsync_003Ed__6))]
-	private Naninovel.UniTask LoadAsync(AsyncToken token)
+	private async Naninovel.UniTask LoadAsync(AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		if (FastEnum.TryParse<PerspectiveStageKind>((string)Id, true, out PerspectiveStageKind kind))
+		{
+			await PerspectiveStageManager.LoadStageAsync(kind, token.CancellationToken);
+		}
 	}
 
 	[Token(Token = "0x60000F5")]

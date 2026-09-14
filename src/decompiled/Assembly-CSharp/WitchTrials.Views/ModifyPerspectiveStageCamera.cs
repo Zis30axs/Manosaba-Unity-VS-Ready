@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
+using FastEnumUtility;
+using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using LitMotion;
@@ -104,27 +106,57 @@ public class ModifyPerspectiveStageCamera : Command
 	[Token(Token = "0x17000013")]
 	private IPerspectiveStageCameraModifier CameraModifier
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x31F9C0, 186 B
+		// Lazy cache in +0x68 via `ServiceLocator.Get<IPerspectiveStageManager>(true)`.
 		[Token(Token = "0x60000F8")]
 		[Address(RVA = "0x31F9C0", Offset = "0x31E3C0", VA = "0x18031F9C0")]
 		get
 		{
-			return null;
+			return _cameraModifier ??= ServiceLocator.Get<IPerspectiveStageManager>(true);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31FA80, 171 B
+	// `WaitOrForget` (vtable +0x208, slot 13) over `ModifyAsync` with `Wait` (+0x60).
 	[Token(Token = "0x60000F9")]
 	[Address(RVA = "0x31FA80", Offset = "0x31E480", VA = "0x18031FA80", Slot = "5")]
 	public override Naninovel.UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		return WaitOrForget(ModifyAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31FB30, 383 B (entry) + MoveNext 0x31FCB0
+	// Single await.
+	// - `duration` = `Duration` when assigned, else 0.35f (rdata 0x2AE26D0).
+	// - `ease` is a zero-initialized local (0 = `Ease.Linear`). When `EaseName`
+	//   is assigned, its string (the inlined StringParameter -> string
+	//   conversion: `HasValue` at vtable +0x1C8, then `Nullable<string>.Value`)
+	//   goes to `FastEnum.TryParse<Ease>(value, ignoreCase: true, out ease)`
+	//   (`TryParseInternal` with `dl = 1`). On failure the literal "Failed to
+	//   parse `{0}` easing." is formatted with the raw parameter object and
+	//   sent to Command vtable +0x1A8 = slot 7 `Warn`; execution continues.
+	// - Each tween is built only when its parameter is assigned, else null.
+	//   Height and distance use inlined record constructors (To +0x10,
+	//   Duration +0x14, Ease +0x18); rotation calls its constructor (0x39FA80)
+	//   with the `float?[]` implicit of `Rotation`.
+	// - `sub_3C80` resolves IPerspectiveStageCameraModifier slot 0
+	//   `ModifyCameraAsync(Index, heightTween, rotationTween, distanceTween,
+	//   token's CancellationToken)`; the getter is inlined.
 	[Token(Token = "0x60000FA")]
 	[Address(RVA = "0x31FB30", Offset = "0x31E530", VA = "0x18031FB30")]
 	[AsyncStateMachine(typeof(_003CModifyAsync_003Ed__11))]
-	private Naninovel.UniTask ModifyAsync(AsyncToken token)
+	private async Naninovel.UniTask ModifyAsync(AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		float duration = Assigned(Duration) ? Duration.Value : 0.35f;
+		Ease ease = Ease.Linear;
+		if (Assigned(EaseName) && !FastEnum.TryParse<Ease>((string)EaseName, true, out ease))
+		{
+			Warn(string.Format("Failed to parse `{0}` easing.", EaseName));
+		}
+		ModifyCameraHeightTween heightTween = Assigned(Height) ? new ModifyCameraHeightTween(Height, duration, ease) : null;
+		ModifyCameraRotationTween rotationTween = Assigned(Rotation) ? new ModifyCameraRotationTween(Rotation, duration, ease) : null;
+		ModifyCameraDistanceTween distanceTween = Assigned(Distance) ? new ModifyCameraDistanceTween(Distance, duration, ease) : null;
+		await CameraModifier.ModifyCameraAsync(Index, heightTween, rotationTween, distanceTween, token.CancellationToken);
 	}
 
 	[Token(Token = "0x60000FB")]
