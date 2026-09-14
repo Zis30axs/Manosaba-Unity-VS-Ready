@@ -94,3 +94,24 @@ File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/StageCameraController.cs
   mode from the usual "unassigned field throws NRE" pattern logged elsewhere in this
   file: worth flagging separately if the camera subsystem ever silently no-ops instead
   of throwing.
+
+## `WitchTrials.Views.DebateTextPrinterPanel`
+
+File: `src/decompiled/Assembly-CSharp/WitchTrials.Views/DebateTextPrinterPanel.cs`
+
+- `[SerializeField] private DebateText[] _labels;` -- dereferenced unconditionally
+  (explicit inlined NRE throws) in `SetText`/`AddText`, and passed to
+  `Enumerable.Where` in `RevealMessages` (a null array there throws LINQ's
+  `ArgumentNullException` rather than an NRE). Every element is also dereferenced per
+  iteration, so a null entry inside the array throws too.
+- `[SerializeField] private HorizontalOrVerticalLayoutGroup _layoutGroup;` --
+  unconditional NRE-throwing dereference in `RevealMessages` (its `spacing` is set).
+- `[SerializeField] private AutoLayoutSupporter _autoLayoutSupporter;` --
+  unconditional NRE-throwing dereference in `RevealMessages`
+  (`ExecuteRebuildingAsync`).
+- `[SerializeField] private LabelSpaceData[] _labelSpaceData;` -- not read by any
+  method reconstructed so far. `RevealMessages` reads the runtime `_labelSpaces`
+  dictionary instead (presumably built from this array in the still-unreconstructed
+  `Awake`; unverified). A locale with no entry silently gets spacing `0f`, not an
+  error, so a missing `LabelSpaceData` row on the prefab would show up as zero line
+  spacing rather than a crash.

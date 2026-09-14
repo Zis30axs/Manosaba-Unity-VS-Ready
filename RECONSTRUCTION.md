@@ -19,7 +19,7 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
-| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：35/82 个函数体、17,741/32,044 B 完成（约 43% 方法数、约 55% 字节数），全部 Confidence A；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：49/82 个函数体、27,405/32,044 B 完成（约 60% 方法数、约 85.5% 字节数），行为全部 Confidence A；最近一批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`OnDestroy`/3 个 getter）与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
 | PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：19/65 个函数体、23,203/27,784 B（约 83.5% 字节数）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 
 ---
@@ -779,14 +779,19 @@ private void Start()
 
 ---
 
-## 7.5 `Debate/Court` 子系统：本轮攻坚，35 个原生方法体 / 17,741 B（独立 worktree
+## 7.5 `Debate/Court` 子系统：本轮攻坚，49 个原生方法体 / 27,405 B（独立 worktree
 `recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
 
-**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **35 个 /
-17,741 B（约 43% 方法数、约 55% 字节数）**，全部 Confidence A。（初次
+**进度**：`Debate/Court` 桶原本 82 个独立函数体 / 32,044 B，本轮完成 **49 个 /
+27,405 B（约 60% 方法数、约 85.5% 字节数）**，行为全部 Confidence A（个别无法从
+字节区分的 C# 写法选择记为 B，逐处在源码注释里标明）。（初次
 提交时有 2 处被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——
 已在外部复核后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫
-遗漏和 1 处多余语句，详见下方"本轮修正"。）
+遗漏和 1 处多余语句，详见下方"本轮修正"。）最近一批 +14 个 / +9,664 B：
+`DebateTextPrinterPanel` 的 `SetText`/`AppendText`/`RevealMessages`（含其谓词
+lambda）/`WatAndRevealAsync`/`Gosub`/`OnDestroy` 及 3 个属性 getter，`PrintDebateText`
+的 `CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数（与
+`PrintTextModified` 折叠，按折叠体约定字节只计一次），见下方"显示管线"小节。
 
 | 文件 | 完成 / 总数 | 说明 |
 |---|---|---|
@@ -794,8 +799,8 @@ private void Start()
 | `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
 | `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
 | `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
-| `PrintDebateText.cs` | 14 / ~15 | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`（场景位置/旋转/动画种类配置）已复原，**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合**；`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数还没做 |
-| `DebateTextPrinterPanel.cs` | 2 / ~14（`AddText` + 其 `.Where` 谓词 lambda） | 辩论打字机效果的标签填充半边（优先级表 #33）——`AddText(string text)` 把入参按 `<br>` 拆行，挑出当前"空闲"（`!enabled`）的标签逐个启用/清零透明度/填文字；`SetText`/`AppendText`/`RevealMessages`/`WatAndRevealAsync`/`Gosub` 等淡入与调用方还是空桩，`AddText` 的调用者链还没排查 |
+| `PrintDebateText.cs` | 18（原"~15"总数估计偏低；逐地址核对未做，见"尚未解决"第 3 条） | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`（场景位置/旋转/动画种类配置）已复原，**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合**；本轮补完 `CompleteOnContinue`（按 "Continue" 输入提前完成，经 `ref` 改写传入的 token）/`ShouldPlayAutoVoice`/`WaitAutoVoice`（立即完成，不等语音）/构造函数（与 `PrintTextModified` 折叠） |
+| `DebateTextPrinterPanel.cs` | 12 / ~23 | 辩论打字机效果：`SetText`（重置整个 `_labels`）/`AddText`（优先级表 #33，只填空闲标签）按 `<br>` 拆行填字；`AppendText` 把文字拼到最后一条消息，**并丢弃其作者**；`RevealMessages` 按当前语言设行距、等布局重建，再对每个已启用标签错开 0.2 s 发起淡入（**不读传入的 `delay`**；`enableDebugSkip` 打开时不错开）；`WatAndRevealAsync` 等待后 0.4 s alpha 0→1；`Gosub`；`OnDestroy` 取消并释放 `_revealCts`；3 个属性 getter。`Awake`/`Initialize`/`SetMessages`/`AddMessage`/`SetFont`/构造函数等仍是空桩 |
 
 ### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
 
@@ -1169,29 +1174,77 @@ private void AddText(string text)
    `StringBuilder.Append(string)` 重载（调用点 `rdx` 里是 `STR ':'` 指针，不是裸
    char 值），应写成 `Append(":")` 而不是 `Append(':')`。
 
+### `DebateTextPrinterPanel` 显示管线 + `PrintDebateText` 尾巴 — 三处字节确认的行为事实
+
+本批 14 个函数体 / 9,664 B。`DebateTextPrinterPanel` 10 个：`SetText` 865 B、
+`AppendText` 1,069 B、`RevealMessages` 383+2,411 B、其谓词 lambda 152 B、
+`WatAndRevealAsync` 427+1,409 B、`Gosub` 281+953 B、`OnDestroy` 229 B、
+`LocalizationProvider`/`NaniVarManager`/`IsEnabledDebugSkip` 三个 getter 202/202/275 B。
+`PrintDebateText` 4 个：`CompleteOnContinue` 496 B、`ShouldPlayAutoVoice` 238 B、
+`WaitAutoVoice` 65 B、构造函数 7 B。逐方法证据在源码注释里，这里只记结论：
+
+- **`SetText` 与 `AddText` 的下标约定互不兼容。** 两者开头逐字节相同（内联的
+  `IsNullOrWhiteSpace` + `Split("<br>")`），但 `SetText` 遍历整个 `_labels` 并按总标签数
+  做越界检查，`AddText` 则先 `.Where(!enabled)` 过滤。两处警告字符串是不同的驻留对象
+  （经 `il2cpp_db` 字符串表取出，不是看终端乱码）："…ラベル数を超えています。"与
+  "…未使用ラベル数を超えています。"，少了"未使用"，独立印证两者比较的对象不同。
+  `SetText` 之后空闲标签是数组后缀，而 `AddText` 从 `_labels[0]` 写起。
+- **`AppendText` 丢弃作者。** 最后一条消息被替换为 `new PrintedMessage(last.Text + text)`，
+  `author` 的两个字段显式清零（`Count == 0` 分支同样）。`Messages` getter 被派发 4 次，
+  但它是 `[CompilerGenerated]` 字段读取，C++ 后端会合并冗余派发，调用次数不能当作源码
+  结构的证据，所以没有据此编造局部变量。
+- **`RevealMessages` 不读自己的 `delay` 参数。** 状态机只提升了 `this` 和 `token`；逐标签
+  错开是硬编码的 `i * 0.2f`（常量从 PE 读出为 0.2），`enableDebugSkip` 打开时为 0。每个
+  `WatAndRevealAsync` 都被 `Forget()`，所以该方法在所有淡入"开始"时就完成，不等淡入结束。
+  上一个 `_revealCts` 被直接覆盖，未取消也未释放；已复原的方法里只有 `OnDestroy` 清理它。
+  谓词 lambda 是 `label.enabled`，与 `AddText` 的 `!enabled` 相反。
+- `WatAndRevealAsync`：`Naninovel.UniTask.Delay`（`delayTiming` 传 8 =
+  `PlayerLoopTiming.Update`，其余为默认值）之后 `LMotion.Create(0f, 1f, 0.4f)
+  .BindToColorA(label).ToUniTask(ct)`。
+- `CompleteOnContinue` 经 `ref` 改写调用方的 token：保留 `CancellationToken`，把
+  `CompletionToken` 链接到下一次 "Continue" 输入；没有该输入采样器时返回装箱的
+  `EmptyDisposable`，不改 token。`ShouldPlayAutoVoice` 检查的是 `PlaybackSpot.ScriptPath`
+  非空，不是 `PlaybackSpot.Valid`（后者检查行号下标，已独立反汇编）。`WaitAutoVoice`
+  立即完成。构造函数与 `PrintTextModified` 折叠。
+
+**工程/第三方桩修正**：`Naninovel.Common` 的 `PooledObject<T>` 有 `IDisposable.Dispose`
+却没有声明 `: IDisposable`，导致 `using` 无法编译（与此前 `UniTask.Awaiter`/
+`ParameterList<TItem>` 同类）；`Assembly-CSharp.csproj` 缺 `LitMotion.Extensions.dll`
+引用（`BindToColorA` 在其中）。
+
+**工具备忘**：`disas.py ... | tee 文件 | head -N` 会因 SIGPIPE 截断落盘内容
+（`RevealMessages` 的 MoveNext 第一次只写入 335/617 行）。大函数一律直接重定向到文件。
+
 ### 尚未解决的问题（诚实记录，不是回避）
 
-1. **`DebateTextPrinterPanel::AddText` 里字节确认的一处行为疑点未解释**——循环边界
-   用"空闲标签数"（`availableLabels.Length`），但写入目标是 `_labels[i]` 而非
-   `availableLabels[i]`；是否安全取决于调用方是否保证空闲标签总是数组前缀，未证实
-   （详见上方 `AddText` 小节）。
-2. **`DebateTextPrinterPanel.cs` 剩余尾巴**——`SetText`/`AppendText`/
-   `RevealMessages`/`WatAndRevealAsync`/`Gosub`/构造函数都还是空桩；`AddText` 的
-   调用者链（谁在什么时候调它、`SetText` 是否真的先把 `_labels` 全部重置为禁用）
-   还没排查，这正是上一条疑点能否解释清楚的关键。
-3. **`PrintDebateText.cs` 剩余尾巴**——`CompleteOnContinue`（Slot 15 空桩）、
-   `ShouldPlayAutoVoice`（Slot 33 空桩）、`WaitAutoVoice`（Slot 40 空桩）、实例构造函数
-   （`0x323690`）都还没排查，是这个文件收尾的最后一批。
+1. **`AddText` 与 `SetText` 的下标约定互不兼容（`SetText` 复原后，疑点更具体了，
+   但仍未证实会实际触发）**——`SetText` 遍历整个 `_labels`，把
+   `_labels[0..lines.Length)` 启用、其余禁用，所以它之后的"空闲"标签是数组**后缀**；
+   `AddText` 用 `.Where(!enabled)` 选出这段后缀计数，却从 `_labels[0]` 开始写。若在
+   部分填充的 `SetText` 之后调用 `AddText`，会覆盖正在显示的前缀。两者的调用方
+   （`SetMessages`/`AddMessage`，仍是空桩）还没排查，所以是否真会发生仍未知。
+2. **`DebateTextPrinterPanel.cs` 剩余尾巴**——`Awake`/`Initialize`/`SetMessages`/
+   `AddMessage`/`SetFont`/构造函数/`LabelSpaceData` 两个 getter 仍是空桩（反汇编已
+   存到本会话 scratchpad，未写入）。`RevealProgress` get 与 `Appearance` get/set 的
+   RVA 解析到的是其它类型共享的折叠体（`VirtualResourceProvider.get_LoadProgress`
+   等），不能直接照那几份反汇编写，需要单独处理。
+3. **`PrintDebateText.cs` 逐地址核对未做**——本轮补完 `CompleteOnContinue`/
+   `ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数后，文件内非共享空体地址 18 个、
+   `RECONSTRUCTED` 标记 16 个（异步方法的 MoveNext 地址并入入口方法计），原表里
+   "~15" 的总数估计偏低；是否已无空桩需要逐地址核对，暂不宣称整个文件完成。
 
 （`ModifyDebatePrinter` 已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter →
-Print → WaitForDebate` 入口链已完全闭合，不再是阻塞项——此前"尚未解决"列表里的
-这一条已解决，不是悄悄消失。）
+Print → WaitForDebate` 入口链已完全闭合；`SetText`/`AppendText`/`RevealMessages`/
+`WatAndRevealAsync`/`Gosub` 与 `PrintDebateText` 的四个尾巴本轮均已复原——以上
+各条旧待办已解决，不是悄悄消失。）
 
 ### 下一批最高价值目标（按价值排序，供下一轮直接开始）
 
-1. `DebateTextPrinterPanel.cs` 收尾（`SetText`/`AppendText`/`RevealMessages`/
-   `WatAndRevealAsync`/`Gosub`）——顺带能解释清楚 `AddText` 那处尚未解决的行为疑点
-2. `PrintDebateText.cs` 收尾（`CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数）
+1. `DebateTextPrinterPanel::SetMessages`（1415 B）/`AddMessage`（191 B）——它们是
+   `SetText`/`AddText` 的候选调用方，能直接回答上面第 1 条是否会实际触发
+2. `DebateTextPrinterPanel` 其余：`Awake`（786 B）/`Initialize`（830 B）/`SetFont`（907 B）
+3. `PrintTextModified::ShouldPlayAutoVoice`（RVA `0x3251A0`）——与本轮
+   `PrintDebateText` 的同名重写对照；以及 `PrintDebateText.cs` 逐地址核对
 
 （`StageCameraController::ShakeCameraAsync` 已复原——见下方 §7.6，`_shakeCameraTasks`
 的 3 槽已完全解释清楚，`_modifyCameraTasks` 的空闲第 4 槽也已 grep 穷尽排查
