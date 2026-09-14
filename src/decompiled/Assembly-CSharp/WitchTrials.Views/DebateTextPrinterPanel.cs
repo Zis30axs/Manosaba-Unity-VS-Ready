@@ -221,7 +221,7 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 
 	[Token(Token = "0x4000452")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x160")]
-	private readonly StringBuilder _builder;
+	private readonly StringBuilder _builder = new StringBuilder();
 
 	[Token(Token = "0x4000453")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x168")]
@@ -366,16 +366,82 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		return default(Naninovel.UniTask);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x366B20, 1415 B
+	// - `_revealCts` cancel/dispose/null, byte-identical to `OnDestroy`'s
+	//   block (inlined `Cancel()`, same `data_30DEB5A` flag).
+	// - `foreach` over `_labels` setting `alpha = 0f` (inlined
+	//   `TMP_Text.set_alpha`, same shape as `SetText`/`AddText`). The array
+	//   is loaded into a register once before the loop and never re-read
+	//   from the field, which is how C# compiles `foreach` over an array
+	//   (it caches the array in a hidden local), unlike the `for` loops in
+	//   `SetText`/`AddText` that reload `_labels` every pass.
+	// - `Messages.ReplaceWith(messages)`.
+	// - `messages.Count` (`IReadOnlyCollection<T>` index 0) is dispatched
+	//   once and then compared against 0 and 1, so the source evaluates it
+	//   once (a `switch`); two `messages.Count` expressions would need two
+	//   interface calls. 0 -> `SetText("")` (a literal `""` load, not the
+	//   `String.Empty` static read seen in `SetText`); 1 ->
+	//   `SetText(FormatMessage(messages[0]))` (`IReadOnlyList<T>` index 0 =
+	//   indexer, index argument 0; `FormatMessage` is `UITextPrinterPanel`
+	//   Slot 114 at `klass+0x858`); otherwise `_builder.Length = 0`, a
+	//   `foreach` over `messages` (enumerator disposed via `IDisposable` in
+	//   the finally path) appending `FormatMessage(message)` to `_builder`,
+	//   then `SetText(_builder.ToString())` (`StringBuilder` vtable Slot 3).
+	//   Nothing is appended between messages, so any line break must come
+	//   from `FormatMessage` itself.
+	// The three branches reach one native `SetText` call site; whether the
+	// source had one call per case (merged by the C++ backend) or a shared
+	// local is not discriminable (B), so the per-case form is written.
+	// This is the confirmed caller of `SetText`.
 	[Token(Token = "0x600037B")]
 	[Address(RVA = "0x366B20", Offset = "0x365520", VA = "0x180366B20", Slot = "107")]
 	public override void SetMessages(IReadOnlyList<PrintedMessage> messages)
 	{
+		if (_revealCts != null)
+		{
+			_revealCts.Cancel();
+			_revealCts.Dispose();
+			_revealCts = null;
+		}
+		foreach (DebateText label in _labels)
+		{
+			label.alpha = 0f;
+		}
+		Messages.ReplaceWith(messages);
+		switch (messages.Count)
+		{
+		case 0:
+			SetText("");
+			break;
+		case 1:
+			SetText(FormatMessage(messages[0]));
+			break;
+		default:
+			_builder.Length = 0;
+			foreach (PrintedMessage message in messages)
+			{
+				_builder.Append(FormatMessage(message));
+			}
+			SetText(_builder.ToString());
+			break;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3670B0, 191 B
+	// `Messages.Add(message)` (`List<PrintedMessage>.Add`), then
+	// `AddText(FormatMessage(message))` (`FormatMessage` = Slot 114, direct
+	// call to `AddText`). Unlike `SetMessages` it neither cancels the
+	// current reveal nor resets label alpha. This is the confirmed caller of
+	// `AddText`. Combined with `SetMessages -> SetText`, an `AddMessage`
+	// after a partially-filled `SetMessages` hits the index mismatch noted
+	// on `SetText`; whether Naninovel's base printer ever makes that call
+	// sequence is third-party behavior not examined here.
 	[Token(Token = "0x600037C")]
 	[Address(RVA = "0x3670B0", Offset = "0x365AB0", VA = "0x1803670B0", Slot = "108")]
 	public override void AddMessage(PrintedMessage message)
 	{
+		Messages.Add(message);
+		AddText(FormatMessage(message));
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x367170, 1069 B
@@ -749,6 +815,13 @@ public class DebateTextPrinterPanel : UITextPrinterPanel, ILocalizableUI
 		await gosub.Execute(default(AsyncToken));
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x368620, 181 B
+	// Allocates a `StringBuilder`, stores it to `_builder` (`+0x160`), and
+	// only then tail-jumps into `UITextPrinterPanel..ctor`. A field
+	// initializer runs before the base constructor call, while an assignment
+	// in the constructor body would run after it, so this is the
+	// `= new StringBuilder()` initializer on the `_builder` declaration; the
+	// constructor body itself is empty.
 	[Token(Token = "0x6000385")]
 	[Address(RVA = "0x368620", Offset = "0x367020", VA = "0x180368620")]
 	public DebateTextPrinterPanel()
