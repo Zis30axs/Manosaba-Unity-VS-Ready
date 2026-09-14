@@ -448,11 +448,13 @@ public class WitchBookScreen : NaninovelScreen
 	[Token(Token = "0x170000A0")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x379E80, 202 B
+		// Lazy cache in +0xC8 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`.
 		[Token(Token = "0x60004D0")]
 		[Address(RVA = "0x379E80", Offset = "0x378880", VA = "0x180379E80")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 

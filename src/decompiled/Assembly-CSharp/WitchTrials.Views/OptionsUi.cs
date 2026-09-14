@@ -427,11 +427,14 @@ public class OptionsUi : CustomUI, ISettingsUI, IManagedUI
 	[Token(Token = "0x1700005C")]
 	private IWitchTrialsChoiceHandlerManager WitchTrialsChoiceHandlerManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352E10, 202 B
+		// Lazy cache in +0x1A8 via `Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>()`
+		// (an engine service, not a ServiceLocator lookup).
 		[Token(Token = "0x60002DA")]
 		[Address(RVA = "0x352E10", Offset = "0x351810", VA = "0x180352E10")]
 		get
 		{
-			return null;
+			return _witchTrialsChoiceHandlerManager ??= Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>();
 		}
 	}
 

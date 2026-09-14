@@ -90,11 +90,13 @@ public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, I
 	[Token(Token = "0x1700011A")]
 	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x39C070, 202 B
+		// Lazy cache in +0x108 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`.
 		[Token(Token = "0x6000691")]
 		[Address(RVA = "0x39C070", Offset = "0x39AA70", VA = "0x18039C070")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 
