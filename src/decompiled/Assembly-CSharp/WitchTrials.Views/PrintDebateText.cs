@@ -485,6 +485,10 @@ public class PrintDebateText : PrintText
 	[AsyncStateMachine(typeof(_003CPrint_003Ed__21))]
 	protected override async UniTask Print(ITextPrinterActor printer, AsyncToken token)
 	{
+		// RECONSTRUCTED | Confidence: A | <>n__0 base-call accessor, RVA: 0x3238E0, 31 B
+		// Compiler-generated for the `base.Print` call inside this async method:
+		// copies the 16-byte AsyncToken and calls `PrintText.Print` (0x4FD430)
+		// non-virtually. It needs no source of its own beyond this line.
 		await base.Print(printer, token);
 		if (IsEnabledDebugSkip)
 		{

@@ -171,6 +171,10 @@ public class DebugOptions : DebugOptionsBase
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA420, 76 B
+	// Calls the static `DebugOptionsBase.get_IsDebugMode`; when it is false,
+	// returns its (false) result directly; otherwise returns the byte at
+	// DebugOptions static-fields +0x19 = `s_allowContinueDebate`.
 	[Token(Token = "0x17000141")]
 	public static bool AllowContinueDebate
 	{
@@ -178,7 +182,7 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA420", Offset = "0x3A8E20", VA = "0x1803AA420")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_allowContinueDebate;
 		}
 	}
 
