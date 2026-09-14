@@ -30,19 +30,19 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 
 	[Token(Token = "0x400070A")]
 	[FieldOffset(Offset = "0x20")]
-	private readonly ReactiveProperty<bool> _isInTitleScreen;
+	private readonly ReactiveProperty<bool> _isInTitleScreen = new ReactiveProperty<bool>(false);
 
 	[Token(Token = "0x400070B")]
 	[FieldOffset(Offset = "0x28")]
-	private readonly ReactiveProperty<bool> _isTrialMode;
+	private readonly ReactiveProperty<bool> _isTrialMode = new ReactiveProperty<bool>();
 
 	[Token(Token = "0x400070C")]
 	[FieldOffset(Offset = "0x30")]
-	private readonly ReactiveProperty<bool> _canFastForwardDebate;
+	private readonly ReactiveProperty<bool> _canFastForwardDebate = new ReactiveProperty<bool>();
 
 	[Token(Token = "0x400070D")]
 	[FieldOffset(Offset = "0x38")]
-	private readonly Timer _trialTimer;
+	private readonly Timer _trialTimer = new Timer(true);
 
 	[Token(Token = "0x400070E")]
 	[FieldOffset(Offset = "0x40")]
@@ -102,6 +102,16 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 		set;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3993C0, 319 B
+	// Starts with the inlined `DebugOptions.StartGameScenario` (0x3AA370:
+	// IsDebugMode && static +0xA `s_overrideStartGameScenario` ?
+	// +0x10 `s_startGameScenario` : null); a non-null result is returned.
+	// Otherwise the remaining bytes (lazy +0x18 `_naniScriptManager` via
+	// `Engine.GetServiceOrErr<IScriptManager>()`, IEngineService<ScriptsConfiguration>
+	// slot 0 `Configuration`, +0x48 `StartGameScript`) are byte-identical to the
+	// base `NaninovelManager.get_StartGameScenarioName` at 0xD026C0, which
+	// was disassembled for comparison. That base getter is inlined here; the
+	// private `NaniScriptManager` it uses is not accessible from this class.
 	[Token(Token = "0x1700010F")]
 	public override string StartGameScenarioName
 	{
@@ -109,7 +119,7 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 		[Address(RVA = "0x3993C0", Offset = "0x397DC0", VA = "0x1803993C0", Slot = "7")]
 		get
 		{
-			return null;
+			return WitchTrials.Debugging.DebugOptions.StartGameScenario ?? base.StartGameScenarioName;
 		}
 	}
 
@@ -302,7 +312,15 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 	[Address(RVA = "0x399EE0", Offset = "0x3988E0", VA = "0x180399EE0", Slot = "18")]
 	public IObservable<Unit> OnEnterTitleScreenAsObservable()
 	{
-		return null;
+		// RECONSTRUCTED | Confidence: A | RVA: 0x399EE0, 502 B
+		// +0x20 `_isInTitleScreen` -> `ReactivePropertyExtensions
+		// .SkipLatestValueOnSubscribe<bool>` (method metadata; called through an
+		// aliased shared body) -> `Observable.Where<bool>` with the cached
+		// `<>c.<OnEnterTitleScreenAsObservable>b__42_0` (static slot +8; its body is
+		// folded with `ByteEqualityComparer.GetHashCode`, i.e. it returns the bool
+		// unchanged) -> tail jump to `AsUnitObservable<bool>`. Emits only on
+		// later transitions into the title screen, never the current value.
+		return _isInTitleScreen.SkipLatestValueOnSubscribe().Where(x => x).AsUnitObservable();
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x39A0E0, 118 B
@@ -488,6 +506,15 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (values), B (initializer-vs-ctor spelling) | RVA: 0x39AD50, 572 B
+	// Only the four readonly-field stores, now written as field initializers.
+	// The base `NaninovelManager..ctor` is the empty shared 0x30C000 and emits
+	// no call.
+	// - +0x20 = `new ReactiveProperty<bool>(false)` (the value ctor 0x8C4A20
+	//   with a zero byte).
+	// - +0x28 and +0x30 = `new ReactiveProperty<bool>()` (parameterless 0x8C4900).
+	// - +0x38 = `WitchTrials.Models.Timer` with its ctor(bool useRealtime)
+	//   inlined: +0x28 `Speed` = 1f initializer, +0x10 `_useRealtime` = true.
 	[Token(Token = "0x6000675")]
 	[Address(RVA = "0x39AD50", Offset = "0x399750", VA = "0x18039AD50")]
 	public WitchTrialsNaninovelManager()
