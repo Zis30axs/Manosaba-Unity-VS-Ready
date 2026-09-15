@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：71/165 个函数体、18,321/50,436 B。已完成三组，见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：89/165 个函数体、23,240/50,436 B。已完成四组（第 4 组为 HintDisplay），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
 
@@ -2070,7 +2070,21 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **`WitchTrialsLogUi.SpawnMessage`**：基类调用后，若 `LastMessage` 为 `WitchTrialsLogMessageUi`，则调用 `ModifyAuthorPanel`。
 - **`WitchTrialsLogMessageUi` 构造函数**：+0x90/+0xA0 的写入是 BacklogMessageUI 的初始化器，本类没有自己的初始化器。
 
-进度：`progress.py UI` 测得 71/165、18,321/50,436 B；全部 `WitchTrials.*` 合计 474/929、162,364/316,778 B；警告基线 140。
+**第 4 组：HintDisplay（提示应用，19 个函数体 + 3 个 MoveNext）**
+
+- **`Present`**：
+  - 清空文本，切换两个 CanvasGroup，`RequestNextMessage` 抽取一条消息（icall `Random::RandomRangeInt`）。
+  - `_cts?.Cancel()` 后新建 CTS，并 `_cts.AddTo(destroyCancellationToken)`：Cysharp `CancellationTokenExtensions.AddTo` 已内联，即 `RegisterWithoutCaptureExecutionContext` 配静态 `disposeCallback`。
+  - 最后 `MainLoopAsync(_cts.Token).Forget()`。
+- **`MainLoopAsync`**：循环执行 `Yield`；消息为空则 `WaitWhile`，再 `ShowTextAsync`；随后 `WaitContinueOrBreakAsync` 为假时退出。循环结束后内联 `Dismiss`（`Close` + `OnClose?.Invoke()`）。
+- **`ShowTextAsync`**：逐字追加并调用 `SetText(StringBuilder)` 与 `ForceMeshUpdate`，按 `_waitOnChara` 加字符表额外时间 `Delay(RoundToInt(x*1000))`。
+  - `[数字]` 标记：`TryParse` 成功时 `WaitForSeconds`，随后跳过标记。
+  - 任一按钮被按下（`TextSkip = 7`）时，用正则去掉剩余标记后一次性写出，再 `WaitForSeconds(_waitSkip)`。
+- **`WaitContinueOrBreakAsync`**：每帧清空所选按钮；Witch → true，WordPrinter → false。
+- **按钮接线**：关闭按钮经 UniRx 订阅 `Dismiss`（lambda `b__30_0` 与 `Dismiss` 折叠为同一函数体）；其余三个按钮用 `AddListener` 写入 `_selectedButtonKind`。
+- **构造函数**：只有字段初始化器 `0.1f` / `0.5f`，以及 `{ '。', '】' }` 各 0.3f 的等待表。
+
+进度：`progress.py UI` 测得 89/165、23,240/50,436 B；全部 `WitchTrials.*` 合计 492/929、167,283/316,778 B；警告基线 140。
 
 
 ---
