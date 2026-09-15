@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 进行中：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2630,19 +2630,55 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 33/162、5,739/56,145 B；全部 `WitchTrials.*` 合计 775/929、258,966/316,778 B；0 错误，警告基线 140。
 
+### 第 D2 组：三个 `Localize*` 组件与 `LoadingIndicatorRolling`（21 个函数体，另补 3 个嵌套类成员）
+
+三个 `Localize*` 组件的 `LocalizationProvider` getter 形状相同：
+- 用 `ServiceLocator.Get<ILocalizationManager>(true)` 懒加载缓存。
+- 这里的 `ILocalizationManager` 是 GigaCreation 的接口，继承 `ILocalizationProvider`，不是 Naninovel 的同名接口。
+- 订阅统一写作 `OnLocaleChangedAsObservable().Subscribe(handler).AddTo(this)`（UniRx，接口槽 3）。
+
+- **`LocalizeCanvasGroup`**：
+  - `OnEnable` 订阅后立即按 `CurrentLocale`（槽 1）应用。
+  - `HandleLocaleChanged` 让匹配语言的 CanvasGroup 的 alpha 为 1，其余为 0。
+  - `OnDisable` 只 `Dispose` 订阅，不清字段。
+- **`LocalizeImage`**：
+  - `Map` 只构建一次：`_settings.ToDictionary(Locale, Sprite)`，再把 Image 自身的 sprite 以 `SourceLocale`（槽 0）为键 `Add` 进去。因此 `_settings` 里若含源语言项，会因重复键抛异常。
+  - `ModifyImageByLocale`：先 `TryGetValue`（IDictionary 槽 7），失败时直接读 `_map` 字段取 `SourceLocale` 项；设为 `overrideSprite` 后调用 `SetNativeSize()`（Image 虚槽 45）。
+  - `OnDisable` 清空 `overrideSprite`。
+- **`LocalizeRebuildables`**：
+  - `Reset` 收集子级按钮/开关（`includeInactive: true`），标签取"全部子级标签 − 按钮/开关各自拥有的标签"（`Except`，拥有者一侧用无参重载）。
+  - `Activate` 先按当前语言 `RebuildAll`，再订阅。
+  - `Deactivate` 释放并清空订阅。
+  - `RebuildAll` 对三类控件分别调用 `Rebuild`：
+    - 按钮：`Rebuild(null, true, false, locale)`。`controlsItsOwnSize` 为有值的 false（Nullable ctor 以 0 构造），不是 `default`。
+    - 开关：公开的 `Rebuild(true, locale)`（0xCECC40），被内联到其私有 `RebuildElements`。
+    - 标签：`Rebuild(null, true, locale)`。
+- **`LoadingIndicatorRolling`**（加载转圈）：
+  - `Reset`：内联 `base.Reset()`（`_canvasGroup = GetComponent<CanvasGroup>()`），再存 `transform`。
+  - `OnShow` 调用 `ShowAsync(destroyCancellationToken).Forget()`。
+  - `ShowAsync`（MoveNext 3,157 B，两个 await 状态）：
+    1. 取消并释放旧的 `_cts`，新建后与 `ct` 链接（using）。
+    2. 在未取消期间循环：用 LitMotion 在 `_duration` 内完成 0→360，`_ease` 缓动，调度器为 `MotionScheduler.UpdateIgnoreTimeScale`（静态 +0x60），绑定 `SetRoll`，`AddTo(this)`，经 `ToUniTask` 等待；然后 `UniTask.Delay(_delay 秒)`（DelayType 重载）。
+    3. 正常退出时释放并清空 `_cts`；取消时异常跳出，只释放链接源。清理由 `OnHide` 负责：取消、释放并清空 `_cts`。
+    - 由于使用 IgnoreTimeScale 调度器，暂停（`timeScale = 0`）时转圈照常。
+  - `SetRoll(value)`：只替换欧拉角的 z 分量，值为 `value < 180 ? -value : 360 - value`（常量 180/360 取自数据 RVA 0x2AE2C08/0x2AE2C40）。
+  - 构造函数只有 `_duration = 1f` 字段初始化器。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 54/162、13,772/56,145 B；全部 `WitchTrials.*` 合计 796/929、266,999/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
 旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（129 个函数体、约 50 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。按大小划分：
-   - 小于 120 B 的零散方法约 28 个。
-   - 120–250 B 的服务 getter、`Reset` 与 record 的 `EqualityContract`/`Equals(object)` 约 44 个。
-   - 大于 250 B 的约 79 个，主要是：
+1. **`Other` 桶余量**（108 个函数体、约 42 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
+   - 零散小方法、服务 getter，以及 record 的 `EqualityContract`/`Equals(object)`。
+   - 较大的函数体：
      - `Emote*` 命令的 `GetParametersForActor` 与构造函数。
      - `Spawnable*` 的 `AwaitSpawn/AwaitDestroy`。
-     - `Localize*` 组件。
      - `AuthorTextBuilder`、`Timer`。
      - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
      - `StopForChoice.Execute`（2,409 B）。
