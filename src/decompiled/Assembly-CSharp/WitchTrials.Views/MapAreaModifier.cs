@@ -21,22 +21,39 @@ public class MapAreaModifier : MonoBehaviour
 	[SerializeField]
 	private bool _showFocusButton;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36E920 (identical-code-folded with ResetReferences)
 	[Token(Token = "0x60003EF")]
 	[Address(RVA = "0x36E920", Offset = "0x36D320", VA = "0x18036E920")]
 	private void Reset()
 	{
+		ResetReferences();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36E920
+	// 
+	// `gameObject.GetComponentsInChildren<MapArea>(includeInactive: dl=1)` - the
+	// inlined `Component.GetComponentsInChildren<T>(bool)` wrapper.
 	[Token(Token = "0x60003F0")]
 	[Address(RVA = "0x36E920", Offset = "0x36D320", VA = "0x18036E920")]
 	public void ResetReferences()
 	{
+		_mapAreas = GetComponentsInChildren<MapArea>(true);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36E9F0
+	// 
+	// Array loop over `_mapAreas` reading `_showFocusButton` (+0x30) and
+	// `_labelMaxWidths` (+0x28) per iteration; the body is MapArea.ModifyInEditor
+	// (0x36DF50) inlined (same DisplayClass10_0, undo names and closures).
 	[Token(Token = "0x60003F1")]
 	[Address(RVA = "0x36E9F0", Offset = "0x36D3F0", VA = "0x18036E9F0")]
 	public void ModifyInEditor()
 	{
+		MapArea[] mapAreas = _mapAreas;
+		foreach (MapArea mapArea in mapAreas)
+		{
+			mapArea.ModifyInEditor(_showFocusButton, _labelMaxWidths);
+		}
 	}
 
 	[Token(Token = "0x60003F2")]

@@ -26,6 +26,7 @@
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
 | Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
+| Map 子系统 | 进行中：第 A 组（叶子组件）完成，17/27 个函数体、5,094/9,894 B。MapArea、MapAreaFocusButton、MapAreaLabel、MapAreaModifier、MapFloor 全部方法，含 `OnClickAsync` 状态机与两个编辑器用 `ModifyInEditor`；为此给 Assembly-CSharp 补上 `GigaCreation.Tools.UndoExtensions` 工程引用，见 §7.14。第 B 组（MapPage、ChoiceMapArea、SpawnableMap）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2230,6 +2231,37 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **CreditsDirectorAct1.NaniAudioManager**：懒加载缓存（+0xA0）。
 
 进度：Audio 18/18；全部 `WitchTrials.*` 合计 613/929、205,414/316,778 B；0 错误，警告基线 140。
+
+## 7.14 `Map` 子系统
+
+### 第 A 组：叶子组件（MapArea / MapAreaFocusButton / MapAreaLabel / MapAreaModifier / MapFloor）
+
+- **`MapArea`**：
+  - `Reset`：两次 `GetComponentInChildren<T>()`（METHODINFO 给出 MapAreaFocusButton、MapAreaLabel）。
+  - `Show` / `Hide`：内联了 `MapAreaLabel.Show`/`Hide`（0x36E750 / 0x3491C0，已分别反汇编确认是 `_canvasGroup.alpha = 1f / 0f`），因此写成方法调用。
+  - `ChangeFocusButtonActivity`：按 `enable` 分支，进入内联的 `MapAreaFocusButton.Enable`/`Disable`（CanvasGroup 的 interactable + blocksRaycasts）。
+  - `OnClickAsync`（MoveNext 0x36E320）：`new AsyncUnityEventHandler(_focusButton.onClick, ct, callOnce: true).OnInvokeAsync()`，这正是 Cysharp `UnityAsyncExtensions.OnClickAsync(Button, CancellationToken)` 的内联体。await 之后返回 `_areaKind`。
+  - `ModifyInEditor`：两次 `DoActionAsUndoable<T>`，撤销名分别是 'Modify Map Area Focus Button' 和 'Modify Map Area Label'。闭包 DisplayClass10_0 捕获 `showFocusButton`（+0x10）与 `labelMaxWidths`（+0x18）。
+- **`MapAreaFocusButton`**：
+  - `Awake` 直接调 `Selectable.Awake`，然后把 alpha 置 0。
+  - `OnHighlightingChanged` 与 `ModifyInEditor(bool)` 被链接器折叠为同一函数体（`alpha = flag ? 1f : 0f`）。前者写成对后者的调用。
+- **`MapAreaLabel.ModifyInEditor`**：
+  - 用 `preferredWidth`（TMP_Text 槽 84）做 `Array.BinarySearch<float>`；结果为负时取反，再用 `cmovge` 夹到 `Length - 1`。
+  - 这是内联的 int Min，写作 `Math.Min`；与 `Mathf.Min` 无法区分，拼写按 B 级。
+  - 然后逐个设置底板图片的 `enabled = i == index`（icall 0x2604C50）。
+- **`MapAreaModifier`**：
+  - `Reset` 与 `ResetReferences` 折叠为一体，是 `GetComponentsInChildren<MapArea>(true)`（经 `gameObject`，dl=1）。
+  - `ModifyInEditor` 对每个 MapArea 内联了 `MapArea.ModifyInEditor`。
+- **`MapFloor`**：
+  - `Reset` 调用的是无参 `GetComponentsInChildren<MapArea>()`，与 MapAreaModifier 不同，不含非激活对象。
+  - `Show(restriction)`：先启用 Canvas 与 GraphicRaycaster，再用 `KeyValuePair.Deconstruct` 遍历 `Areas`。`restriction == null` 或 `Enumerable.Contains` 为真时显示，否则隐藏。
+  - `Hide` 与 `WitchBookPageBase.Hide` 折叠。
+  - `IsMatch` 是 `pair.Equals(_idAndVersion)`：`pair` 为 null 时直接 NRE，随后是内联的 `IdVersionPair.Equals(IdVersionPair)`。
+- **工程配置**：
+  - `DoActionAsUndoable` 定义在 `GigaCreation.Tools.UndoExtensions`。该工程已存在于解决方案中，但 Assembly-CSharp 此前没有引用它（CS0234），现已补上 ProjectReference。
+  - 注意：`work/make_ide_project3.py` 按 DummyDll 的引用表生成 csproj，而该表里没有这个程序集（泛型方法在 dump 中无 RVA）。重新生成工程会丢掉这条引用。
+
+进度：Map 17/27、5,094/9,894 B；全部 `WitchTrials.*` 合计 629/929、209,717/316,778 B；0 错误，警告基线 140。
 
 
 ---
