@@ -47,9 +47,13 @@ public class SpecialThanksDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F5B0, 82 B (shared int+ref store body)
+	// Stores `course` (edx) to +0x10 and `name` (r8) to +0x18.
 	[Token(Token = "0x60005C2")]
 	[Address(RVA = "0x38F5B0", Offset = "0x38DFB0", VA = "0x18038F5B0")]
 	public SpecialThanksDataItem(SpecialThanksCourse course, LocalizedText[] name)
 	{
+		_course = course;
+		_name = name;
 	}
 }

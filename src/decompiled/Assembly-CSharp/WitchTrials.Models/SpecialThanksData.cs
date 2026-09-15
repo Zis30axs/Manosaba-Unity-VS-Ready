@@ -45,9 +45,13 @@ public class SpecialThanksData : ScriptableObject
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F4B0, 197 B
+	// Only `_items (+0x20) = new List<SpecialThanksDataItem>()` is initialized. `_textSizeByCourses`
+	// (+0x18) has no initializer. Then a tail jump to `ScriptableObject..ctor`.
 	[Token(Token = "0x60005BA")]
 	[Address(RVA = "0x38F4B0", Offset = "0x38DEB0", VA = "0x18038F4B0")]
 	public SpecialThanksData()
 	{
+		_items = new List<SpecialThanksDataItem>();
 	}
 }
