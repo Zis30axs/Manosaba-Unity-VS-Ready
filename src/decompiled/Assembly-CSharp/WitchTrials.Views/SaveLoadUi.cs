@@ -44,22 +44,24 @@ public class SaveLoadUi : CustomUI, ISaveLoadUI, IManagedUI
 		[Token(Token = "0x17000068")]
 		public SaveLoadUIPresentationMode Mode
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x331650 (shared 4-byte field getter, +0x10 `_mode`)
 			[Token(Token = "0x6000328")]
 			[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
 			get
 			{
-				return default(SaveLoadUIPresentationMode);
+				return _mode;
 			}
 		}
 
 		[Token(Token = "0x17000069")]
 		public SaveLoadPanel Panel
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18 `_panel`)
 			[Token(Token = "0x6000329")]
 			[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 			get
 			{
-				return null;
+				return _panel;
 			}
 		}
 

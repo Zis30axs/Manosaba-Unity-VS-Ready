@@ -47,11 +47,12 @@ public class OptionsUi : CustomUI, ISettingsUI, IManagedUI
 		[Token(Token = "0x1700005E")]
 		public Toggle Toggle
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (shared generic reference-field getter, +0x10 `_toggle`)
 			[Token(Token = "0x60002F9")]
 			[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 			get
 			{
-				return null;
+				return _toggle;
 			}
 		}
 
