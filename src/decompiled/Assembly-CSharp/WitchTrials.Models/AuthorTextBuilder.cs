@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GigaCreation.Tools.Service;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -39,29 +41,37 @@ public sealed class AuthorTextBuilder
 		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
 		[Header("Parameters")]
 		[SerializeField]
-		private float _firstInitialFontSize;
+		private float _firstInitialFontSize = 132f;
 
 		[Token(Token = "0x4000794")]
 		[Il2CppDummyDll.FieldOffset(Offset = "0x24")]
 		[SerializeField]
-		private float _firstBodyFontSize;
+		private float _firstBodyFontSize = 72f;
 
 		[Token(Token = "0x4000795")]
 		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
 		[SerializeField]
-		private float _secondInitialFontSize;
+		private float _secondInitialFontSize = 120f;
 
 		[Token(Token = "0x4000796")]
 		[Il2CppDummyDll.FieldOffset(Offset = "0x2C")]
 		[SerializeField]
-		private float _secondBodyFontSize;
+		private float _secondBodyFontSize = 72f;
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A4810, 229 B (note the crossed offsets: initial sizes +0x3C/+0x44, body sizes +0x38/+0x40)
 		[Token(Token = "0x600072A")]
 		[Address(RVA = "0x3A4810", Offset = "0x3A3210", VA = "0x1803A4810")]
 		public void InjectTo(AuthorTextBuilder writer)
 		{
+			writer._characterDataAsset = _characterDataAsset;
+			writer._authorDataAsset = _authorDataAsset;
+			writer._firstInitialFontSize = _firstInitialFontSize;
+			writer._firstBodyFontSize = _firstBodyFontSize;
+			writer._secondInitialFontSize = _secondInitialFontSize;
+			writer._secondBodyFontSize = _secondBodyFontSize;
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A4900, 29 B (field initializers only: 132 / 72 / 120 / 72)
 		[Token(Token = "0x600072B")]
 		[Address(RVA = "0x3A4900", Offset = "0x3A3300", VA = "0x1803A4900")]
 		public Settings()
@@ -258,7 +268,7 @@ public sealed class AuthorTextBuilder
 
 	[Token(Token = "0x4000786")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
-	private readonly StringBuilder _builder;
+	private readonly StringBuilder _builder = new StringBuilder();
 
 	[Token(Token = "0x4000787")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
@@ -303,109 +313,204 @@ public sealed class AuthorTextBuilder
 	[Token(Token = "0x1700012D")]
 	private static string ColorClosingTag
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A33F0, 49 B
 		[Token(Token = "0x600071D")]
 		[Address(RVA = "0x3A33F0", Offset = "0x3A1DF0", VA = "0x1803A33F0")]
 		get
 		{
-			return null;
+			return "</color>";
 		}
 	}
 
 	[Token(Token = "0x1700012E")]
 	private static string SizeClosingTag
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A3430, 49 B
 		[Token(Token = "0x600071E")]
 		[Address(RVA = "0x3A3430", Offset = "0x3A1E30", VA = "0x1803A3430")]
 		get
 		{
-			return null;
+			return "</size>";
 		}
 	}
 
 	[Token(Token = "0x1700012F")]
 	private IAddressableAssetLoader AddressableAssetLoader
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A3470, 186 B (`??= ServiceLocator.Get<IAddressablesManager>(true)`, +0x18)
 		[Token(Token = "0x600071F")]
 		[Address(RVA = "0x3A3470", Offset = "0x3A1E70", VA = "0x1803A3470")]
 		get
 		{
-			return null;
+			return _addressableAssetLoader ??= ServiceLocator.Get<IAddressablesManager>(true);
 		}
 	}
 
 	[Token(Token = "0x17000130")]
 	private ILocalizationProvider LocalizationProvider
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A3530, 186 B (`??= ServiceLocator.Get<ILocalizationManager>(true)`, +0x20)
 		[Token(Token = "0x6000720")]
 		[Address(RVA = "0x3A3530", Offset = "0x3A1F30", VA = "0x1803A3530")]
 		get
 		{
-			return null;
+			return _localizationProvider ??= ServiceLocator.Get<ILocalizationManager>(true);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (InjectTo written as a call; it is inlined) | RVA: 0x3A35F0, 392 B
+	// The `_builder` field initializer runs first, then Settings.InjectTo (0x3A4810) copies the assets and font sizes.
 	[Token(Token = "0x6000721")]
 	[Address(RVA = "0x3A35F0", Offset = "0x3A1FF0", VA = "0x1803A35F0")]
 	public AuthorTextBuilder(Settings settings)
 	{
+		settings.InjectTo(this);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A3780 (builder stub); MoveNext 0x3A5C40, 1090 B, one await
 	[Token(Token = "0x6000722")]
 	[Address(RVA = "0x3A3780", Offset = "0x3A2180", VA = "0x1803A3780")]
 	[AsyncStateMachine(typeof(_003CInitializeAsync_003Ed__21))]
-	public UniTask InitializeAsync([Optional] CancellationToken ct)
+	public async UniTask InitializeAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		await LoadDataAsync(ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (`color ?? Color.white` spelling) | RVA: 0x3A3920, 2017 B
+	// 
+	// - An author template for the current locale (ILocalizationProvider slot 1) wins when it is not blank
+	//   (string.IsNullOrWhiteSpace inlined as the char loop): `%COLOR%` becomes `#RRGGBB`, white (1,1,1,1 at data RVA
+	//   0x2AE36E0) without a colour.
+	// - Otherwise the character name data is used. Both halves empty -> false. One half -> simple tagged name
+	//   (Name + FamilyName, the empty one contributes nothing). Both -> full name with family name first for
+	//   Ja / ZhHans / ZhHant (`test eax, ~2` + `cmp eax, 3`) and given name first otherwise (EnUs, Ko).
+	// - The colour tag is only emitted when a colour is passed. IReadOnlyDictionary slot 1 is TryGetValue.
 	[Token(Token = "0x6000723")]
 	[Address(RVA = "0x3A3920", Offset = "0x3A2320", VA = "0x1803A3920")]
 	public bool TryBuildAuthorText(string authorId, Color? color, out string text)
 	{
-		text = default;
-		text = default;
-		return default(bool);
+		if (string.IsNullOrEmpty(authorId))
+		{
+			text = null;
+			return false;
+		}
+		if (_authorData.TryGetValue(authorId, out IReadOnlyDictionary<LocaleKind, string> templates) && templates.TryGetValue(LocalizationProvider.CurrentLocale, out string template) && !string.IsNullOrWhiteSpace(template))
+		{
+			text = template.Replace(ColorTemplateLiteral, "#" + ColorUtility.ToHtmlStringRGB(color ?? Color.white));
+			return true;
+		}
+		if (!_nameData.TryGetValue(authorId, out IReadOnlyDictionary<LocaleKind, FullName> names) || !names.TryGetValue(LocalizationProvider.CurrentLocale, out FullName fullName))
+		{
+			text = null;
+			return false;
+		}
+		bool noName = string.IsNullOrEmpty(fullName.Name);
+		bool noFamilyName = string.IsNullOrEmpty(fullName.FamilyName);
+		if (noName && noFamilyName)
+		{
+			text = null;
+			return false;
+		}
+		string htmlStringRgb = (color.HasValue ? ColorUtility.ToHtmlStringRGB(color.Value) : null);
+		if (noName || noFamilyName)
+		{
+			text = BuildTaggedSimpleName(fullName.Name + fullName.FamilyName, htmlStringRgb);
+			return true;
+		}
+		LocaleKind currentLocale = LocalizationProvider.CurrentLocale;
+		text = ((currentLocale is LocaleKind.Ja or LocaleKind.ZhHans or LocaleKind.ZhHant) ? BuildTaggedFullName(fullName.FamilyName, fullName.Name, htmlStringRgb) : BuildTaggedFullName(fullName.Name, fullName.FamilyName, htmlStringRgb));
+		return true;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A4110, 124 B (StringBuilder.Clear inlined as Length = 0; ToString via vtable)
 	[Token(Token = "0x6000724")]
 	[Address(RVA = "0x3A4110", Offset = "0x3A2B10", VA = "0x1803A4110")]
 	public string BuildTaggedSimpleName([NotNull] string nameText, string htmlStringRgb)
 	{
-		return null;
+		_builder.Clear();
+		AppendTaggedName(_builder, nameText, isFirst: true, htmlStringRgb);
+		return _builder.ToString();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A4190, 173 B (the second part never gets a colour)
 	[Token(Token = "0x6000725")]
 	[Address(RVA = "0x3A4190", Offset = "0x3A2B90", VA = "0x1803A4190")]
 	public string BuildTaggedFullName([NotNull] string firstText, [NotNull] string lastText, string htmlStringRgb)
 	{
-		return null;
+		_builder.Clear();
+		AppendTaggedName(_builder, firstText, isFirst: true, htmlStringRgb);
+		AppendTaggedName(_builder, lastText, isFirst: false, null);
+		return _builder.ToString();
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (Substring(1) is inlined as Substring(1, Length - 1), called twice) |
+	// RVA: 0x3A4240, 768 B
+	// 
+	// The first character is set in the `initial` size and the rest in the `body` size of the first or second part
+	// (field pairs +0x3C/+0x38 and +0x44/+0x40). The colour tag (a plain null test on htmlStringRgb) wraps only the
+	// initial of the first part; BuildColorOpeningTag and both closing-tag getters are inlined.
 	[Token(Token = "0x6000726")]
 	[Address(RVA = "0x3A4240", Offset = "0x3A2C40", VA = "0x1803A4240")]
 	private void AppendTaggedName(StringBuilder builder, [NotNull] string nameText, bool isFirst, string htmlStringRgb)
 	{
+		float size = (isFirst ? _firstInitialFontSize : _secondInitialFontSize);
+		if (isFirst && htmlStringRgb != null)
+		{
+			builder.Append(BuildColorOpeningTag(htmlStringRgb));
+		}
+		builder.Append(BuildSizeOpeningTag(size));
+		builder.Append(nameText.Substring(0, 1));
+		builder.Append(SizeClosingTag);
+		if (isFirst && htmlStringRgb != null)
+		{
+			builder.Append(ColorClosingTag);
+		}
+		if (!string.IsNullOrEmpty(nameText.Substring(1)))
+		{
+			builder.Append(BuildSizeOpeningTag(isFirst ? _firstBodyFontSize : _secondBodyFontSize));
+			builder.Append(nameText.Substring(1));
+			builder.Append(SizeClosingTag);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (the tuple await's local names) | RVA: 0x3A4550 (builder stub);
+	// MoveNext 0x3A6090, 2825 B; <>c lambdas b__26_0/b__26_2 0x326120 (Id), b__26_1 0x3A5040, b__26_3 0x3A5820,
+	// b__26_4..7/10/11 (Locale/Text shared getters), b__26_8 0x329530 (identity); <>c__DisplayClass26_0.b__9 0x3A5AC0
+	// 
+	// - Both data assets load in parallel: a ValueTuple of two Cysharp UniTasks awaited through
+	//   UniTaskExtensions.GetAwaiter<CharacterData, AuthorData> (AssetReference overload of GetOrLoadAddressableAsset).
+	// - `_nameData`: per character, Name and FamilyName become locale -> text dictionaries; every locale present in either
+	//   (Enumerable.Union over the two Keys, IReadOnlyDictionary slot 3) maps to a FullName whose missing half is
+	//   string.Empty (CollectionExtensions.GetValueOrDefault ?? String.Empty; the FullName ctor is inlined).
+	// - `_authorData`: per author, TaggedText as a locale -> template dictionary.
 	[Token(Token = "0x6000727")]
 	[Address(RVA = "0x3A4550", Offset = "0x3A2F50", VA = "0x1803A4550")]
 	[AsyncStateMachine(typeof(_003CLoadDataAsync_003Ed__26))]
-	private UniTask LoadDataAsync([Optional] CancellationToken ct)
+	private async UniTask LoadDataAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		(CharacterData characterData, AuthorData authorData) = await (AddressableAssetLoader.GetOrLoadAddressableAsset<CharacterData>(_characterDataAsset, ct), AddressableAssetLoader.GetOrLoadAddressableAsset<AuthorData>(_authorDataAsset, ct));
+		_nameData = characterData.Items.ToDictionary<CharacterDataItem, string, IReadOnlyDictionary<LocaleKind, FullName>>((CharacterDataItem item) => item.Id, delegate(CharacterDataItem item)
+		{
+			IReadOnlyDictionary<LocaleKind, string> names = item.Name.ToDictionary((LocalizedText text) => text.Locale, (LocalizedText text) => text.Text);
+			IReadOnlyDictionary<LocaleKind, string> familyNames = item.FamilyName.ToDictionary((LocalizedText text) => text.Locale, (LocalizedText text) => text.Text);
+			return names.Keys.Union(familyNames.Keys).ToDictionary((LocaleKind locale) => locale, (LocaleKind locale) => new FullName(names.GetValueOrDefault(locale) ?? string.Empty, familyNames.GetValueOrDefault(locale) ?? string.Empty));
+		});
+		_authorData = authorData.Items.ToDictionary<AuthorDataItem, string, IReadOnlyDictionary<LocaleKind, string>>((AuthorDataItem item) => item.Id, (AuthorDataItem item) => item.TaggedText.ToDictionary((LocalizedText text) => text.Locale, (LocalizedText text) => text.Text));
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A4700, 89 B (tail call to String.Concat)
 	[Token(Token = "0x6000728")]
 	[Address(RVA = "0x3A4700", Offset = "0x3A3100", VA = "0x1803A4700")]
 	private static string BuildColorOpeningTag(string htmlStringRGB)
 	{
-		return null;
+		return "<color=#" + htmlStringRGB + ">";
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A4760, 161 B (boxed float, String.FormatHelper)
 	[Token(Token = "0x6000729")]
 	[Address(RVA = "0x3A4760", Offset = "0x3A3160", VA = "0x1803A4760")]
 	private static string BuildSizeOpeningTag(float size)
 	{
-		return null;
+		return string.Format("<size={0}>", size);
 	}
 }

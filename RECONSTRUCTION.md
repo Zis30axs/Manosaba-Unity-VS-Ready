@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 进行中：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2739,16 +2739,38 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 91/162、29,355/56,145 B；全部 `WitchTrials.*` 合计 833/929、282,582/316,778 B；0 错误，警告基线 140。
 
+### 第 D5 组：`AuthorTextBuilder`（13 个函数体，另补 `Settings` 两个成员）
+
+证据品/备忘录等文本里"作者名"的富文本生成器。
+
+- **加载**（`InitializeAsync` → `LoadDataAsync`，MoveNext 2,825 B）：
+  - 两个 Addressable 资源 `CharacterData`/`AuthorData` 以 UniTask 元组并行加载。
+  - `_nameData`：每个角色的名、姓各转为"语言 → 文本"字典；两者键的并集（`Union`）逐语言生成 `FullName`，缺的一半为 `string.Empty`。
+  - `_authorData`：每个作者的 `TaggedText` 转为"语言 → 模板"字典。
+- **`TryBuildAuthorText(authorId, color, out text)`**（2,017 B）：
+  1. 当前语言有非空白作者模板时优先使用：把 `%COLOR%` 替换为 `#RRGGBB`，未给颜色时用白色（数据 RVA 0x2AE36E0 = 1,1,1,1）。
+  2. 否则用角色姓名：名、姓都为空时返回 false；只有一半时生成简单名；两者都有时，日语/简体/繁体中文为"姓在前"，英语/韩语为"名在前"（字节中的 `test eax, ~2` 加 `cmp eax, 3`）。
+- **`AppendTaggedName`**：
+  - 首字用 `initial` 字号，其余用 `body` 字号（第一/第二部分各一对字段，Settings 默认 132/72 与 120/72）。
+  - 颜色标签只包住第一部分的首字。
+  - `Substring(1)` 被内联为 `Substring(1, Length - 1)` 并调用了两次，按源码形式保留两次调用。
+- 构造函数只有 `_builder` 字段初始化器与内联的 `Settings.InjectTo`。
+- `FullName` record 的编译器生成成员（`ToString`/`Equals`/`GetHashCode` 等）未计入 `Other` 桶，本组未处理。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 104/162、34,370/56,145 B；全部 `WitchTrials.*` 合计 846/929、287,597/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
 旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（71 个函数体、约 27 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
+1. **`Other` 桶余量**（58 个函数体、约 22 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
    - 零散小方法、服务 getter，以及 record 的 `EqualityContract`/`Equals(object)`。
    - 较大的函数体：
-     - `AuthorTextBuilder`、`Timer`。
+     - `Timer`。
      - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
      - `StopForChoice.Execute`（2,409 B）。
      - `WitchTrialsActions..ctor`（3,678 B，Input System 生成代码）。
