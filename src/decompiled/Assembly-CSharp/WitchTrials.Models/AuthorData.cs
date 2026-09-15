@@ -26,9 +26,13 @@ public class AuthorData : ScriptableObject
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A3070, 197 B
+	// This is the field initializer `_items (+0x18) = new List<AuthorDataItem>()` (List..ctor 0x857BA0),
+	// then a tail jump to `ScriptableObject..ctor`.
 	[Token(Token = "0x6000719")]
 	[Address(RVA = "0x3A3070", Offset = "0x3A1A70", VA = "0x1803A3070")]
 	public AuthorData()
 	{
+		_items = new List<AuthorDataItem>();
 	}
 }

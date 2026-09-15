@@ -26,6 +26,10 @@ public sealed class MapData : WitchBookDataBase<MapDataItem>
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F2B0, 57 B
+	// This is only the implicit `base()`: `WitchBookDataBase<MapDataItem>..ctor` is inlined down to
+	// `ScriptableObject..ctor`. There is no field initializer, so `_items` (+0x18) stays null until Unity
+	// deserializes it.
 	[Token(Token = "0x60005A6")]
 	[Address(RVA = "0x38F2B0", Offset = "0x38DCB0", VA = "0x18038F2B0")]
 	public MapData()

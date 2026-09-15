@@ -112,9 +112,17 @@ public class CharacterDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F070, 511 B
+	// Six stores in parameter order to +0x10..+0x38, each with a write barrier; the last three args come from the stack.
 	[Token(Token = "0x600059F")]
 	[Address(RVA = "0x38F070", Offset = "0x38DA70", VA = "0x18038F070")]
 	public CharacterDataItem(string id, LocalizedText[] name, LocalizedText[] familyName, string age, string height, string weight)
 	{
+		_id = id;
+		_name = name;
+		_familyName = familyName;
+		_age = age;
+		_height = height;
+		_weight = weight;
 	}
 }
