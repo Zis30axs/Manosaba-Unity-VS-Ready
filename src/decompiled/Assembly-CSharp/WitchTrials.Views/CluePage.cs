@@ -148,6 +148,8 @@ public sealed class CluePage : WitchBookPageBase<ClueDataItem, ClueState>
 		_thumbnail.Setup(WitchBookDataHelper.BuildClueTextureAddress(map.Id));
 	}
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x36C010, 62 B
+	// Only the call to WitchBookPageBase<ClueDataItem, ClueState>..ctor; no field initializers.
 	[Token(Token = "0x60003B6")]
 	[Address(RVA = "0x36C010", Offset = "0x36AA10", VA = "0x18036C010")]
 	public CluePage()

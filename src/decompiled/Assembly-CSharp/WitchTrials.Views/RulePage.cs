@@ -194,6 +194,8 @@ public class RulePage : WitchBookPageBase<RuleDataItem, RuleState>
 		_descriptionLabel.SetText(_localizedTextData[map.IdVersionPair][base.CurrentLocale].Description);
 	}
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x375780, 62 B
+	// Only the call to WitchBookPageBase<RuleDataItem, RuleState>..ctor; no field initializers.
 	[Token(Token = "0x600044C")]
 	[Address(RVA = "0x375780", Offset = "0x374180", VA = "0x180375780")]
 	public RulePage()
