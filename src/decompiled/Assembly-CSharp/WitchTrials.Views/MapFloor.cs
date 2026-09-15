@@ -59,29 +59,63 @@ public class MapFloor : MonoBehaviour
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36EF60
+	// 
+	// GetComponent<Canvas> / GetComponent<GraphicRaycaster> / the parameterless
+	// GetComponentsInChildren<MapArea>() (unlike MapAreaModifier, no includeInactive).
 	[Token(Token = "0x60003F4")]
 	[Address(RVA = "0x36EF60", Offset = "0x36D960", VA = "0x18036EF60")]
 	private void Reset()
 	{
+		_canvas = GetComponent<Canvas>();
+		_graphicRaycaster = GetComponent<GraphicRaycaster>();
+		_mapAreas = GetComponentsInChildren<MapArea>();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F100
+	// 
+	// Enables canvas and raycaster (set_enabled dl=1), then iterates `Areas` through
+	// `IEnumerable<KeyValuePair<MapAreaKind, MapArea>>` with `KeyValuePair.Deconstruct`.
+	// A null `restriction` or `Enumerable.Contains<MapAreaKind>` true jumps to the
+	// alpha-1 path (MapArea.Show inlined); otherwise alpha 0 (MapArea.Hide inlined).
 	[Token(Token = "0x60003F5")]
 	[Address(RVA = "0x36F100", Offset = "0x36DB00", VA = "0x18036F100")]
 	public void Show([Optional] IReadOnlyCollection<MapAreaKind> restriction)
 	{
+		_canvas.enabled = true;
+		_graphicRaycaster.enabled = true;
+		foreach (var (kind, mapArea) in Areas)
+		{
+			if (restriction == null || restriction.Contains(kind))
+			{
+				mapArea.Show();
+			}
+			else
+			{
+				mapArea.Hide();
+			}
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F420 (folded with WitchBookPageBase.Hide)
 	[Token(Token = "0x60003F6")]
 	[Address(RVA = "0x36F420", Offset = "0x36DE20", VA = "0x18036F420")]
 	public void Hide()
 	{
+		_canvas.enabled = false;
+		_graphicRaycaster.enabled = false;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F460
+	// 
+	// `pair` null -> NRE (instance call on `pair`); then IdVersionPair.Equals inlined:
+	// reference-equal -> true, `other` (`_idAndVersion`, +0x38) null -> false, string
+	// Id compared via SequenceEqual, then int Version (+0x18).
 	[Token(Token = "0x60003F7")]
 	[Address(RVA = "0x36F460", Offset = "0x36DE60", VA = "0x18036F460")]
 	public bool IsMatch(IdVersionPair pair)
 	{
-		return default(bool);
+		return pair.Equals(_idAndVersion);
 	}
 
 	[Token(Token = "0x60003F8")]
