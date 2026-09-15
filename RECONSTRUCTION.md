@@ -24,6 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
+| TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
@@ -2154,6 +2155,28 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **补登**：ControlPanel.Start 的 lambda RVA 移到 RECONSTRUCTED 标记行上，`b__47_7/8` 因此计入进度。
 
 进度：`progress.py UI` 测得 165/165、50,436/50,436 B（UI 子系统完成）；全部 `WitchTrials.*` 合计 576/929、195,947/316,778 B；警告基线 140。
+
+## 7.11 `TrialState` 子系统收尾：已完成，18/18 个函数体 / 6,293/6,293 B
+
+试点（§5）之后，这个桶还剩 6 个函数体。选它是因为它能在一次提交内收尾，而且依赖的接口此前都已恢复。
+
+- **`WitchTrialsNaninovelManager.ChangeTrialMode`**（0x399940）：
+  - `enable` 为 true 时尾跳到 `StartTrial`。
+  - 否则执行 `_isTrialMode.Value = false`。
+- **`WitchTrialsNaninovelManager.SetTrialTimer`**（0x3999B0）：
+  - 先取 `_trialTimer`，再调 `TimeSpan.Interval((double)time, 1000)`，即内联的 `TimeSpan.FromSeconds`。
+  - 然后 `Timer.SetTime(...)`，最后 `_pauseRequestCount = 0`。
+- **三个命令的 `Execute`**：
+  - 共同结构：先 `ServiceLocator.Get<IWitchTrialsNaninovelManager>(false)`（`cl = 0`，与各处懒缓存用的 `true` 不同），再对参数调用 `Naninovel.Nullable<T>` 隐式转换，最后返回 default（已完成的 UniTask）。
+  - `trialMode`：先把槽 2 `IsPresentEvidenceMode` 设为 false，再调槽 4 `ChangeTrialMode(Enable)`。
+  - `pauseTrial`：调槽 7 `ChangeTrialPauseMode(Enable, ProcessTimer)`。
+  - `timer`：调槽 5 `SetTrialTimer(Time)`。
+- **`ChangeTrialPauseMode..ctor`**（0x325690）：
+  - 这个函数体与 ArrangeCharacters、ClearChoiceHandler、ChangeActorMaskability 的构造函数折叠在一起。
+  - 内容是 `BooleanParameter.op_Implicit(true)` 写入 +0x38，再调 `Command..ctor`。
+  - 在本类中 +0x38 即 `ProcessTimer`，因此写作 `ProcessTimer = true`。它与 `[ParameterDefaultValue("true")]` 一致。
+
+进度：TrialState 18/18；全部 `WitchTrials.*` 合计 582/929、197,140/316,778 B；0 错误，警告基线 140。
 
 
 ---

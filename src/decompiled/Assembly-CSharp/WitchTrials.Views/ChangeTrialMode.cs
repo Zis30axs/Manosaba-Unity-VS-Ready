@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using Naninovel;
+using WitchTrials.Models;
 
 namespace WitchTrials.Views;
 
@@ -17,11 +18,17 @@ public class ChangeTrialMode : Command
 	[RequiredParameter]
 	public BooleanParameter Enable;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x325460, 266 B
+	// ServiceLocator.Get<IWitchTrialsNaninovelManager>(cl = 0); slot 2 set_IsPresentEvidenceMode(false); then
+	// Naninovel.Nullable<bool> implicit operator on `Enable` (+0x30) into slot 4 ChangeTrialMode. Returns default (completed).
 	[Token(Token = "0x6000133")]
 	[Address(RVA = "0x325460", Offset = "0x323E60", VA = "0x180325460", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		IWitchTrialsNaninovelManager manager = GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(false);
+		manager.IsPresentEvidenceMode = false;
+		manager.ChangeTrialMode(Enable);
+		return UniTask.CompletedTask;
 	}
 
 	[Token(Token = "0x6000134")]

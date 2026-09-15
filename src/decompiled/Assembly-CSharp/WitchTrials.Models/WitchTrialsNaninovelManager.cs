@@ -203,16 +203,31 @@ public class WitchTrialsNaninovelManager : NaninovelManager, IWitchTrialsNaninov
 		_isInTitleScreen.Value = isIn;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x399940, 99 B
+	// `enable` -> tail jump to StartTrial (0x39A1D0); otherwise `_isTrialMode` (+0x28) ReactiveProperty<bool>.Value = false.
 	[Token(Token = "0x6000665")]
 	[Address(RVA = "0x399940", Offset = "0x398340", VA = "0x180399940", Slot = "14")]
 	public void ChangeTrialMode(bool enable)
 	{
+		if (enable)
+		{
+			StartTrial();
+		}
+		else
+		{
+			_isTrialMode.Value = false;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3999B0, 200 B
+	// `_trialTimer` (+0x38) is loaded first; TimeSpan.Interval((double)time, 1000) is the inlined TimeSpan.FromSeconds;
+	// Timer.SetTime (0x3A6E80); then `_pauseRequestCount` (+0x68) = 0.
 	[Token(Token = "0x6000666")]
 	[Address(RVA = "0x3999B0", Offset = "0x3983B0", VA = "0x1803999B0", Slot = "15")]
 	public void SetTrialTimer(float time)
 	{
+		_trialTimer.SetTime(TimeSpan.FromSeconds(time));
+		_pauseRequestCount = 0;
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x399A80, 350 B
