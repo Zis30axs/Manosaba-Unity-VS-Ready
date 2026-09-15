@@ -27,7 +27,7 @@
 | Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
-| Debug 子系统 | 进行中：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
+| Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2386,7 +2386,45 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
     4. 在未取消、且已用时间小于 `Duration`（缺省 0.35）期间，每帧 `Yield(Update, token)`。
   - `LoadingMode` 字段遮蔽了同名枚举类型，因此泛型参数写成完全限定名。
 
-进度：Debug 30/46、10,881/20,437 B；全部 `WitchTrials.*` 合计 669/929、225,744/316,778 B；0 错误，警告基线 140。
+进度（上半后）：Debug 30/46、10,881/20,437 B；全部 `WitchTrials.*` 合计 669/929、225,744/316,778 B；0 错误，警告基线 140。
+
+### 第 B 组（下半）：DebugReporter / SlackApp
+
+- **凭据检查（先于复原完成）**：
+  - 两个类中的全部字符串字面量均已筛查，只有日文 UI 文案、文件名片段、表单字段名，以及三个公开的 `https://slack.com/api/...` 端点常量；后者在基线存根里本就存在。
+  - `_token`、`_channelId`、`_deletePostUrl` 是 `[SerializeField]` 实例字段，值存放在场景/资产数据中，代码只读取它们。
+  - 因此复原代码不含任何凭据。资产中的实际值不在本任务范围内，也没有去查。
+- **`DebugReporter`**：
+  - `Start`：隐藏结果窗口，上传按钮订阅 `UploadAsync(destroyCancellationToken).Forget()`。
+  - `Reset`：`GetComponent<Button>()`。
+  - ctor：只有字段初始化 `_format = "yyyy/MM/dd HH:mm:ss"`。
+  - `UploadAsync`（MoveNext 0x3AC280，8,576 B）：
+    1. 生成时间戳文件名、CSV 与截图 JPEG。
+    2. 保存 `Time.timeScale` 并置 0，显示三按钮结果窗口。
+    3. 结果 1 为 Slack：上传 jpg，再上传 csv（snippet 类型 `csv`），然后 `CompleteUploadAsync`，显示文件列表，等待 3 秒（`DelayType.UnscaledDeltaTime` 重载）。
+    4. 结果 2 为桌面：写入 `桌面/产品名_デバッグ情報/时间戳/` 下（目录不存在则创建），两次写文件以 ValueTuple 并行 await，等待 3 秒（`ignoreTimeScale: true` 重载）。**两个分支用了不同的 `Delay` 重载，字节确认。**
+    5. 关闭窗口并恢复 timeScale。**没有 try/finally**：中途抛异常时游戏会停留在暂停状态。
+    - 两个结果分支是两个独立的 `if`（Slack 分支结束后会再判断一次 `== 2`）。
+    - 桌面分支的截图路径复用了 `postMessage` 的状态机槽位，原局部变量名已丢失，命名按 B 级。
+    - `AsUniTask` 以静态形式调用：若按扩展方法查找，会同时绑定 UniTask 的 ValueTask 重载，而 DummyDll 引用集解析不了其 mscorlib 类型引用（CS7069）。调用目标不变。
+  - `WaitForClickResultButtonAsync`：linked CTS；取消/Slack/本地三个按钮的 `OnClickAsync` 走 `WhenAny`，再 `Cancel()`，返回下标 0/1/2。
+  - `CaptureScreenshotAsJpegAsync`：`WaitForEndOfFrame(ct)`，`ScreenCapture.CaptureScreenshotAsTexture()`，`EncodeToJPG(75)`，`Destroy`。
+  - `BuildLogAsCsv`：两列 CSV，依次为日志时间、构建时间戳（按 `_utcOffsetHours`）、版本、平台、分辨率；引擎未初始化时只写一行，否则写播放位置与经 `Quote` 的已打印消息。
+  - `BuildPostMessage`：以「テストプレイ報告 」开头，接时间、播放位置，已打印消息用 ``` 包起来。
+- **`SlackApp`**：
+  - `WebRequestManager`：`ServiceLocator.Get<IWebRequestManager>(true)` 懒加载。
+  - 两个公开 `UploadFileAsync`：分别补 `snippetType` 为 null、把文本经 `Encoding.UTF8.GetBytes` 转码后，转发给私有重载。
+  - 私有 `UploadFileAsync`（MoveNext 0x3B11D0）：
+    1. `files.getUploadURLExternal`，表单为 token / filename / length，再加可选 snippet_type。
+    2. 反序列化出 `UploadUrlExternalJson`。
+    3. 以 `AddBinaryData("file")` POST 到返回的 `UploadUrl`。
+    4. 返回 `FileId`。两个 `UnityWebRequest` 都用 using 释放。
+  - `CompleteUploadAsync`：把 `fileIds` 映射为 `[{id}]` JSON，POST `files.completeUploadExternal`（token / files / channel_id / initial_comment），`Debug.Log` 响应。
+  - `DeleteMessageAsync`：从 Slack 永久链接末段去掉首字母 `p`，在第 10 位插入 `.` 得到 ts，POST `chat.delete`；`DeleteMessage` 用 `destroyCancellationToken` fire-and-forget。
+  - 所有请求都经 IWebRequestManager 槽 0 `SendWebRequestAsync(request, timeout, showErrorDialog, ct)`。thunk sub_8570 传入 timeout 5（即缺省值）；`showErrorDialog` 按缺省写出，B 级。
+- **工程配置**：Assembly-CSharp 补上 `GigaCreation.Essentials.Platforms` 工程引用，以及 `UnityEngine.ScreenCaptureModule`、`UnityEngine.ImageConversionModule` 两个 DummyDll 引用。与 UndoExtensions 一样，重新生成工程时需要保留这些引用。
+
+进度：Debug 46/46、20,437/20,437 B；全部 `WitchTrials.*` 合计 685/929、235,300/316,778 B；0 错误，警告基线 140。
 
 
 ---

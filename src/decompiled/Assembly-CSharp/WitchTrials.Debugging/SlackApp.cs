@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using GigaCreation.Tools.Service;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
@@ -343,58 +346,122 @@ public class SlackApp : MonoBehaviour
 	[Token(Token = "0x17000143")]
 	private IWebRequestManager WebRequestManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3AEE10
+		// Lazy cache in +0x38 via `ServiceLocator.Get<IWebRequestManager>(true)`.
 		[Token(Token = "0x600078C")]
 		[Address(RVA = "0x3AEE10", Offset = "0x3AD810", VA = "0x1803AEE10")]
 		get
 		{
-			return null;
+			return _webRequestManager ??= ServiceLocator.Get<IWebRequestManager>(true);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AEED0 (stub); MoveNext 0x3B1EF0
+	// Forwards to the private overload with `snippetType` null.
 	[Token(Token = "0x600078D")]
 	[Address(RVA = "0x3AEED0", Offset = "0x3AD8D0", VA = "0x1803AEED0")]
 	[AsyncStateMachine(typeof(_003CUploadFileAsync_003Ed__9))]
-	public UniTask<string> UploadFileAsync(byte[] binary, string filename, [Optional] CancellationToken ct)
+	public async UniTask<string> UploadFileAsync(byte[] binary, string filename, [Optional] CancellationToken ct)
 	{
-		return default(UniTask<string>);
+		return await UploadFileAsync(binary, filename, null, ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AF180 (stub); MoveNext 0x3B0E30
+	// `Encoding.UTF8` + vtable slot 18 `GetBytes(string)`, then the private overload.
 	[Token(Token = "0x600078E")]
 	[Address(RVA = "0x3AF180", Offset = "0x3ADB80", VA = "0x1803AF180")]
 	[AsyncStateMachine(typeof(_003CUploadFileAsync_003Ed__10))]
-	public UniTask<string> UploadFileAsync(string text, string filename, string snippetType, [Optional] CancellationToken ct)
+	public async UniTask<string> UploadFileAsync(string text, string filename, string snippetType, [Optional] CancellationToken ct)
 	{
-		return default(UniTask<string>);
+		return await UploadFileAsync(Encoding.UTF8.GetBytes(text), filename, snippetType, ct);
 	}
 
+	// RECONSTRUCTED | Confidence: A (showErrorDialog argument: B) | RVA: 0x3AF480 (stub); MoveNext 0x3B11D0, 3301 B
+	// 
+	// Slack external upload, step 1: form token/filename/length (+ snippet_type when non-null), POST to
+	// GetUploadUrlExternalApi (hoisted `request1`), Newtonsoft `DeserializeObject<UploadUrlExternalJson>`.
+	// Step 2: form token + `AddBinaryData("file", binary)`, POST to `UploadUrl` (`request2`). Both requests
+	// are disposed on every exit (nested usings); returns `FileId`. The token is the serialized `_token`
+	// field; no credential is present in code.
+	// The request goes through IWebRequestManager slot 0 `SendWebRequestAsync(UnityWebRequest, int timeout,
+	// bool showErrorDialog, CancellationToken)` via thunk sub_8570, which passes timeout 5 (the default);
+	// the dialog flag is written with its default (B).
 	[Token(Token = "0x600078F")]
 	[Address(RVA = "0x3AF480", Offset = "0x3ADE80", VA = "0x1803AF480")]
 	[AsyncStateMachine(typeof(_003CUploadFileAsync_003Ed__11))]
-	private UniTask<string> UploadFileAsync(byte[] binary, string filename, string snippetType, [Optional] CancellationToken ct)
+	private async UniTask<string> UploadFileAsync(byte[] binary, string filename, string snippetType, [Optional] CancellationToken ct)
 	{
-		return default(UniTask<string>);
+		WWWForm form = new WWWForm();
+		form.AddField("token", _token);
+		form.AddField("filename", filename);
+		form.AddField("length", binary.Length.ToString());
+		if (snippetType != null)
+		{
+			form.AddField("snippet_type", snippetType);
+		}
+		using UnityWebRequest request1 = UnityWebRequest.Post(GetUploadUrlExternalApi, form);
+		UploadUrlExternalJson uploadUrlExternalJson = JsonConvert.DeserializeObject<UploadUrlExternalJson>(await WebRequestManager.SendWebRequestAsync(request1, ct: ct));
+		WWWForm uploadForm = new WWWForm();
+		uploadForm.AddField("token", _token);
+		uploadForm.AddBinaryData("file", binary);
+		using UnityWebRequest request2 = UnityWebRequest.Post(uploadUrlExternalJson.UploadUrl, uploadForm);
+		await WebRequestManager.SendWebRequestAsync(request2, ct: ct);
+		return uploadUrlExternalJson.FileId;
 	}
 
+	// RECONSTRUCTED | Confidence: A (showErrorDialog argument: B) | RVA: 0x3AF780 (stub); MoveNext 0x3AFDA0; lambda <>c.b__12_0 0x3AFD00
+	// 
+	// `JsonConvert.SerializeObject(fileIds.Select(id => new CompleteUploadExternalJson { Id = id }).ToList())`,
+	// form token/files/channel_id (`_channelId`)/initial_comment, POST to CompleteUploadExternalApi
+	// (`request3`), and `Debug.Log` of the response.
+	// The request goes through IWebRequestManager slot 0 `SendWebRequestAsync(UnityWebRequest, int timeout,
+	// bool showErrorDialog, CancellationToken)` via thunk sub_8570, which passes timeout 5 (the default);
+	// the dialog flag is written with its default (B).
 	[Token(Token = "0x6000790")]
 	[Address(RVA = "0x3AF780", Offset = "0x3AE180", VA = "0x1803AF780")]
 	[AsyncStateMachine(typeof(_003CCompleteUploadAsync_003Ed__12))]
-	public UniTask CompleteUploadAsync(string[] fileIds, string message, [Optional] CancellationToken ct)
+	public async UniTask CompleteUploadAsync(string[] fileIds, string message, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		string files = JsonConvert.SerializeObject(fileIds.Select((string id) => new CompleteUploadExternalJson
+		{
+			Id = id
+		}).ToList());
+		WWWForm form = new WWWForm();
+		form.AddField("token", _token);
+		form.AddField("files", files);
+		form.AddField("channel_id", _channelId);
+		form.AddField("initial_comment", message);
+		using UnityWebRequest request3 = UnityWebRequest.Post(CompleteUploadExternalApi, form);
+		UnityEngine.Debug.Log(await WebRequestManager.SendWebRequestAsync(request3, ct: ct));
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AF9F0, 82 B
 	[Token(Token = "0x6000791")]
 	[Address(RVA = "0x3AF9F0", Offset = "0x3AE3F0", VA = "0x1803AF9F0")]
 	public void DeleteMessage(string deletePostUrl)
 	{
+		DeleteMessageAsync(deletePostUrl, destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A (showErrorDialog argument: B) | RVA: 0x3AFA50 (stub); MoveNext 0x3B06F0
+	// 
+	// The message timestamp is recovered from a Slack permalink: last '/' segment, drop the leading 'p',
+	// insert '.' at index 10. Form token/channel/ts, POST to DeleteMessageApi (`request2`), log the response.
+	// The request goes through IWebRequestManager slot 0 `SendWebRequestAsync(UnityWebRequest, int timeout,
+	// bool showErrorDialog, CancellationToken)` via thunk sub_8570, which passes timeout 5 (the default);
+	// the dialog flag is written with its default (B).
 	[Token(Token = "0x6000792")]
 	[Address(RVA = "0x3AFA50", Offset = "0x3AE450", VA = "0x1803AFA50")]
 	[AsyncStateMachine(typeof(_003CDeleteMessageAsync_003Ed__14))]
-	public UniTask DeleteMessageAsync(string deletePostUrl, [Optional] CancellationToken ct)
+	public async UniTask DeleteMessageAsync(string deletePostUrl, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		string ts = deletePostUrl.Split('/').Last().Substring(1).Insert(10, ".");
+		WWWForm form = new WWWForm();
+		form.AddField("token", _token);
+		form.AddField("channel", _channelId);
+		form.AddField("ts", ts);
+		using UnityWebRequest request2 = UnityWebRequest.Post(DeleteMessageApi, form);
+		UnityEngine.Debug.Log(await WebRequestManager.SendWebRequestAsync(request2, ct: ct));
 	}
 
 	[Token(Token = "0x6000793")]
