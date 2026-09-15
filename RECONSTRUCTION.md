@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：130/165 个函数体、37,629/50,436 B。已完成六组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi；剩余为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
 
@@ -2016,7 +2016,7 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：`progress.py WitchBook/Data` 测得 **121/121、39,146/39,146 B（100%）**；全部 `WitchTrials.*` 合计 406/929、144,435/316,778 B。
 
-## 7.10 `UI` 子系统：进行中（用户优先级第 6 位）
+## 7.10 `UI` 子系统：已完成，165/165 个函数体 / 50,436/50,436 B（用户优先级第 6 位）
 
 **第 1 组：小型控件与 Page 构造函数**
 
@@ -2126,7 +2126,34 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **`LoadGameAsync`**：`PresentationMode = Load` 后 `await SaveLoadUi.PresentAsync(null, ct)`。
 - **`QuitGameAsync`**：与 ControlPanel.ReturnToTitleAsync 同构。确认结果为 Cancel 时返回；否则先释放对话框，再在阻塞器作用域内 `ResumeAtLabel("QuitGame")`。
 
-进度：`progress.py UI` 测得 130/165、37,629/50,436 B；全部 `WitchTrials.*` 合计 539/929、182,873/316,778 B；警告基线 140。剩余的 UI 函数体集中在 OptionsUi。
+**第 7 组：OptionsUi（设置画面，15 个函数体 + 19 个订阅 lambda + 3 个 MoveNext + 5 个闭包/静态 lambda）**
+
+- **访问器**：
+  - GigaCreation `ILocalizationManager` 与 `INaninovelManager` 走 `ServiceLocator.Get<T>(true)`。
+  - `ICameraManagerExtended`、`IAudioManager`、`IScriptPlayer`、`ITextPrinterManager`、`ILocalizationManagerExtended` 走 `Engine.GetServiceOrErr<T>()`。
+- **`Initialize`**（Naninovel builder）：
+  - 先取 `base.Initialize()`，最后再 await。CustomUI.Initialize 被内联成 default，因此状态机只存了 0。
+  - 可用语言：调试模式下取 `AvailableLocales`，按 `Languages.GetAll()` 中 tag 的顺序排序；否则取 `ValidLocales`。
+  - 语言下拉框用 `Languages.GetNameByTag` 生成名称。字体由 `EnumerableAsyncExtensions.Select(locales, locale => GetOrLoadFontAssetAsync(locale.ToLocaleKind(), dct))` 并发加载，经 `LocalizationDropdown.SetOptions(names, fonts)` 写入。
+  - 分辨率与帧率下拉框分别用 `"{0} x {1}"`、`"{0} fps"` 格式化。
+  - `_unavailableResolutionOptionCount` = 配置的分辨率数 − 实际可用分辨率数。
+- **`ActivateUi`**：`_disposables` 已存在时直接返回；否则先 `ApplyOptionValuesToUi()`，再建立 19 个订阅。
+  - 滑块：值 ÷ 10 写入文本速度、自动延迟和四路音量。
+  - 开关组与下拉框：先播放 Submit 音效，再写入对应设置。
+  - 三个重置按钮：从 `IEngineService<TConfig>.Configuration` 的 Default* 字段恢复默认值，然后重新 `ApplyOptionValuesToUi()`。
+  - `_toggleSkipModeToggleGroup` 订阅的是空 lambda，函数体折叠到 0x30C000。
+  - 分页：`for` 循环中每次迭代生成一个闭包；Toggle 打开时播放音效并调用 `page.SetActive(enable)`；初始状态为 `SetActive(i == 0)`。
+- **`ApplyOptionValuesToUi`**：
+  - 滑块值为 `Mathf.RoundToInt(x * 10f)`。0x355C90 即 `(int)Math.Round(double)`。
+  - 开关组用 `bool ? 1 : 0`。
+  - 语言下拉框的索引为 `_availableLocales.IndexOf(SelectedLocale)`。
+  - 分辨率下拉框的值为 `ResolutionLevel - _unavailableResolutionOptionCount`。
+- **`ChangeLocaleAsync`**：在 `NaninovelLoadingScreen.Show(Short, true, 空数组)` 的 using 范围内依次隐藏标题、`await SelectLocale(locale)`、恢复标题。
+- **`SaveAsync`**：若上一次保存的 `_saveUcs` 仍为 Pending，先在加载画面下等待它；然后新建 UCS，`await SaveSettingsAsync(ct)`，最后 `TrySetResult()`。`Save()` 即 `SaveAsync(dct).Forget()`。
+- **构建修正**：`Naninovel.Common` 也定义了 `Naninovel.LinqUtils`（但没有 IndexOf），直接写 `LinqUtils.IndexOf` 会报 CS0433。改用扩展方法写法后，解析到的是唯一的 Elringus 版本；按 TypeDefIndex 4038 判断，二进制里用的正是该版本。
+- **补登**：ControlPanel.Start 的 lambda RVA 移到 RECONSTRUCTED 标记行上，`b__47_7/8` 因此计入进度。
+
+进度：`progress.py UI` 测得 165/165、50,436/50,436 B（UI 子系统完成）；全部 `WitchTrials.*` 合计 576/929、195,947/316,778 B；警告基线 140。
 
 
 ---
