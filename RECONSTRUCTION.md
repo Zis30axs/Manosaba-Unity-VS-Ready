@@ -23,7 +23,7 @@
 | PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：**已完成**：65/65 个函数体、27,784/27,784 B（100%，`progress.py` 测得；收尾覆盖全部舞台命令、`StageCameraContainer`/`StageScreenContainer`/`StageScreenController` 全部方法与 `PerspectiveStagePresenter`，见 §7.6；此前手工累加的"19/65、23,203 B、83.5%"口径错误已作废）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
-| WitchBook/Data 子系统 | 进行中（用户优先级第 5 位）：105/121 个函数体、32,704/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi 已完成，见 §7.9；警告基线降为 140 |
+| WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
 
 ---
 
@@ -1916,7 +1916,7 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 ---
 
-## 7.9 `WitchBook/Data` 子系统：进行中（用户优先级第 5 位）
+## 7.9 `WitchBook/Data` 子系统：已完成（用户优先级第 5 位）
 
 按顺序推进：模型层 → 五个 Page → ItemButton/Thumbnail → WitchBookScreen → WitchBookUi → 三个命令。
 
@@ -1998,7 +1998,22 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - `SetFont` 与 DebateTextPrinterPanel.SetFont 同形：内联的 `base.SetFont` + 对 `SelectMany(config => config.Components)` 逐个 `ChangeFontMaterialAsync(...).Forget()`（lambda 折叠在 0x368A00）。
 - `SerializeState`：基类调用后 `new GameState { ... = RestrictionX?.ToArray() }`，`SetState` 内联为 `Dictionary.set_Item`。`DeserializeState`：`await base.DeserializeState`，`GetState<GameState>()` 为空时两项置 null，否则 `?.ToList()`（`new List<T>(array)` 内联）。
 
-进度：`progress.py WitchBook/Data` 测得 105/121、32,704/39,146 B；全部 `WitchTrials.*` 合计 390/929、137,993/316,778 B。剩余 WitchBookButtonUi，以及 ShowWitchBookUi/ClearWitchBook/UpdateWitchBook 三个命令。
+**第 6 组：`WitchBookButtonUi` 与三个命令（ShowWitchBookUi / ClearWitchBook / UpdateWitchBook）**
+
+- 惰性 getter 均为 `Engine.GetServiceOrErr<T>()`，`WitchBookUi` 为 `NaniUiManager.GetUI<IWitchBookUi>()`（内层 getter 内联）。IWitchBookUi 接口槽：0 SetPresentationMode、1 SetRestrictionCategories、2 SetRestrictionMapAreas、3 GetActiveEvidences、4 ChoiceEvidenceAsync、5 ChoiceAreaAsync、6 UpdateVersion、7 ClearState。
+- `WitchBookButtonUi.Start`：`_button.onClick.AsObservable().Subscribe(_ => ...).AddTo(this)`。lambda（0x3776F0）播放 `_openSfxPath`（结果丢弃），重置为 Local / 无限制，再 `PresentAsync(null, destroyCancellationToken).Forget()`（CancellationToken 重载）。CustomUI 与 ScriptableUIBehaviour 都不声明 Start，基类为 Unity 空的 UIBehaviour.Start，故不写 base 调用。
+- `ShowWitchBookUi`：
+  - `Execute` 传入 `Global ? Global : Local`、`Assigned(CategoryNames) ? ParseCategories : null`、`areas = null`；`Back` 在此不读。
+  - `ShowWitchBook` 依次调用槽 0/1/2，再 `await PresentAsync(null, token)`（AsyncToken 重载，已内联）。
+  - `IsEnabledDebugSkip` 为 `TryGetVariableValue<bool>("enableDebugSkip", out v) && v`，原生编译器折叠为 `and al`，写法 B。
+  - 构造函数只有 `Back = false` / `Global = false` 两个字段初始化。
+- `ClearWitchBook`：
+  - `IsAct2Chapter1Adv` 与 GosubResetWitchBook 同一前缀（`ScriptPath.Split('/')` 取最后一段 → `TryParseScenarioName`），判定 Act 2、Chapter 1、Part Adv。
+  - `Execute` 在 `DebugOptions.CheckWitchBookState` 为真时，Act2-1 ADV 清全部类别，否则清一个零初始化元素的数组（`{ Clue }`，写法 B）；非调试时按 CategoryNames 或全部类别逐个 `ClearState`。
+- `UpdateWitchBook`：`FastEnum.TryParse` 失败时 `Err("Invalid category: {0}. Valid values are: {1}")`，但仍继续执行 `UpdateVersion(category, Id, Version)`，此时 category 为 0。
+- `ChoiceEvidence.<Execute>b__2_0`（0x326010）已在 Execute 中内联书写，只在 RECONSTRUCTED 行补记 RVA。
+
+进度：`progress.py WitchBook/Data` 测得 **121/121、39,146/39,146 B（100%）**；全部 `WitchTrials.*` 合计 406/929、144,435/316,778 B。
 
 
 ---
