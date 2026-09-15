@@ -334,7 +334,7 @@ public class ControlPanel : MonoBehaviour
 		}
 	}
 
-	// RECONSTRUCTED | Confidence: A (OnClickAsObservable spelling: B) | RVA: 0x337710, 1570 B
+	// RECONSTRUCTED | Confidence: A (OnClickAsObservable spelling: B) | RVA: 0x337710, 1570 B; lambdas 0x338890 0x3389E0 0x338AE0 0x338BE0 0x338D30 0x338F50 0x338FF0 0x339090 0x3391B0
 	// Lambdas <Start>b__47_0..8 at 0x338890 / 0x3389E0 / 0x338AE0 / 0x338BE0 / 0x338D30 / 0x338F50 / 0x338FF0 /
 	// 0x339090 / 0x3391B0.
 	// - Close() first; then each button's onClick (+0x100) AsObservable -> Subscribe(instance lambda) -> AddTo(this):
