@@ -105,11 +105,12 @@ public class CharacterDataItem
 	[Token(Token = "0x170000BE")]
 	public string Weight
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x347410 (shared `mov rax,[rcx+0x38]; ret`, +0x38 `_weight`)
 		[Token(Token = "0x600059E")]
 		[Address(RVA = "0x347410", Offset = "0x345E10", VA = "0x180347410")]
 		get
 		{
-			return null;
+			return _weight;
 		}
 	}
 
