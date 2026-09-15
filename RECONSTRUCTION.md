@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 进行中：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2668,16 +2668,51 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 54/162、13,772/56,145 B；全部 `WitchTrials.*` 合计 796/929、266,999/316,778 B；0 错误，警告基线 140。
 
+### 第 D3 组：`Emote*` 表情动作命令（15 个函数体）
+
+五个命令都继承 GigaCreation 的 `AnimateActorExtended`（它又继承 Naninovel 的 `animate` 命令），本质是"写死关键帧的 animate 预设"。
+
+- **`GetParametersForActor`**：
+  - 把私有关键帧数组逐个 `string.Join(KeyDelimiters[0], 数组)`，写入基类的 `ScenePositionX/ScenePositionY/Rotation/EasingTypeName/Duration`（偏移 +0x58/+0x60/+0x70/+0x88/+0x90）。
+  - 设 `Relative = true`（+0xB0），然后尾跳基类实现。
+  - 各命令只写自己用到的字段，写入顺序按字节保留（`EmoteNod` 先写缓动、后写时长）。
+- **`Speed` 参数**（Jump/JumpDouble/Nod）：
+  - 时长经 lambda `x / (Assigned(Speed) ? Speed.Value : 1f)` 缩放。
+  - 构造函数中 `Speed = 1f`。
+- **关键帧数据**：
+  - 少量元素的数组由构造函数逐元素写入。
+  - 其余来自 `RuntimeHelpers.InitializeArray`，其 `<PrivateImplementationDetails>` 数据块不在 `GameAssembly.dll` 中，而在 `global-metadata.dat`（v31，magic 0xFAB11BAF）。按 dump.cs 标注的 metadata 偏移读出后，缓动枚举值均落在 `EasingType` 合法范围内。
+
+| 命令 | 数组 | 缓动 |
+|------|------|------|
+| `EmoteFall` | X {-6,0,3,0}；Y {-2,-2,-3,-50}；旋转 {6,0,-3,3}；时长 {0.3,0.3,0.3,0.5} | InOutCubic, InCubic, OutQuad, InCubic |
+| `EmoteJump` | Y {6,-1.5,0}；时长 {0.2,0.2,0.1} | OutQuad, InQuad, OutQuad |
+| `EmoteJumpDouble` | Y {6,-2,6,-2,0}；时长 {0.15×4, 0.1} | OutQuad/InQuad 交替 |
+| `EmoteNod` | Y {-5,0}；时长 {0.3,0.3} | OutQuad, InQuad |
+| `EmoteShake` | X {-0.6,0.6,-0.6,0.6,-0.4,0.4,0}；时长 0.05×7 | （不设） |
+
+- **`EmoteFall.Execute`**（MoveNext 2,985 B，三个 await 状态，`<>n__0` 证明是 `base.Execute`）：
+  1. 先启动基类动画并暂存任务。
+  2. 等 1.15 s。
+  3. 发出 `new HideActors { ActorIds = ActorIds }.Execute(token).Forget()`，角色倒下时开始隐藏。
+  4. 再等 0.15 s。
+  5. 播放音效 `Body_Fall`（`PlaySfx(path, 1f, 0f, false, null, token)`，fire-and-forget）。
+  6. 最后等待暂存的动画任务。
+  - 两次延时都是 Naninovel `UniTask.Delay(TimeSpan, false, Update, token.CancellationToken)`，常量取自数据 RVA 0x2AE2910/0x2AE2898。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 69/162、22,972/56,145 B；全部 `WitchTrials.*` 合计 811/929、276,199/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
 旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（108 个函数体、约 42 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
+1. **`Other` 桶余量**（93 个函数体、约 33 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
    - 零散小方法、服务 getter，以及 record 的 `EqualityContract`/`Equals(object)`。
    - 较大的函数体：
-     - `Emote*` 命令的 `GetParametersForActor` 与构造函数。
      - `Spawnable*` 的 `AwaitSpawn/AwaitDestroy`。
      - `AuthorTextBuilder`、`Timer`。
      - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
