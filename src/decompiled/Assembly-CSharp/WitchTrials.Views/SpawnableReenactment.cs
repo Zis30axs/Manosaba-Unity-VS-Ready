@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GigaCreation.Tools.Private.PlayableDirectors;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -170,34 +172,89 @@ public class SpawnableReenactment : MonoBehaviour, Spawn.IParameterized, Spawn.I
 	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
 	private CancellationTokenSource _cts;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x333420, 332 B
+	// Parameter 0 is the story index (Naninovel ParseUtils.AsInvariantInt, int?); a missing or invalid value means 0. `asap` is unused.
 	[Token(Token = "0x600019B")]
 	[Address(RVA = "0x333420", Offset = "0x331E20", VA = "0x180333420", Slot = "4")]
 	public void SetSpawnParameters(IReadOnlyList<string> parameters, bool asap)
 	{
+		_currenIndex = (parameters?.ElementAtOrDefault(0)?.AsInvariantInt()).GetValueOrDefault();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x333570 (builder stub); MoveNext 0x333D60, 1003 B, two Task await states
+	// 
+	// - The previous run's `_cts` (+0x48) is cancelled and disposed; an already completed token clears it and stops.
+	// - Story 0 is preceded by the opening timeline (+0x20); then `_storiesDirector[_currenIndex]` plays.
 	[Token(Token = "0x600019C")]
 	[Address(RVA = "0x333570", Offset = "0x331F70", VA = "0x180333570", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CAwaitSpawn_003Ed__7))]
-	public Naninovel.UniTask AwaitSpawn([Optional] AsyncToken asyncToken)
+	public async Naninovel.UniTask AwaitSpawn([Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		if (asyncToken.Completed)
+		{
+			_cts = null;
+			return;
+		}
+		if (_currenIndex == 0)
+		{
+			await RunTimelineAsync(asyncToken, _openingDirector);
+		}
+		await RunTimelineAsync(asyncToken, _storiesDirector[_currenIndex]);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3336F0 (builder stub); MoveNext 0x333AF0, 613 B
+	// Cancels the running timeline and plays the closing one (+0x28); no completed-token check here.
 	[Token(Token = "0x600019D")]
 	[Address(RVA = "0x3336F0", Offset = "0x3320F0", VA = "0x1803336F0", Slot = "6")]
 	[AsyncStateMachine(typeof(_003CAwaitDestroy_003Ed__8))]
-	public Naninovel.UniTask AwaitDestroy([Optional] AsyncToken asyncToken)
+	public async Naninovel.UniTask AwaitDestroy([Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		await RunTimelineAsync(asyncToken, _closingDirector);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (the task kept in a local across Evaluate) | RVA: 0x333870 (builder stub);
+	// MoveNext 0x334150, 2168 B (System AsyncTaskMethodBuilder: this is a real `async Task`)
+	// 
+	// - `_current` (+0x38) takes the director; a fresh `_cts` is linked with the command token.
+	// - Skipped when the director is destroyed or this GameObject is gone (inlined Unity `!=` / Object.op_Implicit).
+	// - icall `PlayableGraph::IsValid()`: an existing graph is rewound (`time = 0`) and resumed, otherwise PlayAsync
+	//   (GigaCreation PlayableDirectorExtensions). Evaluate() runs before the returned Cysharp UniTask is awaited.
+	// - `_cts` is disposed and cleared at the end (also when skipped).
 	[Token(Token = "0x600019E")]
 	[Address(RVA = "0x333870", Offset = "0x332270", VA = "0x180333870")]
 	[AsyncStateMachine(typeof(_003CRunTimelineAsync_003Ed__9))]
-	private Task RunTimelineAsync(AsyncToken asyncToken, PlayableDirector director)
+	private async Task RunTimelineAsync(AsyncToken asyncToken, PlayableDirector director)
 	{
-		return null;
+		_current = director;
+		_cts = new CancellationTokenSource();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, asyncToken.CancellationToken);
+		if (_current != null && (bool)base.gameObject)
+		{
+			Cysharp.Threading.Tasks.UniTask task;
+			if (_current.playableGraph.IsValid())
+			{
+				_current.time = 0.0;
+				task = _current.ResumeAsync(linkedCts.Token);
+			}
+			else
+			{
+				task = _current.PlayAsync(linkedCts.Token);
+			}
+			_current.Evaluate();
+			await task;
+		}
+		_cts.Dispose();
+		_cts = null;
 	}
 
 	[Token(Token = "0x600019F")]

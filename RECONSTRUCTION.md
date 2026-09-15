@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 进行中：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2704,16 +2704,50 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 69/162、22,972/56,145 B；全部 `WitchTrials.*` 合计 811/929、276,199/316,778 B；0 错误，警告基线 140。
 
+### 第 D4 组：`Spawnable*` 生成物（22 个函数体）
+
+三个类都实现 Naninovel `@spawn` 的 `Spawn.IParameterized`/`Spawn.IAwaitable` 与 `DestroySpawned.IAwaitable`：出现和消失都是可等待的演出。
+
+公共形状：
+- 每次 `AwaitSpawn`/`AwaitDestroy` 先取消并释放上一轮的 `_cts`，新建后与命令 token 链接（using）。
+- 各类在结束时如何清理 `_cts` 并不一致，已逐个按字节保留。
+
+- **`SpawnableClue`**（证据品图片弹出）：
+  - `SetSpawnParameters`：参数 0 为证据品 ID（缺失时警告 `証拠品 ID が指定されていません。`）；`asap` 把动画时间置 0。
+  - `AwaitSpawn`（MoveNext 4,107 B）：
+    1. 完成正在跑的 tween；Canvas 使用 Naninovel 相机。
+    2. 经 `GetOrLoadAddressableAsset<Texture2D>(BuildClueTextureAddress(id))` 加载图片；找不到时警告并不显示。
+    3. 时间为 0 时直接显示。否则从 alpha 0、偏移 `-_move` 处，经 Naninovel `UniTask.WhenAll(MoveAsync, FadeAsync)` 回到初始位置。
+  - `AwaitDestroy` 为反向（时间为 0 时只把 alpha 置 0）。
+  - `MoveAsync`/`FadeAsync` 为 `Tweener.RunAwaitable(new VectorTween/FloatTween(..., new Tween(time, easing), 回调), token, this)`。
+  - 构造函数只有两个 Tweener 字段初始化器。
+- **`SpawnableReenactment`**（案件重演 Timeline）：
+  - 参数 0 为故事序号（`AsInvariantInt`，缺省 0）。
+  - `AwaitSpawn`：token 已完成时清空 `_cts` 并返回；序号 0 先播开场 Timeline，再播 `_storiesDirector[序号]`。
+  - `AwaitDestroy`：播放收尾 Timeline。
+  - `RunTimelineAsync` 是真正的 `async Task`（System `AsyncTaskMethodBuilder`，MoveNext 2,168 B）：
+    - 导演或自身 GameObject 已销毁时跳过。
+    - 否则按 icall `PlayableGraph::IsValid()` 选择"时间归零后 `ResumeAsync`"或 `PlayAsync`（GigaCreation 扩展）。
+    - 先 `Evaluate()` 再等待返回的任务；最后释放并清空 `_cts`。
+  - 字段名 `_currenIndex` 的拼写错误是原文。
+- **`SpawnableTrialText`**（审判文字演出）：
+  - `SetSpawnParameters` 只设置 Canvas 相机。
+  - `AwaitSpawn` 与重演的 Timeline 启动逻辑相同（无销毁检查），结束后释放并清空 `_cts`（`Dispose()` 被内联）。
+  - `AwaitDestroy`：token 已完成时时长为 0，时长为 0 时什么都不做（不改 alpha）。否则用 LitMotion 在 `_hideDuration` 内把根 CanvasGroup 淡出到 0。结束后 `_cts` 只释放不清空。
+
+第一次编译缺少 `GigaCreation.Tools.Private.PlayableDirectors` 的 using（2 个错误），补上后通过；审计仍为基线 4 处。
+
+进度：Other 91/162、29,355/56,145 B；全部 `WitchTrials.*` 合计 833/929、282,582/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
 旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（93 个函数体、约 33 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
+1. **`Other` 桶余量**（71 个函数体、约 27 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
    - 零散小方法、服务 getter，以及 record 的 `EqualityContract`/`Equals(object)`。
    - 较大的函数体：
-     - `Spawnable*` 的 `AwaitSpawn/AwaitDestroy`。
      - `AuthorTextBuilder`、`Timer`。
      - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
      - `StopForChoice.Execute`（2,409 B）。
