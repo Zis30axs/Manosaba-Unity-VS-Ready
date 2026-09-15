@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：89/165 个函数体、23,240/50,436 B。已完成四组（第 4 组为 HintDisplay），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：107/165 个函数体、29,993/50,436 B。已完成五组（第 4 组为 HintDisplay，第 5 组为 ControlPanel），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
 
@@ -2084,7 +2084,22 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **按钮接线**：关闭按钮经 UniRx 订阅 `Dismiss`（lambda `b__30_0` 与 `Dismiss` 折叠为同一函数体）；其余三个按钮用 `AddListener` 写入 `_selectedButtonKind`。
 - **构造函数**：只有字段初始化器 `0.1f` / `0.5f`，以及 `{ '。', '】' }` 各 0.3f 的等待表。
 
-进度：`progress.py UI` 测得 89/165、23,240/50,436 B；全部 `WitchTrials.*` 合计 492/929、167,283/316,778 B；警告基线 140。
+**第 5 组：ControlPanel（游戏内菜单，20 个函数体 + 9 个点击 lambda + 1 个 MoveNext）**
+
+- **`Start`**：先 `Close()`，再为各按钮订阅 `onClick.AsObservable()` 并 `AddTo(this)`：
+  - 回想、存档、读档、设置：先播放 Submit 音效、`Close()`，再 `PresentAsync(null, destroyCancellationToken).Forget()`。存档/读档在此之前设置 `SaveLoadUi.PresentationMode = Save/Load`（ISaveLoadUI 槽 1）。
+  - 返回标题：调用 `ReturnToTitleAsync(...).Forget()`。
+  - 开/关按钮与遮挡按钮：播放对应 SFX（结果丢弃）后 `Open`/`Close`。
+  - 提示入口：`_hintDisplay.Present()`、隐藏 home 组，并设 `_hintDisplay.OnClose = Open`。
+- **`OnEnable`/`OnDisable`**：`NaniInputManager?.GetSampler("Pause")`（Naninovel IInputManager 槽 6），非空时增删 `OnStart += ToggleVisibility`。
+- **`Open`/`Close`**：切换 `_isOpened` 与四个 CanvasGroup，`_naviAnimator.SetBool(s_blink, …)`。
+  - `Open` 另外关闭自动与快进（IScriptPlayer 槽 35/34）。
+  - `Close` 另外关闭提示显示。
+  - `s_blink` 为静态初始化器 `Animator.StringToHash("Blink")`。
+- **`ReturnToTitleAsync`**：外层 `using` 阻塞器，内层 `using` 对话框。确认结果为 Cancel 时直接返回；否则对话框先释放，再在阻塞器作用域内 `await _returnToTitleScript.PlayAsync(ct)`。
+- **构建修正**：`PresentAsync` 是 `GigaCreation.NaninovelExtender.Ui` 中的扩展方法，补上该 using 后编译通过。
+
+进度：`progress.py UI` 测得 107/165、29,993/50,436 B；全部 `WitchTrials.*` 合计 513/929、174,642/316,778 B；警告基线 140。
 
 
 ---
