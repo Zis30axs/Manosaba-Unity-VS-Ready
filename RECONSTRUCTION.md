@@ -28,7 +28,7 @@
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
 | Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
-| Credits/Gallery 子系统 | 进行中：37/71 个函数体、9,380/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组（CreditsDirectorAct2/SpecialThanksRoll）与第 C 组（Gallery）待做 |
+| Credits/Gallery 子系统 | 进行中：51/71 个函数体、15,019/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组（Gallery）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2517,6 +2517,43 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - `Debug`（UnityEngine 与 System.Diagnostics）
 
 进度：Credits/Gallery 37/71、9,380/20,747 B；全部 `WitchTrials.*` 合计 719/929、243,994/316,778 B；0 错误，警告基线 140。
+
+### 第 B2 组：CreditsDirectorAct2 / SpecialThanksRoll（14 个函数体）
+
+- **`CreditsDirectorAct2`**（第 2 章片尾）：
+  - `PreloadResourcesAsync`（MoveNext 4,863 B）：两个缓存都已存在时直接返回。否则：
+    1. 通过 `IAddressableAssetLoader.GetOrLoadAddressableAsset<SpecialThanksData>(AssetReference, ct)` 加载数据。
+    2. 课程表：按 Level 降序、再按 Fee 降序排序，按 Phase 分组，每组转成数组。
+    3. 名单：按 Course 分组，每项的 `LocalizedText[]` 转成 Locale → Text 字典。
+    4. 对 `_creditRolls[..2]`（`RuntimeHelpers.GetSubArray`）中的特别鸣谢卷轴执行第 0 阶段排版。
+  - `PlayAsync`（MoveNext 4,343 B）：
+    1. 启用所有卷轴，fire-and-forget `ShowStillsAsync`。
+    2. 若 `_specialThanksPhase == 0`，先排版前两卷。
+    3. 收集前两卷的 `RebuildLayoutAsync`。
+    4. 逐卷滚动：
+       - 视口时长 = `rect.height / _scrollSpeed`，滚动时长 = `ContentHeight / _scrollSpeed - 视口时长`。
+       - 除最后一卷外，只等待 `滚动时长 - 视口时长` 的 `UniTask.Delay`（`bool ignoreTimeScale` 重载，0x180D530），不等滚动结束，因此相邻两卷在画面上交叠；最后一卷等待滚动本身。
+       - 下一卷若是 SpecialThanksRoll，则先为它排版，并把布局重建加入批次，批次整体 await 后清空。
+    5. 结束后跳到 `EndLabelName`。
+    - 单个 await 写成条件表达式（写法 B 级）。
+    - 没有 try/finally。
+  - `ShowStillsAsync`：等待 `_stillDelayUnits` 拍，然后对每张 EndingStill 依次淡入、停留 `_stillDisplayUnits` 拍、淡出，淡入淡出各 `_stillFadeUnits` 拍。
+  - `PrepareSpecialThanksRoll` 每次调用消费课程表的一个阶段：清空卷轴，按条目的 Level 与 Course 名单 `SetCreditTexts`，阶段号加 1。
+  - `Stop` 关闭显示、关闭所有卷轴、清空特别鸣谢卷轴，并把阶段号归零。
+  - `Reset`/`Initialize` 为组件引用与卷轴初始状态。
+  - lambda `b__16_8` 是纯引用判空（`test rdx,rdx; setne`），不是 UnityEngine.Object 重载的 `!=`，写作 `is not null`（B 级）。
+- **`SpecialThanksRoll`**：
+  - `SetCreditTexts`（1,415 B）：
+    - 从 `_labelPrefabs[sizeLevel]` 实例化标签，行宽取标签 `sizeDelta.x`，名字间距取「＿」的首选宽度。
+    - 名字经 `IReadOnlyDictionary<LocaleKind, string>` 索引器取 `LocaleKind.Ja`（接口槽 2，键常量 0），即名单只显示日文名；字典的静态类型为 B 级。
+    - 放得下时用全角空格分隔（行首不加）；放不下时换行。累计 `_maxLineCount` 行后换一个新标签继续。
+    - **换到新标签后仍会先追加一个换行**，所以续接标签的第一行是空行（字节确认）。
+  - `Clear` 销毁全部标签对象并清空列表。
+  - `EndToScroll` 调用基类后，把所有标签置空文本。
+  - `RebuildLayoutAsync` 等待 `AutoLayoutSupporter.ExecuteRebuildingAsync`。
+  - 构造函数只有 `_labels = new List<TMP_Text>()` 字段初始化。
+
+进度：Credits/Gallery 51/71、15,019/20,747 B；全部 `WitchTrials.*` 合计 733/929、249,633/316,778 B；0 错误，警告基线 140。
 
 
 ---
