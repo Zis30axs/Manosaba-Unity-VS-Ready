@@ -27,7 +27,7 @@
 | Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
-| Debug 子系统 | 进行中：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
+| Debug 子系统 | 进行中：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2348,7 +2348,45 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - 202 B 的 getter 已钉死（0x3A7E10）：与 186 B 版本完全相同，都是 `??= Engine.GetServiceOrErr<T>()`。多出的 16 字节仅来自字段偏移 +0x80 需要 4 字节位移编码。
 - **第 B 组注意**：`SlackApp`/`DebugReporter.BuildPostMessage` 可能内嵌 token、webhook URL 或频道 ID。复原时这类字面量一律写成带占位符的命名常量，并注明"literal present at data RVA 0x…, redacted"，不把凭据提交进仓库。
 
-进度：Debug 19/46、5,106/20,437 B；全部 `WitchTrials.*` 合计 657/929、219,539/316,778 B；0 错误，警告基线 140。
+进度（第 A 组后）：Debug 19/46、5,106/20,437 B；全部 `WitchTrials.*` 合计 657/929、219,539/316,778 B；0 错误，警告基线 140。
+
+### 第 B 组（上半）：DebugCommandButtons / DebugInfoBuilder / SRDebuggerInitializer / `showLoading`
+
+- **`DebugCommandButtons`**：
+  - 两个 getter 均为 `??= Engine.GetServiceOrErr<T>()`；202 B 的那个多出的字节仅来自 +0x80 位移编码。
+  - `Start`：DisplayClass23_0 捕获 `this` 与 `FindAnyObjectByType<TimeDebugCommands>()`。7 个按钮按字段顺序各做一次 UniRx `onClick.AsObservable().Subscribe(...).AddTo(this)`，每个回调都先调 `PlayResponseSfx(ResponseKind.Submit)`。
+    - 时间按钮：`TogglePause()`、`SpeedUp(0.2f)`、`SlowDown(0.2f)`（rdata 0x2AE2670 = 0.2）。
+    - 调试主页：DebugPanel 槽 5 `HideContent()`，然后 `GoToDebugHomeAsync(destroyCancellationToken).Forget()`。
+    - 两个开关：只有在 `enableDebugSkip` / `allowContinueDebate` 变量**已存在**（`TryGetVariableValue` 成功）时才写入取反值，变量不存在时按钮无效。
+    - 解锁全部 CG：`TryGetUI<IGalleryUi>`，再精确类型比较（GalleryUi 是 sealed），然后调用内联的 `GalleryUi.UnlockAllStills`。
+  - `GoToDebugHomeAsync`（MoveNext 0x3A8E60）：
+    1. 标题 UI 可见（IManagedUI 槽 2）时，经 CancellationToken 重载 `DismissAsync(null, ct)` 关闭。
+    2. `SetTitleScreenShown(false)`。
+    3. `new Goto { Path = new NamedString(_debugHomeScenario, null) }`，经槽 5 `Execute()` 等待执行。
+- **`GalleryUi.UnlockAllStills`**（属 Credits/Gallery 桶，因被内联而一并复原）：`if (Application.isPlaying) UnlockAllStillsAsync().Forget()`。
+- **`DebugInfoBuilder`**：
+  - `Quote`：文本含换行时加双引号。
+  - `TryGetPlaybackSpot`：IScriptPlayer 槽 24，`Valid` 内联。
+  - `TryGetPrintedMessage`：
+    - 取第一个 `Visible` 的文本打印机（IActor 槽 3）。
+    - 以 `Environment.NewLine` 连接 `Messages.Select(BuildMessage)`，方法组委托缓存在 `<>O`。
+  - `BuildMessage`：
+    - 先把 `<br>` 替换为换行。
+    - 有作者且能取到 ICharacterManager 时，作者名优先取非空 `Label`，否则取槽 7 `GetAuthorName(Id)`。
+    - 作者名非空白时，输出 `"＠" + 作者名 + 换行 + 正文`。
+- **`SRDebuggerInitializer.Awake`**：
+  - 播放器构建中 `Application.isEditor` 是 5 字节 `xor al,al; ret`（0x74B0C0），编辑器早退分支被折叠掉。
+  - `IDebugManager.IsDebugMode.Value` 被读取但结果从不测试。这是 `if` 体被编译剔除（例如 `[Conditional]` 的 SRDebugger 初始化调用）后的残留：字节为 A 级，源码意图为 B 级。
+- **`ShowLoadingUiForDebug`（`showLoading` 命令）**：
+  - `Execute`：`WaitOrForget`（槽 13）。
+  - `ShowLoadingUiAsync`（MoveNext 0x3B2D10）：
+    1. 忽略大小写解析 `LoadingMode`，失败时 `Warn`，模式保持为 0。
+    2. `using` 住 `NaninovelLoadingScreen.Show(mode, HaltInput, [])`。
+    3. 状态机字段名为 `startingTime`，实际是从 0 累加 `Time.deltaTime` 的已用时间。
+    4. 在未取消、且已用时间小于 `Duration`（缺省 0.35）期间，每帧 `Yield(Update, token)`。
+  - `LoadingMode` 字段遮蔽了同名枚举类型，因此泛型参数写成完全限定名。
+
+进度：Debug 30/46、10,881/20,437 B；全部 `WitchTrials.*` 合计 669/929、225,744/316,778 B；0 错误，警告基线 140。
 
 
 ---

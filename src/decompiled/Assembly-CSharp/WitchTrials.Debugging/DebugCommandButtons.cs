@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿using GigaCreation.NaninovelExtender.Ui;
+using GigaCreation.Tools.Debugging.General;
+using Naninovel.Commands;
+using Naninovel.UI;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -9,9 +13,11 @@ using GigaCreation.Tools.Debugging.Ui;
 using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using Naninovel;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using WitchTrials.Models;
+using WitchTrials.Views;
 
 namespace WitchTrials.Debugging;
 
@@ -162,37 +168,122 @@ public class DebugCommandButtons : MonoBehaviour
 	[Token(Token = "0x17000139")]
 	private ICustomVariableManager NaniVarManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A7D50, 186 B
+		// Lazy cache in +0x78 via `Engine.GetServiceOrErr<ICustomVariableManager>()`.
 		[Token(Token = "0x600075B")]
 		[Address(RVA = "0x3A7D50", Offset = "0x3A6750", VA = "0x1803A7D50")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
 	[Token(Token = "0x1700013A")]
 	private IUIManager NaniUiManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3A7E10, 202 B
+		// Lazy cache in +0x80 via `Engine.GetServiceOrErr<IUIManager>()`. This is the same shape as the 186 B
+		// getters; the extra 16 bytes come only from the +0x80 displacement encoding.
 		[Token(Token = "0x600075C")]
 		[Address(RVA = "0x3A7E10", Offset = "0x3A6810", VA = "0x1803A7E10")]
 		get
 		{
-			return null;
+			return _naniUiManager ??= Engine.GetServiceOrErr<IUIManager>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A7EE0, 1260 B; <>c__DisplayClass23_0 lambdas b__0 0x3A8580,
+	// b__1 0x3A8600, b__2 0x3A8680, b__3 0x3A8700, b__4 0x3A8940, b__5 0x3A8A50, b__6 0x3A8B60
+	// 
+	// - The DisplayClass holds `this` (+0x10) and `timeDebugCommands` (+0x18) =
+	//   `Object.FindAnyObjectByType<TimeDebugCommands>()`.
+	// - Each of the seven buttons (+0x28..+0x58, in field order) does
+	//   `onClick (+0x100).AsObservable().Subscribe(Action<Unit>).AddTo<IDisposable>(this)` (UniRx).
+	// - Every lambda first calls IInputManager slot 0 `PlayResponseSfx(ResponseKind.Submit)` (r9d = 1) through
+	//   the InputManager getter.
+	// - Time buttons: `TogglePause()`, `SpeedUp(0.2f)`, `SlowDown(0.2f)` (rdata 0x2AE2670 = 0.2).
+	// - Debug home: DebugPanel vtable +0x188 = slot 5 `HideContent()`, then
+	//   `GoToDebugHomeAsync(destroyCancellationToken)` (builder stub inlined) and Cysharp `Forget()`.
+	// - Two toggles: `TryGetVariableValue<bool>` and, only on success, `TrySetVariableValue<bool>(name, !value)`
+	//   (`sete`).
+	// - Unlock stills: `TryGetUI<IGalleryUi>`, an exact class compare (GalleryUi is sealed), and
+	//   GalleryUi.UnlockAllStills (0x350380) inlined.
 	[Token(Token = "0x600075D")]
 	[Address(RVA = "0x3A7EE0", Offset = "0x3A68E0", VA = "0x1803A7EE0")]
 	private void Start()
 	{
+		TimeDebugCommands timeDebugCommands = Object.FindAnyObjectByType<TimeDebugCommands>();
+		_togglePauseButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			timeDebugCommands.TogglePause();
+		}).AddTo(this);
+		_speedUpButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			timeDebugCommands.SpeedUp(0.2f);
+		}).AddTo(this);
+		_slowDownButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			timeDebugCommands.SlowDown(0.2f);
+		}).AddTo(this);
+		_debugHomeButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			_debugPanel.HideContent();
+			GoToDebugHomeAsync(destroyCancellationToken).Forget();
+		}).AddTo(this);
+		_toggleDebugSkipButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			if (NaniVarManager.TryGetVariableValue(EnableDebugSkipVarName, out bool enabled))
+			{
+				NaniVarManager.TrySetVariableValue(EnableDebugSkipVarName, !enabled);
+			}
+		}).AddTo(this);
+		_toggleAllowContinueDebateButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			if (NaniVarManager.TryGetVariableValue(AllowContinueDebateVarName, out bool allowed))
+			{
+				NaniVarManager.TrySetVariableValue(AllowContinueDebateVarName, !allowed);
+			}
+		}).AddTo(this);
+		_unlockAllStillsButton.onClick.AsObservable().Subscribe(delegate
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			if (NaniUiManager.TryGetUI(out IGalleryUi galleryUi) && galleryUi is GalleryUi gallery)
+			{
+				gallery.UnlockAllStills();
+			}
+		}).AddTo(this);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3A83D0 (builder stub); MoveNext 0x3A8E60, 1904 B
+	// 
+	// - `TryGetUI<ITitleUI>` (inlined, null-safe on the manager), then IManagedUI slot 2 `get_Visible`.
+	// - If visible: `ManagedUiExtensions.DismissAsync(ui, null, ct)` (CancellationToken overload 0xD39FB0),
+	//   awaited as Cysharp.
+	// - The inlined WitchTrialsNaninovelManager getter (+0x70), then slot 3 `SetTitleScreenShown(false)`.
+	// - `new Goto()` (Command ctor only), whose +0x30 `Path` =
+	//   `new NamedString(_debugHomeScenario (+0x60), null)` via the NamedStringParameter implicit.
+	// - Command vtable +0x188 = slot 5 `Execute(default)`, awaited as Naninovel.UniTask.
 	[Token(Token = "0x600075E")]
 	[Address(RVA = "0x3A83D0", Offset = "0x3A6DD0", VA = "0x1803A83D0")]
 	[AsyncStateMachine(typeof(_003CGoToDebugHomeAsync_003Ed__24))]
-	private Cysharp.Threading.Tasks.UniTask GoToDebugHomeAsync([Optional] CancellationToken ct)
+	private async Cysharp.Threading.Tasks.UniTask GoToDebugHomeAsync([Optional] CancellationToken ct)
 	{
-		return default(Cysharp.Threading.Tasks.UniTask);
+		if (NaniUiManager.TryGetUI(out ITitleUI titleUi) && titleUi.Visible)
+		{
+			await titleUi.DismissAsync(null, ct);
+		}
+		WitchTrialsNaninovelManager.SetTitleScreenShown(false);
+		Goto gotoCommand = new Goto
+		{
+			Path = new NamedString(_debugHomeScenario, null)
+		};
+		await gotoCommand.Execute();
 	}
 
 	[Token(Token = "0x600075F")]

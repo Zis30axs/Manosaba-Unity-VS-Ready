@@ -158,10 +158,19 @@ public sealed class GalleryUi : CGGalleryPanel, IGalleryUi, IManagedUI
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x350380, 430 B
+	// 
+	// The icall `Application::get_isPlaying` (data 0x25EE758) guards a builder Start of
+	// <UnlockAllStillsAsync>d__15, then `get_Task` and a tail jump to Naninovel `UniTaskExtensions.ForgetCore`.
+	// The same body is inlined byte-for-byte into DebugCommandButtons' unlock-all-stills button lambda.
 	[Token(Token = "0x60002BF")]
 	[Address(RVA = "0x350380", Offset = "0x34ED80", VA = "0x180350380")]
 	public void UnlockAllStills()
 	{
+		if (Application.isPlaying)
+		{
+			UnlockAllStillsAsync().Forget();
+		}
 	}
 
 	[Token(Token = "0x60002C0")]
