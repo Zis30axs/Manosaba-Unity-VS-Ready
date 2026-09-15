@@ -79,7 +79,7 @@ public class ChoiceEvidence : ShowWitchBookUi
 	[ParameterAlias("correct")]
 	public StringParameter CorrectEvidenceId;
 
-	// RECONSTRUCTED | Confidence: A | RVA: 0x325E70, 389 B (entry) + MoveNext 0x326140
+	// RECONSTRUCTED | Confidence: A | RVA: 0x325E70, 389 B (entry) + MoveNext 0x326140 + lambda 0x326010
 	// Three await points: state 0 `ShowWitchBook` (Naninovel UniTask), state 1
 	// `IWitchBookUi.ChoiceEvidenceAsync` (Naninovel UniTask<string>), state 2
 	// `ManagedUiExtensions.DismissAsync` (Cysharp UniTask). Anchors:
