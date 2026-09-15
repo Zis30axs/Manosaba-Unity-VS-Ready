@@ -31,6 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| Other（未归类余量） | 进行中：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2591,16 +2592,70 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Credits/Gallery 71/71、20,747/20,747 B；全部 `WitchTrials.*` 合计 753/929、255,361/316,778 B；0 错误，警告基线 140。
 
+## 7.17 未归类余量（`Other` 桶）
+
+`progress.py` 的 `Other` 桶收纳没有归入任何子系统的 `WitchTrials.*` 函数体，起点 11/162、2,134/56,145 B。这个桶不是一个连贯的子系统，而是若干小组件、positional record 的编译器生成成员、`Emote*` 命令和 `Spawnable*` 生成物的混合。因此按类分组推进，每组重跑审计。
+
+### 审计脚本收紧
+
+`stub_audit.py`（scratchpad）现在只报告同时满足以下三个条件的方法：
+1. 函数体为空或 `return default`。
+2. 自身注释块里没有 RECONSTRUCTED 标记。
+3. RVA 已被别处的标记计入进度。
+
+原生代码本来就为空的两个共享体（0x30C000 `ret`、0x30D8F0 尾跳 MonoBehaviour 构造）直接跳过。收紧后基线为 4 处，都是命令类构造函数：ChangeCourtFireFxActivity、HidePerspectiveStageScreen、ShakePerspectiveStageCamera、ShowWitchBookUi。它们的标记注释与构造函数之间隔着字段声明，所以被误报。本轮已逐个核对：字段初始化器确实写在字段声明上（`Enable = true`、`Reset = true`、`Force/Frequency/DampingRatio`、`Back/Global = false`），原生体大小（112/112/661/221 B）与此一致。
+
+### 第 D1 组：PointerStaying 系列与三个小组件（22 个函数体，另补 5 个嵌套类成员）
+
+- **`PointerStayingPropagator`**（悬停状态在同组 UI 间传播）：
+  - `Awake`：`GetComponentsInChildren<IPointerStaying>(includeInactive: true)`，让每个子项 `RegisterTo(this)`（接口槽 2）。
+  - `OnPointerEnter/Exit(eventData, owner)`：对所有已注册项（含 owner 自身）先过 `BlockList.CanPropagate`，再调用 `DoPointerEnter/Exit`（槽 0/1）。私有 `CanPropagate` 被内联，写法定 B 级。
+  - 构造函数只有 `_blockList = new BlockList()` 字段初始化器（BlockList 构造被内联，`IgnoreSettings = Array.Empty<IgnoreSetting>()`）。
+- **`BlockList.CanPropagate(owner, target)`**：
+  1. `owner == target` 时直接返回 false，不回传给自己。
+  2. owner 不是 `PointerStayingSpriteSwapper`（精确类型检查，类为 sealed），或找不到 `IsOwner(worker)` 的 IgnoreSetting 时，返回 true。
+  3. 否则返回 `!_ignores.Contains(target as PointerStayingSpriteSwapper)`。
+  - lambda（`<>c__DisplayClass1_0.b__0`，0x30E590）与末尾的 `IgnoreSetting.CanPropagate` 都是内联的。
+  - 结论：IgnoreSetting 只对精灵切换器生效，文字颜色切换器作为 owner 时总是全量传播。
+- **`PointerStayingSpriteSwapper` / `PointerStayingTextColorSwapper`**：
+  - `DoPointerEnter/Exit` 分别设置 `Image.overrideSprite`（悬停 +0x30 / 默认 +0x28）或 `Graphic.color`（虚槽 23，悬停 +0x38 / 默认 +0x28）。
+  - `OnPointerEnter/Exit` 先执行同样的赋值（内联），再在传播器存在时（Unity `!=`）通知传播器。
+  - 精灵切换器的 `OnDestroy` 清空 `overrideSprite`，与 GigaCreation `DotIndicator.OnDestroy` 共用函数体。
+  - `RegisterTo` 是共享的字段 setter 体；`Reset` 调用 `GetComponent<T>`。
+- **`SetMainCameraToCanvasOnAwake`**：`_canvas.worldCamera = Camera.main`；`Reset` 调用 `GetComponent<Canvas>`。
+- **`SetShaderTimerAsUnscale`**：
+  - `.cctor` 执行 `Shader.PropertyToID("_UnscaledTime")`。
+  - `Update` 每帧 `Shader.SetGlobalFloat(id, Time.unscaledTime)`（icall 名直接确认）。
+- **`PauseOrUnpause.Pause(enable)`**：`Time.timeScale = enable ? 0f : 1f`。1.0 取自数据 RVA 0x2AE2820。
+
+进度：Other 33/162、5,739/56,145 B；全部 `WitchTrials.*` 合计 775/929、258,966/316,778 B；0 错误，警告基线 140。
 
 ---
 
 ## 8. 下一步
 
-1. **继续批量定案剩余折叠组**——`.ctor()` 空构造确认（低优先级，代码已经对，只差注释）、
-   `op_Equality`/`op_Inequality` 的缺失方法补齐（需要先决定是否值得新增 API 面）。
-2. **恢复 `<LoadServiceState>d__9.MoveNext`**，把 async 状态机的工作流验证出来
-   （这是唯一还没验证过的机制，之后 Naninovel-glue 和 PerspectiveStage 大量依赖它）。
-3. 然后按第 4 节的表推进 Boot/Init → SaveLoad → Naninovel-glue。
+旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
+
+1. **`Other` 桶余量**（129 个函数体、约 50 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。按大小划分：
+   - 小于 120 B 的零散方法约 28 个。
+   - 120–250 B 的服务 getter、`Reset` 与 record 的 `EqualityContract`/`Equals(object)` 约 44 个。
+   - 大于 250 B 的约 79 个，主要是：
+     - `Emote*` 命令的 `GetParametersForActor` 与构造函数。
+     - `Spawnable*` 的 `AwaitSpawn/AwaitDestroy`。
+     - `Localize*` 组件。
+     - `AuthorTextBuilder`、`Timer`。
+     - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
+     - `StopForChoice.Execute`（2,409 B）。
+     - `WitchTrialsActions..ctor`（3,678 B，Input System 生成代码）。
+2. **Boot/Init（按用户要求暂缓）**：7/32，剩余 25 个函数体，包括：
+   - SteamManager（含 1,446 B 的 `Awake`）。
+   - GameInitializer 的 `Awake/OnDestroy/InitializeAsync`。
+   - EntrySequence、SplashScreen。
+   - DefaultLocaleSelector/Presenter。
+   - `EngineInitializationUiModified.OnEnable`。
+3. **遗留整理**（低优先级）：
+   - `.ctor()` 空构造的标注确认。
+   - record 的 `op_Equality`/`op_Inequality` 在骨架中缺失，需要先决定是否值得新增 API 面（§6）。
 
 ---
 
