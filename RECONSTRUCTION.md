@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：43/165 个函数体、8,374/50,436 B。第 1 组小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数已完成，见 §7.10；警告基线仍为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：59/165 个函数体、13,326/50,436 B。第 1 组小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数、第 2 组（AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数）已完成，见 §7.10；警告基线仍为 140 |
 
 ---
 
@@ -2040,7 +2040,23 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - 构造函数与 RebuildableLabel..ctor 折叠，+0x48 = 1 是基类的初始化器。
 - 四个 Page 构造函数（各 62 B）只调用 `WitchBookPageBase<TItem, TState>..ctor`。
 
-进度：`progress.py UI` 测得 43/165、8,374/50,436 B；全部 `WitchTrials.*` 合计 441/929、151,017/316,778 B；警告基线 140。
+**第 2 组：AutoToggleUi / AdvChoiceHandlerButton / MPImageAppearanceChanger 族 / TrialChoiceHandlerPanel**
+
+- `AutoToggleUi`：
+  - `OnEnable`/`OnDisable` 为 `base` 调用加 IScriptPlayer 槽 10/11 的 `OnAutoPlay` 订阅与退订。
+  - `Initialize` 订阅 `_toggle.OnValueChangedAsObservable()`。lambda（0x336F80）是本类的实例方法，每次经 getter 取播放器，所以是 lambda 而非绑定到播放器的方法组。随后 `SetIsOnWithoutNotify(AutoPlayActive)`（`Toggle.Set(v, false)` 内联）。
+  - `HandleAutoModeChanged` 设置 `isOn`，再 `SetSkipEnabled(false)`（槽 34）；`Visible`（ScriptableUIBehaviour 槽 28）为真时播放 Submit 音效。
+- `AdvChoiceHandlerButton`：
+  - `OnEnable`/`OnDisable` 的 `base` 为内联的 `ScriptableUIControl<Button>.OnEnable/OnDisable`（对 this 调用槽 60/61 `BindUIEvents`/`UnbindUIEvents`）。之后在 hint CanvasGroup 存活时增删 `OnCriticalChoiceHintChanged`（IWitchTrialsChoiceHandlerManager 槽 2/3）。
+  - `Initialize` 逐字节内联 `ChoiceHandlerButton.Initialize`（0x615400），再按 `CriticalChoiceHintEnabled` 设置 hint 透明度。
+  - `OnButtonClick` 只播放 SFX 并 `Forget`；基类 `ScriptableButton.OnButtonClick` 是共享空函数体 0x30C000，无从判断源码是否调用了 base（B）。
+- `MPImageAppearanceChanger`（基类，progress 计入 Other）：
+  - 下标越界或长度不足时 `Debug.LogError(string.Format(...), this)`。
+  - bool 版本报错时输出两数组长度的较小值（`cmp` + `cmovge`），写作 `Mathf.Min`（B）。
+- `LabeledMPImageAppearanceChanger`：`Reset` 与 `ChangeAppearance(int)` 内联基类体，bool 版本则真实调用基类，随后对 `_labelColors` 做同样的范围检查。
+- `TrialChoiceHandlerPanel` 构造函数与 Naninovel 的 ChoiceHandlerPanel 构造函数折叠，本类没有自己的初始化器。
+
+进度：`progress.py UI` 测得 59/165、13,326/50,436 B；全部 `WitchTrials.*` 合计 462/929、157,369/316,778 B；警告基线 140。
 
 
 ---
