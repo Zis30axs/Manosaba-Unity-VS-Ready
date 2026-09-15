@@ -24,6 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
+| Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2177,6 +2178,24 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - 在本类中 +0x38 即 `ProcessTimer`，因此写作 `ProcessTimer = true`。它与 `[ParameterDefaultValue("true")]` 一致。
 
 进度：TrialState 18/18；全部 `WitchTrials.*` 合计 582/929、197,140/316,778 B；0 错误，警告基线 140。
+
+## 7.12 `Input` 子系统收尾：已完成，25/25 个函数体 / 5,482/5,482 B
+
+- **`WitchTrialsActions`（Unity Input System 生成代码）**：
+  - `bindingMask` / `devices` 的 get/set 与 `FindBinding`，都和 `UnityEngine.InputSystem.DefaultInputActions` 共用同一函数体（折叠），内容是对 `asset` 的直接转发。
+  - getter 内联了 InputActionAsset 的字段读取（bindingMask 在 +0x38，DeviceArray 在 +0xA8）；setter 在 `DeviceArray.Set` 成功后调 `LazyResolveBindings`。
+  - 5 个 `*Scheme` getter 采用生成器的固定写法：索引字段（+0xE8..+0xF8）为 -1 时 `FindControlSchemeIndex("Keyboard&Mouse"/"Gamepad"/"Touch"/"Joystick"/"XR")`，再返回 `asset.controlSchemes[index]`。
+- **`WitchTrialsInputManager`**：
+  - ctor：先调基类 `InputManager<WitchTrialsActions>` 的 ctor，再保存 `_naninovelActionMapName`。
+  - `PlayResponseSfx`：`_naniAudioManager` 为空时，内联 `Engine.TryGetService<IAudioManagerExtended>`（METHODINFO 可证）；取不到时 `Debug.LogWarning("Naninovel AudioManager not found.")` 并返回，取到时缓存。随后调槽 0 `PlayResponseSfx(kind)`。
+  - `BuildActionNameOrId`：`actionMapName` 为 null 时换成 `_naninovelActionMapName`，其余部分是基类实现（0x832780，已单独反汇编比对）的内联：映射名为 null 或全空白时返回 actionName，否则返回 `map + "/" + name`。
+- **`DebugTextPreferenceNaninovelInputState`**：
+  - `NaniInputManager` 为惰性缓存（+0x60）。
+  - `LabelText` = `Engine.Initialized ? BuildText() : "Naninovel has not been initialized"`。
+  - `BuildText`：清空 StringBuilder，输出 `ProcessInput: O|X |`，再对 `_bindingNames` 做 foreach（数组只加载一次），逐项输出 `| name: O|X `（`IsSampling`，槽 9），最后 `ToString().Trim()`。
+  - ctor：`_builder = new StringBuilder()`。
+
+进度：Input 25/25；全部 `WitchTrials.*` 合计 599/929、200,954/316,778 B；0 错误，警告基线 140。
 
 
 ---
