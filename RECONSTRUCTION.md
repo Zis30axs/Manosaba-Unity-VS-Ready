@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：59/165 个函数体、13,326/50,436 B。第 1 组小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数、第 2 组（AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数）已完成，见 §7.10；警告基线仍为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：71/165 个函数体、18,321/50,436 B。已完成三组，见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
 
@@ -2056,7 +2056,21 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - `LabeledMPImageAppearanceChanger`：`Reset` 与 `ChangeAppearance(int)` 内联基类体，bool 版本则真实调用基类，随后对 `_labelColors` 做同样的范围检查。
 - `TrialChoiceHandlerPanel` 构造函数与 Naninovel 的 ChoiceHandlerPanel 构造函数折叠，本类没有自己的初始化器。
 
-进度：`progress.py UI` 测得 59/165、13,326/50,436 B；全部 `WitchTrials.*` 合计 462/929、157,369/316,778 B；警告基线 140。
+**第 3 组：回想面板（WitchTrialsLogUi / WitchTrialsLogMessageUi）与 WitchTrialsTextPrinterPanel**
+
+- **`AuthorPanel` / `AuthorNamePanel` 的覆写是共享的 `return null` 函数体（0x33E0C0）**，本类自己读基类字段。基类私有字段在字节里是直接加载的，但只有非虚的 `base.AuthorPanel`（BacklogMessageUI 0x471780 = +0xA8）与 `base.AuthorNamePanel`（RevealableTextPrinterPanel 0x4933A0 = +0x158）的 getter 内联后才会出现这种加载，两处 getter 均已反汇编确认，故写作 `base.X`。
+- **作者文本流程与 ProfilePage 同形**：`GetActorMetaOrDefault` → `UseCharacterColor ? NameColor : null` → `TryBuildAuthorText`，失败时回退 `GetAuthorName` + `BuildTaggedSimpleName`；名字为空白时写入显式 null。
+  - 打印面板的回退名优先取 `Author.Label`；它为 `IsEmpty` 时才用 `CharacterManager`（槽 104）按 id 查名。
+  - 文本不为空白时，设置铭牌 CanvasGroup 的 alpha，并写入 `AuthorNamePanel.Text`（槽 5）。
+  - 回想消息改为设置标签文本，并以 `!string.IsNullOrEmpty(AuthorId)` 调用 `base.AuthorPanel.SetActive`。
+- **两个 `Initialize` 的写法**：
+  - 共同步骤：先保存 `base.Initialize()`（经 `<>n__0` 内联，回想面板为 `BindInput("ShowBacklog", Show)` 与 `BindInput("Cancel", Hide)`，槽 93/47/48），直接新建 `AuthorTextBuilder`，`await InitializeAsync(destroyCancellationToken)`，最后 `await task`。
+  - 打印面板另有：`_changeScaleByAppearances.ToDictionary(Appearance, Targets)`。
+- **`SetActiveAppearance`**：按当前外观名 `TryGetValue`，把每个目标 Transform 的 `localScale` 设为 `(Scale.x, Scale.y, 0)`。icall 名 `Transform::set_localScale_Injected` 从解析字符串读出。
+- **`WitchTrialsLogUi.SpawnMessage`**：基类调用后，若 `LastMessage` 为 `WitchTrialsLogMessageUi`，则调用 `ModifyAuthorPanel`。
+- **`WitchTrialsLogMessageUi` 构造函数**：+0x90/+0xA0 的写入是 BacklogMessageUI 的初始化器，本类没有自己的初始化器。
+
+进度：`progress.py UI` 测得 71/165、18,321/50,436 B；全部 `WitchTrials.*` 合计 474/929、162,364/316,778 B；警告基线 140。
 
 
 ---
