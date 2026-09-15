@@ -26,7 +26,7 @@
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
 | Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
-| Map 子系统 | 进行中：第 A 组（叶子组件）完成，17/27 个函数体、5,094/9,894 B。MapArea、MapAreaFocusButton、MapAreaLabel、MapAreaModifier、MapFloor 全部方法，含 `OnClickAsync` 状态机与两个编辑器用 `ModifyInEditor`；为此给 Assembly-CSharp 补上 `GigaCreation.Tools.UndoExtensions` 工程引用，见 §7.14。第 B 组（MapPage、ChoiceMapArea、SpawnableMap）待做 |
+| Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2261,7 +2261,48 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - `DoActionAsUndoable` 定义在 `GigaCreation.Tools.UndoExtensions`。该工程已存在于解决方案中，但 Assembly-CSharp 此前没有引用它（CS0234），现已补上 ProjectReference。
   - 注意：`work/make_ide_project3.py` 按 DummyDll 的引用表生成 csproj，而该表里没有这个程序集（泛型方法在 dump 中无 RVA）。重新生成工程会丢掉这条引用。
 
-进度：Map 17/27、5,094/9,894 B；全部 `WitchTrials.*` 合计 629/929、209,717/316,778 B；0 错误，警告基线 140。
+### 第 B 组：MapPage / ChoiceMapArea（`map` 命令）/ SpawnableMap
+
+- **`MapPage`**：
+  - `Reset`：先调 `base.Reset()`，再 `GetComponentsInChildren<MapFloor>(true)`。
+  - ctor 只尾跳到基类构造函数。
+  - `InitializeAreas`：
+    - 先存 `_restrictionAreas`。
+    - `_floors.Where(floor => pairs.Any(floor.IsMatch)).SelectMany(floor => floor.Areas.Values).ToArray()`。其中 `IsMatch` 以方法组委托传入，`Values` 是 IReadOnlyDictionary 槽 4。
+    - 对每个区域内联了 `ChangeFocusButtonActivity(false)`（常量参数，无分支）。
+  - `OnChoiceMapAreaAsync`（MoveNext 0x371070）：
+    - DisplayClass9_0 捕获 `this` 与 `linkedCts`，后者由 using 在所有出口释放（sub_371A00）。
+    - 筛出 `_restrictionAreas.Contains(area.AreaKind)` 的区域并启用焦点按钮。
+    - 对 `area.OnClickAsync(linkedCts.Token)` 调用 `UniTask.WhenAny(UniTask<T>[])`（lambda 内联了 OnClickAsync 的 builder 桩）。
+    - 得到结果后先 `linkedCts.Cancel()`，再返回 `result`。
+- **`ChoiceMapArea`（`map` 命令）**：
+  - `Execute` 与 `@evidence` 同构：
+    1. 置 `IsPresentEvidenceMode = true`，建 `{ Map }` 类别数组，取限制区域。
+    2. **区域数为 0 时在显示图鉴之前就 `Warn` 并返回。** 此时 `IsPresentEvidenceMode` 保持为 true，字节确认。
+    3. `ShowWitchBook(Local, …)`。
+    4. 调试跳过时取 `restrictionAreas[0]`，否则 await IWitchBookUi 槽 5 `ChoiceAreaAsync`。
+    5. 把 `FastToString` 写入 `chosenAreaId`；关闭图鉴；复位模式；调试跳过时开启 skip。
+  - 构建时需要 `GigaCreation.NaninovelExtender.Ui` 的 using（`DismissAsync` 扩展方法）。
+  - `GetRestrictionAreas`：
+    - `flag` 取整数变量（`Assigned` 且读取成功，否则为 0）。
+    - 每个名字经 `FastEnum.TryParse`：成功时执行 `test flag, 1<<i; jg 跳过`，即**位被置上的区域会被排除**，flag 是排除掩码；失败时 `Warn("Invalid map area name: {0}.")`。
+    - `jg` 与 `!= 0` 只在第 31 位上有差别，拼写按 B 级。
+- **`SpawnableMap`**：
+  - `SetSpawnParameters` 与 ObjectionCutIn 同形：`worldCamera = NaniCameraManager.Camera`，下标取首参数的 `AsInvariantInt`，缺省为 0。
+  - `AwaitSpawn`：
+    1. 取消并释放旧 `_cts`；token 已完成时置 null 并返回。
+    2. 取 `_playableDirectors[_currenIndex]`，新建 `_cts` 与 linked CTS。
+    3. `PlayableGraph.IsValid()`（icall 0x260C8C8）为假时 `PlayAsync`；为真时先 `time = 0` 再 `ResumeAsync`。
+    4. 先 `Evaluate()` 再 await。
+    5. 之后 `_cts.Dispose(); _cts = null`。
+  - `AwaitDestroy`：
+    - token 已完成时时长为 0，`Mathf.Approximately(duration, 0)` 为真时直接返回。
+    - 否则 `LMotion.Create(alpha, 0, duration).BindToAlpha(_rootCanvasGroup).ToUniTask(linkedCts.Token)`，完成后 `_cts.Dispose()`。
+    - **与 AwaitSpawn 不同，这里不把 `_cts` 置 null**（字节确认）。
+      - 若同一实例之后再次调用 AwaitSpawn/AwaitDestroy，就会对已释放的 CTS 调 `Cancel`。
+      - 通常 despawn 之后对象即被销毁，所以这很可能不会触发；这一点只是推断，未经运行时验证。
+
+进度：Map 27/27、9,894/9,894 B；全部 `WitchTrials.*` 合计 639/929、214,517/316,778 B；0 错误，警告基线 140。
 
 
 ---
