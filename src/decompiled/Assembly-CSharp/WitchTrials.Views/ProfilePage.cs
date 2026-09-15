@@ -179,6 +179,8 @@ public sealed class ProfilePage : WitchBookPageBase<ProfileDataItem, ProfileStat
 		_thumbnail.Setup(WitchBookDataHelper.BuildProfileTextureAddress(map.Id));
 	}
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x3740E0, 62 B
+	// Only the call to WitchBookPageBase<ProfileDataItem, ProfileState>..ctor; no field initializers.
 	[Token(Token = "0x600043C")]
 	[Address(RVA = "0x3740E0", Offset = "0x372AE0", VA = "0x1803740E0")]
 	public ProfilePage()

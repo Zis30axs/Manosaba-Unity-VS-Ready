@@ -24,6 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：43/165 个函数体、8,374/50,436 B。第 1 组小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数已完成，见 §7.10；警告基线仍为 140 |
 
 ---
 
@@ -2014,6 +2015,32 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - `ChoiceEvidence.<Execute>b__2_0`（0x326010）已在 Execute 中内联书写，只在 RECONSTRUCTED 行补记 RVA。
 
 进度：`progress.py WitchBook/Data` 测得 **121/121、39,146/39,146 B（100%）**；全部 `WitchTrials.*` 合计 406/929、144,435/316,778 B。
+
+## 7.10 `UI` 子系统：进行中（用户优先级第 6 位）
+
+**第 1 组：小型控件与 Page 构造函数**
+
+- 基类私有成员一律经受保护访问器内联出现，逐个反汇编确认后改写为访问器，而非直接访问字段：
+  - `SlideToggle`：`IsActiveSelectableUtil`（0xCF00B0）、`OnHighlightingChangedAsObservable()`（0xCF0A80，SelectableUtility +0x10）、`OnValueChangedAsObservable()`（0xCF0A30）。
+  - `RebuildableButton.Label`（0x44CE10 = +0x40）、`RebuildableLabel.UiLabel`（+0x20）。
+- `WitchTrialsTabToggle`：
+  - `OnDisable` 逐字节内联 SlideToggle.OnDisable（清空基类 +0x138），再清空本类 +0x180 的 `_disposables`，因此是两个不同的 CompositeDisposable。
+  - 构造函数中 +0x130/+0x138 的写入是基类字段初始化器；只有 +0x180 属于本类，写作字段初始化器。
+  - `OnHighlightingChanged` 为 `value | isOn`。
+- `CanvasGroupButton.OnStateChanged`：
+  - 高亮 = Highlighted(1) 或 Pressed(2)；枚举值由 dump.cs 常量与 SlideToggle.DoStateTransition 的分派顺序共同确认。
+  - 禁用 = `_ignoreParentDisabling ? !interactable : state == Disabled(4)`。读的是 +0xD8 的 `m_Interactable`，不是 `IsInteractable()`。
+- `ToggleImageSwitcher.OnValueChanged` 与 `Change` 共用 RVA 0x30FA50（折叠），补丁改为按方法签名匹配，避免同一 RVA 被重复命中。
+- `WitchTrialsButton`：
+  - `_defaultSize = new Vector2(505f, 120f)`，由 `struct` 解码 0x43FC8000/0x42F00000 得出。
+  - `RebuildElements` 在基类调用之前就读取了 `Label as WitchTrialsButtonLabel` 与 `buttonData.ResponseKind`，故写为局部变量（B）；响应为 Submit 时调用 `ModifyEmphasizedText`。
+- `WitchTrialsButtonLabel.ModifyEmphasizedText`：
+  - 单字与多字两个 `string.Format` 在原生层合并为同一个 FormatHelper 调用点（尾合并），源码写作 if/else。
+  - 首字以装箱 `text[0]` 传入；`Substring(1)` 的写法为 B。
+  - 构造函数与 RebuildableLabel..ctor 折叠，+0x48 = 1 是基类的初始化器。
+- 四个 Page 构造函数（各 62 B）只调用 `WitchBookPageBase<TItem, TState>..ctor`。
+
+进度：`progress.py UI` 测得 43/165、8,374/50,436 B；全部 `WitchTrials.*` 合计 441/929、151,017/316,778 B；警告基线 140。
 
 
 ---

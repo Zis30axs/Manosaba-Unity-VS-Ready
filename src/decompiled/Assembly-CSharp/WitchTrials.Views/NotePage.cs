@@ -142,6 +142,8 @@ public class NotePage : WitchBookPageBase<NoteDataItem, NoteState>
 		_descriptionLabel.SetText(_localizedTextData[map.IdVersionPair][base.CurrentLocale].Description);
 	}
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x371FE0, 62 B
+	// Only the call to WitchBookPageBase<NoteDataItem, NoteState>..ctor; no field initializers.
 	[Token(Token = "0x6000418")]
 	[Address(RVA = "0x371FE0", Offset = "0x3709E0", VA = "0x180371FE0")]
 	public NotePage()
