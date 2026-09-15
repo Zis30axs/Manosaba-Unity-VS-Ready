@@ -114,10 +114,14 @@ public class SplashScreen : MonoBehaviour
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36E750 (identical-code-folded with MapAreaLabel.Show)
+	// 
+	// `_canvasGroup` (+0x20) -> set_alpha(1f).
 	[Token(Token = "0x6000572")]
 	[Address(RVA = "0x36E750", Offset = "0x36D150", VA = "0x18036E750")]
 	private void Awake()
 	{
+		_canvasGroup.alpha = 1f;
 	}
 
 	[Token(Token = "0x6000573")]

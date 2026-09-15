@@ -27,6 +27,7 @@
 | Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
+| Debug 子系统 | 进行中：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2303,6 +2304,51 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
       - 通常 despawn 之后对象即被销毁，所以这很可能不会触发；这一点只是推断，未经运行时验证。
 
 进度：Map 27/27、9,894/9,894 B；全部 `WitchTrials.*` 合计 639/929、214,517/316,778 B；0 错误，警告基线 140。
+
+## 7.15 ICF 计数更正与 `Debug` 子系统第 A 组
+
+### 更正：折叠别名曾被计入进度，但函数体仍为空
+
+- `progress.py` 按 RVA 全局计数。若在一个文件里标记了某个 identical-code-folded 函数，另一个类里共享同一 RVA 的方法也会被算作完成，即使它的函数体仍是 `{}`。
+- 用脚本扫描了全部 `WitchTrials.*`：收集所有 `// RECONSTRUCTED` 行上的 RVA，再找出共享这些 RVA、自身却为空或只有 `return default` 桩的方法。本轮 Map 标记带出的真实虚高有 3 处，现已补上函数体并加注折叠伙伴：
+  - `EndingStill.Awake`（0x3491C0，与 `MapAreaLabel.Hide` 折叠）：`_canvasGroup.alpha = 0f`。
+  - `SplashScreen.Awake`（0x36E750，与 `MapAreaLabel.Show` 折叠）：`_canvasGroup.alpha = 1f`。
+  - `WitchBookPageBase.Hide`（0x36F420，与 `MapFloor.Hide` 折叠）：`_canvas`/`_graphicRaycaster` 的 `enabled = false`，是 `Show` 的镜像。
+- 其余命中不是虚高，逐类核对如下：
+  - 0x30D8F0：共享的空 MonoBehaviour 构造函数，本来就为空。
+  - 0x30C000：3 字节 `ret`。
+  - 命令类构造函数：函数体就是字段初始化器，注释写在字段上。
+  - 已内联写出的 lambda：`SoundTestUi` 的滑块回调、MapPage 的两个 lambda。
+- 另有一批**早于本会话**的共享平凡 getter 别名，函数体仍是 `return default`/`null` 桩：`AuthorTextBuilder`、`CharacterDataItem`、`GoogleForm`、`SaveLoadUi`、`OptionsUi`、`MasterData` 中与 0x33A4E0/0x33FBC0/0x331650/0x398CF0 共享的访问器，以及 `AuthorTextBuilder` 的 record 成员。行为上它们只是读字段，但进度数把它们算作已完成。留待后续清理，届时逐个补写字段返回。
+- 结论：进度数对"独立函数体"是准确的，但"每个方法都有源码"需要以上述补写为前提。
+
+### 第 A 组：`DebugOptions` 与 `DebugTextPreference*`
+
+- **`DebugOptions`**：
+  - `EnableSteamworks` 默认值是反的：非调试模式直接返回 true，只有调试模式才读 `s_enableSteamworks`。
+  - `Locale`：`IsDebugMode && s_overrideLocale ? s_locale : null`。
+  - `SkipSplashScreen`：与 `DebugSkip` 同形。
+  - **`SkipEntrySequenceAtFirstTime` 的发行版函数体是通用的 3 字节 `xor eax,eax; ret`**（与大量 BCL `return false` 成员共享），恒返回 false，从不读字段。源码中很可能有条件编译或常量守卫，但其形式已无证据。
+  - `UpdateStaticFields`：按声明顺序把 10 个序列化实例字段拷到静态字段，无 base 调用。
+- **调试标签**：
+  - 共同形态：`Engine.Initialized ? … : "Naninovel has not been initialized"`，服务与配置都用 `??=` 懒加载。
+  - `ActorInfo`：
+    - 用 `Engine.FindService<IActorManager>(m => m.ActorExists(_actorId))` 懒加载。
+    - IActorManager 槽 6 `ActorExists`、槽 7 `GetActor`；IActor 槽 5 `Position`。
+    - 输出 `"[{0}] Position={1}"`，否则 `"[" + id + "] Not exist"`。
+    - `BuildText` 被逐字节内联进 `LabelText`。
+  - `AutoDelay`：TextPrintersConfiguration +0x4C `MaxAutoWaitDelay`，ScriptPlayerConfiguration +0x20 `MinAutoPlayDelay`（偏移取自 dump.cs）。
+  - `CustomVariable`：
+    - 未初始化时返回 `"-"`，与其他标签不同，和 default 分支共用同一返回块。
+    - 用非泛型 `TryGetVariableValue(name, out CustomVariableValue)`，读取失败时返回 `name + ": -"`。
+    - 按 `Type` 分三路：String 走 Concat；Numeric/Boolean 装箱后 `Format`。
+  - `PlaybackSpot`：结构返回的接口桩 sub_8630（`mov r8d, 0x18`），即 IScriptPlayer 槽 24 `PlaybackSpot`，再调 `ToString()`。
+  - `ScriptPlayMode`：`"Auto: {0} | Skip: {1}"`，槽 17 `AutoPlayActive`、槽 16 `SkipActive`，均为装箱 bool，不经 `ToDebugString`。
+  - `ToDebugString`：`self ? "O" : "X"`。
+- 202 B 的 getter 已钉死（0x3A7E10）：与 186 B 版本完全相同，都是 `??= Engine.GetServiceOrErr<T>()`。多出的 16 字节仅来自字段偏移 +0x80 需要 4 字节位移编码。
+- **第 B 组注意**：`SlackApp`/`DebugReporter.BuildPostMessage` 可能内嵌 token、webhook URL 或频道 ID。复原时这类字面量一律写成带占位符的命名常量，并注明"literal present at data RVA 0x…, redacted"，不把凭据提交进仓库。
+
+进度：Debug 19/46、5,106/20,437 B；全部 `WitchTrials.*` 合计 657/929、219,539/316,778 B；0 错误，警告基线 140。
 
 
 ---

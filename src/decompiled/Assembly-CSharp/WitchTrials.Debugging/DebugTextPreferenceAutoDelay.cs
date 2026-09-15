@@ -18,33 +18,42 @@ public class DebugTextPreferenceAutoDelay : DebugTextPreferenceBase
 	[Token(Token = "0x17000146")]
 	protected override string LabelText
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3B3B50, 678 B
+		// Both config getters are inlined. The two fields are TextPrintersConfiguration +0x4C `MaxAutoWaitDelay`
+		// and ScriptPlayerConfiguration +0x20 `MinAutoPlayDelay` (dump.cs offsets), both boxed.
 		[Token(Token = "0x60007B4")]
 		[Address(RVA = "0x3B3B50", Offset = "0x3B2550", VA = "0x1803B3B50", Slot = "4")]
 		get
 		{
-			return null;
+			return Engine.Initialized
+				? string.Format("MaxAutoWaitDelay: {0} | MinAutoPlayDelay: {1}", TpConf.MaxAutoWaitDelay, SpConf.MinAutoPlayDelay)
+				: "Naninovel has not been initialized";
 		}
 	}
 
 	[Token(Token = "0x17000147")]
 	private TextPrintersConfiguration TpConf
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3B3E00
+		// Lazy cache in +0x50 via `Engine.GetConfiguration<TextPrintersConfiguration>()`.
 		[Token(Token = "0x60007B5")]
 		[Address(RVA = "0x3B3E00", Offset = "0x3B2800", VA = "0x1803B3E00")]
 		get
 		{
-			return null;
+			return _tpConf ??= Engine.GetConfiguration<TextPrintersConfiguration>();
 		}
 	}
 
 	[Token(Token = "0x17000148")]
 	private ScriptPlayerConfiguration SpConf
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3B3EC0
+		// Lazy cache in +0x58 via `Engine.GetConfiguration<ScriptPlayerConfiguration>()`.
 		[Token(Token = "0x60007B6")]
 		[Address(RVA = "0x3B3EC0", Offset = "0x3B28C0", VA = "0x1803B3EC0")]
 		get
 		{
-			return null;
+			return _spConf ??= Engine.GetConfiguration<ScriptPlayerConfiguration>();
 		}
 	}
 

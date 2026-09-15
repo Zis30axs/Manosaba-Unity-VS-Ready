@@ -64,10 +64,14 @@ public abstract class WitchBookPageBase : MonoBehaviour, IDisposable
 		_graphicRaycaster.enabled = true;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F420, 57 B (identical-code-folded with MapFloor.Hide)
+	// Mirror of Show: `_canvas.enabled = false`, then `_graphicRaycaster.enabled = false` (tail jump).
 	[Token(Token = "0x6000499")]
 	[Address(RVA = "0x36F420", Offset = "0x36DE20", VA = "0x18036F420", Slot = "10")]
 	public virtual void Hide()
 	{
+		_canvas.enabled = false;
+		_graphicRaycaster.enabled = false;
 	}
 
 	[Token(Token = "0x600049A")]

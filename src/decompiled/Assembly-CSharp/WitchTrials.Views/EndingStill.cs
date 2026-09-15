@@ -115,10 +115,14 @@ public class EndingStill : MonoBehaviour
 	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
 	private CancellationTokenSource _cts;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3491C0 (identical-code-folded with MapAreaLabel.Hide)
+	// 
+	// `_canvasGroup` (+0x20) -> set_alpha(0f): the still starts hidden.
 	[Token(Token = "0x600027C")]
 	[Address(RVA = "0x3491C0", Offset = "0x347BC0", VA = "0x1803491C0")]
 	private void Awake()
 	{
+		_canvasGroup.alpha = 0f;
 	}
 
 	[Token(Token = "0x600027D")]
