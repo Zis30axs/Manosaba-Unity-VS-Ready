@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：116/162 个函数体、39,772/56,145 B。第 D6 组完成：审判流程命令（`@stopForChoice` 的调试自动选择、坏结局/正确选项位标志、`@badId`、回到标题的淡出与状态重置）。以下为第 D5 组记录：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 进行中：131/162 个函数体、44,437/56,145 B。第 D7 组完成：`Timer` 倒计时模型（按速度扣减剩余时间、链接取消）、`WitchTrialsBackground` 与 `BackgroundMatcherExtended`（按 16:9 参考尺寸匹配背景相机）、调试命令 `BlockInteraction`。以下为第 D6 组记录：116/162 个函数体、39,772/56,145 B。第 D6 组完成：审判流程命令（`@stopForChoice` 的调试自动选择、坏结局/正确选项位标志、`@badId`、回到标题的淡出与状态重置）。以下为第 D5 组记录：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2791,18 +2791,48 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 116/162、39,772/56,145 B；全部 `WitchTrials.*` 合计 858/929、292,999/316,778 B；0 错误，警告基线 140。
 
+### 第 D7 组：`Timer`、背景匹配器与 `BlockInteraction`（15 个函数体）
+
+- **`Timer`（倒计时模型）**：
+  - `TimeSinceStartup`：按 `_useRealtime` 取 `Time.realtimeSinceStartup` 或 `Time.time`，经内联的 `TimeSpan.FromSeconds` 转换。
+  - 构造函数只写入 `_speed = 1f`（字段初始化器）与 `_useRealtime`。
+  - `Dispose` 与 `SetTime` 都先取消、释放并清空运行中的 CTS。
+    - `Dispose` 随后释放并清空 `_remainingTime`。
+    - `SetTime` 释放旧属性后换成新的 `ReactiveProperty<TimeSpan>(time)`。
+  - `StartAsync`：
+    1. 未设置时间时 `Debug.LogWarning("Time is not set.")` 并返回；已在运行时直接返回。
+    2. 否则设定 `Speed`，新建 CTS，并与外部 `ct` 链接（using）。
+    3. 每帧 `UniTask.Yield(linkedCts.Token)`；`Speed <= 0` 时暂停计时。
+    4. 否则把经过的时间乘以 `Speed`，从剩余时间中扣除。未到零则发布新值；到零则发布 `TimeSpan.Zero`，释放并清空 CTS 后结束。
+  - 行为为 A；循环的具体块嵌套为 B（`previousTime` 只在"继续"路径上被清零）。
+- **`WitchTrialsBackground`**：
+  - 两个构造函数直接转到 `SpriteBackgroundExtended`。四参数版本与基类构造函数 ICF 折叠：`subId` 非空时 id 为 `actorId-subId`。
+  - `Initialize`：等待基类初始化后，以 `ActorMeta` 与 `TransitionalRenderer` 创建 `BackgroundMatcherExtended`。
+  - `Dispose`：先执行基类（内联的 `SpriteBackground.Dispose`），再停止自己的匹配器。
+- **`BackgroundMatcherExtended`**：
+  - `CreateForBackground` 仿照 Naninovel 的 `BackgroundMatcher.CreateFor`：`MatchMode` 为 `Disable`，或渲染器不是 `TransitionalSpriteRenderer` 时返回 null；否则创建并 `Start()`。
+  - `TryGetReferenceSize`：参考尺寸为 `(宽 / PixelsPerUnit, 宽 / (16/9) / PixelsPerUnit)`，高度由 16:9 宽度推出，不读取纹理高度。
+  - 字段名 `MatchMode`（+0x70）与 `PixelsPerUnit`（+0x38）取自 dump.cs 的 `BackgroundMetadata` / `OrthoActorMetadata`。
+- **`BlockInteraction`（调试命令）**：与 `ShowLoadingUiForDebug` 同形。
+  - 在 `InteractionBlocker` 的 using 内累加 `Time.deltaTime`，直到达到 `Duration`（默认 0.35 秒）或令牌取消。
+  - `Execute` 为 `WaitOrForget(BlockAsync, Wait, token)`。
+- 虚槽确认：`CameraMatcher` 5 = `Start`、6 = `Stop`；`TransitionalRenderer` 7 = `MainTexture`；`SpriteActor` 64 = `TransitionalRenderer`。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 131/162、44,437/56,145 B；全部 `WitchTrials.*` 合计 873/929、297,664/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
 旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（46 个函数体、约 16 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。主要剩余：
-   - 零散小方法、服务 getter，以及 record 的 `EqualityContract`/`Equals(object)`。
-   - 较大的函数体：
-     - `Timer`。
-     - 三个 `ModifyCamera*Tween` record 的编译器生成成员。
-     - `WitchTrialsActions..ctor`（3,678 B，Input System 生成代码）。
+1. **`Other` 桶余量**（31 个函数体、约 12 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。剩余：
+   - 三个 `ModifyCamera*Tween` record 的编译器生成成员（`EqualityContract`、`ToString`、`PrintMembers`、`GetHashCode`、两个 `Equals`、`<Clone>$`；Rotation 另有 `Deconstruct`）。
+   - `WitchTrialsActions`：`.ctor`（3,678 B，Input System 生成代码）、`Dispose`、`get_Naninovel`。
+   - `GoogleForm`：`DialogProvider`、`Awake`、`Reset`、`OpenGoogleFormAsync`、`BuildUrl`。
+   - `PrintTextModified.ShouldPlayAutoVoice`。
 2. **Boot/Init（按用户要求暂缓）**：7/32，剩余 25 个函数体，包括：
    - SteamManager（含 1,446 B 的 `Awake`）。
    - GameInitializer 的 `Awake/OnDestroy/InitializeAsync`。
