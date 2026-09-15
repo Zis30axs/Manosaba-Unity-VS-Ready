@@ -148,10 +148,16 @@ public class MapPage : WitchBookPageBase<MapDataItem, MapState>
 	[Il2CppDummyDll.FieldOffset(Offset = "0xD0")]
 	private MapArea[] _displayableAreas;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F5B0
+	// 
+	// Direct call to WitchBookPageBase.Reset, then `gameObject.GetComponentsInChildren<MapFloor>(dl=1)`
+	// (the inlined `Component.GetComponentsInChildren<T>(bool)` wrapper) into +0xB8.
 	[Token(Token = "0x60003FD")]
 	[Address(RVA = "0x36F5B0", Offset = "0x36DFB0", VA = "0x18036F5B0", Slot = "5")]
 	protected override void Reset()
 	{
+		base.Reset();
+		_floors = GetComponentsInChildren<MapFloor>(true);
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x36F690, 504 B (entry) + MoveNext 0x370A00, 1585 B
@@ -211,20 +217,64 @@ public class MapPage : WitchBookPageBase<MapDataItem, MapState>
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36FB30; closures <>c__DisplayClass8_0.b__0 0x3706C0, <>c.b__8_1 0x370660
+	// 
+	// - `restrictions` goes to `_restrictionAreas` (+0xC8); `GetDisplayableIdVersionPairs()` into the
+	//   DisplayClass (+0x10).
+	// - `_floors.Where(b__0).SelectMany(b__8_1).ToArray()` into `_displayableAreas` (+0xD0).
+	//   b__0 is `Enumerable.Any<IdVersionPair>(pairs, new Func(floor.IsMatch))` (method-group delegate
+	//   with `floor` as target); b__8_1 is `floor.Areas` + IReadOnlyDictionary slot 4 `Values`.
+	// - The loop is MapArea.ChangeFocusButtonActivity(false) inlined: `_focusButton._canvasGroup`
+	//   interactable / blocksRaycasts set to 0 with no branch (constant argument).
 	[Token(Token = "0x6000401")]
 	[Address(RVA = "0x36FB30", Offset = "0x36E530", VA = "0x18036FB30")]
 	public void InitializeAreas(IReadOnlyCollection<MapAreaKind> restrictions)
 	{
+		_restrictionAreas = restrictions;
+		IdVersionPair[] displayablePairs = GetDisplayableIdVersionPairs();
+		_displayableAreas = _floors
+			.Where((MapFloor floor) => displayablePairs.Any(floor.IsMatch))
+			.SelectMany((MapFloor floor) => floor.Areas.Values)
+			.ToArray();
+		MapArea[] displayableAreas = _displayableAreas;
+		foreach (MapArea mapArea in displayableAreas)
+		{
+			mapArea.ChangeFocusButtonActivity(false);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36FF80 (builder stub); MoveNext 0x371070; lambdas <>c__DisplayClass9_0.b__0 0x370770, b__1 0x3707E0
+	// 
+	// - DisplayClass9_0 holds `this` (+0x10) and `linkedCts` (+0x18) =
+	//   `CancellationTokenSource.CreateLinkedTokenSource(ct)`. It is disposed on every exit
+	//   through the compiler's using helper sub_371A00.
+	// - `_displayableAreas.Where(b__0).ToArray()`: b__0 is
+	//   `Enumerable.Contains<MapAreaKind>(_restrictionAreas (+0xC8), area._areaKind (+0x30))`.
+	// - Loop: inlined ChangeFocusButtonActivity(true) (interactable + blocksRaycasts).
+	// - `Select(b__1).ToArray()`: b__1 is `area.OnClickAsync(linkedCts.Token)` with its builder stub
+	//   inlined (530 B).
+	// - `UniTask.WhenAny<MapAreaKind>(UniTask<T>[])`; awaiter is `ValueTuple<int, MapAreaKind>`.
+	// - After GetResult: `linkedCts.Cancel()` (inlined `IsCancellationRequested` check +
+	//   NotifyCancellation), then SetResult with the tuple's `result`.
 	[Token(Token = "0x6000402")]
 	[Address(RVA = "0x36FF80", Offset = "0x36E980", VA = "0x18036FF80")]
 	[AsyncStateMachine(typeof(_003COnChoiceMapAreaAsync_003Ed__9))]
-	public UniTask<MapAreaKind> OnChoiceMapAreaAsync([Optional] CancellationToken ct)
+	public async UniTask<MapAreaKind> OnChoiceMapAreaAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask<MapAreaKind>);
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+		MapArea[] choosableAreas = _displayableAreas.Where((MapArea area) => _restrictionAreas.Contains(area.AreaKind)).ToArray();
+		foreach (MapArea mapArea in choosableAreas)
+		{
+			mapArea.ChangeFocusButtonActivity(true);
+		}
+		(int winArgumentIndex, MapAreaKind result) = await UniTask.WhenAny(choosableAreas.Select((MapArea area) => area.OnClickAsync(linkedCts.Token)).ToArray());
+		linkedCts.Cancel();
+		return result;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x370170
+	// 
+	// Tail jump to `WitchBookPageBase<MapDataItem, MapState>..ctor`; no field initializers.
 	[Token(Token = "0x6000403")]
 	[Address(RVA = "0x370170", Offset = "0x36EB70", VA = "0x180370170")]
 	public MapPage()
