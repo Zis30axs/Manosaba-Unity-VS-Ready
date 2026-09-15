@@ -14,22 +14,29 @@ public class DebugTextPreferenceScriptPlayMode : DebugTextPreferenceBase
 	[Token(Token = "0x17000150")]
 	private IScriptPlayer NaniScriptPlayer
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3B4AD0
+		// Lazy cache in +0x50 via `Engine.GetServiceOrErr<IScriptPlayer>()`.
 		[Token(Token = "0x60007C5")]
 		[Address(RVA = "0x3B4AD0", Offset = "0x3B34D0", VA = "0x1803B4AD0")]
 		get
 		{
-			return null;
+			return _naniScriptPlayer ??= Engine.GetServiceOrErr<IScriptPlayer>();
 		}
 	}
 
 	[Token(Token = "0x17000151")]
 	protected override string LabelText
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3B4B90, 375 B
+		// IScriptPlayer slot 17 `get_AutoPlayActive` is the first argument and slot 16 `get_SkipActive` the
+		// second, both boxed bools (not ToDebugString). The getter is called once per argument.
 		[Token(Token = "0x60007C6")]
 		[Address(RVA = "0x3B4B90", Offset = "0x3B3590", VA = "0x1803B4B90", Slot = "4")]
 		get
 		{
-			return null;
+			return Engine.Initialized
+				? string.Format("Auto: {0} | Skip: {1}", NaniScriptPlayer.AutoPlayActive, NaniScriptPlayer.SkipActive)
+				: "Naninovel has not been initialized";
 		}
 	}
 
