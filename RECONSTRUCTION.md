@@ -31,7 +31,7 @@
 | Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
-| Other（未归类余量） | 进行中：158/162 个函数体、51,816/56,145 B。第 D9 组完成：三个 `ModifyCamera*Tween` record 的全部编译器生成成员（`EqualityContract`／`ToString`／`PrintMembers`／`GetHashCode`／两个 `Equals`／`<Clone>$`／`Deconstruct`）。以下为第 D8 组记录：136/162 个函数体、46,090/56,145 B。第 D8 组完成：`GoogleForm`（问卷 URL 拼装与 `EntryInfo` 诊断信息；本版本 `Awake` 即销毁该对象）与 `PrintTextModified.ShouldPlayAutoVoice`（`wait:false` 时快进中仍播语音）；`OpenGoogleFormAsync` 因入口守卫与未赋值的 using 资源暂缓。以下为第 D7 组记录：131/162 个函数体、44,437/56,145 B。第 D7 组完成：`Timer` 倒计时模型（按速度扣减剩余时间、链接取消）、`WitchTrialsBackground` 与 `BackgroundMatcherExtended`（按 16:9 参考尺寸匹配背景相机）、调试命令 `BlockInteraction`。以下为第 D6 组记录：116/162 个函数体、39,772/56,145 B。第 D6 组完成：审判流程命令（`@stopForChoice` 的调试自动选择、坏结局/正确选项位标志、`@badId`、回到标题的淡出与状态重置）。以下为第 D5 组记录：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
+| Other（未归类余量） | 161/162 个函数体、55,725/56,145 B。仅剩 1 个刻意暂缓的函数体（`GoogleForm.OpenGoogleFormAsync`，见 §7.17 第 D8 组）。第 D10 组完成：`WitchTrialsActions`（Input System 生成的包装类：46,682 字符的 `.inputactions` JSON、两张映射表与 24 次动作查找）。以下为第 D9 组记录：158/162 个函数体、51,816/56,145 B。第 D9 组完成：三个 `ModifyCamera*Tween` record 的全部编译器生成成员（`EqualityContract`／`ToString`／`PrintMembers`／`GetHashCode`／两个 `Equals`／`<Clone>$`／`Deconstruct`）。以下为第 D8 组记录：136/162 个函数体、46,090/56,145 B。第 D8 组完成：`GoogleForm`（问卷 URL 拼装与 `EntryInfo` 诊断信息；本版本 `Awake` 即销毁该对象）与 `PrintTextModified.ShouldPlayAutoVoice`（`wait:false` 时快进中仍播语音）；`OpenGoogleFormAsync` 因入口守卫与未赋值的 using 资源暂缓。以下为第 D7 组记录：131/162 个函数体、44,437/56,145 B。第 D7 组完成：`Timer` 倒计时模型（按速度扣减剩余时间、链接取消）、`WitchTrialsBackground` 与 `BackgroundMatcherExtended`（按 16:9 参考尺寸匹配背景相机）、调试命令 `BlockInteraction`。以下为第 D6 组记录：116/162 个函数体、39,772/56,145 B。第 D6 组完成：审判流程命令（`@stopForChoice` 的调试自动选择、坏结局/正确选项位标志、`@badId`、回到标题的淡出与状态重置）。以下为第 D5 组记录：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -2867,21 +2867,35 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 
 进度：Other 158/162、51,816/56,145 B；全部 `WitchTrials.*` 合计 900/929、305,043/316,778 B；0 错误，警告基线 140。
 
+### 第 D10 组：`WitchTrialsActions`（3 个函数体，另补 2 个取值器与 7 处字段初始化器）
+
+- **构造函数（3,678 B）**：Unity Input System 为 `.inputactions` 资产生成的包装类构造函数。
+  - `m_Asset = InputActionAsset.FromJson(<JSON>)`。该 JSON 是 0x38FF4B 处的元数据字符串字面量：存储态 46,682 字符、1,194 行；反汇编按 `
+` 转义打印时为 47,875 字符（两个数字都记下来，免得以后重算）。
+  - 已按 JSON 解析验证：两张映射表（Naninovel 14 个动作／61 条绑定，UI 8 个／22 条）与五套控制方案（Keyboard&Mouse、Gamepad、Touch、Joystick、XR）。写回源码后又从 `.cs` 里取出、还原成对引号做了回读校验，MD5 与提取结果一致，字面量内无制表符污染。
+  - 其后 24 次 `FindActionMap`／`FindAction` 查找，全部带 `throwIfNotFound: true`（r8b = 1）。
+  - 两个回调 `List<>` 与五个控制方案索引（均为 -1）是**字段初始化器**而非构造函数语句——这正是它们的写入早于 `FromJson` 的原因（与第 D7 组 `Timer._speed = 1f` 同理）。
+- **`Dispose`**：`UnityEngine.Object.Destroy(m_Asset)`，即生成代码销毁自己构建的资产。
+- **`Naninovel` / `UI` 取值器**：同一段 91 B 的"把 `this` 包进访问结构体"函数体（0x390E40），与 `Task.GetAwaiter`、`DefaultInputActions.get_Player`、30 多个 `ParticleSystem` 模块取值器 ICF 折叠。`get_UI` 原本是未登记的空存根，若只补 `get_Naninovel` 会把审计基线从 4 顶到 5，故一并补上。
+- `m_Asset` 沿用本仓库既有的 B 级字段名（自动属性的后备字段），与已恢复的 `asset` 取值器一致；Input System 生成源码里写作 `asset = …`。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 161/162、55,725/56,145 B；全部 `WitchTrials.*` 合计 903/929、308,952/316,778 B；0 错误，警告基线 140。
+
 ---
 
 ## 8. 下一步
 
-旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 与 `Other` 外的子系统均为 100%，数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
+旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 外的子系统均已恢复完毕（`Other` 仅剩 1 个刻意暂缓的函数体），数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
 
-1. **`Other` 桶余量**（4 个函数体、约 4 KB）。继续按类分组，每组重跑 `stub_audit.py`（基线 4）。剩余：
-   - `WitchTrialsActions`：`.ctor`（3,678 B，Input System 生成代码）、`Dispose`、`get_Naninovel`。
-   - `GoogleForm.OpenGoogleFormAsync`（0x33A020）与其 MoveNext（0x33A8D0）：入口守卫让初始状态直接完成，`<blocker>5__2` 从未被赋值，using 初始化式无字节依据，见 §7.17 第 D8 组。
-2. **Boot/Init（按用户要求暂缓）**：7/32，剩余 25 个函数体，包括：
+1. **Boot/Init（按用户要求暂缓）**：7/32，剩余 25 个函数体，包括：
    - SteamManager（含 1,446 B 的 `Awake`）。
    - GameInitializer 的 `Awake/OnDestroy/InitializeAsync`。
    - EntrySequence、SplashScreen。
    - DefaultLocaleSelector/Presenter。
    - `EngineInitializationUiModified.OnEnable`。
+2. **刻意暂缓的函数体**：`GoogleForm.OpenGoogleFormAsync`（0x33A020）与其 MoveNext（0x33A8D0）——入口守卫让初始状态直接完成，`<blocker>5__2` 在方法体和调用方里都从未被赋值，using 的初始化式无字节依据；详见 §7.17 第 D8 组。`Other` 桶其余 161 个函数体已全部恢复。
 3. **遗留整理**（低优先级）：
    - `.ctor()` 空构造的标注确认。
    - record 的 `op_Equality`/`op_Inequality` 在骨架中缺失，需要先决定是否值得新增 API 面（§6）。
