@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GigaCreation.Tools.Service;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -11,6 +13,7 @@ using Naninovel.Async.CompilerServices;
 using Naninovel.Commands;
 using UnityEngine;
 using UnityEngine.UI;
+using WitchTrials.Models;
 
 namespace WitchTrials.Views;
 
@@ -271,11 +274,11 @@ public class SpawnableClue : MonoBehaviour, Spawn.IParameterized, Spawn.IAwaitab
 
 	[Token(Token = "0x40001AB")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
-	private readonly Tweener<VectorTween> _moveTweener;
+	private readonly Tweener<VectorTween> _moveTweener = new Tweener<VectorTween>();
 
 	[Token(Token = "0x40001AC")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x68")]
-	private readonly Tweener<FloatTween> _fadeTweener;
+	private readonly Tweener<FloatTween> _fadeTweener = new Tweener<FloatTween>();
 
 	[Token(Token = "0x40001AD")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x70")]
@@ -304,98 +307,192 @@ public class SpawnableClue : MonoBehaviour, Spawn.IParameterized, Spawn.IAwaitab
 	[Token(Token = "0x17000023")]
 	private IAddressablesManager AddressablesManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32DD30, 186 B (`??= ServiceLocator.Get<T>(true)`, +0x70)
 		[Token(Token = "0x600017C")]
 		[Address(RVA = "0x32DD30", Offset = "0x32C730", VA = "0x18032DD30")]
 		get
 		{
-			return null;
+			return _addressablesManager ??= ServiceLocator.Get<IAddressablesManager>(true);
 		}
 	}
 
 	[Token(Token = "0x17000024")]
 	private Camera Camera
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32DDF0, 239 B (ICameraManager slot 0 `Camera`, cached in +0x78)
 		[Token(Token = "0x600017D")]
 		[Address(RVA = "0x32DDF0", Offset = "0x32C7F0", VA = "0x18032DDF0")]
 		get
 		{
-			return null;
+			return _camera ??= Engine.GetServiceOrErr<ICameraManager>().Camera;
 		}
 	}
 
 	[Token(Token = "0x17000025")]
 	private string Address
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32DEE0, 85 B (tail jump)
 		[Token(Token = "0x600017E")]
 		[Address(RVA = "0x32DEE0", Offset = "0x32C8E0", VA = "0x18032DEE0")]
 		get
 		{
-			return null;
+			return WitchBookDataHelper.BuildClueTextureAddress(_clueId);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32DF40, 88 B
 	[Token(Token = "0x600017F")]
 	[Address(RVA = "0x32DF40", Offset = "0x32C940", VA = "0x18032DF40")]
 	private void Awake()
 	{
+		_initialPosition = _contentRectTransform.anchoredPosition;
+		_contentCanvasGroup.alpha = 0f;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32DFA0, 310 B
+	// Parameter 0 is the clue id; `asap` spawns/despawns instantly by zeroing the animation time (+0x88).
 	[Token(Token = "0x6000180")]
 	[Address(RVA = "0x32DFA0", Offset = "0x32C9A0", VA = "0x18032DFA0", Slot = "4")]
 	public void SetSpawnParameters(IReadOnlyList<string> parameters, bool asap)
 	{
+		_clueId = parameters?.ElementAtOrDefault(0);
+		if (string.IsNullOrEmpty(_clueId))
+		{
+			UnityEngine.Debug.LogWarning("証拠品 ID が指定されていません。");
+		}
+		_time = (asap ? 0f : _duration);
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (the anchored position/alpha read into locals before the calls) |
+	// RVA: 0x32E0E0 (builder stub); MoveNext 0x32F480, 4107 B, two await states
+	// 
+	// - Restarts `_cts` (+0x98) and links it with the command token; running tweens are completed first.
+	// - The canvas renders through the Naninovel camera (Camera getter inlined).
+	// - The clue texture loads through IAddressableAssetLoader.GetOrLoadAddressableAsset<Texture2D>(Address, token)
+	//   (Cysharp UniTask). Missing texture: warning, nothing shown.
+	// - With `_time == 0` (Mathf.Approximately, sub_331670) the content appears at once. Otherwise it starts at alpha 0
+	//   offset by -_move and moves/fades to the initial position over `_time` (spawn easings +0x50/+0x54) with
+	//   Naninovel UniTask.WhenAll; the linked token reaches MoveAsync/FadeAsync through AsyncToken's implicit conversion.
+	// - `_cts` is disposed and cleared only after an animated spawn completes.
 	[Token(Token = "0x6000181")]
 	[Address(RVA = "0x32E0E0", Offset = "0x32CAE0", VA = "0x18032E0E0", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CAwaitSpawn_003Ed__26))]
-	public Naninovel.UniTask AwaitSpawn([Optional] AsyncToken asyncToken)
+	public async Naninovel.UniTask AwaitSpawn([Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, asyncToken.CancellationToken);
+		CompleteTweenersIfRunning();
+		_canvas.worldCamera = Camera;
+		Texture2D texture = await AddressablesManager.GetOrLoadAddressableAsset<Texture2D>(Address, linkedCts.Token);
+		if (texture != null)
+		{
+			_rawImage.texture = texture;
+			if (Mathf.Approximately(_time, 0f))
+			{
+				_contentCanvasGroup.alpha = 1f;
+				_contentRectTransform.anchoredPosition = _initialPosition;
+				return;
+			}
+			_contentCanvasGroup.alpha = 0f;
+			_contentRectTransform.anchoredPosition = _initialPosition - _move;
+			Vector2 anchoredPosition = _contentRectTransform.anchoredPosition;
+			float alpha = _contentCanvasGroup.alpha;
+			await Naninovel.UniTask.WhenAll(MoveAsync(anchoredPosition, _initialPosition, _time, _spawnMoveEasing, linkedCts.Token), FadeAsync(alpha, 1f, _time, _spawnFadeEasing, linkedCts.Token));
+			_cts.Dispose();
+			_cts = null;
+		}
+		else
+		{
+			UnityEngine.Debug.LogWarning("証拠品 ID: " + _clueId + " の画像が見つかりません。");
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (locals as in AwaitSpawn) | RVA: 0x32E280 (builder stub); MoveNext 0x32EAF0, 2436 B
+	// Mirror of AwaitSpawn: from the current position/alpha to `_initialPosition - _move` and alpha 0 with the despawn
+	// easings (+0x58/+0x5C). With `_time == 0` only the alpha is zeroed.
 	[Token(Token = "0x6000182")]
 	[Address(RVA = "0x32E280", Offset = "0x32CC80", VA = "0x18032E280", Slot = "6")]
 	[AsyncStateMachine(typeof(_003CAwaitDestroy_003Ed__27))]
-	public Naninovel.UniTask AwaitDestroy([Optional] AsyncToken asyncToken)
+	public async Naninovel.UniTask AwaitDestroy([Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, asyncToken.CancellationToken);
+		CompleteTweenersIfRunning();
+		if (Mathf.Approximately(_time, 0f))
+		{
+			_contentCanvasGroup.alpha = 0f;
+			return;
+		}
+		Vector2 anchoredPosition = _contentRectTransform.anchoredPosition;
+		Vector2 to = _initialPosition - _move;
+		float alpha = _contentCanvasGroup.alpha;
+		await Naninovel.UniTask.WhenAll(MoveAsync(anchoredPosition, to, _time, _despawnMoveEasing, linkedCts.Token), FadeAsync(alpha, 0f, _time, _despawnFadeEasing, linkedCts.Token));
+		_cts.Dispose();
+		_cts = null;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32E400, 275 B (Running getters inlined)
 	[Token(Token = "0x6000183")]
 	[Address(RVA = "0x32E400", Offset = "0x32CE00", VA = "0x18032E400")]
 	private void CompleteTweenersIfRunning()
 	{
+		if (_moveTweener.Running)
+		{
+			_moveTweener.CompleteInstantly();
+		}
+		if (_fadeTweener.Running)
+		{
+			_fadeTweener.CompleteInstantly();
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (behaviour), B (lambda body: SetAnchoredPosition is inlined) | RVA: 0x32E520 (builder stub);
+	// MoveNext 0x3308F0, 1156 B; lambda <MoveAsync>b__29_0 0x32EAB0
+	// Tween(time, easing) with the default scale/complete flags (0x101); Tweener.RunAwaitable(tween, token, this).
 	[Token(Token = "0x6000184")]
 	[Address(RVA = "0x32E520", Offset = "0x32CF20", VA = "0x18032E520")]
 	[AsyncStateMachine(typeof(_003CMoveAsync_003Ed__29))]
-	private Naninovel.UniTask MoveAsync(Vector3 from, Vector3 to, float time, EasingType easing, [Optional] AsyncToken asyncToken)
+	private async Naninovel.UniTask MoveAsync(Vector3 from, Vector3 to, float time, EasingType easing, [Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		await _moveTweener.RunAwaitable(new VectorTween(from, to, new Tween(time, easing), (Vector3 vec3) => SetAnchoredPosition(vec3)), asyncToken, this);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32E710 (builder stub); MoveNext 0x330490, 1104 B (SetAlpha method group)
 	[Token(Token = "0x6000185")]
 	[Address(RVA = "0x32E710", Offset = "0x32D110", VA = "0x18032E710")]
 	[AsyncStateMachine(typeof(_003CFadeAsync_003Ed__30))]
-	private Naninovel.UniTask FadeAsync(float from, float to, float time, EasingType easing, [Optional] AsyncToken asyncToken)
+	private async Naninovel.UniTask FadeAsync(float from, float to, float time, EasingType easing, [Optional] AsyncToken asyncToken)
 	{
-		return default(Naninovel.UniTask);
+		await _fadeTweener.RunAwaitable(new FloatTween(from, to, new Tween(time, easing), SetAlpha), asyncToken, this);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32E900, 30 B
 	[Token(Token = "0x6000186")]
 	[Address(RVA = "0x32E900", Offset = "0x32D300", VA = "0x18032E900")]
 	private void SetAnchoredPosition(Vector2 anchoredPosition)
 	{
+		_contentRectTransform.anchoredPosition = anchoredPosition;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32E920, 30 B
 	[Token(Token = "0x6000187")]
 	[Address(RVA = "0x32E920", Offset = "0x32D320", VA = "0x18032E920")]
 	private void SetAlpha(float a)
 	{
+		_contentCanvasGroup.alpha = a;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32E940, 362 B (the two Tweener field initializers only)
 	[Token(Token = "0x6000188")]
 	[Address(RVA = "0x32E940", Offset = "0x32D340", VA = "0x18032E940")]
 	public SpawnableClue()
