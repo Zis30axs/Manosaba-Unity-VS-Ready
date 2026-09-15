@@ -28,7 +28,7 @@
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
 | Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
-| Credits/Gallery 子系统 | 进行中：51/71 个函数体、15,019/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组（Gallery）待做 |
+| Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2554,6 +2554,42 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - 构造函数只有 `_labels = new List<TMP_Text>()` 字段初始化。
 
 进度：Credits/Gallery 51/71、15,019/20,747 B；全部 `WitchTrials.*` 合计 733/929、249,633/316,778 B；0 错误，警告基线 140。
+
+### 第 C 组：GalleryStillGridSlot / GalleryStillViewerPanel / GalleryUi（20 个函数体）
+
+- **`GalleryStillGridSlot`**（CG 画廊的格子）：
+  - `ThumbnailRectTransform`：Unity 对象判空缓存；为空时取 `ThumbnailImage`（槽 77）的 transform，以精确类型检查（`as`）转成 RectTransform。
+  - `LoadCGTextures`（MoveNext 1,498 B）：
+    1. 保存当前缩略图，换成 `LoadingTexture`（槽 79）。
+    2. 用 `TexturePaths.OrderBy(TexturePaths.IndexOf)` 排序后，把每个路径映射到 `GetOrLoadUnlockedStillTextureAsync`，整体 await 后存入 `_cgTextures`。
+       - 排序键的委托绑定的是 Naninovel `LinqUtils.IndexOf` 方法组。
+       - 按自身下标排序等于保持原顺序（字节确认）。
+    3. 恢复原缩略图。
+  - `HandleItemUpdated`（async void，MoveNext 2,051 B）：
+    1. `Id` 为空时每帧等待；组件被销毁则放弃。
+    2. 加载贴图。有任意已解锁项时（`AnyUnlocked`，槽 81），取第一张非空贴图；否则取 `LockedTexture`（槽 78）。
+    3. 按贴图宽高比调整缩略图宽度（保持高度），然后设置贴图。
+  - `GetOrLoadUnlockedStillTextureAsync`：
+    1. 未解锁（IUnlockableManager 槽 3 `ItemUnlocked`）时返回 null。
+    2. 已加载（IResourceLoader 槽 5 `IsLoaded`）时取 `GetLoaded`（泛型接口槽 5）。
+    3. 否则 `await LoadOrErr(path, this)`。
+    - 两条分支共用内联的 `Resource<Texture2D>` → `Texture2D` 转换，写作条件表达式（B 级）。
+- **`GalleryStillViewerPanel`**（大图查看器）：
+  - `Show` 先创建一个 `CancelEventBlocker`，拦截父级的取消输入，然后 `base.Show(textures)`。CGViewerPanel.Show（0x614710）被逐条内联，字节一致。
+  - `Hide` 调用 `base.Hide()`，再释放拦截器；`OnDisable` 同理。
+  - `ShowNextTexture` 在基类流程（出队 → Crossfader 交叉淡化）之前，先把查看器高度按贴图宽高比调整（保持宽度）。局部变量的拆分由调用顺序决定（B 级）。
+  - `ViewerRectTransform`/`ParentBlockables` 为懒加载 getter；构造函数与 CGViewerPanel 折叠。
+- **`GalleryUi`**：
+  - 四个服务 getter。
+  - `UpdateCgSourcePaths` 把 `_cgSourcePaths[i]` 写入 `CGSources[i].PathPrefix`，多出的路径被忽略。
+  - `UnlockAllStillsAsync`：
+    1. 并行 `LocateAsync` 所有 CG 源，逐个 `UnlockItem`（槽 5）。
+    2. `SaveGlobal()`（IStateManager 槽 32）fire-and-forget。
+    - 调试按钮与 `UnlockAllStills` 走这里。
+  - `LocateAsync` 调用 `config.CreateLocalizableFor<Texture2D>(resources, l10n).Locate(null)`。
+- **ICF 审计复查**（advisor 要求的第二次）：本组完成后重跑。发现 `CreditsDirectorBase.EndLabelName` 标记的共享体 0x347410 同时覆盖 `CharacterDataItem.Weight`（+0x38），后者为空体，已补上。其余 7 处为此前记录的同文件合法空体。
+
+进度：Credits/Gallery 71/71、20,747/20,747 B；全部 `WitchTrials.*` 合计 753/929、255,361/316,778 B；0 错误，警告基线 140。
 
 
 ---

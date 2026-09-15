@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
@@ -111,51 +112,64 @@ public sealed class GalleryUi : CGGalleryPanel, IGalleryUi, IManagedUI
 	[Token(Token = "0x17000050")]
 	private IResourceProviderManager NaniResourceProviderManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x34FF60, 202 B (`??= Engine.GetServiceOrErr<T>()`)
 		[Token(Token = "0x60002BA")]
 		[Address(RVA = "0x34FF60", Offset = "0x34E960", VA = "0x18034FF60")]
 		get
 		{
-			return null;
+			return _naniResourceProviderManager ??= Engine.GetServiceOrErr<IResourceProviderManager>();
 		}
 	}
 
 	[Token(Token = "0x17000051")]
 	private ILocalizationManager NaniLocalizationManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x350030, 202 B (`??= Engine.GetServiceOrErr<T>()`)
 		[Token(Token = "0x60002BB")]
 		[Address(RVA = "0x350030", Offset = "0x34EA30", VA = "0x180350030")]
 		get
 		{
-			return null;
+			return _naniLocalizationManager ??= Engine.GetServiceOrErr<ILocalizationManager>();
 		}
 	}
 
 	[Token(Token = "0x17000052")]
 	private IUnlockableManager NaniUnlockableManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x350100, 202 B (`??= Engine.GetServiceOrErr<T>()`)
 		[Token(Token = "0x60002BC")]
 		[Address(RVA = "0x350100", Offset = "0x34EB00", VA = "0x180350100")]
 		get
 		{
-			return null;
+			return _naniUnlockableManager ??= Engine.GetServiceOrErr<IUnlockableManager>();
 		}
 	}
 
 	[Token(Token = "0x17000053")]
 	private IStateManager NaniStateManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3501D0, 202 B (`??= Engine.GetServiceOrErr<T>()`)
 		[Token(Token = "0x60002BD")]
 		[Address(RVA = "0x3501D0", Offset = "0x34EBD0", VA = "0x1803501D0")]
 		get
 		{
-			return null;
+			return _naniStateManager ??= Engine.GetServiceOrErr<IStateManager>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3502A0, 219 B
+	// CGSources is CGGalleryPanel slot 97; ResourceLoaderConfiguration.PathPrefix is +0x10. Extra paths are ignored.
 	[Token(Token = "0x60002BE")]
 	[Address(RVA = "0x3502A0", Offset = "0x34ECA0", VA = "0x1803502A0")]
 	public void UpdateCgSourcePaths()
 	{
+		for (int i = 0; i < _cgSourcePaths.Length; i++)
+		{
+			if (i < CGSources.Length)
+			{
+				CGSources[i].PathPrefix = _cgSourcePaths[i];
+			}
+		}
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x350380, 430 B
@@ -173,22 +187,38 @@ public sealed class GalleryUi : CGGalleryPanel, IGalleryUi, IManagedUI
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x350530 (builder stub); MoveNext 0x350CC0, 1555 B
+	// 
+	// Every CG source is located in parallel (Naninovel GetAwaiter over IEnumerable<UniTask<T>>), each located path is
+	// unlocked (IUnlockableManager slot 5 `UnlockItem`), then IStateManager slot 32 `SaveGlobal()` is fire-and-forget.
 	[Token(Token = "0x60002C0")]
 	[Address(RVA = "0x350530", Offset = "0x34EF30", VA = "0x180350530")]
 	[AsyncStateMachine(typeof(_003CUnlockAllStillsAsync_003Ed__15))]
-	private UniTask UnlockAllStillsAsync()
+	private async UniTask UnlockAllStillsAsync()
 	{
-		return default(UniTask);
+		IReadOnlyCollection<string>[] array = await CGSources.Select(LocateAsync);
+		foreach (IReadOnlyCollection<string> paths in array)
+		{
+			foreach (string path in paths)
+			{
+				NaniUnlockableManager.UnlockItem(path);
+			}
+		}
+		NaniStateManager.SaveGlobal().Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x350650 (builder stub); MoveNext 0x350850, 1081 B
+	// `CreateLocalizableFor<Texture2D>(resources, l10n, fallbackToSource: true)` (both service getters inlined), then
+	// ResourceLoader<T> slot 40 `Locate(path)` with a null path.
 	[Token(Token = "0x60002C1")]
 	[Address(RVA = "0x350650", Offset = "0x34F050", VA = "0x180350650")]
 	[AsyncStateMachine(typeof(_003CLocateAsync_003Ed__16))]
-	private UniTask<IReadOnlyCollection<string>> LocateAsync(ResourceLoaderConfiguration config)
+	private async UniTask<IReadOnlyCollection<string>> LocateAsync(ResourceLoaderConfiguration config)
 	{
-		return default(UniTask<IReadOnlyCollection<string>>);
+		return await config.CreateLocalizableFor<Texture2D>(NaniResourceProviderManager, NaniLocalizationManager).Locate(null);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x350840, 7 B (tail jump to CGGalleryPanel..ctor; no initializers)
 	[Token(Token = "0x60002C2")]
 	[Address(RVA = "0x350840", Offset = "0x34F240", VA = "0x180350840")]
 	public GalleryUi()
