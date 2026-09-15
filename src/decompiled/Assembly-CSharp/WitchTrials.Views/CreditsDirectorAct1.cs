@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using LitMotion.Extensions;
+using PPT.Noise;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -7,6 +9,7 @@ using Cysharp.Threading.Tasks.CompilerServices;
 using Il2CppDummyDll;
 using LitMotion;
 using Naninovel;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -139,30 +142,88 @@ public sealed class CreditsDirectorAct1 : CreditsDirectorBase
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x340FB0, 345 B
 	[Token(Token = "0x6000237")]
 	[Address(RVA = "0x340FB0", Offset = "0x33F9B0", VA = "0x180340FB0", Slot = "4")]
 	protected override void Reset()
 	{
+		base.Reset();
+		_scrollbar = GetComponentInChildren<Scrollbar>();
+		_noiseCanvasGroup = GetComponentInChildren<Noise>().GetComponent<CanvasGroup>();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x341110, 100 B
 	[Token(Token = "0x6000238")]
 	[Address(RVA = "0x341110", Offset = "0x33FB10", VA = "0x180341110", Slot = "5")]
 	public override void Initialize()
 	{
+		base.Initialize();
+		_back.alpha = 0f;
+		_titleLogoAct1.alpha = 0f;
+		_noiseCanvasGroup.gameObject.SetActive(false);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x341180 (builder stub); MoveNext 0x3413F0, 6800 B, nine await states (0-8);
+	// lambdas <PlayAsync>b__17_0 / b__17_1 both fold to 0x3413C0 (`_scrollbar.Set(f, true)`, the inlined `value` setter)
+	// 
+	// - Float constants (all multiplied by BgmUnitDuration): 4.0 @0x2AE2A10 title fade, 197.0 @0x2AE2C14 scroll length,
+	//   187.0 @0x2AE2C10 and 5.0 @0x2AE2A34 the two waits; 1.5 @0x2AE2894 multiplies the noise BGM volume.
+	// - `ChangeActivity(true)` is inlined (GameObject.SetActive + Canvas.enabled on the base's private fields).
+	// - `WaitUnitsAsync(12, ct)` has its builder stub inlined (count 0xC stored in the state machine).
+	// - IAudioManager slots (accessor order): 16 PlayBgm (thunk sub_5C60, r8d=0x10), 18 StopAllBgm, 13 ModifyBgm.
+	//   All three results go to Naninovel `Forget()`.
+	// - `scrollMotion` (+0x28) is completed through MotionHandleExtensions.Complete -> MotionManager (storage slot 5).
+	// - The Delay calls use the DelayType overload (see WaitUnitsAsync).
+	// - No try/finally: cancelling skips the tail (the BGM stop, alpha resets and the end-label jump).
 	[Token(Token = "0x6000239")]
 	[Address(RVA = "0x341180", Offset = "0x33FB80", VA = "0x180341180", Slot = "7")]
 	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__17))]
-	public override Cysharp.Threading.Tasks.UniTask PlayAsync([Optional] CancellationToken ct)
+	public override async Cysharp.Threading.Tasks.UniTask PlayAsync([Optional] CancellationToken ct)
 	{
-		return default(Cysharp.Threading.Tasks.UniTask);
+		_titleLogoAct1.alpha = 1f;
+		ChangeActivity(true);
+		await WaitUnitsAsync(12, ct);
+		await LMotion.Create(1f, 0f, BgmUnitDuration * 4f).BindToAlpha(_titleLogoAct1).AddTo(this).ToUniTask(ct);
+		_back.alpha = 1f;
+		MotionHandle scrollMotion = LMotion.Create(1f, 0f, BgmUnitDuration * 197f).Bind(delegate(float f)
+		{
+			_scrollbar.value = f;
+		}).AddTo(this);
+		await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(BgmUnitDuration * 187f), Cysharp.Threading.Tasks.DelayType.DeltaTime, Cysharp.Threading.Tasks.PlayerLoopTiming.Update, ct);
+		await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(BgmUnitDuration * 5f), Cysharp.Threading.Tasks.DelayType.DeltaTime, Cysharp.Threading.Tasks.PlayerLoopTiming.Update, ct);
+		NaniAudioManager.PlayBgm(_noiseBgmPath, _noiseBgmVolume, 0f, true, null, null, default).Forget();
+		_noiseCanvasGroup.gameObject.SetActive(true);
+		scrollMotion.Complete();
+		await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(_noiseDuration), Cysharp.Threading.Tasks.DelayType.DeltaTime, Cysharp.Threading.Tasks.PlayerLoopTiming.Update, ct);
+		NaniAudioManager.StopAllBgm(0f, default).Forget();
+		_noiseCanvasGroup.gameObject.SetActive(false);
+		await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(_noiseInterval), Cysharp.Threading.Tasks.DelayType.DeltaTime, Cysharp.Threading.Tasks.PlayerLoopTiming.Update, ct);
+		NaniAudioManager.PlayBgm(_noiseBgmPath, _noiseBgmVolume, 0f, true, null, null, default).Forget();
+		_noiseCanvasGroup.gameObject.SetActive(true);
+		ResumeAtLabel(_reverseLabelName);
+		await LMotion.Create(0f, 1f, _reverseDuration - _noisePowerUpDuration).Bind(delegate(float f)
+		{
+			_scrollbar.value = f;
+		}).AddTo(this).ToUniTask(ct);
+		NaniAudioManager.ModifyBgm(_noiseBgmPath, _noiseBgmVolume * 1.5f, false, _noisePowerUpDuration, default).Forget();
+		await LMotion.Create(_noiseCanvasGroup.alpha, 1f, _noisePowerUpDuration).BindToAlpha(_noiseCanvasGroup).AddTo(this).ToUniTask(ct);
+		await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(_endingInterval), Cysharp.Threading.Tasks.DelayType.DeltaTime, Cysharp.Threading.Tasks.PlayerLoopTiming.Update, ct);
+		NaniAudioManager.StopAllBgm(0f, default).Forget();
+		_back.alpha = 0f;
+		_titleLogoAct1.alpha = 0f;
+		_noiseCanvasGroup.gameObject.SetActive(false);
+		ResumeAtLabel(base.EndLabelName);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x341330, 131 B (ChangeActivity(false) inlined, then the Initialize resets)
 	[Token(Token = "0x600023A")]
 	[Address(RVA = "0x341330", Offset = "0x33FD30", VA = "0x180341330", Slot = "8")]
 	public override void Stop()
 	{
+		ChangeActivity(false);
+		_back.alpha = 0f;
+		_titleLogoAct1.alpha = 0f;
+		_noiseCanvasGroup.gameObject.SetActive(false);
 	}
 
 	[Token(Token = "0x600023B")]
