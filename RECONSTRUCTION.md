@@ -2829,7 +2829,7 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - `Awake`：**无条件** `Destroy(gameObject)`——函数体内没有任何分支。本版本中反馈按钮在唤醒时即销毁，`TitleUi` 也用 Unity 活性检查包住 `_googleForm`。
   - `Reset`：编辑器钩子，`_button = GetComponentInChildren<Button>()`。
   - `BuildUrl`：以 `_formUrl` 建 `StringBuilder`，逐条追加 `&entry.<id>=<data>`，最后经内联的 `Uri.EscapeUriString`。**代码中没有 URL 字面量**：`_formUrl` 是 `[SerializeField]`，实际值存在场景/预制体里（资源侧不属本仓库职责）。
-  - 嵌套 `EntryInfo`：`Data` 按 `_kind` 依次返回版本号、平台名、分辨率（icall 0x25F3CA0 `Screen::get_currentResolution_Injected`，已按字节确认）、播放位置或已显示的消息；静态 `s_scenarioNamePattern`（`.cctor` 0x33A7F0）为 `new Regex("([A-Z])[a-z]+(\d+)", RegexOptions.Compiled)`，把 `Trial14` 之类压成 `T14`，再把 `#` 换成 `L`。
+  - 嵌套 `EntryInfo`：`Data` 按 `_kind` 依次返回版本号、平台名、分辨率（icall 0x25F3CA0 `Screen::get_currentResolution_Injected`，已按字节确认）、播放位置或已显示的消息；静态 `s_scenarioNamePattern`（`.cctor` 0x33A7F0）为正则 `([A-Z])[a-z]+(\d+)`（`Compiled`，源码里写作 C# 字面量 `"([A-Z])[a-z]+(\d+)"`），把 `Trial14` 之类压成 `T14`，再把 `#` 换成 `L`。
 - **`PrintTextModified.ShouldPlayAutoVoice`**：与基类 `PrintText`（0x4FE180）逐字节对照，只多一条判断。
   - 基类：自动语音开关（`AudioConfiguration` +0x40 `EnableAutoVoicing`）、`PlaybackSpot.Valid`（Command +0x18，内联为脚本路径非空）、且 `!ScriptPlayer.SkipActive`（`IScriptPlayer` 接口槽 16）。
   - 本类在最后一条之前插入：命令显式写了 `wait:false` 时直接返回真，即快进中也播语音。转换用的是 `Nullable<bool>.op_Implicit` 而非 `.Value`。
