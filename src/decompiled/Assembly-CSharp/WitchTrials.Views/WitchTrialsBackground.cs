@@ -54,29 +54,45 @@ public class WitchTrialsBackground : SpriteBackgroundExtended
 	[Il2CppDummyDll.FieldOffset(Offset = "0xC0")]
 	private BackgroundMatcherExtended _matcher;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x313970, 14 B (tail jump to SpriteBackground..ctor 0x46C8C0 through the
+	// inlined, empty SpriteBackgroundExtended(id, metadata, loader) constructor)
 	[Token(Token = "0x600008F")]
 	[Address(RVA = "0x313970", Offset = "0x312370", VA = "0x180313970")]
 	public WitchTrialsBackground(string id, BackgroundMetadata meta, StandaloneAppearanceLoader<Texture2D> loader)
+		: base(id, meta, loader)
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x313980, 230 B (ICF-folded with SpriteBackgroundExtended..ctor(actorId, subId,
+	// metadata, loader): `actorId + "-" + subId` when subId is non-empty, SpriteBackground ctor, subId stored at +0xB8)
 	[Token(Token = "0x6000090")]
 	[Address(RVA = "0x313980", Offset = "0x312380", VA = "0x180313980")]
 	public WitchTrialsBackground(string actorId, string subId, BackgroundMetadata meta, StandaloneAppearanceLoader<Texture2D> loader)
+		: base(actorId, subId, meta, loader)
 	{
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x313A70 (builder stub); MoveNext 0x313E50, 1161 B
+	// `<>n__0` (0x313D30, folded with SpriteBackground.Initialize) is the base call. After it completes, the matcher is
+	// built from MonoBehaviourActor slot 26 `ActorMeta` and SpriteActor slot 64 `TransitionalRenderer`, stored at +0xC0.
 	[Token(Token = "0x6000091")]
 	[Address(RVA = "0x313A70", Offset = "0x312470", VA = "0x180313A70", Slot = "41")]
 	[AsyncStateMachine(typeof(_003CInitialize_003Ed__3))]
-	public override UniTask Initialize()
+	public override async UniTask Initialize()
 	{
-		return default(UniTask);
+		await base.Initialize();
+		_matcher = BackgroundMatcherExtended.CreateForBackground(ActorMeta, TransitionalRenderer);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x313B90, 404 B
+	// The body up to `+0xB0 matcher?.Stop()` is SpriteBackground.Dispose (0x46C940) inlined: destroy the GameObject
+	// (slot 39), unsubscribe OnLocalized from the appearance loader, release it, and stop the base matcher.
+	// It then stops our own matcher through CameraMatcher slot 6 `Stop`.
 	[Token(Token = "0x6000092")]
 	[Address(RVA = "0x313B90", Offset = "0x312590", VA = "0x180313B90", Slot = "48")]
 	public override void Dispose()
 	{
+		base.Dispose();
+		_matcher?.Stop();
 	}
 }

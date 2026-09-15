@@ -77,19 +77,36 @@ public class BlockInteraction : Command
 	[UsedImplicitly]
 	public BooleanParameter Wait;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3B2260, 171 B (Command slot 13 `WaitOrForget` with `Wait` at +0x38)
 	[Token(Token = "0x60007A3")]
 	[Address(RVA = "0x3B2260", Offset = "0x3B0C60", VA = "0x1803B2260", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		return WaitOrForget(BlockAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3B2310 (builder stub); MoveNext 0x3B24B0, 1535 B
+	// 
+	// Same shape as ShowLoadingUiForDebug.ShowLoadingUiAsync, but the using resource is `new InteractionBlocker()`
+	// (hoisted unnamed IDisposable at +0x30). `<startingTime>5__3` (+0x38) accumulates Time.deltaTime (icall
+	// 0x2608950). `<duration>5__4` (+0x3C) = Assigned(Duration) ? Duration.Value : 0.35f (rdata 0x2AE26D0).
+	// The loop runs while `!token.Canceled` and `duration > startingTime`, awaiting
+	// `UniTask.Yield(PlayerLoopTiming.Update (8), token)`.
 	[Token(Token = "0x60007A4")]
 	[Address(RVA = "0x3B2310", Offset = "0x3B0D10", VA = "0x1803B2310")]
 	[AsyncStateMachine(typeof(_003CBlockAsync_003Ed__3))]
-	private UniTask BlockAsync(AsyncToken token)
+	private async UniTask BlockAsync(AsyncToken token)
 	{
-		return default(UniTask);
+		using (new InteractionBlocker())
+		{
+			float startingTime = 0f;
+			float duration = Assigned(Duration) ? Duration.Value : 0.35f;
+			while (!token.Canceled && duration > startingTime)
+			{
+				startingTime += UnityEngine.Time.deltaTime;
+				await UniTask.Yield(PlayerLoopTiming.Update, token);
+			}
+		}
 	}
 
 	[Token(Token = "0x60007A5")]
