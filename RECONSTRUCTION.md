@@ -24,7 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
-| UI 子系统 | 进行中（用户优先级第 6 位）：107/165 个函数体、29,993/50,436 B。已完成五组（第 4 组为 HintDisplay，第 5 组为 ControlPanel），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| UI 子系统 | 进行中（用户优先级第 6 位）：130/165 个函数体、37,629/50,436 B。已完成六组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi；剩余为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
 ---
 
@@ -2099,7 +2099,34 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **`ReturnToTitleAsync`**：外层 `using` 阻塞器，内层 `using` 对话框。确认结果为 Cancel 时直接返回；否则对话框先释放，再在阻塞器作用域内 `await _returnToTitleScript.PlayAsync(ct)`。
 - **构建修正**：`PresentAsync` 是 `GigaCreation.NaninovelExtender.Ui` 中的扩展方法，补上该 using 后编译通过。
 
-进度：`progress.py UI` 测得 107/165、29,993/50,436 B；全部 `WitchTrials.*` 合计 513/929、174,642/316,778 B；警告基线 140。
+**第 6 组：TitleUi（标题画面，22 个函数体 + 6 个点击 lambda + 3 个 MoveNext）**
+
+- **访问器**：
+  - `InputManager` / `DialogProvider` 用 `ServiceLocator.Get<T>(true)` 懒加载（DialogProvider 实际取 `IDialogManager`）。
+  - 四个 Naninovel 服务用 `Engine.GetServiceOrErr<T>()`。
+  - `GalleryUi` / `OptionsUi` 为 `NaniUiManager.GetUI<ICGGalleryUI / ISettingsUI>()`。
+  - `CanLoadGame` = `TryGetVariableValue<int>("g_gameProgress")` 成功且值 > 0。
+  - `Visible` 读 `_visibleSelf`，写入时经 vtable 槽 45 转 `SetVisibility`。
+- **`Awake`**：`base.Awake()` 之后无条件 `_googleForm = null`。原始字节 `48 C7 83 08 01 00 00 00…` 可证实。因此本构建里 Activate 的 GoogleForm 分支永远不会执行。
+- **`ChangeVisibility`**（Naninovel builder）：
+  - 停止淡入淡出 tween，写 `_visibleSelf`，调 `HandleVisibilityChanged`（槽 55）。
+  - CanvasGroup（槽 42）为空则返回。`DisableInteraction`（槽 33）为 false 时设 `blocksRaycasts`。
+  - `ControlOpacity`（槽 43）为 false 则返回。
+  - `time = duration ?? FadeTime`（槽 19）。time 为 0 时直接写 alpha。
+  - 否则构造 `FloatTween(alpha, target, new Tween(time, _visibleSelf ? 显示缓动 : 隐藏缓动, IgnoreTimeScale, true), SetOpacity)`，并 `await RunAwaitable(tween, asyncToken, this)`。
+  - `Tween.Scale` 直接接收 `IgnoreTimeScale`，未取反。
+- **`SetVisibility`**：上述逻辑的同步版本，alpha 直接取 1/0。
+- **`Activate`**：每个按钮都是 `onClick.AsObservable().Subscribe(lambda).AddTo(_disposables, this)`，`Deactivate` 调 `_disposables.Clear()`。
+  - 读档按钮仅在 `CanLoadGame` 时订阅：播放 Submit 音效，然后 `LoadGameAsync`。
+  - 新游戏：`PlaySfx(_startGameSfxPath)`，然后 `StartGame`（内联）。
+  - 图鉴、设置：`PresentAsync(null, dct)`。
+  - 退出：`QuitGameAsync`。
+  - GoogleForm：`OpenGoogleFormAsync`。
+- **`StartGame`**：`SetTitleScreenShown(false)`（IWitchTrialsNaninovelManager 槽 3），`nextScenario` ← `StartGameScenarioName`（INaninovelManager 槽 0），`ResumeAtLabel("StartGame")`。
+- **`LoadGameAsync`**：`PresentationMode = Load` 后 `await SaveLoadUi.PresentAsync(null, ct)`。
+- **`QuitGameAsync`**：与 ControlPanel.ReturnToTitleAsync 同构。确认结果为 Cancel 时返回；否则先释放对话框，再在阻塞器作用域内 `ResumeAtLabel("QuitGame")`。
+
+进度：`progress.py UI` 测得 130/165、37,629/50,436 B；全部 `WitchTrials.*` 合计 539/929、182,873/316,778 B；警告基线 140。剩余的 UI 函数体集中在 OptionsUi。
 
 
 ---
