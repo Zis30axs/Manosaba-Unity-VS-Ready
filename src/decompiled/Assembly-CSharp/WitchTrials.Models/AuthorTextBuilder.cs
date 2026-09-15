@@ -85,46 +85,41 @@ public sealed class AuthorTextBuilder
 			}
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 get (shared reference-field getter, +0x10); setter shares a generic store body
 		[Token(Token = "0x17000132")]
 		public string Name
 		{
 			[Token(Token = "0x600072E")]
 			[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 			[CompilerGenerated]
-			get
-			{
-				return null;
-			}
+			get;
 			[Token(Token = "0x600072F")]
 			[Address(RVA = "0x30C0D0", Offset = "0x30AAD0", VA = "0x18030C0D0")]
 			[CompilerGenerated]
-			set
-			{
-			}
+			set;
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 get (shared reference-field getter, +0x18); setter shares a generic store body
 		[Token(Token = "0x17000133")]
 		public string FamilyName
 		{
 			[Token(Token = "0x6000730")]
 			[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 			[CompilerGenerated]
-			get
-			{
-				return null;
-			}
+			get;
 			[Token(Token = "0x6000731")]
 			[Address(RVA = "0x36C200", Offset = "0x36AC00", VA = "0x18036C200")]
 			[CompilerGenerated]
-			set
-			{
-			}
+			set;
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x36C0D0 (shared two-reference-store body: +0x10, +0x18)
 		[Token(Token = "0x600072C")]
 		[Address(RVA = "0x36C0D0", Offset = "0x36AAD0", VA = "0x18036C0D0")]
 		public FullName([NotNull] string Name, [NotNull] string FamilyName)
 		{
+			this.Name = Name;
+			this.FamilyName = FamilyName;
 		}
 
 		[Token(Token = "0x6000732")]
@@ -159,22 +154,24 @@ public sealed class AuthorTextBuilder
 			return default(bool);
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x36C8D0 (shared record copy-ctor body, two reference fields)
 		[Token(Token = "0x600073A")]
 		[Address(RVA = "0x36C8D0", Offset = "0x36B2D0", VA = "0x18036C8D0")]
 		[CompilerGenerated]
 		protected FullName(FullName original)
 		{
+			Name = original.Name;
+			FamilyName = original.FamilyName;
 		}
 
+		// RECONSTRUCTED | Confidence: A | RVA: 0x36C9B0 (shared Deconstruct body, two reference fields)
 		[Token(Token = "0x600073B")]
 		[Address(RVA = "0x36C9B0", Offset = "0x36B3B0", VA = "0x18036C9B0")]
 		[CompilerGenerated]
 		public void Deconstruct(out string Name, out string FamilyName)
 		{
-			Name = default;
-			FamilyName = default;
-			Name = default;
-			FamilyName = default;
+			Name = this.Name;
+			FamilyName = this.FamilyName;
 		}
 	}
 

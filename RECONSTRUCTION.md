@@ -28,6 +28,7 @@
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
 | Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
+| Credits/Gallery 子系统 | 进行中：22/71 个函数体、5,267/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B 组（CreditsDirector/CreditsUI/SpecialThanksRoll）与第 C 组（Gallery）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2425,6 +2426,62 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
 - **工程配置**：Assembly-CSharp 补上 `GigaCreation.Essentials.Platforms` 工程引用，以及 `UnityEngine.ScreenCaptureModule`、`UnityEngine.ImageConversionModule` 两个 DummyDll 引用。与 UndoExtensions 一样，重新生成工程时需要保留这些引用。
 
 进度：Debug 46/46、20,437/20,437 B；全部 `WitchTrials.*` 合计 685/929、235,300/316,778 B；0 错误，警告基线 140。
+
+## 7.16 ICF 积压清理与 `Credits/Gallery` 子系统第 A 组
+
+### ICF 共享存根积压（§7.15 遗留）
+
+§7.15 的审计脚本在 Debug 收尾后重跑，确认以下 RVA 已由其他文件的标记计入进度，但本文件里的函数体仍是空存根。现已全部补齐：
+
+- **`AuthorTextBuilder.FullName`**：这是非位置式 record。
+  - `Name`/`FamilyName` 的访问器改为自动访问器：get 分别折叠到 0x33FBC0（+0x10）和 0x33A4E0（+0x18），set 折叠到共享存储体 0x30C0D0 和 0x36C200。
+  - 主构造 0x36C0D0、拷贝构造 0x36C8D0、`Deconstruct` 0x36C9B0 都补上两字段赋值。
+  - `EqualityContract`、`ToString` 等独立 RVA 未反汇编，仍为存根，不计入。
+- **共享字段 getter**：
+  - `CharacterDataItem.Name`（0x33A4E0，`_name`）
+  - `MasterData.DefaultHp`（0x398CF0，`movss xmm0,[rcx+0x28]`）
+  - `GoogleForm.EntryInfo.Id`（0x33A4E0，`_id`）
+  - `OptionsUi.PageCanvas.Toggle`（0x33FBC0，`_toggle`）
+  - `SaveLoadUi.SaveLoadPanelReference.Mode`（0x331650）和 `.Panel`（0x33A4E0）
+
+补丁后重跑审计，只剩 7 处"同文件已标记"的合法空体：
+- 4 个构造函数，其行为在字段初始化器里。
+- 3 个 lambda，函数体已写在父方法的匿名委托中（MapPage ×2、SoundTestUi）。
+
+### 第 A 组：命令与小组件（19 个函数体）
+
+- **`HideCreditsUi`（`hideCredit`）**：`Engine.GetServiceOrErr<IUIManager>().GetUI<ICreditsUI>().Stop()`。ICreditsUI 槽位为 0 PreloadResourcesAsync、1 PlayAsync、2 Stop。
+- **`ShowCreditsUi`（`credit`）**：
+  - 两个懒加载 getter：`CreditsUi` 内联了 `NaniUiManager`。
+  - `PreloadResources` 以 `default` AsyncToken 调用 `PreloadResourcesAsync(ActNumber, default)`。
+  - `ReleaseResources` 就是 `CreditsUi.Stop()`（字节确认，不是释放资源 API）。
+  - `Execute` 为 `WaitOrForget(PlayAsync, Wait, token)`，`PlayAsync` 为 `await CreditsUi.PlayAsync(ActNumber, token)`。
+- **`EndingStill`**：
+  - `Reset` 调用 `GetComponent<CanvasGroup>()`。
+  - `PresentAsync` 与 `DismissAsync` 的 MoveNext（各 1,927 B）规范化后逐行 diff，只有 `LMotion.Create` 的两个浮点常量不同（0→1 与 1→0）。
+  - 流程：
+    1. 取消并释放旧 `_cts`，新建一个。
+    2. `using` 联结 `_cts.Token` 与 `ct`。
+    3. `LMotion.Create(...).BindToAlpha(_canvasGroup).AddTo(this).ToUniTask(linkedCts.Token)`。
+    4. 在 using 内释放 `_cts` 并置 null。
+- **`CreditRoll`**：
+  - `ContentHeight` 取 `_scrollRect.content.sizeDelta.y`。
+  - `Reset` 取四个组件引用。
+  - `BeginToScroll`/`EndToScroll` 分别开启和关闭 `_canvas`。
+  - `ScrollAsync` 流程：
+    1. 虚调用 `BeginToScroll`（槽 5）。
+    2. `LMotion.Create(1f, 0f, duration)` 经内联 `Bind` 绑到滚动条，`AddTo(this)`，`ToUniTask(ct)`。
+    3. 虚调用 `EndToScroll`（槽 6）。
+  - **没有 try/finally**：取消时不会执行 `EndToScroll`，画布保持开启。
+  - lambda 直接调用私有的 `Scrollbar.Set(f, true)`，这是被内联的 `value` setter，因此写作 `_scrollbar.value = f`。
+  - `SetGameObjectActive`/`SetCanvasEnabled` 此前已由折叠伙伴计入，本次补上函数体。
+- **`StillGrid`**：
+  - `SlotData` 取 `_sortedSlotData ??= base.SlotData.OrderBy(lambda).ToList()`。
+  - lambda 返回 id 在 `_order` 中的下标。不在表中的 CG 返回 `Count + 原下标`，排在已列出项之后并保持原相对顺序。
+  - **B 级**：lambda 以非虚方式读基类字段 +0xC8，但在 lambda 里写 `base.SlotData` 会让 Roslyn 生成 `<>n__0` 辅助方法，而 dump.cs 中没有该方法。行为已字节确认，源码写法不确定。
+  - 构造函数与 `CGGalleryGrid..ctor` 折叠，只含基类初始化器 `itemsPerPage = 9`。
+
+进度：Credits/Gallery 22/71、5,267/20,747 B；全部 `WitchTrials.*` 合计 704/929、239,881/316,778 B；0 错误，警告基线 140。
 
 
 ---

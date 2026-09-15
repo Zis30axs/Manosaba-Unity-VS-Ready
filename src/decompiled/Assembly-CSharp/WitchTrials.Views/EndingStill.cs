@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using LitMotion.Extensions;
+using LitMotion;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -125,26 +127,66 @@ public class EndingStill : MonoBehaviour
 		_canvasGroup.alpha = 0f;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3491F0, 151 B
 	[Token(Token = "0x600027D")]
 	[Address(RVA = "0x3491F0", Offset = "0x347BF0", VA = "0x1803491F0")]
 	private void Reset()
 	{
+		_canvasGroup = GetComponent<CanvasGroup>();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x349290 (builder stub); MoveNext 0x349DC0, 1927 B
+	// 
+	// PresentAsync and DismissAsync MoveNext bodies are byte-identical except the two `LMotion.Create` float
+	// constants (Present: from 0 to 1, Dismiss: from 1 to 0).
+	// - A running `_cts` (+0x28) is Cancel()ed and Dispose()d, then replaced by a new CTS.
+	// - `<linkedCts>5__2` = `CreateLinkedTokenSource(_cts.Token, ct)` (two-token overload); the try region
+	//   starts after it and the finally disposes it through IDisposable (a `using`).
+	// - `LMotion.Create(from, to, duration).BindToAlpha(_canvasGroup).AddTo(this)` (MonoBehaviour overload
+	//   0xDA53D0) -> `ToUniTask(linkedCts.Token)`.
+	// - After the await, still inside the using: `_cts.Dispose(); _cts = null;`.
 	[Token(Token = "0x600027E")]
 	[Address(RVA = "0x349290", Offset = "0x347C90", VA = "0x180349290")]
 	[AsyncStateMachine(typeof(_003CPresentAsync_003Ed__4))]
-	public UniTask PresentAsync(float duration, [Optional] CancellationToken ct)
+	public async UniTask PresentAsync(float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, ct);
+		await LMotion.Create(0f, 1f, duration).BindToAlpha(_canvasGroup).AddTo(this).ToUniTask(linkedCts.Token);
+		_cts.Dispose();
+		_cts = null;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x349460 (builder stub); MoveNext 0x349630, 1927 B
+	// 
+	// PresentAsync and DismissAsync MoveNext bodies are byte-identical except the two `LMotion.Create` float
+	// constants (Present: from 0 to 1, Dismiss: from 1 to 0).
+	// - A running `_cts` (+0x28) is Cancel()ed and Dispose()d, then replaced by a new CTS.
+	// - `<linkedCts>5__2` = `CreateLinkedTokenSource(_cts.Token, ct)` (two-token overload); the try region
+	//   starts after it and the finally disposes it through IDisposable (a `using`).
+	// - `LMotion.Create(from, to, duration).BindToAlpha(_canvasGroup).AddTo(this)` (MonoBehaviour overload
+	//   0xDA53D0) -> `ToUniTask(linkedCts.Token)`.
+	// - After the await, still inside the using: `_cts.Dispose(); _cts = null;`.
 	[Token(Token = "0x600027F")]
 	[Address(RVA = "0x349460", Offset = "0x347E60", VA = "0x180349460")]
 	[AsyncStateMachine(typeof(_003CDismissAsync_003Ed__5))]
-	public UniTask DismissAsync(float duration, [Optional] CancellationToken ct)
+	public async UniTask DismissAsync(float duration, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, ct);
+		await LMotion.Create(1f, 0f, duration).BindToAlpha(_canvasGroup).AddTo(this).ToUniTask(linkedCts.Token);
+		_cts.Dispose();
+		_cts = null;
 	}
 
 	[Token(Token = "0x6000280")]

@@ -68,11 +68,12 @@ public class MasterData : MasterDataBase, IMasterData, IAddressablesMasterData, 
 	[Token(Token = "0x17000104")]
 	public float DefaultHp
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x398CF0 (shared `movss xmm0,[rcx+0x28]; ret`, +0x28 `_defaultHp`)
 		[Token(Token = "0x600063A")]
 		[Address(RVA = "0x398CF0", Offset = "0x3976F0", VA = "0x180398CF0", Slot = "4")]
 		get
 		{
-			return default(float);
+			return _defaultHp;
 		}
 	}
 

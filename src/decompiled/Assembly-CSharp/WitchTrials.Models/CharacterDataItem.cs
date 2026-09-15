@@ -57,11 +57,12 @@ public class CharacterDataItem
 	[Token(Token = "0x170000BA")]
 	public IReadOnlyList<LocalizedText> Name
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18 `_name`)
 		[Token(Token = "0x600059A")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _name;
 		}
 	}
 
