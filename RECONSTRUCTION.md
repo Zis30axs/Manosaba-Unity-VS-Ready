@@ -24,6 +24,7 @@
 | Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
 | Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
 | WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
+| Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
@@ -2196,6 +2197,39 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - ctor：`_builder = new StringBuilder()`。
 
 进度：Input 25/25；全部 `WitchTrials.*` 合计 599/929、200,954/316,778 B；0 错误，警告基线 140。
+
+## 7.13 `Audio` 子系统收尾：已完成，18/18 个函数体 / 5,268/5,268 B
+
+- **`PlaySfxModified`（`sfx` 命令，继承 Naninovel `PlaySfx`）**：
+  - `Play` 的结构与原版一致：
+    - `Duration` 已赋值时取其值，否则取 `AudioManager.Configuration.DefaultFadeDuration`（+0x50）。
+    - 有 `SfxPath` 时 await 单条轨道。
+    - 没有 `SfxPath` 时用 `CollectionPool` 租出 HashSet 与 List，经槽 28 `GetPlayedSfx` 取当前所有音效，逐条修改后 `UniTask.WhenAll`。
+    - `AudioCommand.AudioManager`（0x4DE6D0）就是 `Engine.GetServiceOrErr<IAudioManager>()`，因此循环内的内联形态仍写作 `AudioManager`。
+  - 唯一的改动是 `PlayOrModifyTrack` 从静态方法变成实例方法。原因是资源未加载时要调用 `Warn`（Command 槽 7），输出「効果音がロードされていません：」加路径。
+    - 已在播放（槽 25）时调 `ModifySfx`（槽 14）。
+    - 已加载（`AudioLoader` 槽 11 → `IResourceLoader.IsLoaded` 槽 5）时调 `PlaySfx`（槽 19）。
+  - ctor 与 `PlaySfx..ctor` 折叠在一起：基类构造函数被内联，本类自身没有字段，所以函数体为空。
+- **`SoundTestUi`**：
+  - `ModifyPlayer`：经槽 27 `GetPlayedBgm` 取当前 BGM。多于 1 首时重置播放器并 `Debug.Log`；为 0 首时只重置；否则设置标题，并对 `GetAudioTrack`（槽 30）的结果做 `is AudioTrack` 判断后调 `UpdatePlayerAsync(...).Forget()`。
+  - `ResetPlayer`：三个标签写入 U+2212 `−`；关闭 raycast；滑块 `SetValueWithoutNotify(0)`（Slider 槽 48）；两张图的颜色写成全零（`Color.clear`，按 B 级处理拼写）；`_cts` 依次 Cancel、Dispose、置 null。
+  - `UpdatePlayerAsync`：
+    - 替换 `_cts` 后创建 linked CTS。
+    - 有 intro 片段时：用 `AudioSettings.dspTime`（icall 名已读出）驱动进度，按 `{0:mm\:ss} / {1:mm\:ss}` 格式显示，每帧 `UniTask.Yield(Update, token)`。
+    - 进入 loop 段：用 `AudioSource.timeSamples` 与 `AudioClip.frequency`（icall 名已读出）计算进度。
+    - 滑块的 `OnValueChangedAsObservable().Skip(1)` 订阅挂在 linked token 上：这是内联的 Cysharp `AddTo(IDisposable, CancellationToken)`，由 RegisterWithoutCaptureExecutionContext 加缓存的 dispose 回调组成。订阅的 lambda 反向写回 `timeSamples`。
+    - intro 块结束时 +0x48 被清零，这是编译器对提升局部变量的清理，不对应源码语句。
+  - `GetTimeSpan` = `new TimeSpan(samples * TicksPerSecond / frequency)`。
+  - `SetValueWithoutNotify` 在 0.001 / 0.999 处吸附到 0 / 1，中间值走内联的 `Mathf.Clamp`。
+- **`SpawnableWithAudio`**：
+  - `Awake`：先解析服务，再读 `_audioSource`，所以混音组先存入局部变量。计算为 `AudioMixer.FindMatchingGroups(path)?.FirstOrDefault()`。
+  - `Reset`：执行 `GetComponent<AudioSource>()`。
+- **`UpdateAudioPlayerUi`（`audioPlayer` 命令）**：
+  - UI 用懒加载缓存。
+  - `Execute`：`SoundTestUi.ModifyPlayer(TrackName)`，其中字符串转换是内联的 `StringParameter` 隐式运算符（0x5ABEF0，形态逐字节一致）。
+- **CreditsDirectorAct1.NaniAudioManager**：懒加载缓存（+0xA0）。
+
+进度：Audio 18/18；全部 `WitchTrials.*` 合计 613/929、205,414/316,778 B；0 错误，警告基线 140。
 
 
 ---

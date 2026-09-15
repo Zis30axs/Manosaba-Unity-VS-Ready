@@ -129,11 +129,13 @@ public sealed class CreditsDirectorAct1 : CreditsDirectorBase
 	[Token(Token = "0x17000044")]
 	private IAudioManager NaniAudioManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x340EE0, 202 B
+		// Lazy cache in +0xA0 via `Engine.GetServiceOrErr<IAudioManager>()`.
 		[Token(Token = "0x6000236")]
 		[Address(RVA = "0x340EE0", Offset = "0x33F8E0", VA = "0x180340EE0")]
 		get
 		{
-			return null;
+			return _naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();
 		}
 	}
 
