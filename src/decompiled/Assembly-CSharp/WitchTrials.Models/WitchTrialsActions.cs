@@ -628,32 +628,42 @@ public class WitchTrialsActions
 	[Token(Token = "0x170000DA")]
 	public InputBinding? bindingMask
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390B60, 76 B
+		// Copies InputActionAsset +0x38 (bindingMask, inlined getter) from `asset` (+0x10); folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code).
 		[Token(Token = "0x60005D1")]
 		[Address(RVA = "0x390B60", Offset = "0x38F560", VA = "0x180390B60", Slot = "7")]
 		get
 		{
-			return null;
+			return asset.bindingMask;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390BB0, 91 B
+		// InputActionAsset.set_bindingMask(value); folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code).
 		[Token(Token = "0x60005D2")]
 		[Address(RVA = "0x390BB0", Offset = "0x38F5B0", VA = "0x180390BB0", Slot = "8")]
 		set
 		{
+			asset.bindingMask = value;
 		}
 	}
 
 	[Token(Token = "0x170000DB")]
 	public ReadOnlyArray<InputDevice>? devices
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390C10, 68 B
+		// InputActionMap.DeviceArray.Get on asset +0xA8 (inlined devices getter); folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code).
 		[Token(Token = "0x60005D3")]
 		[Address(RVA = "0x390C10", Offset = "0x38F610", VA = "0x180390C10", Slot = "9")]
 		get
 		{
-			return null;
+			return asset.devices;
 		}
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390C60, 121 B
+		// DeviceArray.Set then LazyResolveBindings on the first map (inlined devices setter); folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code).
 		[Token(Token = "0x60005D4")]
 		[Address(RVA = "0x390C60", Offset = "0x38F660", VA = "0x180390C60", Slot = "10")]
 		set
 		{
+			asset.devices = value;
 		}
 	}
 
@@ -704,55 +714,85 @@ public class WitchTrialsActions
 	[Token(Token = "0x170000E0")]
 	public InputControlScheme KeyboardMouseScheme
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390EA0, 201 B
+		// +0xE8 == -1 -> FindControlSchemeIndex("Keyboard&Mouse"); then controlSchemes[index].
 		[Token(Token = "0x60005E0")]
 		[Address(RVA = "0x390EA0", Offset = "0x38F8A0", VA = "0x180390EA0")]
 		get
 		{
-			return default(InputControlScheme);
+			if (m_KeyboardMouseSchemeIndex == -1)
+			{
+				m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard&Mouse");
+			}
+			return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
 		}
 	}
 
 	[Token(Token = "0x170000E1")]
 	public InputControlScheme GamepadScheme
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x390F70, 201 B
+		// +0xEC == -1 -> FindControlSchemeIndex("Gamepad"); then controlSchemes[index].
 		[Token(Token = "0x60005E1")]
 		[Address(RVA = "0x390F70", Offset = "0x38F970", VA = "0x180390F70")]
 		get
 		{
-			return default(InputControlScheme);
+			if (m_GamepadSchemeIndex == -1)
+			{
+				m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+			}
+			return asset.controlSchemes[m_GamepadSchemeIndex];
 		}
 	}
 
 	[Token(Token = "0x170000E2")]
 	public InputControlScheme TouchScheme
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x391040, 201 B
+		// +0xF0 == -1 -> FindControlSchemeIndex("Touch"); then controlSchemes[index].
 		[Token(Token = "0x60005E2")]
 		[Address(RVA = "0x391040", Offset = "0x38FA40", VA = "0x180391040")]
 		get
 		{
-			return default(InputControlScheme);
+			if (m_TouchSchemeIndex == -1)
+			{
+				m_TouchSchemeIndex = asset.FindControlSchemeIndex("Touch");
+			}
+			return asset.controlSchemes[m_TouchSchemeIndex];
 		}
 	}
 
 	[Token(Token = "0x170000E3")]
 	public InputControlScheme JoystickScheme
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x391110, 201 B
+		// +0xF4 == -1 -> FindControlSchemeIndex("Joystick"); then controlSchemes[index].
 		[Token(Token = "0x60005E3")]
 		[Address(RVA = "0x391110", Offset = "0x38FB10", VA = "0x180391110")]
 		get
 		{
-			return default(InputControlScheme);
+			if (m_JoystickSchemeIndex == -1)
+			{
+				m_JoystickSchemeIndex = asset.FindControlSchemeIndex("Joystick");
+			}
+			return asset.controlSchemes[m_JoystickSchemeIndex];
 		}
 	}
 
 	[Token(Token = "0x170000E4")]
 	public InputControlScheme XRScheme
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3911E0, 201 B
+		// +0xF8 == -1 -> FindControlSchemeIndex("XR"); then controlSchemes[index].
 		[Token(Token = "0x60005E4")]
 		[Address(RVA = "0x3911E0", Offset = "0x38FBE0", VA = "0x1803911E0")]
 		get
 		{
-			return default(InputControlScheme);
+			if (m_XRSchemeIndex == -1)
+			{
+				m_XRSchemeIndex = asset.FindControlSchemeIndex("XR");
+			}
+			return asset.controlSchemes[m_XRSchemeIndex];
 		}
 	}
 
@@ -814,12 +854,12 @@ public class WitchTrialsActions
 		return null;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x390DE0, 93 B
+	// InputActionAsset.FindBinding(bindingMask, out action); folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code).
 	[Token(Token = "0x60005DD")]
 	[Address(RVA = "0x390DE0", Offset = "0x38F7E0", VA = "0x180390DE0", Slot = "6")]
 	public int FindBinding(InputBinding bindingMask, out InputAction action)
 	{
-		action = default;
-		action = default;
-		return default(int);
+		return asset.FindBinding(bindingMask, out action);
 	}
 }
