@@ -28,7 +28,7 @@
 | Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
 | Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
 | Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
-| Credits/Gallery 子系统 | 进行中：22/71 个函数体、5,267/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B 组（CreditsDirector/CreditsUI/SpecialThanksRoll）与第 C 组（Gallery）待做 |
+| Credits/Gallery 子系统 | 进行中：37/71 个函数体、9,380/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组（CreditsDirectorAct2/SpecialThanksRoll）与第 C 组（Gallery）待做 |
 | TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
 | UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
 
@@ -2482,6 +2482,41 @@ dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保�
   - 构造函数与 `CGGalleryGrid..ctor` 折叠，只含基类初始化器 `itemsPerPage = 9`。
 
 进度：Credits/Gallery 22/71、5,267/20,747 B；全部 `WitchTrials.*` 合计 704/929、239,881/316,778 B；0 错误，警告基线 140。
+
+### 第 B1 组：CreditsDirectorBase / CreditsDirectorAct1 / CreditsUI（15 个函数体）
+
+- **`CreditsDirectorBase`**：
+  - `Initialize` 关闭显示，并计算一拍时长：`BgmUnitDuration = 60 / _bgmBpm`，BPM 为 0 时取 1 秒。sub_331670 是另行编译的一份 `Mathf.Approximately`。
+  - `BgmUnitDuration` 是自动属性（+0x48）；`EndLabelName` 读取 `_endLabelName`。
+  - `WaitUnitsAsync(count)` 等待 `count × 拍长` 秒。
+    - `UniTask.Delay` 调用的是 DelayType 重载（0x180D710），它与 `bool ignoreTimeScale` 重载（0x180D530）是不同的调用目标。
+    - 因此源码显式传入了 `DelayType.DeltaTime`（写法 B 级）。
+  - `ResumeAtLabel` 转调 Naninovel `ScriptPlayerExtensions.ResumeAtLabel`；基类 `PreloadResourcesAsync` 返回 `UniTask.CompletedTask`。
+- **`CreditsDirectorAct1`**（第 1 章片尾，MoveNext 6,800 B，9 个 await 状态）：
+  1. 显示标题 logo，等待 12 拍，用 4 拍淡出。
+  2. 显示背景，滚动条用 197 拍从 1 滚到 0（句柄存为 `scrollMotion`），然后等待 187 拍，再等待 5 拍。
+  3. 循环播放噪声 BGM（IAudioManager 槽 16 `PlayBgm`），显示噪声层，并调用 `scrollMotion.Complete()` 让滚动直接到底。
+  4. 等待 `_noiseDuration` 秒后 `StopAllBgm`（槽 18）并隐藏噪声层；再等待 `_noiseInterval` 秒，重新播放噪声并显示，然后 `ResumeAtLabel(_reverseLabelName)`。
+  5. 用 `_reverseDuration - _noisePowerUpDuration` 秒把滚动条从 0 倒卷回 1；接着 `ModifyBgm`（槽 13）把音量调到 1.5 倍，同时噪声层透明度升到 1。
+  6. 等待 `_endingInterval` 秒，停止 BGM、复位透明度、隐藏噪声层，跳到 `EndLabelName`。
+  - 常量 4/197/187/5/1.5 均从数据段读出；IAudioManager 槽号按访问器的声明顺序计算。
+  - 没有 try/finally，取消时会跳过收尾。
+  - `Reset` 通过 `PPT.Noise.Noise` 组件找到噪声层的 CanvasGroup。为此给 Assembly-CSharp 补上 `ppt-noise` 工程引用，重新生成工程时需要保留。
+- **`CreditsUI`**：
+  - `Initialize` 先逐个初始化导演，再 `await base.Initialize()`。dump.cs 中有 `CreditsUI.<>n__0` 基类调用辅助方法，且它与 `CustomUI.Initialize` 折叠，这证实了该写法。
+  - `PreloadResourcesAsync(act)` 调用 `_creditsDirectors[act - 1]`，只有数组边界检查。
+  - `PlayAsync(act)`：
+    1. 取消并释放旧 CTS。
+    2. 章号越界时把 `_cts` 置 null，`Debug.LogWarning`（「章番号に該当するクレジット演出がありません：{0}」）后返回。
+    3. 否则记录当前导演，`ChangeVisibility(true).Forget()`（槽 44）。
+    4. 用联结 token 等待导演的 `PlayAsync`，结束后清空当前导演。
+  - `Stop`：取消并释放 CTS，停止当前导演（Unity 对象判空），`ChangeVisibility(false).Forget()`。
+- **编译修正**：以下类型存在同名歧义，已改为完全限定名：
+  - `DelayType`（LitMotion 与 Cysharp）
+  - `PlayerLoopTiming`（Naninovel 与 Cysharp）
+  - `Debug`（UnityEngine 与 System.Diagnostics）
+
+进度：Credits/Gallery 37/71、9,380/20,747 B；全部 `WitchTrials.*` 合计 719/929、243,994/316,778 B；0 错误，警告基线 140。
 
 
 ---
