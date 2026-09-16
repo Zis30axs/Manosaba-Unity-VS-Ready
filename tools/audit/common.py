@@ -88,6 +88,16 @@ def dump_jsonl(name, records):
 # Index-derived object ledger
 # --------------------------------------------------------------------------- #
 
+class UnknownPathID(KeyError):
+    """The row's pathID is unknown; it must not be faked as a valid 0.
+
+    ``adopt_orphans`` wrote ``path_id=0`` for every row it could not attribute to a source
+    bundle.  Those zeros are placeholders, not identifiers: several distinct objects carry
+    the same 0.  Returning 0 here would silently collapse them into one bucket, which is
+    exactly the defect the canonical ledger exists to prevent, so the access raises instead.
+    """
+
+
 class IndexRow(dict):
     """One row of ``res/_index.csv`` enriched with canonical identity."""
 
@@ -98,9 +108,29 @@ class IndexRow(dict):
         return self["key"]
 
     @property
+    def pathid_known(self):
+        """False for rows whose pathID the ripper never recovered."""
+        return self.get("provenance") != "recovered_unattributed"
+
+    @property
     def pid(self):
-        """Signed int64 pathID (real one, recovered from the file name if needed)."""
+        """Signed int64 pathID -- the same value as the canonical ``pid_int`` field.
+
+        Raises :class:`UnknownPathID` when the pathID is unknown, so a caller has to make
+        an explicit decision instead of bucketing the row under a fabricated 0.
+        """
+        if not self.pathid_known:
+            raise UnknownPathID(
+                f"pathID unknown for {self.get('output_file')!r} "
+                f"(provenance={self.get('provenance')!r}); use .pathid_known before reading .pid")
         return self["pid_int"]
+
+    def __missing__(self, name):
+        # ``row["pid"]`` is an alias for the canonical ``pid_int`` field and obeys the same
+        # unknown-pathID rule as the property; every other missing key stays a KeyError.
+        if name == "pid":
+            return self.pid
+        raise KeyError(name)
 
 
 class IndexLedger:

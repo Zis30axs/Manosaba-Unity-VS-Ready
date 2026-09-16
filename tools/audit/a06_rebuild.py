@@ -14,19 +14,35 @@ import os, sys, json, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import RES, OUT, load_index
 
-def load_scope(rows, key_kind, key):
-    """key_kind: 'source' or 'container'"""
+def load_scope(rows, key_kind, key, diagnostics=None):
+    """key_kind: 'source' or 'container'
+
+    ``diagnostics`` (optional dict) collects what was skipped or unreadable, so a missing
+    dump file or an unknown pathID becomes a reported fact rather than a silent hole.
+    """
+    diag = diagnostics if diagnostics is not None else {}
     objs = {}
     for r in rows:
         if key_kind == "source" and r["source_bundle"] != key:
             continue
         if key_kind == "container" and r["asset_path"] != key:
             continue
+        if not r.pathid_known:
+            diag["unknown_pathid_rows"] = diag.get("unknown_pathid_rows", 0) + 1
+            diag.setdefault("unknown_pathid_samples", []).append(r["output_file"])
+            continue
         fp = os.path.join(RES, r["output_file"].replace("/", os.sep))
+        if not os.path.exists(fp):
+            diag["dump_missing"] = diag.get("dump_missing", 0) + 1
+            diag.setdefault("dump_missing_samples", []).append(r["output_file"])
+            objs[r["pid"]] = (r["type"], {"__error__": f"dump file missing: {r['output_file']}"})
+            continue
         try:
-            objs[r["pid"]] = (r["type"], json.load(open(fp, encoding="utf-8")))
-        except Exception as e:
-            objs[r["pid"]] = (r["type"], {"__error__": str(e)})
+            with open(fp, encoding="utf-8") as fh:
+                objs[r["pid"]] = (r["type"], json.load(fh))
+        except (OSError, ValueError) as e:
+            diag["unreadable"] = diag.get("unreadable", 0) + 1
+            objs[r["pid"]] = (r["type"], {"__error__": f"{type(e).__name__}: {e}"})
     return objs
 
 def rebuild(objs, label):
@@ -115,8 +131,10 @@ def main():
               ("source", "resources.assets", "resources.assets"),
               ("container", "Assets/#WitchTrials/Prefabs/General/Core/Game.prefab", "Game.prefab")]
     for kind, key, label in scopes:
-        objs = load_scope(rows, kind, key)
+        diagnostics = {}
+        objs = load_scope(rows, kind, key, diagnostics)
         tree, report = rebuild(objs, label)
+        report["load_diagnostics"] = diagnostics
         out[label] = report
         fn = "hierarchy_" + label.split()[0].replace(".", "_").replace("/", "_") + ".json"
         json.dump({"report": report, "tree": tree}, open(os.path.join(OUT, fn), "w", encoding="utf-8"),

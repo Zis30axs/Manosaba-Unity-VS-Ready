@@ -44,7 +44,11 @@ def main():
         kinds[ext or "(no-ext)"] += 1
 
     # duplicates of path_id inside one source
-    pid_coll = collections.Counter((r["source_bundle"], r["pid"]) for r in rows)
+    # Rows with an unknown pathID cannot take part in a collision census: their 0 is a
+    # placeholder, not an identifier.  They are counted separately instead of bucketed.
+    unknown_pathid_rows = sum(1 for r in rows if not r.pathid_known)
+    pid_coll = collections.Counter((r["source_bundle"], r["pid"])
+                                   for r in rows if r.pathid_known)
     dup = {f"{k[0]}|{k[1]}": v for k, v in pid_coll.items() if v > 1}
 
     # output_file uniqueness
@@ -70,6 +74,7 @@ def main():
         },
         "rows_without_container": sum(1 for r in rows if not r["asset_path"]),
         "recovered_rows_pathid0": len(recovered),
+        "rows_with_unknown_pathid": unknown_pathid_rows,
         "duplicate_pathid_within_source": len(dup),
         "duplicate_output_file_rows": sum(v - 1 for v in ofc.values() if v > 1),
         "largest_prefabs_by_dumped_objects": [{"container": c, "objects": n} for n, c in prefab_objs[:25]],
