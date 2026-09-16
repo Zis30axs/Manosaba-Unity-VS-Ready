@@ -22,6 +22,7 @@ sys.path.insert(0, HERE)
 import a08_prefab_sweep as a08  # noqa: E402
 import common  # noqa: E402
 import identity  # noqa: E402
+import resolution  # noqa: E402
 
 
 def write_json(path, obj):
@@ -759,6 +760,240 @@ class TestA07MainFlow(unittest.TestCase):
         self.assertEqual(report["bundles"]["physical_distinct_filenames"], 1)
         self.assertTrue(os.path.exists(os.path.join(self.out, "bundle_accounting.csv")))
         self.assertTrue(os.path.exists(os.path.join(self.out, "addressable_keys.csv.gz")))
+
+
+# --------------------------------------------------------------------------- #
+# E63-001 / E63-002: ownership and strict pointer resolution                    #
+# --------------------------------------------------------------------------- #
+
+
+def owner_table(sources):
+    """Build an OwnerTable from {source: (serialized_files, objects)} fixtures."""
+    table = resolution.OwnerTable()
+    for src, (sfs, objects) in sources.items():
+        table.add_source(src, sfs, objects)
+    return table
+
+
+class TestStrictResolution(unittest.TestCase):
+    """A pointer is resolved in its own SerializedFile, or reported -- never guessed."""
+
+    def setUp(self):
+        # One source, two SerializedFiles.  CAB-A can reach CAB-B through its externals;
+        # CAB-B has no externals of its own.  PathID 1 is declared by BOTH files.
+        self.table = owner_table({
+            "src/one.bundle": (
+                [{"name": "CAB-A", "externals": [{"path": "archive:/CAB-B/CAB-B"}]},
+                 {"name": "CAB-B", "externals": []}],
+                [{"file": "CAB-A", "path_id": "1", "type": "GameObject"},
+                 {"file": "CAB-A", "path_id": "7", "type": "Transform"},
+                 {"file": "CAB-B", "path_id": "1", "type": "Material"},
+                 {"file": "CAB-B", "path_id": "2", "type": "Transform"}],
+            ),
+        })
+
+    def test_same_pathid_in_two_files_is_ambiguous_not_first_match(self):
+        with self.assertRaises(resolution.AmbiguousOwner):
+            self.table.owning_file("src/one.bundle", 1)
+
+    def test_unique_pathid_resolves_to_its_declaring_file(self):
+        self.assertEqual(self.table.owning_file("src/one.bundle", 7), "CAB-A")
+        self.assertEqual(self.table.owning_file("src/one.bundle", 2), "CAB-B")
+
+    def test_unknown_pathid_is_none_not_an_invented_owner(self):
+        self.assertIsNone(self.table.owning_file("src/one.bundle", 4242))
+
+    def test_file_local_pointer_is_not_bound_to_a_sibling_file(self):
+        """fileID 0 means 'this file'. A pathID only a sibling declares must not bind."""
+        r = self.table.resolve("src/one.bundle", "CAB-A", ptr(2))
+        self.assertFalse(r.bound)
+        self.assertEqual(r.kind, resolution.AMBIGUOUS_LOCAL)
+        self.assertEqual(r.detail["declared_by"], ["CAB-B"])
+
+    def test_file_local_pointer_resolves_inside_its_own_file(self):
+        r = self.table.resolve("src/one.bundle", "CAB-A", ptr(7))
+        self.assertTrue(r.bound)
+        self.assertEqual(r.key, ("src/one.bundle", "CAB-A", 7))
+        self.assertEqual(r.detail["type"], "Transform")
+
+    def test_missing_pathid_is_reported_as_unresolved(self):
+        r = self.table.resolve("src/one.bundle", "CAB-A", ptr(4242))
+        self.assertEqual(r.kind, resolution.UNRESOLVED_LOCAL)
+        self.assertIsNone(r.key)
+
+    def test_external_uses_only_its_own_externals_list(self):
+        r = self.table.resolve("src/one.bundle", "CAB-A", ptr(2, file_id=1))
+        self.assertEqual(r.kind, resolution.EXTERNAL_RESOLVED)
+        self.assertEqual(r.key, ("src/one.bundle", "CAB-B", 2))
+
+    def test_external_index_beyond_this_files_externals_is_reported(self):
+        """CAB-B has no externals; the same fileID that works from CAB-A must fail here."""
+        r = self.table.resolve("src/one.bundle", "CAB-B", ptr(2, file_id=1))
+        self.assertEqual(r.kind, resolution.EXTERNAL_OUT_OF_RANGE)
+        self.assertEqual(r.detail["externals_available"], 0)
+
+    def test_null_pointer_is_not_an_error(self):
+        self.assertEqual(self.table.resolve("src/one.bundle", "CAB-A", ptr(0)).kind,
+                         resolution.NULL)
+
+    def test_malformed_pointer_is_reported(self):
+        self.assertEqual(self.table.resolve("src/one.bundle", "CAB-A", "nonsense").kind,
+                         resolution.MALFORMED)
+        self.assertEqual(
+            self.table.resolve("src/one.bundle", "CAB-A",
+                               {"m_FileID": "x", "m_PathID": 1}).kind,
+            resolution.MALFORMED)
+
+    def test_duplicate_owner_entry_is_a_defect_not_an_overwrite(self):
+        table = owner_table({"s": ([{"name": "CAB", "externals": []}],
+                                   [{"file": "CAB", "path_id": "5", "type": "GameObject"},
+                                    {"file": "CAB", "path_id": "5", "type": "Transform"}])})
+        self.assertEqual(table.stats["duplicate_owner_entry"], 1)
+        self.assertEqual(table.owner[("s", "CAB", 5)]["type"], "GameObject")
+        self.assertEqual([d["kind"] for d in table.defects], ["duplicate_owner_entry"])
+
+    def test_object_without_an_owning_file_is_reported(self):
+        table = owner_table({"s": ([{"name": "CAB", "externals": []}],
+                                   [{"file": None, "path_id": "5", "type": "GameObject"}])})
+        self.assertEqual(table.stats["object_without_owner"], 1)
+        self.assertEqual([d["kind"] for d in table.defects], ["object_without_owner"])
+
+    def test_summarise_reports_the_ambiguity_it_found(self):
+        s = resolution.summarise(self.table)
+        self.assertEqual(s["objects_with_owner"], 4)
+        self.assertEqual(s["sources_with_multiple_serialized_files"], 1)
+        self.assertEqual(s["ambiguous_source_pathid_pairs"], 1)
+
+
+class TestContainerIsNotAnAddressSpace(unittest.TestCase):
+    """E63-001: objects of one SerializedFile may be filed under several container paths.
+
+    Modelled on the measured contradiction in the shipped report: one MonoBehaviour was
+    reported as `missing_component` under DebugLabel.prefab and simultaneously as
+    `orphan_component` under Game.prefab, although a03 attributes both it and its owning
+    GameObject to the same SerializedFile.
+    """
+
+    def test_component_filed_under_another_container_is_still_resolvable(self):
+        table = owner_table({
+            "aa/general-prefabs.bundle": (
+                [{"name": "CAB-1", "externals": []}],
+                [{"file": "CAB-1", "path_id": "6314399593608855299", "type": "GameObject"},
+                 {"file": "CAB-1", "path_id": "-2807983474179293437", "type": "MonoBehaviour"}],
+            ),
+        })
+        src, sf = "aa/general-prefabs.bundle", "CAB-1"
+        # The GameObject lists a component that the index filed under a *different*
+        # container path.  Ownership, not the container, decides whether it exists.
+        r = table.resolve(src, sf, ptr(-2807983474179293437))
+        self.assertTrue(r.bound)
+        self.assertEqual(r.detail["type"], "MonoBehaviour")
+        # ... and the component points back at the GameObject.
+        back = table.resolve(src, sf, ptr(6314399593608855299))
+        self.assertTrue(back.bound)
+        self.assertEqual(back.detail["type"], "GameObject")
+
+
+class TestClosureFollowsOwnershipNotContainer(unittest.TestCase):
+    """E63-001 end to end: the component filed under a sibling container must be found.
+
+    Mirrors the measured contradiction: MonoBehaviour -2807983474179293437 and its owner
+    GameObject 6314399593608855299 are declared by the same SerializedFile, but the index
+    filed them under Game.prefab and DebugLabel.prefab respectively, so the old validator
+    reported one `missing_component` and one `orphan_component` for the same object.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="manosaba_closure_")
+        self.res = os.path.join(self.tmp, "res")
+        os.makedirs(self.res, exist_ok=True)
+        self.here = "Assets/Here.prefab"
+        self.sibling = "Assets/Sibling.prefab"
+        self.src = "aa/shared.bundle"
+        # GameObject 1 + Transform 2 are filed under Here.prefab.
+        # MonoBehaviour 3 -- a component of GameObject 1 -- is filed under Sibling.prefab.
+        rows = [
+            {"type": "GameObject", "asset_path": self.here, "output_file": "h1.json",
+             "source_bundle": self.src, "path_id": "1"},
+            {"type": "Transform", "asset_path": self.here, "output_file": "h2.json",
+             "source_bundle": self.src, "path_id": "2"},
+            {"type": "MonoBehaviour", "asset_path": self.sibling, "output_file": "s3.json",
+             "source_bundle": self.src, "path_id": "3"},
+        ]
+        make_object(self.res, "h1.json", {"m_Name": "Root",
+                                          "m_Component": [{"component": ptr(2)},
+                                                          {"component": ptr(3)}]})
+        make_object(self.res, "h2.json", {"m_GameObject": ptr(1), "m_Father": ptr(0),
+                                          "m_Children": []})
+        make_object(self.res, "s3.json", {"m_GameObject": ptr(1)})
+        idx = make_index(self.tmp, rows)
+        ledger, _ = common.load_index_ledger(index_csv=idx, res_root=self.res)
+        self.rows = ledger.rows
+        self.here_rows = [r for r in self.rows if r["asset_path"] == self.here]
+        self.row_index = {(r["source_identity"], r["pid_int"]): r for r in self.rows}
+        # One source, one SerializedFile, declaring all three objects.
+        self.owners = owner_table({self.src: (
+            [{"name": "CAB-shared", "externals": []}],
+            [{"file": "CAB-shared", "path_id": "1", "type": "GameObject"},
+             {"file": "CAB-shared", "path_id": "2", "type": "Transform"},
+             {"file": "CAB-shared", "path_id": "3", "type": "MonoBehaviour"}])})
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_container_scoped_view_reports_the_false_missing_component(self):
+        """Without ownership the sibling-filed component is invisible -- the old defect."""
+        res = a08.validate_container(self.here, self.here_rows, {}, False)
+        kinds = [i["kind"] for i in res["issues"]]
+        self.assertIn("missing_component", kinds)
+        self.assertEqual(res["ownership"], "index-derived")
+
+    def test_ownership_closure_finds_the_component_and_clears_the_issue(self):
+        res = a08.validate_container(self.here, self.here_rows, {}, False,
+                                     self.owners, self.row_index)
+        kinds = [i["kind"] for i in res["issues"]]
+        self.assertNotIn("missing_component", kinds, res["issues"])
+        self.assertNotIn("orphan_component", kinds, res["issues"])
+        self.assertEqual(res["ownership"], "a03")
+        self.assertEqual(res["objects_pulled_in"], 1)
+        self.assertEqual(res["pulled_in_samples"][0]["path_id"], "3")
+        self.assertEqual(res["pulled_in_samples"][0]["filed_under"], self.sibling)
+        self.assertTrue(res["clean"], res["issues"])
+
+    def test_closure_does_not_absorb_unrelated_objects_of_the_same_file(self):
+        """A SerializedFile can serve many prefabs; only reachable objects are pulled in."""
+        unrelated = {"type": "GameObject", "asset_path": "Assets/Other.prefab",
+                     "output_file": "o9.json", "source_bundle": self.src, "path_id": "9"}
+        make_object(self.res, "o9.json", {"m_Name": "Unrelated"})
+        owners = owner_table({self.src: (
+            [{"name": "CAB-shared", "externals": []}],
+            [{"file": "CAB-shared", "path_id": p, "type": t} for p, t in
+             (("1", "GameObject"), ("2", "Transform"), ("3", "MonoBehaviour"),
+              ("9", "GameObject"))])})
+        rows = [dict(r) for r in ([{"type": r["type"], "asset_path": r["asset_path"],
+                                    "output_file": r["output_file"],
+                                    "source_bundle": self.src,
+                                    "path_id": str(r["pid_int"])} for r in self.rows] +
+                                  [unrelated])]
+        idx = make_index(self.tmp, rows)
+        ledger, _ = common.load_index_ledger(index_csv=idx, res_root=self.res)
+        row_index = {(r["source_identity"], r["pid_int"]): r for r in ledger.rows}
+        here_rows = [r for r in ledger.rows if r["asset_path"] == self.here]
+        res = a08.validate_container(self.here, here_rows, {}, False, owners, row_index)
+        self.assertEqual(res["objects_pulled_in"], 1)      # only the component
+        self.assertEqual(res["objects"], 3)                # 1 + 2 + 3, never 9
+        self.assertNotIn("9", [s["path_id"] for s in res["pulled_in_samples"]])
+
+    def test_owned_object_missing_from_the_index_is_reported(self):
+        owners = owner_table({self.src: (
+            [{"name": "CAB-shared", "externals": []}],
+            [{"file": "CAB-shared", "path_id": p, "type": t} for p, t in
+             (("1", "GameObject"), ("2", "Transform"), ("3", "MonoBehaviour"))])})
+        row_index = {k: v for k, v in self.row_index.items() if k[1] != 3}
+        res = a08.validate_container(self.here, self.here_rows, {}, False, owners, row_index)
+        self.assertEqual([d["kind"] for d in res["closure_defects"]],
+                         ["owned_object_not_in_index"])
+        self.assertIn("missing_component", [i["kind"] for i in res["issues"]])
 
 
 if __name__ == "__main__":

@@ -29,6 +29,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import identity  # noqa: E402
+import resolution  # noqa: E402
 from common import OUT, RES_ROOT, load_index_ledger  # noqa: E402
 
 A03_DIR = os.path.join(OUT, "a03")
@@ -61,26 +62,44 @@ def load_source_model():
     return manifest, model, cab_owner
 
 
-def load_object_table(model):
-    """(source, sf, pathID) -> {type, output_file, container} using the canonical ledger."""
+def load_object_table(model, owners=None):
+    """(source, sf, pathID) -> {type, output_file, container}, owner-driven.
+
+    The SerializedFile comes from the a03 scan (``obj.assets_file.name``), not from a guess:
+    a row is registered under the one file that actually declares its pathID.  Rows whose
+    owner is unknown or ambiguous are reported and left out rather than fanned out, so a
+    later lookup cannot succeed by accident.
+    """
     ledger, _ = load_index_ledger(check_files=False)
+    owners = owners if owners is not None else resolution.load_owner_table()
     table = {}
+    unowned = []
     for r in ledger.rows:
         if r["provenance"] != "index":
             continue
-        src = r["source_identity"]
-        entry = model.get(src)
-        if entry is None:
+        if not r.pathid_known:
+            unowned.append({"kind": "unknown_pathid", "source": r["source_identity"],
+                            "output_file": r["output_file"]})
             continue
-        # The dump index does not name the SerializedFile, so a row is registered under
-        # every SerializedFile of its source; resolution then only requires that *some*
-        # file in that source declares the pathID (a cross-file ambiguity is reported).
-        for sf_name in entry["serialized_files"]:
-            table[(src, sf_name, r["pid_int"])] = {
-                "type": r["type"], "output_file": r["output_file"],
-                "container": r["asset_path"],
-            }
-    return ledger, table
+        src = r["source_identity"]
+        if model.get(src) is None:
+            continue
+        try:
+            sf_name = owners.owning_file(src, r["pid_int"])
+        except resolution.AmbiguousOwner as exc:
+            unowned.append({"kind": "ambiguous_owner", "source": src,
+                            "path_id": str(r["pid_int"]), "output_file": r["output_file"],
+                            "detail": str(exc)})
+            continue
+        if sf_name is None:
+            unowned.append({"kind": "owner_not_in_a03_scan", "source": src,
+                            "path_id": str(r["pid_int"]), "output_file": r["output_file"]})
+            continue
+        table[(src, sf_name, r["pid_int"])] = {
+            "type": r["type"], "output_file": r["output_file"],
+            "container": r["asset_path"], "serialized_file": sf_name,
+        }
+    return ledger, table, unowned
 
 
 # --------------------------------------------------------------------------- #
@@ -115,7 +134,8 @@ def build_output_lookup(ledger):
 
 def main():
     manifest, model, cab_owner = load_source_model()
-    ledger, object_table = load_object_table(model)
+    owners = resolution.load_owner_table(manifest=manifest)
+    ledger, object_table, unowned_rows = load_object_table(model, owners)
     out_lookup = build_output_lookup(ledger)
 
     stats = collections.Counter()
@@ -174,12 +194,24 @@ def main():
                     stats["null_ref"] += 1
                     class_by_source[src]["null_ref"] += 1
                     continue
+                # The pointer lives in a specific SerializedFile; ask that file only.
                 hit = None
-                for sf_name in sf_names:
-                    tgt = object_table.get((src, sf_name, pid))
+                owner_sf = None
+                try:
+                    owner_sf = owners.owning_file(src, pid)
+                except resolution.AmbiguousOwner:
+                    stats["intra_ambiguous_owner"] += 1
+                    class_by_source[src]["intra_ambiguous_owner"] += 1
+                    unresolved_rows.append({"kind": "intra_ambiguous_owner", "source": src,
+                                            "output_file": output_file,
+                                            "field_path": field_path,
+                                            "from_type": row["type"],
+                                            "target_path_id": str(pid), "target_file_id": fid})
+                    continue
+                if owner_sf is not None:
+                    tgt = object_table.get((src, owner_sf, pid))
                     if tgt is not None:
-                        hit = (sf_name, tgt)
-                        break
+                        hit = (owner_sf, tgt)
                 if hit is None:
                     stats["intra_MISSING"] += 1
                     class_by_source[src]["intra_missing"] += 1
@@ -261,11 +293,14 @@ def main():
             tentry = model.get(target_src)
             resolved = None
             if tentry:
-                for sf_name in tentry["serialized_files"]:
-                    tgt = object_table.get((target_src, sf_name, pid))
-                    if tgt is not None:
-                        resolved = tgt
-                        break
+                try:
+                    tsf = owners.owning_file(target_src, pid)
+                except resolution.AmbiguousOwner:
+                    tsf = None
+                    stats["external_ambiguous_owner"] += 1
+                    class_by_source[src]["external_ambiguous_owner"] += 1
+                if tsf is not None:
+                    resolved = object_table.get((target_src, tsf, pid))
             if resolved is not None:
                 stats["external_resolved"] += 1
                 class_by_source[src]["external_resolved"] += 1
@@ -291,6 +326,11 @@ def main():
         "sources_scanned": len(model),
         "sources_with_error": [s["rel"] for s in manifest["sources"] if s.get("error")],
         "objects_in_table": len(object_table),
+        "ownership": resolution.summarise(owners),
+        "rows_without_usable_owner": len(unowned_rows),
+        "rows_without_usable_owner_by_kind":
+            dict(collections.Counter(r["kind"] for r in unowned_rows)),
+        "rows_without_usable_owner_samples": unowned_rows[:20],
         "unresolved_total": len(unresolved_rows),
         "unresolved_by_kind": dict(collections.Counter(r["kind"] for r in unresolved_rows)),
         "unreadable_json": unreadable,
