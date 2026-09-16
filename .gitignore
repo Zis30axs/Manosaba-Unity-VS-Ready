@@ -7,8 +7,36 @@
 
 # Unity reconstruction audit: regenerable bulk outputs
 /tools/audit/out/a03_cache/
+/tools/audit/out/a03/
 /tools/audit/out/containers_by_kind.csv
+/tools/audit/out/unresolved_references.csv
 /tools/audit/*.log
+
+# Machine-specific absolute paths for the audit/integration tooling (never commit)
+/tools/audit/audit.config.local.json
+
+# Unity integration pipeline: track the tool sources, ignore regenerable bulk evidence.
+# The allowlist must precede the re-ignores below, or it would re-expose out/ and converted/.
+!/tools/unity-rebuild/
+/tools/unity-rebuild/out/
+/tools/unity-rebuild/work/
+/tools/unity-rebuild/converted/
+/tools/unity-rebuild/*.log
+
+# Unity project: keep the authored project, ignore generated caches and build output
+/UnityProject/Library/
+/UnityProject/Temp/
+/UnityProject/Obj/
+/UnityProject/Logs/
+/UnityProject/UserSettings/
+/UnityProject/Build/
+/UnityProject/Builds/
+/UnityProject/Recordings/
+/UnityProject/[Bb]uild[Ll]ogs/
+/UnityProject/*.csproj
+/UnityProject/*.sln
+/UnityProject/*.user
+/UnityProject/Assets/AddressableAssetsData/AssetGroups/*.asset.tmp
 
 # Build output
 /dist/
