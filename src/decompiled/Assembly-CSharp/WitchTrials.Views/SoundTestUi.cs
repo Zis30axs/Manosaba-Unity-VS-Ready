@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -163,45 +164,148 @@ public class SoundTestUi : CustomUI, ISoundTestUi, IManagedUI
 	[Token(Token = "0x1700006A")]
 	private IAudioManager NaniAudioManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x35FEC0, 202 B
+		// Lazy cache in +0x138 via `Engine.GetServiceOrErr<IAudioManager>()`.
 		[Token(Token = "0x6000339")]
 		[Address(RVA = "0x35FEC0", Offset = "0x35E8C0", VA = "0x18035FEC0")]
 		get
 		{
-			return null;
+			return _naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x35FF90, 625 B
+	// - new List<string>; IAudioManager slot 27 GetPlayedBgm(list).
+	// - Count > 1: ResetPlayer(), Debug.Log("More than one BGM is playing: " + string.Join(", ", list)).
+	// - Count == 0: tail jump to ResetPlayer.
+	// - Otherwise _titleLabel.SetText(trackName); slot 30 GetAudioTrack(list[0]) type-checked as AudioTrack ->
+	//   UpdatePlayerAsync(track, destroyCancellationToken).Forget() (Naninovel ForgetCore).
 	[Token(Token = "0x600033A")]
 	[Address(RVA = "0x35FF90", Offset = "0x35E990", VA = "0x18035FF90", Slot = "95")]
 	public void ModifyPlayer(string trackName)
 	{
+		List<string> playedBgm = new List<string>();
+		NaniAudioManager.GetPlayedBgm(playedBgm);
+		if (playedBgm.Count > 1)
+		{
+			ResetPlayer();
+			UnityEngine.Debug.Log("More than one BGM is playing: " + string.Join(", ", playedBgm));
+			return;
+		}
+		if (playedBgm.Count == 0)
+		{
+			ResetPlayer();
+			return;
+		}
+		_titleLabel.SetText(trackName);
+		if (NaniAudioManager.GetAudioTrack(playedBgm[0]) is AudioTrack track)
+		{
+			UpdatePlayerAsync(track, destroyCancellationToken).Forget();
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (Color.clear spelling: B) | RVA: 0x360210, 524 B
+	// Labels "−" / "−" / "− / −" (U+2212); blocksRaycasts = false; Slider vtable slot 48 SetValueWithoutNotify(0f);
+	// Graphic slot 23 set_color with an all-zero Color on both images; `_cts` (+0x140) non-null -> inlined Cancel()
+	// (disposed check + NotifyCancellation(false)), Dispose(), null.
 	[Token(Token = "0x600033B")]
 	[Address(RVA = "0x360210", Offset = "0x35EC10", VA = "0x180360210")]
 	public void ResetPlayer()
 	{
+		_titleLabel.SetText("−");
+		_kindLabel.SetText("−");
+		_timeLabel.SetText("− / −");
+		_playerSliderCanvasGroup.blocksRaycasts = false;
+		_playerSlider.SetValueWithoutNotify(0f);
+		_fillImage.color = Color.clear;
+		_handleImage.color = Color.clear;
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+			_cts = null;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (hoisted-local clear and Yield spelling: B) | RVA: 0x360420 (stub), MoveNext 0x360810, 4484 B; lambda 0x3606B0
+	// - DisplayClass15_0 {track}; `_cts` Cancel+Dispose when present, new CancellationTokenSource, `<linkedCts>5__2` =
+	//   CreateLinkedTokenSource(_cts.Token, ct) (never disposed).
+	// - ObjectUtils.IsValid(track.IntroClip +0x28): "Intro" label, blocksRaycasts false, fill = _introColor (+0x118), handle
+	//   clear; introClipLength = samples * 1e7 / frequency ticks (GetTimeSpan inlined); startDspTime = AudioSettings.dspTime
+	//   (icall get_dspTime); introLength = clip.length. Loop while not cancelled and dspTime < start + length: elapsed =
+	//   (long)((dspTime - start) * 1e7) ticks; SetValueWithoutNotify((float)(elapsed.TotalSeconds / introClipLength.TotalSeconds));
+	//   _timeLabel = string.Format("{0:mm\\:ss} / {1:mm\\:ss}", elapsed, introClipLength); await Yield(Update = 8, token).
+	//   On leaving the block `<introClipLength>5__4` (+0x48) is zeroed (compiler hoisted-local cleanup).
+	// - "Loop" label, blocksRaycasts true, both images _loopColor (+0x128); clipLength from track.Clip (+0x20);
+	//   _playerSlider.OnValueChangedAsObservable().Skip(1).Subscribe(b__0) registered on linkedCts.Token via the inlined
+	//   Cysharp AddTo (RegisterWithoutCaptureExecutionContext + cached dispose callback).
+	// - Loop while not cancelled: elapsed from track.Source (+0x30) timeSamples (icall) and clip frequency; same slider /
+	//   label update against clipLength; await Yield(Update, linkedCts.Token).
+	// - b__0(value): track.Source.timeSamples = (int)(track.Clip.samples * value).
 	[Token(Token = "0x600033C")]
 	[Address(RVA = "0x360420", Offset = "0x35EE20", VA = "0x180360420")]
 	[AsyncStateMachine(typeof(_003CUpdatePlayerAsync_003Ed__15))]
-	private UniTask UpdatePlayerAsync(AudioTrack track, [Optional] CancellationToken ct)
+	private async UniTask UpdatePlayerAsync(AudioTrack track, [Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		if (_cts != null)
+		{
+			_cts.Cancel();
+			_cts.Dispose();
+		}
+		_cts = new CancellationTokenSource();
+		CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, ct);
+		if (ObjectUtils.IsValid(track.IntroClip))
+		{
+			_kindLabel.SetText("Intro");
+			_playerSliderCanvasGroup.blocksRaycasts = false;
+			_fillImage.color = _introColor;
+			_handleImage.color = Color.clear;
+			TimeSpan introClipLength = GetTimeSpan(track.IntroClip.samples, track.IntroClip.frequency);
+			double startDspTime = AudioSettings.dspTime;
+			float introLength = track.IntroClip.length;
+			while (!linkedCts.Token.IsCancellationRequested && AudioSettings.dspTime < startDspTime + introLength)
+			{
+				TimeSpan elapsed = new TimeSpan((long)((AudioSettings.dspTime - startDspTime) * TimeSpan.TicksPerSecond));
+				SetValueWithoutNotify((float)(elapsed.TotalSeconds / introClipLength.TotalSeconds));
+				_timeLabel.SetText(string.Format("{0:mm\\:ss} / {1:mm\\:ss}", elapsed, introClipLength));
+				await UniTask.Yield(PlayerLoopTiming.Update, linkedCts.Token);
+			}
+		}
+		_kindLabel.SetText("Loop");
+		_playerSliderCanvasGroup.blocksRaycasts = true;
+		_fillImage.color = _loopColor;
+		_handleImage.color = _loopColor;
+		TimeSpan clipLength = GetTimeSpan(track.Clip.samples, track.Clip.frequency);
+		Cysharp.Threading.Tasks.CancellationTokenExtensions.AddTo(
+			UniRx.ObservableExtensions.Subscribe(UniRx.Observable.Skip(UniRx.UnityUIComponentExtensions.OnValueChangedAsObservable(_playerSlider), 1),
+				value => track.Source.timeSamples = (int)(track.Clip.samples * value)),
+			linkedCts.Token);
+		while (!linkedCts.Token.IsCancellationRequested)
+		{
+			TimeSpan elapsed = GetTimeSpan(track.Source.timeSamples, track.Clip.frequency);
+			SetValueWithoutNotify((float)(elapsed.TotalSeconds / clipLength.TotalSeconds));
+			_timeLabel.SetText(string.Format("{0:mm\\:ss} / {1:mm\\:ss}", elapsed, clipLength));
+			await UniTask.Yield(PlayerLoopTiming.Update, linkedCts.Token);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x360620, 104 B
+	// progress < 0.001f -> 0; > 0.999f -> 1; otherwise the inlined Mathf.Clamp(progress, 0.001f, 0.999f); then Slider
+	// vtable slot 48 SetValueWithoutNotify (tail jump).
 	[Token(Token = "0x600033D")]
 	[Address(RVA = "0x360620", Offset = "0x35F020", VA = "0x180360620")]
 	private void SetValueWithoutNotify(float progress)
 	{
+		_playerSlider.SetValueWithoutNotify(progress < 0.001f ? 0f : progress > 0.999f ? 1f : Mathf.Clamp(progress, 0.001f, 0.999f));
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x360690, 19 B
+	// (long)samples * 10,000,000 / frequency ticks.
 	[Token(Token = "0x600033E")]
 	[Address(RVA = "0x360690", Offset = "0x35F090", VA = "0x180360690")]
 	private static TimeSpan GetTimeSpan(int samples, int frequency)
 	{
-		return default(TimeSpan);
+		return new TimeSpan(samples * TimeSpan.TicksPerSecond / frequency);
 	}
 
 	[Token(Token = "0x600033F")]

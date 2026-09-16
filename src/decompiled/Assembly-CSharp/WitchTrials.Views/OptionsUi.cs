@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GigaCreation.NaninovelExtender.Common;
+using GigaCreation.Tools.Debugging.General;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -44,11 +47,12 @@ public class OptionsUi : CustomUI, ISettingsUI, IManagedUI
 		[Token(Token = "0x1700005E")]
 		public Toggle Toggle
 		{
+			// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (shared generic reference-field getter, +0x10 `_toggle`)
 			[Token(Token = "0x60002F9")]
 			[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
 			get
 			{
-				return null;
+				return _toggle;
 			}
 		}
 
@@ -361,143 +365,365 @@ public class OptionsUi : CustomUI, ISettingsUI, IManagedUI
 	[Token(Token = "0x17000056")]
 	private GigaCreation.Essentials.Localization.ILocalizationManager LocalizationManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352930, 202 B
+		// Lazy cache in +0x178 via `ServiceLocator.Get<ILocalizationManager>(true)`.
 		[Token(Token = "0x60002D4")]
 		[Address(RVA = "0x352930", Offset = "0x351330", VA = "0x180352930")]
 		get
 		{
-			return null;
+			return _localizationManager ??= ServiceLocator.Get<GigaCreation.Essentials.Localization.ILocalizationManager>(includeDerivedType: true);
 		}
 	}
 
 	[Token(Token = "0x17000057")]
 	private INaninovelManager NaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352A00, 202 B
+		// Lazy cache in +0x180 via `ServiceLocator.Get<INaninovelManager>(true)`.
 		[Token(Token = "0x60002D5")]
 		[Address(RVA = "0x352A00", Offset = "0x351400", VA = "0x180352A00")]
 		get
 		{
-			return null;
+			return _naninovelManager ??= ServiceLocator.Get<INaninovelManager>(includeDerivedType: true);
 		}
 	}
 
 	[Token(Token = "0x17000058")]
 	private ICameraManagerExtended NaniCameraManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352AD0, 202 B
+		// Lazy cache in +0x188 via `Engine.GetServiceOrErr<ICameraManagerExtended>()`.
 		[Token(Token = "0x60002D6")]
 		[Address(RVA = "0x352AD0", Offset = "0x3514D0", VA = "0x180352AD0")]
 		get
 		{
-			return null;
+			return _naniCameraManager ??= Engine.GetServiceOrErr<ICameraManagerExtended>();
 		}
 	}
 
 	[Token(Token = "0x17000059")]
 	private IAudioManager NaniAudioManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352BA0, 202 B
+		// Lazy cache in +0x190 via `Engine.GetServiceOrErr<IAudioManager>()`.
 		[Token(Token = "0x60002D7")]
 		[Address(RVA = "0x352BA0", Offset = "0x3515A0", VA = "0x180352BA0")]
 		get
 		{
-			return null;
+			return _naniAudioManager ??= Engine.GetServiceOrErr<IAudioManager>();
 		}
 	}
 
 	[Token(Token = "0x1700005A")]
 	private IScriptPlayer NaniScriptPlayer
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352C70, 202 B
+		// Lazy cache in +0x198 via `Engine.GetServiceOrErr<IScriptPlayer>()`.
 		[Token(Token = "0x60002D8")]
 		[Address(RVA = "0x352C70", Offset = "0x351670", VA = "0x180352C70")]
 		get
 		{
-			return null;
+			return _naniScriptPlayer ??= Engine.GetServiceOrErr<IScriptPlayer>();
 		}
 	}
 
 	[Token(Token = "0x1700005B")]
 	private ITextPrinterManager NaniPrinterManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352D40, 202 B
+		// Lazy cache in +0x1A0 via `Engine.GetServiceOrErr<ITextPrinterManager>()`.
 		[Token(Token = "0x60002D9")]
 		[Address(RVA = "0x352D40", Offset = "0x351740", VA = "0x180352D40")]
 		get
 		{
-			return null;
+			return _naniPrinterManager ??= Engine.GetServiceOrErr<ITextPrinterManager>();
 		}
 	}
 
 	[Token(Token = "0x1700005C")]
 	private IWitchTrialsChoiceHandlerManager WitchTrialsChoiceHandlerManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352E10, 202 B
+		// Lazy cache in +0x1A8 via `Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>()`
+		// (an engine service, not a ServiceLocator lookup).
 		[Token(Token = "0x60002DA")]
 		[Address(RVA = "0x352E10", Offset = "0x351810", VA = "0x180352E10")]
 		get
 		{
-			return null;
+			return _witchTrialsChoiceHandlerManager ??= Naninovel.Engine.GetServiceOrErr<IWitchTrialsChoiceHandlerManager>();
 		}
 	}
 
 	[Token(Token = "0x1700005D")]
 	private ILocalizationManagerExtended NaniLocalizationManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x352EE0, 202 B
+		// Lazy cache in +0x1B0 via `Engine.GetServiceOrErr<ILocalizationManagerExtended>()`.
 		[Token(Token = "0x60002DB")]
 		[Address(RVA = "0x352EE0", Offset = "0x3518E0", VA = "0x180352EE0")]
 		get
 		{
-			return null;
+			return _naniLocalizationManager ??= Engine.GetServiceOrErr<ILocalizationManagerExtended>();
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (base.Initialize inlining and wrapper names: B) | RVA: 0x352FB0 (stub), MoveNext 0x357920, 4199 B; lambdas 0x354A90 0x3570C0 0x3570D0 0x3571A0 0x357230
+	// - `<task>5__2` (+0x20) is stored as default before anything runs: CustomUI.Initialize (0x3483B0) is inlined, so this
+	//   is `base.Initialize()`; it is awaited last (u__2).
+	// - DebugOptionsBase.IsDebugMode: DisplayClass49_0.configuredLanguages = Languages.GetAll() (inlined to get_configured)
+	//   .Select(<>c.b__49_2, the shared `mov rax,[rdx]` = Language.Tag).ToArray(); _availableLocales = ILocalizationManager
+	//   slot 3 AvailableLocales.OrderBy(b__3 = configuredLanguages.IndexOf(locale)).ToArray().
+	//   Otherwise ILocalizationManagerExtended slot 0 ValidLocales.ToArray().
+	// - `<names>5__3` = _availableLocales.Select(<>O Languages.GetNameByTag).ToList().
+	// - await EnumerableAsyncExtensions.Select(_availableLocales, b__49_4) via UniTaskExtensions.GetAwaiter<TMP_FontAsset>;
+	//   b__49_4 = LocalizationManager (inlined; ILocalizationManager : IFontProvider) slot 0
+	//   GetOrLoadFontAssetAsync(locale.ToLocaleKind(), destroyCancellationToken).
+	// - _languageDropdown: ClearOptions / AddOptions(names) / `is TweeningDropdownLocalized` -> ItemFontAssets (+0x1F0) =
+	//   fonts, i.e. LocalizationDropdown.SetOptions(options, fontAssets) inlined.
+	// - _unavailableResolutionOptionCount = Configuration(+0x18 ResolutionsForPc).Length - slot 8 AvailableResolutionsForPc.Length.
+	// - _resolutionDropdown.SetOptions(AvailableResolutionsForPc.Select("{0} x {1}").ToList());
+	//   _frameRateDropdown.SetOptions(Configuration.TargetFpsValues (+0x28).Select("{0} fps").ToList()).
 	[Token(Token = "0x60002DC")]
 	[Address(RVA = "0x352FB0", Offset = "0x3519B0", VA = "0x180352FB0", Slot = "83")]
 	[AsyncStateMachine(typeof(_003CInitialize_003Ed__49))]
-	public override Naninovel.UniTask Initialize()
+	public override async Naninovel.UniTask Initialize()
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.UniTask task = base.Initialize();
+		if (DebugOptionsBase.IsDebugMode)
+		{
+			string[] configuredLanguages = Languages.GetAll().Select(language => language.Tag).ToArray();
+			_availableLocales = NaniLocalizationManager.AvailableLocales.OrderBy(locale => configuredLanguages.IndexOf(locale)).ToArray();
+		}
+		else
+		{
+			_availableLocales = NaniLocalizationManager.ValidLocales.ToArray();
+		}
+		List<string> names = _availableLocales.Select(Languages.GetNameByTag).ToList();
+		TMPro.TMP_FontAsset[] fontAssets = await EnumerableAsyncExtensions.Select(_availableLocales, locale => LocalizationManager.GetOrLoadFontAssetAsync(locale.ToLocaleKind(), destroyCancellationToken));
+		_languageDropdown.SetOptions(names, fontAssets);
+		_unavailableResolutionOptionCount = NaniCameraManager.Configuration.ResolutionsForPc.Length - NaniCameraManager.AvailableResolutionsForPc.Length;
+		_resolutionDropdown.SetOptions(NaniCameraManager.AvailableResolutionsForPc.Select(size => string.Format("{0} x {1}", size.x, size.y)).ToList());
+		_frameRateDropdown.SetOptions(NaniCameraManager.Configuration.TargetFpsValues.Select(fps => string.Format("{0} fps", fps)).ToList());
+		await task;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3530E0, 163 B
+	// visible -> ActivateUi(); otherwise Dispose() (inlined); then tail-jumps to CustomUI.HandleVisibilityChanged.
 	[Token(Token = "0x60002DD")]
 	[Address(RVA = "0x3530E0", Offset = "0x351AE0", VA = "0x1803530E0", Slot = "55")]
 	protected override void HandleVisibilityChanged(bool visible)
 	{
+		if (visible)
+		{
+			ActivateUi();
+		}
+		else
+		{
+			Dispose();
+		}
+		base.HandleVisibilityChanged(visible);
 	}
 
+	// RECONSTRUCTED | Confidence: A (wrapper names: B) | RVA: 0x353190, 3636 B; lambdas 0x354C70 0x354CE0 0x354D40 0x354DB0 0x354E10 0x30C000 0x354EC0 0x354F70 0x355180 0x355410 0x3554C0 0x355570 0x355610 0x3556C0 0x355890 0x355900 0x355970 0x3559E0 0x355A50 0x357280
+	// - Early return while _disposables (+0x1C8) exists; else new CompositeDisposable, ApplyOptionValuesToUi(), and every
+	//   subscription is `.Subscribe(lambda).AddTo(_disposables, this)`.
+	// - Sliders: value / 10f into ITextPrinterManager slot 7 BaseRevealSpeed, slot 9 BaseAutoDelay, IAudioManager slots
+	//   2/4/6/8 Master/Bgm/Sfx/Voice volume; the two OnConfirm lambdas only play the Submit sfx (IInputManager slot 0, arg 1).
+	// - Toggle groups/dropdowns play Submit first: IScriptPlayer slot 20 SkipMode = idx == 0 ? Everything : ReadOnly;
+	//   _toggleSkipModeToggleGroup gets the cached static <>c.b__51_5, folded into the empty body 0x30C000;
+	//   IWitchTrialsChoiceHandlerManager slot 1 = idx == 1; ChangeLocaleAsync(_availableLocales[idx]).Forget();
+	//   ICameraManagerExtended slot 1 FullScreen = idx == 1, slot 3 ResolutionLevel = idx + _unavailableResolutionOptionCount,
+	//   slot 5 TargetFpsLevel = level, slot 7 IsPostProcessingEnabled = idx == 1.
+	// - Reset buttons (RebuildableButton.OnClickAsObservable, ResponseKind): copy the IEngineService<TConfig>.Configuration
+	//   defaults back (DefaultBaseRevealSpeed +0x40 / DefaultBaseAutoDelay +0x44, DefaultSkipMode +0x18,
+	//   DefaultCriticalChoiceHintEnabled +0x18; DefaultGraphicsOptions +0x30 .FullScreen/.TargetFpsLevel/.PostProcessingActivity
+	//   with ResolutionLevel = _unavailableResolutionOptionCount; Default*Volume +0x30..+0x3C), then ApplyOptionValuesToUi().
+	// - Pages: `for` over _pages (array reloaded each pass) with a per-iteration DisplayClass51_0 {page, this}; Toggle (+0x10,
+	//   getter inlined).OnValueChangedAsObservable -> b__19: Submit sfx only when enabled, then page.SetActive(enable);
+	//   after subscribing, page.SetActive(i == 0). SetActive (0x356FD0) is inlined in both places.
 	[Token(Token = "0x60002DE")]
 	[Address(RVA = "0x353190", Offset = "0x351B90", VA = "0x180353190")]
 	private void ActivateUi()
 	{
+		if (_disposables != null)
+		{
+			return;
+		}
+		_disposables = new CompositeDisposable();
+		ApplyOptionValuesToUi();
+		_messageSpeedSlider.OnSlideAsObservable().Subscribe(x => NaniPrinterManager.BaseRevealSpeed = x / 10f).AddTo(_disposables, this);
+		_messageSpeedSlider.OnConfirmAsObservable().Subscribe(_ => InputManager.PlayResponseSfx(ResponseKind.Submit)).AddTo(_disposables, this);
+		_autoDelaySlider.OnSlideAsObservable().Subscribe(x => NaniPrinterManager.BaseAutoDelay = x / 10f).AddTo(_disposables, this);
+		_autoDelaySlider.OnConfirmAsObservable().Subscribe(_ => InputManager.PlayResponseSfx(ResponseKind.Submit)).AddTo(_disposables, this);
+		_skipModeToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniScriptPlayer.SkipMode = idx == 0 ? PlayerSkipMode.Everything : PlayerSkipMode.ReadOnly;
+		}).AddTo(_disposables, this);
+		_toggleSkipModeToggleGroup.OnValueChangedAsObservable().Subscribe(idx => { }).AddTo(_disposables, this);
+		_criticalChoiceHintToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled = idx == 1;
+		}).AddTo(_disposables, this);
+		_languageDropdown.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			ChangeLocaleAsync(_availableLocales[idx]).Forget();
+		}).AddTo(_disposables, this);
+		_resetMessageOptionsButton.OnClickAsObservable().Subscribe(_ =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniPrinterManager.BaseRevealSpeed = NaniPrinterManager.Configuration.DefaultBaseRevealSpeed;
+			NaniPrinterManager.BaseAutoDelay = NaniPrinterManager.Configuration.DefaultBaseAutoDelay;
+			NaniScriptPlayer.SkipMode = NaniScriptPlayer.Configuration.DefaultSkipMode;
+			WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled = WitchTrialsChoiceHandlerManager.Configuration.DefaultCriticalChoiceHintEnabled;
+			ApplyOptionValuesToUi();
+		}).AddTo(_disposables, this);
+		_screenModeToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniCameraManager.FullScreen = idx == 1;
+		}).AddTo(_disposables, this);
+		_resolutionDropdown.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniCameraManager.ResolutionLevel = idx + _unavailableResolutionOptionCount;
+		}).AddTo(_disposables, this);
+		_frameRateDropdown.OnValueChangedAsObservable().Subscribe(level =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniCameraManager.TargetFpsLevel = level;
+		}).AddTo(_disposables, this);
+		_postProcessingToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniCameraManager.IsPostProcessingEnabled = idx == 1;
+		}).AddTo(_disposables, this);
+		_resetGraphicOptionsButton.OnClickAsObservable().Subscribe(_ =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniCameraManager.FullScreen = NaniCameraManager.Configuration.DefaultGraphicsOptions.FullScreen;
+			NaniCameraManager.ResolutionLevel = _unavailableResolutionOptionCount;
+			NaniCameraManager.TargetFpsLevel = NaniCameraManager.Configuration.DefaultGraphicsOptions.TargetFpsLevel;
+			NaniCameraManager.IsPostProcessingEnabled = NaniCameraManager.Configuration.DefaultGraphicsOptions.PostProcessingActivity;
+			ApplyOptionValuesToUi();
+		}).AddTo(_disposables, this);
+		_masterVolumeSlider.OnSlideAsObservable().Subscribe(x => NaniAudioManager.MasterVolume = x / 10f).AddTo(_disposables, this);
+		_bgmVolumeSlider.OnSlideAsObservable().Subscribe(x => NaniAudioManager.BgmVolume = x / 10f).AddTo(_disposables, this);
+		_sfxVolumeSlider.OnSlideAsObservable().Subscribe(x => NaniAudioManager.SfxVolume = x / 10f).AddTo(_disposables, this);
+		_voiceVolumeSlider.OnSlideAsObservable().Subscribe(x => NaniAudioManager.VoiceVolume = x / 10f).AddTo(_disposables, this);
+		_resetAudioOptionsButton.OnClickAsObservable().Subscribe(_ =>
+		{
+			InputManager.PlayResponseSfx(ResponseKind.Submit);
+			NaniAudioManager.MasterVolume = NaniAudioManager.Configuration.DefaultMasterVolume;
+			NaniAudioManager.BgmVolume = NaniAudioManager.Configuration.DefaultBgmVolume;
+			NaniAudioManager.SfxVolume = NaniAudioManager.Configuration.DefaultSfxVolume;
+			NaniAudioManager.VoiceVolume = NaniAudioManager.Configuration.DefaultVoiceVolume;
+			ApplyOptionValuesToUi();
+		}).AddTo(_disposables, this);
+		for (int i = 0; i < _pages.Length; i++)
+		{
+			PageCanvas page = _pages[i];
+			page.Toggle.OnValueChangedAsObservable().Subscribe(enable =>
+			{
+				if (enable)
+				{
+					InputManager.PlayResponseSfx(ResponseKind.Submit);
+				}
+				page.SetActive(enable);
+			}).AddTo(_disposables, this);
+			page.SetActive(i == 0);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x353FD0, 119 B
+	// Only when _disposables is non-null: Dispose() it and clear the field.
 	[Token(Token = "0x60002DF")]
 	[Address(RVA = "0x353FD0", Offset = "0x3529D0", VA = "0x180353FD0")]
 	private void Dispose()
 	{
+		if (_disposables != null)
+		{
+			_disposables.Dispose();
+			_disposables = null;
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A (wrapper names: B) | RVA: 0x354050, 1342 B
+	// - LabeledSlider.SetValue(int) inlined as `_slider (+0x20).value = (float)int` (Slider vtable slot 47); each value is
+	//   RoundToInt(x * 10f) of ITextPrinterManager slot 6/8 and IAudioManager slot 1/3/5/7.
+	// - OptionItemToggleGroup.SetValue(bool ? 1 : 0): SkipMode (IScriptPlayer slot 19) != Everything; CriticalChoiceHintEnabled
+	//   (slot 0); FullScreen (ICameraManagerExtended slot 0); IsPostProcessingEnabled (slot 6).
+	// - (LinqUtils.IndexOf is written in extension form: Naninovel.Common also defines a LinqUtils, without IndexOf.)
+	// - OptionItemDropdown.SetValue inlined as TMP_Dropdown.SetValue(v, sendCallback: false): language index =
+	//   LinqUtils.IndexOf(_availableLocales, SelectedLocale (ILocalizationManager slot 2)); ResolutionLevel (slot 2) -
+	//   _unavailableResolutionOptionCount; TargetFpsLevel (slot 4).
 	[Token(Token = "0x60002E0")]
 	[Address(RVA = "0x354050", Offset = "0x352A50", VA = "0x180354050")]
 	private void ApplyOptionValuesToUi()
 	{
+		_messageSpeedSlider.SetValue(Mathf.RoundToInt(NaniPrinterManager.BaseRevealSpeed * 10f));
+		_autoDelaySlider.SetValue(Mathf.RoundToInt(NaniPrinterManager.BaseAutoDelay * 10f));
+		_skipModeToggleGroup.SetValue(NaniScriptPlayer.SkipMode != PlayerSkipMode.Everything ? 1 : 0);
+		_criticalChoiceHintToggleGroup.SetValue(WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled ? 1 : 0);
+		_languageDropdown.SetValue(_availableLocales.IndexOf(NaniLocalizationManager.SelectedLocale));
+		_screenModeToggleGroup.SetValue(NaniCameraManager.FullScreen ? 1 : 0);
+		_resolutionDropdown.SetValue(NaniCameraManager.ResolutionLevel - _unavailableResolutionOptionCount);
+		_frameRateDropdown.SetValue(NaniCameraManager.TargetFpsLevel);
+		_masterVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.MasterVolume * 10f));
+		_bgmVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.BgmVolume * 10f));
+		_sfxVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.SfxVolume * 10f));
+		_voiceVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.VoiceVolume * 10f));
+		_postProcessingToggleGroup.SetValue(NaniCameraManager.IsPostProcessingEnabled ? 1 : 0);
 	}
 
+	// RECONSTRUCTED | Confidence: A (SelectLocale overload: B) | RVA: 0x354590 (stub), MoveNext 0x357330, 1517 B
+	// `<>s__2` (+0x28) = NaninovelLoadingScreen.Show(1 = Short, true, Array.Empty<ICancelEventBlockable>()); inside it:
+	// ChangeCaptionVisibility(false), await ILocalizationManager slot 6 SelectLocale(locale) (thunk 0x71F0, string arg),
+	// ChangeCaptionVisibility(true). Only the loading screen is disposed on the exception path.
 	[Token(Token = "0x60002E1")]
 	[Address(RVA = "0x354590", Offset = "0x352F90", VA = "0x180354590")]
 	[AsyncStateMachine(typeof(_003CChangeLocaleAsync_003Ed__54))]
-	private Cysharp.Threading.Tasks.UniTask ChangeLocaleAsync(string locale)
+	private async Cysharp.Threading.Tasks.UniTask ChangeLocaleAsync(string locale)
 	{
-		return default(Cysharp.Threading.Tasks.UniTask);
+		using (NaninovelLoadingScreen.Show(LoadingMode.Short, haltInput: true, Array.Empty<ICancelEventBlockable>()))
+		{
+			_languageDropdown.ChangeCaptionVisibility(false);
+			await NaniLocalizationManager.SelectLocale(locale);
+			_languageDropdown.ChangeCaptionVisibility(true);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x354730, 424 B
+	// Start<SaveAsync d__56> inlined with destroyCancellationToken, then Forget().
 	[Token(Token = "0x60002E2")]
 	[Address(RVA = "0x354730", Offset = "0x353130", VA = "0x180354730")]
 	public void Save()
 	{
+		SaveAsync(destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A (TrySetResult spelling: B) | RVA: 0x3548E0 (stub), MoveNext 0x358990, 2485 B
+	// - If _saveUcs (+0x1D0) exists and its Task status (IUniTaskSource slot 0, token 0) is Pending: under
+	//   NaninovelLoadingScreen.Show(Short, true, empty) await that task.
+	// - _saveUcs = new UniTaskCompletionSource(); await NaninovelManager (getter inlined) INaninovelStateSaver slot 0
+	//   SaveSettingsAsync(ct); then TrySignalCompletion(1 = Succeeded) = TrySetResult().
 	[Token(Token = "0x60002E3")]
 	[Address(RVA = "0x3548E0", Offset = "0x3532E0", VA = "0x1803548E0")]
 	[AsyncStateMachine(typeof(_003CSaveAsync_003Ed__56))]
-	private Cysharp.Threading.Tasks.UniTask SaveAsync([Optional] CancellationToken ct)
+	private async Cysharp.Threading.Tasks.UniTask SaveAsync([Optional] CancellationToken ct)
 	{
-		return default(Cysharp.Threading.Tasks.UniTask);
+		if (_saveUcs != null && _saveUcs.Task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending)
+		{
+			using (NaninovelLoadingScreen.Show(LoadingMode.Short, haltInput: true, Array.Empty<ICancelEventBlockable>()))
+			{
+				await _saveUcs.Task;
+			}
+		}
+		_saveUcs = new Cysharp.Threading.Tasks.UniTaskCompletionSource();
+		await NaninovelManager.SaveSettingsAsync(ct);
+		_saveUcs.TrySetResult();
 	}
 
 	[Token(Token = "0x60002E4")]

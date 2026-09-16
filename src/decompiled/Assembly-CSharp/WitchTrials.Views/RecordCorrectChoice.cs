@@ -52,12 +52,14 @@ public class RecordCorrectChoice : SetCustomVariableAsFlag
 	[Token(Token = "0x40000AA")]
 	private const string PlayedCorrectChoiceVarName = "g_playedCorrectChoice";
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x31B2D0 (builder stub); MoveNext 0x31B3F0, 765 B, one await
+	// SetCustomVariableAsFlag.SetAndSaveFlagAsync(name, bit, BitwiseOperator.Or) (0xCF9200); the bit is `Number - 1`.
 	[Token(Token = "0x60000CC")]
 	[Address(RVA = "0x31B2D0", Offset = "0x319CD0", VA = "0x18031B2D0", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CExecute_003Ed__1))]
-	public override UniTask Execute([Optional] AsyncToken token)
+	public override async UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		await SetAndSaveFlagAsync(PlayedCorrectChoiceVarName, Number - 1, BitwiseOperator.Or);
 	}
 
 	[Token(Token = "0x60000CD")]

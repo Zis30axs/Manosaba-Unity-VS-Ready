@@ -26,6 +26,10 @@ public class RuleData : WitchBookDataBase<RuleDataItem>
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F370, 57 B
+	// This is only the implicit `base()`: `WitchBookDataBase<RuleDataItem>..ctor` is inlined down to
+	// `ScriptableObject..ctor`. There is no field initializer, so `_items` (+0x18) stays null until Unity
+	// deserializes it.
 	[Token(Token = "0x60005B3")]
 	[Address(RVA = "0x38F370", Offset = "0x38DD70", VA = "0x18038F370")]
 	public RuleData()

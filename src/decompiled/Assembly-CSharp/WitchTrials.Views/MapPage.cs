@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -147,46 +148,133 @@ public class MapPage : WitchBookPageBase<MapDataItem, MapState>
 	[Il2CppDummyDll.FieldOffset(Offset = "0xD0")]
 	private MapArea[] _displayableAreas;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F5B0
+	// 
+	// Direct call to WitchBookPageBase.Reset, then `gameObject.GetComponentsInChildren<MapFloor>(dl=1)`
+	// (the inlined `Component.GetComponentsInChildren<T>(bool)` wrapper) into +0xB8.
 	[Token(Token = "0x60003FD")]
 	[Address(RVA = "0x36F5B0", Offset = "0x36DFB0", VA = "0x18036F5B0", Slot = "5")]
 	protected override void Reset()
 	{
+		base.Reset();
+		_floors = GetComponentsInChildren<MapFloor>(true);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F690, 504 B (entry) + MoveNext 0x370A00, 1585 B
+	// RECONSTRUCTED | RVA: 0x3701B0 `<>n__0` (118 B), the base-call accessor for `base.LoadDataAsync(ct)`
+	// RECONSTRUCTED | RVA: 0x3702D0 `<>c.b__5_0`, 0x370320 `<>c.b__5_1` (817 B)
+	// The entry, `<>n__0` and `b__5_0` are byte-identical to CluePage (pagediff: 0 differing lines).
+	// MoveNext differs from Clue only in three places: the element type `IReadOnlyDictionary<LocaleKind, string>`, the cache
+	// slot `<>9__5_1` at +0x20, and the store at `_localizedTextData` +0xC0.
+	// `b__5_1` has no display class and no Union: `versioned.Item` (fully-shared get_Item inlined), then `_buttonText`
+	// (+0x10) → `ToDictionary(b__5_2 Locale, b__5_3 Text)` (sub_4A60). `ProfilePage.b__9_1` is byte-identical.
 	[Token(Token = "0x60003FE")]
 	[Address(RVA = "0x36F690", Offset = "0x36E090", VA = "0x18036F690", Slot = "16")]
 	[AsyncStateMachine(typeof(_003CLoadDataAsync_003Ed__5))]
-	protected override UniTask<IList<VersionedItem<MapDataItem>>> LoadDataAsync([Optional] CancellationToken ct)
+	protected override async UniTask<IList<VersionedItem<MapDataItem>>> LoadDataAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask<IList<VersionedItem<MapDataItem>>>);
+		IList<VersionedItem<MapDataItem>> result = await base.LoadDataAsync(ct);
+		_localizedTextData = result.ToDictionary((VersionedItem<MapDataItem> versioned) => versioned.IdVersionPair, (VersionedItem<MapDataItem> versioned) => (IReadOnlyDictionary<LocaleKind, string>)versioned.Item.ButtonText.ToDictionary((LocalizedText text) => text.Locale, (LocalizedText text) => text.Text));
+		return result;
 	}
 
+	// RECONSTRUCTED | Confidence: A (behavior), B (ternary spelling) | RVA: 0x36F890, 311 B
+	// - `_localizedTextData (+0xC0)[map.IdVersionPair]` (sub_6C80, slot 2), then `[CurrentLocale]`
+	//   (sub_36F0 with ecx = 2, get_Item). The result is null-checked (NRE) for the instance call
+	//   `text.Contains("<br>")`.
+	// - `backgroundIndex = (byte)contains + 1` (`movzx r8d, al; inc r8d`): the native compiler's folding of
+	//   `contains ? 2 : 1`, the same index 2 RulePage uses for its two-line `<br>` label.
+	// - Tail jump to `button.SetupWithText(text, backgroundIndex)`.
 	[Token(Token = "0x60003FF")]
 	[Address(RVA = "0x36F890", Offset = "0x36E290", VA = "0x18036F890", Slot = "17")]
 	protected override void SetupItemButton(WitchBookItemButton button, VersionedItem<MapDataItem> map)
 	{
+		string text = _localizedTextData[map.IdVersionPair][base.CurrentLocale];
+		button.SetupWithText(text, text.Contains("<br>") ? 2 : 1);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F9D0, 341 B
+	// - An array `foreach` over `_floors` (+0xB8), using an index and length with bounds checks.
+	// - Per floor, `map.IdVersionPair` is re-read (the getter is called every iteration), then an inlined
+	//   `MapFloor.IsMatch(pair)`: `pair.Equals(floor._idAndVersion (+0x38))`. A null pair throws NRE; a null
+	//   `_idAndVersion` gives false; same ref gives true; otherwise ordinal Id plus Version compare.
+	// - Match → `floor.Show(_restrictionAreas (+0xC8))` (0x36F100); no match → `floor.Hide()` (0x36F420).
 	[Token(Token = "0x6000400")]
 	[Address(RVA = "0x36F9D0", Offset = "0x36E3D0", VA = "0x18036F9D0", Slot = "18")]
 	protected override void RefreshPageContent(VersionedItem<MapDataItem> map)
 	{
+		MapFloor[] floors = _floors;
+		foreach (MapFloor mapFloor in floors)
+		{
+			if (mapFloor.IsMatch(map.IdVersionPair))
+			{
+				mapFloor.Show(_restrictionAreas);
+			}
+			else
+			{
+				mapFloor.Hide();
+			}
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36FB30; closures <>c__DisplayClass8_0.b__0 0x3706C0, <>c.b__8_1 0x370660
+	// 
+	// - `restrictions` goes to `_restrictionAreas` (+0xC8); `GetDisplayableIdVersionPairs()` into the
+	//   DisplayClass (+0x10).
+	// - `_floors.Where(b__0).SelectMany(b__8_1).ToArray()` into `_displayableAreas` (+0xD0).
+	//   b__0 is `Enumerable.Any<IdVersionPair>(pairs, new Func(floor.IsMatch))` (method-group delegate
+	//   with `floor` as target); b__8_1 is `floor.Areas` + IReadOnlyDictionary slot 4 `Values`.
+	// - The loop is MapArea.ChangeFocusButtonActivity(false) inlined: `_focusButton._canvasGroup`
+	//   interactable / blocksRaycasts set to 0 with no branch (constant argument).
 	[Token(Token = "0x6000401")]
 	[Address(RVA = "0x36FB30", Offset = "0x36E530", VA = "0x18036FB30")]
 	public void InitializeAreas(IReadOnlyCollection<MapAreaKind> restrictions)
 	{
+		_restrictionAreas = restrictions;
+		IdVersionPair[] displayablePairs = GetDisplayableIdVersionPairs();
+		_displayableAreas = _floors
+			.Where((MapFloor floor) => displayablePairs.Any(floor.IsMatch))
+			.SelectMany((MapFloor floor) => floor.Areas.Values)
+			.ToArray();
+		MapArea[] displayableAreas = _displayableAreas;
+		foreach (MapArea mapArea in displayableAreas)
+		{
+			mapArea.ChangeFocusButtonActivity(false);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36FF80 (builder stub); MoveNext 0x371070; lambdas <>c__DisplayClass9_0.b__0 0x370770, b__1 0x3707E0
+	// 
+	// - DisplayClass9_0 holds `this` (+0x10) and `linkedCts` (+0x18) =
+	//   `CancellationTokenSource.CreateLinkedTokenSource(ct)`. It is disposed on every exit
+	//   through the compiler's using helper sub_371A00.
+	// - `_displayableAreas.Where(b__0).ToArray()`: b__0 is
+	//   `Enumerable.Contains<MapAreaKind>(_restrictionAreas (+0xC8), area._areaKind (+0x30))`.
+	// - Loop: inlined ChangeFocusButtonActivity(true) (interactable + blocksRaycasts).
+	// - `Select(b__1).ToArray()`: b__1 is `area.OnClickAsync(linkedCts.Token)` with its builder stub
+	//   inlined (530 B).
+	// - `UniTask.WhenAny<MapAreaKind>(UniTask<T>[])`; awaiter is `ValueTuple<int, MapAreaKind>`.
+	// - After GetResult: `linkedCts.Cancel()` (inlined `IsCancellationRequested` check +
+	//   NotifyCancellation), then SetResult with the tuple's `result`.
 	[Token(Token = "0x6000402")]
 	[Address(RVA = "0x36FF80", Offset = "0x36E980", VA = "0x18036FF80")]
 	[AsyncStateMachine(typeof(_003COnChoiceMapAreaAsync_003Ed__9))]
-	public UniTask<MapAreaKind> OnChoiceMapAreaAsync([Optional] CancellationToken ct)
+	public async UniTask<MapAreaKind> OnChoiceMapAreaAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask<MapAreaKind>);
+		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+		MapArea[] choosableAreas = _displayableAreas.Where((MapArea area) => _restrictionAreas.Contains(area.AreaKind)).ToArray();
+		foreach (MapArea mapArea in choosableAreas)
+		{
+			mapArea.ChangeFocusButtonActivity(true);
+		}
+		(int winArgumentIndex, MapAreaKind result) = await UniTask.WhenAny(choosableAreas.Select((MapArea area) => area.OnClickAsync(linkedCts.Token)).ToArray());
+		linkedCts.Cancel();
+		return result;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x370170
+	// 
+	// Tail jump to `WitchBookPageBase<MapDataItem, MapState>..ctor`; no field initializers.
 	[Token(Token = "0x6000403")]
 	[Address(RVA = "0x370170", Offset = "0x36EB70", VA = "0x180370170")]
 	public MapPage()

@@ -57,11 +57,12 @@ public class CharacterDataItem
 	[Token(Token = "0x170000BA")]
 	public IReadOnlyList<LocalizedText> Name
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 (shared generic reference-field getter, +0x18 `_name`)
 		[Token(Token = "0x600059A")]
 		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
 		get
 		{
-			return null;
+			return _name;
 		}
 	}
 
@@ -104,17 +105,26 @@ public class CharacterDataItem
 	[Token(Token = "0x170000BE")]
 	public string Weight
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x347410 (shared `mov rax,[rcx+0x38]; ret`, +0x38 `_weight`)
 		[Token(Token = "0x600059E")]
 		[Address(RVA = "0x347410", Offset = "0x345E10", VA = "0x180347410")]
 		get
 		{
-			return null;
+			return _weight;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F070, 511 B
+	// Six stores in parameter order to +0x10..+0x38, each with a write barrier; the last three args come from the stack.
 	[Token(Token = "0x600059F")]
 	[Address(RVA = "0x38F070", Offset = "0x38DA70", VA = "0x18038F070")]
 	public CharacterDataItem(string id, LocalizedText[] name, LocalizedText[] familyName, string age, string height, string weight)
 	{
+		_id = id;
+		_name = name;
+		_familyName = familyName;
+		_age = age;
+		_height = height;
+		_weight = weight;
 	}
 }

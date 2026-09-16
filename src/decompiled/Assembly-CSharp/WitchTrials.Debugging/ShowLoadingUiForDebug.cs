@@ -1,8 +1,12 @@
-﻿using System;
+﻿using FastEnumUtility;
+using GigaCreation.Essentials.Ui;
+using GigaCreation.NaninovelExtender.Common;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
+using UnityEngine;
 using YieldAwaitable = Naninovel.YieldAwaitable;
 using JetBrains.Annotations;
 using Naninovel;
@@ -90,19 +94,47 @@ public class ShowLoadingUiForDebug : Command
 	[UsedImplicitly]
 	public BooleanParameter Wait;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3B2AC0, 171 B
+	// `WaitOrForget` (vtable +0x208, slot 13) over `ShowLoadingUiAsync` with `Wait` (+0x48).
 	[Token(Token = "0x60007A8")]
 	[Address(RVA = "0x3B2AC0", Offset = "0x3B14C0", VA = "0x1803B2AC0", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		return WaitOrForget(ShowLoadingUiAsync, Wait, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3B2B70 (builder stub); MoveNext 0x3B2D10, 1928 B
+	// 
+	// - `FastEnum.TryParse<LoadingMode>((string)LoadingMode, ignoreCase: true (dl=1), out mode)`. On failure,
+	//   Command slot 7 `Warn` with the format argument being the parameter object; mode stays 0.
+	// - The hoisted unnamed `IDisposable` (+0x30) =
+	//   `NaninovelLoadingScreen.Show(mode, HaltInput, Array.Empty<ICancelEventBlockable>())`, disposed on
+	//   every exit.
+	// - `<startingTime>5__3` (+0x38) starts at 0f and accumulates `Time.deltaTime` (icall 0x2608950), so
+	//   despite its name it is elapsed time.
+	// - `<duration>5__4` (+0x3C) = Assigned(Duration) ? Duration.Value : 0.35f (rdata 0x2AE26D0).
+	// - The loop runs while `!token.Canceled` (inlined IsCancellationRequested) and `duration > startingTime`,
+	//   awaiting `UniTask.Yield(PlayerLoopTiming.Update (8), token)`.
+	// - The enum is qualified because the `LoadingMode` field shadows the type name.
 	[Token(Token = "0x60007A9")]
 	[Address(RVA = "0x3B2B70", Offset = "0x3B1570", VA = "0x1803B2B70")]
 	[AsyncStateMachine(typeof(_003CShowLoadingUiAsync_003Ed__5))]
-	private UniTask ShowLoadingUiAsync(AsyncToken token)
+	private async UniTask ShowLoadingUiAsync(AsyncToken token)
 	{
-		return default(UniTask);
+		if (!FastEnum.TryParse<GigaCreation.NaninovelExtender.Common.LoadingMode>(LoadingMode, ignoreCase: true, out GigaCreation.NaninovelExtender.Common.LoadingMode mode))
+		{
+			Warn(string.Format("Failed to parse `{0}` as loading mode.", LoadingMode));
+		}
+		using (NaninovelLoadingScreen.Show(mode, HaltInput, Array.Empty<ICancelEventBlockable>()))
+		{
+			float startingTime = 0f;
+			float duration = Assigned(Duration) ? Duration.Value : 0.35f;
+			while (!token.Canceled && duration > startingTime)
+			{
+				startingTime += Time.deltaTime;
+				await UniTask.Yield(PlayerLoopTiming.Update, token);
+			}
+		}
 	}
 
 	[Token(Token = "0x60007AA")]

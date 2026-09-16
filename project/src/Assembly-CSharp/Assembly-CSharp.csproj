@@ -25,6 +25,7 @@
     <ProjectReference Include="..\GigaCreation.Essentials.Localization\GigaCreation.Essentials.Localization.csproj" />
     <ProjectReference Include="..\GigaCreation.Essentials.MasterData\GigaCreation.Essentials.MasterData.csproj" />
     <ProjectReference Include="..\GigaCreation.Essentials.Overlays\GigaCreation.Essentials.Overlays.csproj" />
+    <ProjectReference Include="..\GigaCreation.Essentials.Platforms\GigaCreation.Essentials.Platforms.csproj" />
     <ProjectReference Include="..\GigaCreation.Essentials.UI\GigaCreation.Essentials.UI.csproj" />
     <ProjectReference Include="..\GigaCreation.Essentials.WebRequestUtils\GigaCreation.Essentials.WebRequestUtils.csproj" />
     <ProjectReference Include="..\GigaCreation.NaninovelExtender.Audio\GigaCreation.NaninovelExtender.Audio.csproj" />
@@ -38,19 +39,30 @@
     <ProjectReference Include="..\GigaCreation.Tools.Debugging.General\GigaCreation.Tools.Debugging.General.csproj" />
     <ProjectReference Include="..\GigaCreation.Tools.Debugging.TextDisplays\GigaCreation.Tools.Debugging.TextDisplays.csproj" />
     <ProjectReference Include="..\GigaCreation.Tools.Debugging.UI\GigaCreation.Tools.Debugging.UI.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.Private.PlayableDirectors\GigaCreation.Tools.Private.PlayableDirectors.csproj" />
     <ProjectReference Include="..\GigaCreation.Tools.Service\GigaCreation.Tools.Service.csproj" />
     <ProjectReference Include="..\GigaCreation.Tools.UI\GigaCreation.Tools.UI.csproj" />
+    <ProjectReference Include="..\GigaCreation.Tools.UndoExtensions\GigaCreation.Tools.UndoExtensions.csproj" />
     <ProjectReference Include="..\Il2CppDummyDll\Il2CppDummyDll.csproj" />
     <ProjectReference Include="..\Naninovel.Common\Naninovel.Common.csproj" />
+    <ProjectReference Include="..\ppt-noise\ppt-noise.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="FastEnum">
+      <HintPath>$(ManosabaRefs)\FastEnum.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="LeTai.TrueShadow">
       <HintPath>$(ManosabaRefs)\LeTai.TrueShadow.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="LitMotion">
       <HintPath>$(ManosabaRefs)\LitMotion.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="LitMotion.Extensions">
+      <HintPath>$(ManosabaRefs)\LitMotion.Extensions.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="MPUIKit">
@@ -69,8 +81,16 @@
       <HintPath>$(ManosabaRefs)\UniTask.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>$(ManosabaRefs)\UniTask.Addressables.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Unity.Addressables">
       <HintPath>$(ManosabaRefs)\Unity.Addressables.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>$(ManosabaRefs)\Unity.ResourceManager.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.InputSystem">
@@ -83,6 +103,10 @@
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>$(ManosabaRefs)\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
@@ -103,6 +127,14 @@
     </Reference>
     <Reference Include="UnityEngine.UIModule">
       <HintPath>$(ManosabaRefs)\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>$(ManosabaRefs)\UnityEngine.ScreenCaptureModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">

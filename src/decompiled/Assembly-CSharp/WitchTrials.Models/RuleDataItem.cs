@@ -67,9 +67,14 @@ public class RuleDataItem
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F3B0, 255 B (shared three-ref-store body)
+	// Stores `numbering`, `subtitle` and `description` to +0x10/+0x18/+0x20.
 	[Token(Token = "0x60005B7")]
 	[Address(RVA = "0x38F3B0", Offset = "0x38DDB0", VA = "0x18038F3B0")]
 	public RuleDataItem(string numbering, LocalizedText[] subtitle, LocalizedText[] description)
 	{
+		_numbering = numbering;
+		_subtitle = subtitle;
+		_description = description;
 	}
 }

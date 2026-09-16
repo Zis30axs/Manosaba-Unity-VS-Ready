@@ -12,16 +12,22 @@ public class VersionNumberDisplay : MonoBehaviour
 	[SerializeField]
 	private TextMeshProUGUI _label;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38CFA0
+	// `_label` (+0x20) loaded first; string.Concat("Ver. ", Application.version) -> TMP_Text.SetText(string).
 	[Token(Token = "0x6000578")]
 	[Address(RVA = "0x38CFA0", Offset = "0x38B9A0", VA = "0x18038CFA0")]
 	private void Awake()
 	{
+		_label.SetText("Ver. " + Application.version);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38D040
+	// GetComponent<TextMeshProUGUI>() into +0x20.
 	[Token(Token = "0x6000579")]
 	[Address(RVA = "0x38D040", Offset = "0x38BA40", VA = "0x18038D040")]
 	private void Reset()
 	{
+		_label = GetComponent<TextMeshProUGUI>();
 	}
 
 	[Token(Token = "0x600057A")]

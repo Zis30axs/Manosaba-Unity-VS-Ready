@@ -70,28 +70,49 @@ public class WitchTrialsLogUi : BacklogPanelModified
 	[Token(Token = "0x1700003C")]
 	private AuthorTextBuilder AuthorTextBuilder
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x33E630
+		// Lazy `_authorTextBuilder` (+0x160) ??= new AuthorTextBuilder(_authorTextSettings +0x158).
 		[Token(Token = "0x6000211")]
 		[Address(RVA = "0x33E630", Offset = "0x33D030", VA = "0x18033E630")]
 		get
 		{
-			return null;
+			return _authorTextBuilder ??= new AuthorTextBuilder(_authorTextSettings);
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x33E700 (stub), MoveNext 0x33EB70, <>n__0 base accessor 0x33E9B0
+	// - `<task>5__2` (+0x20) = base.Initialize(): BacklogPanel.Initialize inlined through <>n__0 (BindInput slot 93
+	//   "ShowBacklog" -> Show (slot 47), "Cancel" -> Hide (slot 48), returns default).
+	// - `_authorTextBuilder = new AuthorTextBuilder(_authorTextSettings)` stored directly (not via the getter), reloaded,
+	//   then `InitializeAsync(destroyCancellationToken)` awaited through the Cysharp awaiter.
+	// - `task` awaited last through the Naninovel IAwaiter (state 1).
 	[Token(Token = "0x6000212")]
 	[Address(RVA = "0x33E700", Offset = "0x33D100", VA = "0x18033E700", Slot = "83")]
 	[AsyncStateMachine(typeof(_003CInitialize_003Ed__4))]
-	public override Naninovel.UniTask Initialize()
+	public override async Naninovel.UniTask Initialize()
 	{
-		return default(Naninovel.UniTask);
+		Naninovel.UniTask task = base.Initialize();
+		_authorTextBuilder = new AuthorTextBuilder(_authorTextSettings);
+		await _authorTextBuilder.InitializeAsync(destroyCancellationToken);
+		await task;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x33E830
+	// BacklogPanel.SpawnMessage (real call); `LastMessage` (slot 100) exact-type test against the sealed
+	// WitchTrialsLogMessageUi -> ModifyAuthorPanel(AuthorTextBuilder) with the getter inlined.
 	[Token(Token = "0x6000213")]
 	[Address(RVA = "0x33E830", Offset = "0x33D230", VA = "0x18033E830", Slot = "114")]
 	protected override void SpawnMessage(BacklogMessage message)
 	{
+		base.SpawnMessage(message);
+		if (LastMessage is WitchTrialsLogMessageUi messageUi)
+		{
+			messageUi.ModifyAuthorPanel(AuthorTextBuilder);
+		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x33E9A0, 7 B
+	// Tail jump to BacklogPanel..ctor; no field initializers.
 	[Token(Token = "0x6000214")]
 	[Address(RVA = "0x33E9A0", Offset = "0x33D3A0", VA = "0x18033E9A0")]
 	public WitchTrialsLogUi()

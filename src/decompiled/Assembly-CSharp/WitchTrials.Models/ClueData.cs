@@ -26,6 +26,10 @@ public sealed class ClueData : WitchBookDataBase<ClueDataItem>
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38F270, 57 B
+	// This is only the implicit `base()`: `WitchBookDataBase<ClueDataItem>..ctor` is inlined down to
+	// `ScriptableObject..ctor`. There is no field initializer, so `_items` (+0x18) stays null until Unity
+	// deserializes it.
 	[Token(Token = "0x60005A1")]
 	[Address(RVA = "0x38F270", Offset = "0x38DC70", VA = "0x18038F270")]
 	public ClueData()

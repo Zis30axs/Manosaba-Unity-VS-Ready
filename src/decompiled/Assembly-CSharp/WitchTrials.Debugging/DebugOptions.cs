@@ -108,47 +108,63 @@ public class DebugOptions : DebugOptionsBase
 	[Token(Token = "0x1700013B")]
 	public static bool EnableSteamworks
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3AA230, 77 B
+		// Inverted default: `IsDebugMode` false returns `mov al, 1`, so a release build always enables
+		// Steamworks; only in debug mode does static +0x0 `s_enableSteamworks` decide.
 		[Token(Token = "0x6000771")]
 		[Address(RVA = "0x3AA230", Offset = "0x3A8C30", VA = "0x1803AA230")]
 		get
 		{
-			return default(bool);
+			return !IsDebugMode || s_enableSteamworks;
 		}
 	}
 
 	[Token(Token = "0x1700013C")]
 	public static LocaleKind? Locale
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3AA280, 140 B
+		// `IsDebugMode` and static +0x1 `s_overrideLocale` -> `new LocaleKind?(s_locale (+0x4))`; else a
+		// zeroed Nullable (null).
 		[Token(Token = "0x6000772")]
 		[Address(RVA = "0x3AA280", Offset = "0x3A8C80", VA = "0x1803AA280")]
 		get
 		{
-			return null;
+			return IsDebugMode && s_overrideLocale ? new LocaleKind?(s_locale) : null;
 		}
 	}
 
 	[Token(Token = "0x1700013D")]
 	public static bool SkipSplashScreen
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x3AA310, 76 B
+		// `IsDebugMode`, then static +0x8 `s_skipSplashScreen`. Same shape as `DebugSkip`.
 		[Token(Token = "0x6000773")]
 		[Address(RVA = "0x3AA310", Offset = "0x3A8D10", VA = "0x1803AA310")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_skipSplashScreen;
 		}
 	}
 
 	[Token(Token = "0x1700013E")]
 	public static bool SkipEntrySequenceAtFirstTime
 	{
+		// RECONSTRUCTED | Confidence: A (behavior) | RVA: 0x3AA360, 3 B
+		// The shipped getter is the universal 3-byte `xor eax, eax; ret` stub shared with dozens of BCL
+		// `return false` members, so it always returns false and never reads `s_skipEntrySequenceAtFirstTime`.
+		// The field is still written by UpdateStaticFields. The source very likely had a conditional-compilation
+		// or constant-false guard, but no evidence of its form survives.
 		[Token(Token = "0x6000774")]
 		[Address(RVA = "0x3AA360", Offset = "0x3A8D60", VA = "0x1803AA360")]
 		get
 		{
-			return default(bool);
+			return false;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA370, 84 B
+	// `IsDebugMode`, then the static byte +0xA `s_overrideStartGameScenario`;
+	// when both are set it returns +0x10 `s_startGameScenario`, otherwise null.
 	[Token(Token = "0x1700013F")]
 	public static string StartGameScenario
 	{
@@ -156,10 +172,14 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA370", Offset = "0x3A8D70", VA = "0x1803AA370")]
 		get
 		{
-			return null;
+			return IsDebugMode && s_overrideStartGameScenario ? s_startGameScenario : null;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA3D0, 76 B
+	// `DebugOptionsBase.get_IsDebugMode`; if false its result is returned,
+	// otherwise the DebugOptions static byte +0x18 = `s_debugSkip`. Same shape as
+	// `AllowContinueDebate`.
 	[Token(Token = "0x17000140")]
 	public static bool DebugSkip
 	{
@@ -167,10 +187,14 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA3D0", Offset = "0x3A8DD0", VA = "0x1803AA3D0")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_debugSkip;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA420, 76 B
+	// Calls the static `DebugOptionsBase.get_IsDebugMode`; when it is false,
+	// returns its (false) result directly; otherwise returns the byte at
+	// DebugOptions static-fields +0x19 = `s_allowContinueDebate`.
 	[Token(Token = "0x17000141")]
 	public static bool AllowContinueDebate
 	{
@@ -178,10 +202,12 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA420", Offset = "0x3A8E20", VA = "0x1803AA420")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_allowContinueDebate;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA470, 76 B
+	// `IsDebugMode`, then the static byte +0x1A `s_checkWitchBookState`.
 	[Token(Token = "0x17000142")]
 	public static bool CheckWitchBookState
 	{
@@ -189,14 +215,28 @@ public class DebugOptions : DebugOptionsBase
 		[Address(RVA = "0x3AA470", Offset = "0x3A8E70", VA = "0x1803AA470")]
 		get
 		{
-			return default(bool);
+			return IsDebugMode && s_checkWitchBookState;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3AA4C0, 344 B
+	// 
+	// Ten straight copies from the serialized instance fields (+0x20..+0x3A) to the statics (+0x0..+0x1A),
+	// in declaration order. The string store has a write barrier. There is no base call.
 	[Token(Token = "0x6000779")]
 	[Address(RVA = "0x3AA4C0", Offset = "0x3A8EC0", VA = "0x1803AA4C0", Slot = "4")]
 	protected override void UpdateStaticFields()
 	{
+		s_enableSteamworks = _enableSteamworks;
+		s_overrideLocale = _overrideLocale;
+		s_locale = _locale;
+		s_skipSplashScreen = _skipSplashScreen;
+		s_skipEntrySequenceAtFirstTime = _skipEntrySequenceAtFirstTime;
+		s_overrideStartGameScenario = _overrideStartGameScenario;
+		s_startGameScenario = _startGameScenario;
+		s_debugSkip = _debugSkip;
+		s_allowContinueDebate = _allowContinueDebate;
+		s_checkWitchBookState = _checkWitchBookState;
 	}
 
 	[Token(Token = "0x600077A")]

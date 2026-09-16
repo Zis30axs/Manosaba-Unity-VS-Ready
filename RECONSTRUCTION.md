@@ -19,6 +19,19 @@
 | 编译状态 | `dotnet build Manosaba.sln --no-incremental` = **0 error**（历史 `CS8632` 警告仅存在于未触碰的其他程序集） |
 | 目标架构 | 独立 Unity Editor 工程 + 合法外部依赖 → Play Mode（**不是**塞回原版 `GameAssembly.dll`，Harmony 仅作恢复验证工具，见 §0.6） |
 | Naninovel 兼容层可行性 | 已审计（§0.6，含一轮复核修正）：脚本是预编译 JSON（不用重写 `.nani` 解析器），条件分支语义 0 使用，表达式函数 15 个里只用到 1 个（`max`）；GigaCreation.NaninovelExtender 对 Naninovel actor/manager 基类有硬依赖，范围比初估大但仍可枚举；**独立风险**：`res/Assets` 下无 `.prefab`/`.unity`/`.meta`，场景/预制体还没有 Editor 可用形式，可能比兼容层本身更大——不需要先转 Yarn Spinner |
+| Debate/Court 子系统 | 本轮攻坚（独立分支 `recon/core-systems`）：**已完成**：82/82 个函数体、32,044/32,044 B（100%，`work/reversing/progress.py` 测得；最近几批补完 `ExecutionButtonScreen`/`SkipDebateButton`/`ObjectionCutIn` 三个整类、`ChoiceEvidence::Execute`（`@evidence`）、`Damage::Execute`（原生为空操作）、`DebugOptions.AllowContinueDebate`，以及收尾的 `DebateText::ProcessText`/`ModifyLinkedTextColor`（链接悬停高亮）；此前手工累加的"49/82、27,405 B、85.5%"口径错误已作废，见 §7.5 更正），行为全部 Confidence A；最近几批补完 `DebateTextPrinterPanel` 显示管线（`SetText`/`AppendText`/`SetMessages`/`AddMessage`/`RevealMessages`/`WatAndRevealAsync`/`Gosub`/`Awake`/`Initialize`/`SetFont`/`OnDestroy`/3 个 getter）与 `DebateText` 链接点击链与 `PrintDebateText` 的 4 个尾巴，查出三处字节确认的行为事实（`RevealMessages` 不读自己的 `delay` 参数、`AppendText` 丢弃消息作者、`SetText`/`AddText` 下标约定互不兼容），并补上缺失的 `LitMotion.Extensions` 引用与 `PooledObject<T>` 桩缺失的 `IDisposable` 声明，见 §7.5；`DebateUi.cs` 整个文件完成；`WaitForDebate`/`Print()`/`Execute()` 均已复原成真正的 `async`/`await`（`Print()` 3 个 await 点、`Execute()` 2 个 await 点），不是 MoveNext 逐状态翻译；`ModifyDebatePrinter`（此前判定"very hard"暂缓的场景位置/旋转/动画种类配置）已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合；`DebateTextPrinterPanel::AddText`（优先级表 #33）及其 LINQ 谓词 lambda 也已复原，五处非显然的第三方 API 识别（`IsNullOrWhiteSpace`/`Split`/`Behaviour.get_enabled`/`Behaviour.set_enabled`/`TMP_Text.set_alpha`）全部逐字节独立验证，并诚实记录了一处字节确认的行为疑点（循环边界用"空闲标签数"但写入目标是 `_labels[i]` 而非 `availableLabels[i]`）；外部复核发现并已修复 4 处提交后才暴露的错误（2 处虚表槽位号、1 处遗漏的 disposal 守卫、1 处多余语句），另有 2 处提交前发现并订正的注释错误（`set_Position`/`set_Rotation` 分派机制混淆；`AddText` 未填充槽位回退常量的错误识别），详见 §7.5"本轮修正"；顺带修复了两处阻塞性第三方/工程配置缺口（`Naninovel.UniTask.Awaiter` 缺失基接口列表；`Assembly-CSharp.csproj` 完全没有引用 `FastEnum.dll`） |
+| PerspectiveStage 子系统 | 本轮启动（用户优先级第 2 位，此前完全未触碰）：**已完成**：65/65 个函数体、27,784/27,784 B（100%，`progress.py` 测得；收尾覆盖全部舞台命令、`StageCameraContainer`/`StageScreenContainer`/`StageScreenController` 全部方法与 `PerspectiveStagePresenter`，见 §7.6；此前手工累加的"19/65、23,203 B、83.5%"口径错误已作废）——`GosubToModifyPerspectiveStageCamera::Execute`/`GosubToSplitPerspectiveStageScreens::Execute`/`PerspectiveStagePresenter::Awake`/`StageCameraController::Awake`/`StageCameraController::get_TrialStateManager`/`StageCameraController::ModifyCameraAsync`/`StageCameraController::ShakeCameraAsync`/`PerspectiveStageManager`整个类（构造函数+属性+全部 7 个接口方法）/`StageScreenController::Awake`/`StageCameraController::OnDestroy`与`StageScreenController::OnDestroy`（同一原生函数的折叠体），全部 Confidence A（三个异步方法收尾的 using-vs-try/finally 写法为 B，见 §7.6）。`PerspectiveStageManager` 的每个方法都是单跳转发到对应子接口字段（`_loader`/`_screenModifier`/`_cameraModifier`/`_courtModifier`），逐一独立追踪参数在共享"接口槽缓存"跳板里的寄存器/栈来源验证，而不是按方法名相似度假设；`PerspectiveStagePresenter::Awake` 的构造调用把 `_cameraModifier` 钉死为 `_cameraController`（`StageCameraController`），使得 `ModifyCameraAsync`/`ShakeCameraAsync` 两条调用链现在从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，构成完整闭合的调用链而非假设。`ModifyCameraAsync`（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，共 4,999 B，单一 await 点）复原成真正的 `async`/`await`，途中独立反汇编确认 `Cysharp.Threading.Tasks.UniTaskExtensions.GetAwaiter(UniTask[])`（RVA `0x18203F0`）——这是 `await _modifyCameraTasks[cameraIndex];` 之所以能编译的原因，也解开了 `Awake()` 留白的"4 行任务槽表索引什么"：槽 0/1/2 = height/rotation/distance tween 任务；副作用是发现并修复了一处工程配置缺口（`Assembly-CSharp.csproj` 缺 `UnityEngine.AssetBundleModule` 引用——`Cysharp.Threading.Tasks` 命名空间下同时可见的 `UnityAsyncExtensions.GetAwaiter(AssetBundleRequest/AssetBundleCreateRequest)` 使扩展方法查找必须能解析该类型，即使从未选中这些重载，已用 `MetadataLoadContext` 反射验证）。`ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190` MoveNext，共 4,465 B）结构与 `ModifyCameraAsync` 同构，把 `_shakeCameraTasks` 的 3 槽解释为 X/Y/Z 三轴（`Vector3 force` 是必填结构体，三路无条件全跑，跟三个可选 tween 不同），并顺带用 grep 穷尽排查确认 `_modifyCameraTasks` 空闲的第 4 槽再无第三处读写——从"未知"降级为"证据已穷尽"。**`GosubToModifyPerspectiveStageCamera` 在脚本里出现 16,542 次——是全部 43 个 `WitchTrials.*` 自定义命令类里频次第二高的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标 `PrintDebateText`（2,003 次）高一个数量级**，所以这不只是"打开了一个新子系统"，按调用频次算是本轮杠杆最高的单个复原目标。前两个都不是 async 状态机（同步方法，尾调用返回 `gosub.Execute(default(AsyncToken))`，自身收到的 `token` 被静默丢弃不转发，字节确认 `AsyncToken` 恰好 16 字节）；揭示并在第二个目标上验证确认了一种"读每角色命名变量 → 拼 subroutine 标签后缀 → 重发布固定名变量 → Gosub 到 System_Subroutine"的通用调用约定；发现两者对同一个 `look:` 角色 id 会算出不同的变量名（`ToLowerInvariant` vs `FirstToLower`），查过脚本语料后确认这处不一致在实际内容里是惰性的（用到的 `look:` 值都是单大写字母开头）。`PerspectiveStagePresenter::Awake` 是这个子系统"常驻状态"一侧的入口，构造并注册唯一的 `PerspectiveStageManager` 服务，是整个子系统的接线图；复原过程中识别出两处看似直接跨类访问私有成员的调用，实际都是被内联的公开包装方法（`StageScreenController.Dismiss()`/`StageCameraController.Dismiss()`），各自独立反汇编验证；顺带修复第三处阻塞性第三方引用桩缺口（`Naninovel.ParameterList<TItem>` 缺失 `IEnumerable<TItem>`/`IEnumerable` 基接口，与 `UniTask.Awaiter` 同类问题）；本轮新发现五处无条件解引用的 `[SerializeField]` 字段已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`，详见 §7.6 |
+| Naninovel-glue 子系统 | 本轮推进（用户优先级第 3 位）：**已完成**：66/66 个函数体、21,262/21,262 B（100%，`progress.py` 测得）——`WitchTrialsScriptPlayer`（软重置保留 skip/auto、`GetSkipAllowed`、`ProcessAutoObjectionAsync`）、`WitchTrialsChoiceHandlerManager`、`WitchTrialsNaninovelManager` 余下成员、`ScriptHelper`、`GosubResetWitchBook` 整类、`ScenarioInfo` 改回位置记录，见 §7.7；全部 `WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B |
+| Save/Load 子系统 | 本轮推进（用户优先级第 4 位）：**已完成**：31/31 个函数体、10,941/10,941 B（100%，`progress.py` 测得）——`QuickSave`/`QuickLoad`/`OpenLoadUi` 三个命令、`SaveLoadUi` 整类（存/读/删三条 async 流程、分页加载遮罩计数、焦点槽位选择）、`TitleUi.SaveLoadUi`，见 §7.8；全部 `WitchTrials.*` 合计 278/929 个函数体、104,318/316,778 B |
+| WitchBook/Data 子系统 | 已完成（用户优先级第 5 位）：121/121 个函数体、39,146/39,146 B。模型层、五个 Page、列表项控件、WitchBookScreen、WitchBookUi、按钮与三个命令，见 §7.9；警告基线降为 140 |
+| Audio 子系统 | 已完成：18/18 个函数体、5,268/5,268 B。收尾的 14 个包括：`sfx` 命令（PlaySfxModified）、SoundTestUi 播放器（含 UpdatePlayerAsync 状态机）、SpawnableWithAudio、`audioPlayer` 命令，以及两个 IAudioManager 懒加载访问器，见 §7.13 |
+| Input 子系统 | 已完成：25/25 个函数体、5,482/5,482 B。收尾的 17 个包括：WitchTrialsActions 的 Unity 生成包装器（bindingMask/devices/FindBinding/5 个 Scheme）、WitchTrialsInputManager（ctor/PlayResponseSfx/BuildActionNameOrId）、DebugTextPreferenceNaninovelInputState，见 §7.12 |
+| Map 子系统 | 已完成：27/27 个函数体、9,894/9,894 B。第 A 组为叶子组件（MapArea/FocusButton/Label/Modifier/MapFloor），为此补上 `GigaCreation.Tools.UndoExtensions` 工程引用。第 B 组为 MapPage（区域初始化、`OnChoiceMapAreaAsync` 的 WhenAny 选择）、`map` 命令 ChoiceMapArea（flag 变量是"排除"位掩码）、SpawnableMap（Timeline 播放与淡出），见 §7.14 |
+| Debug 子系统 | 已完成：46/46 个函数体、20,437/20,437 B。收尾为 DebugReporter（测试报告：截图 + CSV 日志 → Slack 或桌面）与 SlackApp（Slack 外部上传 REST 流程）。代码中没有内嵌凭据（token/频道为序列化字段），并补上 Platforms、ScreenCapture、ImageConversion 三个引用，见 §7.15。以下为上半记录：30/46 个函数体、10,881/20,437 B。第 B 组中 DebugCommandButtons（7 个调试按钮 + `GoToDebugHomeAsync`）、DebugInfoBuilder、SRDebuggerInitializer、`showLoading` 命令已完成，并顺带补写被内联的 `GalleryUi.UnlockAllStills`。剩余 DebugReporter 与 SlackApp 属于外部上传链路，其中的字面量按脱敏规则处理，见 §7.15。以下为第 A 组记录：第 A 组完成，19/46 个函数体、5,106/20,437 B。已完成 `DebugOptions` 的剩余静态开关与 `UpdateStaticFields`，以及 5 个 `DebugTextPreference*` 调试标签和 `ToDebugString`。发现 `SkipEntrySequenceAtFirstTime` 在发行版中恒为 false。另外修正了一处 ICF 计数虚高：3 个折叠别名体此前为空，现已补上，见 §7.15。第 B 组（DebugReporter/SlackApp/DebugInfoBuilder/DebugCommandButtons）待做 |
+| Credits/Gallery 子系统 | 已完成：71/71 个函数体、20,747/20,747 B。第 A 组完成：`credit`/`hideCredit` 命令、EndingStill（淡入/淡出）、CreditRoll（滚动条滚动）、StillGrid（按 `_order` 排序 CG 槽位）。同时清掉 §7.15 记录的 ICF 共享存根积压（AuthorTextBuilder.FullName 记录、CharacterDataItem/MasterData/GoogleForm/OptionsUi/SaveLoadUi 共 12 处），见 §7.16。第 B1 组完成：CreditsDirectorBase（BGM 拍长、按拍等待）、第 1 章片尾演出 Act1（9 个 await 的状态机，含噪声 BGM 与滚动倒卷）、CreditsUI（按章号分派导演），为此补上 `ppt-noise` 工程引用，见 §7.16。第 B2 组完成：第 2 章片尾 Act2（多段滚动交叠、特别鸣谢分阶段排版、CG 轮播）与 SpecialThanksRoll（按宽度折行的名单排版），见 §7.16。第 C 组完成：CG 画廊（格子缩略图的解锁/加载/按比例缩放、查看器的取消事件拦截与按宽度缩放、一键解锁全部 CG 并保存全局状态），见 §7.16 |
+| TrialState 子系统 | 已完成：18/18 个函数体、6,293/6,293 B。最后 6 个为 WitchTrialsNaninovelManager 的 ChangeTrialMode/SetTrialTimer，以及三个 Naninovel 命令 `trialMode`/`pauseTrial`/`timer`，见 §7.11 |
+| UI 子系统 | 已完成（用户优先级第 6 位）：165/165 个函数体、50,436/50,436 B。共七组（第 4 组为 HintDisplay，第 5 组为 ControlPanel，第 6 组为 TitleUi，第 7 组为 OptionsUi），见 §7.10：<br>第 1 组：小型控件（TabToggle、两个 Toggle 切换器、CanvasGroupButton、VersionNumberDisplay、WitchTrialsButton/Label）与四个 Page 构造函数。<br>第 2 组：AutoToggleUi、AdvChoiceHandlerButton、MPImageAppearanceChanger 及其 Labeled 子类、TrialChoiceHandlerPanel 构造函数。<br>第 3 组：回想面板 WitchTrialsLogUi/LogMessageUi 与 WitchTrialsTextPrinterPanel。<br>警告基线仍为 140 |
+| Other（未归类余量） | 161/162 个函数体、55,725/56,145 B。仅剩 1 个刻意暂缓的函数体（`GoogleForm.OpenGoogleFormAsync`，见 §7.17 第 D8 组）。第 D10 组完成：`WitchTrialsActions`（Input System 生成的包装类：46,682 字符的 `.inputactions` JSON、两张映射表与 24 次动作查找）。以下为第 D9 组记录：158/162 个函数体、51,816/56,145 B。第 D9 组完成：三个 `ModifyCamera*Tween` record 的全部编译器生成成员（`EqualityContract`／`ToString`／`PrintMembers`／`GetHashCode`／两个 `Equals`／`<Clone>$`／`Deconstruct`）。以下为第 D8 组记录：136/162 个函数体、46,090/56,145 B。第 D8 组完成：`GoogleForm`（问卷 URL 拼装与 `EntryInfo` 诊断信息；本版本 `Awake` 即销毁该对象）与 `PrintTextModified.ShouldPlayAutoVoice`（`wait:false` 时快进中仍播语音）；`OpenGoogleFormAsync` 因入口守卫与未赋值的 using 资源暂缓。以下为第 D7 组记录：131/162 个函数体、44,437/56,145 B。第 D7 组完成：`Timer` 倒计时模型（按速度扣减剩余时间、链接取消）、`WitchTrialsBackground` 与 `BackgroundMatcherExtended`（按 16:9 参考尺寸匹配背景相机）、调试命令 `BlockInteraction`。以下为第 D6 组记录：116/162 个函数体、39,772/56,145 B。第 D6 组完成：审判流程命令（`@stopForChoice` 的调试自动选择、坏结局/正确选项位标志、`@badId`、回到标题的淡出与状态重置）。以下为第 D5 组记录：104/162 个函数体、34,370/56,145 B。第 D5 组完成：AuthorTextBuilder（作者名富文本：作者模板优先，否则按语言决定姓名顺序并分首字/正文字号）。以下为第 D4 组记录：91/162 个函数体、29,355/56,145 B。第 D4 组完成：三个 `Spawnable*` 生成物（证据品图片的淡入移动、案件重演与审判文字的 Timeline 播放）。以下为第 D3 组记录：69/162 个函数体、22,972/56,145 B。第 D3 组完成：五个 `Emote*` 表情动作命令（写死关键帧的 animate 预设，关键帧数组从 global-metadata.dat 读出；EmoteFall 倒下时隐藏角色并播放音效）。以下为第 D2 组记录：54/162 个函数体、13,772/56,145 B。第 D2 组完成：LocalizeCanvasGroup/LocalizeImage/LocalizeRebuildables（按语言切换 CanvasGroup、Sprite 与可重建控件）与 LoadingIndicatorRolling（不受 timeScale 影响的循环转圈）。以下为第 D1 组记录：33/162 个函数体、5,739/56,145 B。第 D1 组完成：PointerStaying 系列（悬停状态在同组 UI 间传播，BlockList/IgnoreSetting 只对精灵切换器生效）、SetMainCameraToCanvasOnAwake、SetShaderTimerAsUnscale（`_UnscaledTime` 全局着色器时间）、PauseOrUnpause（timeScale 0/1）。审计脚本收紧后基线为 4 处，已逐个核对为合法，见 §7.17 |
 
 ---
 
@@ -512,6 +525,9 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 
 难度分布：trivial 233 / easy 540 / medium 374 / hard 53 / very hard 2。
 
+各桶当前复原进度用 `work/reversing/progress.py` 测量（与本表同口径；计数规则见 §7.6
+"进度计数约定"），不要手工累加。
+
 **Naninovel（789 个类型）暂不作为恢复目标**——那是有公开文档的商业中间件，
 它的已知语义更适合当作交叉验证的旁证（B 级证据），而不是恢复对象。
 
@@ -552,18 +568,18 @@ getter 共用（`ClueData.get_Items`、`MapData.get_Items`、`AuthorDataItem.get
 | 22 | Naninovel-glue | `GosubResetWitchBook::CheckEvidenceState` | `0x328D20` | 1103 | 17 | 1 | 0 | 0 | 8 | hard |
 | 23 | Naninovel-glue | `GosubToObjectionCutIn::Execute` | `0x325750` ✅ | 736 | 7 | 0 | 0 | 5 | 5 | medium |
 | 24 | Naninovel-glue | `WitchTrialsNaninovelPresenter::Awake` | `0x38EE30` ✅ | 227 | 4 | 0 | 1 | 0 | 1 | easy |
-| 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
-| 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
-| 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
-| 28 | PerspectiveStage | `StageCameraController::Awake` | `0x3846C0` | 840 | 24 | 0 | 0 | 0 | 0 | hard |
+| 25 | PerspectiveStage | `GosubToModifyPerspectiveStageCamera::Execute` | `0x31D870` ✅ | 2520 | 48 | 0 | 0 | 11 | 8 | hard |
+| 26 | PerspectiveStage | `GosubToSplitPerspectiveStageScreens::Execute` | `0x31E250` ✅ | 2338 | 44 | 0 | 0 | 10 | 7 | hard |
+| 27 | PerspectiveStage | `PerspectiveStagePresenter::Awake` | `0x38D8D0` ✅ | 1558 | 33 | 0 | 1 | 0 | 5 | hard |
+| 28 | PerspectiveStage | `StageCameraController::Awake` | `0x3846C0` ✅ | 840 | 24 | 0 | 0 | 0 | 0 | hard |
 | 29 | WitchBook/Data | `ClueDataItem::.ctor` | `0x36C0D0` ✅ | 170 | 4 | 72 | 0 | 0 | 0 | easy |
 | 30 | WitchBook/Data | `MapDataItem::.ctor` | `0x30C0D0` ✅ | 82 | 2 | 56 | 0 | 0 | 0 | easy |
 | 31 | WitchBook/Data | `WitchBookScreen::InitializePages` | `0x37A880` | 1408 | 31 | 0 | 5 | 0 | 5 | hard |
 | 32 | WitchBook/Data | `WitchBookScreen::get_PageData` | `0x3799B0` ✅ | 807 | 15 | 14 | 0 | 0 | 3 | medium |
-| 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` | 1322 | 36 | 1 | 0 | 3 | 5 | hard |
-| 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
-| 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` | 1590 | 34 | 1 | 0 | 1 | 7 | hard |
-| 36 | Debate/Court | `DebateUi::TimeSpanToText` | `0x36A900` | 1156 | 29 | 1 | 1 | 3 | 1 | hard |
+| 33 | Debate/Court | `DebateTextPrinterPanel::AddText` | `0x367E20` ✅ | 1322 | 36 | 1 | 0 | 3 | 5 | hard |
+| 34 | Debate/Court | `DebateUi::OnVisibilityChangedByCustomUi` | `0x36A100` ✅ | 1435 | 19 | 1 | 2 | 0 | 10 | hard |
+| 35 | Debate/Court | `PrintDebateText::ModifyDebatePrinter` | `0x322B40` ✅ | 1590 | 34 | 1 | 0 | 1 | 7 | hard |
+| 36 | Debate/Court | `DebateUi::TimeSpanToText` | `0x36A900` ✅ | 1156 | 29 | 1 | 1 | 3 | 1 | hard |
 | 37 | Map | `ChoiceMapArea::GetRestrictionAreas` | `0x327030` | 1029 | 25 | 1 | 1 | 1 | 8 | hard |
 | 38 | Map | `MapPage::InitializeAreas` | `0x36FB30` | 1092 | 21 | 1 | 0 | 1 | 6 | hard |
 | 39 | Map | `MapFloor::Show` | `0x36F100` | 784 | 21 | 1 | 1 | 0 | 2 | hard |
@@ -777,13 +793,2112 @@ private void Start()
 
 ---
 
+## 7.5 `Debate/Court` 子系统：已完成，82/82 个函数体 / 32,044/32,044 B（独立 worktree
+`recon/core-systems`，无资源审计工作，见并行的 `audit/unity-assets`）
+
+**进度（`work/reversing/progress.py` 测得，口径与 §3 桶总数一致）**：`Debate/Court` 桶
+82 个独立函数体 / 32,044 B，**全部复原（100%）**。收尾一批：`DebateText::ProcessText`
+（不调用基类实现，自行串起 6 个 Naninovel 标签处理虚方法——vtable 槽 162/159/163/160/161/165
+= `ProcessExpressionTags`/`ProcessLinkTags`/`ProcessTipTags`/`ProcessRubyTags`/`ProcessEventTags`/
+`FixArabic`；非空白文本时订阅 GigaCreation `IInputManager.GetAction("Point", "UI")`（接口槽 1）
+驱动悬停高亮）与 `DebateText::ModifyLinkedTextColor`（`FindIntersectingLink` 命中链接时按
+0.75 调暗、离开时按 1.33333f 还原，两常量从 PE 读出，1.33333f 不是精确倒数，反复悬停会有
+微小色差漂移；每轮以 `UpdateVertexData(All)` 结束）。再上一批：`ChoiceEvidence::Execute`（`@evidence` 命令，3 个 await 复原为真正的
+`async`/`await`；`correct:` 指定的证据不在图鉴当前显示范围时走 `Command.Err`（vtable 槽 8）
+报错而非警告；调试跳过时不等玩家选择、直接取正解或 `"*"`，结束后
+`IScriptPlayer.SetSkipEnabled(true)`（接口槽 34）），`DebateTextPrinter` 构造函数（纯基类调用）。
+最新一批 +7 个 / +1,283 B：`ObjectionCutIn`（`SetSpawnParameters` 与两个 async 方法；
+`AwaitSpawn` 按参数只显示一组对象，`PlayableGraph::IsValid()` 由 icall 名字符串锚定——
+已有图则 `time = 0` 后 `ResumeAsync`，否则 `PlayAsync`；`AwaitDestroy` 只取消 `_cts`，
+不隐藏任何东西），`Damage::Execute`（原生代码里是空操作，同步完成），
+`DebugOptions.AllowContinueDebate`（`IsDebugMode && s_allowContinueDebate`），
+`ChangeCourtFireFxActivity` 构造函数（字段初始化 `Enable = true`），`PrintDebateText.<>n__0`
+（`base.Print` 的编译器生成访问器）。顺带补上 `Assembly-CSharp.csproj` 缺失的
+`GigaCreation.Tools.Private.PlayableDirectors` 项目引用。
+再上一批 +20 个 / +5,099 B：`ExecutionButtonScreen` 整个类（处刑按钮：按住蓄血槽，
+满槽后播完成音效、等 `_delayAfterFullFill` 秒、`ResumeAtLabel("ExecutionConfirmed")`；
+3 个 async 方法复原为真正的 `async`/`await`，2 个 `IAudioManager` 接口槽 19/20 =
+`PlaySfx`/`StopSfx` 逐一从跳板里的槽号常量锚定；字节确认填充速度按帧计、没有乘
+`Time.deltaTime`），`SkipDebateButton` 整个类，`DebateTextPrinterPanel::set_Appearance`
+（自动属性，dump.cs 的 `<Appearance>k__BackingField; // 0x188` 直接锚定）。
+行为全部 Confidence A（个别无法从字节区分的 C# 写法选择记为 B，逐处在源码注释里标明）。
+**更正**：本节此前写的"49 个 / 27,405 B（约 85.5%）"是手工累加的，与桶总数口径不一致，
+已作废——它把异步方法的 `MoveNext` 字节计入了分子（`MoveNext` 所在的 `<X>d__N` 嵌套类型
+在 dump.cs 里命名空间为空，`rank2.py` 按 `WitchTrials.` 前缀过滤时就不在任何桶里），把按
+`rank2.py` 规则归入 Naninovel-glue 的 `DebateTextPrinterPanel::Gosub` 算进了本桶，还把 7 B
+的折叠平凡构造体（`ranked.json` 的 `aliased`，不在任何桶里）算作一个体。以后进度一律以
+`progress.py` 为准，不再手工累加。（初次
+提交时有 2 处被误判为需要 Confidence B 的调用目标，实际是虚表基址算错导致的——
+已在外部复核后重新独立锚定虚表基址并修正为 Confidence A；另有 1 处 disposal 守卫
+遗漏和 1 处多余语句，详见下方"本轮修正"。）最近几批：`DebateTextPrinterPanel` 的
+`SetText`/`AppendText`/`RevealMessages`（含其谓词 lambda）/`WatAndRevealAsync`/`Gosub`/
+`OnDestroy`/`SetMessages`/`AddMessage`/`Awake`/`Initialize`/`SetFont`/构造函数及 3 个属性
+getter，`PrintDebateText` 的 `CompleteOnContinue`/`ShouldPlayAutoVoice`/`WaitAutoVoice`/
+构造函数，`DebateText` 的链接点击链，见下方"显示管线"小节。
+
+| 文件 | 完成 / 总数 | 说明 |
+|---|---|---|
+| `DebateUi.cs` | **14 / 14（整个文件）** | 辩论 UI：倒计时文本、跳过按钮、HP 变化钩子 |
+| `Court.cs` | 2 / 3（ctor 是已知的共享空构造体） | 法庭火焰特效 |
+| `ChangeCourtFireFxActivity.cs` | 2 / 3（同上） | 火焰开关 Command |
+| `ChangeDebateMode.cs` | 1 / 2（同上） | 辩论模式开关 Command |
+| `PrintDebateText.cs` | 18（原"~15"总数估计偏低；逐地址核对未做，见"尚未解决"第 3 条） | 辩论文字打印 Command（脚本内 2,003 次调用）——`Execute()`/`Print()` 均已复原成结构化 `async`/`await`（见下方详述）；`ModifyDebatePrinter`（场景位置/旋转/动画种类配置）已复原，**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链现已完全闭合**；本轮补完 `CompleteOnContinue`（按 "Continue" 输入提前完成，经 `ref` 改写传入的 token）/`ShouldPlayAutoVoice`/`WaitAutoVoice`（立即完成，不等语音）/构造函数（与 `PrintTextModified` 折叠） |
+| `DebateTextPrinterPanel.cs` | 12 / ~23 | 辩论打字机效果：`SetText`（重置整个 `_labels`）/`AddText`（优先级表 #33，只填空闲标签）按 `<br>` 拆行填字；`AppendText` 把文字拼到最后一条消息，**并丢弃其作者**；`RevealMessages` 按当前语言设行距、等布局重建，再对每个已启用标签错开 0.2 s 发起淡入（**不读传入的 `delay`**；`enableDebugSkip` 打开时不错开）；`WatAndRevealAsync` 等待后 0.4 s alpha 0→1；`Gosub`；`OnDestroy` 取消并释放 `_revealCts`；3 个属性 getter。`Awake`/`Initialize`/`SetMessages`/`AddMessage`/`SetFont`/构造函数等仍是空桩 |
+
+### 系统模型：`DebateUi` 完整生命周期（可连续阅读）
+
+```
+Initialize()
+  -> _skipDebateButton.SetIconShadowEnabled(false)      // 初始外观：跳过图标暗淡
+
+ChangeVisibility(visible, duration, token)               // CustomUI 显示/隐藏总入口
+  -> OnVisibilityChangedByCustomUi(visible)
+  -> base.ChangeVisibility(...)                          // 交给 Naninovel 处理淡入淡出动画
+
+OnVisibilityChangedByCustomUi(true)                      // 辩论 UI 出现时
+  -> _disposables = new CompositeDisposable()
+  -> WitchTrialsNaninovelManager.OnRemainingTimeChangedAsObservable()
+       .Subscribe(b__18_0).AddTo(_disposables)           // 每次倒计时变化：刷新文本 + 归零时触发 Goto("TimeIsUp")
+  -> WitchTrialsNaninovelManager.OnDebateSkippableChangedAsObservable()
+       .Subscribe(b__18_1).AddTo(_disposables)           // 是否可跳过变化：跳过按钮 Present()/Dismiss()
+  -> _skipDebateButton.OnPointerDownAsObservable()
+       .Subscribe(b__18_2).AddTo(_disposables)           // 按下：NaniScriptPlayer.SetSkipEnabled(true)
+  -> _skipDebateButton.OnPointerUpAsObservable()
+       .Subscribe(b__18_3).AddTo(_disposables)           // 松开：SetSkipEnabled(false)（长按跳过）
+  -> NaniScriptPlayer.OnSkip += _skipDebateButton.SetIconShadowEnabled   // 跳过状态 <-> 图标外观双向同步
+
+OnVisibilityChangedByCustomUi(false)                      // 辩论 UI 隐藏时
+  -> _disposables.Clear(); _disposables.Dispose(); _disposables = null   // 全部取消订阅
+  -> NaniScriptPlayer.OnSkip -= _skipDebateButton.SetIconShadowEnabled
+
+b__18_0(TimeSpan remaining)                               // 倒计时归零时的关键发现
+  -> _label.SetText(TimeSpanToText(remaining))
+  -> if (remaining > TimeSpan.Zero) return;
+  -> new Goto { Path = "System/System_Subroutine.TimeIsUp", ResetState = ["-"] }.Execute().Forget();
+     // 计时器不是纯 UI 效果：倒计时归零会直接跳转执行脚本的 TimeIsUp 分支
+```
+
+这条链路证实：**辩论倒计时是真正的游戏规则耦合点**，不是装饰性 UI——`TimeIsUp`
+标签的具体内容（大概率是"举证失败/超时惩罚"分支）还没有单独反查，列进下面的
+下一步。
+
+### `PrintDebateText::CalculateWaitTime` — 一个此前完全不透明的调用链，现已打通
+
+```
+CalculateWaitTime()
+  -> IsEnabledDebugSkip ? return 0.1f
+  -> IsPlayingAutoVoice()?
+       -> AudioManager.GetVoiceTrack(AutoVoicePath)            // IAudioManager dump.cs Slot 31
+       -> is AudioTrack audioTrack ? return audioTrack.Clip.length   // 有真实语音：等待时长=语音时长
+  -> 否则 CalculateWaitTimeFromMessage(Text)
+       -> 剥离空白/日文括号引号标点 + 富文本标签（两个静态 Regex，原文本已从数据段
+          直接读出，不是猜的）
+       -> return cleanedLength * 0.15f + 0.6f                  // 阅读速度估算公式
+```
+
+（此调用链最初误判为 `ShouldPlayAutoVoice()` + `BuildAutoVoicePath()`；见下方
+"本轮修正" 一节——由外部复核发现并经反汇编+dump.cs 独立核实后更正为
+`IsPlayingAutoVoice()`/`get_AutoVoicePath()`，现为 Confidence A。）
+
+**`PrintDebateText` 的静态构造函数（`.cctor`）是原始 ILSpy 桩代码里完全缺失的一个
+真实原生方法**——它有自己的 RVA（`0x3236A0`），但 ILSpy 生成 `.cs` 桩文件时把它
+漏掉了（大概率认为这类"纯字段初始化"构造函数不值得单独渲染）。这是本轮流程上的
+一个提醒：**符号库（`il2cpp_db.py`/`sweep.py`）比 ILSpy 桩文件更权威**，遇到
+"这个类应该有 cctor 但 `.cs` 里没有" 的情况，直接查符号库能找到。
+
+### `WaitForDebate` — 完整恢复成 `async`/`await`/`while`，不是 MoveNext 逐状态翻译
+
+已按用户要求把 `<WaitForDebate>d__25.MoveNext`（824 B 状态机）**结构化复原**成：
+
+```csharp
+private async UniTask WaitForDebate(float time, [Optional] AsyncToken token)
+{
+    float elapsedTime = 0f;
+    while (elapsedTime < time)
+    {
+        token.ThrowIfCanceled();
+        if (token.Completed) break;
+        NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, time - elapsedTime);
+        await AsyncUtils.WaitEndOfFrame(token);
+        token.ThrowIfCanceled();
+        elapsedTime += Time.deltaTime;
+    }
+}
+```
+
+确认技巧记录下来供后续状态机复原复用：
+1. **`sub_XXXXX(cached icall)` 模式可以直接读出 icall 名字符串**——被调用地址附近
+   的数据段里存着形如 `"UnityEngine.Time::get_deltaTime()"` 的纯 ASCII 字符串，
+   `il2cpp_pe.PE().read(rva, n)` 直接读出来即可，不需要靠猜测/模式匹配。
+2. **`AsyncUtils.WaitEndOfFrame(token)` 的识别靠独立反汇编逐字节对比**——常量
+   `PlayerLoopTiming.PostLateUpdate`（`0xc`）和构造出的结构体形状，在调用点内联的
+   版本和这个方法自己反汇编出来的版本完全一致，才敢确认成具名调用而不是保留在
+   raw 状态机层面。
+3. **虚方法调用点的 `[klass+base+16*slot]`/`[klass+base+16*slot+8]` 双读取模式，
+   读的是同一个 `VirtualInvokeData{ methodPtr; method; }`（16 字节）的两个字段，不是
+   相邻两个槽位**——`method`（`MethodInfo*`）在需要按共享泛型方式分派时会被塞进
+   调用约定的下一个空闲寄存器（可能是 `rdx`、也可能是 `r8`，取决于该虚方法本身有
+   几个显式参数），本轮在 `ModifyDebatePrinter`（`set_Position`/Slot 6）和
+   `AddText`（`Graphic.SetVerticesDirty`/Slot 28、`text` setter/Slot 66）里各遇到
+   一次，混淆过一次（见"本轮修正"）。这也是"虚表基址 `0x138` 对全二进制通用"这一
+   经验结论背后真正的结构性原因，不只是"两次独立锚定恰好给出同一个数"的巧合。
+4. **`describe_data` 返回的字符串字面量是已经正确解码的 Python `str`，但这个环境的
+   终端/文件重定向会把非 ASCII 字符显示成乱码（`repr()` 也一样会乱码）**——正确
+   读法是 `sys.stdout.buffer.write(s.encode('utf-8'))` 直接写字节流，绕过终端的
+   错误编码假设；已在 `AddText` 的日语警告字符串上验证过。
+
+### `Print()` — 3 个 await 点，第一次打通"调试跳过自动举证"分支
+
+`<Print>d__21.MoveNext`（RVA `0x324180`，3290 B，本轮单个最大的复原目标）**结构化
+复原**成：
+
+```csharp
+protected override async UniTask Print(ITextPrinterActor printer, AsyncToken token)
+{
+    await base.Print(printer, token);
+    if (IsEnabledDebugSkip)
+    {
+        string[] linkIds = s_linkIdRegex.Matches(Text)
+            .Where((Match match) => match.Groups.Count == 2)
+            .Select((Match match) => match.Groups[1].Value)
+            .ToArray();
+        if (linkIds.Length != 0)
+        {
+            NaniVarManager.TrySetVariableValue(DebateWaitTimeVarName, 0f);
+            await WitchTrialsScriptPlayer.ProcessAutoObjectionAsync(linkIds);
+            return;
+        }
+    }
+    await WaitForDebate(CalculateWaitTime(), token);
+}
+```
+
+关键发现：**`enableDebugSkip` 打开时，`Print()` 完全跳过正常的计时等待**，改成用
+`s_linkIdRegex`（`<link="(\w+?)">`）从台词里抠出所有 `<link="id">` 标记的 id，一次性
+交给 `IWitchTrialsScriptPlayer.ProcessAutoObjectionAsync(string[] objectionIds)`（dump.cs
+确认为该接口 Slot 0，和该接口仅有的另一成员 `CancelGosub()` 放在一起看，读作"QA/调试
+模式下自动化处理证据链接式举证，不必等真人逐个点击"）。这条分支被证实**立即
+`return`**（state==1 的 resume label 直接跳到 `SetResult` 收尾，不会落入第 4 步）——
+不是靠语义推测，是靠追踪 resume label 的跳转目标验证的。三个 await 点分别在状态机
+里对应 state 0/1/2，全部通过"resume 路径落到与同步完成路径相同的合并点"这一方式
+交叉验证了控制流，不是逐状态直译。
+
+两个被 ILSpy 完全省略的编译器缓存 lambda（`PrintDebateText.<>c.<Print>b__21_0`/
+`b__21_1`，和本文件的 `.cctor` 一样属于"ILSpy 认为不值得渲染的纯样板代码"）逐字节
+比对确认为 `match.Groups.Count == 2`（`GroupCollection.get_Count()` 的 35 字节体
+完全相同）和 `match.Groups[1].Value`（`Capture.get_Value()` 的 40 字节体完全相同）——
+由于 `s_linkIdRegex` 只有一个捕获组，前者对这个正则永远为真，是"忠实但语义上多余"
+的防御性代码，如实保留，不做"优化"。
+
+**副产品：修了一个阻塞性的第三方桩代码缺口**——`Naninovel.UniTask.Awaiter`（编译期
+引用桩 `src/decompiled/Elringus.Naninovel.Runtime/Naninovel/UniTask.cs`）完全没有声明
+基接口列表（应为 `: IAwaiter, ICriticalNotifyCompletion, INotifyCompletion`，dump.cs
+和二进制 DummyDll 都确认了这一点），导致任何对裸 `UniTask` 表达式的 `await`
+都会报 `CS4027`。这是本轮第一次真正尝试在别处 `await` 一个 `UniTask`（`WaitForDebate`
+自己等待的是另一种 `YieldAwaitable.Awaiter`），所以之前没暴露。已按 dump.cs 逐字段
+核实后补回接口列表；顺带检查了同一参考树里所有其他 `struct Awaiter` 声明（含
+`<Execute>d__19` 会用到的泛型 `UniTask<T>.Awaiter`），确认只有这一处缺失。
+
+### `Execute()` — 2 个 await 点，纠正了一次"逐字节折叠"的过度断言
+
+`<Execute>d__19.MoveNext`（RVA `0x323A90`，1762 B）**结构化复原**成：
+
+```csharp
+public override async UniTask Execute(AsyncToken token)
+{
+    ITextPrinterActor printer = await GetOrAddPrinter(token);
+    if (printer is IDebateTextPrinterActor debateTextPrinterActor)
+    {
+        ModifyDebatePrinter(debateTextPrinterActor);
+    }
+    await WaitOrForget(new Func<AsyncToken, UniTask>(displayClass.b__0), true, token);
+}
+```
+
+其中 `GetOrAddPrinter`（dump.cs `PrinterCommand` Slot 20）和 `WaitOrForget`（dump.cs
+`Command` Slot 13）都是继承自基类、本类型未重写的虚方法。闭包 lambda
+（`_003CExecute_003Eb__0`，RVA `0x323A50`）确认与 `Naninovel.Commands.PrintText` 自己的
+`<>c__DisplayClass31_0.<Execute>b__0` **完全共享同一地址**（dump.cs 对这一个地址列出了
+两个不同的托管名字）。
+
+**记录一次自我纠正**：第一版注释把这条"lambda 共享地址"的事实过度推广成了
+"整个 `Execute()` 方法体和 `PrintText.Execute()` 逐字节折叠、行为完全一样"——这是
+外部复核直接指出的错误，凭证据一查就能证伪：`PrintText.<Execute>d__31.MoveNext`
+在 dump.cs 里是**另一个地址**（`0x4FF740`），根本没有被折叠。独立反汇编这个地址后
+确认：`PrintText` 自己的 `Execute()` 也是同样的"`GetOrAddPrinter` → await →
+`WaitOrForget(lambda, true, token)` → await"两段式结构，但**完全没有** isinst 检查、
+完全没有调用任何 actor 类型相关的东西。所以准确的结论是：`PrintDebateText.Execute()`
+不是"照抄基类"，而是在基类同一个两段式骨架里**插入了恰好一步**辩论专属逻辑
+（`IDebateTextPrinterActor` 配置钩子）；`PrintText` 自己 Slot 27–41 的
+`ShowPrinter`/`PlayAutoVoice`/`WaitInput`/`AddBacklog` 等等既不在这个 `Execute()`
+里，也不在 `PrintText` 自己的 `Execute()` 里被调用——那些是 `Print()`
+（Slot 26/35）内部的事，正好就是这个文件里 `Print()` 覆写要接管的那一层。
+
+### `ModifyDebatePrinter` — 此前判定"very hard"暂缓的目标，现已复原
+
+`PrintDebateText::ModifyDebatePrinter`（RVA `0x322B40`，1590 B）**结构化复原**成：
+
+```csharp
+private void ModifyDebatePrinter(IDebateTextPrinterActor printer)
+{
+    if (Assigned(ScenePosition))
+    {
+        Rect sceneRect = CameraConfigurationUtility.EvaluateSceneRect(true);
+        float x = (ScenePosition.ElementAtOrNull(0) != null)
+            ? sceneRect.x + ((float?)ScenePosition[0]).Value / 100f * sceneRect.width
+            : printer.Position.x;
+        float y = (ScenePosition.ElementAtOrNull(1) != null)
+            ? sceneRect.y + ((float?)ScenePosition[1]).Value / 100f * sceneRect.height
+            : printer.Position.y;
+        float z = ((float?)(ScenePosition.ElementAtOrNull(2) ?? (NullableFloat)printer.Position.z)).Value;
+        printer.Position = new Vector3(x, y, z);
+    }
+    if (Assigned(Roll))
+    {
+        printer.Rotation = Quaternion.Euler(0f, 0f, Roll);
+    }
+    if (Assigned(AnimationKind))
+    {
+        if (FastEnum.TryParse<DebateTextAnimationKind>(AnimationKind, true, out DebateTextAnimationKind animationKind))
+        {
+            printer.AnimationKind = animationKind;
+        }
+        else
+        {
+            Warn(string.Format("Invalid animation kind: {0}", AnimationKind));
+        }
+    }
+}
+```
+
+三个独立的 `if (Assigned(...))` 块，每处守卫都逐字节比对 `Command.Assigned`
+（`parameter != null && parameter.HasValue`）的独立反汇编，并且共享同一个
+`data_30DC164` 类型初始化标志——证实这三处确实是同一个内联静态调用，不是
+三段各写各的检查：
+
+- **`ScenePosition`**（`DecimalListParameter` = `ParameterList<NullableFloat>`）：
+  X/Y 是当前场景矩形的百分比（显式给出时），否则退回 printer 当前位置对应分量；
+  Z 是不带缩放的原始值。X/Y 各自编译成**两次独立调用**——`ElementAtOrNull(i)`
+  只做判空，真正取值另有一次单独的 `get_Item(i)` 调用；只有 Z 才是真正复用同一次
+  `ElementAtOrNull(2)` 结果（经 `??` 直接送进 `Nullable<float>.op_Implicit`，没有
+  第二次 `get_Item`）——这个不对称是靠反汇编字节确认的，不是凭源码风格猜的。场景
+  矩形来自 `CameraConfigurationUtility.EvaluateSceneRect(true)`（dump.cs 确认的单参
+  `Nullable<bool>` 重载，调用点内联构造了一个 `Nullable<bool>(true)`）。`printer.
+  Position` 的读（回退分支）走 `IActor.get_Position`（Slot 5）经通用 getter 蹦床
+  `sub_39F0`（槽位号经 `edx` 动态传入，不是 `IActor` 专属蹦床）；最终 `printer.
+  Position = new Vector3(x, y, z)` 的写走 `IActor.set_Position`（Slot 6），但这次
+  是**完全内联在调用点自身**的接口偏移缓存扫描（先查 `[r10+0x12e]` 处缓存的接口
+  偏移表，未命中才 `mov r8d, 6` + `call sub_243A20` 解出槽位，再 `call` 解出的函数
+  指针）——**没有经过任何共享蹦床**，这一点和下面的 `Roll` 不同。
+- **`Roll`**：`printer.Rotation = Quaternion.Euler(0f, 0f, Roll)`——靠读出解析目标
+  地址处缓存的 icall 名字符串 `"UnityEngine.Quaternion::Internal_FromEulerRad_
+  Injected(...)"` 确认，乘的常量读回来正好是 `Mathf.Deg2Rad`（`0.017453292...`）。
+  和 `set_Position` 不同，这次写**确实**经过一个共享运行时蹦床（`call sub_38B0`，
+  RVA `0x38B0`）——独立反汇编这个蹦床本体，确认它把 `IActor.set_Rotation` 的槽位号
+  （dump.cs Slot 8）硬编码进了自己的机器码（`mov r8d, 8`），而不是像 `sub_39F0` 那样
+  作为运行时参数动态传入。**`Position` 和 `Rotation` 这两次写用的是两种完全不同的
+  分派机制，不是同一机制换了个槽位常量**——初稿注释曾把两者的蹦床归属写反（说
+  `Position` 也走 `sub_38B0`），提交前由外部复核比对反汇编原始记录后指出并订正，
+  未进入已提交历史。
+- **`AnimationKind`**：`FastEnum.TryParse<DebateTextAnimationKind>(AnimationKind,
+  true, out var animationKind)`（dump.cs 确认存在这个确切的 `TryParse<T>(string,
+  bool, out T)` 重载）成功则设置 `printer.AnimationKind`（dump.cs
+  `IDebateTextPrinterActor.set_AnimationKind`，Slot 1，经通用 setter 蹦床
+  `sub_36F0`，槽位号同样是运行时参数动态传入），失败则调用 `Warn(...)`（dump.cs
+  `Command.Warn`，Slot 7），格式字符串 `"Invalid animation kind: {0}"` 直接从数据段
+  读出——解析结果没有被无检查地使用过。
+
+**编译期额外需要的两处基础设施修复**：
+- `NullableFloat -> float` 的隐式转换在三处触发 CS0457（`NullableFloat.implicit
+  operator float?(NullableFloat)` 和 `Nullable<float>.implicit operator
+  float(Nullable<float>)` 两个候选歧义）——沿用本项目已有的两步转换写法
+  `((float?)x).Value`，与反汇编里真实的两步展开（先 `NullableFloat` 自己的转换，
+  再一次独立的 `Nullable<float>.op_Implicit`/`.Value`）完全对应。
+- `Assembly-CSharp.csproj` 完全没有 `FastEnum.dll` 的 `<Reference>` 条目——DLL 本身
+  一直存在于 `src/il2cpp/DummyDll/FastEnum.dll`，只是此前没有任何已复原代码用到过
+  它，所以从未暴露。已按现有 `<Reference>` 条目的写法补一条。
+
+**`Execute → GetOrAddPrinter → ModifyDebatePrinter → Print → WaitForDebate` 入口链
+现已完全闭合**——这是本轮以"系统级连贯性"而非孤立方法数为目标的一个完整闭环。
+
+### `DebateTextPrinterPanel::AddText` — 优先级表 #33，五处第三方 API 逐字节验证
+
+`DebateTextPrinterPanel::AddText`（RVA `0x367E20`，1322 B）**结构化复原**成：
+
+```csharp
+private void AddText(string text)
+{
+    string[] lines = string.IsNullOrWhiteSpace(text) ? Array.Empty<string>() : text.Split("<br>");
+    DebateText[] availableLabels = _labels.Where((DebateText label) => !label.enabled).ToArray();
+    if (lines.Length > availableLabels.Length)
+    {
+        UnityEngine.Debug.LogWarning("渡されたメッセージの行数が未使用ラベル数を超えています。");
+        return;
+    }
+    for (int i = 0; i < availableLabels.Length; i++)
+    {
+        bool hasLine = i < lines.Length;
+        _labels[i].enabled = hasLine;
+        _labels[i].alpha = 0f;
+        _labels[i].text = hasLine ? lines[i] : string.Empty;
+    }
+}
+```
+
+这是本轮验证密度最高的一个方法——五处非显然识别，每一处都靠独立反汇编对应的
+真实方法逐字节比对，而不是靠名字/签名猜测：
+
+- `string.IsNullOrWhiteSpace(text)`：开头的判空 + 逐字符 `Char.IsWhiteSpace` 循环
+  和独立反汇编出来的 `System.String.IsNullOrWhiteSpace`（RVA `0xE25060`）结构完全
+  相同，连共享的 `data_30D76D8` 类初始化标志位都一致。
+- `text.Split("<br>")`：不只是"dump.cs 里唯一匹配的重载"这种签名推断——调用点是
+  `String.Split(string, StringSplitOptions)`（RVA `0xE29360`）整个方法体的完整
+  内联，连它自己内部（这里恒为死代码，因为 `"<br>"` 是非空字面量）的分隔符判空
+  兜底逻辑都原样内联进来了。**这个兜底逻辑正是解开 `data_30D76E0 + 0xb8` 真实
+  身份的关键**：它是 `String.Split` 自己用来替换 `null` 分隔符的通用"空字符串"
+  静态引用，不是某个具体字面量的缓存槽——纠正了下面会提到的一次提交前误判。
+- `.Where(label => !label.enabled)` 的谓词 lambda `<AddText>b__34_0`（RVA
+  `0x368A20`）经独立反汇编，与 `UnityEngine.Behaviour.get_enabled`（RVA
+  `0x2060B80`）逐字节相同（含共享的 `data_2604C08` 缓存图标符描述符），后面接一个
+  `sete al` 取反——即这个 LINQ 过滤收集的是**当前被禁用（"空闲"）的标签**，不是
+  当前可见的标签。
+- `_labels[i].enabled = hasLine` 与独立反汇编的 `Behaviour.set_enabled(bool)`
+  （RVA `0x2060C20`）逐字节相同。
+- `_labels[i].alpha = 0f` 与独立反汇编的 `TMP_Text.set_alpha(float)`（RVA
+  `0x1EFFDE0`）逐字节相同；这个 setter 自己内部的"新旧值相同就跳过"空操作守卫，
+  正是调用点看起来像有一个 `if` 的原因——**不需要在源码层面另写一个 `if`**，那个
+  分支完全是内联进来的 setter 自身逻辑。
+- `_labels[i].text` 的写入走 vtable Slot 66，对应本文件同目录
+  `NaninovelTMProText.cs` 里它自己重写的 `text` setter（同一个 Slot 66）。
+
+**诚实记录一处字节确认、但没有解释掉的行为疑点**：循环的边界来自
+`availableLabels.Length`（当前"空闲"标签的数量），但循环体内每次都直接写
+`_labels[i]`，不是 `availableLabels[i]`——反汇编在 `0x36813F`/`0x368221` 都是
+重新从 `this._labels` 取值，从未使用 `[rsp+0x98]`（`ToArray()` 结果）本身来索引，
+只有循环上界用了它。这意味着"有多少空闲槽位"和"写的是哪些槽位"是两件不一定
+对齐的事——如果空闲（禁用）的标签不是 `_labels[0..count)` 这样一个前缀，这次
+调用就会静默覆盖一个当前正在显示文字的标签。这是否会真的发生，取决于所有调用方
+是否都保证调用前先把整个 `_labels` 重置为禁用（这个类自己的 `SetText` 很可能就是
+干这个的，但它还是空桩，未证实）。记录为一个字节确认的行为发现，而不是含糊带过。
+
+### 本轮修正（外部复核发现，已核实并修复——见 commit `d457070`）
+
+在把这批代码标为"完成"之后，外部复核（advisor）指出并经独立反汇编+dump.cs
+交叉验证确认了四处问题；记录在这里而不是悄悄改写历史，因为这正是"B/C 不能
+冒充 A"纪律应该覆盖、但这次在提交前没做到的地方：
+
+1. **`CalculateWaitTime` 的两处虚表槽位号原本都错了**——最初的算法是"假设其中
+   一次调用是 `ShouldPlayAutoVoice`（Slot 33），再反推另一次的槽位差"，这是循环
+   论证。改为从同一文件里另外两处调用独立锚定虚表基址：`Naninovel.Commands.Goto.Execute`
+   （dump.cs Slot 5）在 `[klass+0x188]`被分派，`StringBuilder.ToString()`（Object
+   的 Slot 3）在 `TimeSpanToText` 里于 `[klass+0x168]` 被分派——两者都给出基址
+   `0x138`（`offset = 0x138 + 16*slot`）。代入后：`[klass+0x3d8]` 实际是 Slot 42
+   = `IsPlayingAutoVoice()`，`[klass+0x2b8]` 实际是 Slot 24 = `get_AutoVoicePath()`。
+   `ShouldPlayAutoVoice()`（Slot 33）和原先标 Confidence B 的 `BuildAutoVoicePath()`
+   （Slot 29）都不是真正调用目标——两者分别偏差 9 个和 5 个槽位。已改为
+   `IsPlayingAutoVoice()`/`AutoVoicePath` 属性，Confidence A。
+2. **`DebateUi::OnVisibilityChangedByCustomUi` 丢了两处守卫**——`visible=false`
+   分支原来无条件执行 `NaniScriptPlayer.OnSkip -=`，而反汇编里 `_disposables==null`
+   时会直接跳到函数尾（整个 teardown including `-=` 都跳过）；`visible=true` 分支
+   原来无条件 `new CompositeDisposable()` 再订阅四个流，反汇编里其实有一个
+   `_disposables != null` 时直接返回的幂等守卫——没有它，第二次 `visible=true`
+   会重复订阅全部四个流并泄漏上一个 `CompositeDisposable`。这是一个已提交为
+   "14/14 完成"的文件里的真实行为偏差，`dotnet build` 完全测不出来。已按反汇编
+   补回两处 `if` 守卫。
+3. **`WaitForDebate` 里多写了一行不存在的 `token.ThrowIfCanceled()`**——`await`
+   之后那次调用实际操作的是 `[rsp+0x48]`（本地恢复出来的 awaiter 副本内部），不是
+   `this.token`（`[rbx+0x28]`，循环顶部那次真正的调用用的是这个）；前者就是
+   `await` 自带的 `awaiter.GetResult()`，不是源码里第二次显式调用。已删除多余行。
+4. **`TimeSpanToText` 的分钟计算和分隔符写法都不精确**——分钟用的辅助函数
+   （`sub_37E2B0`）经独立反汇编 `UnityEngine.Mathf.FloorToInt`（RVA `0x2053640`）
+   逐字节比对，92/92 字节完全一致（含内部同一个 `Math.Floor` helper），应写成
+   `Mathf.FloorToInt((float)timeSpan.TotalMinutes)` 而不是
+   `(int)Math.Floor(timeSpan.TotalMinutes)`；两个 `:` 分隔符走的是
+   `StringBuilder.Append(string)` 重载（调用点 `rdx` 里是 `STR ':'` 指针，不是裸
+   char 值），应写成 `Append(":")` 而不是 `Append(':')`。
+
+### `DebateTextPrinterPanel` 显示管线 + `PrintDebateText` 尾巴 — 三处字节确认的行为事实
+
+本批 14 个函数体 / 9,664 B。`DebateTextPrinterPanel` 10 个：`SetText` 865 B、
+`AppendText` 1,069 B、`RevealMessages` 383+2,411 B、其谓词 lambda 152 B、
+`WatAndRevealAsync` 427+1,409 B、`Gosub` 281+953 B、`OnDestroy` 229 B、
+`LocalizationProvider`/`NaniVarManager`/`IsEnabledDebugSkip` 三个 getter 202/202/275 B。
+`PrintDebateText` 4 个：`CompleteOnContinue` 496 B、`ShouldPlayAutoVoice` 238 B、
+`WaitAutoVoice` 65 B、构造函数 7 B。逐方法证据在源码注释里，这里只记结论：
+
+- **`SetText` 与 `AddText` 的下标约定互不兼容。** 两者开头逐字节相同（内联的
+  `IsNullOrWhiteSpace` + `Split("<br>")`），但 `SetText` 遍历整个 `_labels` 并按总标签数
+  做越界检查，`AddText` 则先 `.Where(!enabled)` 过滤。两处警告字符串是不同的驻留对象
+  （经 `il2cpp_db` 字符串表取出，不是看终端乱码）："…ラベル数を超えています。"与
+  "…未使用ラベル数を超えています。"，少了"未使用"，独立印证两者比较的对象不同。
+  `SetText` 之后空闲标签是数组后缀，而 `AddText` 从 `_labels[0]` 写起。
+- **`AppendText` 丢弃作者。** 最后一条消息被替换为 `new PrintedMessage(last.Text + text)`，
+  `author` 的两个字段显式清零（`Count == 0` 分支同样）。`Messages` getter 被派发 4 次，
+  但它是 `[CompilerGenerated]` 字段读取，C++ 后端会合并冗余派发，调用次数不能当作源码
+  结构的证据，所以没有据此编造局部变量。
+- **`RevealMessages` 不读自己的 `delay` 参数。** 状态机只提升了 `this` 和 `token`；逐标签
+  错开是硬编码的 `i * 0.2f`（常量从 PE 读出为 0.2），`enableDebugSkip` 打开时为 0。每个
+  `WatAndRevealAsync` 都被 `Forget()`，所以该方法在所有淡入"开始"时就完成，不等淡入结束。
+  上一个 `_revealCts` 被直接覆盖，未取消也未释放；已复原的方法里只有 `OnDestroy` 清理它。
+  谓词 lambda 是 `label.enabled`，与 `AddText` 的 `!enabled` 相反。
+- `WatAndRevealAsync`：`Naninovel.UniTask.Delay`（`delayTiming` 传 8 =
+  `PlayerLoopTiming.Update`，其余为默认值）之后 `LMotion.Create(0f, 1f, 0.4f)
+  .BindToColorA(label).ToUniTask(ct)`。
+- `CompleteOnContinue` 经 `ref` 改写调用方的 token：保留 `CancellationToken`，把
+  `CompletionToken` 链接到下一次 "Continue" 输入；没有该输入采样器时返回装箱的
+  `EmptyDisposable`，不改 token。`ShouldPlayAutoVoice` 检查的是 `PlaybackSpot.ScriptPath`
+  非空，不是 `PlaybackSpot.Valid`（后者检查行号下标，已独立反汇编）。`WaitAutoVoice`
+  立即完成。构造函数与 `PrintTextModified` 折叠。
+
+**工程/第三方桩修正**：`Naninovel.Common` 的 `PooledObject<T>` 有 `IDisposable.Dispose`
+却没有声明 `: IDisposable`，导致 `using` 无法编译（与此前 `UniTask.Awaiter`/
+`ParameterList<TItem>` 同类）；`Assembly-CSharp.csproj` 缺 `LitMotion.Extensions.dll`
+引用（`BindToColorA` 在其中）。
+
+**工具备忘**：`disas.py ... | tee 文件 | head -N` 会因 SIGPIPE 截断落盘内容
+（`RevealMessages` 的 MoveNext 第一次只写入 335/617 行）。大函数一律直接重定向到文件。
+
+### 尚未解决的问题（诚实记录，不是回避）
+
+1. **`AddText` 与 `SetText` 的下标约定互不兼容（`SetText` 复原后，疑点更具体了，
+   但仍未证实会实际触发）**——`SetText` 遍历整个 `_labels`，把
+   `_labels[0..lines.Length)` 启用、其余禁用，所以它之后的"空闲"标签是数组**后缀**；
+   `AddText` 用 `.Where(!enabled)` 选出这段后缀计数，却从 `_labels[0]` 开始写。若在
+   部分填充的 `SetText` 之后调用 `AddText`，会覆盖正在显示的前缀。两者的调用方
+   （`SetMessages`/`AddMessage`，仍是空桩）还没排查，所以是否真会发生仍未知。
+2. **`DebateTextPrinterPanel.cs` 剩余尾巴**——`Awake`/`Initialize`/`SetMessages`/
+   `AddMessage`/`SetFont`/构造函数/`LabelSpaceData` 两个 getter 仍是空桩（反汇编已
+   存到本会话 scratchpad，未写入）。`RevealProgress` get 与 `Appearance` get/set 的
+   RVA 解析到的是其它类型共享的折叠体（`VirtualResourceProvider.get_LoadProgress`
+   等），不能直接照那几份反汇编写，需要单独处理。
+3. **`PrintDebateText.cs` 逐地址核对未做**——本轮补完 `CompleteOnContinue`/
+   `ShouldPlayAutoVoice`/`WaitAutoVoice`/构造函数后，文件内非共享空体地址 18 个、
+   `RECONSTRUCTED` 标记 16 个（异步方法的 MoveNext 地址并入入口方法计），原表里
+   "~15" 的总数估计偏低；是否已无空桩需要逐地址核对，暂不宣称整个文件完成。
+
+（`ModifyDebatePrinter` 已复原，`Execute → GetOrAddPrinter → ModifyDebatePrinter →
+Print → WaitForDebate` 入口链已完全闭合；`SetText`/`AppendText`/`RevealMessages`/
+`WatAndRevealAsync`/`Gosub` 与 `PrintDebateText` 的四个尾巴本轮均已复原——以上
+各条旧待办已解决，不是悄悄消失。）
+
+### 下一批最高价值目标（按价值排序，供下一轮直接开始）
+
+1. `DebateTextPrinterPanel::SetMessages`（1415 B）/`AddMessage`（191 B）——它们是
+   `SetText`/`AddText` 的候选调用方，能直接回答上面第 1 条是否会实际触发
+2. `DebateTextPrinterPanel` 其余：`Awake`（786 B）/`Initialize`（830 B）/`SetFont`（907 B）
+3. `PrintTextModified::ShouldPlayAutoVoice`（RVA `0x3251A0`）——与本轮
+   `PrintDebateText` 的同名重写对照；以及 `PrintDebateText.cs` 逐地址核对
+
+（`StageCameraController::ShakeCameraAsync` 已复原——见下方 §7.6，`_shakeCameraTasks`
+的 3 槽已完全解释清楚，`_modifyCameraTasks` 的空闲第 4 槽也已 grep 穷尽排查
+（`private` 字段，除 `Awake`/`ModifyCameraAsync` 外无第三处读写），从"未知"降级为
+"证据已穷尽、原意是否故意留白已不可考"，不再是待办项。`PerspectiveStageManager`
+整个类——构造函数、`StageOffset` 属性、以及全部 7 个接口方法——本轮也已全部复原，
+见下方 §7.6，不再是待办项；`PerspectiveStagePresenter::Awake` 早先揭示的"接线图"
+现在有了完整的双端证据：`ModifyCameraAsync`/`ShakeCameraAsync` 这两条调用链已经
+从 `PerspectiveStageManager` 一路追踪到 `StageCameraController` 的真实实现，
+不是推测。`StageScreenController::Awake` 已复原——同一个 `sub_297400` 数组分配
+helper，比 `StageCameraController::Awake` 简单（没有任务槽表要预分配）；
+`StageCameraController::OnDestroy`/`StageScreenController::OnDestroy` 也已复原——
+两个类共享同一个原生函数（folded body，同一 RVA，因为 `_tokenSources` 在两个类
+里都在偏移 0x40），遍历 `_tokenSources` 逐个 `Cancel()`/`Dispose()`/置空，是
+`Awake()` 分配那张表的生命周期另一端。`PerspectiveStage` 桶里"入口+接线"这一层
+现在已经收尾。）
+
+**约定备忘**：`work/reversing/` 下的 `disas.py` 等脚本依赖 `capstone`，这个环境的
+系统 Python 没装；必须用 `E:/Manosaba-VSCodeReady/tools/venv/Scripts/python.exe`
+调用，否则会报 `ModuleNotFoundError: No module named 'capstone'`。
+
+## 7.6 `PerspectiveStage` 子系统：已完成，65/65 个函数体 / 27,784/27,784 B（用户优先级第 2 位）
+
+**进度（`work/reversing/progress.py` 测得）**：`PerspectiveStage` 桶 65 个独立函数体 /
+27,784 B，**全部复原（100%）**。收尾几批覆盖：全部 Naninovel 舞台命令
+（`hideStageScreen`/`showStageScreen`/`stageCamera`/`shakeStageCamera`/`loadStage`/
+`unloadStage`/`splitStageScreen`，均为 `WaitOrForget`(vtable 槽 13) + 真正的 `async`/`await`，
+接口槽号逐一从跳板常量锚定；`loadStage` 解析失败静默不做事，`stageCamera` 缓动名解析失败
+`Warn`），`StageCameraContainer` 全部补间（高度/距离的另两轴硬置 0、旋转拆成容器偏航 +
+相机俯仰/横滚并以 `(UniTask, UniTask)` 元组 await、X/Y/Z 抖动/冲击）、`StageScreenContainer`
+（分屏四边形：`tan(roll)/16:9*0.5` 倾斜，`tanf` 由级数项 1/3 与有理式路径识别）、
+`StageScreenController`（可见性渐变前开相机、淡出完成后关相机；分屏登记到
+`ITrialStateManager` 槽 4）、`PerspectiveStagePresenter`（加载时已有舞台则不重载、
+`_stageReferences[kind]` 缺项抛异常、`ChangeFireFxActivity` 只查实例根上的 `Court`）。
+补上 `Assembly-CSharp.csproj` 缺失的 `Unity.ResourceManager`（`AsyncOperationHandle`）与
+`UniTask.Addressables`（`AddressablesAsyncExtensions.ToUniTask`）两个引用。
+此前的中间进度（17 个 / 11,705 B，约 42%）为本节开头的测量，已被上述收尾覆盖。**更正**：
+此前写的"19 个 / 23,203 B（约 83.5%）"作废——那是按下面已废弃的两条手工约定累加的：
+把两个异步方法的 `MoveNext` 字节（不在桶里）计入分子，把 `get_TrialStateManager`
+（`rank2.py` 归入 `TrialState` 桶）算进本桶，并把折叠的 `OnDestroy` 算作 2 个体。下面
+列举的各条目及其字节数作为"原生代码规模"的叙述性数字保留，但**不能**与桶总数相加比较。
+已复原条目：`GosubToModifyPerspectiveStageCamera::Execute`（RVA `0x31D870`，优先级表
+#25）、`GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，优先级表
+#26）、`PerspectiveStagePresenter::Awake`（RVA `0x38D8D0`，优先级表 #27）、
+`StageCameraController::Awake`（RVA `0x3846C0`，优先级表 #28）、
+`StageCameraController::get_TrialStateManager`（RVA `0x384600`，186 B，不在原始
+44 个优先级表里，是跟随调用图顺带发现的）、`StageCameraController::ModifyCameraAsync`
+（RVA `0x384B50` 入口 + `0x3850A0` MoveNext，4,999 B，同样不在原始表里）、
+`StageCameraController::ShakeCameraAsync`（RVA `0x384E00` 入口 + `0x386190`
+MoveNext，4,465 B，同样不在原始表里）、`PerspectiveStageManager` 整个类
+（构造函数 358 B + `StageOffset` 属性 19 B + 7 个接口方法共 5,595 B，共 5,972 B，
+全部不在原始表里）、`StageScreenController::Awake`（RVA `0x387B10`，156 B，不在
+原始表里）、以及 `StageCameraController::OnDestroy`/`StageScreenController::OnDestroy`
+（folded body，RVA `0x384A10`，169 B，同样不在原始表里），全部 Confidence A（三个
+异步方法收尾的 `using`/`try-finally` 写法选择均为 B，见各自小节）。这是本轮第一次
+真正进入这个子系统（此前完全未触碰）。
+
+**进度计数约定（更正版，取代此前的两条手工约定）**：进度只以
+`work/reversing/progress.py` 的输出为准，它与 §3 桶总数（`rank2.py` → `ranked.json`）
+用同一口径：
+
+- **异步方法只计入口壳**。`MoveNext` 属于编译器生成的嵌套类型 `<X>d__N`，dump.cs 里
+  它的 `// Namespace:` 为空，全名不带 `WitchTrials.` 前缀，`rank2.py` 从不把它放进任何桶；
+  静态 lambda 容器 `<>c` 同理。把 `MoveNext` 字节加进分子会让百分比虚高（此前
+  PerspectiveStage 的 83.5% 实际为 42%）。
+- **折叠体按 RVA 去重，只算一行**。`rank2.py` 遇到已见过的 RVA 直接跳过，所以
+  `0x384A10`（两个 `OnDestroy` 共享）在 65 个体里只占 1 行，归属列出的第一个类。
+- **别名数 > 1 且 ≤ 0x40 B 的共享平凡体不在任何桶里**（`ranked.json` 的 `aliased`），
+  复原它们对进度贡献为 0（例如 `PrintDebateText`/`PrintTextModified` 共享的 7 B 构造函数）。
+  超过 0x40 B 的共享体仍在 `rows` 里，照常计 1 行（例如 `0x366370`
+  `DebateTextPrinterPanel::set_Appearance`，82 B，Debate/Court）。
+- **归桶按 `rank2.py` 的首个匹配正则**，不按"它在哪个功能里被用到"：
+  `DebateTextPrinterPanel::Gosub` 归 Naninovel-glue，`StageCameraController::get_TrialStateManager`
+  归 TrialState。
+- 一个体算"已完成"，当且仅当其 RVA 出现在 `src/decompiled/Assembly-CSharp` 某个
+  `// RECONSTRUCTED` 标记行或其下一行。
+
+**这不只是"打开了一个新子系统"**：第 4 节频次统计显示 `GosubToModifyPerspectiveStageCamera`
+在脚本里出现 **16,542 次**——是全部 43 个 `WitchTrials.*` 自定义命令类里频次
+**第二高**的（仅次于 `PrintTextModified` 的 31,575 次），比本轮之前的主攻目标
+`PrintDebateText`（2,003 次）高一个数量级。按调用频次算，这是本轮杠杆最高的单个
+复原目标，不是"顺手开个新桶"。
+
+### `GosubToModifyPerspectiveStageCamera::Execute` — 揭示了 PerspectiveStage 的一种通用调用约定
+
+```csharp
+public override UniTask Execute([Optional] AsyncToken token)
+{
+    int index = ((int?)Index).Value;
+    string targetCharIdxVarName = LookCharacterId.Value.ToLowerInvariant() + "Idx";
+    ICustomVariableManager customVariableManager = Engine.GetServiceOrErr<ICustomVariableManager>();
+    if (!customVariableManager.TryGetVariableValue<int>(targetCharIdxVarName, out int targetCharIdx))
+    {
+        Warn("Variable " + targetCharIdxVarName + " does not exist.");
+        return default(UniTask);
+    }
+    StringBuilder stringBuilder = new StringBuilder("ModifyCamera");
+    // ...(Composition/RollDirection/ZoomLevel/LabelNameParams 逐个 Append 到 stringBuilder)...
+    customVariableManager.TrySetVariableValue("cameraIdx", index);
+    customVariableManager.TrySetVariableValue("targetCharIdx", targetCharIdx);
+    Gosub gosub = new Gosub
+    {
+        Path = new NamedString(SubroutineScriptPath, stringBuilder.ToString())
+    };
+    return gosub.Execute(default(AsyncToken));
+}
+```
+
+**不是 async 状态机**——没有 `[AsyncStateMachine]`，没有嵌套 `<Execute>d__` 结构体；
+反汇编直接证实了这一点：整个方法同步运行，以一次纯粹的尾调用
+`return gosub.Execute(default(AsyncToken));` 结束——**自己收到的 `token` 参数在
+函数体内完全没被读取过**，调用点现场清零构造了一个全新的 16 字节结构体传进去
+（`xorps`+`movdqa` 清零的宽度，逐字节对照 dump.cs 里 `AsyncToken`（两个
+`CancellationToken` 字段，各 8 字节，共 16 字节）的真实大小，不是"猜测清零宽度
+等于整个结构体"）——也就是说这条 Command 自己的取消令牌被静默丢弃，不会传给它
+派发出去的 `Gosub`。
+
+**通用调用约定，现已在两个目标上验证确认（不再是单点推测）**：这类
+`GosubTo*PerspectiveStage*` Command 不直接操作摄像机/舞台状态，而是：
+1. 读一个"每角色命名"的脚本变量（这里是 `<小写look>Idx`）拿到目标索引；
+2. 把参数拼成一段固定前缀+参数序列的字符串（这里是
+   `"ModifyCamera-<comp>-<rollDir>-Lvl<n>[-<param>...]"`）；
+3. 把索引以两个固定名字（`cameraIdx`/`targetCharIdx`）重新发布成脚本变量，供
+   `System/System_Subroutine` 里的具体分支读取；
+4. `new Gosub { Path = ... }` 跳转到 `"System/System_Subroutine"`，用第 2 步拼出的
+   字符串作为标签后缀，`Execute()` 同步完成、`token` 不转发。
+
+### `GosubToSplitPerspectiveStageScreens::Execute` — 验证了上面的约定，同时抓出一个真实的两命令行为分歧
+
+`GosubToSplitPerspectiveStageScreens::Execute`（RVA `0x31E250`，2338 B）逐字节确认
+是同一种骨架，三处真实差异（都独立验证过，不是"假设一致"）：
+- 没有 `ZoomLevel` 字段（`LabelNameParams` 挪到了 `+0x50`，正好是
+  `GosubToModifyPerspectiveStageCamera.ZoomLevel` 原来的位置——用字段偏移的
+  变化本身当证据，不是"读了 dump.cs 类体确认"），所以拼出来的前缀是
+  `"SplitScreen-<comp>-<rollDir>[-<param>...]"`，没有 `-Lvl<n>` 这一段。
+- 前缀字符串是 `"SplitScreen"` 不是 `"ModifyCamera"`。
+- 角色索引变量名用的是 `Naninovel.StringUtils.FirstToLower(LookCharacterId)`
+  （只转小写首字母，"Ann" → "annIdx"、但 "AnnSmith" → "annSmithIdx"），不是
+  `LookCharacterId.Value.ToLowerInvariant()`（转整个字符串，"AnnSmith" →
+  "annsmithIdx"）。
+
+**第一版复原直接照抄了 `LookCharacterId.Value`（沿用另一个类的读法），是错的**——
+`FirstToLower` 是个接受 `null` 的普通静态方法，这条路径反汇编里根本没有
+"未赋值就抛异常"的守卫（`LookCharacterId` 虽然两个类都标了 `[RequiredParameter]`，
+但只有 `ModifyCamera` 的字节层面真的在这次读取上强制了它）；独立反汇编
+`StringParameter.op_Implicit` 逐字节比对后，确认正确写法是让隐式转换
+`StringUtils.FirstToLower(LookCharacterId)` 自己处理判空——这和本轮反复用到的
+"调用点看起来像有守卫，其实是被内联的转换/setter 自身逻辑"是同一类陷阱。
+
+**两个命令会对同一个 `look:` 角色 id 算出不同的变量名**（`ToLowerInvariant` vs
+`FirstToLower` 在角色名有多个大写字母时不一致）——查过 `res/Assets/#WitchTrials/
+Scenarios/**/*.asset.json` 全部脚本语料后确认：两个命令实际用到的 `look:` 值只有
+`Ema`/`Sherry`，都是单大写字母开头，两种转小写方式结果相同——**这处不一致是真实
+存在的实现分歧，但在这个游戏的实际内容里是惰性的，不是活跃的脚本 bug**。
+
+**本轮第三处基础设施修复**：`Naninovel/ParameterList.cs`（第三方引用桩）的类声明
+完全没有基接口列表（`ParameterList<TItem> : CommandParameter<List<TItem>>`），而
+dump.cs 显示真实类型是 `..., IEnumerable<TItem>, IEnumerable`——和本轮已修复的
+`UniTask.Awaiter` 缺失基接口列表是同一类问题。桩文件里已经有两个私有的
+"乱码命名"占位方法（`System_002ECollections_002E...GetEnumerator`），只是没有
+声明成真正的显式接口实现——补上接口列表 + 把这两个方法改写成
+`IEnumerable.GetEnumerator()`/`IEnumerable<TItem>.GetEnumerator()` 的显式接口实现
+语法即可，不用改动方法体。这一修复让 `foreach (NullableString x in
+LabelNameParams)` 不再需要额外的 `(IEnumerable<NullableString>)` 强制转换，直接
+匹配反汇编里朴素的 `IEnumerable<NullableString>.GetEnumerator()` 调用。
+
+### `PerspectiveStagePresenter::Awake` — 子系统"常驻状态"一侧的接线图
+
+前两个目标是"命令调用"一侧（脚本触发的 `GosubTo*` Command）；`Awake()`（RVA
+`0x38D8D0`，1558 B）是"常驻状态"一侧——揭示了整个 `PerspectiveStage` 子系统在运行时
+是怎么接线的：
+
+```csharp
+private void Awake()
+{
+    _screenController.Dismiss();
+    _cameraController.Dismiss();
+    _stageReferences = _stageData.ToDictionary((PerspectiveStageData data) => data.Kind, (PerspectiveStageData data) => data.Stage);
+    _perspectiveStageManager = new PerspectiveStageManager(this, _screenController, _cameraController, this, _stageParent.position);
+    ServiceLocator.Register(_perspectiveStageManager);
+}
+```
+
+**子系统模型**：`PerspectiveStagePresenter` 自己同时实现 `IPerspectiveStageLoader`
+和 `ICourtModifier` 两个接口，`_screenController`（`StageScreenController`）实现
+`IPerspectiveStageScreenModifier`，`_cameraController`（`StageCameraController`）实现
+`IPerspectiveStageCameraModifier`——`Awake()` 把这四个角色一起打包，构造出唯一一个
+`PerspectiveStageManager`（同时实现 `IPerspectiveStageManager`/`IPerspectiveStageLoader`/
+`IPerspectiveStageScreenModifier`/`IPerspectiveStageCameraModifier`/`ICourtModifier`/
+`IService` 六个接口），注册进 `ServiceLocator`。也就是说：**`PerspectiveStagePresenter`
+本身不是这个子系统的"大脑"，只是个组装 MonoBehaviour**——真正的状态和行为都封装在
+`PerspectiveStageManager` 里，脚本层通过 `ServiceLocator`/`Engine.GetServiceOrErr<
+IPerspectiveStageManager>()` 拿到的也是这一个实例。
+
+**复原过程中抓到一次"看起来像跨类访问私有成员"的假象**：`_screenController.Dismiss()`/
+`_cameraController.Dismiss()` 在反汇编里表现为直接读取 `StageScreenController.
+_generalScreen` 字段、直接调用 `StageCameraController.SetCameraEnabled`——但这两个
+成员在 dump.cs 里都标记为 `private`，跨类直接访问在 C# 里根本编译不过。独立反汇编
+`StageScreenController.Dismiss()`（RVA `0x3881E0`）后确认它的方法体逐字节等于这里
+内联的序列；`StageCameraController.Dismiss()`/`Present()`（RVA `0x385010`/
+`0x385000`）是一对 10 字节的尾调用蹦床，分别把 `SetCameraEnabled(false)`/
+`SetCameraEnabled(true)` 包成公开的 0 参数方法——所以源码层面写的是这两个公开的
+`Dismiss()`，只是它们自己的小函数体又被内联回了调用点，不是真的绕过了访问控制。
+`PerspectiveStageManager` 的构造同理：`il2cpp_codegen_object_new` 后直接摆字段，
+不是漏看了构造函数调用——独立反汇编它自己的 `.ctor`（RVA `0x3A0B50`）逐字节确认
+字段写入顺序和偏移完全一致，构造函数体本身就小到会被内联。
+
+**新发现的 `[SerializeField]` 无守卫解引用**：`_stageParent`/`_screenController`/
+`_cameraController`/`_stageData`（`PerspectiveStagePresenter`）和 `_generalScreen`
+（`StageScreenController`）共五处，已记入 `RECONSTRUCTION_CLAUDE_NOTES.md` 供并行的
+`audit/unity-assets` agent 参考。
+
+### `StageCameraController::Awake` — 预分配任务槽表，留下一个记录在案的未知数
+
+`Awake()`（RVA `0x3846C0`，840 B）**结构化复原**成：
+
+```csharp
+private void Awake()
+{
+    _modifyCameraTasks = new UniTask[_cameraContainers.Length][];
+    for (int i = 0; i < _modifyCameraTasks.Length; i++)
+    {
+        _modifyCameraTasks[i] = new UniTask[4];
+    }
+    _shakeCameraTasks = new UniTask[_cameraContainers.Length][];
+    for (int i = 0; i < _shakeCameraTasks.Length; i++)
+    {
+        _shakeCameraTasks[i] = new UniTask[3];
+    }
+    _tokenSources = new CancellationTokenSource[_cameraContainers.Length];
+}
+```
+
+五处 `new T[n]` 分配全部落到同一个反汇编确认的通用数组分配 helper
+（`sub_297400(TYPE, length)`：算 `元素大小*长度+头部`、走 GC 分配器、写回 TypeInfo
+和长度——是 IL2CPP 对 `newarr`/`new T[n]` IL 指令的共享 codegen，不是五个不同的
+具名 API），`_cameraContainers`（`[SerializeField]`）在这个方法里被独立重新读取
+并各自单独判空**三次**（不是缓存进局部变量后复用一次判空）——反汇编逐字确认，
+如实保留这个"重复读取"的写法，不做"看起来能简化"的整理。
+
+**当时诚实记录的未解开问题，本轮已解开一半**：`_modifyCameraTasks`/
+`_shakeCameraTasks` 每行的长度是字面常量 `4`/`3`，当时既不匹配
+`ModifyCameraAsync`（三个 tween 参数）也不匹配 `ShakeCameraAsync`（没有这种参数
+结构），留白未猜。下面的 `ModifyCameraAsync` 小节把 `_modifyCameraTasks` 这一半
+解开了；`_shakeCameraTasks` 的 3 槽仍未验证。
+
+### `StageCameraController::get_TrialStateManager` — 同一个惰性缓存模式的第三个实例
+
+RVA `0x384600`（186 B）逐字节确认，与 `StageScreenController::get_TrialStateManager`
+（RVA `0x387A50`，优先级表 #12）完全同构：
+
+```csharp
+private ITrialStateManager TrialStateManager
+{
+    get
+    {
+        return _trialStateManager ??= Naninovel.Engine.GetServiceOrErr<ITrialStateManager>();
+    }
+}
+```
+
+`[this+0x28]` 判空、METHODINFO 槽解析到
+`Method$Naninovel.Engine.GetServiceOrErr<ITrialStateManager>()`、结果写回字段——
+跟第 0 节 TL;DR 里提到的"惰性缓存的服务查找"这一种模式（`_field ??=
+Engine.GetServiceOrErr<T>()`）第三次重复出现，没有任何变体。
+
+### `StageCameraController::ModifyCameraAsync` — 单一 await 点，把"4 行任务槽"之谜解开一半
+
+RVA `0x384B50`（680 B，纯 `AsyncUniTaskMethodBuilder.Start<>()` 入口壳，没有自己
+的逻辑）+ `0x3850A0`（`<ModifyCameraAsync>d__10.MoveNext()`，4,319 B，真正的方法
+体）。初始化块只声明了**一个** `AwaitUnsafeOnCompleted<UniTask.Awaiter,
+...d__10>()`——单一 await 点，意味着这 4,319 B 大部分是直线执行的赋值/分支逻辑，
+不是真正复杂的状态机，字节数比看起来的更"便宜"。复原结果：
+
+```csharp
+public async UniTask ModifyCameraAsync(int cameraIndex, ModifyCameraHeightTween heightTween, ModifyCameraRotationTween rotationTween, ModifyCameraDistanceTween distanceTween, [Optional] CancellationToken ct)
+{
+    if (cameraIndex < 0 || cameraIndex >= _cameraContainers.Length)
+    {
+        UnityEngine.Debug.LogWarning($"Camera index {cameraIndex} is out of range.");
+        return;
+    }
+
+    TrialStateManager.RegisterCameraState(cameraIndex, heightTween?.To, rotationTween?.To, distanceTween?.To);
+
+    if (_tokenSources[cameraIndex] != null)
+    {
+        _tokenSources[cameraIndex].Cancel();
+        _tokenSources[cameraIndex].Dispose();
+    }
+    _tokenSources[cameraIndex] = new CancellationTokenSource();
+    CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_tokenSources[cameraIndex].Token, ct);
+
+    _modifyCameraTasks[cameraIndex][0] = (heightTween != null) ? _cameraContainers[cameraIndex].ModifyHeightAsync(heightTween.To, heightTween.Ease, heightTween.Duration, linkedCts.Token) : default(UniTask);
+    _modifyCameraTasks[cameraIndex][1] = (rotationTween != null) ? _cameraContainers[cameraIndex].ModifyRotationAsync(rotationTween.To, rotationTween.Ease, rotationTween.Duration, linkedCts.Token) : default(UniTask);
+    _modifyCameraTasks[cameraIndex][2] = (distanceTween != null) ? _cameraContainers[cameraIndex].ModifyDistanceAsync(distanceTween.To, distanceTween.Ease, distanceTween.Duration, linkedCts.Token) : default(UniTask);
+
+    using (linkedCts)
+    {
+        await _modifyCameraTasks[cameraIndex];
+        _tokenSources[cameraIndex].Dispose();
+        _tokenSources[cameraIndex] = null;
+    }
+}
+```
+
+**关键发现：`UniTaskExtensions.GetAwaiter(UniTask[] tasks)` 是一个真实存在的
+API，不是猜测**——独立反汇编 RVA `0x18203F0`，`dump.cs` 签名确认
+`public static UniTask.Awaiter GetAwaiter(UniTask[] tasks)`，只接收数组本身、
+没有下标参数。这就是 `await _modifyCameraTasks[cameraIndex];` 这行为什么能通过
+编译：数组通过这个扩展方法直接变成可等待对象。这解开了 `Awake()` 留白的"4 行
+任务槽表索引什么"的**大半**：三个独立的边界检查字面量（`cmp [row+0x18], 0/1/2;
+jbe <越界处理>`）配合每次 16 字节（`UniTask` 结构体大小）的写入偏移
+（`row+0x20/+0x30/+0x40`）确认——槽 0 = height tween 任务，槽 1 = rotation，
+槽 2 = distance；槽 3（`row+0x50`）在这个方法里**从未被写入**，永远是
+`default(UniTask)`，在 `GetAwaiter(UniTask[])` 这种数组整体等待里是无害的填充。
+**为什么分配长度是 4 而不是恰好 3，仍然是未解开的尾巴**——`_shakeCameraTasks`
+的 3 槽还没有对应的证据（需要反汇编 `<ShakeCameraAsync>d__11.MoveNext()`，RVA
+`0x386190`）。
+
+`RegisterCameraState(int, float?, float?[], float?)` 的识别用了两条独立证据
+交叉验证：一是跟 `ITrialStateManager` 接口定义逐字段类型比对，是唯一一个形状
+匹配的成员；二是虚表槽算术（`mov r8d, 2` 选中接口第 3 个声明成员，0 起始，
+正好是 `RegisterCameraState`）。这个接口方法的真实实现
+（`TrialStateManager::RegisterCameraState`，RVA `0x39DA50`，见第 5 节试点小节）
+本轮之前就已经复原，两端可以互相印证。
+
+三个 tween 分支的参数（`To`/`Ease`/`Duration`）逐一比对了各自 record 类型
+（`ModifyCameraHeightTween`/`ModifyCameraRotationTween`/`ModifyCameraDistanceTween`，
+均已在更早的批量定案里复原）自己的字段偏移，调用参数顺序则比对了
+`StageCameraContainer::ModifyHeightAsync`/`ModifyRotationAsync`/
+`ModifyDistanceAsync` 各自的真实签名——height/distance 两路在这个调用点是被
+内联的 `Start<>()` kickoff（跟自己的状态机结构体字段偏移逐一核对），rotation
+那一路是普通具名调用，同一个类的三个姊妹异步方法在同一个调用点上被内联的
+方式不一致，是本轮反复见到的"trivial wrapper 是否内联取决于具体实例化"现象
+的又一例。
+
+**收尾部分的证据等级降级说明**：`_tokenSources[cameraIndex]` 的 dispose+置空
+在 `linkedCts` 的 dispose 之前执行——这一点是指令顺序直接观察到的，Confidence A。
+但 `linkedCts` 的 dispose 每次都通过显式 `IDisposable` 接口调用桩派发（而不是
+直接调用 `CancellationTokenSource.Dispose()`），并且在三处独立的退出路径上各自
+重复了一份、每份都套了一层 `state < 0` 判断——这只能说明"这是一个跨多个入口点
+的编译器生成 `finally`"，**不能**单独区分源码写的是 `using (linkedCts) { ... }`
+还是手写的 `try { ... } finally { ((IDisposable)linkedCts).Dispose(); }`（
+`CancellationTokenSource` 是非密封类型、`Dispose()` 是虚方法，两种写法在这个
+粒度上编译结果相同）。选了 `using` 是因为它最惯用、且完全复现了观察到的顺序
+和派发方式；这处收尾写法本身标记为 **Confidence B**，其余全部 A。
+
+**顺带修复一处工程配置缺口**：加上 `await` 那一行以后，编译报
+`CS0012`——`AssetBundleRequest`/`AssetBundleCreateRequest` 定义在未引用的程序集
+里。用 `System.Reflection.MetadataLoadContext` 反射 `UniTask.dll`（在
+`work/reversing/` 之外临时建的检查用小工程，未纳入正式代码）确认：真正的原因是
+`Cysharp.Threading.Tasks.UnityAsyncExtensions`（跟已经 `using` 的
+`UniTaskExtensions` 同一个命名空间）声明了
+`GetAwaiter(AssetBundleRequest)`/`GetAwaiter(AssetBundleCreateRequest)`——C# 的
+扩展方法查找要枚举这个命名空间下所有候选类的所有同名方法，即使最终选中的是
+`UniTaskExtensions.GetAwaiter(UniTask[])`，光是"看一眼"那两个签名也需要能解析
+`AssetBundleRequest` 类型。`Assembly-CSharp.csproj` 里补一条到
+`UnityEngine.AssetBundleModule.dll`（`il2cpp/DummyDll` 下已存在，只是从未被引用
+过）的引用即可，不是绕过问题的权宜之计。
+
+### `StageCameraController::ShakeCameraAsync` — 与 `ModifyCameraAsync` 同构，顺带解释清楚 `_shakeCameraTasks` 的 3 槽
+
+RVA `0x384E00`（505 B 入口壳）+ `0x386190`（`<ShakeCameraAsync>d__11.MoveNext()`，
+3,960 B，单一 await 点）。控制流跟 `ModifyCameraAsync` 逐字节同构——边界检查、
+`_tokenSources` 取消/释放/重建/链接、收尾 `using (linkedCts)` 全部照搬同一套
+证据（只是状态机字段偏移不同，见方法自带的注释）：
+
+```csharp
+public async UniTask ShakeCameraAsync(int cameraIndex, Vector3 force, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct)
+{
+    if (cameraIndex < 0 || cameraIndex >= _cameraContainers.Length)
+    {
+        UnityEngine.Debug.LogWarning($"Camera index {cameraIndex} is out of range.");
+        return;
+    }
+
+    if (_tokenSources[cameraIndex] != null)
+    {
+        _tokenSources[cameraIndex].Cancel();
+        _tokenSources[cameraIndex].Dispose();
+    }
+    _tokenSources[cameraIndex] = new CancellationTokenSource();
+    CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_tokenSources[cameraIndex].Token, ct);
+
+    _shakeCameraTasks[cameraIndex][0] = _cameraContainers[cameraIndex].ShakeCameraXAsync(force.x, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+    _shakeCameraTasks[cameraIndex][1] = _cameraContainers[cameraIndex].ShakeCameraYAsync(force.y, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+    _shakeCameraTasks[cameraIndex][2] = _cameraContainers[cameraIndex].ShakeCameraZAsync(force.z, duration, frequency, dampingRatio, randomly, linkedCts.Token);
+
+    using (linkedCts)
+    {
+        await _shakeCameraTasks[cameraIndex];
+        _tokenSources[cameraIndex].Dispose();
+        _tokenSources[cameraIndex] = null;
+    }
+}
+```
+
+两处跟 `ModifyCameraAsync`不同、都已验证的地方：一是一次性初始化块里完全没有
+出现 `ITrialStateManager_TypeInfo`，说明摇晃相机从不写持久化的每相机试炼状态
+（只有"相机在哪"的 height/rotation/distance 状态才写）；二是 `force` 是必填的
+`Vector3` 结构体，不可能为 `null`，所以三条轴向调用无条件全部执行（没有
+`ModifyCameraAsync`里那种按 tween 是否赋值决定要不要跑的三元表达式）。
+
+**`_shakeCameraTasks` 的 3 槽现在完全解释清楚**：`force.x`/`.y`/`.z`（状态机偏移
+`0x30`/`0x34`/`0x38`，正好是 `Vector3` 自己的内存布局）分别喂给
+`StageCameraContainer.ShakeCameraXAsync`/`ShakeCameraYAsync`/`ShakeCameraZAsync`
+（逐一比对过这三个方法各自的真实签名和状态机字段偏移），存进
+`_shakeCameraTasks[cameraIndex][0]`/`[1]`/`[2]`——三个轴，三个槽，不多不少，
+不需要填充位。
+
+**这也让 `_modifyCameraTasks` 空闲第 4 槽的追问可以收尾了**：`_modifyCameraTasks`
+是 `private` 字段，全仓库 grep 只有 `Awake()`（分配）和 `ModifyCameraAsync`
+（写槽 0/1/2）两处读写，`ShakeCameraAsync` 只碰自己独立的 `_shakeCameraTasks`。
+既然已经排查了这个字段在代码里**唯一**可能写它的两个方法，且都不写槽 3，就没有
+第三个"漏查的消费者"可以再去找了。第 4 槽是否是原作者故意留的余量（比如曾经
+计划过第 4 种 tween）还是单纯多分配了一格，从代码本身已经不可考——但"从这两个
+方法的证据看，槽 3 永远是 `default(UniTask)`"这一点现在是完全确定的，不再是
+"未排查"，是"排查完了、答案就是没有第三方写它"。
+
+### `PerspectiveStageManager` 整个类 — 子系统"大脑"其实是一层薄转发
+
+构造函数（358 B）、`StageOffset` 属性（19 B）、以及全部 7 个接口方法（共
+5,595 B）本轮全部复原。结果是：这个被 `PerspectiveStagePresenter::Awake`
+称为子系统"大脑"的类，其实每个方法都只做一件事——把调用原样转发给对应的
+子接口字段：
+
+```csharp
+public PerspectiveStageManager(IPerspectiveStageLoader loader, IPerspectiveStageScreenModifier screenModifier, IPerspectiveStageCameraModifier cameraModifier, ICourtModifier courtModifier, Vector3 stageOffset)
+{
+    _loader = loader;
+    _screenModifier = screenModifier;
+    _cameraModifier = cameraModifier;
+    _courtModifier = courtModifier;
+    StageOffset = stageOffset;
+}
+
+public async UniTask LoadStageAsync(PerspectiveStageKind kind, [Optional] CancellationToken ct) => await _loader.LoadStageAsync(kind, ct);
+public void UnloadStage() => _loader.UnloadStage();
+public async UniTask ChangeScreenVisibilityAsync(int screenIndex, bool visible, float duration, [Optional] CancellationToken ct) => await _screenModifier.ChangeScreenVisibilityAsync(screenIndex, visible, duration, ct);
+public void SplitScreen(int screenIndex, float normalizedPosX, float roll, ScreenSplitDirection direction) => _screenModifier.SplitScreen(screenIndex, normalizedPosX, roll, direction);
+public async UniTask ModifyCameraAsync(int cameraIndex, ModifyCameraHeightTween heightTween, ModifyCameraRotationTween rotationTween, ModifyCameraDistanceTween distanceTween, [Optional] CancellationToken ct) => await _cameraModifier.ModifyCameraAsync(cameraIndex, heightTween, rotationTween, distanceTween, ct);
+public async UniTask ShakeCameraAsync(int cameraIndex, Vector3 power, float duration, int frequency, float dampingRatio, bool randomly, [Optional] CancellationToken ct) => await _cameraModifier.ShakeCameraAsync(cameraIndex, power, duration, frequency, dampingRatio, randomly, ct);
+public void ChangeFireFxActivity(bool active) => _courtModifier.ChangeFireFxActivity(active);
+```
+
+（实际源文件里每个方法保留展开的方法体和各自的证据注释，这里只是压缩展示
+形状；`StageOffset` 是 get-only 自动属性，由构造函数直接赋值。）
+
+**验证方法，不是按名字猜**：每一条转发都独立确认了两件事——(1) 被调用的
+是接口的哪个成员，靠的是 IL2CPP 共享的"接口槽缓存"跳板（项目里反复出现的
+"universal vtable base 0x138"手法）解析出的成员索引（`r8d`/`ecx` 的字面值），
+逐一比对各接口自己声明顺序里第 N 个成员是谁；(2) 每个参数的寄存器/栈来源，
+通过跳板自己的栈帧大小算术（`push rdi; sub rsp, N` ⇒ 跳板的 `[rsp+X]` 对应
+调用者的 `[rsp+(X-栈帧总大小)]`）逐一映射回调用者传入的具体字段，逐字节确认
+落点跟接口签名声明的参数顺序一致。`ModifyCameraAsync` 用的跳板
+（`sub_3C80`）逐一核对到底；`ShakeCameraAsync` 用的跳板（`sub_3B50`）结构
+不同（`Vector3 power` 按指针传递给本地副本），本轮也完整算过一遍栈帧偏移，
+不是靠跟 `ModifyCameraAsync` 结构相似就假设过关。
+
+**这条链现在完全闭合，不是假设**：`PerspectiveStagePresenter::Awake`
+（本轮更早复原）里的构造调用是
+`new PerspectiveStageManager(this, _screenController, _cameraController, this, _stageParent.position)`
+——也就是说运行时 `_cameraModifier` 就是 `_cameraController`（一个
+`StageCameraController` 实例），`_loader`/`_courtModifier` 都是
+presenter 自己。所以 `PerspectiveStageManager.ModifyCameraAsync` →
+`StageCameraController.ModifyCameraAsync`、
+`PerspectiveStageManager.ShakeCameraAsync` →
+`StageCameraController.ShakeCameraAsync` 这两条调用链，从脚本层一路到
+相机控制器的真实实现，现在是逐字节追踪确认过的完整闭环，不是"结构相似所以
+大概率是它"。
+
+### `StageScreenController::Awake` — 同一个数组分配 helper，但没有任务槽表
+
+`StageScreenController::Awake`（RVA `0x387B10`，156 B）比
+`StageCameraController::Awake` 简单得多：同一个共享 `sub_297400(TYPE, length)`
+数组分配 helper（调用形状完全一致），但这个控制器没有 `_modifyCameraTasks`/
+`_shakeCameraTasks` 那种按屏幕预分配的任务槽表要建，只有：
+
+```csharp
+private void Awake()
+{
+    _tokenSources = new CancellationTokenSource[_screenContainers.Length];
+}
+```
+
+`_screenContainers`（`[SerializeField]`）被无条件解引用取 `.Length`（内联的
+NRE 抛出桩），已记入 `RECONSTRUCTION_CLAUDE_NOTES.md`。
+
+### `StageCameraController::OnDestroy` / `StageScreenController::OnDestroy` — 折叠体，`Awake` 分配的表在这里被回收
+
+两个类的 `OnDestroy` 是同一个原生函数（RVA `0x384A10`，169 B）——反汇编的
+`managed:` 行同时列出两个类名，这是 §1.3 讲过的函数体折叠现象，成立的前提是
+两个类在这个函数唯一访问的字段（`_tokenSources`）上共享同一个
+`FieldOffset`（都是 `0x40`，已在两份 `FieldOffset` 表里逐一核对）。逐字节复原为：
+
+```csharp
+private void OnDestroy()
+{
+    for (int i = 0; i < _tokenSources.Length; i++)
+    {
+        if (_tokenSources[i] != null)
+        {
+            _tokenSources[i].Cancel();
+            _tokenSources[i].Dispose();
+            _tokenSources[i] = null;
+        }
+    }
+}
+```
+
+判别式证据：循环边界（`_tokenSources.Length`）在每次迭代前都重新从
+`this` 取字段并重新判空，不是循环外缓存到局部变量一次——这排除了
+`int n = _tokenSources.Length;` 提到循环外的写法，坐实了"每次都走属性/索引器"
+这一形状。`Cancel()`/`Dispose()` 是两次独立的索引器读取，不是缓存同一个引用两次
+调用：两者之间反汇编重新加载并重新判空了一次该槽位（编译器无法证明
+`Cancel()` 没有把槽位置空，所以必须再判一次）。清零槽位调用的
+`sub_2390(array, index, value)`——这个引用数组元素带 GC 写屏障的存储 helper——
+在 `ModifyCameraAsync` 自己的 MoveNext 里独立交叉确认了两次（`new
+CancellationTokenSource()` 存入槽位、以及末尾存 `null`，两处的寄存器摆法都是
+`rcx`=数组、`rdx`=下标、`r8`=值），不是凭印象假设的。这是 `Awake()` 分配
+`_tokenSources` 表的生命周期另一端：组件销毁时把还没完成的每个 token source
+取消、释放、清空引用。
+
+## 7.7 `Naninovel-glue` 子系统：已完成，66/66 个函数体 / 21,262/21,262 B（用户优先级第 3 位）
+
+`work/reversing/progress.py Naninovel-glue` 测得 66/66、21,262/21,262 B（100%）。全部
+`WitchTrials.*` 合计 252/929 个函数体、95,243/316,778 B。本节只记本轮新增部分；此前已完成的
+`StartTrial`/`ChangeTrialPauseMode`/`GosubToObjectionCutIn`/`WitchTrialsNaninovelPresenter`
+等见前文各节。
+
+**`WitchTrialsScriptPlayer`**
+- `ResetService`（`0x39C1C0`）：中段与基类 `ScriptPlayer.ResetService`（`0x5C4AE0`）逐字节相同，
+  即内联的 `base.ResetService()`；前后用 `_dontDisableAutoPlayAndSkip = IsSoftResetting` 包住，
+  于是**软重置期间基类重置不会关掉 skip/auto play**（本类的 `DisableSkip`/`DisableAutoPlay`
+  覆写在该标志为真时什么都不做）。
+- `GetSkipAllowed`（`0x39C890`）：`DebugOptions.DebugSkip` → 辩论中（`IsInDebate`）→
+  `SkipMode == Everything` → 否则只允许跳过已读行 `HasPlayed(PlayedScript.Path, PlayedIndex + 1)`。
+- `ProcessAutoObjectionAsync`（`0x39C560` + MoveNext `0x39CAE0`）：先取消旧 `_cts`、新建 `_cts`；
+  对每个异议 id 依次 `await new Gosub { Path = new NamedString(null, id) }.Execute(token)`，
+  随后 `ThrowIfCanceled` 并 `await UniTask.Yield(PostLateUpdate, token)`；循环结束
+  `_cts.Dispose(); _cts = null`（**无判空**）。没有 try/finally：被取消时异常直接进
+  SetException，`_cts` 由取消方负责释放。
+
+**`WitchTrialsChoiceHandlerManager`**：构造函数内联了基类 `ChoiceHandlerManager` 构造
+（`PickedChoices` 字段初始化器 + `ActorManager` 构造 + `resources`/`l10n`）；
+`SaveServiceState`/`LoadServiceState` 用 `SettingsWitchTrials` 存取"关键选项提示"开关，
+读不到状态时回落到 `Configuration.DefaultCriticalChoiceHintEnabled`；
+`SetCriticalChoiceHintEnabled` 写字段后同步触发 `OnCriticalChoiceHintChanged`。
+
+**`WitchTrialsNaninovelManager` 余下成员**：`StartGameScenarioName` =
+`DebugOptions.StartGameScenario ?? base.StartGameScenarioName`（尾段与基类 getter `0xD026C0`
+逐字节相同）；`OnEnterTitleScreenAsObservable` =
+`_isInTitleScreen.SkipLatestValueOnSubscribe().Where(x => x).AsUnitObservable()`；
+构造函数只有四个字段初始化器（`_isInTitleScreen` 显式传 `false`，`_trialTimer = new Timer(true)`）。
+
+**`ScriptHelper`**：正则 `^[A-Z][a-z]*(\d+)_[A-Z][a-z]*(\d+)_([A-Z][a-z]*)(\d+)$`（`Compiled`）；
+`TryParseScenarioName` 四个分组**无短路地全部解析**后再无分支地 AND，成功才构造 `ScenarioInfo`。
+
+**`GosubResetWitchBook`（`@gosubResetBook`）整类**：
+- `Execute`：从 `PlaybackSpot.ScriptPath` 末段解析场景名，失败则 `Warn`（"魔女図鑑リセットが
+  想定されていないシナリオで実行されました。"）并结束；调试选项 `CheckWitchBookState` 开启且证据
+  状态有变化时导出脚本，若 `Part == Trial` 则到此结束；`IsDebugDirectJump` **显式为 false 时结束**；
+  其余交给内联的 `base.Execute`（`Gosub.Execute`，`0x4EFC80` 对照）。
+- `TryGetScriptPathAndLabel`：标签为 `Reset{Act}-{Chapter}-{Part}` 或加上 `Version` 参数对象本身
+  （`{3}` 走参数对象的 ToString），其余与基类一致。
+- `CheckEvidenceState`：按类别取魔女图鉴当前生效证据（按 Id 排序）做快照，与上次快照比较长度与
+  逐项 `IdVersionPair.Equals`（lambda 与 `0x3A2E80` 逐字节一致）；首次调用恒为 true；无论结果都会
+  覆盖快照。
+- `ExportScriptFile`：调试用，向桌面 `ResetWitchBook.nani` 追加一段能重建当前图鉴状态的脚本
+  （`# 场景名`、`@clearBook`、每项 `@update {id} category:{cat} version:{ver}`、`@return`），
+  `await using StreamWriter`。
+- `<>n__0`（`0x329360`）是 async 方法里 `base.Execute` 的编译器访问器。
+
+**`ScenarioInfo` 改回位置记录（更正）**：8 个合成成员（`EqualityContract`/`ToString`/
+`PrintMembers`/`GetHashCode`/两个 `Equals`/`<Clone>$`/`Deconstruct`）逐一与 Roslyn 记录降级形态
+核对一致，原声明是 `public record ScenarioInfo(int Act, int Chapter, ScenarioPartKind Part, int Section);`。
+此前注释称"存在真实 `set` 访问器，所以 backing field 不是 readonly"是错的：那是 `init` 访问器，
+dump.cs 的 `readonly` 标记是对的。三个 `ModifyCamera*Tween` 记录保留非位置写法，只更正了指向
+`ScenarioInfo.cs` 的注释。
+
+**顺带复原**：`DebugOptions.DebugSkip`/`StartGameScenario`/`CheckWitchBookState`（均为
+`IsDebugMode && s_x` 形状）。
+
+**编译基线变化**：警告数 144 → **143**，差值是旧 `ScenarioInfo` 桩里 `Equals(ScenarioInfo? other)`
+的 CS8632，改成位置记录后由编译器合成、不再有该注解；0 error 不变。
+
+
+## 7.8 `Save/Load` 子系统：已完成，31/31 个函数体 / 10,941/10,941 B（用户优先级第 4 位）
+
+`progress.py SaveLoad` 测得 31/31、10,941/10,941 B（100%）；全部 `WitchTrials.*` 合计 278/929、104,318/316,778 B。
+
+**命令**
+- `@quickSave`（`QuickSave`）：先写自定义变量 `lastQuickSaveSlotNumber`，再在
+  `NaninovelLoadingScreen.Show(LoadingMode.Subtle, haltInput: false)` 期间调用
+  `IClickThroughPanelExtended.DontBlockInteractionOnNext()` 并等待
+  `IStateManagerExtended.QuickSaveAsync(SlotNumber)`；`Wait` 参数经 `WaitOrForget` 决定是否阻塞脚本。
+- `@quickLoad`（`QuickLoad`）：槽位优先取参数，否则读变量 `lastQuickSaveSlotNumber`；
+  **两者都没有时只 `Warn("No quick save slot number found.")` 然后照常用 0 号槽继续**；
+  `Show(LoadingMode.Long, haltInput: true)` 期间等待 `QuickLoadAsync`。
+- `@openLoadUi`（`OpenLoadUi`）：取 `ISaveLoadUI`，`PresentationMode = Load`，再等待 Cysharp
+  `ManagedUiExtensions.PresentAsync(ui, null, token.CancellationToken)`。
+- 字节里的 `Array.Empty<ICancelEventBlockable>()` 是 `Show(..., params ICancelEventBlockable[])`
+  省略 params 实参的编译器降级，源码不写第三个实参。
+
+**`SaveLoadUi` 结构**
+- `Awake`：`_panels = _panelReferences.ToDictionary(r => r.Mode, r => r.Panel)`，
+  `SetPresentationMode(Load)`，最后 `base.Awake()`。`PresentationMode` setter 与
+  `SetPresentationMode` 是同一个原生函数体（缺面板时 `Debug.LogWarning("The panel for {0} does not exists.")`，但仍然赋值）。
+- `Initialize`：分别以 `SaveSlotLimit` 初始化 Save/Load 两个面板的网格
+  （Save 面板点击→`HandleSaveSlotClicked`，Load 面板点击→`HandleLoadSlotClicked`，删除和取档回调共用），
+  `Dismiss` 所有面板，`await UniTask.WhenAll(...)`；不调用 `base.Initialize()`。
+- `OnShow` 订阅的 lambda（`<OnShow>b__52_0`）：UI 可见且计数 >0 时显示 `LoadingMode.Short` 遮罩
+  （以 `_naninovelScreen` 作为 blockable），计数回到 ≤0 时释放。**此前这里是一个 Confidence D 的占位方法
+  `OnShowSlotCountChanged`（`throw NotImplementedException`），本轮已按字节复原并内联回 lambda。**
+- `LoadSaveSlotAsync`：槽位不存在返回 null；计数器存在时 `Value++`，`try { await Load } finally { Value-- }`
+  （finally 无判空）。
+- `FindFocusObject`：当前模式面板网格里 `activeInHierarchy` 的槽位中取 `LastSelectTime` 最大者的
+  `gameObject`（严格大于才替换）。
+
+**三条 async 流程**
+- 读档 `HandleLoadSlotClickedAsync`：播放读档音效 → `NaninovelInteractionBlocker` 期间：淡出 →
+  `_naninovelScreen.DismissAsync(0f)`（不等待）→ 标题 UI 若可见则 `DismissAsync(0f)`（不等待）→
+  `SetTitleScreenShown(false)` → `UniTask.Delay(_loadDelay)` → `IStateManager.LoadGame(slotId)` →
+  淡入 → `IInputManager.ProcessInput = true`。
+- 存档 `HandleSaveSlotClickedAsync`：先播放确认音效；槽位已存在时弹覆盖确认（取消即返回）；
+  播放存档音效；`CreateLinkedTokenSource(ct)` + `CancelAfterSlim(_saveGameTimeout)`；
+  `LoadingMode.Short` 遮罩期间启动 `SaveGame(slotId)`，并以
+  `UniTask.Yield(Update, linkedCts.Token)` 轮询完成——**Yield 的 GetResult 会抛取消异常，所以存档超时表现为整个流程被取消**；
+  完成后把新状态 `BindSlot` 到所有面板。
+- 删档 `HandleDeleteSlotClickedAsync`：确认音效 → 弹删除确认（取消即返回）→ `DeleteSaveSlot` →
+  所有面板 `BindSlot(slotNumber, null)`。
+- 三个 `HandleXxxClicked` 同步入口都是 `HandleXxxClickedAsync(slotNumber, destroyCancellationToken).Forget()`。
+
+---
+
+## 7.9 `WitchBook/Data` 子系统：已完成（用户优先级第 5 位）
+
+按顺序推进：模型层 → 五个 Page → ItemButton/Thumbnail → WitchBookScreen → WitchBookUi → 三个命令。
+
+**第 1 组：模型层（22 个函数体，另加 bucket 外的 `IdVersionPair` 6 个）**
+- `VersionedState`：
+  - `_list` 由构造函数初始化为 `new List<IdVersionPair>(64)`。依据是内联的 List 构造直接以长度 64 调用数组分配器；无参构造只会引用静态空数组，不会分配。
+  - `ActiveItems` = `_list.Where(p => p.Version > 0).ToList()`。
+  - `SetVersion`：倒序查找 `EqualId`，命中则整项替换为新 `IdVersionPair`，否则 `Add`。
+  - `Copy`：`Clear` 后设 `Capacity`，再逐项 `IdVersionPair.Clone`。
+  - `Clone` = `new` + `Copy(this)`；`Validate` = `List.Contains`（走 `IEquatable`）；`IsNull` = `_list == null`。
+- `IdVersionPair`：
+  - `Equals(other)` / `Equals(x, y)` 是 IDE 生成的相等模板，后者多一次 `GetType()` 比较。
+  - `GetHashCode(obj)` = `HashCode.Combine(Id, Version)`。
+  - `EqualId` 是 `string.Equals(Id, id, Ordinal)`。它带 CompareInfo/CultureInfo 元数据初始化，`==` 版本没有，行为同为序数比较；写法定 B 级。
+- `WitchBookDataHelper`：
+  - `BuildClueTextureAddress("1-2")` → `"General/WitchBook/Clue_001_002"`：共享 StringBuilder，按 `'-'` 切分，各段 `PadLeft(3,'0')`。
+  - `BuildProfileTextureAddress` → `"General/WitchBook/Profile_" + id`。
+  - `ParseCategories`：`FastEnum.TryParse`（区分大小写），失败时 `Debug.LogError("Invalid WitchBook category name: X.")` 并跳过。
+- 数据类构造：
+  - `AuthorData`/`CharacterData`/`SpecialThanksData` 只有 `_items = new List<>()` 字段初始化器；`SpecialThanksData._textSizeByCourses` 没有初始化器。
+  - 五个 `XxxData : WitchBookDataBase<T>` 构造为空，`_items` 由 Unity 反序列化填充。
+  - `CharacterDataItem`/`RuleDataItem`/`SpecialThanksDataItem` 构造按参数顺序存字段。
+
+**第 2 组：五个 Page + `WitchBookPageBase`（`Reset`/`Show`）**
+
+方法：先完整解码 `CluePage`，再用 `pagediff.py`（归一化地址/类型名后逐行 diff）对其余四页做字节级比对，只精读有差异的部分。
+
+- `LoadDataAsync`：全部是 `var result = await base.LoadDataAsync(ct);` 后建本地化查找表，最后 `return result;`。
+  - Clue/Note 的入口、`<>n__0`、`b__N_0`、`b__7` 与 Clue 逐字节相同，Note 的 MoveNext 只差写入偏移（+0xC8/+0xD0）。
+  - 查找表形如 `ToDictionary(v => v.IdVersionPair, v => names.Keys.Union(descriptions.Keys).ToDictionary(l => l, l => new LocalizedTexts(names.GetValueOrDefault(l) ?? "", ...)))`。
+  - Rule 多一张 `_numberings` 表（`Item.Numbering`）。由于 C# 不合并相同 lambda，`b__10_0` 与 `b__10_2` 字节相同。
+  - Map/Profile 只有一层 `ButtonText`/`Description` 的 `ToDictionary(Locale, Text)`，两者的 lambda 逐字节相同。
+  - Profile 先 `new AuthorTextBuilder(_authorTextSettings)` 并启动 `InitializeAsync(ct)`（不 await），等基类加载完成后再 `await` 该任务，两者并发。
+- `SetupItemButton`：
+  - Clue/Profile 走贴图（`BuildClue/ProfileTextureAddress`）。
+  - Note 用 `SetupWithText(title, 0)`。
+  - Rule 用 `SetupWithText(GetTitleText() + "<br>" + numbering, 2)`。
+  - Map 用 `SetupWithText(text, text.Contains("<br>") ? 2 : 1)`（原生编译器折叠为 `movzx; inc`）。
+- `RefreshPageContent`：
+  - 两级 `IReadOnlyDictionary` 索引器（接口槽 2 = `get_Item`，几个 thunk 均已核对）。
+  - Note 标题先经 `s_tagPattern`（`new Regex("<.+?>", Compiled)`）去标签。
+  - Map 遍历 `_floors`：匹配的层 `Show(_restrictionAreas)`，其余层 `Hide()`。
+  - Profile 优先 `TryBuildAuthorText(id, UseCharacterColor ? NameColor : null)`，失败时回退 `BuildTaggedSimpleName(GetAuthorName(id), null)`。
+- `RulePage.GetTitleText`：逐指令内联了 Naninovel `TextManagerExtensions.GetRecordValue`（0x596010，同一元数据标志），值为空时回退 `_managedTextProvider.DefaultValue`。
+- 三个 `LocalizedTexts` 嵌套类改写为位置记录。编译器生成的 `LocalizedTexts?` 不再产生 CS8632，**警告基线 143 → 140**。
+
+**第 3 组：列表项控件（ItemButton / Thumbnail / Description / List / SubjectLabel）**
+
+- `SetupWithAddressableTexture` / `Thumbnail.Setup` 流程：
+  - 内联 `StateLoading()`：默认贴图、`alpha = 0`、不可交互。
+  - `_cts?.Cancel()` 后 `new CancellationTokenSource()`。
+  - `GetOrLoadAddressableAsset<Texture2D>(address, _cts.Token).ContinueWith(SetTexture).Forget()`。
+  - `SetTexture`：`alpha == 0f` 时设 1f 并可交互；`!activeSelf` 时 `SetActive(true)`。
+  - icall 名称已从 PE 字符串核对：get_alpha / set_alpha / set_interactable / get_activeSelf / set_enabled。
+- `SetupWithText`：用 `for` 循环（每次迭代重读数组）设 `enabled = i == backgroundIndex`。
+- `ClearContent` 不取消进行中的加载。
+- `WitchBookItemDescription.SetText` 用的是 `_autoLayoutSupporter` 自己的 `destroyCancellationToken`，不是 `this` 的。
+- `WitchBookItemSubjectLabel.SetText` 首字放大：
+  - 长度 > 1：`"<size=+{0}>{1}<space={2}><size=+0>{3}"`。
+  - 长度 = 1：`"<size=+{0}>{1}"`。
+  - `_fontSizeDiff` 字段初始值为 30f。
+
+**第 4 组：`WitchBookScreen`（22 个函数体 + 4 个 MoveNext）**
+
+- 三个惰性 getter：`InputManager` / `DialogProvider`（服务按 `IDialogManager` 查找，存为 `IDialogProvider`，与 SaveLoadUi 同形）/ `NaniAudioManager`；三个 `[CompilerGenerated]` 自动属性（+0xF8/+0x100/+0x108）。
+- 生命周期覆写：`BeginToPresent`/`EndToPresent`/`EndToDismiss` 内联了 NaninovelScreen 基类体（与 0xD3CF30/0xD3CF70/0xD3D330 逐字节一致），写作 `base.X()`；只有 `BeginToDismiss` 真正调用基类（0xD3D180）。
+- `BeginToPresent`：先取 `IsPresentEvidenceMode`（槽 1）再取 `IsInDebate`（槽 0），`or` 只控制 `ChangeTrialPauseMode(true, true)`；alpha、`blocksRaycasts` 与 `new CancelEventBlocker(new ICancelEventBlockable[] { this })`（数组 ctor 0xCDB6B0）只看 `IsPresentEvidenceMode`。
+- `InitializePages`：每次迭代新建 DisplayClass42_0 捕获类别；受限类别隐藏标签与页面；`MapPage` 走 `InitializeAreas(RestrictionAreas)`；`Toggle.Set(true, true)` 即内联的 `isOn = true`；订阅 `OnValueChangedAsObservable()`，回调播放 `ResponseKind.Tab` 音效并 `ChangePage`，`AddTo(_disposables, this)`。
+- `PlayCancelSfx` 直接丢弃 `PlaySfx` 返回的 UniTask（无 `ForgetCore`，与 SaveLoadUi 不同）。
+- `ChoiceEvidenceAsync`（MoveNext 0x37C580）是重试循环：确认对话框非 Submit 时清空 blocker/dialog 后回到取消检查并再次 `OnPresentEvidenceAsync`；`<>7__wrap5` 是 finally 中 await 的返回标志。`ProvidableDialog` 只实现 `IUniTaskAsyncDisposable`，故写成显式 `try/finally { await dialog.DisposeAsync(); }`（`NaninovelInteractionBlocker` 用无参 ctor 0xCFBE30）。
+- `OnPresentEvidenceAsync`：链接 CTS + `UniTask.WhenAny(UniTask<string>[])`，取胜者后 `Cancel()`。`ChoiceAreaAsync`：当前页不是 `MapPage` 时输出日文警告并返回 0。
+- 两条日文字面量取自 stringliteral.json 解码，而非反汇编注释。
+
+**第 5 组：`WitchBookUi`（12 个函数体 + 4 个 MoveNext）**
+
+- `Initialize`：先把 `base.Initialize()` 存入 `<result>5__2`（dump.cs 中本类有 `<>n__0` 访问器，指向 CustomUI.Initialize 0x3483B0，其 `return default` 被内联成空 awaiter），再 `await _witchBookScreen.InitializeAsync(destroyCancellationToken)`（Cysharp，已内联），最后 `await result`。
+- 三个 `Set*` 与 `GetActiveEvidences`/`UpdateVersion`/`ClearState` 都是对 WitchBookScreen 的转发，被转发目标（自动属性 setter、`PageData[category].Page.X()`）整体内联。
+- `ChoiceEvidenceAsync`/`ChoiceAreaAsync`：`using` 一个 `token.CreateLinkedTokenSource()`，把其 Token 交给 Screen 的同名方法并 await。
+- `SetFont` 与 DebateTextPrinterPanel.SetFont 同形：内联的 `base.SetFont` + 对 `SelectMany(config => config.Components)` 逐个 `ChangeFontMaterialAsync(...).Forget()`（lambda 折叠在 0x368A00）。
+- `SerializeState`：基类调用后 `new GameState { ... = RestrictionX?.ToArray() }`，`SetState` 内联为 `Dictionary.set_Item`。`DeserializeState`：`await base.DeserializeState`，`GetState<GameState>()` 为空时两项置 null，否则 `?.ToList()`（`new List<T>(array)` 内联）。
+
+**第 6 组：`WitchBookButtonUi` 与三个命令（ShowWitchBookUi / ClearWitchBook / UpdateWitchBook）**
+
+- 惰性 getter 均为 `Engine.GetServiceOrErr<T>()`，`WitchBookUi` 为 `NaniUiManager.GetUI<IWitchBookUi>()`（内层 getter 内联）。IWitchBookUi 接口槽：0 SetPresentationMode、1 SetRestrictionCategories、2 SetRestrictionMapAreas、3 GetActiveEvidences、4 ChoiceEvidenceAsync、5 ChoiceAreaAsync、6 UpdateVersion、7 ClearState。
+- `WitchBookButtonUi.Start`：`_button.onClick.AsObservable().Subscribe(_ => ...).AddTo(this)`。lambda（0x3776F0）播放 `_openSfxPath`（结果丢弃），重置为 Local / 无限制，再 `PresentAsync(null, destroyCancellationToken).Forget()`（CancellationToken 重载）。CustomUI 与 ScriptableUIBehaviour 都不声明 Start，基类为 Unity 空的 UIBehaviour.Start，故不写 base 调用。
+- `ShowWitchBookUi`：
+  - `Execute` 传入 `Global ? Global : Local`、`Assigned(CategoryNames) ? ParseCategories : null`、`areas = null`；`Back` 在此不读。
+  - `ShowWitchBook` 依次调用槽 0/1/2，再 `await PresentAsync(null, token)`（AsyncToken 重载，已内联）。
+  - `IsEnabledDebugSkip` 为 `TryGetVariableValue<bool>("enableDebugSkip", out v) && v`，原生编译器折叠为 `and al`，写法 B。
+  - 构造函数只有 `Back = false` / `Global = false` 两个字段初始化。
+- `ClearWitchBook`：
+  - `IsAct2Chapter1Adv` 与 GosubResetWitchBook 同一前缀（`ScriptPath.Split('/')` 取最后一段 → `TryParseScenarioName`），判定 Act 2、Chapter 1、Part Adv。
+  - `Execute` 在 `DebugOptions.CheckWitchBookState` 为真时，Act2-1 ADV 清全部类别，否则清一个零初始化元素的数组（`{ Clue }`，写法 B）；非调试时按 CategoryNames 或全部类别逐个 `ClearState`。
+- `UpdateWitchBook`：`FastEnum.TryParse` 失败时 `Err("Invalid category: {0}. Valid values are: {1}")`，但仍继续执行 `UpdateVersion(category, Id, Version)`，此时 category 为 0。
+- `ChoiceEvidence.<Execute>b__2_0`（0x326010）已在 Execute 中内联书写，只在 RECONSTRUCTED 行补记 RVA。
+
+进度：`progress.py WitchBook/Data` 测得 **121/121、39,146/39,146 B（100%）**；全部 `WitchTrials.*` 合计 406/929、144,435/316,778 B。
+
+## 7.10 `UI` 子系统：已完成，165/165 个函数体 / 50,436/50,436 B（用户优先级第 6 位）
+
+**第 1 组：小型控件与 Page 构造函数**
+
+- 基类私有成员一律经受保护访问器内联出现，逐个反汇编确认后改写为访问器，而非直接访问字段：
+  - `SlideToggle`：`IsActiveSelectableUtil`（0xCF00B0）、`OnHighlightingChangedAsObservable()`（0xCF0A80，SelectableUtility +0x10）、`OnValueChangedAsObservable()`（0xCF0A30）。
+  - `RebuildableButton.Label`（0x44CE10 = +0x40）、`RebuildableLabel.UiLabel`（+0x20）。
+- `WitchTrialsTabToggle`：
+  - `OnDisable` 逐字节内联 SlideToggle.OnDisable（清空基类 +0x138），再清空本类 +0x180 的 `_disposables`，因此是两个不同的 CompositeDisposable。
+  - 构造函数中 +0x130/+0x138 的写入是基类字段初始化器；只有 +0x180 属于本类，写作字段初始化器。
+  - `OnHighlightingChanged` 为 `value | isOn`。
+- `CanvasGroupButton.OnStateChanged`：
+  - 高亮 = Highlighted(1) 或 Pressed(2)；枚举值由 dump.cs 常量与 SlideToggle.DoStateTransition 的分派顺序共同确认。
+  - 禁用 = `_ignoreParentDisabling ? !interactable : state == Disabled(4)`。读的是 +0xD8 的 `m_Interactable`，不是 `IsInteractable()`。
+- `ToggleImageSwitcher.OnValueChanged` 与 `Change` 共用 RVA 0x30FA50（折叠），补丁改为按方法签名匹配，避免同一 RVA 被重复命中。
+- `WitchTrialsButton`：
+  - `_defaultSize = new Vector2(505f, 120f)`，由 `struct` 解码 0x43FC8000/0x42F00000 得出。
+  - `RebuildElements` 在基类调用之前就读取了 `Label as WitchTrialsButtonLabel` 与 `buttonData.ResponseKind`，故写为局部变量（B）；响应为 Submit 时调用 `ModifyEmphasizedText`。
+- `WitchTrialsButtonLabel.ModifyEmphasizedText`：
+  - 单字与多字两个 `string.Format` 在原生层合并为同一个 FormatHelper 调用点（尾合并），源码写作 if/else。
+  - 首字以装箱 `text[0]` 传入；`Substring(1)` 的写法为 B。
+  - 构造函数与 RebuildableLabel..ctor 折叠，+0x48 = 1 是基类的初始化器。
+- 四个 Page 构造函数（各 62 B）只调用 `WitchBookPageBase<TItem, TState>..ctor`。
+
+**第 2 组：AutoToggleUi / AdvChoiceHandlerButton / MPImageAppearanceChanger 族 / TrialChoiceHandlerPanel**
+
+- `AutoToggleUi`：
+  - `OnEnable`/`OnDisable` 为 `base` 调用加 IScriptPlayer 槽 10/11 的 `OnAutoPlay` 订阅与退订。
+  - `Initialize` 订阅 `_toggle.OnValueChangedAsObservable()`。lambda（0x336F80）是本类的实例方法，每次经 getter 取播放器，所以是 lambda 而非绑定到播放器的方法组。随后 `SetIsOnWithoutNotify(AutoPlayActive)`（`Toggle.Set(v, false)` 内联）。
+  - `HandleAutoModeChanged` 设置 `isOn`，再 `SetSkipEnabled(false)`（槽 34）；`Visible`（ScriptableUIBehaviour 槽 28）为真时播放 Submit 音效。
+- `AdvChoiceHandlerButton`：
+  - `OnEnable`/`OnDisable` 的 `base` 为内联的 `ScriptableUIControl<Button>.OnEnable/OnDisable`（对 this 调用槽 60/61 `BindUIEvents`/`UnbindUIEvents`）。之后在 hint CanvasGroup 存活时增删 `OnCriticalChoiceHintChanged`（IWitchTrialsChoiceHandlerManager 槽 2/3）。
+  - `Initialize` 逐字节内联 `ChoiceHandlerButton.Initialize`（0x615400），再按 `CriticalChoiceHintEnabled` 设置 hint 透明度。
+  - `OnButtonClick` 只播放 SFX 并 `Forget`；基类 `ScriptableButton.OnButtonClick` 是共享空函数体 0x30C000，无从判断源码是否调用了 base（B）。
+- `MPImageAppearanceChanger`（基类，progress 计入 Other）：
+  - 下标越界或长度不足时 `Debug.LogError(string.Format(...), this)`。
+  - bool 版本报错时输出两数组长度的较小值（`cmp` + `cmovge`），写作 `Mathf.Min`（B）。
+- `LabeledMPImageAppearanceChanger`：`Reset` 与 `ChangeAppearance(int)` 内联基类体，bool 版本则真实调用基类，随后对 `_labelColors` 做同样的范围检查。
+- `TrialChoiceHandlerPanel` 构造函数与 Naninovel 的 ChoiceHandlerPanel 构造函数折叠，本类没有自己的初始化器。
+
+**第 3 组：回想面板（WitchTrialsLogUi / WitchTrialsLogMessageUi）与 WitchTrialsTextPrinterPanel**
+
+- **`AuthorPanel` / `AuthorNamePanel` 的覆写是共享的 `return null` 函数体（0x33E0C0）**，本类自己读基类字段。基类私有字段在字节里是直接加载的，但只有非虚的 `base.AuthorPanel`（BacklogMessageUI 0x471780 = +0xA8）与 `base.AuthorNamePanel`（RevealableTextPrinterPanel 0x4933A0 = +0x158）的 getter 内联后才会出现这种加载，两处 getter 均已反汇编确认，故写作 `base.X`。
+- **作者文本流程与 ProfilePage 同形**：`GetActorMetaOrDefault` → `UseCharacterColor ? NameColor : null` → `TryBuildAuthorText`，失败时回退 `GetAuthorName` + `BuildTaggedSimpleName`；名字为空白时写入显式 null。
+  - 打印面板的回退名优先取 `Author.Label`；它为 `IsEmpty` 时才用 `CharacterManager`（槽 104）按 id 查名。
+  - 文本不为空白时，设置铭牌 CanvasGroup 的 alpha，并写入 `AuthorNamePanel.Text`（槽 5）。
+  - 回想消息改为设置标签文本，并以 `!string.IsNullOrEmpty(AuthorId)` 调用 `base.AuthorPanel.SetActive`。
+- **两个 `Initialize` 的写法**：
+  - 共同步骤：先保存 `base.Initialize()`（经 `<>n__0` 内联，回想面板为 `BindInput("ShowBacklog", Show)` 与 `BindInput("Cancel", Hide)`，槽 93/47/48），直接新建 `AuthorTextBuilder`，`await InitializeAsync(destroyCancellationToken)`，最后 `await task`。
+  - 打印面板另有：`_changeScaleByAppearances.ToDictionary(Appearance, Targets)`。
+- **`SetActiveAppearance`**：按当前外观名 `TryGetValue`，把每个目标 Transform 的 `localScale` 设为 `(Scale.x, Scale.y, 0)`。icall 名 `Transform::set_localScale_Injected` 从解析字符串读出。
+- **`WitchTrialsLogUi.SpawnMessage`**：基类调用后，若 `LastMessage` 为 `WitchTrialsLogMessageUi`，则调用 `ModifyAuthorPanel`。
+- **`WitchTrialsLogMessageUi` 构造函数**：+0x90/+0xA0 的写入是 BacklogMessageUI 的初始化器，本类没有自己的初始化器。
+
+**第 4 组：HintDisplay（提示应用，19 个函数体 + 3 个 MoveNext）**
+
+- **`Present`**：
+  - 清空文本，切换两个 CanvasGroup，`RequestNextMessage` 抽取一条消息（icall `Random::RandomRangeInt`）。
+  - `_cts?.Cancel()` 后新建 CTS，并 `_cts.AddTo(destroyCancellationToken)`：Cysharp `CancellationTokenExtensions.AddTo` 已内联，即 `RegisterWithoutCaptureExecutionContext` 配静态 `disposeCallback`。
+  - 最后 `MainLoopAsync(_cts.Token).Forget()`。
+- **`MainLoopAsync`**：循环执行 `Yield`；消息为空则 `WaitWhile`，再 `ShowTextAsync`；随后 `WaitContinueOrBreakAsync` 为假时退出。循环结束后内联 `Dismiss`（`Close` + `OnClose?.Invoke()`）。
+- **`ShowTextAsync`**：逐字追加并调用 `SetText(StringBuilder)` 与 `ForceMeshUpdate`，按 `_waitOnChara` 加字符表额外时间 `Delay(RoundToInt(x*1000))`。
+  - `[数字]` 标记：`TryParse` 成功时 `WaitForSeconds`，随后跳过标记。
+  - 任一按钮被按下（`TextSkip = 7`）时，用正则去掉剩余标记后一次性写出，再 `WaitForSeconds(_waitSkip)`。
+- **`WaitContinueOrBreakAsync`**：每帧清空所选按钮；Witch → true，WordPrinter → false。
+- **按钮接线**：关闭按钮经 UniRx 订阅 `Dismiss`（lambda `b__30_0` 与 `Dismiss` 折叠为同一函数体）；其余三个按钮用 `AddListener` 写入 `_selectedButtonKind`。
+- **构造函数**：只有字段初始化器 `0.1f` / `0.5f`，以及 `{ '。', '】' }` 各 0.3f 的等待表。
+
+**第 5 组：ControlPanel（游戏内菜单，20 个函数体 + 9 个点击 lambda + 1 个 MoveNext）**
+
+- **`Start`**：先 `Close()`，再为各按钮订阅 `onClick.AsObservable()` 并 `AddTo(this)`：
+  - 回想、存档、读档、设置：先播放 Submit 音效、`Close()`，再 `PresentAsync(null, destroyCancellationToken).Forget()`。存档/读档在此之前设置 `SaveLoadUi.PresentationMode = Save/Load`（ISaveLoadUI 槽 1）。
+  - 返回标题：调用 `ReturnToTitleAsync(...).Forget()`。
+  - 开/关按钮与遮挡按钮：播放对应 SFX（结果丢弃）后 `Open`/`Close`。
+  - 提示入口：`_hintDisplay.Present()`、隐藏 home 组，并设 `_hintDisplay.OnClose = Open`。
+- **`OnEnable`/`OnDisable`**：`NaniInputManager?.GetSampler("Pause")`（Naninovel IInputManager 槽 6），非空时增删 `OnStart += ToggleVisibility`。
+- **`Open`/`Close`**：切换 `_isOpened` 与四个 CanvasGroup，`_naviAnimator.SetBool(s_blink, …)`。
+  - `Open` 另外关闭自动与快进（IScriptPlayer 槽 35/34）。
+  - `Close` 另外关闭提示显示。
+  - `s_blink` 为静态初始化器 `Animator.StringToHash("Blink")`。
+- **`ReturnToTitleAsync`**：外层 `using` 阻塞器，内层 `using` 对话框。确认结果为 Cancel 时直接返回；否则对话框先释放，再在阻塞器作用域内 `await _returnToTitleScript.PlayAsync(ct)`。
+- **构建修正**：`PresentAsync` 是 `GigaCreation.NaninovelExtender.Ui` 中的扩展方法，补上该 using 后编译通过。
+
+**第 6 组：TitleUi（标题画面，22 个函数体 + 6 个点击 lambda + 3 个 MoveNext）**
+
+- **访问器**：
+  - `InputManager` / `DialogProvider` 用 `ServiceLocator.Get<T>(true)` 懒加载（DialogProvider 实际取 `IDialogManager`）。
+  - 四个 Naninovel 服务用 `Engine.GetServiceOrErr<T>()`。
+  - `GalleryUi` / `OptionsUi` 为 `NaniUiManager.GetUI<ICGGalleryUI / ISettingsUI>()`。
+  - `CanLoadGame` = `TryGetVariableValue<int>("g_gameProgress")` 成功且值 > 0。
+  - `Visible` 读 `_visibleSelf`，写入时经 vtable 槽 45 转 `SetVisibility`。
+- **`Awake`**：`base.Awake()` 之后无条件 `_googleForm = null`。原始字节 `48 C7 83 08 01 00 00 00…` 可证实。因此本构建里 Activate 的 GoogleForm 分支永远不会执行。
+- **`ChangeVisibility`**（Naninovel builder）：
+  - 停止淡入淡出 tween，写 `_visibleSelf`，调 `HandleVisibilityChanged`（槽 55）。
+  - CanvasGroup（槽 42）为空则返回。`DisableInteraction`（槽 33）为 false 时设 `blocksRaycasts`。
+  - `ControlOpacity`（槽 43）为 false 则返回。
+  - `time = duration ?? FadeTime`（槽 19）。time 为 0 时直接写 alpha。
+  - 否则构造 `FloatTween(alpha, target, new Tween(time, _visibleSelf ? 显示缓动 : 隐藏缓动, IgnoreTimeScale, true), SetOpacity)`，并 `await RunAwaitable(tween, asyncToken, this)`。
+  - `Tween.Scale` 直接接收 `IgnoreTimeScale`，未取反。
+- **`SetVisibility`**：上述逻辑的同步版本，alpha 直接取 1/0。
+- **`Activate`**：每个按钮都是 `onClick.AsObservable().Subscribe(lambda).AddTo(_disposables, this)`，`Deactivate` 调 `_disposables.Clear()`。
+  - 读档按钮仅在 `CanLoadGame` 时订阅：播放 Submit 音效，然后 `LoadGameAsync`。
+  - 新游戏：`PlaySfx(_startGameSfxPath)`，然后 `StartGame`（内联）。
+  - 图鉴、设置：`PresentAsync(null, dct)`。
+  - 退出：`QuitGameAsync`。
+  - GoogleForm：`OpenGoogleFormAsync`。
+- **`StartGame`**：`SetTitleScreenShown(false)`（IWitchTrialsNaninovelManager 槽 3），`nextScenario` ← `StartGameScenarioName`（INaninovelManager 槽 0），`ResumeAtLabel("StartGame")`。
+- **`LoadGameAsync`**：`PresentationMode = Load` 后 `await SaveLoadUi.PresentAsync(null, ct)`。
+- **`QuitGameAsync`**：与 ControlPanel.ReturnToTitleAsync 同构。确认结果为 Cancel 时返回；否则先释放对话框，再在阻塞器作用域内 `ResumeAtLabel("QuitGame")`。
+
+**第 7 组：OptionsUi（设置画面，15 个函数体 + 19 个订阅 lambda + 3 个 MoveNext + 5 个闭包/静态 lambda）**
+
+- **访问器**：
+  - GigaCreation `ILocalizationManager` 与 `INaninovelManager` 走 `ServiceLocator.Get<T>(true)`。
+  - `ICameraManagerExtended`、`IAudioManager`、`IScriptPlayer`、`ITextPrinterManager`、`ILocalizationManagerExtended` 走 `Engine.GetServiceOrErr<T>()`。
+- **`Initialize`**（Naninovel builder）：
+  - 先取 `base.Initialize()`，最后再 await。CustomUI.Initialize 被内联成 default，因此状态机只存了 0。
+  - 可用语言：调试模式下取 `AvailableLocales`，按 `Languages.GetAll()` 中 tag 的顺序排序；否则取 `ValidLocales`。
+  - 语言下拉框用 `Languages.GetNameByTag` 生成名称。字体由 `EnumerableAsyncExtensions.Select(locales, locale => GetOrLoadFontAssetAsync(locale.ToLocaleKind(), dct))` 并发加载，经 `LocalizationDropdown.SetOptions(names, fonts)` 写入。
+  - 分辨率与帧率下拉框分别用 `"{0} x {1}"`、`"{0} fps"` 格式化。
+  - `_unavailableResolutionOptionCount` = 配置的分辨率数 − 实际可用分辨率数。
+- **`ActivateUi`**：`_disposables` 已存在时直接返回；否则先 `ApplyOptionValuesToUi()`，再建立 19 个订阅。
+  - 滑块：值 ÷ 10 写入文本速度、自动延迟和四路音量。
+  - 开关组与下拉框：先播放 Submit 音效，再写入对应设置。
+  - 三个重置按钮：从 `IEngineService<TConfig>.Configuration` 的 Default* 字段恢复默认值，然后重新 `ApplyOptionValuesToUi()`。
+  - `_toggleSkipModeToggleGroup` 订阅的是空 lambda，函数体折叠到 0x30C000。
+  - 分页：`for` 循环中每次迭代生成一个闭包；Toggle 打开时播放音效并调用 `page.SetActive(enable)`；初始状态为 `SetActive(i == 0)`。
+- **`ApplyOptionValuesToUi`**：
+  - 滑块值为 `Mathf.RoundToInt(x * 10f)`。0x355C90 即 `(int)Math.Round(double)`。
+  - 开关组用 `bool ? 1 : 0`。
+  - 语言下拉框的索引为 `_availableLocales.IndexOf(SelectedLocale)`。
+  - 分辨率下拉框的值为 `ResolutionLevel - _unavailableResolutionOptionCount`。
+- **`ChangeLocaleAsync`**：在 `NaninovelLoadingScreen.Show(Short, true, 空数组)` 的 using 范围内依次隐藏标题、`await SelectLocale(locale)`、恢复标题。
+- **`SaveAsync`**：若上一次保存的 `_saveUcs` 仍为 Pending，先在加载画面下等待它；然后新建 UCS，`await SaveSettingsAsync(ct)`，最后 `TrySetResult()`。`Save()` 即 `SaveAsync(dct).Forget()`。
+- **构建修正**：`Naninovel.Common` 也定义了 `Naninovel.LinqUtils`（但没有 IndexOf），直接写 `LinqUtils.IndexOf` 会报 CS0433。改用扩展方法写法后，解析到的是唯一的 Elringus 版本；按 TypeDefIndex 4038 判断，二进制里用的正是该版本。
+- **补登**：ControlPanel.Start 的 lambda RVA 移到 RECONSTRUCTED 标记行上，`b__47_7/8` 因此计入进度。
+
+进度：`progress.py UI` 测得 165/165、50,436/50,436 B（UI 子系统完成）；全部 `WitchTrials.*` 合计 576/929、195,947/316,778 B；警告基线 140。
+
+## 7.11 `TrialState` 子系统收尾：已完成，18/18 个函数体 / 6,293/6,293 B
+
+试点（§5）之后，这个桶还剩 6 个函数体。选它是因为它能在一次提交内收尾，而且依赖的接口此前都已恢复。
+
+- **`WitchTrialsNaninovelManager.ChangeTrialMode`**（0x399940）：
+  - `enable` 为 true 时尾跳到 `StartTrial`。
+  - 否则执行 `_isTrialMode.Value = false`。
+- **`WitchTrialsNaninovelManager.SetTrialTimer`**（0x3999B0）：
+  - 先取 `_trialTimer`，再调 `TimeSpan.Interval((double)time, 1000)`，即内联的 `TimeSpan.FromSeconds`。
+  - 然后 `Timer.SetTime(...)`，最后 `_pauseRequestCount = 0`。
+- **三个命令的 `Execute`**：
+  - 共同结构：先 `ServiceLocator.Get<IWitchTrialsNaninovelManager>(false)`（`cl = 0`，与各处懒缓存用的 `true` 不同），再对参数调用 `Naninovel.Nullable<T>` 隐式转换，最后返回 default（已完成的 UniTask）。
+  - `trialMode`：先把槽 2 `IsPresentEvidenceMode` 设为 false，再调槽 4 `ChangeTrialMode(Enable)`。
+  - `pauseTrial`：调槽 7 `ChangeTrialPauseMode(Enable, ProcessTimer)`。
+  - `timer`：调槽 5 `SetTrialTimer(Time)`。
+- **`ChangeTrialPauseMode..ctor`**（0x325690）：
+  - 这个函数体与 ArrangeCharacters、ClearChoiceHandler、ChangeActorMaskability 的构造函数折叠在一起。
+  - 内容是 `BooleanParameter.op_Implicit(true)` 写入 +0x38，再调 `Command..ctor`。
+  - 在本类中 +0x38 即 `ProcessTimer`，因此写作 `ProcessTimer = true`。它与 `[ParameterDefaultValue("true")]` 一致。
+
+进度：TrialState 18/18；全部 `WitchTrials.*` 合计 582/929、197,140/316,778 B；0 错误，警告基线 140。
+
+## 7.12 `Input` 子系统收尾：已完成，25/25 个函数体 / 5,482/5,482 B
+
+- **`WitchTrialsActions`（Unity Input System 生成代码）**：
+  - `bindingMask` / `devices` 的 get/set 与 `FindBinding`，都和 `UnityEngine.InputSystem.DefaultInputActions` 共用同一函数体（折叠），内容是对 `asset` 的直接转发。
+  - getter 内联了 InputActionAsset 的字段读取（bindingMask 在 +0x38，DeviceArray 在 +0xA8）；setter 在 `DeviceArray.Set` 成功后调 `LazyResolveBindings`。
+  - 5 个 `*Scheme` getter 采用生成器的固定写法：索引字段（+0xE8..+0xF8）为 -1 时 `FindControlSchemeIndex("Keyboard&Mouse"/"Gamepad"/"Touch"/"Joystick"/"XR")`，再返回 `asset.controlSchemes[index]`。
+- **`WitchTrialsInputManager`**：
+  - ctor：先调基类 `InputManager<WitchTrialsActions>` 的 ctor，再保存 `_naninovelActionMapName`。
+  - `PlayResponseSfx`：`_naniAudioManager` 为空时，内联 `Engine.TryGetService<IAudioManagerExtended>`（METHODINFO 可证）；取不到时 `Debug.LogWarning("Naninovel AudioManager not found.")` 并返回，取到时缓存。随后调槽 0 `PlayResponseSfx(kind)`。
+  - `BuildActionNameOrId`：`actionMapName` 为 null 时换成 `_naninovelActionMapName`，其余部分是基类实现（0x832780，已单独反汇编比对）的内联：映射名为 null 或全空白时返回 actionName，否则返回 `map + "/" + name`。
+- **`DebugTextPreferenceNaninovelInputState`**：
+  - `NaniInputManager` 为惰性缓存（+0x60）。
+  - `LabelText` = `Engine.Initialized ? BuildText() : "Naninovel has not been initialized"`。
+  - `BuildText`：清空 StringBuilder，输出 `ProcessInput: O|X |`，再对 `_bindingNames` 做 foreach（数组只加载一次），逐项输出 `| name: O|X `（`IsSampling`，槽 9），最后 `ToString().Trim()`。
+  - ctor：`_builder = new StringBuilder()`。
+
+进度：Input 25/25；全部 `WitchTrials.*` 合计 599/929、200,954/316,778 B；0 错误，警告基线 140。
+
+## 7.13 `Audio` 子系统收尾：已完成，18/18 个函数体 / 5,268/5,268 B
+
+- **`PlaySfxModified`（`sfx` 命令，继承 Naninovel `PlaySfx`）**：
+  - `Play` 的结构与原版一致：
+    - `Duration` 已赋值时取其值，否则取 `AudioManager.Configuration.DefaultFadeDuration`（+0x50）。
+    - 有 `SfxPath` 时 await 单条轨道。
+    - 没有 `SfxPath` 时用 `CollectionPool` 租出 HashSet 与 List，经槽 28 `GetPlayedSfx` 取当前所有音效，逐条修改后 `UniTask.WhenAll`。
+    - `AudioCommand.AudioManager`（0x4DE6D0）就是 `Engine.GetServiceOrErr<IAudioManager>()`，因此循环内的内联形态仍写作 `AudioManager`。
+  - 唯一的改动是 `PlayOrModifyTrack` 从静态方法变成实例方法。原因是资源未加载时要调用 `Warn`（Command 槽 7），输出「効果音がロードされていません：」加路径。
+    - 已在播放（槽 25）时调 `ModifySfx`（槽 14）。
+    - 已加载（`AudioLoader` 槽 11 → `IResourceLoader.IsLoaded` 槽 5）时调 `PlaySfx`（槽 19）。
+  - ctor 与 `PlaySfx..ctor` 折叠在一起：基类构造函数被内联，本类自身没有字段，所以函数体为空。
+- **`SoundTestUi`**：
+  - `ModifyPlayer`：经槽 27 `GetPlayedBgm` 取当前 BGM。多于 1 首时重置播放器并 `Debug.Log`；为 0 首时只重置；否则设置标题，并对 `GetAudioTrack`（槽 30）的结果做 `is AudioTrack` 判断后调 `UpdatePlayerAsync(...).Forget()`。
+  - `ResetPlayer`：三个标签写入 U+2212 `−`；关闭 raycast；滑块 `SetValueWithoutNotify(0)`（Slider 槽 48）；两张图的颜色写成全零（`Color.clear`，按 B 级处理拼写）；`_cts` 依次 Cancel、Dispose、置 null。
+  - `UpdatePlayerAsync`：
+    - 替换 `_cts` 后创建 linked CTS。
+    - 有 intro 片段时：用 `AudioSettings.dspTime`（icall 名已读出）驱动进度，按 `{0:mm\:ss} / {1:mm\:ss}` 格式显示，每帧 `UniTask.Yield(Update, token)`。
+    - 进入 loop 段：用 `AudioSource.timeSamples` 与 `AudioClip.frequency`（icall 名已读出）计算进度。
+    - 滑块的 `OnValueChangedAsObservable().Skip(1)` 订阅挂在 linked token 上：这是内联的 Cysharp `AddTo(IDisposable, CancellationToken)`，由 RegisterWithoutCaptureExecutionContext 加缓存的 dispose 回调组成。订阅的 lambda 反向写回 `timeSamples`。
+    - intro 块结束时 +0x48 被清零，这是编译器对提升局部变量的清理，不对应源码语句。
+  - `GetTimeSpan` = `new TimeSpan(samples * TicksPerSecond / frequency)`。
+  - `SetValueWithoutNotify` 在 0.001 / 0.999 处吸附到 0 / 1，中间值走内联的 `Mathf.Clamp`。
+- **`SpawnableWithAudio`**：
+  - `Awake`：先解析服务，再读 `_audioSource`，所以混音组先存入局部变量。计算为 `AudioMixer.FindMatchingGroups(path)?.FirstOrDefault()`。
+  - `Reset`：执行 `GetComponent<AudioSource>()`。
+- **`UpdateAudioPlayerUi`（`audioPlayer` 命令）**：
+  - UI 用懒加载缓存。
+  - `Execute`：`SoundTestUi.ModifyPlayer(TrackName)`，其中字符串转换是内联的 `StringParameter` 隐式运算符（0x5ABEF0，形态逐字节一致）。
+- **CreditsDirectorAct1.NaniAudioManager**：懒加载缓存（+0xA0）。
+
+进度：Audio 18/18；全部 `WitchTrials.*` 合计 613/929、205,414/316,778 B；0 错误，警告基线 140。
+
+## 7.14 `Map` 子系统
+
+### 第 A 组：叶子组件（MapArea / MapAreaFocusButton / MapAreaLabel / MapAreaModifier / MapFloor）
+
+- **`MapArea`**：
+  - `Reset`：两次 `GetComponentInChildren<T>()`（METHODINFO 给出 MapAreaFocusButton、MapAreaLabel）。
+  - `Show` / `Hide`：内联了 `MapAreaLabel.Show`/`Hide`（0x36E750 / 0x3491C0，已分别反汇编确认是 `_canvasGroup.alpha = 1f / 0f`），因此写成方法调用。
+  - `ChangeFocusButtonActivity`：按 `enable` 分支，进入内联的 `MapAreaFocusButton.Enable`/`Disable`（CanvasGroup 的 interactable + blocksRaycasts）。
+  - `OnClickAsync`（MoveNext 0x36E320）：`new AsyncUnityEventHandler(_focusButton.onClick, ct, callOnce: true).OnInvokeAsync()`，这正是 Cysharp `UnityAsyncExtensions.OnClickAsync(Button, CancellationToken)` 的内联体。await 之后返回 `_areaKind`。
+  - `ModifyInEditor`：两次 `DoActionAsUndoable<T>`，撤销名分别是 'Modify Map Area Focus Button' 和 'Modify Map Area Label'。闭包 DisplayClass10_0 捕获 `showFocusButton`（+0x10）与 `labelMaxWidths`（+0x18）。
+- **`MapAreaFocusButton`**：
+  - `Awake` 直接调 `Selectable.Awake`，然后把 alpha 置 0。
+  - `OnHighlightingChanged` 与 `ModifyInEditor(bool)` 被链接器折叠为同一函数体（`alpha = flag ? 1f : 0f`）。前者写成对后者的调用。
+- **`MapAreaLabel.ModifyInEditor`**：
+  - 用 `preferredWidth`（TMP_Text 槽 84）做 `Array.BinarySearch<float>`；结果为负时取反，再用 `cmovge` 夹到 `Length - 1`。
+  - 这是内联的 int Min，写作 `Math.Min`；与 `Mathf.Min` 无法区分，拼写按 B 级。
+  - 然后逐个设置底板图片的 `enabled = i == index`（icall 0x2604C50）。
+- **`MapAreaModifier`**：
+  - `Reset` 与 `ResetReferences` 折叠为一体，是 `GetComponentsInChildren<MapArea>(true)`（经 `gameObject`，dl=1）。
+  - `ModifyInEditor` 对每个 MapArea 内联了 `MapArea.ModifyInEditor`。
+- **`MapFloor`**：
+  - `Reset` 调用的是无参 `GetComponentsInChildren<MapArea>()`，与 MapAreaModifier 不同，不含非激活对象。
+  - `Show(restriction)`：先启用 Canvas 与 GraphicRaycaster，再用 `KeyValuePair.Deconstruct` 遍历 `Areas`。`restriction == null` 或 `Enumerable.Contains` 为真时显示，否则隐藏。
+  - `Hide` 与 `WitchBookPageBase.Hide` 折叠。
+  - `IsMatch` 是 `pair.Equals(_idAndVersion)`：`pair` 为 null 时直接 NRE，随后是内联的 `IdVersionPair.Equals(IdVersionPair)`。
+- **工程配置**：
+  - `DoActionAsUndoable` 定义在 `GigaCreation.Tools.UndoExtensions`。该工程已存在于解决方案中，但 Assembly-CSharp 此前没有引用它（CS0234），现已补上 ProjectReference。
+  - 注意：`work/make_ide_project3.py` 按 DummyDll 的引用表生成 csproj，而该表里没有这个程序集（泛型方法在 dump 中无 RVA）。重新生成工程会丢掉这条引用。
+
+### 第 B 组：MapPage / ChoiceMapArea（`map` 命令）/ SpawnableMap
+
+- **`MapPage`**：
+  - `Reset`：先调 `base.Reset()`，再 `GetComponentsInChildren<MapFloor>(true)`。
+  - ctor 只尾跳到基类构造函数。
+  - `InitializeAreas`：
+    - 先存 `_restrictionAreas`。
+    - `_floors.Where(floor => pairs.Any(floor.IsMatch)).SelectMany(floor => floor.Areas.Values).ToArray()`。其中 `IsMatch` 以方法组委托传入，`Values` 是 IReadOnlyDictionary 槽 4。
+    - 对每个区域内联了 `ChangeFocusButtonActivity(false)`（常量参数，无分支）。
+  - `OnChoiceMapAreaAsync`（MoveNext 0x371070）：
+    - DisplayClass9_0 捕获 `this` 与 `linkedCts`，后者由 using 在所有出口释放（sub_371A00）。
+    - 筛出 `_restrictionAreas.Contains(area.AreaKind)` 的区域并启用焦点按钮。
+    - 对 `area.OnClickAsync(linkedCts.Token)` 调用 `UniTask.WhenAny(UniTask<T>[])`（lambda 内联了 OnClickAsync 的 builder 桩）。
+    - 得到结果后先 `linkedCts.Cancel()`，再返回 `result`。
+- **`ChoiceMapArea`（`map` 命令）**：
+  - `Execute` 与 `@evidence` 同构：
+    1. 置 `IsPresentEvidenceMode = true`，建 `{ Map }` 类别数组，取限制区域。
+    2. **区域数为 0 时在显示图鉴之前就 `Warn` 并返回。** 此时 `IsPresentEvidenceMode` 保持为 true，字节确认。
+    3. `ShowWitchBook(Local, …)`。
+    4. 调试跳过时取 `restrictionAreas[0]`，否则 await IWitchBookUi 槽 5 `ChoiceAreaAsync`。
+    5. 把 `FastToString` 写入 `chosenAreaId`；关闭图鉴；复位模式；调试跳过时开启 skip。
+  - 构建时需要 `GigaCreation.NaninovelExtender.Ui` 的 using（`DismissAsync` 扩展方法）。
+  - `GetRestrictionAreas`：
+    - `flag` 取整数变量（`Assigned` 且读取成功，否则为 0）。
+    - 每个名字经 `FastEnum.TryParse`：成功时执行 `test flag, 1<<i; jg 跳过`，即**位被置上的区域会被排除**，flag 是排除掩码；失败时 `Warn("Invalid map area name: {0}.")`。
+    - `jg` 与 `!= 0` 只在第 31 位上有差别，拼写按 B 级。
+- **`SpawnableMap`**：
+  - `SetSpawnParameters` 与 ObjectionCutIn 同形：`worldCamera = NaniCameraManager.Camera`，下标取首参数的 `AsInvariantInt`，缺省为 0。
+  - `AwaitSpawn`：
+    1. 取消并释放旧 `_cts`；token 已完成时置 null 并返回。
+    2. 取 `_playableDirectors[_currenIndex]`，新建 `_cts` 与 linked CTS。
+    3. `PlayableGraph.IsValid()`（icall 0x260C8C8）为假时 `PlayAsync`；为真时先 `time = 0` 再 `ResumeAsync`。
+    4. 先 `Evaluate()` 再 await。
+    5. 之后 `_cts.Dispose(); _cts = null`。
+  - `AwaitDestroy`：
+    - token 已完成时时长为 0，`Mathf.Approximately(duration, 0)` 为真时直接返回。
+    - 否则 `LMotion.Create(alpha, 0, duration).BindToAlpha(_rootCanvasGroup).ToUniTask(linkedCts.Token)`，完成后 `_cts.Dispose()`。
+    - **与 AwaitSpawn 不同，这里不把 `_cts` 置 null**（字节确认）。
+      - 若同一实例之后再次调用 AwaitSpawn/AwaitDestroy，就会对已释放的 CTS 调 `Cancel`。
+      - 通常 despawn 之后对象即被销毁，所以这很可能不会触发；这一点只是推断，未经运行时验证。
+
+进度：Map 27/27、9,894/9,894 B；全部 `WitchTrials.*` 合计 639/929、214,517/316,778 B；0 错误，警告基线 140。
+
+## 7.15 ICF 计数更正与 `Debug` 子系统第 A 组
+
+### 更正：折叠别名曾被计入进度，但函数体仍为空
+
+- `progress.py` 按 RVA 全局计数。若在一个文件里标记了某个 identical-code-folded 函数，另一个类里共享同一 RVA 的方法也会被算作完成，即使它的函数体仍是 `{}`。
+- 用脚本扫描了全部 `WitchTrials.*`：收集所有 `// RECONSTRUCTED` 行上的 RVA，再找出共享这些 RVA、自身却为空或只有 `return default` 桩的方法。本轮 Map 标记带出的真实虚高有 3 处，现已补上函数体并加注折叠伙伴：
+  - `EndingStill.Awake`（0x3491C0，与 `MapAreaLabel.Hide` 折叠）：`_canvasGroup.alpha = 0f`。
+  - `SplashScreen.Awake`（0x36E750，与 `MapAreaLabel.Show` 折叠）：`_canvasGroup.alpha = 1f`。
+  - `WitchBookPageBase.Hide`（0x36F420，与 `MapFloor.Hide` 折叠）：`_canvas`/`_graphicRaycaster` 的 `enabled = false`，是 `Show` 的镜像。
+- 其余命中不是虚高，逐类核对如下：
+  - 0x30D8F0：共享的空 MonoBehaviour 构造函数，本来就为空。
+  - 0x30C000：3 字节 `ret`。
+  - 命令类构造函数：函数体就是字段初始化器，注释写在字段上。
+  - 已内联写出的 lambda：`SoundTestUi` 的滑块回调、MapPage 的两个 lambda。
+- 另有一批**早于本会话**的共享平凡 getter 别名，函数体仍是 `return default`/`null` 桩：`AuthorTextBuilder`、`CharacterDataItem`、`GoogleForm`、`SaveLoadUi`、`OptionsUi`、`MasterData` 中与 0x33A4E0/0x33FBC0/0x331650/0x398CF0 共享的访问器，以及 `AuthorTextBuilder` 的 record 成员。行为上它们只是读字段，但进度数把它们算作已完成。留待后续清理，届时逐个补写字段返回。
+- 结论：进度数对"独立函数体"是准确的，但"每个方法都有源码"需要以上述补写为前提。
+
+### 第 A 组：`DebugOptions` 与 `DebugTextPreference*`
+
+- **`DebugOptions`**：
+  - `EnableSteamworks` 默认值是反的：非调试模式直接返回 true，只有调试模式才读 `s_enableSteamworks`。
+  - `Locale`：`IsDebugMode && s_overrideLocale ? s_locale : null`。
+  - `SkipSplashScreen`：与 `DebugSkip` 同形。
+  - **`SkipEntrySequenceAtFirstTime` 的发行版函数体是通用的 3 字节 `xor eax,eax; ret`**（与大量 BCL `return false` 成员共享），恒返回 false，从不读字段。源码中很可能有条件编译或常量守卫，但其形式已无证据。
+  - `UpdateStaticFields`：按声明顺序把 10 个序列化实例字段拷到静态字段，无 base 调用。
+- **调试标签**：
+  - 共同形态：`Engine.Initialized ? … : "Naninovel has not been initialized"`，服务与配置都用 `??=` 懒加载。
+  - `ActorInfo`：
+    - 用 `Engine.FindService<IActorManager>(m => m.ActorExists(_actorId))` 懒加载。
+    - IActorManager 槽 6 `ActorExists`、槽 7 `GetActor`；IActor 槽 5 `Position`。
+    - 输出 `"[{0}] Position={1}"`，否则 `"[" + id + "] Not exist"`。
+    - `BuildText` 被逐字节内联进 `LabelText`。
+  - `AutoDelay`：TextPrintersConfiguration +0x4C `MaxAutoWaitDelay`，ScriptPlayerConfiguration +0x20 `MinAutoPlayDelay`（偏移取自 dump.cs）。
+  - `CustomVariable`：
+    - 未初始化时返回 `"-"`，与其他标签不同，和 default 分支共用同一返回块。
+    - 用非泛型 `TryGetVariableValue(name, out CustomVariableValue)`，读取失败时返回 `name + ": -"`。
+    - 按 `Type` 分三路：String 走 Concat；Numeric/Boolean 装箱后 `Format`。
+  - `PlaybackSpot`：结构返回的接口桩 sub_8630（`mov r8d, 0x18`），即 IScriptPlayer 槽 24 `PlaybackSpot`，再调 `ToString()`。
+  - `ScriptPlayMode`：`"Auto: {0} | Skip: {1}"`，槽 17 `AutoPlayActive`、槽 16 `SkipActive`，均为装箱 bool，不经 `ToDebugString`。
+  - `ToDebugString`：`self ? "O" : "X"`。
+- 202 B 的 getter 已钉死（0x3A7E10）：与 186 B 版本完全相同，都是 `??= Engine.GetServiceOrErr<T>()`。多出的 16 字节仅来自字段偏移 +0x80 需要 4 字节位移编码。
+- **第 B 组注意**：`SlackApp`/`DebugReporter.BuildPostMessage` 可能内嵌 token、webhook URL 或频道 ID。复原时这类字面量一律写成带占位符的命名常量，并注明"literal present at data RVA 0x…, redacted"，不把凭据提交进仓库。
+
+进度（第 A 组后）：Debug 19/46、5,106/20,437 B；全部 `WitchTrials.*` 合计 657/929、219,539/316,778 B；0 错误，警告基线 140。
+
+### 第 B 组（上半）：DebugCommandButtons / DebugInfoBuilder / SRDebuggerInitializer / `showLoading`
+
+- **`DebugCommandButtons`**：
+  - 两个 getter 均为 `??= Engine.GetServiceOrErr<T>()`；202 B 的那个多出的字节仅来自 +0x80 位移编码。
+  - `Start`：DisplayClass23_0 捕获 `this` 与 `FindAnyObjectByType<TimeDebugCommands>()`。7 个按钮按字段顺序各做一次 UniRx `onClick.AsObservable().Subscribe(...).AddTo(this)`，每个回调都先调 `PlayResponseSfx(ResponseKind.Submit)`。
+    - 时间按钮：`TogglePause()`、`SpeedUp(0.2f)`、`SlowDown(0.2f)`（rdata 0x2AE2670 = 0.2）。
+    - 调试主页：DebugPanel 槽 5 `HideContent()`，然后 `GoToDebugHomeAsync(destroyCancellationToken).Forget()`。
+    - 两个开关：只有在 `enableDebugSkip` / `allowContinueDebate` 变量**已存在**（`TryGetVariableValue` 成功）时才写入取反值，变量不存在时按钮无效。
+    - 解锁全部 CG：`TryGetUI<IGalleryUi>`，再精确类型比较（GalleryUi 是 sealed），然后调用内联的 `GalleryUi.UnlockAllStills`。
+  - `GoToDebugHomeAsync`（MoveNext 0x3A8E60）：
+    1. 标题 UI 可见（IManagedUI 槽 2）时，经 CancellationToken 重载 `DismissAsync(null, ct)` 关闭。
+    2. `SetTitleScreenShown(false)`。
+    3. `new Goto { Path = new NamedString(_debugHomeScenario, null) }`，经槽 5 `Execute()` 等待执行。
+- **`GalleryUi.UnlockAllStills`**（属 Credits/Gallery 桶，因被内联而一并复原）：`if (Application.isPlaying) UnlockAllStillsAsync().Forget()`。
+- **`DebugInfoBuilder`**：
+  - `Quote`：文本含换行时加双引号。
+  - `TryGetPlaybackSpot`：IScriptPlayer 槽 24，`Valid` 内联。
+  - `TryGetPrintedMessage`：
+    - 取第一个 `Visible` 的文本打印机（IActor 槽 3）。
+    - 以 `Environment.NewLine` 连接 `Messages.Select(BuildMessage)`，方法组委托缓存在 `<>O`。
+  - `BuildMessage`：
+    - 先把 `<br>` 替换为换行。
+    - 有作者且能取到 ICharacterManager 时，作者名优先取非空 `Label`，否则取槽 7 `GetAuthorName(Id)`。
+    - 作者名非空白时，输出 `"＠" + 作者名 + 换行 + 正文`。
+- **`SRDebuggerInitializer.Awake`**：
+  - 播放器构建中 `Application.isEditor` 是 5 字节 `xor al,al; ret`（0x74B0C0），编辑器早退分支被折叠掉。
+  - `IDebugManager.IsDebugMode.Value` 被读取但结果从不测试。这是 `if` 体被编译剔除（例如 `[Conditional]` 的 SRDebugger 初始化调用）后的残留：字节为 A 级，源码意图为 B 级。
+- **`ShowLoadingUiForDebug`（`showLoading` 命令）**：
+  - `Execute`：`WaitOrForget`（槽 13）。
+  - `ShowLoadingUiAsync`（MoveNext 0x3B2D10）：
+    1. 忽略大小写解析 `LoadingMode`，失败时 `Warn`，模式保持为 0。
+    2. `using` 住 `NaninovelLoadingScreen.Show(mode, HaltInput, [])`。
+    3. 状态机字段名为 `startingTime`，实际是从 0 累加 `Time.deltaTime` 的已用时间。
+    4. 在未取消、且已用时间小于 `Duration`（缺省 0.35）期间，每帧 `Yield(Update, token)`。
+  - `LoadingMode` 字段遮蔽了同名枚举类型，因此泛型参数写成完全限定名。
+
+进度（上半后）：Debug 30/46、10,881/20,437 B；全部 `WitchTrials.*` 合计 669/929、225,744/316,778 B；0 错误，警告基线 140。
+
+### 第 B 组（下半）：DebugReporter / SlackApp
+
+- **凭据检查（先于复原完成）**：
+  - 两个类中的全部字符串字面量均已筛查，只有日文 UI 文案、文件名片段、表单字段名，以及三个公开的 `https://slack.com/api/...` 端点常量；后者在基线存根里本就存在。
+  - `_token`、`_channelId`、`_deletePostUrl` 是 `[SerializeField]` 实例字段，值存放在场景/资产数据中，代码只读取它们。
+  - 因此复原代码不含任何凭据。资产中的实际值不在本任务范围内，也没有去查。
+- **`DebugReporter`**：
+  - `Start`：隐藏结果窗口，上传按钮订阅 `UploadAsync(destroyCancellationToken).Forget()`。
+  - `Reset`：`GetComponent<Button>()`。
+  - ctor：只有字段初始化 `_format = "yyyy/MM/dd HH:mm:ss"`。
+  - `UploadAsync`（MoveNext 0x3AC280，8,576 B）：
+    1. 生成时间戳文件名、CSV 与截图 JPEG。
+    2. 保存 `Time.timeScale` 并置 0，显示三按钮结果窗口。
+    3. 结果 1 为 Slack：上传 jpg，再上传 csv（snippet 类型 `csv`），然后 `CompleteUploadAsync`，显示文件列表，等待 3 秒（`DelayType.UnscaledDeltaTime` 重载）。
+    4. 结果 2 为桌面：写入 `桌面/产品名_デバッグ情報/时间戳/` 下（目录不存在则创建），两次写文件以 ValueTuple 并行 await，等待 3 秒（`ignoreTimeScale: true` 重载）。**两个分支用了不同的 `Delay` 重载，字节确认。**
+    5. 关闭窗口并恢复 timeScale。**没有 try/finally**：中途抛异常时游戏会停留在暂停状态。
+    - 两个结果分支是两个独立的 `if`（Slack 分支结束后会再判断一次 `== 2`）。
+    - 桌面分支的截图路径复用了 `postMessage` 的状态机槽位，原局部变量名已丢失，命名按 B 级。
+    - `AsUniTask` 以静态形式调用：若按扩展方法查找，会同时绑定 UniTask 的 ValueTask 重载，而 DummyDll 引用集解析不了其 mscorlib 类型引用（CS7069）。调用目标不变。
+  - `WaitForClickResultButtonAsync`：linked CTS；取消/Slack/本地三个按钮的 `OnClickAsync` 走 `WhenAny`，再 `Cancel()`，返回下标 0/1/2。
+  - `CaptureScreenshotAsJpegAsync`：`WaitForEndOfFrame(ct)`，`ScreenCapture.CaptureScreenshotAsTexture()`，`EncodeToJPG(75)`，`Destroy`。
+  - `BuildLogAsCsv`：两列 CSV，依次为日志时间、构建时间戳（按 `_utcOffsetHours`）、版本、平台、分辨率；引擎未初始化时只写一行，否则写播放位置与经 `Quote` 的已打印消息。
+  - `BuildPostMessage`：以「テストプレイ報告 」开头，接时间、播放位置，已打印消息用 ``` 包起来。
+- **`SlackApp`**：
+  - `WebRequestManager`：`ServiceLocator.Get<IWebRequestManager>(true)` 懒加载。
+  - 两个公开 `UploadFileAsync`：分别补 `snippetType` 为 null、把文本经 `Encoding.UTF8.GetBytes` 转码后，转发给私有重载。
+  - 私有 `UploadFileAsync`（MoveNext 0x3B11D0）：
+    1. `files.getUploadURLExternal`，表单为 token / filename / length，再加可选 snippet_type。
+    2. 反序列化出 `UploadUrlExternalJson`。
+    3. 以 `AddBinaryData("file")` POST 到返回的 `UploadUrl`。
+    4. 返回 `FileId`。两个 `UnityWebRequest` 都用 using 释放。
+  - `CompleteUploadAsync`：把 `fileIds` 映射为 `[{id}]` JSON，POST `files.completeUploadExternal`（token / files / channel_id / initial_comment），`Debug.Log` 响应。
+  - `DeleteMessageAsync`：从 Slack 永久链接末段去掉首字母 `p`，在第 10 位插入 `.` 得到 ts，POST `chat.delete`；`DeleteMessage` 用 `destroyCancellationToken` fire-and-forget。
+  - 所有请求都经 IWebRequestManager 槽 0 `SendWebRequestAsync(request, timeout, showErrorDialog, ct)`。thunk sub_8570 传入 timeout 5（即缺省值）；`showErrorDialog` 按缺省写出，B 级。
+- **工程配置**：Assembly-CSharp 补上 `GigaCreation.Essentials.Platforms` 工程引用，以及 `UnityEngine.ScreenCaptureModule`、`UnityEngine.ImageConversionModule` 两个 DummyDll 引用。与 UndoExtensions 一样，重新生成工程时需要保留这些引用。
+
+进度：Debug 46/46、20,437/20,437 B；全部 `WitchTrials.*` 合计 685/929、235,300/316,778 B；0 错误，警告基线 140。
+
+## 7.16 ICF 积压清理与 `Credits/Gallery` 子系统第 A 组
+
+### ICF 共享存根积压（§7.15 遗留）
+
+§7.15 的审计脚本在 Debug 收尾后重跑，确认以下 RVA 已由其他文件的标记计入进度，但本文件里的函数体仍是空存根。现已全部补齐：
+
+- **`AuthorTextBuilder.FullName`**：这是非位置式 record。
+  - `Name`/`FamilyName` 的访问器改为自动访问器：get 分别折叠到 0x33FBC0（+0x10）和 0x33A4E0（+0x18），set 折叠到共享存储体 0x30C0D0 和 0x36C200。
+  - 主构造 0x36C0D0、拷贝构造 0x36C8D0、`Deconstruct` 0x36C9B0 都补上两字段赋值。
+  - `EqualityContract`、`ToString` 等独立 RVA 未反汇编，仍为存根，不计入。
+- **共享字段 getter**：
+  - `CharacterDataItem.Name`（0x33A4E0，`_name`）
+  - `MasterData.DefaultHp`（0x398CF0，`movss xmm0,[rcx+0x28]`）
+  - `GoogleForm.EntryInfo.Id`（0x33A4E0，`_id`）
+  - `OptionsUi.PageCanvas.Toggle`（0x33FBC0，`_toggle`）
+  - `SaveLoadUi.SaveLoadPanelReference.Mode`（0x331650）和 `.Panel`（0x33A4E0）
+
+补丁后重跑审计，只剩 7 处"同文件已标记"的合法空体：
+- 4 个构造函数，其行为在字段初始化器里。
+- 3 个 lambda，函数体已写在父方法的匿名委托中（MapPage ×2、SoundTestUi）。
+
+### 第 A 组：命令与小组件（19 个函数体）
+
+- **`HideCreditsUi`（`hideCredit`）**：`Engine.GetServiceOrErr<IUIManager>().GetUI<ICreditsUI>().Stop()`。ICreditsUI 槽位为 0 PreloadResourcesAsync、1 PlayAsync、2 Stop。
+- **`ShowCreditsUi`（`credit`）**：
+  - 两个懒加载 getter：`CreditsUi` 内联了 `NaniUiManager`。
+  - `PreloadResources` 以 `default` AsyncToken 调用 `PreloadResourcesAsync(ActNumber, default)`。
+  - `ReleaseResources` 就是 `CreditsUi.Stop()`（字节确认，不是释放资源 API）。
+  - `Execute` 为 `WaitOrForget(PlayAsync, Wait, token)`，`PlayAsync` 为 `await CreditsUi.PlayAsync(ActNumber, token)`。
+- **`EndingStill`**：
+  - `Reset` 调用 `GetComponent<CanvasGroup>()`。
+  - `PresentAsync` 与 `DismissAsync` 的 MoveNext（各 1,927 B）规范化后逐行 diff，只有 `LMotion.Create` 的两个浮点常量不同（0→1 与 1→0）。
+  - 流程：
+    1. 取消并释放旧 `_cts`，新建一个。
+    2. `using` 联结 `_cts.Token` 与 `ct`。
+    3. `LMotion.Create(...).BindToAlpha(_canvasGroup).AddTo(this).ToUniTask(linkedCts.Token)`。
+    4. 在 using 内释放 `_cts` 并置 null。
+- **`CreditRoll`**：
+  - `ContentHeight` 取 `_scrollRect.content.sizeDelta.y`。
+  - `Reset` 取四个组件引用。
+  - `BeginToScroll`/`EndToScroll` 分别开启和关闭 `_canvas`。
+  - `ScrollAsync` 流程：
+    1. 虚调用 `BeginToScroll`（槽 5）。
+    2. `LMotion.Create(1f, 0f, duration)` 经内联 `Bind` 绑到滚动条，`AddTo(this)`，`ToUniTask(ct)`。
+    3. 虚调用 `EndToScroll`（槽 6）。
+  - **没有 try/finally**：取消时不会执行 `EndToScroll`，画布保持开启。
+  - lambda 直接调用私有的 `Scrollbar.Set(f, true)`，这是被内联的 `value` setter，因此写作 `_scrollbar.value = f`。
+  - `SetGameObjectActive`/`SetCanvasEnabled` 此前已由折叠伙伴计入，本次补上函数体。
+- **`StillGrid`**：
+  - `SlotData` 取 `_sortedSlotData ??= base.SlotData.OrderBy(lambda).ToList()`。
+  - lambda 返回 id 在 `_order` 中的下标。不在表中的 CG 返回 `Count + 原下标`，排在已列出项之后并保持原相对顺序。
+  - **B 级**：lambda 以非虚方式读基类字段 +0xC8，但在 lambda 里写 `base.SlotData` 会让 Roslyn 生成 `<>n__0` 辅助方法，而 dump.cs 中没有该方法。行为已字节确认，源码写法不确定。
+  - 构造函数与 `CGGalleryGrid..ctor` 折叠，只含基类初始化器 `itemsPerPage = 9`。
+
+进度：Credits/Gallery 22/71、5,267/20,747 B；全部 `WitchTrials.*` 合计 704/929、239,881/316,778 B；0 错误，警告基线 140。
+
+### 第 B1 组：CreditsDirectorBase / CreditsDirectorAct1 / CreditsUI（15 个函数体）
+
+- **`CreditsDirectorBase`**：
+  - `Initialize` 关闭显示，并计算一拍时长：`BgmUnitDuration = 60 / _bgmBpm`，BPM 为 0 时取 1 秒。sub_331670 是另行编译的一份 `Mathf.Approximately`。
+  - `BgmUnitDuration` 是自动属性（+0x48）；`EndLabelName` 读取 `_endLabelName`。
+  - `WaitUnitsAsync(count)` 等待 `count × 拍长` 秒。
+    - `UniTask.Delay` 调用的是 DelayType 重载（0x180D710），它与 `bool ignoreTimeScale` 重载（0x180D530）是不同的调用目标。
+    - 因此源码显式传入了 `DelayType.DeltaTime`（写法 B 级）。
+  - `ResumeAtLabel` 转调 Naninovel `ScriptPlayerExtensions.ResumeAtLabel`；基类 `PreloadResourcesAsync` 返回 `UniTask.CompletedTask`。
+- **`CreditsDirectorAct1`**（第 1 章片尾，MoveNext 6,800 B，9 个 await 状态）：
+  1. 显示标题 logo，等待 12 拍，用 4 拍淡出。
+  2. 显示背景，滚动条用 197 拍从 1 滚到 0（句柄存为 `scrollMotion`），然后等待 187 拍，再等待 5 拍。
+  3. 循环播放噪声 BGM（IAudioManager 槽 16 `PlayBgm`），显示噪声层，并调用 `scrollMotion.Complete()` 让滚动直接到底。
+  4. 等待 `_noiseDuration` 秒后 `StopAllBgm`（槽 18）并隐藏噪声层；再等待 `_noiseInterval` 秒，重新播放噪声并显示，然后 `ResumeAtLabel(_reverseLabelName)`。
+  5. 用 `_reverseDuration - _noisePowerUpDuration` 秒把滚动条从 0 倒卷回 1；接着 `ModifyBgm`（槽 13）把音量调到 1.5 倍，同时噪声层透明度升到 1。
+  6. 等待 `_endingInterval` 秒，停止 BGM、复位透明度、隐藏噪声层，跳到 `EndLabelName`。
+  - 常量 4/197/187/5/1.5 均从数据段读出；IAudioManager 槽号按访问器的声明顺序计算。
+  - 没有 try/finally，取消时会跳过收尾。
+  - `Reset` 通过 `PPT.Noise.Noise` 组件找到噪声层的 CanvasGroup。为此给 Assembly-CSharp 补上 `ppt-noise` 工程引用，重新生成工程时需要保留。
+- **`CreditsUI`**：
+  - `Initialize` 先逐个初始化导演，再 `await base.Initialize()`。dump.cs 中有 `CreditsUI.<>n__0` 基类调用辅助方法，且它与 `CustomUI.Initialize` 折叠，这证实了该写法。
+  - `PreloadResourcesAsync(act)` 调用 `_creditsDirectors[act - 1]`，只有数组边界检查。
+  - `PlayAsync(act)`：
+    1. 取消并释放旧 CTS。
+    2. 章号越界时把 `_cts` 置 null，`Debug.LogWarning`（「章番号に該当するクレジット演出がありません：{0}」）后返回。
+    3. 否则记录当前导演，`ChangeVisibility(true).Forget()`（槽 44）。
+    4. 用联结 token 等待导演的 `PlayAsync`，结束后清空当前导演。
+  - `Stop`：取消并释放 CTS，停止当前导演（Unity 对象判空），`ChangeVisibility(false).Forget()`。
+- **编译修正**：以下类型存在同名歧义，已改为完全限定名：
+  - `DelayType`（LitMotion 与 Cysharp）
+  - `PlayerLoopTiming`（Naninovel 与 Cysharp）
+  - `Debug`（UnityEngine 与 System.Diagnostics）
+
+进度：Credits/Gallery 37/71、9,380/20,747 B；全部 `WitchTrials.*` 合计 719/929、243,994/316,778 B；0 错误，警告基线 140。
+
+### 第 B2 组：CreditsDirectorAct2 / SpecialThanksRoll（14 个函数体）
+
+- **`CreditsDirectorAct2`**（第 2 章片尾）：
+  - `PreloadResourcesAsync`（MoveNext 4,863 B）：两个缓存都已存在时直接返回。否则：
+    1. 通过 `IAddressableAssetLoader.GetOrLoadAddressableAsset<SpecialThanksData>(AssetReference, ct)` 加载数据。
+    2. 课程表：按 Level 降序、再按 Fee 降序排序，按 Phase 分组，每组转成数组。
+    3. 名单：按 Course 分组，每项的 `LocalizedText[]` 转成 Locale → Text 字典。
+    4. 对 `_creditRolls[..2]`（`RuntimeHelpers.GetSubArray`）中的特别鸣谢卷轴执行第 0 阶段排版。
+  - `PlayAsync`（MoveNext 4,343 B）：
+    1. 启用所有卷轴，fire-and-forget `ShowStillsAsync`。
+    2. 若 `_specialThanksPhase == 0`，先排版前两卷。
+    3. 收集前两卷的 `RebuildLayoutAsync`。
+    4. 逐卷滚动：
+       - 视口时长 = `rect.height / _scrollSpeed`，滚动时长 = `ContentHeight / _scrollSpeed - 视口时长`。
+       - 除最后一卷外，只等待 `滚动时长 - 视口时长` 的 `UniTask.Delay`（`bool ignoreTimeScale` 重载，0x180D530），不等滚动结束，因此相邻两卷在画面上交叠；最后一卷等待滚动本身。
+       - 下一卷若是 SpecialThanksRoll，则先为它排版，并把布局重建加入批次，批次整体 await 后清空。
+    5. 结束后跳到 `EndLabelName`。
+    - 单个 await 写成条件表达式（写法 B 级）。
+    - 没有 try/finally。
+  - `ShowStillsAsync`：等待 `_stillDelayUnits` 拍，然后对每张 EndingStill 依次淡入、停留 `_stillDisplayUnits` 拍、淡出，淡入淡出各 `_stillFadeUnits` 拍。
+  - `PrepareSpecialThanksRoll` 每次调用消费课程表的一个阶段：清空卷轴，按条目的 Level 与 Course 名单 `SetCreditTexts`，阶段号加 1。
+  - `Stop` 关闭显示、关闭所有卷轴、清空特别鸣谢卷轴，并把阶段号归零。
+  - `Reset`/`Initialize` 为组件引用与卷轴初始状态。
+  - lambda `b__16_8` 是纯引用判空（`test rdx,rdx; setne`），不是 UnityEngine.Object 重载的 `!=`，写作 `is not null`（B 级）。
+- **`SpecialThanksRoll`**：
+  - `SetCreditTexts`（1,415 B）：
+    - 从 `_labelPrefabs[sizeLevel]` 实例化标签，行宽取标签 `sizeDelta.x`，名字间距取「＿」的首选宽度。
+    - 名字经 `IReadOnlyDictionary<LocaleKind, string>` 索引器取 `LocaleKind.Ja`（接口槽 2，键常量 0），即名单只显示日文名；字典的静态类型为 B 级。
+    - 放得下时用全角空格分隔（行首不加）；放不下时换行。累计 `_maxLineCount` 行后换一个新标签继续。
+    - **换到新标签后仍会先追加一个换行**，所以续接标签的第一行是空行（字节确认）。
+  - `Clear` 销毁全部标签对象并清空列表。
+  - `EndToScroll` 调用基类后，把所有标签置空文本。
+  - `RebuildLayoutAsync` 等待 `AutoLayoutSupporter.ExecuteRebuildingAsync`。
+  - 构造函数只有 `_labels = new List<TMP_Text>()` 字段初始化。
+
+进度：Credits/Gallery 51/71、15,019/20,747 B；全部 `WitchTrials.*` 合计 733/929、249,633/316,778 B；0 错误，警告基线 140。
+
+### 第 C 组：GalleryStillGridSlot / GalleryStillViewerPanel / GalleryUi（20 个函数体）
+
+- **`GalleryStillGridSlot`**（CG 画廊的格子）：
+  - `ThumbnailRectTransform`：Unity 对象判空缓存；为空时取 `ThumbnailImage`（槽 77）的 transform，以精确类型检查（`as`）转成 RectTransform。
+  - `LoadCGTextures`（MoveNext 1,498 B）：
+    1. 保存当前缩略图，换成 `LoadingTexture`（槽 79）。
+    2. 用 `TexturePaths.OrderBy(TexturePaths.IndexOf)` 排序后，把每个路径映射到 `GetOrLoadUnlockedStillTextureAsync`，整体 await 后存入 `_cgTextures`。
+       - 排序键的委托绑定的是 Naninovel `LinqUtils.IndexOf` 方法组。
+       - 按自身下标排序等于保持原顺序（字节确认）。
+    3. 恢复原缩略图。
+  - `HandleItemUpdated`（async void，MoveNext 2,051 B）：
+    1. `Id` 为空时每帧等待；组件被销毁则放弃。
+    2. 加载贴图。有任意已解锁项时（`AnyUnlocked`，槽 81），取第一张非空贴图；否则取 `LockedTexture`（槽 78）。
+    3. 按贴图宽高比调整缩略图宽度（保持高度），然后设置贴图。
+  - `GetOrLoadUnlockedStillTextureAsync`：
+    1. 未解锁（IUnlockableManager 槽 3 `ItemUnlocked`）时返回 null。
+    2. 已加载（IResourceLoader 槽 5 `IsLoaded`）时取 `GetLoaded`（泛型接口槽 5）。
+    3. 否则 `await LoadOrErr(path, this)`。
+    - 两条分支共用内联的 `Resource<Texture2D>` → `Texture2D` 转换，写作条件表达式（B 级）。
+- **`GalleryStillViewerPanel`**（大图查看器）：
+  - `Show` 先创建一个 `CancelEventBlocker`，拦截父级的取消输入，然后 `base.Show(textures)`。CGViewerPanel.Show（0x614710）被逐条内联，字节一致。
+  - `Hide` 调用 `base.Hide()`，再释放拦截器；`OnDisable` 同理。
+  - `ShowNextTexture` 在基类流程（出队 → Crossfader 交叉淡化）之前，先把查看器高度按贴图宽高比调整（保持宽度）。局部变量的拆分由调用顺序决定（B 级）。
+  - `ViewerRectTransform`/`ParentBlockables` 为懒加载 getter；构造函数与 CGViewerPanel 折叠。
+- **`GalleryUi`**：
+  - 四个服务 getter。
+  - `UpdateCgSourcePaths` 把 `_cgSourcePaths[i]` 写入 `CGSources[i].PathPrefix`，多出的路径被忽略。
+  - `UnlockAllStillsAsync`：
+    1. 并行 `LocateAsync` 所有 CG 源，逐个 `UnlockItem`（槽 5）。
+    2. `SaveGlobal()`（IStateManager 槽 32）fire-and-forget。
+    - 调试按钮与 `UnlockAllStills` 走这里。
+  - `LocateAsync` 调用 `config.CreateLocalizableFor<Texture2D>(resources, l10n).Locate(null)`。
+- **ICF 审计复查**（advisor 要求的第二次）：本组完成后重跑。发现 `CreditsDirectorBase.EndLabelName` 标记的共享体 0x347410 同时覆盖 `CharacterDataItem.Weight`（+0x38），后者为空体，已补上。其余 7 处为此前记录的同文件合法空体。
+
+进度：Credits/Gallery 71/71、20,747/20,747 B；全部 `WitchTrials.*` 合计 753/929、255,361/316,778 B；0 错误，警告基线 140。
+
+## 7.17 未归类余量（`Other` 桶）
+
+`progress.py` 的 `Other` 桶收纳没有归入任何子系统的 `WitchTrials.*` 函数体，起点 11/162、2,134/56,145 B。这个桶不是一个连贯的子系统，而是若干小组件、positional record 的编译器生成成员、`Emote*` 命令和 `Spawnable*` 生成物的混合。因此按类分组推进，每组重跑审计。
+
+### 审计脚本收紧
+
+`stub_audit.py`（scratchpad）现在只报告同时满足以下三个条件的方法：
+1. 函数体为空或 `return default`。
+2. 自身注释块里没有 RECONSTRUCTED 标记。
+3. RVA 已被别处的标记计入进度。
+
+原生代码本来就为空的两个共享体（0x30C000 `ret`、0x30D8F0 尾跳 MonoBehaviour 构造）直接跳过。收紧后基线为 4 处，都是命令类构造函数：ChangeCourtFireFxActivity、HidePerspectiveStageScreen、ShakePerspectiveStageCamera、ShowWitchBookUi。它们的标记注释与构造函数之间隔着字段声明，所以被误报。本轮已逐个核对：字段初始化器确实写在字段声明上（`Enable = true`、`Reset = true`、`Force/Frequency/DampingRatio`、`Back/Global = false`），原生体大小（112/112/661/221 B）与此一致。
+
+### 第 D1 组：PointerStaying 系列与三个小组件（22 个函数体，另补 5 个嵌套类成员）
+
+- **`PointerStayingPropagator`**（悬停状态在同组 UI 间传播）：
+  - `Awake`：`GetComponentsInChildren<IPointerStaying>(includeInactive: true)`，让每个子项 `RegisterTo(this)`（接口槽 2）。
+  - `OnPointerEnter/Exit(eventData, owner)`：对所有已注册项（含 owner 自身）先过 `BlockList.CanPropagate`，再调用 `DoPointerEnter/Exit`（槽 0/1）。私有 `CanPropagate` 被内联，写法定 B 级。
+  - 构造函数只有 `_blockList = new BlockList()` 字段初始化器（BlockList 构造被内联，`IgnoreSettings = Array.Empty<IgnoreSetting>()`）。
+- **`BlockList.CanPropagate(owner, target)`**：
+  1. `owner == target` 时直接返回 false，不回传给自己。
+  2. owner 不是 `PointerStayingSpriteSwapper`（精确类型检查，类为 sealed），或找不到 `IsOwner(worker)` 的 IgnoreSetting 时，返回 true。
+  3. 否则返回 `!_ignores.Contains(target as PointerStayingSpriteSwapper)`。
+  - lambda（`<>c__DisplayClass1_0.b__0`，0x30E590）与末尾的 `IgnoreSetting.CanPropagate` 都是内联的。
+  - 结论：IgnoreSetting 只对精灵切换器生效，文字颜色切换器作为 owner 时总是全量传播。
+- **`PointerStayingSpriteSwapper` / `PointerStayingTextColorSwapper`**：
+  - `DoPointerEnter/Exit` 分别设置 `Image.overrideSprite`（悬停 +0x30 / 默认 +0x28）或 `Graphic.color`（虚槽 23，悬停 +0x38 / 默认 +0x28）。
+  - `OnPointerEnter/Exit` 先执行同样的赋值（内联），再在传播器存在时（Unity `!=`）通知传播器。
+  - 精灵切换器的 `OnDestroy` 清空 `overrideSprite`，与 GigaCreation `DotIndicator.OnDestroy` 共用函数体。
+  - `RegisterTo` 是共享的字段 setter 体；`Reset` 调用 `GetComponent<T>`。
+- **`SetMainCameraToCanvasOnAwake`**：`_canvas.worldCamera = Camera.main`；`Reset` 调用 `GetComponent<Canvas>`。
+- **`SetShaderTimerAsUnscale`**：
+  - `.cctor` 执行 `Shader.PropertyToID("_UnscaledTime")`。
+  - `Update` 每帧 `Shader.SetGlobalFloat(id, Time.unscaledTime)`（icall 名直接确认）。
+- **`PauseOrUnpause.Pause(enable)`**：`Time.timeScale = enable ? 0f : 1f`。1.0 取自数据 RVA 0x2AE2820。
+
+进度：Other 33/162、5,739/56,145 B；全部 `WitchTrials.*` 合计 775/929、258,966/316,778 B；0 错误，警告基线 140。
+
+### 第 D2 组：三个 `Localize*` 组件与 `LoadingIndicatorRolling`（21 个函数体，另补 3 个嵌套类成员）
+
+三个 `Localize*` 组件的 `LocalizationProvider` getter 形状相同：
+- 用 `ServiceLocator.Get<ILocalizationManager>(true)` 懒加载缓存。
+- 这里的 `ILocalizationManager` 是 GigaCreation 的接口，继承 `ILocalizationProvider`，不是 Naninovel 的同名接口。
+- 订阅统一写作 `OnLocaleChangedAsObservable().Subscribe(handler).AddTo(this)`（UniRx，接口槽 3）。
+
+- **`LocalizeCanvasGroup`**：
+  - `OnEnable` 订阅后立即按 `CurrentLocale`（槽 1）应用。
+  - `HandleLocaleChanged` 让匹配语言的 CanvasGroup 的 alpha 为 1，其余为 0。
+  - `OnDisable` 只 `Dispose` 订阅，不清字段。
+- **`LocalizeImage`**：
+  - `Map` 只构建一次：`_settings.ToDictionary(Locale, Sprite)`，再把 Image 自身的 sprite 以 `SourceLocale`（槽 0）为键 `Add` 进去。因此 `_settings` 里若含源语言项，会因重复键抛异常。
+  - `ModifyImageByLocale`：先 `TryGetValue`（IDictionary 槽 7），失败时直接读 `_map` 字段取 `SourceLocale` 项；设为 `overrideSprite` 后调用 `SetNativeSize()`（Image 虚槽 45）。
+  - `OnDisable` 清空 `overrideSprite`。
+- **`LocalizeRebuildables`**：
+  - `Reset` 收集子级按钮/开关（`includeInactive: true`），标签取"全部子级标签 − 按钮/开关各自拥有的标签"（`Except`，拥有者一侧用无参重载）。
+  - `Activate` 先按当前语言 `RebuildAll`，再订阅。
+  - `Deactivate` 释放并清空订阅。
+  - `RebuildAll` 对三类控件分别调用 `Rebuild`：
+    - 按钮：`Rebuild(null, true, false, locale)`。`controlsItsOwnSize` 为有值的 false（Nullable ctor 以 0 构造），不是 `default`。
+    - 开关：公开的 `Rebuild(true, locale)`（0xCECC40），被内联到其私有 `RebuildElements`。
+    - 标签：`Rebuild(null, true, locale)`。
+- **`LoadingIndicatorRolling`**（加载转圈）：
+  - `Reset`：内联 `base.Reset()`（`_canvasGroup = GetComponent<CanvasGroup>()`），再存 `transform`。
+  - `OnShow` 调用 `ShowAsync(destroyCancellationToken).Forget()`。
+  - `ShowAsync`（MoveNext 3,157 B，两个 await 状态）：
+    1. 取消并释放旧的 `_cts`，新建后与 `ct` 链接（using）。
+    2. 在未取消期间循环：用 LitMotion 在 `_duration` 内完成 0→360，`_ease` 缓动，调度器为 `MotionScheduler.UpdateIgnoreTimeScale`（静态 +0x60），绑定 `SetRoll`，`AddTo(this)`，经 `ToUniTask` 等待；然后 `UniTask.Delay(_delay 秒)`（DelayType 重载）。
+    3. 正常退出时释放并清空 `_cts`；取消时异常跳出，只释放链接源。清理由 `OnHide` 负责：取消、释放并清空 `_cts`。
+    - 由于使用 IgnoreTimeScale 调度器，暂停（`timeScale = 0`）时转圈照常。
+  - `SetRoll(value)`：只替换欧拉角的 z 分量，值为 `value < 180 ? -value : 360 - value`（常量 180/360 取自数据 RVA 0x2AE2C08/0x2AE2C40）。
+  - 构造函数只有 `_duration = 1f` 字段初始化器。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 54/162、13,772/56,145 B；全部 `WitchTrials.*` 合计 796/929、266,999/316,778 B；0 错误，警告基线 140。
+
+### 第 D3 组：`Emote*` 表情动作命令（15 个函数体）
+
+五个命令都继承 GigaCreation 的 `AnimateActorExtended`（它又继承 Naninovel 的 `animate` 命令），本质是"写死关键帧的 animate 预设"。
+
+- **`GetParametersForActor`**：
+  - 把私有关键帧数组逐个 `string.Join(KeyDelimiters[0], 数组)`，写入基类的 `ScenePositionX/ScenePositionY/Rotation/EasingTypeName/Duration`（偏移 +0x58/+0x60/+0x70/+0x88/+0x90）。
+  - 设 `Relative = true`（+0xB0），然后尾跳基类实现。
+  - 各命令只写自己用到的字段，写入顺序按字节保留（`EmoteNod` 先写缓动、后写时长）。
+- **`Speed` 参数**（Jump/JumpDouble/Nod）：
+  - 时长经 lambda `x / (Assigned(Speed) ? Speed.Value : 1f)` 缩放。
+  - 构造函数中 `Speed = 1f`。
+- **关键帧数据**：
+  - 少量元素的数组由构造函数逐元素写入。
+  - 其余来自 `RuntimeHelpers.InitializeArray`，其 `<PrivateImplementationDetails>` 数据块不在 `GameAssembly.dll` 中，而在 `global-metadata.dat`（v31，magic 0xFAB11BAF）。按 dump.cs 标注的 metadata 偏移读出后，缓动枚举值均落在 `EasingType` 合法范围内。
+
+| 命令 | 数组 | 缓动 |
+|------|------|------|
+| `EmoteFall` | X {-6,0,3,0}；Y {-2,-2,-3,-50}；旋转 {6,0,-3,3}；时长 {0.3,0.3,0.3,0.5} | InOutCubic, InCubic, OutQuad, InCubic |
+| `EmoteJump` | Y {6,-1.5,0}；时长 {0.2,0.2,0.1} | OutQuad, InQuad, OutQuad |
+| `EmoteJumpDouble` | Y {6,-2,6,-2,0}；时长 {0.15×4, 0.1} | OutQuad/InQuad 交替 |
+| `EmoteNod` | Y {-5,0}；时长 {0.3,0.3} | OutQuad, InQuad |
+| `EmoteShake` | X {-0.6,0.6,-0.6,0.6,-0.4,0.4,0}；时长 0.05×7 | （不设） |
+
+- **`EmoteFall.Execute`**（MoveNext 2,985 B，三个 await 状态，`<>n__0` 证明是 `base.Execute`）：
+  1. 先启动基类动画并暂存任务。
+  2. 等 1.15 s。
+  3. 发出 `new HideActors { ActorIds = ActorIds }.Execute(token).Forget()`，角色倒下时开始隐藏。
+  4. 再等 0.15 s。
+  5. 播放音效 `Body_Fall`（`PlaySfx(path, 1f, 0f, false, null, token)`，fire-and-forget）。
+  6. 最后等待暂存的动画任务。
+  - 两次延时都是 Naninovel `UniTask.Delay(TimeSpan, false, Update, token.CancellationToken)`，常量取自数据 RVA 0x2AE2910/0x2AE2898。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 69/162、22,972/56,145 B；全部 `WitchTrials.*` 合计 811/929、276,199/316,778 B；0 错误，警告基线 140。
+
+### 第 D4 组：`Spawnable*` 生成物（22 个函数体）
+
+三个类都实现 Naninovel `@spawn` 的 `Spawn.IParameterized`/`Spawn.IAwaitable` 与 `DestroySpawned.IAwaitable`：出现和消失都是可等待的演出。
+
+公共形状：
+- 每次 `AwaitSpawn`/`AwaitDestroy` 先取消并释放上一轮的 `_cts`，新建后与命令 token 链接（using）。
+- 各类在结束时如何清理 `_cts` 并不一致，已逐个按字节保留。
+
+- **`SpawnableClue`**（证据品图片弹出）：
+  - `SetSpawnParameters`：参数 0 为证据品 ID（缺失时警告 `証拠品 ID が指定されていません。`）；`asap` 把动画时间置 0。
+  - `AwaitSpawn`（MoveNext 4,107 B）：
+    1. 完成正在跑的 tween；Canvas 使用 Naninovel 相机。
+    2. 经 `GetOrLoadAddressableAsset<Texture2D>(BuildClueTextureAddress(id))` 加载图片；找不到时警告并不显示。
+    3. 时间为 0 时直接显示。否则从 alpha 0、偏移 `-_move` 处，经 Naninovel `UniTask.WhenAll(MoveAsync, FadeAsync)` 回到初始位置。
+  - `AwaitDestroy` 为反向（时间为 0 时只把 alpha 置 0）。
+  - `MoveAsync`/`FadeAsync` 为 `Tweener.RunAwaitable(new VectorTween/FloatTween(..., new Tween(time, easing), 回调), token, this)`。
+  - 构造函数只有两个 Tweener 字段初始化器。
+- **`SpawnableReenactment`**（案件重演 Timeline）：
+  - 参数 0 为故事序号（`AsInvariantInt`，缺省 0）。
+  - `AwaitSpawn`：token 已完成时清空 `_cts` 并返回；序号 0 先播开场 Timeline，再播 `_storiesDirector[序号]`。
+  - `AwaitDestroy`：播放收尾 Timeline。
+  - `RunTimelineAsync` 是真正的 `async Task`（System `AsyncTaskMethodBuilder`，MoveNext 2,168 B）：
+    - 导演或自身 GameObject 已销毁时跳过。
+    - 否则按 icall `PlayableGraph::IsValid()` 选择"时间归零后 `ResumeAsync`"或 `PlayAsync`（GigaCreation 扩展）。
+    - 先 `Evaluate()` 再等待返回的任务；最后释放并清空 `_cts`。
+  - 字段名 `_currenIndex` 的拼写错误是原文。
+- **`SpawnableTrialText`**（审判文字演出）：
+  - `SetSpawnParameters` 只设置 Canvas 相机。
+  - `AwaitSpawn` 与重演的 Timeline 启动逻辑相同（无销毁检查），结束后释放并清空 `_cts`（`Dispose()` 被内联）。
+  - `AwaitDestroy`：token 已完成时时长为 0，时长为 0 时什么都不做（不改 alpha）。否则用 LitMotion 在 `_hideDuration` 内把根 CanvasGroup 淡出到 0。结束后 `_cts` 只释放不清空。
+
+第一次编译缺少 `GigaCreation.Tools.Private.PlayableDirectors` 的 using（2 个错误），补上后通过；审计仍为基线 4 处。
+
+进度：Other 91/162、29,355/56,145 B；全部 `WitchTrials.*` 合计 833/929、282,582/316,778 B；0 错误，警告基线 140。
+
+### 第 D5 组：`AuthorTextBuilder`（13 个函数体，另补 `Settings` 两个成员）
+
+证据品/备忘录等文本里"作者名"的富文本生成器。
+
+- **加载**（`InitializeAsync` → `LoadDataAsync`，MoveNext 2,825 B）：
+  - 两个 Addressable 资源 `CharacterData`/`AuthorData` 以 UniTask 元组并行加载。
+  - `_nameData`：每个角色的名、姓各转为"语言 → 文本"字典；两者键的并集（`Union`）逐语言生成 `FullName`，缺的一半为 `string.Empty`。
+  - `_authorData`：每个作者的 `TaggedText` 转为"语言 → 模板"字典。
+- **`TryBuildAuthorText(authorId, color, out text)`**（2,017 B）：
+  1. 当前语言有非空白作者模板时优先使用：把 `%COLOR%` 替换为 `#RRGGBB`，未给颜色时用白色（数据 RVA 0x2AE36E0 = 1,1,1,1）。
+  2. 否则用角色姓名：名、姓都为空时返回 false；只有一半时生成简单名；两者都有时，日语/简体/繁体中文为"姓在前"，英语/韩语为"名在前"（字节中的 `test eax, ~2` 加 `cmp eax, 3`）。
+- **`AppendTaggedName`**：
+  - 首字用 `initial` 字号，其余用 `body` 字号（第一/第二部分各一对字段，Settings 默认 132/72 与 120/72）。
+  - 颜色标签只包住第一部分的首字。
+  - `Substring(1)` 被内联为 `Substring(1, Length - 1)` 并调用了两次，按源码形式保留两次调用。
+- 构造函数只有 `_builder` 字段初始化器与内联的 `Settings.InjectTo`。
+- `FullName` record 的编译器生成成员（`ToString`/`Equals`/`GetHashCode` 等）未计入 `Other` 桶，本组未处理。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 104/162、34,370/56,145 B；全部 `WitchTrials.*` 合计 846/929、287,597/316,778 B；0 错误，警告基线 140。
+
+### 第 D6 组：审判流程命令（14 个函数体）
+
+- **`@stopForChoice`（`StopForChoice.Execute`，2,409 B，非 async）**：
+  - `clear` 参数清空已记录的选项。
+  - 仅在自定义变量 `enableDebugSkip` 为真时进入调试跳过：取第一个可见的选项处理器（`Actors` 中 `Visible`），自动选择第一个"按钮路径不以 `Bad` 结尾、且未选过（`hostedAt` 不在列表中）"的选项。
+    - 记录该选项位置，除非按钮以 `Cancel` 结尾，或其摘要文本含两个"总是处理"的 ID 之一（`0101Trial14_Choice003`、`0102Trial14_Choice005`）。
+    - 输出 `Log("Auto choice: #" + 摘要首段 Id)`，且不执行基类 `Stop`。
+  - 没有可见处理器时 `Warn` 后照常停止。
+  - `s_chosenChoiceStates` 没有静态初始化器，只在 `SubsystemRegistration` 时由 `ResetStaticFields` 创建。
+- **`@badEnd`（`ProcessBadEnd`）**：
+  1. 把编号写入 `currentBadEndId`。
+  2. 以 `SetAndSaveFlagAsync("g_playedBadEnd", 编号 - 1, Or)` 记录已达成的坏结局位。
+  3. 播放 `System/System_BadEnd`。
+- **`@correctChoice`（`RecordCorrectChoice`）**：同样的位标志写入 `g_playedCorrectChoice`。
+- **`@badId`（`SetBadId`，非 async）**：
+  - 1–13 以 `{0:D2}` 字符串写入 `commonBadEndId`。
+  - 超出范围时 `Warn("共通バッドエンド ID が不正です：…")`（字节为 `(uint)(id - 1) > 12`）。
+- **`ReturnToTitle`**：
+  - `Execute` 为 `WaitOrForget(ReturnToTitleAsync, Wait, token)`，并立即执行基类 `Stop`（其任务被丢弃）。
+  - `ReturnToTitleAsync` 全程在 `NaninovelInteractionBlocker` 内（using）：
+    1. 以黑色 `FadeOutAsync(FadeDuration)`。
+    2. 先创建最短延时，再 `ResetState()`，两者 `WhenAll`，使状态重置很快时也至少等待延时。
+    3. 卸载透视舞台，`SetTitleScreenShown(true)`。
+  - 构造函数默认值：淡出 1.2 秒，最短延时 0.6 秒。
+- `Command` 的虚槽确认：6 = `Log`，7 = `Warn`，8 = `Err`，13 = `WaitOrForget`。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 116/162、39,772/56,145 B；全部 `WitchTrials.*` 合计 858/929、292,999/316,778 B；0 错误，警告基线 140。
+
+### 第 D7 组：`Timer`、背景匹配器与 `BlockInteraction`（15 个函数体）
+
+- **`Timer`（倒计时模型）**：
+  - `TimeSinceStartup`：按 `_useRealtime` 取 `Time.realtimeSinceStartup` 或 `Time.time`，经内联的 `TimeSpan.FromSeconds` 转换。
+  - 构造函数只写入 `_speed = 1f`（字段初始化器）与 `_useRealtime`。
+  - `Dispose` 与 `SetTime` 都先取消、释放并清空运行中的 CTS。
+    - `Dispose` 随后释放并清空 `_remainingTime`。
+    - `SetTime` 释放旧属性后换成新的 `ReactiveProperty<TimeSpan>(time)`。
+  - `StartAsync`：
+    1. 未设置时间时 `Debug.LogWarning("Time is not set.")` 并返回；已在运行时直接返回。
+    2. 否则设定 `Speed`，新建 CTS，并与外部 `ct` 链接（using）。
+    3. 每帧 `UniTask.Yield(linkedCts.Token)`；`Speed <= 0` 时暂停计时。
+    4. 否则把经过的时间乘以 `Speed`，从剩余时间中扣除。未到零则发布新值；到零则发布 `TimeSpan.Zero`，释放并清空 CTS 后结束。
+  - 行为为 A；循环的具体块嵌套为 B（`previousTime` 只在"继续"路径上被清零）。
+- **`WitchTrialsBackground`**：
+  - 两个构造函数直接转到 `SpriteBackgroundExtended`。四参数版本与基类构造函数 ICF 折叠：`subId` 非空时 id 为 `actorId-subId`。
+  - `Initialize`：等待基类初始化后，以 `ActorMeta` 与 `TransitionalRenderer` 创建 `BackgroundMatcherExtended`。
+  - `Dispose`：先执行基类（内联的 `SpriteBackground.Dispose`），再停止自己的匹配器。
+- **`BackgroundMatcherExtended`**：
+  - `CreateForBackground` 仿照 Naninovel 的 `BackgroundMatcher.CreateFor`：`MatchMode` 为 `Disable`，或渲染器不是 `TransitionalSpriteRenderer` 时返回 null；否则创建并 `Start()`。
+  - `TryGetReferenceSize`：参考尺寸为 `(宽 / PixelsPerUnit, 宽 / (16/9) / PixelsPerUnit)`，高度由 16:9 宽度推出，不读取纹理高度。
+  - 字段名 `MatchMode`（+0x70）与 `PixelsPerUnit`（+0x38）取自 dump.cs 的 `BackgroundMetadata` / `OrthoActorMetadata`。
+- **`BlockInteraction`（调试命令）**：与 `ShowLoadingUiForDebug` 同形。
+  - 在 `InteractionBlocker` 的 using 内累加 `Time.deltaTime`，直到达到 `Duration`（默认 0.35 秒）或令牌取消。
+  - `Execute` 为 `WaitOrForget(BlockAsync, Wait, token)`。
+- 虚槽确认：`CameraMatcher` 5 = `Start`、6 = `Stop`；`TransitionalRenderer` 7 = `MainTexture`；`SpriteActor` 64 = `TransitionalRenderer`。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 131/162、44,437/56,145 B；全部 `WitchTrials.*` 合计 873/929、297,664/316,778 B；0 错误，警告基线 140。
+
+### 第 D8 组：`GoogleForm` 与 `PrintTextModified`（5 个函数体，另补 2 个嵌套类成员）
+
+- **`GoogleForm`（问卷反馈按钮）**：
+  - `DialogProvider`：`_dialogProvider ??= ServiceLocator.Get<IDialogManager>(includeDerivedType: true)`，`cl = 1` 即该参数。
+  - `Awake`：**无条件** `Destroy(gameObject)`——函数体内没有任何分支。本版本中反馈按钮在唤醒时即销毁，`TitleUi` 也用 Unity 活性检查包住 `_googleForm`。
+  - `Reset`：编辑器钩子，`_button = GetComponentInChildren<Button>()`。
+  - `BuildUrl`：以 `_formUrl` 建 `StringBuilder`，逐条追加 `&entry.<id>=<data>`，最后经内联的 `Uri.EscapeUriString`。**代码中没有 URL 字面量**：`_formUrl` 是 `[SerializeField]`，实际值存在场景/预制体里（资源侧不属本仓库职责）。
+  - 嵌套 `EntryInfo`：`Data` 按 `_kind` 依次返回版本号、平台名、分辨率（icall 0x25F3CA0 `Screen::get_currentResolution_Injected`，已按字节确认）、播放位置或已显示的消息；静态 `s_scenarioNamePattern`（`.cctor` 0x33A7F0）为正则 `([A-Z])[a-z]+(\d+)`（`Compiled`，源码里写作 C# 字面量 `"([A-Z])[a-z]+(\d+)"`），把 `Trial14` 之类压成 `T14`，再把 `#` 换成 `L`。
+- **`PrintTextModified.ShouldPlayAutoVoice`**：与基类 `PrintText`（0x4FE180）逐字节对照，只多一条判断。
+  - 基类：自动语音开关（`AudioConfiguration` +0x40 `EnableAutoVoicing`）、`PlaybackSpot.Valid`（Command +0x18，内联为脚本路径非空）、且 `!ScriptPlayer.SkipActive`（`IScriptPlayer` 接口槽 16）。
+  - 本类在最后一条之前插入：命令显式写了 `wait:false` 时直接返回真，即快进中也播语音。转换用的是 `Nullable<bool>.op_Implicit` 而非 `.Value`。
+- **暂缓：`GoogleForm.OpenGoogleFormAsync`（0x33A020）与其 MoveNext（0x33A8D0）**：
+  - MoveNext 入口 `state != 0` 直接跳到 `SetResult`，而初始状态为 -1（存根与调用方 `TitleUi.<Activate>b__56_5` 都写入 -1），发布版中该方法立刻完成。
+  - 状态机字段 `<blocker>5__2`（+0x28）在 MoveNext 与调用方里都只被读取和清空，从未被赋值；使用它的那段（对话框排序、`ConfirmAsync`、`Application.OpenURL(BuildUrl())`）因此进不去，其中还带着会抛 `NullReferenceException` 的空检查。
+  - using 的初始化式无字节依据，按"C 和 D 不写进方法体"暂缓。这与 `Awake` 的无条件销毁互相印证：本版本整体关闭了该功能。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 136/162、46,090/56,145 B；全部 `WitchTrials.*` 合计 878/929、299,317/316,778 B；0 错误，警告基线 140。
+
+### 第 D9 组：三个 `ModifyCamera*Tween` record（22 个函数体，另补 1 个共享 `Deconstruct`）
+
+三个 record（`Height`／`Distance`／`Rotation`）的成员形状完全一致，只有成员类型和字段偏移不同：Height 与 Distance 为
+`float To`（+0x10）、`float Duration`（+0x14）、`Ease Ease`（+0x18）；Rotation 为 `float?[] To`（+0x10）、
+`float Duration`（+0x18）、`Ease Ease`（+0x1C）。
+
+- **`EqualityContract`**：`typeof(T)`（ldtoken + `Type.GetTypeFromHandle`），125 B。
+- **`ToString`**：类型名 + `" { "` + 虚槽 6 `PrintMembers`，返回真时补一个空格，最后 `'}'`，311 B。
+- **`PrintMembers`**：逐个成员追加 `"To = "`／`", Duration = "`／`", Ease = "`。
+  - 值类型成员走 `<成员>.ToString()`（浮点为 `Number.FormatSingle` + 当前 `NumberFormatInfo`，枚举为 `Enum.ToString`）。
+  - Rotation 的数组成员走 `StringBuilder.Append(object)`，内联为"判空后调用虚 `ToString`"，所以 `To` 为 null 时这一段什么都不追加。
+- **`GetHashCode`**：`EqualityComparer<T>.Default.GetHashCode` 链。编译器把 record 的乘数 -1521134295 的幂折进了三个
+  `imul` 常量（0x325D7C39、0x7C71BF6F、0x5AAAAAD7），故按字节等价、写回规范形式（等级 B 仅指书写形式）。
+- **`Equals(object)`**：`Equals(obj as T)`，经虚槽 7（+0x1A8），`as` 内联为类型层级深度比较，146 B。
+- **`Equals(T)`**：先引用相等，再判空，再比较双方的虚 `EqualityContract`（派生 record 因此不会等于基类），最后逐成员
+  `EqualityComparer<T>.Default.Equals`。
+- **`<Clone>$`**：`new T(this)`，复制构造函数内联为逐字段拷贝；Rotation 的数组字段带 GC 写屏障，故 164 B 对 88 B。
+- **`Deconstruct`**：三个 out 存储。Height 与 Distance 共用同一函数体（0x39FA60，18 B，ICF 折叠），Rotation 另有一份
+  （0x3A0340，106 B，数组那次写入带写屏障）。
+- `Equals(object)` 与 `<Clone>$` 无法写成 C# 源码，按 `ScenarioInfo.cs` 的既有做法在类型头部注释中登记 RVA，不作声明。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 158/162、51,816/56,145 B；全部 `WitchTrials.*` 合计 900/929、305,043/316,778 B；0 错误，警告基线 140。
+
+### 第 D10 组：`WitchTrialsActions`（3 个函数体，另补 2 个取值器与 7 处字段初始化器）
+
+- **构造函数（3,678 B）**：Unity Input System 为 `.inputactions` 资产生成的包装类构造函数。
+  - `m_Asset = InputActionAsset.FromJson(<JSON>)`。该 JSON 是 0x38FF4B 处的元数据字符串字面量：存储态 46,682 字符、1,194 行；反汇编按 `
+` 转义打印时为 47,875 字符（两个数字都记下来，免得以后重算）。
+  - 已按 JSON 解析验证：两张映射表（Naninovel 14 个动作／61 条绑定，UI 8 个／22 条）与五套控制方案（Keyboard&Mouse、Gamepad、Touch、Joystick、XR）。写回源码后又从 `.cs` 里取出、还原成对引号做了回读校验，MD5 与提取结果一致，字面量内无制表符污染。
+  - 其后 24 次 `FindActionMap`／`FindAction` 查找，全部带 `throwIfNotFound: true`（r8b = 1）。
+  - 两个回调 `List<>` 与五个控制方案索引（均为 -1）是**字段初始化器**而非构造函数语句——这正是它们的写入早于 `FromJson` 的原因（与第 D7 组 `Timer._speed = 1f` 同理）。
+- **`Dispose`**：`UnityEngine.Object.Destroy(m_Asset)`，即生成代码销毁自己构建的资产。
+- **`Naninovel` / `UI` 取值器**：同一段 91 B 的"把 `this` 包进访问结构体"函数体（0x390E40），与 `Task.GetAwaiter`、`DefaultInputActions.get_Player`、30 多个 `ParticleSystem` 模块取值器 ICF 折叠。`get_UI` 原本是未登记的空存根，若只补 `get_Naninovel` 会把审计基线从 4 顶到 5，故一并补上。
+- `m_Asset` 沿用本仓库既有的 B 级字段名（自动属性的后备字段），与已恢复的 `asset` 取值器一致；Input System 生成源码里写作 `asset = …`。
+
+一次编译通过；审计仍为基线 4 处。
+
+进度：Other 161/162、55,725/56,145 B；全部 `WitchTrials.*` 合计 903/929、308,952/316,778 B；0 错误，警告基线 140。
+
+---
+
 ## 8. 下一步
 
-1. **继续批量定案剩余折叠组**——`.ctor()` 空构造确认（低优先级，代码已经对，只差注释）、
-   `op_Equality`/`op_Inequality` 的缺失方法补齐（需要先决定是否值得新增 API 面）。
-2. **恢复 `<LoadServiceState>d__9.MoveNext`**，把 async 状态机的工作流验证出来
-   （这是唯一还没验证过的机制，之后 Naninovel-glue 和 PerspectiveStage 大量依赖它）。
-3. 然后按第 4 节的表推进 Boot/Init → SaveLoad → Naninovel-glue。
+旧版本的计划（验证 async 状态机、推进 SaveLoad/Naninovel-glue）已全部完成。第 1 节表格中除 Boot/Init 外的子系统均已恢复完毕（`Other` 仅剩 1 个刻意暂缓的函数体），数十个 async 状态机已按 MoveNext 字节恢复。剩余工作：
+
+1. **Boot/Init（按用户要求暂缓）**：7/32，剩余 25 个函数体，包括：
+   - SteamManager（含 1,446 B 的 `Awake`）。
+   - GameInitializer 的 `Awake/OnDestroy/InitializeAsync`。
+   - EntrySequence、SplashScreen。
+   - DefaultLocaleSelector/Presenter。
+   - `EngineInitializationUiModified.OnEnable`。
+2. **刻意暂缓的函数体**：`GoogleForm.OpenGoogleFormAsync`（0x33A020）与其 MoveNext（0x33A8D0）——入口守卫让初始状态直接完成，`<blocker>5__2` 在方法体和调用方里都从未被赋值，using 的初始化式无字节依据；详见 §7.17 第 D8 组。`Other` 桶其余 161 个函数体已全部恢复。
+3. **遗留整理**（低优先级）：
+   - `.ctor()` 空构造的标注确认。
+   - record 的 `op_Equality`/`op_Inequality` 在骨架中缺失，需要先决定是否值得新增 API 面（§6）。
 
 ---
 

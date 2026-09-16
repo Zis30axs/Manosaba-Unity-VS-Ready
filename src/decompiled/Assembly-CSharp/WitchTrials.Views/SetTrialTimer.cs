@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using Naninovel;
+using WitchTrials.Models;
 
 namespace WitchTrials.Views;
 
@@ -17,11 +18,16 @@ public class SetTrialTimer : Command
 	[RequiredParameter]
 	public DecimalParameter Time;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x325D70, 243 B
+	// ServiceLocator.Get<IWitchTrialsNaninovelManager>(cl = 0); Naninovel.Nullable<float> implicit operator on `Time`
+	// (+0x30) into slot 5 SetTrialTimer (sub_3780, float in xmm3). Returns default.
 	[Token(Token = "0x600013E")]
 	[Address(RVA = "0x325D70", Offset = "0x324770", VA = "0x180325D70", Slot = "5")]
 	public override UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		IWitchTrialsNaninovelManager manager = GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(false);
+		manager.SetTrialTimer(Time);
+		return UniTask.CompletedTask;
 	}
 
 	[Token(Token = "0x600013F")]

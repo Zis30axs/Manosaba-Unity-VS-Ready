@@ -33,10 +33,15 @@ public abstract class WitchBookPageBase : MonoBehaviour, IDisposable
 	[SerializeField]
 	private GraphicRaycaster _graphicRaycaster;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x379840, 292 B
+	// Unity editor `Reset` callback: `_canvas (+0x20) = GetComponent<Canvas>()`, then
+	// `_graphicRaycaster (+0x28) = GetComponent<GraphicRaycaster>()`.
 	[Token(Token = "0x6000494")]
 	[Address(RVA = "0x379840", Offset = "0x378240", VA = "0x180379840", Slot = "5")]
 	protected virtual void Reset()
 	{
+		_canvas = GetComponent<Canvas>();
+		_graphicRaycaster = GetComponent<GraphicRaycaster>();
 	}
 
 	[Token(Token = "0x6000495")]
@@ -48,16 +53,25 @@ public abstract class WitchBookPageBase : MonoBehaviour, IDisposable
 	[Token(Token = "0x6000497")]
 	public abstract void InitializeItems();
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x379970, 57 B
+	// `_canvas.enabled = true`, then `_graphicRaycaster.enabled = true` (tail jump).
+	// The only null checks are managed NRE checks; `asPresentEvidenceMode` is unused in the base.
 	[Token(Token = "0x6000498")]
 	[Address(RVA = "0x379970", Offset = "0x378370", VA = "0x180379970", Slot = "9")]
 	public virtual void Show(bool asPresentEvidenceMode)
 	{
+		_canvas.enabled = true;
+		_graphicRaycaster.enabled = true;
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x36F420, 57 B (identical-code-folded with MapFloor.Hide)
+	// Mirror of Show: `_canvas.enabled = false`, then `_graphicRaycaster.enabled = false` (tail jump).
 	[Token(Token = "0x6000499")]
 	[Address(RVA = "0x36F420", Offset = "0x36DE20", VA = "0x18036F420", Slot = "10")]
 	public virtual void Hide()
 	{
+		_canvas.enabled = false;
+		_graphicRaycaster.enabled = false;
 	}
 
 	[Token(Token = "0x600049A")]

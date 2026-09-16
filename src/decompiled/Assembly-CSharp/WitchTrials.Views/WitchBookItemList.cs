@@ -111,18 +111,25 @@ public class WitchBookItemList : MonoBehaviour
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3786C0, 292 B
+	// `_autoLayoutSupporter (+0x28) = GetComponentInChildren<AutoLayoutSupporter>(); _pagination (+0x30) = GetComponentInChildren<Pagination>()`.
 	[Token(Token = "0x6000484")]
 	[Address(RVA = "0x3786C0", Offset = "0x3770C0", VA = "0x1803786C0")]
 	private void Reset()
 	{
+		_autoLayoutSupporter = GetComponentInChildren<AutoLayoutSupporter>();
+		_pagination = GetComponentInChildren<Pagination>();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3787F0, 401 B (entry) + MoveNext 0x378990, 724 B
+	// A single await: `_autoLayoutSupporter (+0x28).ExecuteRebuildingAsync(ct)`. The awaiter is at +0x28 and
+	// IUniTaskSource status/GetResult go through the interface thunks.
 	[Token(Token = "0x6000485")]
 	[Address(RVA = "0x3787F0", Offset = "0x3771F0", VA = "0x1803787F0")]
 	[AsyncStateMachine(typeof(_003CExecuteRebuildingAsync_003Ed__11))]
-	public UniTask ExecuteRebuildingAsync([Optional] CancellationToken ct)
+	public async UniTask ExecuteRebuildingAsync([Optional] CancellationToken ct)
 	{
-		return default(UniTask);
+		await _autoLayoutSupporter.ExecuteRebuildingAsync(ct);
 	}
 
 	[Token(Token = "0x6000486")]

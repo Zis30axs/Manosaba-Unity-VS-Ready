@@ -26,9 +26,13 @@ public class CharacterData : ScriptableObject
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x38EF90, 197 B
+	// This is the field initializer `_items (+0x18) = new List<CharacterDataItem>()` (List..ctor 0x857BA0),
+	// then a tail jump to `ScriptableObject..ctor`.
 	[Token(Token = "0x6000598")]
 	[Address(RVA = "0x38EF90", Offset = "0x38D990", VA = "0x18038EF90")]
 	public CharacterData()
 	{
+		_items = new List<CharacterDataItem>();
 	}
 }

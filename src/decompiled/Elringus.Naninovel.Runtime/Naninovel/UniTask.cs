@@ -140,7 +140,7 @@ public readonly struct UniTask : IEquatable<UniTask>
 	}
 
 	[Token(Token = "0x2000137")]
-	public readonly struct Awaiter
+	public readonly struct Awaiter : IAwaiter, ICriticalNotifyCompletion, INotifyCompletion
 {
 		[Token(Token = "0x40004E4")]
 		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]

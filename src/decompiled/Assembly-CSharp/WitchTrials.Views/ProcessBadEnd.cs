@@ -60,12 +60,17 @@ public class ProcessBadEnd : SetCustomVariableAsFlag
 	[Token(Token = "0x4000096")]
 	private const string CurrentBadEndIdVarName = "currentBadEndId";
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x3199B0 (builder stub); MoveNext 0x319AD0, 1421 B, two await states
+	// The bad end number goes to `currentBadEndId`, is recorded as a played flag, then System/System_BadEnd plays
+	// (ScriptPlayerExtensions.LoadAndPlay, playlistIndex 0). SetCustomVariableAsFlag.SetAndSaveFlagAsync(name, bit, BitwiseOperator.Or) (0xCF9200); the bit is `Number - 1`.
 	[Token(Token = "0x60000BD")]
 	[Address(RVA = "0x3199B0", Offset = "0x3183B0", VA = "0x1803199B0", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CExecute_003Ed__3))]
-	public override UniTask Execute([Optional] AsyncToken token)
+	public override async UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(UniTask);
+		NaniVarManager.TrySetVariableValue<int>(CurrentBadEndIdVarName, Number);
+		await SetAndSaveFlagAsync(PlayedBadEndVarName, Number - 1, BitwiseOperator.Or);
+		await Engine.GetServiceOrErr<IScriptPlayer>().LoadAndPlay(BadEndScriptName);
 	}
 
 	[Token(Token = "0x60000BE")]

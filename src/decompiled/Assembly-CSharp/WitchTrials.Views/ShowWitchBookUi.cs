@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GigaCreation.NaninovelExtender.Ui;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -115,17 +116,21 @@ public class ShowWitchBookUi : Command
 	[ParameterAlias("")]
 	public StringListParameter CategoryNames;
 
+	// RECONSTRUCTED | Confidence: A | ctor RVA: 0x32BF50, 221 B
+	// The constructor is only the field initializers: `BooleanParameter.op_Implicit(false)`
+	// into +0x38 `Back` and again into +0x40 `Global` (each with a write barrier), then a
+	// tail jump to `Command..ctor`.
 	[Token(Token = "0x400017C")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
 	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
 	[ParameterDefaultValue("false")]
-	public BooleanParameter Back;
+	public BooleanParameter Back = false;
 
 	[Token(Token = "0x400017D")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
 	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
 	[ParameterDefaultValue("false")]
-	public BooleanParameter Global;
+	public BooleanParameter Global = false;
 
 	[Token(Token = "0x400017E")]
 	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
@@ -146,72 +151,95 @@ public class ShowWitchBookUi : Command
 	[Token(Token = "0x1700001E")]
 	protected IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32B760, 186 B
+		// Lazy cache in +0x48 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`
+		// (`mov cl, 1`: includeDerivedType).
 		[Token(Token = "0x6000164")]
 		[Address(RVA = "0x32B760", Offset = "0x32A160", VA = "0x18032B760")]
 		get
 		{
-			return null;
+			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
 		}
 	}
 
 	[Token(Token = "0x1700001F")]
 	protected ICustomVariableManager NaniVarManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32B820
+		// Lazy cache in +0x50 via `Engine.GetServiceOrErr<ICustomVariableManager>()`.
 		[Token(Token = "0x6000165")]
 		[Address(RVA = "0x32B820", Offset = "0x32A220", VA = "0x18032B820")]
 		get
 		{
-			return null;
+			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
 		}
 	}
 
 	[Token(Token = "0x17000020")]
 	protected IUIManager NaniUiManager
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32B8E0
+		// Lazy cache in +0x58 via `Engine.GetServiceOrErr<IUIManager>()`.
 		[Token(Token = "0x6000166")]
 		[Address(RVA = "0x32B8E0", Offset = "0x32A2E0", VA = "0x18032B8E0")]
 		get
 		{
-			return null;
+			return _naniUiManager ??= Engine.GetServiceOrErr<IUIManager>();
 		}
 	}
 
 	[Token(Token = "0x17000021")]
 	protected IWitchBookUi WitchBookUi
 	{
+		// RECONSTRUCTED | Confidence: A | RVA: 0x32B9A0
+		// Lazy cache in +0x60 via `NaniUiManager.GetUI<IWitchBookUi>()` (getter inlined).
 		[Token(Token = "0x6000167")]
 		[Address(RVA = "0x32B9A0", Offset = "0x32A3A0", VA = "0x18032B9A0")]
 		get
 		{
-			return null;
+			return _witchBookUi ??= NaniUiManager.GetUI<IWitchBookUi>();
 		}
 	}
 
 	[Token(Token = "0x17000022")]
 	protected bool IsEnabledDebugSkip
 	{
+		// RECONSTRUCTED | Confidence: A (`&&` spelling: B) | RVA: 0x32BB10
+		// `NaniVarManager.TryGetVariableValue<bool>("enableDebugSkip", out value)`, then `and al, value`:
+		// the native compiler folds the short-circuit over a plain local into a bitwise and.
 		[Token(Token = "0x6000168")]
 		[Address(RVA = "0x32BB10", Offset = "0x32A510", VA = "0x18032BB10")]
 		get
 		{
-			return default(bool);
+			return NaniVarManager.TryGetVariableValue(EnableDebugSkipVarName, out bool value) && value;
 		}
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32BB80 (stub), MoveNext 0x32C030
+	// `Global` (+0x40) through Nullable<bool> op_Implicit -> `setne` = mode (1 Global / 0 Local); categories =
+	// Assigned(CategoryNames) (ICommandParameter slot 0) ? ParseCategories(string[] implicit) : null; areas null;
+	// awaits ShowWitchBook (0x32BD00, real call). `Back` (+0x38) is not read here.
 	[Token(Token = "0x6000169")]
 	[Address(RVA = "0x32BB80", Offset = "0x32A580", VA = "0x18032BB80", Slot = "5")]
 	[AsyncStateMachine(typeof(_003CExecute_003Ed__18))]
-	public override Naninovel.UniTask Execute([Optional] AsyncToken token)
+	public override async Naninovel.UniTask Execute([Optional] AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		await ShowWitchBook(Global ? WitchBookPresentationMode.Global : WitchBookPresentationMode.Local, Assigned(CategoryNames) ? WitchBookDataHelper.ParseCategories(CategoryNames) : null, null, token);
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x32BD00 (stub), MoveNext 0x32C3F0
+	// WitchBookUi getter per call; IWitchBookUi slot 0 SetPresentationMode(mode), slot 1
+	// SetRestrictionCategories(categories), slot 2 SetRestrictionMapAreas(areas); then ManagedUiExtensions.PresentAsync
+	// (AsyncToken overload, kickoff inlined: duration null, token) awaited through the Cysharp awaiter.
 	[Token(Token = "0x600016A")]
 	[Address(RVA = "0x32BD00", Offset = "0x32A700", VA = "0x18032BD00")]
 	[AsyncStateMachine(typeof(_003CShowWitchBook_003Ed__19))]
-	protected Naninovel.UniTask ShowWitchBook(WitchBookPresentationMode mode, IReadOnlyList<WitchBookCategory> categories, IReadOnlyCollection<MapAreaKind> areas, AsyncToken token)
+	protected async Naninovel.UniTask ShowWitchBook(WitchBookPresentationMode mode, IReadOnlyList<WitchBookCategory> categories, IReadOnlyCollection<MapAreaKind> areas, AsyncToken token)
 	{
-		return default(Naninovel.UniTask);
+		WitchBookUi.SetPresentationMode(mode);
+		WitchBookUi.SetRestrictionCategories(categories);
+		WitchBookUi.SetRestrictionMapAreas(areas);
+		await WitchBookUi.PresentAsync(null, token);
 	}
 
 	[Token(Token = "0x600016B")]

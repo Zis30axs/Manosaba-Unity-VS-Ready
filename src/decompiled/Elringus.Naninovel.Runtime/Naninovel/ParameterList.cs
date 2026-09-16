@@ -5,7 +5,7 @@ using Il2CppDummyDll;
 namespace Naninovel;
 
 [Token(Token = "0x2000400")]
-public abstract class ParameterList<TItem> : CommandParameter<List<TItem>> where TItem : class, new()
+public abstract class ParameterList<TItem> : CommandParameter<List<TItem>>, IEnumerable<TItem>, IEnumerable where TItem : class, new()
 {
 	[Token(Token = "0x170002A4")]
 	public int Length
@@ -32,13 +32,13 @@ public abstract class ParameterList<TItem> : CommandParameter<List<TItem>> where
 	}
 
 	[Token(Token = "0x600134C")]
-	private IEnumerator System_002ECollections_002EIEnumerable_002EGetEnumerator()
+	IEnumerator IEnumerable.GetEnumerator()
 	{
 		return null;
 	}
 
 	[Token(Token = "0x600134D")]
-	private IEnumerator<TItem> System_002ECollections_002EGeneric_002EIEnumerable_003CTItem_003E_002EGetEnumerator()
+	IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
 	{
 		return null;
 	}

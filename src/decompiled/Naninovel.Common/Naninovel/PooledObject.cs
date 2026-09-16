@@ -5,7 +5,7 @@ using Il2CppDummyDll;
 namespace Naninovel;
 
 [Token(Token = "0x2000012")]
-public readonly struct PooledObject<T> where T : class
+public readonly struct PooledObject<T> : IDisposable where T : class
 {
 	[Token(Token = "0x4000019")]
 	[FieldOffset(Offset = "0x0")]
@@ -23,7 +23,7 @@ public readonly struct PooledObject<T> where T : class
 	}
 
 	[Token(Token = "0x6000043")]
-	private void System_002EIDisposable_002EDispose()
+	void IDisposable.Dispose()
 	{
 	}
 }
