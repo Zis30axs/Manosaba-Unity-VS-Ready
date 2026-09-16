@@ -38,6 +38,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import identity  # noqa: E402
+import resolution  # noqa: E402
 from common import OUT, RES_ROOT, load_index_ledger  # noqa: E402
 
 A03_DIR = os.path.join(OUT, "a03")
@@ -124,6 +125,130 @@ def load_container_objects(rows):
     return objects, read_errors, payload_rows
 
 
+def derive_owner_table(rows):
+    """Fallback ownership when no a03 scan is supplied (tests, or a08 run stand-alone).
+
+    Every row of a source is attributed to one synthetic SerializedFile.  That is still a
+    single address space per source -- it is NOT the old behaviour of resolving inside a
+    container path -- but it cannot distinguish two real SerializedFiles, so the result
+    records which kind of ownership data was used.
+    """
+    table = resolution.OwnerTable()
+    by_source = collections.defaultdict(list)
+    for r in rows:
+        if not r.pathid_known:
+            continue
+        by_source[r["source_identity"]].append(r)
+    for src, srows in by_source.items():
+        table.add_source(src, [{"name": "(index-derived)", "externals": []}],
+                         [{"file": "(index-derived)", "path_id": str(r["pid_int"]),
+                           "type": r["type"]} for r in srows])
+    return table
+
+
+def hierarchy_pointers(entry):
+    """The PPtrs that define membership of a prefab, not merely a reference from it.
+
+    * GameObject -> every ``m_Component[].component``
+    * Transform  -> ``m_Father`` and every ``m_Children[]``
+    A component's ``m_GameObject`` is deliberately NOT an expansion edge.  Following it
+    pulls in the owning GameObject of a *neighbouring* prefab that shares the SerializedFile,
+    and that GameObject's root Transform then registers as an extra root here: measured,
+    Game.prefab went 1 -> 3 roots and RebuildableToggle 1 -> 2.  The back-reference is still
+    checked by the validator; it just does not confer membership.  Which container a
+    cross-container component belongs to is a classification question, not a closure one.
+
+    Everything else -- Material, Sprite, AudioClip, AnimationClip ... -- is a reference to a
+    sub-asset.  Following those walks into neighbouring prefabs that happen to share the
+    SerializedFile, which measurably inflated orphan_component from 380 to 815.
+    """
+    doc = entry["doc"]
+    obj_type = entry["type"]
+    out = []
+    if obj_type == "GameObject":
+        for comp in doc.get("m_Component") or []:
+            if isinstance(comp, dict) and isinstance(comp.get("component"), dict):
+                out.append(comp["component"])
+        return out
+    if obj_type in TRANSFORM_TYPES:
+        father = doc.get("m_Father")
+        if isinstance(father, dict):
+            out.append(father)
+        for child in doc.get("m_Children") or []:
+            if isinstance(child, dict):
+                out.append(child)
+    return out
+
+
+def build_closure(container_path, rows, owners, row_index):
+    """Objects this prefab actually owns, inside the SerializedFile that declares them.
+
+    Starts from the rows the index filed under ``container_path`` and expands along
+    file-local pointers that resolve inside the owning SerializedFile.  It deliberately
+    does not take the whole file: the busiest scanned SerializedFile declares 10,056
+    objects and serves 80 prefab containers, so "everything in the file" would merge
+    unrelated prefabs into one.
+    """
+    objects, read_errors, payload_rows = load_container_objects(rows)
+    info = {"ownership": "a03" if row_index is not None else "index-derived",
+            "seed_objects": len(objects), "pulled_in": [], "defects": []}
+
+    owning = set()
+    for r in rows:
+        if not r.pathid_known:
+            continue
+        try:
+            sf = owners.owning_file(r["source_identity"], r["pid_int"])
+        except resolution.AmbiguousOwner as exc:
+            info["defects"].append({"kind": "ambiguous_owner", "path_id": str(r["pid_int"]),
+                                    "detail": str(exc)})
+            continue
+        if sf is not None:
+            owning.add((r["source_identity"], sf))
+    info["owning_files"] = sorted(f"{s}|{f}" for s, f in owning)
+    if len(owning) > 1:
+        # Not observed in the scanned data (all 156 prefab containers map to exactly one
+        # file); reported rather than silently merged if it ever happens.
+        info["defects"].append({"kind": "container_spans_multiple_serialized_files",
+                                "files": info["owning_files"]})
+        return objects, read_errors, payload_rows, info
+    if not owning or row_index is None:
+        return objects, read_errors, payload_rows, info
+
+    src, sf = next(iter(owning))
+    queue = list(objects.values())
+    while queue:
+        entry = queue.pop()
+        for ptr in hierarchy_pointers(entry):
+            fid, pid = ptr.get("m_FileID"), ptr.get("m_PathID")
+            if not isinstance(fid, int) or not isinstance(pid, int):
+                continue
+            if fid != 0 or pid == 0:
+                continue
+            key = (src, pid)
+            if key in objects:
+                continue
+            res = owners.resolve(src, sf, {"m_FileID": 0, "m_PathID": pid})
+            if not res.bound:
+                continue          # reported later by the validator, with its field path
+            row = row_index.get(key)
+            if row is None:
+                info["defects"].append({"kind": "owned_object_not_in_index",
+                                        "path_id": str(pid), "type": res.detail.get("type")})
+                continue
+            extra_objects, extra_errors, extra_payload = load_container_objects([row])
+            read_errors.extend(extra_errors)
+            payload_rows.extend(extra_payload)
+            for k, v in extra_objects.items():
+                if k in objects:
+                    continue
+                objects[k] = v
+                queue.append(v)
+                info["pulled_in"].append({"path_id": str(k[1]), "type": v["type"],
+                                          "filed_under": row["asset_path"]})
+    return objects, read_errors, payload_rows, info
+
+
 class Container:
     """Object table for one prefab container, with an O(1) pathID index.
 
@@ -187,9 +312,19 @@ def resolve_local(table, ptr, issues, ctx, what):
     return key, objects[key]
 
 
-def validate_container(container_path, rows, targets, have_targets):
+def validate_container(container_path, rows, targets, have_targets,
+                       owners=None, row_index=None):
+    """Validate one prefab container.
+
+    ``owners``/``row_index`` carry real ownership from the a03 scan.  When they are absent
+    (stand-alone runs and unit fixtures) ownership is derived from the index rows instead,
+    which is recorded in the result as ``ownership``.
+    """
     issues = []
-    objects, read_errors, payload_rows = load_container_objects(rows)
+    if owners is None:
+        owners = derive_owner_table(rows)
+    objects, read_errors, payload_rows, closure = build_closure(
+        container_path, rows, owners, row_index)
     for err in read_errors:
         issues.append({"kind": "object_read_error", **err})
 
@@ -442,6 +577,12 @@ def validate_container(container_path, rows, targets, have_targets):
         "duplicate_names": dup_names,
         "read_errors": read_errors,
         "payload_rows": len(payload_rows),
+        "ownership": closure["ownership"],
+        "owning_files": closure.get("owning_files", []),
+        "seed_objects": closure["seed_objects"],
+        "objects_pulled_in": len(closure["pulled_in"]),
+        "pulled_in_samples": closure["pulled_in"][:10],
+        "closure_defects": closure["defects"],
         "multi_root_evidence": multi_root_evidence,
         "evidence_gap": evidence_gap,
         "issue_count": len(issues),
@@ -459,13 +600,21 @@ def main():
             by_container[r["asset_path"]].append(r)
 
     targets, have_targets = load_container_targets()
+    owners = resolution.load_owner_table()
+    row_index = {}
+    for r in ledger.rows:
+        if not r.pathid_known:
+            continue
+        row_index.setdefault((r["source_identity"], r["pid_int"]), r)
     print(f"prefab containers: {len(by_container)}  container-target evidence: {have_targets}",
+          flush=True)
+    print("ownership: " + json.dumps(resolution.summarise(owners), ensure_ascii=False),
           flush=True)
 
     results = []
     agg = collections.Counter()
     for i, (cont, rows) in enumerate(sorted(by_container.items())):
-        res = validate_container(cont, rows, targets, have_targets)
+        res = validate_container(cont, rows, targets, have_targets, owners, row_index)
         res["sources"] = sorted({r["source_identity"] for r in rows})
         results.append(res)
         if res["clean"]:
@@ -487,6 +636,8 @@ def main():
         json.dump({
             "prefabs": len(results),
             "containers_with_target_evidence": have_targets,
+            "ownership": resolution.summarise(owners),
+            "objects_pulled_in_total": sum(r["objects_pulled_in"] for r in results),
             "aggregate": dict(agg),
             "definition_of_clean": "zero issues AND exactly one root transform",
             "multi_root_containers": multi_root,
