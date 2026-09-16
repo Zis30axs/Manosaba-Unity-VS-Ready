@@ -102,10 +102,40 @@ public class GameInitializer : MonoBehaviour
 	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
 	private IAddressablesManager _addressablesManager;
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x30FA80
+	//
+	// Native evidence:
+	//   0x30FA91  rdi = rcx (__this)
+	//   0x30FA96..0x30FAC9  one-time type-init guard for three metadata slots:
+	//             AddressablesManager_TypeInfo,
+	//             MethodInfo ServiceLocator.Register<IAddressablesManager>(),
+	//             ServiceLocator_TypeInfo
+	//   0x30FAD0  rcx = AddressablesManager_TypeInfo
+	//   0x30FAD7  call il2cpp_codegen_object_new
+	//   0x30FAE4  call -> GigaCreation.Essentials.AddressablesUtils.AddressablesManager$$.ctor
+	//             (no arguments beyond __this: `new AddressablesManager()`)
+	//   0x30FAF0  [rdi + 0x40] = rbx  ->  this._addressablesManager = <new instance>
+	//             (offset 0x40 confirmed against dump.cs's GameInitializer field
+	//             table) followed by the GC write barrier at 0x30FAF6..0x30FB2F
+	//             (card table at data_3134580), i.e. a *reference* field store, not
+	//             a struct copy.
+	//   0x30FB38  rbx = [rdi + 0x40]  ->  reload this._addressablesManager
+	//   0x30FB4A  rdx = MethodInfo ServiceLocator.Register<IAddressablesManager>()
+	//   0x30FB5E  jmp -> GigaCreation.Tools.Service.ServiceLocator$$Register<object>
+	//             tail call with rcx = rbx (the reloaded field), rdx = MethodInfo.
+	//             ServiceLocator.Register<TService>(TService service) is the only
+	//             matching public overload (see ServiceLocator.cs:62), so the
+	//             instance is passed as the argument.
+	//
+	// Recovered behaviour: creates the project's Addressables front-end and
+	// registers it in the service locator. This is the first half of the boot
+	// chain -- GameInitializer::Start (RVA 0x30FB70) only happens after this.
 	[Token(Token = "0x600005F")]
 	[Address(RVA = "0x30FA80", Offset = "0x30E480", VA = "0x18030FA80")]
 	private void Awake()
 	{
+		_addressablesManager = new AddressablesManager();
+		GigaCreation.Tools.Service.ServiceLocator.Register<IAddressablesManager>(_addressablesManager);
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x30FB70
@@ -137,10 +167,31 @@ public class GameInitializer : MonoBehaviour
 		InitializeAsync(destroyCancellationToken).Forget();
 	}
 
+	// RECONSTRUCTED | Confidence: A | RVA: 0x30FDB0
+	//
+	// Native evidence:
+	//   0x30FDC4..0x30FDE6  one-time type-init guard for
+	//             MethodInfo ServiceLocator.Unregister<IAddressablesManager>()
+	//             and ServiceLocator_TypeInfo
+	//   0x30FDF2  rbx = [rbx + 0x40]  ->  this._addressablesManager
+	//   0x30FDFF  call interface/virtual dispatch resolve (IContentCatalogManager
+	//             slot lookup on the field's static type, emitted for the generic
+	//             constraint check; no managed side effect of its own)
+	//   0x30FE04  rdx = MethodInfo ServiceLocator.Unregister<IAddressablesManager>()
+	//   0x30FE0B  rcx = rbx (the field)
+	//   0x30FE13  jmp -> GigaCreation.Tools.Service.ServiceLocator$$Unregister<object>
+	//             tail call with rcx = this._addressablesManager,
+	//             rdx = MethodInfo. Unregister<TService>(TService service)
+	//             (ServiceLocator.cs:67) is the matching overload, so the field is
+	//             passed as the argument -- this is NOT a parameterless unregister.
+	//
+	// Recovered behaviour: symmetric teardown of Awake(); removes the registered
+	// Addressables front-end from the service locator when the initializer dies.
 	[Token(Token = "0x6000061")]
 	[Address(RVA = "0x30FDB0", Offset = "0x30E7B0", VA = "0x18030FDB0")]
 	private void OnDestroy()
 	{
+		GigaCreation.Tools.Service.ServiceLocator.Unregister<IAddressablesManager>(_addressablesManager);
 	}
 
 	[Token(Token = "0x6000062")]
