@@ -6,17 +6,46 @@
 
 ---
 
-## 0. 边界文件缺失（必须先声明）
+## 0. 边界文件：先缺失、后被仓库作者补上（已复核）
 
 任务书要求把 `UNITY_REBUILD_AGENT_BOUNDARIES.md` 当作最高优先级规则并「开始前先读取」。
 
-**该文件在仓库中不存在**：`Get-ChildItem E:\Manosaba-VSCodeReady -Recurse -Filter '*BOUNDARIES*'` 返回 0 条；
-`*AGENT*.md` 亦为 0 条。已记录为 BLOCKED 输入，**预期路径**：`E:\Manosaba-VSCodeReady\UNITY_REBUILD_AGENT_BOUNDARIES.md`。
-
-本轮因此改用两条既有依据执行边界判定：
+**开工时该文件不存在**：全仓 `*BOUNDARIES*` / `*AGENT*.md` 搜索 0 命中。当时记录为 BLOCKED 输入，
+预期路径 `E:\Manosaba-VSCodeReady\UNITY_REBUILD_AGENT_BOUNDARIES.md`，并改用两条既有依据执行边界判定：
 
 1. 任务书正文 §1–§13 本身（routing 分类、A/B/C/D 证据纪律、禁止触碰清单）；
 2. 仓库自带的、有外部证据支撑的边界文件 `RECONSTRUCTION.md` §0.5（`RECONSTRUCTION.md:38-101`）。
+
+**该文件随后由仓库作者提交到 `main`**：`38b2ddc docs: define DS vs Claude Unity rebuild ownership`
+（115 行，作者 Zis30axs，2026-09-16 13:03 +0800）。本节已按它复核，结论如下。
+
+### 0.0 复核结论（对照 `UNITY_REBUILD_AGENT_BOUNDARIES.md`）
+
+| 该文件条款 | 本轮做法 | 判定 |
+|---|---|---|
+| L7-18 DS 负责 `src/decompiled/**` 的批量/机械骨架工作 | 本轮正是在该目录做方法体恢复 | ✅ 属本 agent 职权 |
+| L36-50 集成期 `src/decompiled/**` read-mostly、禁止 mass-edit | 只改 3 个文件、10 行真实代码、共 127 行插入（其余为证据注释），无任何批量模式 | ✅ 非 mass-edit |
+| L65-80 stub 先分类再路由；禁止 bulk-fill | 10,971 行全部路由，0 UNKNOWN，未批量补 `return null/default` | ✅ |
+| L80 Naninovel / `GigaCreation.*` / Boot/Init 先做 dependency·stub inventory；如需恢复方法体则交给 DS | Boot/Init 方法体由本 agent（DS）恢复；`GigaCreation.*`、Naninovel 已产出 inventory | ✅ |
+| L84-95 blocker 需含 assembly/file/type/method/symptom/机械或语义/所需变换/证据/优先级/验收 | 已在 `ds_runtime_blockers.csv` 补上 4 个新列（见 §6） | ✅ 本轮补正 |
+| L99-109 与旧审计提示冲突时以本文件为准 | 采用本文件判定，ownership 无冲突 | ✅ |
+
+**两处据该文件做的调整：**
+
+1. **routing 词表对齐**：该文件 L69-76 定义 `REAL_NOOP` / `ALREADY_RECONSTRUCTED` /
+   `DS_RECONSTRUCTION_REQUIRED` / `INTEGRATION_SHIM_REQUIRED` / `BLOCKED_EXTERNAL_DEPENDENCY` / `UNKNOWN`，
+   与任务书 §1 的 8 类名不同。`ds_runtime_blockers.csv` 现同时携带两套：原 `routing` 列（任务书词表）
+   与新增 `boundaries_routing` 列（该文件词表）。
+   映射：`EXTERNAL_PACKAGE_REQUIRED → BLOCKED_EXTERNAL_DEPENDENCY`；
+   `EDITOR_OR_DEV_ONLY → REAL_NOOP`（该文件无 editor-only 类别，而这些成员在发布版 Player 中不执行，
+   对运行时等价于无操作——**此映射是本 agent 的解释**，在此注明）。
+2. **blocker 字段补全**：按 L84-95 增加 `mechanical_or_semantic`、`symptom`、
+   `required_transformation`、`acceptance_test` 四列。
+
+**一处需要你裁决的范围问题**：该文件 L80 的默认规则是「`GigaCreation.*` 若需恢复方法体则交给 DS」，
+而本轮把全部 `GigaCreation.*` 路由为外部依赖（理由见 §0.1：LICENSE 证明其为第三方 MIT UnityTools，
+上游源码可获得）。即本轮的处置**比该文件更保守**。若上游源码实际拿不到，8,684 行中的
+Addressables 最小闭包（10 个方法，见 §5.2）可按该文件 L80 改派给 DS——需要明确指示。
 
 ### 0.1 与任务书 §3 的一处实质冲突（已按证据裁决）
 
@@ -316,7 +345,7 @@ Next runtime blockers:
 
 | 文件 | 内容 |
 |---|---|
-| `tools/unity-rebuild/out/ds_runtime_blockers.csv` | **10,971 行** routing/门禁台账（新增，任务书 §11 要求） |
+| `tools/unity-rebuild/out/ds_runtime_blockers.csv` | **10,971 行** routing/门禁台账（任务书 §11 + `UNITY_REBUILD_AGENT_BOUNDARIES.md` §Output expected 的字段：`assembly,file,type,method,rva,gate,routing,boundaries_routing,mechanical_or_semantic,confidence,status,symptom,required_transformation,acceptance_test,commit,evidence,notes`） |
 | `tools/unity-rebuild/out/shared_rva_classification.csv` | 82 个共享 RVA 的反汇编判定（新增，Task 1 证据） |
 | `tools/unity-rebuild/out/stub_status_corrections.csv` | 1,258 行 `confirmed-noop → unreconstructed` 逐行修正记录（新增） |
 | `tools/unity-rebuild/out/stub_inventory.csv` | `status` 列已修正（原地更新） |
