@@ -207,7 +207,7 @@ def main():
             "keys_with_multiple_locations": len(dup_keys),
             "bundles_with_dependencies": sum(1 for b in bundles if b.get("dependencies")),
             "physical_bundle_files": len(on_disk),
-            "physical_distinct_filenames": len(disk_keys),
+            "physical_distinct_filenames": len(disk_names),
             "physical_bytes": sum(on_disk.values()),
             "bundles_unaccounted_for": unaccounted,
         },

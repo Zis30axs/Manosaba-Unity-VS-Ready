@@ -17,7 +17,13 @@ def main():
     by_pid = {int(k): v for k, v in mst["by_pid"].items()}
     # object table: (source, path_id) -> row  (used to resolve fileID==0 m_Script links)
     per_source = collections.defaultdict(dict)
+    unknown_pathid_rows = 0
     for r in rows:
+        if not r.pathid_known:
+            # No usable identifier: such a row can never be the target of a fileID==0
+            # m_Script pointer, so it is excluded from the table and reported instead.
+            unknown_pathid_rows += 1
+            continue
         per_source[r["source_bundle"]][r["pid"]] = r
     ext = {}
     cab2src = {}
@@ -91,6 +97,7 @@ def main():
 
     out = {
         "monobehaviour_rows": len(mb_rows),
+        "rows_with_unknown_pathid_excluded": unknown_pathid_rows,
         "dumped_mb_with_json": len(results),
         "with_decoded_typed_fields": field_decoded,
         "typed_via_script_table": typed,

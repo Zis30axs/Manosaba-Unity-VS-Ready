@@ -522,5 +522,244 @@ class TestContainerTargets(unittest.TestCase):
         self.assertNotIn("resource_locations", body)
 
 
+# --------------------------------------------------------------------------- #
+# E63-006: the pid alias, and the entry points that read it                      #
+# --------------------------------------------------------------------------- #
+
+
+class TestPidAlias(unittest.TestCase):
+    """``row["pid"]`` must equal the canonical field and must not invent a valid 0."""
+
+    def _rows(self, tmp, rows):
+        index = make_index(tmp, rows)
+        ledger, _ = common.load_index_ledger(index_csv=index, res_root=tmp, check_files=False)
+        return ledger.rows
+
+    def test_alias_equals_canonical_field(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            row = self._rows(tmp, [dict(type="GameObject", asset_path="Assets/A.prefab",
+                                        output_file="a.json", source_bundle="aa/x.bundle",
+                                        path_id="836492224112770746")])[0]
+            self.assertTrue(row.pathid_known)
+            self.assertEqual(row["pid"], 836492224112770746)
+            self.assertEqual(row["pid"], row["pid_int"])
+            self.assertEqual(row["pid"], row.pid)
+
+    def test_unknown_pathid_is_not_served_as_zero(self):
+        """The ripper wrote path_id=0 for every unattributed row; 0 is not an identifier."""
+        with tempfile.TemporaryDirectory() as tmp:
+            row = self._rows(tmp, [dict(type="Texture2D", asset_path="",
+                                        output_file="_serialized/orphan.json",
+                                        source_bundle="(recovered)", path_id="0")])[0]
+            self.assertFalse(row.pathid_known)
+            with self.assertRaises(common.UnknownPathID):
+                row["pid"]
+            with self.assertRaises(common.UnknownPathID):
+                row.pid
+            # the placeholder stays visible as data, it just cannot pose as a pathID
+            self.assertEqual(row["pid_int"], 0)
+
+    def test_other_missing_keys_remain_plain_keyerror(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            row = self._rows(tmp, [dict(type="GameObject", asset_path="Assets/A.prefab",
+                                        output_file="a.json", source_bundle="aa/x.bundle",
+                                        path_id="5")])[0]
+            with self.assertRaises(KeyError):
+                row["column_that_does_not_exist"]
+
+
+class TestDocumentedEntryPointsRun(unittest.TestCase):
+    """README run order a02/a05/a06 must actually execute (they died with KeyError: 'pid')."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.res = os.path.join(self.tmp, "res")
+        self.out = os.path.join(self.tmp, "out")
+        os.makedirs(self.res, exist_ok=True)
+        os.makedirs(self.out, exist_ok=True)
+        rows = [
+            dict(type="GameObject", name="Root", asset_path="Assets/P.prefab",
+                 output_file="P/root.json", source_bundle="aa/p.bundle", path_id="11"),
+            dict(type="Transform", asset_path="Assets/P.prefab",
+                 output_file="P/tr.json", source_bundle="aa/p.bundle", path_id="12"),
+            dict(type="MonoBehaviour", asset_path="Assets/P.prefab",
+                 output_file="P/mb.json", source_bundle="aa/p.bundle", path_id="13"),
+            # a row the ripper could not attribute: pathID genuinely unknown
+            dict(type="Texture2D", asset_path="", output_file="_serialized/orphan.json",
+                 source_bundle="(recovered)", path_id="0"),
+        ]
+        self.index = make_index(self.res, rows)
+        make_object(self.res, "P/root.json",
+                    {"m_Name": "Root", "m_IsActive": True,
+                     "m_Component": [{"component": ptr(12)}, {"component": ptr(13)}]})
+        make_object(self.res, "P/tr.json",
+                    {"m_GameObject": ptr(11), "m_Father": ptr(0), "m_Children": []})
+        make_object(self.res, "P/mb.json", {"m_GameObject": ptr(11), "m_Script": ptr(0)})
+        make_object(self.res, "_serialized/orphan.json", {"m_Name": "orphan"})
+        self._common = (common.INDEX_CSV, common.RES_ROOT, common.OUT)
+        common.INDEX_CSV, common.RES_ROOT, common.OUT = self.index, self.res, self.out
+
+    def tearDown(self):
+        common.INDEX_CSV, common.RES_ROOT, common.OUT = self._common
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _patch_module(self, mod):
+        saved = {k: getattr(mod, k) for k in ("RES", "OUT") if hasattr(mod, k)}
+        if hasattr(mod, "RES"):
+            mod.RES = self.res
+        if hasattr(mod, "OUT"):
+            mod.OUT = self.out
+        self.addCleanup(lambda: [setattr(mod, k, v) for k, v in saved.items()])
+
+    def test_a02_runs_and_reports_unknown_pathids_separately(self):
+        import a02_index_stats as a02
+        self._patch_module(a02)
+        a02.main()
+        with open(os.path.join(self.out, "index_summary.json"), encoding="utf-8") as fh:
+            summary = json.load(fh)
+        self.assertEqual(summary["rows"], 4)
+        self.assertEqual(summary["rows_with_unknown_pathid"], 1)
+
+    def test_a05_runs_and_excludes_unknown_pathid_rows(self):
+        import a05_monobehaviour as a05
+        self._patch_module(a05)
+        with open(os.path.join(self.out, "sources.json"), "w", encoding="utf-8") as fh:
+            json.dump([{"rel": "aa/p.bundle", "serialized_files": [{"name": "CAB-p",
+                                                                   "externals": []}]}], fh)
+        with open(os.path.join(self.out, "monoscript_table.json"), "w", encoding="utf-8") as fh:
+            json.dump({"by_pid": {}, "by_identity": {}, "sources": {}}, fh)
+        a05.main()
+        with open(os.path.join(self.out, "monobehaviour.json"), encoding="utf-8") as fh:
+            out = json.load(fh)
+        self.assertEqual(out["monobehaviour_rows"], 1)
+        self.assertEqual(out["rows_with_unknown_pathid_excluded"], 1)
+
+    def test_a06_load_scope_reports_missing_dump_instead_of_raising(self):
+        import a06_rebuild as a06
+        self._patch_module(a06)
+        rows = common.load_index()
+        diag = {}
+        objs = a06.load_scope(rows, "container", "Assets/P.prefab", diag)
+        self.assertIn(11, objs)
+        self.assertNotIn("dump_missing", diag)
+
+        os.remove(os.path.join(self.res, "P", "tr.json"))
+        diag2 = {}
+        objs2 = a06.load_scope(rows, "container", "Assets/P.prefab", diag2)
+        self.assertEqual(diag2["dump_missing"], 1)
+        self.assertIn("__error__", objs2[12][1])
+
+    def test_a06_load_scope_skips_unknown_pathid_with_a_diagnostic(self):
+        import a06_rebuild as a06
+        self._patch_module(a06)
+        rows = common.load_index()
+        diag = {}
+        a06.load_scope(rows, "source", "(recovered)", diag)
+        self.assertEqual(diag["unknown_pathid_rows"], 1)
+        self.assertEqual(diag["unknown_pathid_samples"], ["_serialized/orphan.json"])
+
+    def test_a06_main_runs_end_to_end(self):
+        import a06_rebuild as a06
+        self._patch_module(a06)
+        a06.main()
+        with open(os.path.join(self.out, "hierarchy_report.json"), encoding="utf-8") as fh:
+            report = json.load(fh)
+        self.assertTrue(report)
+        for entry in report.values():
+            self.assertIn("load_diagnostics", entry)
+
+
+class TestA04MissingDumpDiagnostic(unittest.TestCase):
+    """A missing dump must become a reported defect, never a KeyError."""
+
+    def test_missing_dump_row_is_reported_with_a_path_id_string(self):
+        import a04_refs as a04
+        with tempfile.TemporaryDirectory() as tmp:
+            res = os.path.join(tmp, "res")
+            os.makedirs(res, exist_ok=True)
+            index = make_index(res, [
+                dict(type="GameObject", asset_path="Assets/P.prefab", output_file="gone.json",
+                     source_bundle="aa/p.bundle", path_id="99"),
+                dict(type="Texture2D", asset_path="", output_file="_serialized/orphan.json",
+                     source_bundle="(recovered)", path_id="0"),
+            ])
+            saved = (common.INDEX_CSV, common.RES_ROOT, a04.RES_ROOT)
+            common.INDEX_CSV, common.RES_ROOT, a04.RES_ROOT = index, res, res
+            try:
+                ledger, _ = common.load_index_ledger(check_files=False)
+                reported = []
+                for row in ledger.rows:
+                    full = os.path.join(res, row["output_file"].replace("/", os.sep))
+                    if not os.path.exists(full):
+                        reported.append(str(row["pid_int"]) if row.pathid_known else "unknown")
+                self.assertIn("99", reported)
+                self.assertIn("unknown", reported)
+            finally:
+                common.INDEX_CSV, common.RES_ROOT, a04.RES_ROOT = saved
+
+
+class TestA07MainFlow(unittest.TestCase):
+    """a07's summary referenced an undefined name; only running main() exposes it."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.res = os.path.join(self.tmp, "res")
+        self.out = os.path.join(self.tmp, "out")
+        self.aa = os.path.join(self.tmp, "aa")
+        self.aaw = os.path.join(self.aa, "StandaloneWindows64")
+        for d in (self.res, self.out, os.path.join(self.aaw, "sub")):
+            os.makedirs(d, exist_ok=True)
+        # Two bundles with the SAME basename in different directories: 2 paths, 1 name.
+        for rel in ("dup_assets_all.bundle", os.path.join("sub", "dup_assets_all.bundle")):
+            with open(os.path.join(self.aaw, rel), "wb") as fh:
+                fh.write(b"UnityFS\x00" * 4)
+        with open(os.path.join(self.aa, "settings.json"), "w", encoding="utf-8") as fh:
+            json.dump({"m_AddressablesVersion": "2.4.6", "m_buildTarget": "StandaloneWindows64",
+                       "m_SettingsHash": "deadbeef",
+                       "m_CatalogLocations": [{"m_Provider": "ContentCatalogProvider",
+                                               "m_InternalId": "{UnityEngine.AddressableAssets"
+                                                               ".Addressables.RuntimePath}/catalog.bin"}]}, fh)
+        self.index = make_index(self.res, [
+            dict(type="GameObject", asset_path="Assets/P.prefab", output_file="P/root.json",
+                 source_bundle="aa/StandaloneWindows64/dup_assets_all.bundle", path_id="11"),
+        ])
+        make_object(self.res, "P/root.json", {"m_Name": "Root"})
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_main_completes_and_counts_bundles_by_path_not_basename(self):
+        import a07_addressables as a07
+        saved = (a07.AAW, a07.OUT, a07.load_bundles, a07.load_unity_catalog_dump,
+                 a07.catalog_reader.load_catalog, common.INDEX_CSV, common.RES_ROOT)
+        bundles = [{"source": "aa/StandaloneWindows64/dup_assets_all.bundle",
+                    "name": "CAB-dup", "dependencies": [],
+                    "containers": [{"key": "Assets/P.prefab",
+                                    "target": {"m_FileID": 0, "m_PathID": "11"},
+                                    "preloadIndex": 0, "preloadSize": 1}]}]
+
+        def _raise(_path):
+            raise a07.catalog_reader.CatalogFormatError("fixture: not a real catalog")
+
+        a07.AAW, a07.OUT = self.aaw, self.out
+        a07.load_bundles = lambda: bundles
+        a07.load_unity_catalog_dump = lambda: (None, None)
+        a07.catalog_reader.load_catalog = _raise
+        common.INDEX_CSV, common.RES_ROOT = self.index, self.res
+        try:
+            rc = a07.main()
+        finally:
+            (a07.AAW, a07.OUT, a07.load_bundles, a07.load_unity_catalog_dump,
+             a07.catalog_reader.load_catalog, common.INDEX_CSV, common.RES_ROOT) = saved
+
+        self.assertEqual(rc, 0)
+        with open(os.path.join(self.out, "addressables.json"), encoding="utf-8") as fh:
+            report = json.load(fh)
+        self.assertEqual(report["bundles"]["physical_bundle_files"], 2)
+        self.assertEqual(report["bundles"]["physical_distinct_filenames"], 1)
+        self.assertTrue(os.path.exists(os.path.join(self.out, "bundle_accounting.csv")))
+        self.assertTrue(os.path.exists(os.path.join(self.out, "addressable_keys.csv.gz")))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

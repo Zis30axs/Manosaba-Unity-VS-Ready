@@ -148,7 +148,9 @@ def main():
             stats["dump_file_missing"] += 1
             unresolved_rows.append({"kind": "dump_file_missing", "source": src,
                                     "output_file": output_file, "field_path": "",
-                                    "from_type": row["type"], "path_id": str(row["pid"])})
+                                    "from_type": row["type"],
+                                    "path_id": (str(row["pid_int"]) if row.pathid_known
+                                                else "unknown")})
             continue
         try:
             with open(full, encoding="utf-8") as fh:
