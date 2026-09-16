@@ -135,10 +135,44 @@ public class SteamManager : MonoBehaviour
 		SteamAPI.Shutdown();
 	}
 
+	// RECONSTRUCTED | Confidence: B | RVA: 0x389F80
+	//
+	// Native evidence:
+	//   0x389F84  cmp byte ptr [rcx + 0x20], 0  ->  this._bInitialized
+	//             (dump.cs: SteamManager's instance fields are +0x20 `bool
+	//             _bInitialized` and +0x28 `_steamAPIWarningMessageHook`)
+	//   0x389F88  je -> 0x180389FCD, the shared `add rsp,0x28; ret` tail
+	//             -- early return while not initialised; no other branch, no log,
+	//             no string load.
+	//   0x389F93..0x389FB9  one-time type-init guard for
+	//             Steamworks.CallbackDispatcher_TypeInfo
+	//   0x389FBB  call interface/virtual dispatch resolve
+	//   0x389FC0  xor edx, edx      0x389FC2  xor ecx, ecx
+	//   0x389FC8  jmp -> Steamworks.CallbackDispatcher$$RunFrame
+	//
+	// Confidence is B rather than A because of the call target: CallbackDispatcher
+	// ::RunFrame is `internal static` (decompiled_external/com.rlabrecque.steamworks.net
+	// /Steamworks/CallbackDispatcher.cs:95), so Assembly-CSharp cannot name it. The
+	// public forwarder is Steamworks.SteamAPI::RunCallbacks (RVA 0x432EF0), whose
+	// native body is instruction-for-instruction this same tail: the same shared
+	// one-time guard flag (data_30DB68D), the same CallbackDispatcher dispatch
+	// resolve, the same `xor edx,edx / xor ecx,ecx / jmp RunFrame`. The only
+	// compilable source form with this exact control flow is therefore the inlined
+	// RunCallbacks() call.
+	//
+	// Equivalent point: SteamAPI.RunCallbacks() ==
+	// CallbackDispatcher.RunFrame(isGameServer: false).
+	// Uncertain: whether the original source spelled it RunCallbacks() or an
+	// equivalent public wrapper; runtime behaviour is identical either way.
 	[Token(Token = "0x600055C")]
 	[Address(RVA = "0x389F80", Offset = "0x388980", VA = "0x180389F80")]
 	private void Update()
 	{
+		if (!_bInitialized)
+		{
+			return;
+		}
+		SteamAPI.RunCallbacks();
 	}
 
 	[Token(Token = "0x600055D")]
