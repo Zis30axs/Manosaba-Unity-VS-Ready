@@ -23,6 +23,7 @@ import a08_prefab_sweep as a08  # noqa: E402
 import common  # noqa: E402
 import identity  # noqa: E402
 import resolution  # noqa: E402
+import typeinfo  # noqa: E402
 
 
 def write_json(path, obj):
@@ -994,6 +995,245 @@ class TestClosureFollowsOwnershipNotContainer(unittest.TestCase):
         self.assertEqual([d["kind"] for d in res["closure_defects"]],
                          ["owned_object_not_in_index"])
         self.assertIn("missing_component", [i["kind"] for i in res["issues"]])
+
+
+# --------------------------------------------------------------------------- #
+# E63-003: a null host does not make an asset, a host pointer does not make a    #
+# correctly attached component                                                  #
+# --------------------------------------------------------------------------- #
+
+DUMP_FIXTURE = """// Namespace: UnityEngine
+public class Object // TypeDefIndex: 1
+{
+}
+
+// Namespace: UnityEngine
+public class MonoBehaviour : Behaviour // TypeDefIndex: 2
+{
+}
+
+// Namespace: UnityEngine
+public class ScriptableObject : Object // TypeDefIndex: 3
+{
+}
+
+// Namespace: UnityEngine.Playables
+public abstract class PlayableLike : ScriptableObject // TypeDefIndex: 4
+{
+}
+
+// Namespace: Game.Timeline
+internal class ActivationLike : PlayableLike // TypeDefIndex: 5
+{
+}
+
+// Namespace: Game.Ui
+public class Widget : MonoBehaviour // TypeDefIndex: 6
+{
+}
+
+// Namespace: Game.A
+public class Twin : MonoBehaviour // TypeDefIndex: 7
+{
+}
+
+// Namespace: Game.B
+public class Twin : ScriptableObject // TypeDefIndex: 8
+{
+}
+
+// Namespace: Game.C
+public class Collider : Object // TypeDefIndex: 9
+{
+}
+
+// Namespace: Game.D
+public class Collider : Object // TypeDefIndex: 10
+{
+}
+
+// Namespace: Game.Broken
+public class UsesAmbiguousBase : Collider // TypeDefIndex: 11
+{
+}
+"""
+
+
+def write_dump_fixture(tmp):
+    path = os.path.join(tmp, "dump.cs")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(DUMP_FIXTURE)
+    return path
+
+
+class TestTypeInheritance(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="manosaba_types_")
+        self.index = typeinfo.load_type_index(write_dump_fixture(self.tmp))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_internal_class_and_indirect_inheritance_resolve(self):
+        """ActivationPlayableAsset is `internal`; a public-only parser lost 15 real assets."""
+        c = self.index.classify("Game", "Game.Timeline", "ActivationLike")
+        self.assertEqual(c.kind, "ScriptableObject")
+        self.assertEqual([d.name for d in c.chain],
+                         ["ActivationLike", "PlayableLike", "ScriptableObject"])
+
+    def test_same_name_is_disambiguated_by_namespace(self):
+        a = self.index.classify("Game", "Game.A", "Twin")
+        b = self.index.classify("Game", "Game.B", "Twin")
+        self.assertEqual(a.kind, "MonoBehaviour")
+        self.assertEqual(b.kind, "ScriptableObject")
+
+    def test_ambiguous_base_is_reported_not_first_matched(self):
+        c = self.index.classify("Game", "Game.Broken", "UsesAmbiguousBase")
+        self.assertEqual(c.kind, "UNKNOWN")
+        self.assertEqual(c.reason, "ambiguous")
+
+    def test_missing_declaration_is_reported(self):
+        c = self.index.classify("Game", "Game.Nowhere", "NotDeclared")
+        self.assertEqual(c.kind, "UNKNOWN")
+        self.assertEqual(c.reason, "no_declaration")
+
+    def test_evidence_only_records_what_was_consulted(self):
+        self.index.classify("Game", "Game.Ui", "Widget")
+        path = self.index.write_evidence(os.path.join(self.tmp, "type_chains.json"))
+        with open(path, encoding="utf-8") as fh:
+            payload = json.load(fh)
+        self.assertIn("Game.Ui.Widget", payload["types"])
+        self.assertNotIn("Game.B.Twin", payload["types"])
+        self.assertIn("regeneration", payload)
+
+
+class TestOrphanClassification(unittest.TestCase):
+    """The four outcomes, each proved by a fixture rather than by a host pointer's shape."""
+
+    SRC = "aa/shared.bundle"
+    SF = "CAB-shared"
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="manosaba_cls_")
+        self.res = os.path.join(self.tmp, "res")
+        os.makedirs(self.res, exist_ok=True)
+        self.cont = "Assets/Here.prefab"
+        self.other = "Assets/Other.prefab"
+        self.index = typeinfo.load_type_index(write_dump_fixture(self.tmp))
+        # MonoScript pathIDs -> script identity
+        self.by_pid = {
+            900: ("Game", "Game.Timeline", "ActivationLike"),   # ScriptableObject
+            901: ("Game", "Game.Ui", "Widget"),                 # MonoBehaviour
+            902: ("Game", "Game.Nowhere", "NotDeclared"),       # UNKNOWN
+        }
+        self.scripts = a08.ScriptTypes(self.by_pid, self.index)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _build(self, objects, containers=None):
+        """objects: {pid: (type, doc)}; containers: {pid: container path}"""
+        containers = containers or {}
+        objects = dict(objects)
+        # Real dumps reach a MonoScript through the SerializedFile; the fixture must make
+        # those pointers resolvable instead of dangling, or every verdict short-circuits.
+        for script_pid in self.by_pid:
+            objects.setdefault(script_pid, ("MonoScript", {"m_Name": f"script{script_pid}"}))
+            containers.setdefault(script_pid, self.other)
+        rows = []
+        for pid, (obj_type, doc) in objects.items():
+            out = f"o{pid}.json"
+            make_object(self.res, out, doc)
+            rows.append({"type": obj_type, "asset_path": containers.get(pid, self.cont),
+                         "output_file": out, "source_bundle": self.SRC, "path_id": str(pid)})
+        idx = make_index(self.tmp, rows)
+        ledger, _ = common.load_index_ledger(index_csv=idx, res_root=self.res)
+        owners = owner_table({self.SRC: (
+            [{"name": self.SF, "externals": []}],
+            [{"file": self.SF, "path_id": str(pid), "type": t}
+             for pid, (t, _) in objects.items()])})
+        row_index = {(r["source_identity"], r["pid_int"]): r for r in ledger.rows}
+        here = [r for r in ledger.rows if r["asset_path"] == self.cont]
+        return here, owners, row_index
+
+    def _verdicts(self, res):
+        return {c["path_id"]: c for c in res["classified_objects"]}
+
+    def test_null_host_scriptable_object_is_a_subasset_not_an_orphan(self):
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(0), "m_Script": ptr(900)}),
+        })
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        v = self._verdicts(res)["3"]
+        self.assertEqual(v["kind"], "scriptable_object_subasset")
+        self.assertEqual(v["script_kind"], "ScriptableObject")
+        self.assertNotIn("orphan_component", [i["kind"] for i in res["issues"]])
+        self.assertTrue(res["clean"], res["issues"])
+
+    def test_null_host_component_is_reported_not_excused(self):
+        """A null host is only normal for an asset; for a Component it is a defect."""
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(0), "m_Script": ptr(901)}),
+        })
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        self.assertEqual(self._verdicts(res)["3"]["kind"], "component_without_host")
+        self.assertIn("component_without_host", [i["kind"] for i in res["issues"]])
+        self.assertFalse(res["clean"])
+
+    def test_cross_container_component_with_a_claiming_host_is_not_an_orphan(self):
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(4), "m_Script": ptr(901)}),
+            4: ("GameObject", {"m_Name": "Elsewhere",
+                               "m_Component": [{"component": ptr(3)}]}),
+        }, containers={4: self.other})
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        v = self._verdicts(res)["3"]
+        self.assertEqual(v["kind"], "component_owned_by_other_container")
+        self.assertEqual(v["host"]["container"], self.other)
+        self.assertTrue(v["host"]["claims_component"])
+        self.assertNotIn("orphan_component", [i["kind"] for i in res["issues"]])
+
+    def test_host_that_does_not_claim_the_component_stays_an_orphan(self):
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(4), "m_Script": ptr(901)}),
+            4: ("GameObject", {"m_Name": "Elsewhere", "m_Component": []}),
+        }, containers={4: self.other})
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        v = self._verdicts(res)["3"]
+        self.assertEqual(v["kind"], "orphan_component")
+        self.assertEqual(v["reason"], "host_does_not_list_this_component")
+        self.assertFalse(res["clean"])
+
+    def test_unprovable_type_stays_unknown_and_is_not_clean(self):
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(0), "m_Script": ptr(902)}),
+        })
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        v = self._verdicts(res)["3"]
+        self.assertEqual(v["kind"], "unknown_script_kind")
+        self.assertEqual(v["reason"], "no_declaration")
+        self.assertFalse(res["clean"], "an unprovable object must not be reported clean")
+
+    def test_unresolvable_script_pointer_is_unknown_not_an_orphan(self):
+        rows, owners, row_index = self._build({
+            1: ("GameObject", {"m_Name": "Root", "m_Component": [{"component": ptr(2)}]}),
+            2: ("Transform", {"m_GameObject": ptr(1), "m_Father": ptr(0), "m_Children": []}),
+            3: ("MonoBehaviour", {"m_GameObject": ptr(0), "m_Script": ptr(4242)}),
+        })
+        res = a08.validate_container(self.cont, rows, {}, False, owners, row_index, self.scripts)
+        v = self._verdicts(res)["3"]
+        self.assertEqual(v["kind"], "unknown_script_kind")
+        self.assertTrue(v["reason"].startswith("script_pointer_"), v["reason"])
 
 
 if __name__ == "__main__":

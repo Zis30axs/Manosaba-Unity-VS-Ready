@@ -39,6 +39,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import identity  # noqa: E402
 import resolution  # noqa: E402
+import typeinfo  # noqa: E402
 from common import OUT, RES_ROOT, load_index_ledger  # noqa: E402
 
 A03_DIR = os.path.join(OUT, "a03")
@@ -144,6 +145,134 @@ def derive_owner_table(rows):
                          [{"file": "(index-derived)", "path_id": str(r["pid_int"]),
                            "type": r["type"]} for r in srows])
     return table
+
+
+class ScriptTypes:
+    """MonoScript pathID -> (assembly, namespace, type) plus the inheritance index.
+
+    Held together so a08 can answer "is this serialised MonoBehaviour a Component or a
+    ScriptableObject asset?" from evidence rather than from the shape of its host pointer.
+    """
+
+    def __init__(self, by_pid=None, types=None):
+        self.by_pid = by_pid if by_pid is not None else typeinfo.load_monoscript_types()
+        self.types = types if types is not None else typeinfo.load_type_index()
+
+    def identify(self, owners, src, sf, doc):
+        """Resolve ``m_Script`` to (identity, classification) or explain the failure."""
+        ptr = doc.get("m_Script")
+        res = owners.resolve(src, sf, ptr or {})
+        if not res.bound:
+            return None, None, f"script_pointer_{res.kind}"
+        ident = self.by_pid.get(res.key[2])
+        if ident is None:
+            return None, None, "script_not_in_monoscript_table"
+        return ident, self.types.classify(*ident), None
+
+
+def classify_scripted_object(key, entry, host_ptr, owners, src, sf, row_index, scripts,
+                             objects=None):
+    """One object's verdict, with the evidence that produced it.
+
+    Two identity sources, because Unity has two:
+    * a builtin component (MeshRenderer, CanvasRenderer, Collider ...) carries no MonoScript
+      at all -- its serialised class name IS its identity, and it is always a Component;
+    * a scripted object is a ``MonoBehaviour`` class id whose real type comes from
+      ``m_Script`` -> MonoScript -> (assembly, namespace, type), which decides whether it is
+      a Component or a ScriptableObject asset.
+
+    Requiring a MonoScript for the first kind would silently reclassify every builtin
+    component as UNKNOWN and make real orphans disappear.
+    """
+    verdict = {"path_id": str(key[1]), "object_type": entry["type"]}
+    host_pid = host_ptr.get("m_PathID") if isinstance(host_ptr, dict) else None
+    host_fid = host_ptr.get("m_FileID") if isinstance(host_ptr, dict) else None
+    has_host = bool(host_pid)
+    verdict["declared_owner"] = ({"m_FileID": host_fid, "m_PathID": str(host_pid)}
+                                 if isinstance(host_ptr, dict) else None)
+
+    if entry["type"] != "MonoBehaviour":
+        verdict["script_kind"] = "builtin_component"
+        verdict["script"] = {"assembly": "UnityEngine", "namespace": "UnityEngine",
+                             "type": entry["type"]}
+        is_component, is_asset = True, False
+    else:
+        ident, classification, failure = scripts.identify(owners, src, sf, entry["doc"])
+        if failure:
+            verdict.update(kind="unknown_script_kind", reason=failure)
+            return verdict
+        verdict["script"] = {"assembly": ident[0], "namespace": ident[1], "type": ident[2]}
+        verdict["script_kind"] = classification.kind
+        verdict["chain"] = [d.full_name for d in classification.chain]
+        if classification.reason:
+            verdict["reason"] = classification.reason
+        if classification.kind == "UNKNOWN":
+            verdict["kind"] = "unknown_script_kind"
+            return verdict
+        is_component, is_asset = classification.is_component, classification.is_asset
+
+    if is_asset:
+        # A null host is the normal serialised form of a ScriptableObject asset.
+        verdict["kind"] = ("scriptable_object_subasset" if not has_host
+                           else "scriptable_object_with_host")
+        return verdict
+
+    # A Component.  A host pointer alone proves nothing: the GameObject must claim it back.
+    if not has_host:
+        verdict["kind"] = "component_without_host"
+        return verdict
+    if host_fid:
+        verdict.update(kind="unknown_script_kind", reason="host_is_cross_file")
+        return verdict
+    host_res = owners.resolve(src, sf, host_ptr)
+    if not host_res.bound:
+        verdict.update(kind="orphan_component", reason=f"host_{host_res.kind}")
+        return verdict
+    # The host is usually already in this container's closure; only reach for the index
+    # when it is not, so a stand-alone run without a row index still validates properly.
+    # The closure table is keyed (source, pathID); owners.resolve returns
+    # (source, SerializedFile, pathID).  Using the resolver's key here never matched, which
+    # sent every builtin component to host_not_in_index whenever no row index was supplied.
+    host_entry = (objects or {}).get((src, host_pid))
+    host_row = (row_index or {}).get((src, host_pid))
+    if host_entry is not None:
+        host_doc = host_entry["doc"]
+        host_row = host_row or host_entry.get("row")
+    elif host_row is not None:
+        host_doc = read_object_doc(host_row)
+    else:
+        verdict.update(kind="unknown_script_kind", reason="host_not_in_index")
+        return verdict
+    if host_doc is None:
+        verdict.update(kind="unknown_script_kind", reason="host_dump_unreadable")
+        return verdict
+    claimed = False
+    for comp in host_doc.get("m_Component") or []:
+        ptr = comp.get("component") if isinstance(comp, dict) else None
+        if isinstance(ptr, dict) and ptr.get("m_PathID") == key[1] and not ptr.get("m_FileID"):
+            claimed = True
+            break
+    verdict["host"] = {"path_id": str(host_pid),
+                       "container": host_row["asset_path"] if host_row is not None else None,
+                       "type": (host_row["type"] if host_row is not None
+                                else (host_entry or {}).get("type")),
+                       "claims_component": claimed}
+    verdict["kind"] = ("component_owned_by_other_container" if claimed else "orphan_component")
+    if not claimed:
+        verdict["reason"] = "host_does_not_list_this_component"
+    return verdict
+
+
+def read_object_doc(row):
+    path = row.get("dump_path") or os.path.join(RES_ROOT, row["output_file"].replace("/", os.sep))
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (OSError, ValueError, UnicodeError):
+        return None
+    return doc if isinstance(doc, dict) else None
 
 
 def hierarchy_pointers(entry):
@@ -313,7 +442,7 @@ def resolve_local(table, ptr, issues, ctx, what):
 
 
 def validate_container(container_path, rows, targets, have_targets,
-                       owners=None, row_index=None):
+                       owners=None, row_index=None, scripts=None):
     """Validate one prefab container.
 
     ``owners``/``row_index`` carry real ownership from the a03 scan.  When they are absent
@@ -325,6 +454,9 @@ def validate_container(container_path, rows, targets, have_targets,
         owners = derive_owner_table(rows)
     objects, read_errors, payload_rows, closure = build_closure(
         container_path, rows, owners, row_index)
+    classified = []
+    owning = [tuple(f.split("|", 1)) for f in closure.get("owning_files", [])]
+    closure_src, closure_sf = owning[0] if len(owning) == 1 else (None, None)
     for err in read_errors:
         issues.append({"kind": "object_read_error", **err})
 
@@ -392,16 +524,33 @@ def validate_container(container_path, rows, targets, have_targets,
     #
     # A real Component is an object that has an m_GameObject field pointing at a
     # GameObject.  It is orphaned only when that GameObject does not list it back.
+    ISSUE_KINDS = {"orphan_component", "component_without_host",
+                   "scriptable_object_with_host", "unknown_script_kind"}
     for k, v in objects.items():
         if v["type"] == "GameObject":
             continue
         if k in comp_owner:
             continue
         if "m_GameObject" not in v["doc"]:
-            continue  # a sub-asset, not a Component
-        issues.append({"kind": "orphan_component", "where": k[1],
-                       "component_type": v["type"],
-                       "declared_owner": json.dumps(v["doc"].get("m_GameObject"))[:120]})
+            continue  # a sub-asset with no host field at all
+        if closure_src is None or (scripts is None and v["type"] == "MonoBehaviour"):
+            # Only a scripted object needs the MonoScript index; a builtin component is
+            # identified by its own class name and must still be checked for orphanhood.
+            classified.append({"path_id": str(k[1]), "object_type": v["type"],
+                               "kind": "unknown_script_kind", "reason": "no_script_index"})
+            issues.append({"kind": "unknown_script_kind", "where": k[1],
+                           "component_type": v["type"], "reason": "no_script_index"})
+            continue
+        verdict = classify_scripted_object(k, v, v["doc"].get("m_GameObject"), owners,
+                                           closure_src, closure_sf, row_index, scripts,
+                                           objects)
+        classified.append(verdict)
+        if verdict["kind"] in ISSUE_KINDS:
+            issue = {"kind": verdict["kind"], "where": k[1], "component_type": v["type"]}
+            for field in ("reason", "script", "script_kind", "declared_owner", "host"):
+                if field in verdict:
+                    issue[field] = verdict[field]
+            issues.append(issue)
 
     # ---- Transform tree --------------------------------------------------
     def father_of(v):
@@ -578,6 +727,8 @@ def validate_container(container_path, rows, targets, have_targets,
         "read_errors": read_errors,
         "payload_rows": len(payload_rows),
         "ownership": closure["ownership"],
+        "script_classification": dict(collections.Counter(c["kind"] for c in classified)),
+        "classified_objects": classified,
         "owning_files": closure.get("owning_files", []),
         "seed_objects": closure["seed_objects"],
         "objects_pulled_in": len(closure["pulled_in"]),
@@ -601,6 +752,7 @@ def main():
 
     targets, have_targets = load_container_targets()
     owners = resolution.load_owner_table()
+    scripts = ScriptTypes()
     row_index = {}
     for r in ledger.rows:
         if not r.pathid_known:
@@ -614,7 +766,8 @@ def main():
     results = []
     agg = collections.Counter()
     for i, (cont, rows) in enumerate(sorted(by_container.items())):
-        res = validate_container(cont, rows, targets, have_targets, owners, row_index)
+        res = validate_container(cont, rows, targets, have_targets, owners, row_index,
+                                 scripts)
         res["sources"] = sorted({r["source_identity"] for r in rows})
         results.append(res)
         if res["clean"]:
@@ -638,6 +791,8 @@ def main():
             "containers_with_target_evidence": have_targets,
             "ownership": resolution.summarise(owners),
             "objects_pulled_in_total": sum(r["objects_pulled_in"] for r in results),
+            "script_classification": dict(collections.Counter(
+                c["kind"] for r in results for c in r.get("classified_objects", []))),
             "aggregate": dict(agg),
             "definition_of_clean": "zero issues AND exactly one root transform",
             "multi_root_containers": multi_root,
@@ -655,6 +810,30 @@ def main():
                         len(r["orphan_transforms"]), len(r["orphan_gameobjects"]),
                         len(r["read_errors"]), r["issue_count"], r["clean"],
                         ";".join(r["sources"])])
+
+    with open(os.path.join(OUT, "orphan_classification.csv"), "w", encoding="utf-8",
+              newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["container", "path_id", "object_type", "new_kind", "script_assembly",
+                    "script_namespace", "script_type", "script_kind", "inheritance_chain",
+                    "declared_owner_path_id", "host_container", "host_claims_component",
+                    "reason"])
+        for r in results:
+            for c in r.get("classified_objects", []):
+                script = c.get("script") or {}
+                host = c.get("host") or {}
+                owner = c.get("declared_owner") or {}
+                w.writerow([r["container"], c["path_id"], c["object_type"], c["kind"],
+                            script.get("assembly", ""), script.get("namespace", ""),
+                            script.get("type", ""), c.get("script_kind", ""),
+                            " -> ".join(c.get("chain", [])),
+                            owner.get("m_PathID", ""), host.get("container", ""),
+                            host.get("claims_component", ""), c.get("reason", "")])
+
+    scripts.types.write_evidence(
+        os.path.join(OUT, "type_chains.json"),
+        extra={"consulted_for": "a08 orphan classification",
+               "monoscript_entries": len(scripts.by_pid)})
 
     with open(os.path.join(OUT, "prefab_issues.csv"), "w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
