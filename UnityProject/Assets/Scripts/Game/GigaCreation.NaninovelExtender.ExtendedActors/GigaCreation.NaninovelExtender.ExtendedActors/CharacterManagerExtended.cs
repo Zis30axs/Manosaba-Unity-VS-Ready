@@ -336,6 +336,7 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	[Address(RVA = "0xD15040", Offset = "0xD13A40", VA = "0x180D15040", Slot = "31")]
     	public override void SaveServiceState(GameStateMap stateMap)
     	{
+    		base.SaveServiceState(stateMap);
     	}
 
     	[Token(Token = "0x6000027")]
@@ -343,7 +344,7 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	[AsyncStateMachine(typeof(_003CLoadServiceState_003Ed__12))]
     	public override UniTask LoadServiceState(GameStateMap stateMap)
     	{
-    		return default(UniTask);
+    		return base.LoadServiceState(stateMap);
     	}
 
     	[Token(Token = "0x6000028")]
@@ -351,7 +352,7 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	[AsyncStateMachine(typeof(_003CGetOrAddActor_003Ed__13))]
     	public override UniTask<ICharacterActor> GetOrAddActor(string actorId)
     	{
-    		return default(UniTask<ICharacterActor>);
+    		return base.GetOrAddActor(actorId);
     	}
 
     	[Token(Token = "0x6000029")]

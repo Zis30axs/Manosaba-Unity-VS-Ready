@@ -86,12 +86,14 @@ namespace GigaCreation.NaninovelExtender.Ui
     	[Address(RVA = "0xD346B0", Offset = "0xD330B0", VA = "0x180D346B0", Slot = "50")]
     	public override void AddModalUI(IManagedUI managedUI)
     	{
+    		base.AddModalUI(managedUI);
     	}
 
     	[Token(Token = "0x600000A")]
     	[Address(RVA = "0xD34C70", Offset = "0xD33670", VA = "0x180D34C70", Slot = "51")]
     	public override void RemoveModalUI(IManagedUI managedUI)
     	{
+    		base.RemoveModalUI(managedUI);
     	}
 
     	[Token(Token = "0x600000B")]
@@ -104,13 +106,14 @@ namespace GigaCreation.NaninovelExtender.Ui
     	[Address(RVA = "0xD35210", Offset = "0xD33C10", VA = "0x180D35210", Slot = "55")]
     	protected override bool IsModal(IManagedUI managedUI)
     	{
-    		return default(bool);
+    		return base.IsModal(managedUI);
     	}
 
     	[Token(Token = "0x600000D")]
     	[Address(RVA = "0xD35280", Offset = "0xD33C80", VA = "0x180D35280", Slot = "61")]
     	protected override void ToggleUI()
     	{
+    		base.ToggleUI();
     	}
     }
 }

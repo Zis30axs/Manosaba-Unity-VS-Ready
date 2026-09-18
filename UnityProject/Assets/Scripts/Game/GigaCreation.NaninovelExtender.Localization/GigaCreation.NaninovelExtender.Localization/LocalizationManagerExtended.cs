@@ -255,7 +255,7 @@ namespace GigaCreation.NaninovelExtender.Localization
     	[AsyncStateMachine(typeof(_003CSelectLocale_003Ed__11))]
     	public override Naninovel.UniTask SelectLocale(string locale)
     	{
-    		return default(Naninovel.UniTask);
+    		return base.SelectLocale(locale);
     	}
 
     	[Token(Token = "0x600000E")]
@@ -263,14 +263,14 @@ namespace GigaCreation.NaninovelExtender.Localization
     	[AsyncStateMachine(typeof(_003CRetrieveAvailableLocales_003Ed__12))]
     	protected override Naninovel.UniTask RetrieveAvailableLocales()
     	{
-    		return default(Naninovel.UniTask);
+    		return base.RetrieveAvailableLocales();
     	}
 
     	[Token(Token = "0x600000F")]
     	[Address(RVA = "0xD31740", Offset = "0xD30140", VA = "0x180D31740", Slot = "34")]
     	protected override string GetDefaultLocale()
     	{
-    		return null;
+    		return base.GetDefaultLocale();
     	}
 
     	[Token(Token = "0x6000010")]

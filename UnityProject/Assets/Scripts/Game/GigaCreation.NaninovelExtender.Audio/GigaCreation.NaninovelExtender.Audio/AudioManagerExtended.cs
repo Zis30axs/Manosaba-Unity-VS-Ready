@@ -115,13 +115,14 @@ namespace GigaCreation.NaninovelExtender.Audio
     	[Address(RVA = "0xCF4BA0", Offset = "0xCF35A0", VA = "0x180CF4BA0", Slot = "84")]
     	public override UniTask PlayVoice(string path, float volume = 1f, string group = default, string authorId = default, AsyncToken token = default)
     	{
-    		return default(UniTask);
+    		return base.PlayVoice(path, volume, group, authorId, token);
     	}
 
     	[Token(Token = "0x6000009")]
     	[Address(RVA = "0xCF4C60", Offset = "0xCF3660", VA = "0x180CF4C60", Slot = "88")]
     	public override void StopVoice()
     	{
+    		base.StopVoice();
     	}
     }
 }
