@@ -84,18 +84,34 @@ def load_config():
 CFG, CFG_SOURCES = load_config()
 
 REPO_ROOT = CFG.get("repo_root") or REPO_DEFAULT
-RES_ROOT = CFG.get("res_root") or os.path.join(REPO_ROOT, "res")
-GAME_ROOT = CFG.get("game_root") or ""
-GAME_DATA_ROOT = CFG.get("game_data_root") or (
+
+
+def _repo_relative(value):
+    """Absolutise a config path against the repo root.
+
+    audit.config.json deliberately holds machine-independent, repo-relative defaults
+    ("output_root": "tools/unity-rebuild/out").  Left relative, such a path resolves against the
+    *caller's* working directory: running a07_addressables.py from tools/audit made it look for
+    tools/audit/tools/unity-rebuild/out/unity/catalog_dump.json and silently report the Unity
+    runtime dump as absent (observed 2026-09-17).
+    """
+    if not value or os.path.isabs(value):
+        return value
+    return os.path.normpath(os.path.join(REPO_ROOT, value))
+
+
+RES_ROOT = _repo_relative(CFG.get("res_root")) or os.path.join(REPO_ROOT, "res")
+GAME_ROOT = _repo_relative(CFG.get("game_root")) or ""
+GAME_DATA_ROOT = _repo_relative(CFG.get("game_data_root")) or (
     os.path.join(GAME_ROOT, "manosaba_Data") if GAME_ROOT else ""
 )
-AA_ROOT = CFG.get("aa_root") or (
+AA_ROOT = _repo_relative(CFG.get("aa_root")) or (
     os.path.join(GAME_DATA_ROOT, "StreamingAssets", "aa") if GAME_DATA_ROOT else ""
 )
-SOURCE_ROOT = CFG.get("source_root") or os.path.join(REPO_ROOT, "src")
-DUMP_ROOT = CFG.get("dump_root") or os.path.join(REPO_ROOT, "work")
-OUTPUT_ROOT = CFG.get("output_root") or os.path.join(REPO_ROOT, "tools", "unity-rebuild", "out")
-UNITY_EDITOR_PATH = CFG.get("unity_editor_path") or ""
+SOURCE_ROOT = _repo_relative(CFG.get("source_root")) or os.path.join(REPO_ROOT, "src")
+DUMP_ROOT = _repo_relative(CFG.get("dump_root")) or os.path.join(REPO_ROOT, "work")
+OUTPUT_ROOT = _repo_relative(CFG.get("output_root")) or os.path.join(REPO_ROOT, "tools", "unity-rebuild", "out")
+UNITY_EDITOR_PATH = _repo_relative(CFG.get("unity_editor_path")) or ""
 PYTHON_EXE = CFG.get("python_exe") or sys.executable
 
 
