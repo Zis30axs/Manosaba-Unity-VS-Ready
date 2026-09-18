@@ -1,0 +1,25 @@
+﻿using Il2CppDummyDll;
+
+namespace GigaCreation.Tools.Debugging.TextDisplays
+{
+    [Token(Token = "0x200000D")]
+    public class DebugTextPreferenceTimeScale : DebugTextPreferenceBase
+    {
+    	[Token(Token = "0x17000007")]
+    	protected override string LabelText
+    	{
+    		[Token(Token = "0x6000026")]
+    		[Address(RVA = "0xD46D80", Offset = "0xD45780", VA = "0x180D46D80", Slot = "4")]
+    		get
+    		{
+    			return null;
+    		}
+    	}
+
+    	[Token(Token = "0x6000027")]
+    	[Address(RVA = "0x30D8F0", Offset = "0x30C2F0", VA = "0x18030D8F0")]
+    	public DebugTextPreferenceTimeScale()
+    	{
+    	}
+    }
+}

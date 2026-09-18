@@ -1,0 +1,295 @@
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading;
+using GigaCreation.NaninovelExtender.Common;
+using Il2CppDummyDll;
+using YieldAwaitable = Naninovel.YieldAwaitable;
+using JetBrains.Annotations;
+using Naninovel;
+using Naninovel.Async.CompilerServices;
+
+namespace WitchTrials.Models
+{
+    [Token(Token = "0x200017F")]
+    [UsedImplicitly]
+    [InitializeAtRuntime(0, typeof(ScriptPlayer))]
+    public class WitchTrialsScriptPlayer : ScriptPlayer, IWitchTrialsScriptPlayer, IScriptPlayer, IEngineService<ScriptPlayerConfiguration>, IEngineService
+    {
+    	[StructLayout(3)]
+    	[Token(Token = "0x2000180")]
+    	[CompilerGenerated]
+    	private struct _003CProcessAutoObjectionAsync_003Ed__9
+    {
+    		[Token(Token = "0x4000726")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+    		public int _003C_003E1__state;
+
+    		[Token(Token = "0x4000727")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+    		public AsyncUniTaskMethodBuilder _003C_003Et__builder;
+
+    		[Token(Token = "0x4000728")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+    		public WitchTrialsScriptPlayer _003C_003E4__this;
+
+    		[Token(Token = "0x4000729")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+    		public string[] objectionIds;
+
+    		[Token(Token = "0x400072A")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+    		private AsyncToken _003CasyncToken_003E5__2;
+
+    		[Token(Token = "0x400072B")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+    		private string[] _003C_003E7__wrap2;
+
+    		[Token(Token = "0x400072C")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+    		private int _003C_003E7__wrap3;
+
+    		[Token(Token = "0x400072D")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+    		private UniTask.Awaiter _003C_003Eu__1;
+
+    		[Token(Token = "0x400072E")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+    		private YieldAwaitable.Awaiter _003C_003Eu__2;
+
+    		[Token(Token = "0x600069A")]
+    		[Address(RVA = "0x39CAE0", Offset = "0x39B4E0", VA = "0x18039CAE0", Slot = "4")]
+    		private void MoveNext()
+    		{
+    		}
+
+    		[Token(Token = "0x600069B")]
+    		[Address(RVA = "0x30C000", Offset = "0x30AA00", VA = "0x18030C000", Slot = "5")]
+    		[DebuggerHidden]
+    		private void SetStateMachine(IAsyncStateMachine stateMachine)
+    		{
+    		}
+    	}
+
+    	[Token(Token = "0x4000722")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x100")]
+    	private readonly IStateManagerExtended _stateManagerExtended;
+
+    	[Token(Token = "0x4000723")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x108")]
+    	private IWitchTrialsNaninovelManager _witchTrialsNaninovelManager;
+
+    	[Token(Token = "0x4000724")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x110")]
+    	private bool _dontDisableAutoPlayAndSkip;
+
+    	[Token(Token = "0x4000725")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x118")]
+    	private CancellationTokenSource _cts;
+
+    	[Token(Token = "0x1700011A")]
+    	private IWitchTrialsNaninovelManager WitchTrialsNaninovelManager
+    	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x39C070, 202 B
+    		// Lazy cache in +0x108 via `ServiceLocator.Get<IWitchTrialsNaninovelManager>(true)`.
+    		[Token(Token = "0x6000691")]
+    		[Address(RVA = "0x39C070", Offset = "0x39AA70", VA = "0x18039C070")]
+    		get
+    		{
+    			return _witchTrialsNaninovelManager ??= GigaCreation.Tools.Service.ServiceLocator.Get<IWitchTrialsNaninovelManager>(true);
+    		}
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C140, 126 B
+    	// A direct call to `ScriptPlayer..ctor(cfg, input, scripts, state)` (dump.cs
+    	// signature) with `extended` passed as the `IStateManager state` argument,
+    	// then `extended` stored to +0x100.
+    	[Token(Token = "0x6000692")]
+    	[Address(RVA = "0x39C140", Offset = "0x39AB40", VA = "0x18039C140")]
+    	public WitchTrialsScriptPlayer(ScriptPlayerConfiguration cfg, IInputManager input, IScriptManager scripts, IStateManagerExtended extended)
+    		: base(cfg, input, scripts, extended)
+    	{
+    		_stateManagerExtended = extended;
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C1C0, 676 B
+    	// - The `_cts` cancel/dispose/null block, as in `DestroyService`.
+    	// - `_dontDisableAutoPlayAndSkip` (+0x110) =
+    	//   `_stateManagerExtended.IsSoftResetting` (IStateManagerExtended slot 0,
+    	//   `sub_22E0` ecx = 0).
+    	// - The next stretch (0x39C30F-0x39C432) is byte-identical to the base
+    	//   `ScriptPlayer.ResetService` (RVA 0x5C4AE0, disassembled for comparison):
+    	//   Stop (slot 87), CancelCommands (slot 112), PlayedIndex = -1,
+    	//   PlayedScript = ScriptLoader.Juggle(PlayedScript, this), the two
+    	//   command bools cleared, then DisableWaitingForInput/DisableAutoPlay/
+    	//   DisableSkip (slots 103/100/97). So that stretch is the inlined
+    	//   `base.ResetService()`, which dispatches to this class's own
+    	//   `DisableSkip`/`DisableAutoPlay` overrides.
+    	// - Finally the flag is reset to false.
+    	// Net effect: during a soft reset, the base reset does not turn skip or auto
+    	// play off.
+    	[Token(Token = "0x6000693")]
+    	[Address(RVA = "0x39C1C0", Offset = "0x39ABC0", VA = "0x18039C1C0", Slot = "73")]
+    	public override void ResetService()
+    	{
+    		if (_cts != null)
+    		{
+    			_cts.Cancel();
+    			_cts.Dispose();
+    			_cts = null;
+    		}
+    		_dontDisableAutoPlayAndSkip = _stateManagerExtended.IsSoftResetting;
+    		base.ResetService();
+    		_dontDisableAutoPlayAndSkip = false;
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C470, 230 B
+    	// When `_cts` (+0x118) is non-null: the inlined `CancellationTokenSource.Cancel()`
+    	// (disposed-flag check at +0x28 -> ObjectDisposedException, then
+    	// `NotifyCancellation(false)`), `Dispose()`, then `_cts = null`.
+    	// There is no call to `base.DestroyService()`.
+    	[Token(Token = "0x6000694")]
+    	[Address(RVA = "0x39C470", Offset = "0x39AE70", VA = "0x18039C470", Slot = "74")]
+    	public override void DestroyService()
+    	{
+    		if (_cts != null)
+    		{
+    			_cts.Cancel();
+    			_cts.Dispose();
+    			_cts = null;
+    		}
+    	}
+
+    	// RECONSTRUCTED | Confidence: A (behavior), B (AsyncToken spelling) | RVA: 0x39C560, 404 B (entry) + MoveNext 0x39CAE0
+    	// Two await points: state 0 is the Gosub `UniTask.Awaiter`; state 1 is
+    	// `YieldAwaitable.Awaiter`, whose inlined GetResult is
+    	// `AsyncToken.ThrowIfCanceled(null)` on the awaiter's token.
+    	// - The `_cts` (+0x118) cancel/dispose block as in `DestroyService`, but
+    	//   without clearing the field. Then `_cts = new CancellationTokenSource()`
+    	//   with its ctor inlined (+0x24 = -1, +0x20 = 1).
+    	// - The hoisted `asyncToken` (+0x28) is `{ _cts.Token, default }`. That
+    	//   matches both the implicit conversion and `new AsyncToken(ct)`, so the
+    	//   spelling is B.
+    	// - `foreach` over the array (wrap2 = array, wrap3 = index). For each id:
+    	//   - `new Gosub()` (Command ctor), with the `NamedString(null, id)` ctor
+    	//     inlined (Named<NullableString>(null, (NullableString)id)).
+    	//   - `Path` (+0x30) = the implicit NamedStringParameter conversion.
+    	//   - Await vtable +0x188 = slot 5 `Execute(asyncToken)`.
+    	//   - After GetResult, an explicit `asyncToken.ThrowIfCanceled(null)`
+    	//     (0x39D0A9).
+    	//   - `YieldAwaitable { timing = 0xC, token = asyncToken }`, which is the
+    	//     Naninovel `UniTask.Yield(PlayerLoopTiming.PostLateUpdate, asyncToken)`
+    	//     (enum value 12 per dump.cs).
+    	// - After the loop: `_cts.Dispose()` with no null check (NRE when null) and
+    	//   `_cts = null`, then SetResult.
+    	// - No try/finally: when cancelled, the exception goes straight to
+    	//   SetException and `_cts` is left for whoever cancelled it to dispose.
+    	// Each Gosub is a bare command with no PlaybackSpot or other fields set.
+    	[Token(Token = "0x6000695")]
+    	[Address(RVA = "0x39C560", Offset = "0x39AF60", VA = "0x18039C560", Slot = "113")]
+    	[AsyncStateMachine(typeof(_003CProcessAutoObjectionAsync_003Ed__9))]
+    	public async UniTask ProcessAutoObjectionAsync(string[] objectionIds)
+    	{
+    		if (_cts != null)
+    		{
+    			_cts.Cancel();
+    			_cts.Dispose();
+    		}
+    		_cts = new CancellationTokenSource();
+    		AsyncToken asyncToken = _cts.Token;
+    		foreach (string objectionId in objectionIds)
+    		{
+    			await new Naninovel.Commands.Gosub
+    			{
+    				Path = new NamedString(null, objectionId)
+    			}.Execute(asyncToken);
+    			asyncToken.ThrowIfCanceled();
+    			await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, asyncToken);
+    		}
+    		_cts.Dispose();
+    		_cts = null;
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C700, 324 B
+    	// The same `_cts` cancel/dispose/null block as `DestroyService`. Then
+    	// vtable +0x598 = ScriptPlayer slot 70 `get_GosubReturnSpots` (dump.cs),
+    	// and `Stack<PlaybackSpot>.Pop()` with its result discarded: the most recent
+    	// gosub return spot is dropped, so the script does not return there.
+    	[Token(Token = "0x6000696")]
+    	[Address(RVA = "0x39C700", Offset = "0x39B100", VA = "0x18039C700", Slot = "114")]
+    	public void CancelGosub()
+    	{
+    		if (_cts != null)
+    		{
+    			_cts.Cancel();
+    			_cts.Dispose();
+    			_cts = null;
+    		}
+    		GosubReturnSpots.Pop();
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C850, 32 B
+    	// Unless `_dontDisableAutoPlayAndSkip` (+0x110) is set, a tail call through
+    	// vtable +0x6C8 = ScriptPlayer slot 89 `SetSkipEnabled(false)`. This does
+    	// not call `base.DisableSkip()` (slot 97).
+    	[Token(Token = "0x6000697")]
+    	[Address(RVA = "0x39C850", Offset = "0x39B250", VA = "0x18039C850", Slot = "97")]
+    	protected override void DisableSkip()
+    	{
+    		if (!_dontDisableAutoPlayAndSkip)
+    		{
+    			SetSkipEnabled(false);
+    		}
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C870, 32 B
+    	// Unless `_dontDisableAutoPlayAndSkip` is set, a tail call through vtable
+    	// +0x6D8 = ScriptPlayer slot 90 `SetAutoPlayEnabled(false)`.
+    	[Token(Token = "0x6000698")]
+    	[Address(RVA = "0x39C870", Offset = "0x39B270", VA = "0x18039C870", Slot = "100")]
+    	protected override void DisableAutoPlay()
+    	{
+    		if (!_dontDisableAutoPlayAndSkip)
+    		{
+    			SetAutoPlayEnabled(false);
+    		}
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x39C890, 579 B
+    	// No base call. Returns true when any of these holds, in byte order:
+    	// - The inlined `DebugOptions.DebugSkip`: `DebugOptionsBase.IsDebugMode` and
+    	//   the DebugOptions static byte +0x18 `s_debugSkip`, the same shape as its
+    	//   own getter at 0x3AA3D0.
+    	// - The lazy `WitchTrialsNaninovelManager` getter (inlined) and
+    	//   IWitchTrialsNaninovelManager slot 0 `IsInDebate`: skip is always
+    	//   allowed during a debate.
+    	// - Vtable +0x518 = slot 62 `SkipMode` == 1 (`PlayerSkipMode.Everything`).
+    	// Otherwise:
+    	// - `PlayedScript` (slot 64) null -> false.
+    	// - Else vtable +0x708 = slot 93 `HasPlayed(PlayedScript.Path (+0x18),
+    	//   PlayedIndex (slot 69) + 1)` with the index wrapped by `Nullable<int>..ctor`: only
+    	//   already-seen lines can be skipped in read-only mode.
+    	[Token(Token = "0x6000699")]
+    	[Address(RVA = "0x39C890", Offset = "0x39B290", VA = "0x18039C890", Slot = "104")]
+    	protected override bool GetSkipAllowed()
+    	{
+    		if (WitchTrials.Debugging.DebugOptions.DebugSkip)
+    		{
+    			return true;
+    		}
+    		if (WitchTrialsNaninovelManager.IsInDebate)
+    		{
+    			return true;
+    		}
+    		if (SkipMode == PlayerSkipMode.Everything)
+    		{
+    			return true;
+    		}
+    		if (PlayedScript == null)
+    		{
+    			return false;
+    		}
+    		return HasPlayed(PlayedScript.Path, PlayedIndex + 1);
+    	}
+    }
+}
