@@ -88,8 +88,19 @@ function Assert-UnityLicense {
     New-Item -ItemType Directory -Force -Path (Split-Path $ProbeLog) | Out-Null
     $env:TEMP = Join-Path $script:OutRoot 'tmp'
     New-Item -ItemType Directory -Force -Path $env:TEMP | Out-Null
-    & $Exe -batchmode -nographics -quit -logFile - -projectPath $script:UnityProject *>&1 |
-        Out-File -FilePath $ProbeLog -Encoding UTF8
+    # The Editor writes progress and warnings to stderr (for example
+    # "debugger-agent: Unable to listen on 3200"); with $ErrorActionPreference='Stop' the caller
+    # turns that into a terminating NativeCommandError and the gate dies before it compiles.
+    # Native stderr is data here: it belongs in the log, and the licence decision is made from the
+    # log text below, never from the exit code.
+    $savedEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        & $Exe -batchmode -nographics -quit -logFile - -projectPath $script:UnityProject *>&1 |
+            Out-File -FilePath $ProbeLog -Encoding UTF8
+    } finally {
+        $ErrorActionPreference = $savedEap
+    }
     if (-not (Test-Path $ProbeLog)) { return @{ ok = $false; kind = 'no-log'; reason = 'probe log not produced' } }
     $text = Get-Content $ProbeLog -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
     if (-not $text) { return @{ ok = $false; kind = 'no-log'; reason = "empty probe log at $ProbeLog" } }
@@ -104,6 +115,17 @@ function Assert-UnityLicense {
     }
     if ($text -match 'No valid Unity Editor license found' -or
         $text -match 'No ULF license found') {
+        # A missing licence makes every Editor-dependent gate BLOCKED, never PASS -- but the
+        # negative markers must not fire on a licence that did resolve.  The licence client
+        # reports "No ULF license found.,Token not found in cache" while falling back to the
+        # entitlement licence and then logs "Serial number assigned to", so positive evidence
+        # is checked first (observed 2026-09-17: entitlement licence present, probe still said
+        # BLOCKED, and the Editor had in fact compiled the project).
+        if ($text -match 'Serial number assigned to' -or
+            $text -match 'Successfully resolved entitlement details') {
+            return @{ ok = $true; kind = 'ok'
+                      reason = 'editor started; licence resolved through the licensing client (entitlement/ULF)' }
+        }
         return @{ ok = $false; kind = 'no-licence'
                   reason = 'No valid Unity Editor license found - activate Unity (Hub sign-in) and re-run' }
     }
@@ -134,7 +156,14 @@ function Invoke-Logged {
     $env:TEMP = Join-Path $script:OutRoot 'tmp'
     New-Item -ItemType Directory -Force -Path $env:TEMP | Out-Null
     $started = Get-Date
-    & $FilePath @Arguments 2>&1 | Tee-Object -FilePath $LogPath | Out-Null
+    # Native stderr is captured into the log instead of aborting the batch job.
+    $savedEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        & $FilePath @Arguments 2>&1 | Tee-Object -FilePath $LogPath | Out-Null
+    } finally {
+        $ErrorActionPreference = $savedEap
+    }
     $code = $LASTEXITCODE
     return [pscustomobject]@{
         exit_code = $code
@@ -142,6 +171,31 @@ function Invoke-Logged {
         log       = $LogPath
         command   = "$FilePath $($Arguments -join ' ')"
     }
+}
+
+# --- TMP essentials ----------------------------------------------------------------
+# TMPro's global settings asset (`Assets/TextMesh Pro/Resources/TMP Settings.asset`) is absent from this
+# rebuild, and its absence makes every TMP_Text throw on LoadDefaultSettings -- measured: 330 NullReference
+# exceptions once the engine had built its UI hierarchy, which is what the title screen and the ADV views are
+# made of.  `AssetDatabase.ImportPackage` is asynchronous, so this runs as its OWN Editor invocation WITHOUT
+# `-quit`: the tool polls from EditorApplication.update and exits itself once the asset exists.
+function Invoke-TmpEssentials {
+    param([string]$LogPath = (Join-Path $script:LogRoot 'tmp_essentials.log'))
+
+    $settings = Join-Path $script:UnityProject 'Assets\TextMesh Pro\Resources\TMP Settings.asset'
+    if (Test-Path $settings) {
+        return [pscustomobject]@{ exit_code = 0; seconds = 0; log = $null; skipped = $true }
+    }
+    Write-Host '=== TMP essential resources (missing -> importing) ===' -ForegroundColor Cyan
+    $r = Invoke-Logged -FilePath $script:UnityExe -LogPath $LogPath -Arguments @(
+        '-batchmode', '-nographics',
+        '-projectPath', $script:UnityProject,
+        '-executeMethod', 'Manosaba.EditorTools.TmpEssentialsSetup.Run',
+        '-logFile', '-'
+    )
+    Write-Host ("  TMP import exit={0} in {1:N1}s (settings present: {2})" -f `
+        $r.exit_code, $r.seconds, (Test-Path $settings))
+    return $r
 }
 
 Write-Host "[common] repo        = $script:RepoRoot"

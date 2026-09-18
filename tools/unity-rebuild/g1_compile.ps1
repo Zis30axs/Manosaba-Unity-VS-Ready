@@ -74,6 +74,13 @@ $csErrors = ([regex]::Matches($text, 'error CS\d+')).Count
 $csWarnings = ([regex]::Matches($text, 'warning CS\d+')).Count
 $importErrors = ([regex]::Matches($text, 'Import Error|Failed to import')).Count
 $missingScript = ([regex]::Matches($text, 'Missing (MonoBehaviour|Script)')).Count
+# A project can compile cleanly and still be unusable: Unity refuses to *load* an assembly whose
+# references it cannot resolve ("Assembly 'X' will not be loaded due to errors: Unable to resolve
+# reference 'Y'"), and every assembly that references it is dropped along with it.  That is exactly what
+# happened when the genuine FastEnum.dll (which references System.Runtime.CompilerServices.Unsafe) was
+# added: the compile gate said PASS while Play Mode ran with 42 of 43 assemblies and a failing content
+# probe.  So these markers are failures here, not warnings.
+$loadErrors = ([regex]::Matches($text, "will not be loaded due to errors|Unable to resolve reference")).Count
 
 $result.compile = [ordered]@{
     command             = $run.command
@@ -85,6 +92,7 @@ $result.compile = [ordered]@{
     cs_warnings         = $csWarnings
     import_errors       = $importErrors
     missing_script_hits = $missingScript
+    assembly_load_errors = $loadErrors
 }
 
 $unityResult = Join-Path $script:UnityDataRoot 'compile_result.json'
@@ -92,15 +100,15 @@ if (Test-Path $unityResult) {
     $result.compile.assembly_graph = (Get-Content $unityResult -Raw | ConvertFrom-Json)
 }
 
-if ($csErrors -gt 0 -or $run.exit_code -ne 0) {
+if ($csErrors -gt 0 -or $loadErrors -gt 0 -or $run.exit_code -ne 0) {
     $result.status = 'FAIL'
 } else {
     $result.status = 'PASS'
 }
 
 Write-Json (Join-Path $script:UnityDataRoot 'g1_compile.json') $result
-Write-Host ("G1 {0}: cs_errors={1} cs_warnings={2} import_errors={3} exit={4} ({5}s)" -f `
-    $result.status, $csErrors, $csWarnings, $importErrors, $run.exit_code, $run.seconds) `
+Write-Host ("G1 {0}: cs_errors={1} cs_warnings={2} import_errors={3} assembly_load_errors={4} exit={5} ({6}s)" -f `
+    $result.status, $csErrors, $csWarnings, $importErrors, $loadErrors, $run.exit_code, $run.seconds) `
     -ForegroundColor $(if ($result.status -eq 'PASS') { 'Green' } else { 'Red' })
 
 if ($result.status -eq 'PASS') { exit 0 } else { exit 1 }
