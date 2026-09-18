@@ -1,0 +1,184 @@
+using System.Text;
+using AOT;
+using Il2CppDummyDll;
+using Steamworks;
+using UnityEngine;
+
+namespace WitchTrials.Views
+{
+    [Token(Token = "0x200013F")]
+    [DisallowMultipleComponent]
+    public class SteamManager : MonoBehaviour
+    {
+    	[Token(Token = "0x4000628")]
+    	[FieldOffset(Offset = "0x0")]
+    	private static bool s_everInitialized;
+
+    	[Token(Token = "0x4000629")]
+    	[FieldOffset(Offset = "0x8")]
+    	private static SteamManager s_instance;
+
+    	[Token(Token = "0x400062A")]
+    	[FieldOffset(Offset = "0x20")]
+    	private bool _bInitialized;
+
+    	[Token(Token = "0x400062B")]
+    	[FieldOffset(Offset = "0x28")]
+    	private SteamAPIWarningMessageHook_t _steamAPIWarningMessageHook;
+
+    	[Token(Token = "0x170000AB")]
+    	private static SteamManager Instance
+    	{
+    		[Token(Token = "0x6000555")]
+    		[Address(RVA = "0x388D80", Offset = "0x387780", VA = "0x180388D80")]
+    		get
+    		{
+    			return null;
+    		}
+    	}
+
+    	[Token(Token = "0x170000AC")]
+    	public static bool Initialized
+    	{
+    		[Token(Token = "0x6000556")]
+    		[Address(RVA = "0x388F30", Offset = "0x387930", VA = "0x180388F30")]
+    		get
+    		{
+    			return default(bool);
+    		}
+    	}
+
+    	[Token(Token = "0x6000557")]
+    	[Address(RVA = "0x3890E0", Offset = "0x387AE0", VA = "0x1803890E0")]
+    	[MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
+    	private static void SteamAPIDebugTextHook(int nSeverity, StringBuilder pchDebugText)
+    	{
+    	}
+
+    	[Token(Token = "0x6000558")]
+    	[Address(RVA = "0x389130", Offset = "0x387B30", VA = "0x180389130")]
+    	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    	private static void InitOnPlayMode()
+    	{
+    	}
+
+    	[Token(Token = "0x6000559")]
+    	[Address(RVA = "0x3891E0", Offset = "0x387BE0", VA = "0x1803891E0")]
+    	private void Awake()
+    	{
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x389790
+    	//
+    	// Native evidence:
+    	//   0x38988C  `if (s_instance == null) s_instance = this;` -- Unity's
+    	//             overloaded UnityEngine.Object null check inlined (tests both
+    	//             a real C# null and the native "destroyed object" pointer at
+    	//             +0x10, IL2CPP's standard idiom for `UnityEngine.Object == null`)
+    	//   0x180389919  if (!_bInitialized || _steamAPIWarningMessageHook != null) return;
+    	//             i.e. only proceed once Awake() has already initialized Steam
+    	//             AND the warning hook hasn't been installed yet.
+    	//   0x18038992E  cache-and-create pattern for a non-capturing method-group
+    	//             conversion (`SteamManager.<>O.<0>__SteamAPIDebugTextHook`,
+    	//             Roslyn's usual "cache the delegate" boilerplate) ->
+    	//             `_steamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);`
+    	//   0x180389A6F  Steamworks.SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook)
+    	//             -- confirmed by disassembling that method separately (RVA
+    	//             0x3B87A0): identical TestIfAvailableClient + CSteamAPIContext
+    	//             + ISteamClient_SetWarningMessageHook sequence, byte-for-byte,
+    	//             i.e. it is that call inlined here, not hand-written logic.
+    	[Token(Token = "0x600055A")]
+    	[Address(RVA = "0x389790", Offset = "0x388190", VA = "0x180389790")]
+    	private void OnEnable()
+    	{
+    		if (s_instance == null)
+    		{
+    			s_instance = this;
+    		}
+    		if (!_bInitialized || _steamAPIWarningMessageHook != null)
+    		{
+    			return;
+    		}
+    		_steamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);
+    		SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x389AE0
+    	//
+    	// Native evidence:
+    	//   0x389BA2..0x389C09  Unity-overloaded `!=` between s_instance and this
+    	//             (handles the native "destroyed object" pointer on both sides),
+    	//             i.e. `if (s_instance != this) return;`
+    	//   0x389C0F  s_instance = null;
+    	//   0x389C73  if (!_bInitialized) return;
+    	//   0x389C9D..0x389F5F  Steamworks.SteamAPI.Shutdown() inlined verbatim --
+    	//             confirmed by disassembling that method separately (RVA
+    	//             0x432BF0): identical CallbackDispatcher class-init guard
+    	//             (data_30DB68C), identical cached-delegate lookup
+    	//             (data_30D97D8) and data blob references (data_251F310/
+    	//             data_251F350), i.e. this is that call inlined here, the same
+    	//             cross-check technique used for OnEnable's
+    	//             SteamClient.SetWarningMessageHook.
+    	[Token(Token = "0x600055B")]
+    	[Address(RVA = "0x389AE0", Offset = "0x3884E0", VA = "0x180389AE0")]
+    	private void OnDestroy()
+    	{
+    		if (s_instance != this)
+    		{
+    			return;
+    		}
+    		s_instance = null;
+    		if (!_bInitialized)
+    		{
+    			return;
+    		}
+    		SteamAPI.Shutdown();
+    	}
+
+    	// RECONSTRUCTED | Confidence: B | RVA: 0x389F80
+    	//
+    	// Native evidence:
+    	//   0x389F84  cmp byte ptr [rcx + 0x20], 0  ->  this._bInitialized
+    	//             (dump.cs: SteamManager's instance fields are +0x20 `bool
+    	//             _bInitialized` and +0x28 `_steamAPIWarningMessageHook`)
+    	//   0x389F88  je -> 0x180389FCD, the shared `add rsp,0x28; ret` tail
+    	//             -- early return while not initialised; no other branch, no log,
+    	//             no string load.
+    	//   0x389F93..0x389FB9  one-time type-init guard for
+    	//             Steamworks.CallbackDispatcher_TypeInfo
+    	//   0x389FBB  call interface/virtual dispatch resolve
+    	//   0x389FC0  xor edx, edx      0x389FC2  xor ecx, ecx
+    	//   0x389FC8  jmp -> Steamworks.CallbackDispatcher$$RunFrame
+    	//
+    	// Confidence is B rather than A because of the call target: CallbackDispatcher
+    	// ::RunFrame is `internal static` (decompiled_external/com.rlabrecque.steamworks.net
+    	// /Steamworks/CallbackDispatcher.cs:95), so Assembly-CSharp cannot name it. The
+    	// public forwarder is Steamworks.SteamAPI::RunCallbacks (RVA 0x432EF0), whose
+    	// native body is instruction-for-instruction this same tail: the same shared
+    	// one-time guard flag (data_30DB68D), the same CallbackDispatcher dispatch
+    	// resolve, the same `xor edx,edx / xor ecx,ecx / jmp RunFrame`. The only
+    	// compilable source form with this exact control flow is therefore the inlined
+    	// RunCallbacks() call.
+    	//
+    	// Equivalent point: SteamAPI.RunCallbacks() ==
+    	// CallbackDispatcher.RunFrame(isGameServer: false).
+    	// Uncertain: whether the original source spelled it RunCallbacks() or an
+    	// equivalent public wrapper; runtime behaviour is identical either way.
+    	[Token(Token = "0x600055C")]
+    	[Address(RVA = "0x389F80", Offset = "0x388980", VA = "0x180389F80")]
+    	private void Update()
+    	{
+    		if (!_bInitialized)
+    		{
+    			return;
+    		}
+    		SteamAPI.RunCallbacks();
+    	}
+
+    	[Token(Token = "0x600055D")]
+    	[Address(RVA = "0x30D8F0", Offset = "0x30C2F0", VA = "0x18030D8F0")]
+    	public SteamManager()
+    	{
+    	}
+    }
+}
