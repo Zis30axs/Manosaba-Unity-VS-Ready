@@ -1,0 +1,37 @@
+using System;
+using UnityEngine;
+
+namespace Naninovel
+{
+    public class ProjectResourceLoader<TResource> : LoadResourceRunner<TResource> 
+        where TResource : UnityEngine.Object
+    {
+        public virtual string RootPath { get; }
+
+        private readonly Action<string> logAction;
+        private readonly ProjectResourceProvider.TypeRedirector redirector;
+
+        public ProjectResourceLoader (IResourceProvider provider, string rootPath, string resourcePath, 
+            ProjectResourceProvider.TypeRedirector redirector, Action<string> logAction) : base (provider, resourcePath)
+        {
+            RootPath = rootPath;
+            this.redirector = redirector;
+            this.logAction = logAction;
+        }
+
+        public override async UniTask Run ()
+        {
+            var startTime = Engine.Time.UnscaledTime;
+
+            var resourcePath = string.IsNullOrEmpty(RootPath) ? Path : string.Concat(RootPath, "/", Path);
+            var resourceType = redirector != null ? redirector.RedirectType : typeof(TResource);
+            var asset = await Resources.LoadAsync(resourcePath, resourceType);
+            var obj = redirector is null ? asset as TResource : await redirector.ToSourceAsync<TResource>(asset, Path);
+
+            var result = new Resource<TResource>(Path, obj);
+            SetResult(result);
+
+            logAction?.Invoke($"Resource '{Path}' loaded over {Engine.Time.UnscaledTime - startTime:0.###} seconds.");
+        }
+    }
+}
