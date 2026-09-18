@@ -320,17 +320,8 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[Token(Token = "0x17000008")]
     	public override Vector3 Offset
     	{
-    		[Token(Token = "0x6000010")]
-    		[Address(RVA = "0xCF5700", Offset = "0xCF4100", VA = "0x180CF5700", Slot = "38")]
-    		get
-    		{
-    			return default(Vector3);
-    		}
-    		[Token(Token = "0x6000011")]
-    		[Address(RVA = "0x486B20", Offset = "0x485520", VA = "0x180486B20", Slot = "39")]
-    		set
-    		{
-    		}
+    		get => base.Offset;
+    		set => base.Offset = value;
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0xCF5720, 405 B
@@ -356,27 +347,30 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[AsyncStateMachine(typeof(_003CInitializeService_003Ed__32))]
     	public override UniTask InitializeService()
     	{
-    		return default(UniTask);
+    		// Preserve Naninovel's stock camera bootstrap until the extended IL2CPP body
+    		// is fully reconstructed. Returning default here leaves Camera unset.
+    		return base.InitializeService();
     	}
 
     	[Token(Token = "0x6000014")]
     	[Address(RVA = "0xCF59E0", Offset = "0xCF43E0", VA = "0x180CF59E0", Slot = "52")]
     	public override void SaveServiceState(SettingsStateMap stateMap)
     	{
+    		base.SaveServiceState(stateMap);
     	}
 
     	[Token(Token = "0x6000015")]
     	[Address(RVA = "0xCF5BD0", Offset = "0xCF45D0", VA = "0x180CF5BD0", Slot = "53")]
     	public override UniTask LoadServiceState(SettingsStateMap stateMap)
     	{
-    		return default(UniTask);
+    		return base.LoadServiceState(stateMap);
     	}
 
     	[Token(Token = "0x6000016")]
     	[Address(RVA = "0xCF5E80", Offset = "0xCF4880", VA = "0x180CF5E80", Slot = "57")]
     	public override Texture2D CaptureThumbnail()
     	{
-    		return null;
+    		return base.CaptureThumbnail();
     	}
 
     	[Token(Token = "0x6000017")]
@@ -384,14 +378,14 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[AsyncStateMachine(typeof(_003CChangeOffset_003Ed__36))]
     	public override UniTask ChangeOffset(Vector3 offset, Tween tween, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return base.ChangeOffset(offset, tween, asyncToken);
     	}
 
     	[Token(Token = "0x6000018")]
     	[Address(RVA = "0xCF6180", Offset = "0xCF4B80", VA = "0x180CF6180")]
     	private Vector3 ModifyOffset(Vector3 offset)
     	{
-    		return default(Vector3);
+    		return offset;
     	}
 
     	[Token(Token = "0x6000019")]
@@ -399,13 +393,14 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[AsyncStateMachine(typeof(_003CInitializeMainCamera_003Ed__38))]
     	protected override UniTask<Camera> InitializeMainCamera(CameraConfiguration config, Transform parent, int uiLayer)
     	{
-    		return default(UniTask<Camera>);
+    		return base.InitializeMainCamera(config, parent, uiLayer);
     	}
 
     	[Token(Token = "0x600001A")]
     	[Address(RVA = "0xCF6600", Offset = "0xCF5000", VA = "0x180CF6600", Slot = "68")]
     	protected override void SetOffset(Vector3 value)
     	{
+    		base.SetOffset(value);
     	}
 
     	[Token(Token = "0x600001B")]
