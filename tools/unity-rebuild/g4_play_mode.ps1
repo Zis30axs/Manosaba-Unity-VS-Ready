@@ -27,6 +27,7 @@ $result = [ordered]@{
     bootstrap      = $null
     play_mode      = $null
     evidence       = $null
+    game_start     = $null
 }
 
 if (-not $script:UnityExe) {
@@ -51,15 +52,34 @@ Write-Host "  bootstrap exit=$($boot.exit_code)"
 
 # --- 2. Play Mode ------------------------------------------------------------------
 $evidencePath = Join-Path $script:UnityDataRoot 'play_mode_evidence.json'
+$gameEvidence = Join-Path $script:UnityDataRoot 'play_mode_game_start_evidence.json'
 $toolPath     = Join-Path $script:UnityDataRoot 'g4_play_mode.json'        # written by PlayModeGate
 $gatePath     = Join-Path $script:UnityDataRoot 'g4_play_mode_gate.json'   # written by this script
 Remove-Item $evidencePath -ErrorAction SilentlyContinue
+Remove-Item $gameEvidence -ErrorAction SilentlyContinue
 Remove-Item $toolPath -ErrorAction SilentlyContinue
 Remove-Item $gatePath -ErrorAction SilentlyContinue
 
 $env:MANOSABA_EVIDENCE = $evidencePath
 $env:MANOSABA_SMOKE = '1'      # keep the probe's own "smoke" semantics (Application.Quit is a no-op in the Editor)
 $env:MANOSABA_CONTENT = '1'    # require the content probe to succeed, exactly like the Player gate
+
+# Run the same reconstructed game-start probe as G5.  PlayModeGate watches this path too and won't
+# leave Play Mode until the game-start evidence exists (or the session deadline expires).
+$gamePrefabGuid = ''
+$metaPath = Join-Path $script:UnityProject 'Assets\GameContent\#WitchTrials\Prefabs\General\Core\Game.prefab.meta'
+if (Test-Path $metaPath) {
+    $gamePrefabGuid = (Select-String -Path $metaPath -Pattern '^guid: ([0-9a-f]{32})').Matches[0].Groups[1].Value
+}
+$gamePrefabName = 'Game(Clone)'
+$bootRefsPath = Join-Path $script:UnityDataRoot 'level0_boot_references.json'
+$bootRefs = if (Test-Path $bootRefsPath) { Get-Content $bootRefsPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+if ($bootRefs -and $bootRefs.status -eq 'OK') { $gamePrefabName = $bootRefs._gamePrefabInstanceName }
+
+$env:MANOSABA_GAMESTART = '1'
+$env:MANOSABA_GAMESTART_EVIDENCE = $gameEvidence
+$env:MANOSABA_GAMESTART_GAMEPREFAB_GUID = $gamePrefabGuid
+$env:MANOSABA_GAMESTART_GAMEPREFAB_NAME = $gamePrefabName
 $env:MANOSABA_GAMESTART_AUTO_ADVANCE = '1'
 $env:MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS = '12'
 
@@ -75,6 +95,7 @@ $run = Invoke-Logged -FilePath $script:UnityExe -LogPath $log -Arguments @(
 $gate = if (Test-Path $toolPath) { Get-Content $toolPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 $gateFresh = $gate -and (Get-Item $toolPath).LastWriteTime -ge $started
 $evidence = if (Test-Path $evidencePath) { Get-Content $evidencePath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$gameStart = if (Test-Path $gameEvidence) { Get-Content $gameEvidence -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 
 $result.play_mode = [ordered]@{
     exit_code = $run.exit_code
@@ -85,6 +106,10 @@ $result.play_mode = [ordered]@{
     result    = $gate
 }
 $result.evidence = $evidence
+$result.game_start = [ordered]@{
+    evidence_path = $gameEvidence
+    result        = $gameStart
+}
 
 if (-not $gate -or -not $gateFresh) {
     $result.status = 'BLOCKED'
@@ -111,6 +136,14 @@ Write-Host ("G4 {0}: editor exit={1} play={2} assemblies={3} probes={4} content=
     $(if ($evidence) { $evidence.types_probed_ok } else { 'n/a' }),
     $(if ($content) { $content.status } else { 'n/a' }),
     $run.seconds) -ForegroundColor $(if ($result.status -eq 'PASS') { 'Green' } else { 'Red' })
+if ($gameStart) {
+    Write-Host ("  game start: {0} completion={1} played='{2}' spot='{3}'" -f `
+        $gameStart.status, $gameStart.initialize_completion, $gameStart.naninovel_played_script, `
+        $gameStart.naninovel_playback_spot)
+    Write-Host ("  auto-advance: {0} transitions={1} releases={2} final='{3}'" -f `
+        $gameStart.auto_advance, $gameStart.auto_advance_transitions, $gameStart.auto_advance_wait_releases, `
+        $gameStart.auto_advance_final)
+}
 
 if ($result.status -eq 'PASS') { exit 0 }
 if ($result.status -eq 'BLOCKED') { exit 2 }
