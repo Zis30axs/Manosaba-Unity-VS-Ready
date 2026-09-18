@@ -28,7 +28,7 @@ namespace GigaCreation.Essentials.Localization
     		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
     		get
     		{
-    			return null;
+    			return _fontAssetReference;
     		}
     	}
 
@@ -39,7 +39,7 @@ namespace GigaCreation.Essentials.Localization
     		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
     		get
     		{
-    			return null;
+    			return _fontMaterialReferences;
     		}
     	}
 

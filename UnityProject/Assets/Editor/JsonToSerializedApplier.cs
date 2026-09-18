@@ -138,12 +138,34 @@ namespace Manosaba.EditorTools
 
             if (prop.propertyType == SerializedPropertyType.ManagedReference)
             {
-                if (token["rid"] == null)
+                // A { rid: N } token is the first pass: queue creation of the concrete instance.
+                if (token["rid"] != null)
                 {
+                    pending.Add(new PendingRef { path = prop.propertyPath, rid = token.Value<long>("rid") });
                     report.applied++;
                     return;
                 }
-                pending.Add(new PendingRef { path = prop.propertyPath, rid = token.Value<long>("rid") });
+
+                // After the instance is materialised, ApplyInstanceData feeds the reference-table
+                // "data" object back through this method. At that point the property is still
+                // ManagedReference, but the token intentionally has no rid; recurse into the
+                // concrete instance's serialised children instead of treating it as an empty value.
+                if (token.Type != JTokenType.Object)
+                {
+                    report.Warn(path + ": expected managed-reference object, got " + token.Type);
+                    return;
+                }
+                foreach (JProperty child in ((JObject)token).Properties())
+                {
+                    SerializedProperty childProp = prop.FindPropertyRelative(child.Name);
+                    if (childProp == null)
+                    {
+                        report.Warn(path + "." + child.Name + ": no serialised field");
+                        report.skipped++;
+                        continue;
+                    }
+                    Apply(childProp, child.Value, path + "." + child.Name, serialized, refTable, pending, options, report);
+                }
                 report.applied++;
                 return;
             }

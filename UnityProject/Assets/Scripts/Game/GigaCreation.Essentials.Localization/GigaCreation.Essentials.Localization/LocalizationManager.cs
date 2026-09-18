@@ -159,6 +159,10 @@ namespace GigaCreation.Essentials.Localization
     	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
     	private IAddressableAssetLoader _addressableAssetLoader;
 
+    	private readonly LocaleKind _sourceLocale;
+    	private LocaleKind _currentLocale;
+    	private TMP_FontAsset _currentFontAsset;
+
     	[Token(Token = "0x1700000C")]
     	public LocaleKind SourceLocale
     	{
@@ -167,7 +171,7 @@ namespace GigaCreation.Essentials.Localization
     		[CompilerGenerated]
     		get
     		{
-    			return default(LocaleKind);
+    			return _sourceLocale;
     		}
     	}
 
@@ -179,13 +183,14 @@ namespace GigaCreation.Essentials.Localization
     		[CompilerGenerated]
     		get
     		{
-    			return default(LocaleKind);
+    			return _currentLocale;
     		}
     		[Token(Token = "0x6000022")]
     		[Address(RVA = "0x8940E0", Offset = "0x892AE0", VA = "0x1808940E0")]
     		[CompilerGenerated]
     		private set
     		{
+    			_currentLocale = value;
     		}
     	}
 
@@ -197,13 +202,14 @@ namespace GigaCreation.Essentials.Localization
     		[CompilerGenerated]
     		get
     		{
-    			return null;
+    			return _currentFontAsset;
     		}
     		[Token(Token = "0x6000024")]
     		[Address(RVA = "0x58DF10", Offset = "0x58C910", VA = "0x18058DF10")]
     		[CompilerGenerated]
     		private set
     		{
+    			_currentFontAsset = value;
     		}
     	}
 
@@ -222,6 +228,10 @@ namespace GigaCreation.Essentials.Localization
     	[Address(RVA = "0xCD1DB0", Offset = "0xCD07B0", VA = "0x180CD1DB0")]
     	public LocalizationManager(LocaleKind sourceLocale = default, IDictionary<LocaleKind, LocaleDataItem> localeData = default)
     	{
+    		_localeData = localeData;
+    		_localeChangedSubject = new Subject<LocaleKind>();
+    		_sourceLocale = sourceLocale;
+    		CurrentLocale = sourceLocale;
     	}
 
     	[Token(Token = "0x6000027")]
@@ -252,7 +262,7 @@ namespace GigaCreation.Essentials.Localization
     	[Address(RVA = "0xCD24C0", Offset = "0xCD0EC0", VA = "0x180CD24C0", Slot = "8")]
     	public IObservable<LocaleKind> OnLocaleChangedAsObservable()
     	{
-    		return null;
+    		return _localeChangedSubject;
     	}
     }
 }
