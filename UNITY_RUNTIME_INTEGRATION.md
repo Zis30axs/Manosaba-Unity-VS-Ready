@@ -3563,4 +3563,98 @@ System_Title.asset  58341 bytes
 
 
 
+# 2026-09-18：TrueShadow 与 Naninovel TMP 运行资源修复
 
+范围：基于 `015c0cfa2c4ecd35518c3d7fec1371bacf0c73c4`，只补资源及 wiring。
+不修改 `IDefaultLocaleSelector` 或其他 localization service 的重复注册，也不批量修 stub。
+
+## 来源及采用决策
+
+下列 GitHub commit/path 通过公开 API/原始文件核对；仅研究结构与接口，**未复制其商业 shader/font 文件到提交**。
+
+| 仓库 | commit | 核对路径 | 许可证/类别 | 采用内容 |
+|---|---|---|---|---|
+| [xukonxe/LibreAirspace](https://github.com/xukonxe/LibreAirspace/tree/317660ea244f923e1f3fb0defa4a9eed0e2bc908) | `317660ea244f923e1f3fb0defa4a9eed0e2bc908` | `Assets/Le Tai's Asset/TrueShadow/Resources/Shaders/`、`Scripts/Structure/BlendMode.cs` | 仓库 MIT，但不能据此认定 vendored 商业 TrueShadow 可再分发；社区副本 | 确认目录及四个 `Shader.Find` 名称一致；不采用文件实现 |
+| [Arikaton/Cuteblock](https://github.com/Arikaton/Cuteblock/tree/5adbfef23876542d0b123b5eb93787df7bdbdf03) | `5adbfef23876542d0b123b5eb93787df7bdbdf03` | `Assets/Plugins/Le Tai's Asset/TrueShadow/Resources/Shaders/TrueShadow-Normal.shader` | 未声明可确认的仓库许可证；社区副本 | 结构佐证，不采用 |
+| [1sakshm/ProjectUtopia](https://github.com/1sakshm/ProjectUtopia/tree/b6f685166162d2b7e9d15ee916d80677ac21d244) | `b6f685166162d2b7e9d15ee916d80677ac21d244` | `Assets/Asset/TrueShadow/Resources/Shaders/TrueShadow-Normal.shader` | 未声明可确认的仓库许可证；社区副本 | 结构佐证，不采用 |
+| [oswaldpfeiffer/madbox-test-oswald](https://github.com/oswaldpfeiffer/madbox-test-oswald/tree/29d3c56c27f6cf212edb33636b91467936737d7f) | `29d3c56c27f6cf212edb33636b91467936737d7f` | `Assets/Packages/TrueShadow/Resources/Shaders/TrueShadow-Normal.shader` | 未声明可确认的仓库许可证；社区副本 | 结构佐证，不采用 |
+| [thecasterian/mnsb-editor](https://github.com/thecasterian/mnsb-editor/blob/9e9365c0acef417ffd9bf82302a1849f7748f477/CLAUDE.md) | `9e9365c0acef417ffd9bf82302a1849f7748f477` | `CLAUDE.md`：TrialsClockFont / `extract_trial_digits.py`、`characters/font_materials.json`、`docs/text_shadows.md` 的说明 | 未声明可确认许可证；社区提取研究，不是字体授权 | 核对 `general-fonts-common_assets_all.bundle`、SC 材质变体和日文字体 metrics；最终使用本地数据 |
+
+TrueShadow 当前源是原有的**反编译副本**，本次没有将其改称官方包。
+新增 `Packages/com.le-tai.true-shadow/Resources/` 是 **COMPATIBILITY RECONSTRUCTION**，不是 ORIGINAL ASSET。
+自主实现 9 个 shader（4 个 UI blend、Generate、GenerateHQ、Cutout、ImprintPostProcess、PostProcess），
+遵守本地 C# 的 pass/property 调用约定。生成的 32×32 噪声是 white-noise 兼容纹理，**非恢复的原版 blue-noise**；
+Project Settings 使用源码默认值，presets 为空。GPU pass 可用不等于与原版逐像素相同，尤其快速模糊和 spread/inset 边缘。
+接口清单见包内 `Resources/COMPATIBILITY.md`。
+
+## 原字体实际找到了什么
+
+`res/_index.csv`、本地原游戏 bundle 和已有 `catalog_dump.json` 一致指向以下条目：
+
+| 字体 | 原 TMP path_id | 原 bundle | 原 catalog internal id |
+|---|---:|---|---|
+| TsukushiMincho | -4585659588899376959 | `general-fonts-tsukushimincho_assets_all.bundle` | `Assets/#WitchTrials/Fonts/TsukushiMincho/TsukushiMincho.asset` |
+| SourceHanSerifSC | 8324895201456969531 | `general-fonts-sourcehanserifsc_assets_all.bundle` | `Assets/#WitchTrials/Fonts/SourceHanSerifSC/SourceHanSerifSC.asset` |
+| SourceHanSansKR | 5503908547053578156 | `general-fonts-sourcehansanskr_assets_all.bundle` | `Assets/#WitchTrials/Fonts/SourceHanSansKR/SourceHanSansKR.asset` |
+
+原 key 为 `Naninovel/Fonts/<NAME>/Assets/<NAME>`；Naninovel provider 去掉 `Naninovel/` 后，
+配合 UIConfiguration 的 `FontLoader.PathPrefix=Fonts`，满足现有 `<NAME>/Assets/<NAME>`，**没有改掉配置绕过**。
+原始目录中的资源类型是 `TMPro.TMP_FontAsset`；修复前工程这些地址只有普通 Font/Texture 等条目。
+
+三个原 TMP JSON 均为 `m_AtlasPopulationMode=1`（Dynamic），glyph table、character table、fallback table 都为空。
+因此本次从**已有本地原 OTF**与 TMP JSON 创建原生 `TMP_FontAsset`，而非声称恢复了不存在的静态字形表。
+保留原 face info、style、padding、render mode、atlas 尺寸（JP/SC 4096，KR 1024），启用 multi-atlas，
+由 FontEngine 在运行时生成实际 glyph/character/atlas。保留空的原字体 fallback table；全局 TMP fallback 新增这三种字体，
+用于 Naninovel 切换字体前的语言标签。JP 的 pointSize=90、ascentLine≈79.2 与本地元数据及社区研究一致。
+JP/SC 各恢复 7 个 `@Shadow1..6` / `@Outline_Shadow` 材质的参数，使用 Unity TMP shader，不复制原 shader 二进制。
+这是 **REBUILT_FROM_LOCAL_ORIGINAL_FONT_AND_METADATA**，不是字节级原资源复原，也不是开源字体 fallback。
+
+原 OTF SHA256：
+
+- JP `0042affca7f83b7b1d8b5fa9362481e82622a09152b3d5d593314869df8c9490`
+- SC `faf16caeaf207e1926e01af8d9f1a8e71b0e9d8f51bf3b5d9a78f9f30e7e3e31`
+- KR `2c01d8b5dfd59dfe45d7bb1ee2360f3186266468fa5b036e2818ddf582f5bc9d`
+
+没有下载或提交第三方商业字体；原 OTF、生成 TMP/atlas/material 仍留在被忽略的 `Assets/GameContent/`。
+提交修复工具、稳定字体 GUID、Addressables group 和 TMP fallback 引用。全新工作区需先完成已有的本地资源导入，
+再执行下面的 repair，不能只 checkout 源码就假定拥有原游戏资源及其再分发许可。
+
+## 可重复执行
+
+设置 `MANOSABA_UNITY_EDITOR` 为已正常授权的 Unity 6000.0.48f1，关闭同项目的其他 Editor 实例。
+使用可运行的 Python（本机旧 `tools/venv` 解释器启动失败，实际使用 Codex bundled Python）：
+
+```powershell
+python tools/unity-rebuild/runtime_resources.py repair --tag local
+python tools/unity-rebuild/runtime_resources.py verify --graphics --tag local
+python tools/unity-rebuild/runtime_resources.py build --tag local
+python tools/unity-rebuild/runtime_resources.py verify-built --graphics --tag local
+$env:MANOSABA_GAMESTART_CHAIN_SECONDS='60'
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE='1'
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS='12'
+./tools/unity-rebuild/g4b_game_start.ps1 -Wire
+python tools/unity-rebuild/classify_runtime_resource_log.py tools/unity-rebuild/out/logs/game_start.log
+```
+
+注意：不要在 repair 后再用旧全量计划 prune `Manosaba.RuntimeFonts`；该独立 group 由 repair 管理。
+同地址普通 Font 条目保留，以维持原有 smoke 的 Font 类型检查；新的 TMP 条目由 `LoadAssetAsync<TMP_FontAsset>` 区分。
+
+## 本轮实际证据（不把 smoke PASS 误当成没有异常）
+
+- 原资源检查：14 项失败（9 shader、noise、settings、3 TMP）。
+- 最终 G1 编译：PASS，C# error/warning、import error、assembly load error 均为 0；最终 repair 重复执行 exit=0，三个字体 GUID 保持不变。全新空目录重建分支尚未独立验收。
+- 独立副本的同输入资源合同检查：BASELINE exit=1（17 缺项），MODIFIED exit=0；执行 `ROLLBACK.sh` 后 exit=1、输出与基线相同且逐文件哈希恢复，再应用二进制 patch 后 exit=0。此项验证可逆性，不冒充 Unity 运行时回滚测试。四角色产物位于 `work/startup-fix-20260918/`，之前未应用的 C# 提案单独归档，不属于本次资源提交。
+- `modified2-verify`：真实 Unity/GPU 检查 15 项通过、0 失败；日中韩文本生成网格并渲染 PNG，人工查看没有整屏方框。
+- Addressables 构建 exit=0，status=OK，30,822 entries、33,230 locations、12 bundles。
+- `modified-verify-built`：从刚构建 catalog 按三个原 key 加载 **TMP_FontAsset**，全部通过，exit=0。
+- G4b `-Wire`：PASS，场景 GameInitializer 启动、initialize_completion=COMPLETED，Naninovel initialized=True，
+  播放 `System/System_Title`，自动推进窗口完成。这个结果不等于验证整部游戏或所有标题按钮交互。
+- 该 Play Mode 日志：TrueShadow shader null **0**；JP/SC/KR 字体 load failure **分别为 0**。
+- 仍有旧 shipped catalog 探针的 Assembly-CSharp FileNotFoundException（8 次日志出现）；
+  LocalizeImage.Map/OnDisable 空引用（各 57 次首行栈），PointerStayingSpriteSwapper.OnDestroy（27 次首行栈）。
+  未在本轮扩展修复；标题脚本 index=6 在观测窗口不再前进，后续交互/其他 stub 尚未验收。
+- IDefaultLocaleSelector 重复注册 warning 4 次日志出现，按要求保留。异常计数是日志出现数，非去重异常事件数。
+
+报告及图像在 `tools/unity-rebuild/out/runtime-resources/`；G4b 日志/JSON在既有 out/logs 与 out/unity。
+前置错误也保留：沙箱内许可证读不到，正常用户授权执行后许可检查通过；最初 Unity 已打开导致实例冲突；
+生成器首次遇到 SC 材质文件名碰撞（实际为 `~2.json`），已改为按序列化材质名绑定；首次 CJK 验收的 Canvas/纹理导入缺项已修正。

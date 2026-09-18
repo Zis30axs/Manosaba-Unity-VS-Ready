@@ -37,6 +37,12 @@ is the authority on which TrueShadow version this project needs.  Comparison:
 
 ## Known limitation
 
+2026-09-18 update: the missing runtime interfaces are now supplied by independently
+authored shaders/settings/noise under `Resources/`. See
+`Resources/COMPATIBILITY.md`. These are **COMPATIBILITY RECONSTRUCTION**, not
+recovered original commercial assets. The following paragraph records the
+original pre-repair limitation; it no longer describes shader availability.
+
 The dump contains **only C#** — no `.shader`, `.mat`, textures or `.asmdef`.  An asmdef was authored here
 (`LeTai.TrueShadow.asmdef`, assembly name identical to the stub's so the 42 game asmdefs can reference it by
 name).  Consequently the *types* resolve and the prefabs can be built, but TrueShadow's rendering has no
@@ -56,4 +62,3 @@ because they touch vendored code:
    `Transform ICanvasElement.get_transform() { return base.transform; }`.  C# rejects an accessor written as
    a method (CS0683), and it is redundant anyway — `Component.transform` already satisfies
    `ICanvasElement.transform`.
-
