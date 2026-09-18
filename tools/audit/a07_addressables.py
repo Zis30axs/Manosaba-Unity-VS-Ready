@@ -31,22 +31,32 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import catalog_reader  # noqa: E402
-from common import AAW, OUT, load_index_ledger  # noqa: E402
+from common import AAW, OUT, UNITY_REBUILD_OUT, load_index_ledger  # noqa: E402
 
 DERIVED_DIR = os.path.join(OUT, "unity")
 UNITY_CATALOG_DUMP = os.path.join(DERIVED_DIR, "catalog_dump.json")
+# CatalogDump.cs writes next to the other Unity-produced evidence
+# (tools/unity-rebuild/out/unity/, the same directory g1_compile.ps1 reads
+# compile_result.json from).  The legacy audit-out location is still accepted so a dump
+# produced before that move keeps being picked up.
+UNITY_CATALOG_DUMP_CANDIDATES = (
+    os.path.join(UNITY_REBUILD_OUT, "unity", "catalog_dump.json"),
+    UNITY_CATALOG_DUMP,
+)
 
 
 def load_unity_catalog_dump():
     """Authoritative catalog export produced inside Unity by CatalogDump.cs, if present."""
-    if not os.path.exists(UNITY_CATALOG_DUMP):
-        return None, None
-    try:
-        with open(UNITY_CATALOG_DUMP, encoding="utf-8") as fh:
-            data = json.load(fh)
-        return data, UNITY_CATALOG_DUMP
-    except (OSError, ValueError) as exc:
-        return None, f"unreadable: {type(exc).__name__}: {exc}"
+    for path in UNITY_CATALOG_DUMP_CANDIDATES:
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+            return data, path
+        except (OSError, ValueError) as exc:
+            return None, f"unreadable: {type(exc).__name__}: {exc}"
+    return None, None
 
 
 def load_bundles():
