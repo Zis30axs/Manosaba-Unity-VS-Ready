@@ -60,6 +60,8 @@ Remove-Item $gatePath -ErrorAction SilentlyContinue
 $env:MANOSABA_EVIDENCE = $evidencePath
 $env:MANOSABA_SMOKE = '1'      # keep the probe's own "smoke" semantics (Application.Quit is a no-op in the Editor)
 $env:MANOSABA_CONTENT = '1'    # require the content probe to succeed, exactly like the Player gate
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE = '1'
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS = '12'
 
 Write-Host "=== Editor Play Mode ===" -ForegroundColor Cyan
 $started = Get-Date

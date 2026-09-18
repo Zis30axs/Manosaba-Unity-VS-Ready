@@ -119,6 +119,8 @@ $env:MANOSABA_GAMESTART = '1'
 $env:MANOSABA_GAMESTART_EVIDENCE = $gameEvidence
 $env:MANOSABA_GAMESTART_GAMEPREFAB_GUID = $gamePrefabGuid
 $env:MANOSABA_GAMESTART_GAMEPREFAB_NAME = $gamePrefabName
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE = '1'
+$env:MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS = '12'
 
 $savedEap = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
@@ -175,6 +177,9 @@ if ($gameJson) {
     Write-Host ("  naninovel: initialized={0} initializing={1} playing={2} played='{3}' spot='{4}'" -f `
         $gameJson.naninovel_initialized, $gameJson.naninovel_initializing, $gameJson.naninovel_playing, `
         $gameJson.naninovel_played_script, $gameJson.naninovel_playback_spot)
+    Write-Host ("  auto-advance: {0} transitions={1} releases={2} final='{3}'" -f `
+        $gameJson.auto_advance, $gameJson.auto_advance_transitions, $gameJson.auto_advance_wait_releases, `
+        $gameJson.auto_advance_final)
     Write-Host ("  engine: services={0} progress_last={1} post_tasks={2} [{3}]" -f `
         $gameJson.engine_services_count, $gameJson.engine_progress_last, $gameJson.post_init_task_count, `
         $gameJson.post_init_tasks)

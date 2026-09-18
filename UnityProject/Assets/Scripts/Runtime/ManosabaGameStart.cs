@@ -49,6 +49,10 @@ namespace Manosaba.Integration
         //: so runs stay comparable, and overridable so "slow" and "hung" can be told apart with evidence: a chain
         //: that completes after 25 s is a different finding from one that never completes.
         private const string ChainSecondsEnv = "MANOSABA_GAMESTART_CHAIN_SECONDS";
+        /// <summary>When "1", aggressively advance Naninovel during the diagnostic window.</summary>
+        private const string AutoAdvanceEnv = "MANOSABA_GAMESTART_AUTO_ADVANCE";
+        /// <summary>Duration of the opt-in script-player advance window.</summary>
+        private const string AutoAdvanceSecondsEnv = "MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS";
         private const float WindowSeconds = 4f;
 
         /// <summary>The chain observation window: 2 x the per-phase window, or the value from the environment.</summary>
@@ -64,6 +68,21 @@ namespace Manosaba.Integration
                     return parsed;
                 }
                 return WindowSeconds * 2f;
+            }
+        }
+
+        private static float AutoAdvanceSeconds
+        {
+            get
+            {
+                string configured = Environment.GetEnvironmentVariable(AutoAdvanceSecondsEnv);
+                if (!string.IsNullOrEmpty(configured) &&
+                    float.TryParse(configured, NumberStyles.Float, CultureInfo.InvariantCulture, out float parsed) &&
+                    parsed > 0f && parsed <= 120f)
+                {
+                    return parsed;
+                }
+                return 12f;
             }
         }
         /// <summary>Bounds for the probe's manufactured data: deep enough to measure, small enough to stay safe.</summary>
@@ -466,6 +485,12 @@ namespace Manosaba.Integration
             // script, and what the player is playing right now.  All of it is read through reflection because the
             // integration assembly deliberately does not depend on Naninovel at compile time.
             CollectNaninovelState(evidence);
+            if (Environment.GetEnvironmentVariable(AutoAdvanceEnv) == "1")
+            {
+                yield return DriveScriptPlayer(evidence);
+                // Re-sample after the driver so the final script/spot is also present in the ordinary fields.
+                CollectNaninovelState(evidence);
+            }
             // The post-initialization chain is where the engine stops (progress freezes at 0.750), so it gets its
             // own attribution pass: which tasks were registered, and which of the state-loading awaits returns.
             yield return ProbePostInitializationChain(evidence);
@@ -1492,6 +1517,141 @@ namespace Manosaba.Integration
         }
 
         /// <summary>
+        /// Opt-in playthrough driver for G4/G5.  It does not synthesize Unity input and it is never enabled in
+        /// ordinary game runs.  Instead it talks to IScriptPlayer through reflection: temporarily allows skipping
+        /// unread commands, enables skip, and releases any explicit "waiting for input" state.  Every distinct
+        /// playback snapshot is captured, so a gate run identifies the first position that fails to advance.
+        /// </summary>
+        private static IEnumerator DriveScriptPlayer(GameStartEvidence evidence)
+        {
+            const string runtimeAssembly = ", Elringus.Naninovel.Runtime";
+            object player = null;
+            Type playerType = null;
+            PropertyInfo skipModeProperty = null;
+            MethodInfo setSkipEnabled = null;
+            MethodInfo setWaitingForInputEnabled = null;
+            object originalSkipMode = null;
+            bool originalSkipActive = false;
+            string setupError = null;
+
+            try
+            {
+                Type engineType = Type.GetType("Naninovel.Engine" + runtimeAssembly);
+                playerType = Type.GetType("Naninovel.IScriptPlayer" + runtimeAssembly);
+                MethodInfo getService = engineType?
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition &&
+                                         m.GetParameters().Length == 0);
+                if (getService == null || playerType == null)
+                {
+                    setupError = "Naninovel engine/player type unavailable";
+                }
+                else
+                {
+                    player = getService.MakeGenericMethod(playerType).Invoke(null, null);
+                    if (player == null)
+                    {
+                        setupError = "Engine.GetService<IScriptPlayer>() returned null";
+                    }
+                    else
+                    {
+                        skipModeProperty = playerType.GetProperty("SkipMode");
+                        PropertyInfo skipActiveProperty = playerType.GetProperty("SkipActive");
+                        originalSkipMode = skipModeProperty?.GetValue(player);
+                        if (skipActiveProperty?.GetValue(player) is bool active) originalSkipActive = active;
+                        if (skipModeProperty != null && skipModeProperty.PropertyType.IsEnum)
+                        {
+                            object everything = Enum.Parse(skipModeProperty.PropertyType, "Everything");
+                            skipModeProperty.SetValue(player, everything);
+                        }
+                        setSkipEnabled = playerType.GetMethod("SetSkipEnabled", new[] { typeof(bool) });
+                        setWaitingForInputEnabled = playerType.GetMethod("SetWaitingForInputEnabled", new[] { typeof(bool) });
+                        setSkipEnabled?.Invoke(player, new object[] { true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                setupError = Describe(ex);
+            }
+
+            if (!string.IsNullOrEmpty(setupError))
+            {
+                evidence.auto_advance = "BLOCKED: " + setupError;
+                yield break;
+            }
+
+            evidence.auto_advance = "RUNNING";
+            float started = Time.realtimeSinceStartup;
+            float deadline = started + AutoAdvanceSeconds;
+            string lastSnapshot = null;
+            var trace = new List<string>();
+
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                string snapshot = TryAdvanceAndSnapshot(player, playerType, setSkipEnabled,
+                    setWaitingForInputEnabled, evidence, Time.realtimeSinceStartup - started);
+                if (!string.IsNullOrEmpty(snapshot) && snapshot != lastSnapshot)
+                {
+                    lastSnapshot = snapshot;
+                    evidence.auto_advance_transitions++;
+                    if (trace.Count < 64) trace.Add(snapshot);
+                    evidence.auto_advance_trace = string.Join(" | ", trace);
+                    WritePartial(evidence);
+                }
+                yield return null;
+            }
+
+            try
+            {
+                setSkipEnabled?.Invoke(player, new object[] { originalSkipActive });
+                if (skipModeProperty != null && originalSkipMode != null)
+                    skipModeProperty.SetValue(player, originalSkipMode);
+            }
+            catch (Exception ex)
+            {
+                evidence.auto_advance_restore = Describe(ex);
+            }
+
+            evidence.auto_advance = "COMPLETED";
+            evidence.auto_advance_seconds = Time.realtimeSinceStartup - started;
+            evidence.auto_advance_final = lastSnapshot ?? "(no readable player snapshot)";
+        }
+
+        private static string TryAdvanceAndSnapshot(object player, Type playerType, MethodInfo setSkipEnabled,
+                                                     MethodInfo setWaitingForInputEnabled,
+                                                     GameStartEvidence evidence, float elapsed)
+        {
+            try
+            {
+                bool waiting = playerType.GetProperty("WaitingForInput")?.GetValue(player) is bool w && w;
+                bool skip = playerType.GetProperty("SkipActive")?.GetValue(player) is bool s && s;
+                bool playing = playerType.GetProperty("Playing")?.GetValue(player) is bool p && p;
+                if (!skip) setSkipEnabled?.Invoke(player, new object[] { true });
+                if (waiting)
+                {
+                    setWaitingForInputEnabled?.Invoke(player, new object[] { false });
+                    evidence.auto_advance_wait_releases++;
+                }
+
+                string script = null;
+                object played = playerType.GetProperty("PlayedScript")?.GetValue(player);
+                if (played != null) script = played.GetType().GetProperty("Path")?.GetValue(played) as string;
+                object spot = playerType.GetProperty("PlaybackSpot")?.GetValue(player);
+                object index = playerType.GetProperty("PlayedIndex")?.GetValue(player);
+                return elapsed.ToString("F2", CultureInfo.InvariantCulture) + "s " +
+                       (script ?? "(no-script)") + " " + (spot?.ToString() ?? "(no-spot)") +
+                       " index=" + (index?.ToString() ?? "?") +
+                       " playing=" + playing + " waiting=" + waiting + " skip=" + skip;
+            }
+            catch (Exception ex)
+            {
+                evidence.auto_advance = "ERROR: " + Describe(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Reads Naninovel's engine/service state after the boot-chain window, so a run can state facts instead of
         /// impressions: did the engine initialise, how much scenario content did the script manager load, and what
         /// is the player playing.  Everything is reflective (the integration assembly has no compile-time
@@ -1981,6 +2141,14 @@ namespace Manosaba.Integration
             public bool naninovel_playing;
             public string naninovel_played_script;
             public string naninovel_playback_spot;
+            // Opt-in automatic script-player advance telemetry (MANOSABA_GAMESTART_AUTO_ADVANCE=1).
+            public string auto_advance = "not run";
+            public float auto_advance_seconds;
+            public int auto_advance_transitions;
+            public int auto_advance_wait_releases;
+            public string auto_advance_trace = "";
+            public string auto_advance_final = "";
+            public string auto_advance_restore = "";
             public List<string> played_scripts = new List<string>();   // consumed by gate G6's runtime coverage
             public string component_type;
             public bool addressables_field_found;
