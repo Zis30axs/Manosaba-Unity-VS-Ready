@@ -3658,3 +3658,7 @@ python tools/unity-rebuild/classify_runtime_resource_log.py tools/unity-rebuild/
 报告及图像在 `tools/unity-rebuild/out/runtime-resources/`；G4b 日志/JSON在既有 out/logs 与 out/unity。
 前置错误也保留：沙箱内许可证读不到，正常用户授权执行后许可检查通过；最初 Unity 已打开导致实例冲突；
 生成器首次遇到 SC 材质文件名碰撞（实际为 `~2.json`），已改为按序列化材质名绑定；首次 CJK 验收的 Canvas/纹理导入缺项已修正。
+
+## 2026-09-18 后续：按用户明确要求提交本地字体
+
+上述“不提交原字体/生成资源”是上一提交的范围；本次单独将三个本地 OTF、对应 TMP/材质及 Unity .meta 纳入 Git，未修改字体字节或原资源目录，未推送远端。字体 SHA256 与上节一致，资源合同检查重新执行 PASS（0 缺项）。这不是字体再分发许可声明；公开分发前仍需自行确认相应许可。本次只改变版本控制状态，不重复声称完成新的 Unity 运行时验收。
