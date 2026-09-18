@@ -1,0 +1,115 @@
+# G4 Play Mode gate: run the reconstructed project inside the Editor and collect the same evidence the
+# standalone Player produces.
+#
+#   pwsh -File tools/unity-rebuild/g4_play_mode.ps1
+#
+# Steps:
+#   1. ProjectBootstrap - author Assets/Scenes/Boot.unity and register it in the build settings
+#   2. PlayModeGate.Run - switch Addressables to "Use Existing Build" (so Play Mode loads the content the
+#      G3 build produced, not the AssetDatabase), open the Boot scene, enter Play Mode, wait for
+#      ManosabaBoot's evidence, leave Play Mode and exit
+#
+# The evidence file is deleted before the run and required to be *fresh* afterwards, and the gate's own
+# artifact is checked the same way: a stale file must never be read as this round's result.
+#
+# Exit codes: 0 = Play Mode ran and the runtime assertions passed
+#             1 = Play Mode ran but a runtime assertion failed
+#             2 = BLOCKED (no Editor, no scene, no settings)
+#             3 = FAIL: Play Mode produced no evidence within the timeout
+. "$PSScriptRoot\common.ps1"
+
+$result = [ordered]@{
+    gate           = 'G4_editor_play_mode'
+    generated      = (Get-Date).ToUniversalTime().ToString('o')
+    unity_exe      = $script:UnityExe
+    status         = 'NOT_RUN'
+    blocked_reason = $null
+    bootstrap      = $null
+    play_mode      = $null
+    evidence       = $null
+}
+
+if (-not $script:UnityExe) {
+    $result.status = 'BLOCKED'
+    $result.blocked_reason = 'Unity Editor not found; set MANOSABA_UNITY_EDITOR'
+    Write-Json (Join-Path $script:UnityDataRoot 'g4_play_mode.json') $result
+    Write-Host "BLOCKED: $($result.blocked_reason)" -ForegroundColor Red
+    exit 2
+}
+
+# --- 1. bootstrap ------------------------------------------------------------------
+Write-Host "=== bootstrap (Boot scene + build settings) ===" -ForegroundColor Cyan
+$bootLog = Join-Path $script:LogRoot 'bootstrap_g4.log'
+$boot = Invoke-Logged -FilePath $script:UnityExe -LogPath $bootLog -Arguments @(
+    '-batchmode', '-nographics', '-quit',
+    '-projectPath', $script:UnityProject,
+    '-executeMethod', 'Manosaba.EditorTools.ProjectBootstrap.Run',
+    '-logFile', '-'
+)
+$result.bootstrap = [ordered]@{ exit_code = $boot.exit_code; seconds = $boot.seconds; log = $boot.log }
+Write-Host "  bootstrap exit=$($boot.exit_code)"
+
+# --- 2. Play Mode ------------------------------------------------------------------
+$evidencePath = Join-Path $script:UnityDataRoot 'play_mode_evidence.json'
+$toolPath     = Join-Path $script:UnityDataRoot 'g4_play_mode.json'        # written by PlayModeGate
+$gatePath     = Join-Path $script:UnityDataRoot 'g4_play_mode_gate.json'   # written by this script
+Remove-Item $evidencePath -ErrorAction SilentlyContinue
+Remove-Item $toolPath -ErrorAction SilentlyContinue
+Remove-Item $gatePath -ErrorAction SilentlyContinue
+
+$env:MANOSABA_EVIDENCE = $evidencePath
+$env:MANOSABA_SMOKE = '1'      # keep the probe's own "smoke" semantics (Application.Quit is a no-op in the Editor)
+$env:MANOSABA_CONTENT = '1'    # require the content probe to succeed, exactly like the Player gate
+
+Write-Host "=== Editor Play Mode ===" -ForegroundColor Cyan
+$started = Get-Date
+$log = Join-Path $script:LogRoot 'play_mode.log'
+$run = Invoke-Logged -FilePath $script:UnityExe -LogPath $log -Arguments @(
+    '-batchmode', '-nographics',
+    '-projectPath', $script:UnityProject,
+    '-executeMethod', 'Manosaba.EditorTools.PlayModeGate.Run',
+    '-logFile', '-'
+)
+$gate = if (Test-Path $toolPath) { Get-Content $toolPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$gateFresh = $gate -and (Get-Item $toolPath).LastWriteTime -ge $started
+$evidence = if (Test-Path $evidencePath) { Get-Content $evidencePath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+
+$result.play_mode = [ordered]@{
+    exit_code = $run.exit_code
+    seconds   = $run.seconds
+    log       = $log
+    artifact  = $toolPath
+    fresh     = [bool]$gateFresh
+    result    = $gate
+}
+$result.evidence = $evidence
+
+if (-not $gate -or -not $gateFresh) {
+    $result.status = 'BLOCKED'
+    $result.blocked_reason = "PlayModeGate produced no fresh artifact (exit=$($run.exit_code)); see $log"
+    Write-Json $gatePath $result
+    Write-Host "BLOCKED: $($result.blocked_reason)" -ForegroundColor Red
+    exit 2
+}
+
+switch ($gate.status) {
+    'PASS'          { $result.status = 'PASS' }
+    'BLOCKED_NO_EVIDENCE_PATH' { $result.status = 'BLOCKED'; $result.blocked_reason = $gate.error }
+    'BLOCKED_NO_SETTINGS'      { $result.status = 'BLOCKED'; $result.blocked_reason = $gate.error }
+    'BLOCKED_NO_SCENE'         { $result.status = 'BLOCKED'; $result.blocked_reason = $gate.error }
+    'FAIL_TIMEOUT'  { $result.status = 'FAIL'; $result.blocked_reason = $gate.error }
+    default         { $result.status = 'FAIL'; $result.blocked_reason = "play mode status $($gate.status)" }
+}
+
+Write-Json $gatePath $result
+$content = if ($evidence) { $evidence.content } else { $null }
+Write-Host ("G4 {0}: editor exit={1} play={2} assemblies={3} probes={4} content={5} ({6}s)" -f `
+    $result.status, $run.exit_code, $gate.play_seconds,
+    $(if ($evidence) { $evidence.assemblies_found } else { 'n/a' }),
+    $(if ($evidence) { $evidence.types_probed_ok } else { 'n/a' }),
+    $(if ($content) { $content.status } else { 'n/a' }),
+    $run.seconds) -ForegroundColor $(if ($result.status -eq 'PASS') { 'Green' } else { 'Red' })
+
+if ($result.status -eq 'PASS') { exit 0 }
+if ($result.status -eq 'BLOCKED') { exit 2 }
+exit 1
