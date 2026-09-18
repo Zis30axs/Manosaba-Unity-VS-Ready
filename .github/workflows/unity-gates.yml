@@ -1,0 +1,156 @@
+name: Unity Gates
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "compile = G1 only; runtime = G1 + Addressables build + G4/G5/G6"
+        required: true
+        default: compile
+        type: choice
+        options:
+          - compile
+          - runtime
+  push:
+    branches: [main]
+    paths:
+      - "UnityProject/**"
+      - "tools/unity-rebuild/**"
+      - ".github/workflows/unity-gates.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manosaba-unity-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  MANOSABA_UNITY_EDITOR: ${{ vars.MANOSABA_UNITY_EDITOR }}
+  MANOSABA_GAME_ROOT: ${{ vars.MANOSABA_GAME_ROOT }}
+  MANOSABA_PYTHON: python
+
+jobs:
+  compile:
+    name: G1 Unity compile
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.MANOSABA_RUN_UNITY_CI == '1' }}
+    runs-on: [self-hosted, Windows, X64, manosaba-unity]
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout without deleting local reconstruction payload
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Show toolchain
+        shell: pwsh
+        run: |
+          python --version
+          pwsh --version
+          Get-Content UnityProject/ProjectSettings/ProjectVersion.txt
+
+      - name: G1 compile gate
+        shell: pwsh
+        run: ./tools/unity-rebuild/g1_compile.ps1
+
+      - name: Upload G1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g1-evidence-${{ github.run_id }}
+          path: |
+            tools/unity-rebuild/out/preflight.json
+            tools/unity-rebuild/out/unity/g1_compile.json
+            tools/unity-rebuild/out/unity/compile_result.json
+            tools/unity-rebuild/out/logs/license_probe.log
+            tools/unity-rebuild/out/logs/g1_compile.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+  runtime:
+    name: G4/G5/G6 runtime gates
+    needs: compile
+    if: >-
+      ${{
+        needs.compile.result == 'success' &&
+        (
+          (github.event_name == 'workflow_dispatch' && inputs.mode == 'runtime') ||
+          (github.event_name == 'push' && vars.MANOSABA_RUN_RUNTIME_CI == '1')
+        )
+      }}
+    runs-on: [self-hosted, Windows, X64, manosaba-unity]
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout without deleting ignored game payload
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Require local reconstructed content
+        shell: pwsh
+        run: |
+          $required = @(
+              "UnityProject/Assets/GameContent",
+              "UnityProject/Assets/AddressableAssetsData"
+          )
+          $missing = @($required | Where-Object { -not (Test-Path $_) })
+          if ($missing.Count -gt 0) {
+              Write-Error (
+                  "Self-hosted runtime gate is missing ignored local reconstruction payload: " +
+                  ($missing -join ", ") +
+                  ". Seed the runner workspace from the reconstruction machine; checkout uses clean:false so it is preserved."
+              )
+              exit 2
+          }
+
+      - name: Build committed Addressables configuration
+        shell: pwsh
+        run: |
+          . ./tools/unity-rebuild/common.ps1
+          $unity = Assert-Unity
+          $log = Join-Path $script:LogRoot "ci_addressables_build.log"
+          $resultPath = Join-Path $script:UnityDataRoot "addressables_build_result.json"
+          Remove-Item $resultPath -ErrorAction SilentlyContinue
+          $run = Invoke-Logged -FilePath $unity -LogPath $log -Arguments @(
+              "-batchmode", "-nographics", "-quit",
+              "-projectPath", $script:UnityProject,
+              "-executeMethod", "Manosaba.EditorTools.AddressablesBuild.Run",
+              "-logFile", "-"
+          )
+          if ($run.exit_code -ne 0) {
+              throw "AddressablesBuild.Run exited $($run.exit_code); see $log"
+          }
+          if (-not (Test-Path $resultPath)) {
+              throw "AddressablesBuild.Run produced no result: $resultPath"
+          }
+          $built = Get-Content $resultPath -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($built.status -ne "OK") {
+              throw "Addressables build status is '$($built.status)'"
+          }
+          Write-Host ("Addressables OK: entries={0} locations={1} bundles={2}" -f
+              $built.entry_count, $built.location_count, $built.bundle_count)
+
+      - name: G4 Editor Play Mode + game-start auto advance
+        shell: pwsh
+        run: ./tools/unity-rebuild/g4_play_mode.ps1
+
+      - name: G5 standalone Player + game-start auto advance
+        shell: pwsh
+        run: ./tools/unity-rebuild/g5_player_smoke.ps1
+
+      - name: G6 content coverage
+        shell: pwsh
+        run: ./tools/unity-rebuild/g6_content_coverage.ps1
+
+      - name: Upload runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-evidence-${{ github.run_id }}
+          path: |
+            tools/unity-rebuild/out/unity/*.json
+            tools/unity-rebuild/out/logs/*.log
+          if-no-files-found: ignore
+          retention-days: 14

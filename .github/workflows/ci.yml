@@ -1,0 +1,90 @@
+name: Manosaba CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manosaba-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Static reconstruction checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify Unity version pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx "m_EditorVersion: 6000.0.48f1" UnityProject/ProjectSettings/ProjectVersion.txt
+
+      - name: Compile Python tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q tools/unity-rebuild tools/audit
+
+      - name: Parse PowerShell tooling
+        shell: pwsh
+        run: |
+          $allErrors = @()
+          Get-ChildItem -Path tools -Recurse -Filter *.ps1 | ForEach-Object {
+              $tokens = $null
+              $parseErrors = $null
+              [System.Management.Automation.Language.Parser]::ParseFile(
+                  $_.FullName,
+                  [ref]$tokens,
+                  [ref]$parseErrors
+              ) | Out-Null
+              foreach ($parseError in @($parseErrors)) {
+                  $allErrors += ("{0}:{1}:{2}: {3}" -f
+                      $_.FullName,
+                      $parseError.Extent.StartLineNumber,
+                      $parseError.Extent.StartColumnNumber,
+                      $parseError.Message)
+              }
+          }
+          if ($allErrors.Count -gt 0) {
+              $allErrors | ForEach-Object { Write-Error $_ }
+              exit 1
+          }
+
+      - name: Check converted C# tree structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/unity-rebuild/check_converted_tree.py UnityProject/Assets/Scripts/Game
+
+      - name: Record remaining IL2CPP stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/unity-rebuild/out/unity
+          python tools/unity-rebuild/scan_stub_bodies.py \
+            --json tools/unity-rebuild/out/unity/stub_scan.json
+
+      - name: Upload static evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-evidence-${{ github.run_id }}
+          path: tools/unity-rebuild/out/unity/stub_scan.json
+          if-no-files-found: ignore
+          retention-days: 14
