@@ -1,0 +1,53 @@
+====================================================================================================
+FUNCTION RVA 0xD2B440  VA 0x180D2B440  size 0x82 (130 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended$$get_AssignedSubId
+  csig   : System_String_o* GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended__get_AssignedSubId (GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended :: private string get_AssignedSubId()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended:
+      +0x68   SubId                          StringParameter
+      +0x70   MatchScreenWidth               BooleanParameter
+  fields of SpawnExtended.<Execute>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SpawnExtended
+      +0x20   asyncToken                     AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D2B440  push    rbx                                       
+  0x180D2B442  sub     rsp, 0x20                                 
+  0x180D2B446  cmp     byte ptr [rip + 0x23b0dbf], 0                ; data_30DC20C
+  0x180D2B44D  mov     rbx, qword ptr [rcx + 0x68]                  ; rcx->SpawnExtended.SubId
+  0x180D2B451  jne     0x180d2b47c                               
+  0x180D2B453  lea     rcx, [rip + 0x210e94e]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D2B45A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B45F  lock or dword ptr [rsp], 0                        
+  0x180D2B464  lea     rcx, [rip + 0x210cb9d]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D2B46B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B470  lock or dword ptr [rsp], 0                        
+  0x180D2B475  mov     byte ptr [rip + 0x23b0d90], 1                ; data_30DC20C
+
+180D2B47C:
+  0x180D2B47C  test    rbx, rbx                                  
+  0x180D2B47F  je      0x180d2b4ba                               
+  0x180D2B481  mov     rdx, qword ptr [rbx]                      
+  0x180D2B484  mov     rcx, rbx                                  
+  0x180D2B487  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D2B48E  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D2B495  call    rax                                       
+  0x180D2B497  test    al, al                                    
+  0x180D2B499  je      0x180d2b4ba                               
+  0x180D2B49B  mov     r8, qword ptr [rip + 0x210cb66]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D2B4A2  lea     rdx, [rsp + 0x30]                         
+  0x180D2B4A7  mov     rcx, rbx                                  
+  0x180D2B4AA  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D2B4AF  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D2B4B4  add     rsp, 0x20                                 
+  0x180D2B4B8  pop     rbx                                       
+  0x180D2B4B9  ret                                               
+
+180D2B4BA:
+  0x180D2B4BA  xor     eax, eax                                  
+  0x180D2B4BC  add     rsp, 0x20                                 
+  0x180D2B4C0  pop     rbx                                       
+  0x180D2B4C1  ret                                               

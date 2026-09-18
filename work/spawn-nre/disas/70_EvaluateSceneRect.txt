@@ -1,0 +1,283 @@
+====================================================================================================
+FUNCTION RVA 0xCF4EB0  VA 0x180CF4EB0  size 0x3E8 (1000 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility$$EvaluateSceneRect
+  csig   : UnityEngine_Rect_o GigaCreation_NaninovelExtender_Cameras_CameraConfigurationUtility__EvaluateSceneRect (System_Nullable_bool__o matchScreenWidth, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility :: public static Rect EvaluateSceneRect(Nullable<bool> matchScreenWidth)
+====================================================================================================
+  0x180CF4EB0  push    rbp                                       
+  0x180CF4EB2  push    rsi                                       
+  0x180CF4EB3  push    rdi                                       
+  0x180CF4EB4  push    r14                                       
+  0x180CF4EB6  push    r15                                       
+  0x180CF4EB8  sub     rsp, 0x40                                 
+  0x180CF4EBC  lea     rbp, [rsp + 0x20]                         
+  0x180CF4EC1  cmp     byte ptr [rip + 0x23e835c], 0                ; data_30DD224
+  0x180CF4EC8  mov     r14, rcx                                  
+  0x180CF4ECB  mov     qword ptr [rbp + 0x58], rbx               
+  0x180CF4ECF  movzx   ebx, dx                                   
+  0x180CF4ED2  movaps  xmmword ptr [rbp + 0x10], xmm6            
+  0x180CF4ED6  jne     0x180cf4f56                               
+  0x180CF4ED8  lea     rcx, [rip + 0x215d401]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CF4EDF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4EE4  lock or dword ptr [rsp], 0                        
+  0x180CF4EE9  lea     rcx, [rip + 0x2175568]                       ; METHODINFO Method$Naninovel.Engine.TryGetService<ICameraManager>()
+  0x180CF4EF0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4EF5  lock or dword ptr [rsp], 0                        
+  0x180CF4EFA  lea     rcx, [rip + 0x215d02f]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF4F01  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F06  lock or dword ptr [rsp], 0                        
+  0x180CF4F0B  lea     rcx, [rip + 0x213e0c6]                       ; TYPE Naninovel.IEngineService<CameraConfiguration>_TypeInfo
+  0x180CF4F12  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F17  lock or dword ptr [rsp], 0                        
+  0x180CF4F1C  lea     rcx, [rip + 0x214397d]                       ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180CF4F23  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F28  lock or dword ptr [rsp], 0                        
+  0x180CF4F2D  lea     rcx, [rip + 0x214394c]                       ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180CF4F34  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F39  lock or dword ptr [rsp], 0                        
+  0x180CF4F3E  lea     rcx, [rip + 0x2175503]                       ; STR 'The ICameraManager service not found¡£'
+  0x180CF4F45  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F4A  lock or dword ptr [rsp], 0                        
+  0x180CF4F4F  mov     byte ptr [rip + 0x23e82ce], 1                ; data_30DD224
+
+180CF4F56:
+  0x180CF4F56  mov     rcx, qword ptr [rip + 0x215cfd3]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF4F5D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF4F64  jne     0x180cf4f6b                               
+  0x180CF4F66  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF4F6B:
+  0x180CF4F6B  mov     rdi, qword ptr [rip + 0x21754e6]             ; METHODINFO Method$Naninovel.Engine.TryGetService<ICameraManager>()
+  0x180CF4F72  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180CF4F77  jne     0x180cf4f99                               
+  0x180CF4F79  lea     rcx, [rip + 0x215cfb0]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF4F80  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF4F85  lock or dword ptr [rsp], 0                        
+  0x180CF4F8A  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180CF4F8F  jne     0x180cf4f99                               
+  0x180CF4F91  mov     rcx, rdi                                  
+  0x180CF4F94  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CF4F99:
+  0x180CF4F99  mov     rcx, qword ptr [rip + 0x215cf90]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF4FA0  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF4FA7  jne     0x180cf4fae                               
+  0x180CF4FA9  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF4FAE:
+  0x180CF4FAE  mov     rcx, qword ptr [rdi + 0x38]               
+  0x180CF4FB2  mov     rcx, qword ptr [rcx + 8]                  
+  0x180CF4FB6  call    0x1806825e0                                  ; -> Naninovel.Engine$$GetService<object>
+  0x180CF4FBB  cmp     dword ptr [rip + 0x23e4202], 0               ; data_30D91C4
+  0x180CF4FC2  mov     qword ptr [rbp + 0x68], rax               
+  0x180CF4FC6  je      0x180cf5007                               
+  0x180CF4FC8  lea     r8, [rbp + 0x68]                          
+  0x180CF4FCC  shr     r8, 0xc                                   
+  0x180CF4FD0  lea     r9, [rip + 0x243f5a9]                        ; data_3134580
+  0x180CF4FD7  and     r8d, 0x1fffff                             
+  0x180CF4FDE  mov     edx, r8d                                  
+  0x180CF4FE1  shr     rdx, 6                                    
+  0x180CF4FE5  and     r8d, 0x3f                                 
+  0x180CF4FE9  prefetchw byte ptr [r9 + rdx*8]                     
+  0x180CF4FEE  nop                                               
+
+180CF4FF0:
+  0x180CF4FF0  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180CF4FF4  mov     rcx, rax                                  
+  0x180CF4FF7  bts     rcx, r8                                   
+  0x180CF4FFB  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180CF5001  jne     0x180cf4ff0                               
+  0x180CF5003  mov     rax, qword ptr [rbp + 0x68]               
+
+180CF5007:
+  0x180CF5007  test    rax, rax                                  
+  0x180CF500A  je      0x180cf5224                               
+  0x180CF5010  mov     r8, rax                                   
+  0x180CF5013  call    0x1800204b0                                  ; -> sub_204B0 (runtime/helper)
+  0x180CF5018  mov     rcx, qword ptr [rip + 0x2143861]             ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180CF501F  mov     rdi, rax                                  
+  0x180CF5022  mov     word ptr [rbp + 0x50], bx                 
+  0x180CF5026  mov     rax, qword ptr [rcx + 0x20]               
+  0x180CF502A  test    byte ptr [rax + 0x135], 1                 
+  0x180CF5031  jne     0x180cf503b                               
+  0x180CF5033  mov     rcx, rax                                  
+  0x180CF5036  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CF503B:
+  0x180CF503B  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CF5042  lea     r8, [rbp + 0x50]                          
+  0x180CF5046  mov     rcx, qword ptr [rax + 8]                  
+  0x180CF504A  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180CF5051  movsxd  rax, dword ptr [rdx + 0x18]               
+  0x180CF5055  add     r8, rax                                   
+  0x180CF5058  mov     rax, qword ptr [rdx + 0x10]               
+  0x180CF505C  cmp     dword ptr [rax + 0x28], 0                 
+  0x180CF5060  lea     rcx, [r8 - 0x10]                          
+  0x180CF5064  cmovge  rcx, r8                                   
+  0x180CF5068  cmp     byte ptr [rcx], 0                         
+  0x180CF506B  je      0x180cf512c                               
+  0x180CF5071  mov     rbx, qword ptr [rip + 0x2143828]             ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180CF5078  mov     rax, qword ptr [rbx + 0x20]               
+  0x180CF507C  test    byte ptr [rax + 0x135], 1                 
+  0x180CF5083  jne     0x180cf508d                               
+  0x180CF5085  mov     rcx, rax                                  
+  0x180CF5088  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CF508D:
+  0x180CF508D  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CF5094  mov     rcx, qword ptr [rax]                      
+  0x180CF5097  mov     esi, dword ptr [rcx + 0xfc]               
+  0x180CF509D  lea     rax, [rsi + 0xf]                          
+  0x180CF50A1  cmp     rax, rsi                                  
+  0x180CF50A4  ja      0x180cf50b0                               
+  0x180CF50A6  movabs  rax, 0xffffffffffffff0                    
+
+180CF50B0:
+  0x180CF50B0  and     rax, 0xfffffffffffffff0                   
+  0x180CF50B4  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CF50B9  sub     rsp, rax                                  
+  0x180CF50BC  mov     rax, qword ptr [rbx + 0x20]               
+  0x180CF50C0  test    byte ptr [rax + 0x135], 1                 
+  0x180CF50C7  lea     r15, [rsp + 0x20]                         
+  0x180CF50CC  jne     0x180cf50d6                               
+  0x180CF50CE  mov     rcx, rax                                  
+  0x180CF50D1  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CF50D6:
+  0x180CF50D6  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CF50DD  mov     r8, rsi                                   
+  0x180CF50E0  mov     rcx, qword ptr [rax + 8]                  
+  0x180CF50E4  mov     r9, qword ptr [rcx + 0x80]                
+  0x180CF50EB  lea     rcx, [rbp + 0x50]                         
+  0x180CF50EF  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180CF50F3  add     rcx, rax                                  
+  0x180CF50F6  mov     rax, qword ptr [r9 + 0x30]                
+  0x180CF50FA  cmp     dword ptr [rax + 0x28], 0                 
+  0x180CF50FE  lea     rdx, [rcx - 0x10]                         
+  0x180CF5102  cmovge  rdx, rcx                                  
+  0x180CF5106  mov     rcx, r15                                  
+  0x180CF5109  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CF510E  mov     r8, rsi                                   
+  0x180CF5111  lea     rcx, [rbp + 0x50]                         
+  0x180CF5115  mov     rdx, r15                                  
+  0x180CF5118  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CF511D  movzx   eax, byte ptr [rbp + 0x50]                
+  0x180CF5121  test    rdi, rdi                                  
+  0x180CF5124  je      0x180cf5265                               
+  0x180CF512A  jmp     0x180cf5139                               
+
+180CF512C:
+  0x180CF512C  test    rdi, rdi                                  
+  0x180CF512F  je      0x180cf5265                               
+  0x180CF5135  movzx   eax, byte ptr [rdi + 0x24]                
+
+180CF5139:
+  0x180CF5139  test    al, al                                    
+  0x180CF513B  jne     0x180cf5152                               
+  0x180CF513D  mov     rax, qword ptr [rdi + 0x18]               
+  0x180CF5141  movd    xmm6, eax                                 
+  0x180CF5145  shr     rax, 0x20                                 
+  0x180CF5149  cvtdq2ps xmm6, xmm6                                
+  0x180CF514C  movd    xmm5, eax                                 
+  0x180CF5150  jmp     0x180cf51cd                               
+
+180CF5152:
+  0x180CF5152  mov     rax, qword ptr [rip + 0x23f1777]             ; data_30E68D0
+  0x180CF5159  mov     ebx, dword ptr [rdi + 0x1c]               
+  0x180CF515C  test    rax, rax                                  
+  0x180CF515F  jne     0x180cf517d                               
+  0x180CF5161  lea     rcx, [rip + 0x18fedf8]                       ; data_25F3F60
+  0x180CF5168  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CF516D  test    rax, rax                                  
+  0x180CF5170  je      0x180cf526b                               
+  0x180CF5176  mov     qword ptr [rip + 0x23f1753], rax             ; data_30E68D0
+
+180CF517D:
+  0x180CF517D  call    rax                                       
+  0x180CF517F  mov     esi, eax                                  
+  0x180CF5181  mov     rax, qword ptr [rip + 0x23f1750]             ; data_30E68D8
+  0x180CF5188  test    rax, rax                                  
+  0x180CF518B  jne     0x180cf51a9                               
+  0x180CF518D  lea     rcx, [rip + 0x18fe9dc]                       ; data_25F3B70
+  0x180CF5194  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CF5199  test    rax, rax                                  
+  0x180CF519C  je      0x180cf5282                               
+  0x180CF51A2  mov     qword ptr [rip + 0x23f172f], rax             ; data_30E68D8
+
+180CF51A9:
+  0x180CF51A9  movd    xmm0, ebx                                 
+  0x180CF51AD  cvtdq2ps xmm0, xmm0                                
+  0x180CF51B0  movd    xmm6, esi                                 
+  0x180CF51B4  cvtdq2ps xmm6, xmm6                                
+  0x180CF51B7  mulss   xmm6, xmm0                                
+  0x180CF51BB  call    rax                                       
+  0x180CF51BD  movd    xmm5, dword ptr [rdi + 0x1c]              
+  0x180CF51C2  movd    xmm0, eax                                 
+  0x180CF51C6  cvtdq2ps xmm0, xmm0                                
+  0x180CF51C9  divss   xmm6, xmm0                                
+
+180CF51CD:
+  0x180CF51CD  cvtdq2ps xmm5, xmm5                                
+  0x180CF51D0  divss   xmm6, dword ptr [rdi + 0x20]              
+  0x180CF51D5  divss   xmm5, dword ptr [rdi + 0x20]              
+  0x180CF51DA  movsd   xmm4, qword ptr [rdi + 0x28]              
+  0x180CF51DF  movaps  xmm0, xmm6                                
+  0x180CF51E2  mulss   xmm0, dword ptr [rip + 0x1ded53e]            ; data_2AE2728
+  0x180CF51EA  movaps  xmm2, xmm5                                
+  0x180CF51ED  mulss   xmm2, dword ptr [rip + 0x1ded533]            ; data_2AE2728
+  0x180CF51F5  subss   xmm4, xmm0                                
+  0x180CF51F9  movss   xmm0, dword ptr [rdi + 0x2c]              
+  0x180CF51FE  subss   xmm0, xmm2                                
+  0x180CF5202  shufps  xmm4, xmm4, 0xe1                          
+  0x180CF5206  movss   xmm4, xmm0                                
+  0x180CF520A  shufps  xmm4, xmm4, 0xc6                          
+  0x180CF520E  movss   xmm4, xmm6                                
+  0x180CF5212  shufps  xmm4, xmm4, 0x27                          
+  0x180CF5216  movss   xmm4, xmm5                                
+  0x180CF521A  shufps  xmm4, xmm4, 0x39                          
+  0x180CF521E  movups  xmmword ptr [r14], xmm4                   
+  0x180CF5222  jmp     0x180cf524e                               
+
+180CF5224:
+  0x180CF5224  mov     rcx, qword ptr [rip + 0x215d0b5]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CF522B  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF5232  jne     0x180cf5239                               
+  0x180CF5234  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF5239:
+  0x180CF5239  mov     rcx, qword ptr [rip + 0x2175208]             ; STR 'The ICameraManager service not found¡£'
+  0x180CF5240  xor     edx, edx                                  
+  0x180CF5242  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CF5247  xorps   xmm0, xmm0                                
+  0x180CF524A  movups  xmmword ptr [r14], xmm0                   
+
+180CF524E:
+  0x180CF524E  mov     rbx, qword ptr [rbp + 0x58]               
+  0x180CF5252  mov     rax, r14                                  
+  0x180CF5255  movaps  xmm6, xmmword ptr [rbp + 0x10]            
+  0x180CF5259  lea     rsp, [rbp + 0x20]                         
+  0x180CF525D  pop     r15                                       
+  0x180CF525F  pop     r14                                       
+  0x180CF5261  pop     rdi                                       
+  0x180CF5262  pop     rsi                                       
+  0x180CF5263  pop     rbp                                       
+  0x180CF5264  ret                                               
+
+180CF5265:
+  0x180CF5265  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF526A  int3                                              
+
+180CF526B:
+  0x180CF526B  lea     rcx, [rip + 0x18fecee]                       ; data_25F3F60
+  0x180CF5272  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CF5277  mov     rcx, rax                                  
+  0x180CF527A  xor     edx, edx                                  
+  0x180CF527C  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CF5281  int3                                              
+
+180CF5282:
+  0x180CF5282  lea     rcx, [rip + 0x18fe8e7]                       ; data_25F3B70
+  0x180CF5289  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CF528E  mov     rcx, rax                                  
+  0x180CF5291  xor     edx, edx                                  
+  0x180CF5293  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)

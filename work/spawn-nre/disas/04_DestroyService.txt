@@ -1,0 +1,81 @@
+====================================================================================================
+FUNCTION RVA 0xD2C710  VA 0x180D2C710  size 0x4E (78 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$DestroyService
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__DestroyService (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public override void DestroyService()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2C710  push    rbx                                       
+  0x180D2C712  sub     rsp, 0x20                                 
+  0x180D2C716  mov     rdx, qword ptr [rcx]                      
+  0x180D2C719  mov     rbx, rcx                                  
+  0x180D2C71C  mov     rax, qword ptr [rdx + 0x318]              
+  0x180D2C723  mov     rdx, qword ptr [rdx + 0x320]              
+  0x180D2C72A  call    rax                                       
+  0x180D2C72C  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2C730  test    rcx, rcx                                  
+  0x180D2C733  je      0x180d2c74e                               
+  0x180D2C735  mov     r9, qword ptr [rcx]                       
+  0x180D2C738  mov     r8b, 1                                    
+  0x180D2C73B  mov     rdx, rbx                                  
+  0x180D2C73E  mov     rax, qword ptr [r9 + 0x338]               
+  0x180D2C745  mov     r9, qword ptr [r9 + 0x340]                
+  0x180D2C74C  call    rax                                       
+
+180D2C74E:
+  0x180D2C74E  mov     rcx, qword ptr [rbx + 0x50]                  ; rbx->MultipliableSpawn._container | <Spawn>d__11.<>u__2 | <Spawn>d__12.<>u__1
+  0x180D2C752  xor     edx, edx                                  
+  0x180D2C754  add     rsp, 0x20                                 
+  0x180D2C758  pop     rbx                                       
+  0x180D2C759  jmp     0x18054be20                                  ; -> Naninovel.ObjectUtils$$DestroyOrImmediate

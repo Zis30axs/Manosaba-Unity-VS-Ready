@@ -1,0 +1,76 @@
+====================================================================================================
+FUNCTION RVA 0xD2AAD0  VA 0x180D2AAD0  size 0xF7 (247 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended$$Warn
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_DestroySpawnedExtended__Warn (GigaCreation_NaninovelExtender_ExtendedSpawn_DestroySpawnedExtended_o* __this, System_String_o* message, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended :: public override void Warn(string message)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended:
+      +0x48   SubId                          StringParameter
+      +0x50   LogWarning                     BooleanParameter
+  fields of DestroySpawnedExtended.<Destroy>d__4:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DestroySpawnedExtended
+      +0x20   token                          AsyncToken
+      +0x30   <multipliableSpawnManager>5__2 IMultipliableSpawnManager
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D2AAD0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D2AAD5  push    rdi                                       
+  0x180D2AAD6  sub     rsp, 0x60                                 
+  0x180D2AADA  cmp     byte ptr [rip + 0x23b2870], 0                ; data_30DD351
+  0x180D2AAE1  mov     rdi, rdx                                  
+  0x180D2AAE4  mov     rbx, rcx                                  
+  0x180D2AAE7  jne     0x180d2ab01                               
+  0x180D2AAE9  lea     rcx, [rip + 0x21271b0]                       ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D2AAF0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2AAF5  lock or dword ptr [rsp], 0                        
+  0x180D2AAFA  mov     byte ptr [rip + 0x23b2850], 1                ; data_30DD351
+
+180D2AB01:
+  0x180D2AB01  mov     r8, qword ptr [rip + 0x2127198]              ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D2AB08  lea     rdx, [rsp + 0x70]                         
+  0x180D2AB0D  mov     rcx, qword ptr [rbx + 0x50]                  ; rbx->DestroySpawnedExtended.LogWarning
+  0x180D2AB11  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D2AB16  cmp     byte ptr [rsp + 0x70], 0                  
+  0x180D2AB1B  je      0x180d2abbc                               
+  0x180D2AB21  cmp     byte ptr [rip + 0x23b163a], 0                ; data_30DC162
+  0x180D2AB28  jne     0x180d2ab53                               
+  0x180D2AB2A  lea     rcx, [rip + 0x21273ff]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D2AB31  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2AB36  lock or dword ptr [rsp], 0                        
+  0x180D2AB3B  lea     rcx, [rip + 0x2108f9e]                       ; METHODINFO Method$System.Nullable<PlaybackSpot>..ctor()
+  0x180D2AB42  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2AB47  lock or dword ptr [rsp], 0                        
+  0x180D2AB4C  mov     byte ptr [rip + 0x23b160f], 1                ; data_30DC162
+
+180D2AB53:
+  0x180D2AB53  mov     r8, qword ptr [rip + 0x2108f86]              ; METHODINFO Method$System.Nullable<PlaybackSpot>..ctor()
+  0x180D2AB5A  lea     rdx, [rsp + 0x20]                         
+  0x180D2AB5F  xorps   xmm0, xmm0                                
+  0x180D2AB62  lea     rcx, [rsp + 0x40]                         
+  0x180D2AB67  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D2AB6C  xor     eax, eax                                  
+  0x180D2AB6E  movups  xmm0, xmmword ptr [rbx + 0x18]               ; rbx-><Destroy>d__4.<>4__this
+  0x180D2AB72  mov     qword ptr [rsp + 0x50], rax               
+  0x180D2AB77  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D2AB7C  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180D2AB81  mov     rcx, qword ptr [rip + 0x21273a8]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D2AB88  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2AB8F  jne     0x180d2ab96                               
+  0x180D2AB91  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2AB96:
+  0x180D2AB96  movups  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D2AB9B  lea     rdx, [rsp + 0x20]                         
+  0x180D2ABA0  xor     r8d, r8d                                  
+  0x180D2ABA3  movsd   xmm1, qword ptr [rsp + 0x50]              
+  0x180D2ABA9  mov     rcx, rdi                                  
+  0x180D2ABAC  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D2ABB1  movsd   qword ptr [rsp + 0x30], xmm1              
+  0x180D2ABB7  call    0x1805672c0                                  ; -> Naninovel.Engine$$Warn
+
+180D2ABBC:
+  0x180D2ABBC  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180D2ABC1  add     rsp, 0x60                                 
+  0x180D2ABC5  pop     rdi                                       
+  0x180D2ABC6  ret                                               

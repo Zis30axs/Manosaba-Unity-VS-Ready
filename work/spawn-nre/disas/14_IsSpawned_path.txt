@@ -1,0 +1,94 @@
+====================================================================================================
+FUNCTION RVA 0xD2D150  VA 0x180D2D150  size 0x70 (112 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$IsSpawned
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__IsSpawned (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, System_String_o* path, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public override bool IsSpawned(string path)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2D150  mov     qword ptr [rsp + 8], rbx                  
+  0x180D2D155  push    rdi                                       
+  0x180D2D156  sub     rsp, 0x20                                 
+  0x180D2D15A  cmp     byte ptr [rip + 0x23b01fe], 0                ; data_30DD35F
+  0x180D2D161  mov     rbx, rdx                                  
+  0x180D2D164  mov     rdi, rcx                                  
+  0x180D2D167  jne     0x180d2d181                               
+  0x180D2D169  lea     rcx, [rip + 0x211df68]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.ContainsKey()
+  0x180D2D170  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2D175  lock or dword ptr [rsp], 0                        
+  0x180D2D17A  mov     byte ptr [rip + 0x23b01de], 1                ; data_30DD35F
+
+180D2D181:
+  0x180D2D181  test    rbx, rbx                                  
+  0x180D2D184  je      0x180d2d1ae                               
+  0x180D2D186  cmp     dword ptr [rbx + 0x10], 0                 
+  0x180D2D18A  jbe     0x180d2d1ae                               
+  0x180D2D18C  mov     rcx, qword ptr [rdi + 0x38]                  ; rdi->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2D190  test    rcx, rcx                                  
+  0x180D2D193  je      0x180d2d1bb                               
+  0x180D2D195  mov     r8, qword ptr [rip + 0x211df3c]              ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.ContainsKey()
+  0x180D2D19C  mov     rdx, rbx                                  
+  0x180D2D19F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D2D1A4  add     rsp, 0x20                                 
+  0x180D2D1A8  pop     rdi                                       
+  0x180D2D1A9  jmp     0x180c63ae0                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$ContainsKey
+
+180D2D1AE:
+  0x180D2D1AE  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D2D1B3  xor     al, al                                    
+  0x180D2D1B5  add     rsp, 0x20                                 
+  0x180D2D1B9  pop     rdi                                       
+  0x180D2D1BA  ret                                               
+
+180D2D1BB:
+  0x180D2D1BB  call    0x180246730                                  ; THROW NullReferenceException

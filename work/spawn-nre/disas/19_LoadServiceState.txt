@@ -1,0 +1,156 @@
+====================================================================================================
+FUNCTION RVA 0xD2D6E0  VA 0x180D2D6E0  size 0x17E (382 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$LoadServiceState
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__LoadServiceState (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, Naninovel_GameStateMap_o* stateMap, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public override UniTask LoadServiceState(GameStateMap stateMap)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2D6E0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D2D6E5  push    rdi                                       
+  0x180D2D6E6  sub     rsp, 0x50                                 
+  0x180D2D6EA  cmp     byte ptr [rip + 0x23afc73], 0                ; data_30DD364
+  0x180D2D6F1  mov     rdi, rdx                                  
+  0x180D2D6F4  mov     rbx, rcx                                  
+  0x180D2D6F7  jne     0x180d2d711                               
+  0x180D2D6F9  lea     rcx, [rip + 0x2102660]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<MultipliableSpawn.<LoadServiceState>d__20>()
+  0x180D2D700  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2D705  lock or dword ptr [rsp], 0                        
+  0x180D2D70A  mov     byte ptr [rip + 0x23afc53], 1                ; data_30DD364
+
+180D2D711:
+  0x180D2D711  xor     eax, eax                                  
+  0x180D2D713  lea     r9, [rip + 0x23c0b86]                        ; data_30EE2A0
+  0x180D2D71A  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2D71F  xorps   xmm0, xmm0                                
+  0x180D2D722  mov     qword ptr [rsp + 0x48], rax               
+  0x180D2D727  xorps   xmm1, xmm1                                
+  0x180D2D72A  mov     eax, dword ptr [rip + 0x23aba94]             ; data_30D91C4
+  0x180D2D730  movdqu  xmmword ptr [rsp + 0x38], xmm0            
+  0x180D2D736  movups  xmmword ptr [rsp + 0x28], xmm1            
+  0x180D2D73B  test    eax, eax                                  
+  0x180D2D73D  je      0x180d2d78f                               
+  0x180D2D73F  lea     r8, [rsp + 0x28]                          
+  0x180D2D744  shr     r8, 0xc                                   
+  0x180D2D748  and     r8d, 0x1fffff                             
+  0x180D2D74F  mov     eax, r8d                                  
+  0x180D2D752  shr     rax, 6                                    
+  0x180D2D756  and     r8d, 0x3f                                 
+  0x180D2D75A  lea     rdx, [r9 + rax*8]                         
+  0x180D2D75E  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2D765  nop     word ptr [rax + rax]                      
+
+180D2D770:
+  0x180D2D770  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2D777  mov     rcx, rax                                  
+  0x180D2D77A  bts     rcx, r8                                   
+  0x180D2D77E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2D787  jne     0x180d2d770                               
+  0x180D2D789  mov     eax, dword ptr [rip + 0x23aba35]             ; data_30D91C4
+
+180D2D78F:
+  0x180D2D78F  mov     qword ptr [rsp + 0x40], rbx               
+  0x180D2D794  test    eax, eax                                  
+  0x180D2D796  je      0x180d2d7df                               
+  0x180D2D798  lea     r8, [rsp + 0x40]                          
+  0x180D2D79D  shr     r8, 0xc                                   
+  0x180D2D7A1  and     r8d, 0x1fffff                             
+  0x180D2D7A8  mov     eax, r8d                                  
+  0x180D2D7AB  shr     rax, 6                                    
+  0x180D2D7AF  and     r8d, 0x3f                                 
+  0x180D2D7B3  lea     rdx, [r9 + rax*8]                         
+  0x180D2D7B7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2D7BE  nop                                               
+
+180D2D7C0:
+  0x180D2D7C0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2D7C7  mov     rcx, rax                                  
+  0x180D2D7CA  bts     rcx, r8                                   
+  0x180D2D7CE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2D7D7  jne     0x180d2d7c0                               
+  0x180D2D7D9  mov     eax, dword ptr [rip + 0x23ab9e5]             ; data_30D91C4
+
+180D2D7DF:
+  0x180D2D7DF  mov     qword ptr [rsp + 0x38], rdi               
+  0x180D2D7E4  test    eax, eax                                  
+  0x180D2D7E6  je      0x180d2d829                               
+  0x180D2D7E8  lea     r8, [rsp + 0x38]                          
+  0x180D2D7ED  shr     r8, 0xc                                   
+  0x180D2D7F1  and     r8d, 0x1fffff                             
+  0x180D2D7F8  mov     eax, r8d                                  
+  0x180D2D7FB  shr     rax, 6                                    
+  0x180D2D7FF  and     r8d, 0x3f                                 
+  0x180D2D803  lea     rdx, [r9 + rax*8]                         
+  0x180D2D807  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2D80E  nop                                               
+
+180D2D810:
+  0x180D2D810  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2D817  mov     rcx, rax                                  
+  0x180D2D81A  bts     rcx, r8                                   
+  0x180D2D81E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2D827  jne     0x180d2d810                               
+
+180D2D829:
+  0x180D2D829  mov     r8, qword ptr [rip + 0x2102530]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<MultipliableSpawn.<LoadServiceState>d__20>()
+  0x180D2D830  lea     rdx, [rsp + 0x20]                         
+  0x180D2D835  lea     rcx, [rsp + 0x28]                         
+  0x180D2D83A  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D2D842  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D2D847  xor     edx, edx                                  
+  0x180D2D849  lea     rcx, [rsp + 0x28]                         
+  0x180D2D84E  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D2D853  mov     rbx, qword ptr [rsp + 0x60]               
+  0x180D2D858  add     rsp, 0x50                                 
+  0x180D2D85C  pop     rdi                                       
+  0x180D2D85D  ret                                               

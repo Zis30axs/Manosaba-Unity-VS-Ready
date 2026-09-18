@@ -1,0 +1,221 @@
+====================================================================================================
+FUNCTION RVA 0xD2E000  VA 0x180D2E000  size 0x261 (609 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn.<HoldResources>d__9$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__HoldResources_d__9__MoveNext (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__HoldResources_d__9_o __this, const MethodInfo* method);
+  dump.cs: MultipliableSpawn.<HoldResources>d__9 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2E000  mov     qword ptr [rsp + 8], rcx                  
+  0x180D2E005  push    rbx                                       
+  0x180D2E006  push    rsi                                       
+  0x180D2E007  push    rdi                                       
+  0x180D2E008  sub     rsp, 0x70                                 
+  0x180D2E00C  mov     rbx, rcx                                  
+  0x180D2E00F  cmp     byte ptr [rip + 0x23af354], 0                ; data_30DD36A
+  0x180D2E016  jne     0x180d2e063                               
+  0x180D2E018  lea     rcx, [rip + 0x2101d21]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<Resource<GameObject>>, MultipliableSpawn.<HoldResources>d__9>()
+  0x180D2E01F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2E024  lock or dword ptr [rsp], 0                        
+  0x180D2E029  lea     rcx, [rip + 0x21059b0]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource<GameObject>>.GetResult()
+  0x180D2E030  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2E035  lock or dword ptr [rsp], 0                        
+  0x180D2E03A  lea     rcx, [rip + 0x2105987]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource<GameObject>>.get_IsCompleted()
+  0x180D2E041  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2E046  lock or dword ptr [rsp], 0                        
+  0x180D2E04B  lea     rcx, [rip + 0x2105956]                       ; METHODINFO Method$Naninovel.UniTask<Resource<GameObject>>.GetAwaiter()
+  0x180D2E052  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2E057  lock or dword ptr [rsp], 0                        
+  0x180D2E05C  mov     byte ptr [rip + 0x23af307], 1                ; data_30DD36A
+
+180D2E063:
+  0x180D2E063  mov     qword ptr [rsp + 0xa0], 0                 
+  0x180D2E06F  xorps   xmm0, xmm0                                
+  0x180D2E072  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D2E077  mov     eax, dword ptr [rbx]                      
+  0x180D2E079  mov     rdi, qword ptr [rbx + 0x20]                  ; rbx-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2E07D  test    eax, eax                                  
+  0x180D2E07F  jne     0x180d2e09c                               
+  0x180D2E081  movups  xmm0, xmmword ptr [rbx + 0x30]               ; rbx-><HoldResources>d__9.<>u__1 | <Spawn>d__11.asyncToken | <Spawn>d__12.path
+  0x180D2E085  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D2E08A  xorps   xmm1, xmm1                                
+  0x180D2E08D  movups  xmmword ptr [rbx + 0x30], xmm1               ; rbx-><HoldResources>d__9.<>u__1 | <Spawn>d__11.asyncToken
+  0x180D2E091  mov     dword ptr [rbx], 0xffffffff               
+  0x180D2E097  jmp     0x180d2e18a                               
+
+180D2E09C:
+  0x180D2E09C  xor     r8d, r8d                                  
+  0x180D2E09F  lea     rdx, [rsp + 0xa0]                         
+  0x180D2E0A7  mov     rcx, qword ptr [rbx + 0x18]                  ; rbx-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2E0AB  call    0x1805d3870                                  ; -> Naninovel.SpawnConfiguration$$ProcessInputPath
+  0x180D2E0B0  mov     r8, rax                                   
+  0x180D2E0B3  test    rdi, rdi                                  
+  0x180D2E0B6  je      0x180d2e25c                               
+  0x180D2E0BC  mov     rdx, qword ptr [rdi + 0x48]                  ; rdi->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2E0C0  test    rdx, rdx                                  
+  0x180D2E0C3  je      0x180d2e256                               
+  0x180D2E0C9  mov     rax, qword ptr [rdx]                      
+  0x180D2E0CC  mov     r10, qword ptr [rax + 0x388]              
+  0x180D2E0D3  mov     rax, qword ptr [rax + 0x390]              
+  0x180D2E0DA  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2E0DF  mov     r9, qword ptr [rbx + 0x28]                   ; rbx-><HoldResources>d__9.holder | <LoadObjectsAsync>d__21.<>u__1 | <LoadServiceState>d__20.<>u__1
+  0x180D2E0E3  lea     rcx, [rsp + 0x60]                         
+  0x180D2E0E8  call    r10                                       
+  0x180D2E0EB  movups  xmm0, xmmword ptr [rax]                   
+  0x180D2E0EE  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D2E0F3  mov     r8, qword ptr [rip + 0x21058ae]              ; METHODINFO Method$Naninovel.UniTask<Resource<GameObject>>.GetAwaiter()
+  0x180D2E0FA  lea     rdx, [rsp + 0x60]                         
+  0x180D2E0FF  lea     rcx, [rsp + 0x50]                         
+  0x180D2E104  call    0x180972e90                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x180D2E109  movaps  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180D2E10E  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D2E114  mov     rdi, qword ptr [rip + 0x21058ad]             ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource<GameObject>>.get_IsCompleted()
+  0x180D2E11B  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2E11F  test    byte ptr [rax + 0x135], 1                 
+  0x180D2E126  jne     0x180d2e130                               
+  0x180D2E128  mov     rcx, rax                                  
+  0x180D2E12B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2E130:
+  0x180D2E130  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D2E137  mov     rsi, qword ptr [rax + 0x10]               
+  0x180D2E13B  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2E13F  test    byte ptr [rax + 0x135], 1                 
+  0x180D2E146  jne     0x180d2e150                               
+  0x180D2E148  mov     rcx, rax                                  
+  0x180D2E14B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2E150:
+  0x180D2E150  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D2E157  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2E15B  mov     r8, qword ptr [rcx + 0x80]                
+  0x180D2E162  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2E166  lea     r9, [rsp + 0x40]                          
+  0x180D2E16B  add     r9, rax                                   
+  0x180D2E16E  mov     rax, qword ptr [r8 + 0x10]                
+  0x180D2E172  lea     rcx, [r9 - 0x10]                          
+  0x180D2E176  cmp     dword ptr [rax + 0x28], 0                    ; rax-><HoldResources>d__9.holder | <LoadObjectsAsync>d__21.<>u__1 | <LoadServiceState>d__20.<>u__1
+  0x180D2E17A  cmovge  rcx, r9                                   
+  0x180D2E17E  mov     rdx, rsi                                  
+  0x180D2E181  call    0x180972be0                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x180D2E186  test    al, al                                    
+  0x180D2E188  je      0x180d2e1bd                               
+
+180D2E18A:
+  0x180D2E18A  mov     r8, qword ptr [rip + 0x210584f]              ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource<GameObject>>.GetResult()
+  0x180D2E191  lea     rdx, [rsp + 0xa8]                         
+  0x180D2E199  lea     rcx, [rsp + 0x40]                         
+  0x180D2E19E  call    0x180bec390                                  ; -> Naninovel.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180D2E1A3  nop                                               
+  0x180D2E1A4  mov     dword ptr [rbx], 0xfffffffe               
+  0x180D2E1AA  lea     rcx, [rbx + 8]                            
+  0x180D2E1AE  xor     edx, edx                                  
+  0x180D2E1B0  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180D2E1B5:
+  0x180D2E1B5  add     rsp, 0x70                                 
+  0x180D2E1B9  pop     rdi                                       
+  0x180D2E1BA  pop     rsi                                       
+  0x180D2E1BB  pop     rbx                                       
+  0x180D2E1BC  ret                                               
+
+180D2E1BD:
+  0x180D2E1BD  mov     dword ptr [rbx], 0                        
+  0x180D2E1C3  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D2E1C8  movups  xmmword ptr [rbx + 0x30], xmm0               ; rbx-><HoldResources>d__9.<>u__1 | <Spawn>d__11.asyncToken
+  0x180D2E1CC  cmp     dword ptr [rip + 0x23aaff1], 0               ; data_30D91C4
+  0x180D2E1D3  je      0x180d2e211                               
+  0x180D2E1D5  lea     r8, [rbx + 0x30]                             ; rbx-><HoldResources>d__9.<>u__1 | <Spawn>d__11.asyncToken | <Spawn>d__12.path
+  0x180D2E1D9  shr     r8, 0xc                                   
+  0x180D2E1DD  and     r8d, 0x1fffff                             
+  0x180D2E1E4  mov     eax, r8d                                  
+  0x180D2E1E7  shr     rax, 6                                    
+  0x180D2E1EB  lea     rcx, [rip + 0x240638e]                       ; data_3134580
+  0x180D2E1F2  lea     rdx, [rcx + rax*8]                        
+  0x180D2E1F6  and     r8d, 0x3f                                 
+  0x180D2E1FA  prefetchw byte ptr [rdx]                            
+  0x180D2E1FD  nop     dword ptr [rax]                           
+
+180D2E200:
+  0x180D2E200  mov     rax, qword ptr [rdx]                      
+  0x180D2E203  mov     rcx, rax                                  
+  0x180D2E206  bts     rcx, r8                                   
+  0x180D2E20A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D2E20F  jne     0x180d2e200                               
+
+180D2E211:
+  0x180D2E211  lea     rcx, [rbx + 8]                            
+  0x180D2E215  mov     r9, qword ptr [rip + 0x2101b24]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<Resource<GameObject>>, MultipliableSpawn.<HoldResources>d__9>()
+  0x180D2E21C  mov     r8, rbx                                   
+  0x180D2E21F  lea     rdx, [rsp + 0x40]                         
+  0x180D2E224  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D2E229  nop                                               
+  0x180D2E22A  jmp     0x180d2e1b5                               
+  0x180D2E22C  mov     rcx, qword ptr [rsp + 0x90]               
+  0x180D2E234  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D2E23A  add     rcx, 8                                    
+  0x180D2E23E  xor     r8d, r8d                                  
+  0x180D2E241  mov     rdx, qword ptr [rsp + 0xa8]               
+  0x180D2E249  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180D2E24E  add     rsp, 0x70                                 
+  0x180D2E252  pop     rdi                                       
+  0x180D2E253  pop     rsi                                       
+  0x180D2E254  pop     rbx                                       
+  0x180D2E255  ret                                               
+
+180D2E256:
+  0x180D2E256  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2E25B  nop                                               
+
+180D2E25C:
+  0x180D2E25C  call    0x180246730                                  ; THROW NullReferenceException

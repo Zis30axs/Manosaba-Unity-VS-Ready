@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
@@ -62,7 +62,20 @@ namespace GigaCreation.NaninovelExtender.ExtendedSpawn
     	[AsyncStateMachine(typeof(_003CGetOrSpawnAsync_003Ed__0))]
     	public static UniTask<SpawnedObject> GetOrSpawnAsync(this IMultipliableSpawnManager manager, string path, string subId, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask<SpawnedObject>);
+    		return GetOrSpawnAsyncCore(manager, path, subId, asyncToken);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD30580 (kickoff, 688 B) / 0xD30830 (<GetOrSpawnAsync>d__0.MoveNext, 817 B)
+    	// The package's SpawnManagerExtensions.GetOrSpawn with the sub-id threaded through:
+    	//   0x180D30918  thunk 0x8000, ecx = 1 -> IMultipliableSpawnManager slot 1 = IsSpawned(path, subId)
+    	//   true  -> 0x180D30AE4 thunk 0x801B0 -> slot 2 = GetSpawned(path, subId); SetResult
+    	//   false -> 0x180D309BE interface slot 0 = Spawn(path, subId, asyncToken (+0x38)); await (<>u__1); SetResult
+    	// Annotated disassembly: work/spawn-nre/disas/40_GetOrSpawnAsync.txt, 41_GetOrSpawnAsync_MoveNext.txt
+    	private static async UniTask<SpawnedObject> GetOrSpawnAsyncCore(IMultipliableSpawnManager manager, string path, string subId, AsyncToken asyncToken)
+    	{
+    		return manager.IsSpawned(path, subId)
+    			? manager.GetSpawned(path, subId)
+    			: await manager.Spawn(path, subId, asyncToken);
     	}
     }
 }

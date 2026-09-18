@@ -1,0 +1,218 @@
+====================================================================================================
+FUNCTION RVA 0xD2C2C0  VA 0x180D2C2C0  size 0x274 (628 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn___ctor (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, Naninovel_SpawnConfiguration_o* config, Naninovel_IResourceProviderManager_o* providersManager, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public void .ctor(SpawnConfiguration config, IResourceProviderManager providersManager)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2C2C0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D2C2C5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D2C2CA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D2C2CF  mov     qword ptr [rsp + 0x20], rdi               
+  0x180D2C2D4  push    r14                                       
+  0x180D2C2D6  sub     rsp, 0x20                                 
+  0x180D2C2DA  cmp     byte ptr [rip + 0x23b1077], 0                ; data_30DD358
+  0x180D2C2E1  mov     rbp, r8                                   
+  0x180D2C2E4  mov     rsi, rdx                                  
+  0x180D2C2E7  mov     rdi, rcx                                  
+  0x180D2C2EA  jne     0x180d2c315                               
+  0x180D2C2EC  lea     rcx, [rip + 0x211ee4d]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>..ctor()
+  0x180D2C2F3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2C2F8  lock or dword ptr [rsp], 0                        
+  0x180D2C2FD  lea     rcx, [rip + 0x211ee44]                       ; TYPE System.Collections.Generic.Dictionary<string, SpawnedObject>_TypeInfo
+  0x180D2C304  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2C309  lock or dword ptr [rsp], 0                        
+  0x180D2C30E  mov     byte ptr [rip + 0x23b1043], 1                ; data_30DD358
+
+180D2C315:
+  0x180D2C315  mov     rcx, qword ptr [rip + 0x211ee2c]             ; TYPE System.Collections.Generic.Dictionary<string, SpawnedObject>_TypeInfo
+  0x180D2C31C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D2C321  mov     rdx, qword ptr [rip + 0x211ee18]             ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>..ctor()
+  0x180D2C328  mov     rcx, rax                                  
+  0x180D2C32B  mov     rbx, rax                                  
+  0x180D2C32E  call    0x180c61d70                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor
+  0x180D2C333  cmp     dword ptr [rip + 0x23ace8a], 0               ; data_30D91C4
+  0x180D2C33A  lea     r14, [rip + 0x23c1f5f]                       ; data_30EE2A0
+  0x180D2C341  mov     qword ptr [rdi + 0x38], rbx                  ; rdi->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2C345  je      0x180d2c389                               
+  0x180D2C347  lea     r9, [rdi + 0x38]                             ; rdi->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2C34B  shr     r9, 0xc                                   
+  0x180D2C34F  and     r9d, 0x1fffff                             
+  0x180D2C356  mov     eax, r9d                                  
+  0x180D2C359  shr     rax, 6                                    
+  0x180D2C35D  and     r9d, 0x3f                                 
+  0x180D2C361  lea     r8, [r14 + rax*8]                         
+  0x180D2C365  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x180D2C36D  nop     dword ptr [rax]                           
+
+180D2C370:
+  0x180D2C370  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180D2C377  mov     rdx, rax                                  
+  0x180D2C37A  bts     rdx, r9                                   
+  0x180D2C37E  lock cmpxchg qword ptr [r8 + 0x462e0], rdx             
+  0x180D2C387  jne     0x180d2c370                               
+
+180D2C389:
+  0x180D2C389  cmp     byte ptr [rip + 0x23affbe], 0                ; data_30DC34E
+  0x180D2C390  jne     0x180d2c3bb                               
+  0x180D2C392  lea     rcx, [rip + 0x211eda7]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>..ctor()
+  0x180D2C399  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2C39E  lock or dword ptr [rsp], 0                        
+  0x180D2C3A3  lea     rcx, [rip + 0x211ed9e]                       ; TYPE System.Collections.Generic.Dictionary<string, SpawnedObject>_TypeInfo
+  0x180D2C3AA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2C3AF  lock or dword ptr [rsp], 0                        
+  0x180D2C3B4  mov     byte ptr [rip + 0x23aff93], 1                ; data_30DC34E
+
+180D2C3BB:
+  0x180D2C3BB  mov     rcx, qword ptr [rip + 0x211ed86]             ; TYPE System.Collections.Generic.Dictionary<string, SpawnedObject>_TypeInfo
+  0x180D2C3C2  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D2C3C7  mov     rdx, qword ptr [rip + 0x211ed72]             ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>..ctor()
+  0x180D2C3CE  mov     rcx, rax                                  
+  0x180D2C3D1  mov     rbx, rax                                  
+  0x180D2C3D4  call    0x180c61d70                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor
+  0x180D2C3D9  mov     eax, dword ptr [rip + 0x23acde5]             ; data_30D91C4
+  0x180D2C3DF  mov     qword ptr [rdi + 0x18], rbx                  ; rdi-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2C3E3  test    eax, eax                                  
+  0x180D2C3E5  je      0x180d2c42f                               
+  0x180D2C3E7  lea     r8, [rdi + 0x18]                             ; rdi-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2C3EB  shr     r8, 0xc                                   
+  0x180D2C3EF  and     r8d, 0x1fffff                             
+  0x180D2C3F6  mov     eax, r8d                                  
+  0x180D2C3F9  shr     rax, 6                                    
+  0x180D2C3FD  and     r8d, 0x3f                                 
+  0x180D2C401  lea     rdx, [r14 + rax*8]                        
+  0x180D2C405  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2C40C  nop     dword ptr [rax]                           
+
+180D2C410:
+  0x180D2C410  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2C417  mov     rcx, rax                                  
+  0x180D2C41A  bts     rcx, r8                                   
+  0x180D2C41E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2C427  jne     0x180d2c410                               
+  0x180D2C429  mov     eax, dword ptr [rip + 0x23acd95]             ; data_30D91C4
+
+180D2C42F:
+  0x180D2C42F  mov     qword ptr [rdi + 0x10], rsi               
+  0x180D2C433  test    eax, eax                                  
+  0x180D2C435  je      0x180d2c47f                               
+  0x180D2C437  lea     r8, [rdi + 0x10]                          
+  0x180D2C43B  shr     r8, 0xc                                   
+  0x180D2C43F  and     r8d, 0x1fffff                             
+  0x180D2C446  mov     eax, r8d                                  
+  0x180D2C449  shr     rax, 6                                    
+  0x180D2C44D  and     r8d, 0x3f                                 
+  0x180D2C451  lea     rdx, [r14 + rax*8]                        
+  0x180D2C455  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2C45C  nop     dword ptr [rax]                           
+
+180D2C460:
+  0x180D2C460  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2C467  mov     rcx, rax                                  
+  0x180D2C46A  bts     rcx, r8                                   
+  0x180D2C46E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2C477  jne     0x180d2c460                               
+  0x180D2C479  mov     eax, dword ptr [rip + 0x23acd45]             ; data_30D91C4
+
+180D2C47F:
+  0x180D2C47F  mov     qword ptr [rdi + 0x20], rbp                  ; rdi-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2C483  test    eax, eax                                  
+  0x180D2C485  je      0x180d2c4cf                               
+  0x180D2C487  lea     r8, [rdi + 0x20]                             ; rdi-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2C48B  shr     r8, 0xc                                   
+  0x180D2C48F  and     r8d, 0x1fffff                             
+  0x180D2C496  mov     eax, r8d                                  
+  0x180D2C499  shr     rax, 6                                    
+  0x180D2C49D  and     r8d, 0x3f                                 
+  0x180D2C4A1  lea     rdx, [r14 + rax*8]                        
+  0x180D2C4A5  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2C4AC  nop     dword ptr [rax]                           
+
+180D2C4B0:
+  0x180D2C4B0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2C4B7  mov     rcx, rax                                  
+  0x180D2C4BA  bts     rcx, r8                                   
+  0x180D2C4BE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2C4C7  jne     0x180d2c4b0                               
+  0x180D2C4C9  mov     eax, dword ptr [rip + 0x23accf5]             ; data_30D91C4
+
+180D2C4CF:
+  0x180D2C4CF  mov     qword ptr [rdi + 0x40], rbp                  ; rdi->MultipliableSpawn._providersManager | <Spawn>d__11.<>u__1
+  0x180D2C4D3  test    eax, eax                                  
+  0x180D2C4D5  je      0x180d2c519                               
+  0x180D2C4D7  lea     r8, [rdi + 0x40]                             ; rdi->MultipliableSpawn._providersManager | <Spawn>d__11.<>u__1
+  0x180D2C4DB  shr     r8, 0xc                                   
+  0x180D2C4DF  and     r8d, 0x1fffff                             
+  0x180D2C4E6  mov     eax, r8d                                  
+  0x180D2C4E9  shr     rax, 6                                    
+  0x180D2C4ED  and     r8d, 0x3f                                 
+  0x180D2C4F1  lea     rdx, [r14 + rax*8]                        
+  0x180D2C4F5  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2C4FC  nop     dword ptr [rax]                           
+
+180D2C500:
+  0x180D2C500  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D2C507  mov     rcx, rax                                  
+  0x180D2C50A  bts     rcx, r8                                   
+  0x180D2C50E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D2C517  jne     0x180d2c500                               
+
+180D2C519:
+  0x180D2C519  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D2C51E  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180D2C523  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D2C528  mov     rdi, qword ptr [rsp + 0x48]               
+  0x180D2C52D  add     rsp, 0x20                                 
+  0x180D2C531  pop     r14                                       
+  0x180D2C533  ret                                               

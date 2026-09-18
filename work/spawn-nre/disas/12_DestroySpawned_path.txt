@@ -1,0 +1,108 @@
+====================================================================================================
+FUNCTION RVA 0xD2CF90  VA 0x180D2CF90  size 0xAC (172 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$DestroySpawned
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__DestroySpawned (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, System_String_o* path, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public override void DestroySpawned(string path)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2CF90  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D2CF95  push    rdi                                       
+  0x180D2CF96  sub     rsp, 0x20                                 
+  0x180D2CF9A  cmp     byte ptr [rip + 0x23b03bc], 0                ; data_30DD35D
+  0x180D2CFA1  mov     rdi, rdx                                  
+  0x180D2CFA4  mov     rbx, rcx                                  
+  0x180D2CFA7  jne     0x180d2cfc1                               
+  0x180D2CFA9  lea     rcx, [rip + 0x211e130]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.Remove()
+  0x180D2CFB0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2CFB5  lock or dword ptr [rsp], 0                        
+  0x180D2CFBA  mov     byte ptr [rip + 0x23b039c], 1                ; data_30DD35D
+
+180D2CFC1:
+  0x180D2CFC1  mov     r8, qword ptr [rbx]                       
+  0x180D2CFC4  mov     rdx, rdi                                  
+  0x180D2CFC7  mov     rcx, rbx                                  
+  0x180D2CFCA  mov     rax, qword ptr [r8 + 0x2f8]               
+  0x180D2CFD1  mov     r8, qword ptr [r8 + 0x300]                
+  0x180D2CFD8  call    rax                                       
+  0x180D2CFDA  test    al, al                                    
+  0x180D2CFDC  je      0x180d2d02c                               
+  0x180D2CFDE  mov     qword ptr [rsp + 0x30], rsi               
+  0x180D2CFE3  mov     r8, qword ptr [rbx]                       
+  0x180D2CFE6  mov     rdx, rdi                                  
+  0x180D2CFE9  mov     rcx, rbx                                  
+  0x180D2CFEC  mov     rax, qword ptr [r8 + 0x308]               
+  0x180D2CFF3  mov     r8, qword ptr [r8 + 0x310]                
+  0x180D2CFFA  call    rax                                       
+  0x180D2CFFC  mov     rcx, qword ptr [rbx + 0x38]                  ; rbx->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2D000  mov     rsi, rax                                  
+  0x180D2D003  test    rcx, rcx                                  
+  0x180D2D006  je      0x180d2d037                               
+  0x180D2D008  mov     r8, qword ptr [rip + 0x211e0d1]              ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.Remove()
+  0x180D2D00F  mov     rdx, rdi                                  
+  0x180D2D012  call    0x180c66f20                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$Remove
+  0x180D2D017  test    rsi, rsi                                  
+  0x180D2D01A  je      0x180d2d037                               
+  0x180D2D01C  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2D020  xor     edx, edx                                  
+  0x180D2D022  call    0x18054be20                                  ; -> Naninovel.ObjectUtils$$DestroyOrImmediate
+  0x180D2D027  mov     rsi, qword ptr [rsp + 0x30]               
+
+180D2D02C:
+  0x180D2D02C  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D2D031  add     rsp, 0x20                                 
+  0x180D2D035  pop     rdi                                       
+  0x180D2D036  ret                                               
+
+180D2D037:
+  0x180D2D037  call    0x180246730                                  ; THROW NullReferenceException

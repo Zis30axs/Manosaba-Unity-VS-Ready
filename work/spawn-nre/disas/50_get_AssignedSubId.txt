@@ -1,0 +1,54 @@
+====================================================================================================
+FUNCTION RVA 0x86C880  VA 0x18086C880  size 0x82 (130 bytes)
+  managed: Naninovel.Commands.ModifyActor<object, object, object, object, object>$$get_AssignedTransition
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended$$get_AssignedSubId
+  csig   : System_String_o* Naninovel_Commands_ModifyActor_object__object__object__object__object___get_AssignedTransition (Naninovel_Commands_ModifyActor_TActor__TState__TMeta__TConfig__TManager__o* __this, const MethodInfo_86C880* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended :: private string get_AssignedSubId()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.DestroySpawnedExtended:
+      +0x48   SubId                          StringParameter
+      +0x50   LogWarning                     BooleanParameter
+  fields of DestroySpawnedExtended.<Destroy>d__4:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DestroySpawnedExtended
+      +0x20   token                          AsyncToken
+      +0x30   <multipliableSpawnManager>5__2 IMultipliableSpawnManager
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x18086C880  push    rbx                                       
+  0x18086C882  sub     rsp, 0x20                                 
+  0x18086C886  cmp     byte ptr [rip + 0x286f97f], 0                ; data_30DC20C
+  0x18086C88D  mov     rbx, qword ptr [rcx + 0x48]                  ; rcx->DestroySpawnedExtended.SubId
+  0x18086C891  jne     0x18086c8bc                               
+  0x18086C893  lea     rcx, [rip + 0x25cd50e]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x18086C89A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C89F  lock or dword ptr [rsp], 0                        
+  0x18086C8A4  lea     rcx, [rip + 0x25cb75d]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x18086C8AB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C8B0  lock or dword ptr [rsp], 0                        
+  0x18086C8B5  mov     byte ptr [rip + 0x286f950], 1                ; data_30DC20C
+
+18086C8BC:
+  0x18086C8BC  test    rbx, rbx                                  
+  0x18086C8BF  je      0x18086c8fa                               
+  0x18086C8C1  mov     rdx, qword ptr [rbx]                      
+  0x18086C8C4  mov     rcx, rbx                                  
+  0x18086C8C7  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x18086C8CE  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x18086C8D5  call    rax                                       
+  0x18086C8D7  test    al, al                                    
+  0x18086C8D9  je      0x18086c8fa                               
+  0x18086C8DB  mov     r8, qword ptr [rip + 0x25cb726]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x18086C8E2  lea     rdx, [rsp + 0x30]                         
+  0x18086C8E7  mov     rcx, rbx                                  
+  0x18086C8EA  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x18086C8EF  mov     rax, qword ptr [rsp + 0x30]               
+  0x18086C8F4  add     rsp, 0x20                                 
+  0x18086C8F8  pop     rbx                                       
+  0x18086C8F9  ret                                               
+
+18086C8FA:
+  0x18086C8FA  xor     eax, eax                                  
+  0x18086C8FC  add     rsp, 0x20                                 
+  0x18086C900  pop     rbx                                       
+  0x18086C901  ret                                               

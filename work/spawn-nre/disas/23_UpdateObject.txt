@@ -1,0 +1,225 @@
+====================================================================================================
+FUNCTION RVA 0xD2D9E0  VA 0x180D2D9E0  size 0x240 (576 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$UpdateObject
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__UpdateObject (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, Naninovel_SpawnedObjectState_o objState, System_Collections_Generic_IList_SpawnedObject__o* toDestroy, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: private void UpdateObject(SpawnedObjectState objState, IList<SpawnedObject> toDestroy)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2D9E0  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D2D9E5  push    rdi                                       
+  0x180D2D9E6  push    r14                                       
+  0x180D2D9E8  push    r15                                       
+  0x180D2D9EA  sub     rsp, 0x40                                 
+  0x180D2D9EE  cmp     byte ptr [rip + 0x23af971], 0                ; data_30DD366
+  0x180D2D9F5  mov     rsi, r8                                   
+  0x180D2D9F8  mov     r15, rdx                                  
+  0x180D2D9FB  mov     r14, rcx                                  
+  0x180D2D9FE  jne     0x180d2da3a                               
+  0x180D2DA00  lea     rcx, [rip + 0x21248d9]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D2DA07  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DA0C  lock or dword ptr [rsp], 0                        
+  0x180D2DA11  lea     rcx, [rip + 0x2102338]                       ; TYPE System.Collections.Generic.ICollection<SpawnedObject>_TypeInfo
+  0x180D2DA18  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DA1D  lock or dword ptr [rsp], 0                        
+  0x180D2DA22  lea     rcx, [rip + 0x210231f]                       ; STR "スポーンパスに '-' が 2 つ以上含まれています："
+  0x180D2DA29  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DA2E  lock or dword ptr [rsp], 0                        
+  0x180D2DA33  mov     byte ptr [rip + 0x23af92c], 1                ; data_30DD366
+
+180D2DA3A:
+  0x180D2DA3A  mov     rdi, qword ptr [r15]                      
+  0x180D2DA3D  mov     qword ptr [rsp + 0x60], rbx               
+  0x180D2DA42  test    rdi, rdi                                  
+  0x180D2DA45  je      0x180d2dc15                               
+  0x180D2DA4B  cmp     byte ptr [rip + 0x23b0088], 0                ; data_30DDADA
+  0x180D2DA52  mov     eax, 0x2d                                 
+  0x180D2DA57  mov     word ptr [rsp + 0x68], ax                 
+  0x180D2DA5C  jne     0x180d2da76                               
+  0x180D2DA5E  lea     rcx, [rip + 0x2137873]                       ; METHODINFO Method$System.ReadOnlySpan<char>..ctor()
+  0x180D2DA65  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DA6A  lock or dword ptr [rsp], 0                        
+  0x180D2DA6F  mov     byte ptr [rip + 0x23b0064], 1                ; data_30DDADA
+
+180D2DA76:
+  0x180D2DA76  mov     qword ptr [rsp + 0x38], 1                 
+  0x180D2DA7F  lea     rax, [rsp + 0x68]                         
+  0x180D2DA84  mov     qword ptr [rsp + 0x30], rax               
+  0x180D2DA89  lea     rdx, [rsp + 0x30]                         
+  0x180D2DA8E  movaps  xmm0, xmmword ptr [rsp + 0x30]            
+  0x180D2DA93  xor     ebx, ebx                                  
+  0x180D2DA95  xor     r9d, r9d                                  
+  0x180D2DA98  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D2DA9E  mov     r8d, 0x7fffffff                           
+  0x180D2DAA4  mov     qword ptr [rsp + 0x20], rbx               
+  0x180D2DAA9  mov     rcx, rdi                                  
+  0x180D2DAAC  call    0x180e28f40                                  ; -> System.String$$SplitInternal
+  0x180D2DAB1  mov     rcx, rax                                  
+  0x180D2DAB4  test    rax, rax                                  
+  0x180D2DAB7  je      0x180d2dc15                               
+  0x180D2DABD  mov     eax, dword ptr [rax + 0x18]                  ; rax-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2DAC0  cmp     eax, 1                                    
+  0x180D2DAC3  jne     0x180d2dae9                               
+  0x180D2DAC5  test    eax, eax                                  
+  0x180D2DAC7  je      0x180d2dc1b                               
+  0x180D2DACD  mov     r8, qword ptr [r14]                       
+  0x180D2DAD0  mov     rdx, qword ptr [rcx + 0x20]                  ; rcx-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2DAD4  mov     rcx, r14                                  
+  0x180D2DAD7  mov     rax, qword ptr [r8 + 0x308]               
+  0x180D2DADE  mov     r8, qword ptr [r8 + 0x310]                
+  0x180D2DAE5  call    rax                                       
+  0x180D2DAE7  jmp     0x180d2db16                               
+
+180D2DAE9:
+  0x180D2DAE9  cmp     eax, 2                                    
+  0x180D2DAEC  jne     0x180d2dbdf                               
+  0x180D2DAF2  test    eax, eax                                  
+  0x180D2DAF4  je      0x180d2dc1b                               
+  0x180D2DAFA  cmp     eax, 1                                    
+  0x180D2DAFD  jbe     0x180d2dc1b                               
+  0x180D2DB03  mov     r8, qword ptr [rcx + 0x28]                   ; rcx-><HoldResources>d__9.holder | <LoadObjectsAsync>d__21.<>u__1 | <LoadServiceState>d__20.<>u__1
+  0x180D2DB07  xor     r9d, r9d                                  
+  0x180D2DB0A  mov     rdx, qword ptr [rcx + 0x20]                  ; rcx-><HoldResources>d__9.<>4__this | <LoadObjectsAsync>d__21.<>4__this | <LoadServiceState>d__20.<>4__this
+  0x180D2DB0E  mov     rcx, r14                                  
+  0x180D2DB11  call    0x180d2d320                                  ; -> GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$GetSpawned
+
+180D2DB16:
+  0x180D2DB16  mov     rdi, rax                                  
+  0x180D2DB19  test    rsi, rsi                                  
+  0x180D2DB1C  je      0x180d2dc15                               
+  0x180D2DB22  mov     r9, qword ptr [rsi]                       
+  0x180D2DB25  mov     rdx, qword ptr [rip + 0x2102224]             ; TYPE System.Collections.Generic.ICollection<SpawnedObject>_TypeInfo
+  0x180D2DB2C  movzx   ecx, word ptr [r9 + 0x12e]                
+  0x180D2DB34  cmp     bx, cx                                    
+  0x180D2DB37  jae     0x180d2db54                               
+  0x180D2DB39  mov     r8, qword ptr [r9 + 0xb0]                 
+
+180D2DB40:
+  0x180D2DB40  movzx   eax, bx                                   
+  0x180D2DB43  add     rax, rax                                  
+  0x180D2DB46  cmp     qword ptr [r8 + rax*8], rdx               
+  0x180D2DB4A  je      0x180d2dbc0                               
+  0x180D2DB4C  inc     bx                                        
+  0x180D2DB4F  cmp     bx, cx                                    
+  0x180D2DB52  jb      0x180d2db40                               
+
+180D2DB54:
+  0x180D2DB54  mov     r8d, 6                                    
+  0x180D2DB5A  mov     rcx, rsi                                  
+  0x180D2DB5D  call    0x180243a20                                  ; resolve interface method slot
+
+180D2DB62:
+  0x180D2DB62  mov     r9, qword ptr [rax]                       
+  0x180D2DB65  mov     rdx, rdi                                  
+  0x180D2DB68  mov     r8, qword ptr [rax + 8]                   
+  0x180D2DB6C  mov     rcx, rsi                                  
+  0x180D2DB6F  call    r9                                        
+  0x180D2DB72  xor     r8d, r8d                                  
+  0x180D2DB75  mov     rdx, rdi                                  
+  0x180D2DB78  mov     rcx, r15                                  
+  0x180D2DB7B  call    0x1805d5200                                  ; -> Naninovel.SpawnedObjectState$$ApplyTo
+  0x180D2DB80  xorps   xmm0, xmm0                                
+  0x180D2DB83  test    rdi, rdi                                  
+  0x180D2DB86  je      0x180d2dc15                               
+  0x180D2DB8C  xor     r8d, r8d                                  
+  0x180D2DB8F  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D2DB95  lea     rdx, [rsp + 0x30]                         
+  0x180D2DB9A  mov     rcx, rdi                                  
+  0x180D2DB9D  call    0x1805d41f0                                  ; -> Naninovel.SpawnedObject$$AwaitSpawn
+  0x180D2DBA2  xor     edx, edx                                  
+  0x180D2DBA4  mov     rcx, rax                                  
+  0x180D2DBA7  call    0x18051af10                                  ; -> Naninovel.UniTaskExtensions$$ForgetCore
+
+180D2DBAC:
+  0x180D2DBAC  mov     rbx, qword ptr [rsp + 0x60]               
+  0x180D2DBB1  mov     rsi, qword ptr [rsp + 0x70]               
+  0x180D2DBB6  add     rsp, 0x40                                 
+  0x180D2DBBA  pop     r15                                       
+  0x180D2DBBC  pop     r14                                       
+  0x180D2DBBE  pop     rdi                                       
+  0x180D2DBBF  ret                                               
+
+180D2DBC0:
+  0x180D2DBC0  movzx   ecx, bx                                   
+  0x180D2DBC3  add     rcx, rcx                                  
+  0x180D2DBC6  mov     eax, dword ptr [r8 + rcx*8 + 8]           
+  0x180D2DBCB  add     eax, 6                                    
+  0x180D2DBCE  cdqe                                              
+  0x180D2DBD0  shl     rax, 4                                    
+  0x180D2DBD4  add     rax, 0x138                                
+  0x180D2DBDA  add     rax, r9                                   
+  0x180D2DBDD  jmp     0x180d2db62                               
+
+180D2DBDF:
+  0x180D2DBDF  mov     rcx, qword ptr [rip + 0x2102162]             ; STR "スポーンパスに '-' が 2 つ以上含まれています："
+  0x180D2DBE6  xor     r8d, r8d                                  
+  0x180D2DBE9  mov     rdx, rdi                                  
+  0x180D2DBEC  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x180D2DBF1  mov     rcx, qword ptr [rip + 0x21246e8]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D2DBF8  mov     rbx, rax                                  
+  0x180D2DBFB  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2DC02  jne     0x180d2dc09                               
+  0x180D2DC04  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2DC09:
+  0x180D2DC09  xor     edx, edx                                  
+  0x180D2DC0B  mov     rcx, rbx                                  
+  0x180D2DC0E  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+  0x180D2DC13  jmp     0x180d2dbac                               
+
+180D2DC15:
+  0x180D2DC15  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2DC1A  int3                                              
+
+180D2DC1B:
+  0x180D2DC1B  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

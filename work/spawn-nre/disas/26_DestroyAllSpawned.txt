@@ -1,0 +1,149 @@
+====================================================================================================
+FUNCTION RVA 0xD2DDF0  VA 0x180D2DDF0  size 0x167 (359 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$DestroyAllSpawned
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__DestroyAllSpawned (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: protected override void DestroyAllSpawned()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2DDF0  mov     qword ptr [rsp + 8], rcx                  
+  0x180D2DDF5  push    rbx                                       
+  0x180D2DDF6  sub     rsp, 0x60                                 
+  0x180D2DDFA  mov     rbx, rcx                                  
+  0x180D2DDFD  cmp     byte ptr [rip + 0x23af564], 0                ; data_30DD368
+  0x180D2DE04  jne     0x180d2de73                               
+  0x180D2DE06  lea     rcx, [rip + 0x211d2b3]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.Clear()
+  0x180D2DE0D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE12  lock or dword ptr [rsp], 0                        
+  0x180D2DE17  lea     rcx, [rip + 0x211d332]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.get_Values()
+  0x180D2DE1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE23  lock or dword ptr [rsp], 0                        
+  0x180D2DE28  lea     rcx, [rip + 0x211d299]                       ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection.Enumerator<string, SpawnedObject>.Dispose()
+  0x180D2DE2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE34  lock or dword ptr [rsp], 0                        
+  0x180D2DE39  lea     rcx, [rip + 0x211d270]                       ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection.Enumerator<string, SpawnedObject>.MoveNext()
+  0x180D2DE40  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE45  lock or dword ptr [rsp], 0                        
+  0x180D2DE4A  lea     rcx, [rip + 0x211d267]                       ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection.Enumerator<string, SpawnedObject>.get_Current()
+  0x180D2DE51  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE56  lock or dword ptr [rsp], 0                        
+  0x180D2DE5B  lea     rcx, [rip + 0x211d246]                       ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection<string, SpawnedObject>.GetEnumerator()
+  0x180D2DE62  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2DE67  lock or dword ptr [rsp], 0                        
+  0x180D2DE6C  mov     byte ptr [rip + 0x23af4f5], 1                ; data_30DD368
+
+180D2DE73:
+  0x180D2DE73  mov     rcx, qword ptr [rbx + 0x38]                  ; rbx->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2DE77  test    rcx, rcx                                  
+  0x180D2DE7A  je      0x180d2df46                               
+  0x180D2DE80  mov     rdx, qword ptr [rip + 0x211d2c9]             ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.get_Values()
+  0x180D2DE87  call    0x180c62c90                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$get_Values (+2 aliases)
+  0x180D2DE8C  test    rax, rax                                  
+  0x180D2DE8F  je      0x180d2df46                               
+  0x180D2DE95  mov     r8, qword ptr [rip + 0x211d20c]              ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection<string, SpawnedObject>.GetEnumerator()
+  0x180D2DE9C  lea     rdx, [rsp + 0x28]                         
+  0x180D2DEA1  mov     rcx, rax                                  
+  0x180D2DEA4  call    0x18083e3c0                                  ; -> System.Collections.Generic.Dictionary.KeyCollection<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$GetEnumerator (+1 aliases)
+  0x180D2DEA9  movups  xmm0, xmmword ptr [rsp + 0x28]            
+  0x180D2DEAE  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D2DEB3  movsd   xmm1, qword ptr [rsp + 0x38]              
+  0x180D2DEB9  movsd   qword ptr [rsp + 0x50], xmm1              
+  0x180D2DEBF  mov     qword ptr [rsp + 0x28], 0                 
+  0x180D2DEC8  lea     rax, [rsp + 0x40]                         
+  0x180D2DECD  mov     qword ptr [rsp + 0x30], rax               
+
+180D2DED2:
+  0x180D2DED2  mov     rdx, qword ptr [rip + 0x211d1d7]             ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection.Enumerator<string, SpawnedObject>.MoveNext()
+  0x180D2DED9  lea     rcx, [rsp + 0x40]                         
+  0x180D2DEDE  call    0x180c8f0c0                                  ; -> System.Collections.Generic.Dictionary.ValueCollection.Enumerator<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$MoveNext
+  0x180D2DEE3  test    al, al                                    
+  0x180D2DEE5  je      0x180d2df1a                               
+  0x180D2DEE7  mov     r8, qword ptr [rip + 0x211d1ca]              ; METHODINFO Method$System.Collections.Generic.Dictionary.ValueCollection.Enumerator<string, SpawnedObject>.get_Current()
+  0x180D2DEEE  lea     rdx, [rsp + 0x80]                         
+  0x180D2DEF6  lea     rcx, [rsp + 0x40]                         
+  0x180D2DEFB  call    0x180331e60                                  ; -> System.Collections.Generic.Dictionary.Enumerator<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$get_Current (+4 aliases)
+  0x180D2DF00  mov     rcx, qword ptr [rsp + 0x80]               
+  0x180D2DF08  test    rcx, rcx                                  
+  0x180D2DF0B  je      0x180d2df4c                               
+  0x180D2DF0D  xor     edx, edx                                  
+  0x180D2DF0F  mov     rcx, qword ptr [rcx + 0x18]                  ; rcx-><HoldResources>d__9.path | <LoadObjectsAsync>d__21.state | <LoadServiceState>d__20.stateMap
+  0x180D2DF13  call    0x18054be20                                  ; -> Naninovel.ObjectUtils$$DestroyOrImmediate
+  0x180D2DF18  jmp     0x180d2ded2                               
+
+180D2DF1A:
+  0x180D2DF1A  jmp     0x180d2df2b                               
+  0x180D2DF1C  mov     rcx, qword ptr [rsp + 0x28]               
+  0x180D2DF21  test    rcx, rcx                                  
+  0x180D2DF24  jne     0x180d2df52                               
+  0x180D2DF26  mov     rbx, qword ptr [rsp + 0x70]               
+
+180D2DF2B:
+  0x180D2DF2B  mov     rcx, qword ptr [rbx + 0x38]                  ; rbx->MultipliableSpawn._spawnedMap | <Spawn>d__12.asyncToken
+  0x180D2DF2F  test    rcx, rcx                                  
+  0x180D2DF32  je      0x180d2df46                               
+  0x180D2DF34  mov     rdx, qword ptr [rip + 0x211d185]             ; METHODINFO Method$System.Collections.Generic.Dictionary<string, SpawnedObject>.Clear()
+  0x180D2DF3B  call    0x180c63a70                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$Clear
+  0x180D2DF40  add     rsp, 0x60                                 
+  0x180D2DF44  pop     rbx                                       
+  0x180D2DF45  ret                                               
+
+180D2DF46:
+  0x180D2DF46  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2DF4B  nop                                               
+
+180D2DF4C:
+  0x180D2DF4C  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2DF51  nop                                               
+
+180D2DF52:
+  0x180D2DF52  call    0x180246720                                  ; -> sub_246720 (runtime/helper)

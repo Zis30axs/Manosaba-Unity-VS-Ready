@@ -1,0 +1,363 @@
+====================================================================================================
+FUNCTION RVA 0xD2B6C0  VA 0x180D2B6C0  size 0x50A (1290 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended$$ApplyScenePosition
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended__ApplyScenePosition (GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended_o* __this, Naninovel_SpawnedObject_o* spawnedObject, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended :: protected override void ApplyScenePosition(SpawnedObject spawnedObject)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended:
+      +0x68   SubId                          StringParameter
+      +0x70   MatchScreenWidth               BooleanParameter
+  fields of SpawnExtended.<Execute>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SpawnExtended
+      +0x20   asyncToken                     AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D2B6C0  mov     qword ptr [rsp + 0x20], rbx               
+  0x180D2B6C5  push    rbp                                       
+  0x180D2B6C6  push    rsi                                       
+  0x180D2B6C7  push    rdi                                       
+  0x180D2B6C8  mov     rbp, rsp                                  
+  0x180D2B6CB  sub     rsp, 0x60                                 
+  0x180D2B6CF  cmp     byte ptr [rip + 0x23b1c7f], 0                ; data_30DD355
+  0x180D2B6D6  mov     rdi, rdx                                  
+  0x180D2B6D9  mov     rbx, rcx                                  
+  0x180D2B6DC  jne     0x180d2b718                               
+  0x180D2B6DE  lea     rcx, [rip + 0x210e3a3]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<NullableFloat>()
+  0x180D2B6E5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B6EA  lock or dword ptr [rsp], 0                        
+  0x180D2B6EF  lea     rcx, [rip + 0x21265a2]                       ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x180D2B6F6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B6FB  lock or dword ptr [rsp], 0                        
+  0x180D2B700  lea     rcx, [rip + 0x2126009]                       ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x180D2B707  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B70C  lock or dword ptr [rsp], 0                        
+  0x180D2B711  mov     byte ptr [rip + 0x23b1c3d], 1                ; data_30DD355
+
+180D2B718:
+  0x180D2B718  cmp     byte ptr [rip + 0x23b0a45], 0                ; data_30DC164
+  0x180D2B71F  mov     rsi, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B723  jne     0x180d2b73d                               
+  0x180D2B725  lea     rcx, [rip + 0x211aee4]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D2B72C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B731  lock or dword ptr [rsp], 0                        
+  0x180D2B736  mov     byte ptr [rip + 0x23b0a27], 1                ; data_30DC164
+
+180D2B73D:
+  0x180D2B73D  test    rsi, rsi                                  
+  0x180D2B740  je      0x180d2bb27                               
+  0x180D2B746  mov     rdx, qword ptr [rip + 0x211aec3]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D2B74D  xor     ecx, ecx                                  
+  0x180D2B74F  mov     r8, rsi                                   
+  0x180D2B752  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2B757  test    al, al                                    
+  0x180D2B759  je      0x180d2bb27                               
+  0x180D2B75F  movaps  xmmword ptr [rsp + 0x30], xmm8            
+  0x180D2B765  mov     qword ptr [rsp + 0x88], r14               
+  0x180D2B76D  mov     qword ptr [rsp + 0x90], r15               
+  0x180D2B775  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D2B77A  movaps  xmmword ptr [rsp + 0x40], xmm7            
+  0x180D2B77F  mov     rcx, qword ptr [rbx + 0x70]                  ; rbx->SpawnExtended.MatchScreenWidth
+  0x180D2B783  xor     edx, edx                                  
+  0x180D2B785  call    0x1805a58c0                                  ; -> Naninovel.BooleanParameter$$op_Implicit
+  0x180D2B78A  xor     r8d, r8d                                  
+  0x180D2B78D  lea     rcx, [rbp - 0x40]                         
+  0x180D2B791  movzx   edx, ax                                   
+  0x180D2B794  call    0x180cf4eb0                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility$$EvaluateSceneRect
+  0x180D2B799  movups  xmm8, xmmword ptr [rax]                   
+  0x180D2B79D  test    rdi, rdi                                  
+  0x180D2B7A0  je      0x180d2bb37                               
+  0x180D2B7A6  mov     rcx, qword ptr [rdi + 0x18]                  ; rdi-><Execute>d__6.<>4__this
+  0x180D2B7AA  test    rcx, rcx                                  
+  0x180D2B7AD  je      0x180d2bb37                               
+  0x180D2B7B3  xor     edx, edx                                  
+  0x180D2B7B5  call    0x182066fb0                                  ; -> UnityEngine.GameObject$$get_transform
+  0x180D2B7BA  mov     r9, qword ptr [rip + 0x210e2c7]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<NullableFloat>()
+  0x180D2B7C1  lea     r8, [rbp + 0x20]                             ; rbp-><Execute>d__6.asyncToken
+  0x180D2B7C5  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B7C9  xor     edx, edx                                  
+  0x180D2B7CB  mov     r15, rax                                  
+  0x180D2B7CE  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2B7D3  cmp     qword ptr [rbp + 0x20], 0                    ; rbp-><Execute>d__6.asyncToken
+  0x180D2B7D8  je      0x180d2b82c                               
+  0x180D2B7DA  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B7DE  test    rcx, rcx                                  
+  0x180D2B7E1  je      0x180d2bb37                               
+  0x180D2B7E7  mov     r8, qword ptr [rip + 0x2125f22]              ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x180D2B7EE  xor     edx, edx                                  
+  0x180D2B7F0  call    0x1808a1eb0                                  ; -> Naninovel.ParameterList<object>$$get_Item
+  0x180D2B7F5  mov     r8, qword ptr [rip + 0x212649c]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x180D2B7FC  lea     rdx, [rbp + 0x20]                            ; rbp-><Execute>d__6.asyncToken
+  0x180D2B800  mov     rcx, rax                                  
+  0x180D2B803  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D2B808  movss   xmm7, dword ptr [rbp + 0x20]                 ; rbp-><Execute>d__6.asyncToken
+  0x180D2B80D  movaps  xmm0, xmm8                                
+  0x180D2B811  divss   xmm7, dword ptr [rip + 0x1db73ab]            ; data_2AE2BC4
+  0x180D2B819  shufps  xmm0, xmm8, 0xaa                          
+  0x180D2B81E  mulss   xmm7, xmm0                                
+  0x180D2B822  addss   xmm7, xmm8                                
+  0x180D2B827  jmp     0x180d2b8b9                               
+
+180D2B82C:
+  0x180D2B82C  mov     rcx, qword ptr [rdi + 0x18]                  ; rdi-><Execute>d__6.<>4__this
+  0x180D2B830  test    rcx, rcx                                  
+  0x180D2B833  je      0x180d2bb37                               
+  0x180D2B839  xor     edx, edx                                  
+  0x180D2B83B  call    0x182066fb0                                  ; -> UnityEngine.GameObject$$get_transform
+  0x180D2B840  mov     rsi, rax                                  
+  0x180D2B843  test    rax, rax                                  
+  0x180D2B846  je      0x180d2bb37                               
+  0x180D2B84C  cmp     byte ptr [rip + 0x23bd4dd], 0                ; data_30E8D30
+  0x180D2B853  jne     0x180d2b86d                               
+  0x180D2B855  lea     rcx, [rip + 0x213ff84]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D2B85C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B861  lock or dword ptr [rsp], 0                        
+  0x180D2B866  mov     byte ptr [rip + 0x23bd4c3], 1                ; data_30E8D30
+
+180D2B86D:
+  0x180D2B86D  xor     eax, eax                                  
+  0x180D2B86F  mov     qword ptr [rbp - 0x40], rax               
+  0x180D2B873  mov     dword ptr [rbp - 0x38], eax               
+  0x180D2B876  mov     r14, qword ptr [rsi + 0x10]               
+  0x180D2B87A  test    r14, r14                                  
+  0x180D2B87D  je      0x180d2bbc0                               
+  0x180D2B883  mov     rax, qword ptr [rip + 0x23bd4f6]             ; data_30E8D80
+  0x180D2B88A  test    rax, rax                                  
+  0x180D2B88D  jne     0x180d2b8ab                               
+  0x180D2B88F  lea     rcx, [rip + 0x18ddf7a]                       ; data_2609810
+  0x180D2B896  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D2B89B  test    rax, rax                                  
+  0x180D2B89E  je      0x180d2bb3d                               
+  0x180D2B8A4  mov     qword ptr [rip + 0x23bd4d5], rax             ; data_30E8D80
+
+180D2B8AB:
+  0x180D2B8AB  lea     rdx, [rbp - 0x40]                         
+  0x180D2B8AF  mov     rcx, r14                                  
+  0x180D2B8B2  call    rax                                       
+  0x180D2B8B4  movss   xmm7, dword ptr [rbp - 0x40]              
+
+180D2B8B9:
+  0x180D2B8B9  mov     r9, qword ptr [rip + 0x210e1c8]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<NullableFloat>()
+  0x180D2B8C0  lea     r8, [rbp + 0x20]                             ; rbp-><Execute>d__6.asyncToken
+  0x180D2B8C4  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B8C8  mov     edx, 1                                    
+  0x180D2B8CD  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2B8D2  cmp     qword ptr [rbp + 0x20], 0                    ; rbp-><Execute>d__6.asyncToken
+  0x180D2B8D7  je      0x180d2b933                               
+  0x180D2B8D9  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B8DD  test    rcx, rcx                                  
+  0x180D2B8E0  je      0x180d2bb37                               
+  0x180D2B8E6  mov     r8, qword ptr [rip + 0x2125e23]              ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x180D2B8ED  mov     edx, 1                                    
+  0x180D2B8F2  call    0x1808a1eb0                                  ; -> Naninovel.ParameterList<object>$$get_Item
+  0x180D2B8F7  mov     r8, qword ptr [rip + 0x212639a]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x180D2B8FE  lea     rdx, [rbp + 0x20]                            ; rbp-><Execute>d__6.asyncToken
+  0x180D2B902  mov     rcx, rax                                  
+  0x180D2B905  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D2B90A  movss   xmm6, dword ptr [rbp + 0x20]                 ; rbp-><Execute>d__6.asyncToken
+  0x180D2B90F  movaps  xmm0, xmm8                                
+  0x180D2B913  divss   xmm6, dword ptr [rip + 0x1db72a9]            ; data_2AE2BC4
+  0x180D2B91B  shufps  xmm0, xmm8, 0xff                          
+  0x180D2B920  mulss   xmm6, xmm0                                
+  0x180D2B924  shufps  xmm8, xmm8, 0x55                          
+  0x180D2B929  addss   xmm6, xmm8                                
+  0x180D2B92E  jmp     0x180d2b9c0                               
+
+180D2B933:
+  0x180D2B933  mov     rcx, qword ptr [rdi + 0x18]                  ; rdi-><Execute>d__6.<>4__this
+  0x180D2B937  test    rcx, rcx                                  
+  0x180D2B93A  je      0x180d2bb37                               
+  0x180D2B940  xor     edx, edx                                  
+  0x180D2B942  call    0x182066fb0                                  ; -> UnityEngine.GameObject$$get_transform
+  0x180D2B947  mov     rsi, rax                                  
+  0x180D2B94A  test    rax, rax                                  
+  0x180D2B94D  je      0x180d2bb37                               
+  0x180D2B953  cmp     byte ptr [rip + 0x23bd3d6], 0                ; data_30E8D30
+  0x180D2B95A  jne     0x180d2b974                               
+  0x180D2B95C  lea     rcx, [rip + 0x213fe7d]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D2B963  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B968  lock or dword ptr [rsp], 0                        
+  0x180D2B96D  mov     byte ptr [rip + 0x23bd3bc], 1                ; data_30E8D30
+
+180D2B974:
+  0x180D2B974  xor     eax, eax                                  
+  0x180D2B976  mov     qword ptr [rbp - 0x40], rax               
+  0x180D2B97A  mov     dword ptr [rbp - 0x38], eax               
+  0x180D2B97D  mov     r14, qword ptr [rsi + 0x10]               
+  0x180D2B981  test    r14, r14                                  
+  0x180D2B984  je      0x180d2bbb5                               
+  0x180D2B98A  mov     rax, qword ptr [rip + 0x23bd3ef]             ; data_30E8D80
+  0x180D2B991  test    rax, rax                                  
+  0x180D2B994  jne     0x180d2b9b2                               
+  0x180D2B996  lea     rcx, [rip + 0x18dde73]                       ; data_2609810
+  0x180D2B99D  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D2B9A2  test    rax, rax                                  
+  0x180D2B9A5  je      0x180d2bb54                               
+  0x180D2B9AB  mov     qword ptr [rip + 0x23bd3ce], rax             ; data_30E8D80
+
+180D2B9B2:
+  0x180D2B9B2  lea     rdx, [rbp - 0x40]                         
+  0x180D2B9B6  mov     rcx, r14                                  
+  0x180D2B9B9  call    rax                                       
+  0x180D2B9BB  movss   xmm6, dword ptr [rbp - 0x3c]              
+
+180D2B9C0:
+  0x180D2B9C0  mov     r9, qword ptr [rip + 0x210e0c1]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<NullableFloat>()
+  0x180D2B9C7  lea     r8, [rbp + 0x20]                             ; rbp-><Execute>d__6.asyncToken
+  0x180D2B9CB  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx-><Execute>d__6.<>u__2
+  0x180D2B9CF  mov     edx, 2                                    
+  0x180D2B9D4  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2B9D9  mov     rax, qword ptr [rbp + 0x20]                  ; rbp-><Execute>d__6.asyncToken
+  0x180D2B9DD  test    rax, rax                                  
+  0x180D2B9E0  jne     0x180d2ba7a                               
+  0x180D2B9E6  mov     rcx, qword ptr [rdi + 0x18]                  ; rdi-><Execute>d__6.<>4__this
+  0x180D2B9EA  test    rcx, rcx                                  
+  0x180D2B9ED  je      0x180d2bb37                               
+  0x180D2B9F3  xor     edx, edx                                  
+  0x180D2B9F5  call    0x182066fb0                                  ; -> UnityEngine.GameObject$$get_transform
+  0x180D2B9FA  mov     rbx, rax                                  
+  0x180D2B9FD  test    rax, rax                                  
+  0x180D2BA00  je      0x180d2bb37                               
+  0x180D2BA06  cmp     byte ptr [rip + 0x23bd323], 0                ; data_30E8D30
+  0x180D2BA0D  jne     0x180d2ba27                               
+  0x180D2BA0F  lea     rcx, [rip + 0x213fdca]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D2BA16  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2BA1B  lock or dword ptr [rsp], 0                        
+  0x180D2BA20  mov     byte ptr [rip + 0x23bd309], 1                ; data_30E8D30
+
+180D2BA27:
+  0x180D2BA27  xor     eax, eax                                  
+  0x180D2BA29  mov     qword ptr [rbp - 0x40], rax               
+  0x180D2BA2D  mov     dword ptr [rbp - 0x38], eax               
+  0x180D2BA30  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D2BA34  test    rdi, rdi                                  
+  0x180D2BA37  je      0x180d2bbaa                               
+  0x180D2BA3D  mov     rax, qword ptr [rip + 0x23bd33c]             ; data_30E8D80
+  0x180D2BA44  test    rax, rax                                  
+  0x180D2BA47  jne     0x180d2ba65                               
+  0x180D2BA49  lea     rcx, [rip + 0x18dddc0]                       ; data_2609810
+  0x180D2BA50  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D2BA55  test    rax, rax                                  
+  0x180D2BA58  je      0x180d2bb6b                               
+  0x180D2BA5E  mov     qword ptr [rip + 0x23bd31b], rax             ; data_30E8D80
+
+180D2BA65:
+  0x180D2BA65  lea     rdx, [rbp - 0x40]                         
+  0x180D2BA69  mov     rcx, rdi                                  
+  0x180D2BA6C  call    rax                                       
+  0x180D2BA6E  movss   xmm0, dword ptr [rbp - 0x38]              
+  0x180D2BA73  xor     edx, edx                                  
+  0x180D2BA75  call    0x180526ba0                                  ; -> Naninovel.NullableFloat$$op_Implicit
+
+180D2BA7A:
+  0x180D2BA7A  mov     r8, qword ptr [rip + 0x2126217]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x180D2BA81  lea     rdx, [rbp + 0x20]                            ; rbp-><Execute>d__6.asyncToken
+  0x180D2BA85  mov     rcx, rax                                  
+  0x180D2BA88  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D2BA8D  movss   xmm1, dword ptr [rbp + 0x20]                 ; rbp-><Execute>d__6.asyncToken
+  0x180D2BA92  test    r15, r15                                  
+  0x180D2BA95  je      0x180d2bba4                               
+  0x180D2BA9B  cmp     byte ptr [rip + 0x23bd28f], 0                ; data_30E8D31
+  0x180D2BAA2  unpcklps xmm7, xmm6                                
+  0x180D2BAA5  movsd   qword ptr [rbp - 0x40], xmm7              
+  0x180D2BAAA  movss   dword ptr [rbp - 0x38], xmm1              
+  0x180D2BAAF  jne     0x180d2bac9                               
+  0x180D2BAB1  lea     rcx, [rip + 0x213fd28]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D2BAB8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2BABD  lock or dword ptr [rsp], 0                        
+  0x180D2BAC2  mov     byte ptr [rip + 0x23bd268], 1                ; data_30E8D31
+
+180D2BAC9:
+  0x180D2BAC9  mov     rbx, qword ptr [r15 + 0x10]               
+  0x180D2BACD  test    rbx, rbx                                  
+  0x180D2BAD0  je      0x180d2bb99                               
+  0x180D2BAD6  mov     rax, qword ptr [rip + 0x23bd2ab]             ; data_30E8D88
+  0x180D2BADD  test    rax, rax                                  
+  0x180D2BAE0  jne     0x180d2bafe                               
+  0x180D2BAE2  lea     rcx, [rip + 0x18ddd87]                       ; data_2609870
+  0x180D2BAE9  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D2BAEE  test    rax, rax                                  
+  0x180D2BAF1  je      0x180d2bb82                               
+  0x180D2BAF7  mov     qword ptr [rip + 0x23bd28a], rax             ; data_30E8D88
+
+180D2BAFE:
+  0x180D2BAFE  lea     rdx, [rbp - 0x40]                         
+  0x180D2BB02  mov     rcx, rbx                                  
+  0x180D2BB05  call    rax                                       
+  0x180D2BB07  movaps  xmm7, xmmword ptr [rsp + 0x40]            
+  0x180D2BB0C  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+  0x180D2BB11  mov     r15, qword ptr [rsp + 0x90]               
+  0x180D2BB19  mov     r14, qword ptr [rsp + 0x88]               
+  0x180D2BB21  movaps  xmm8, xmmword ptr [rsp + 0x30]            
+
+180D2BB27:
+  0x180D2BB27  mov     rbx, qword ptr [rsp + 0x98]               
+  0x180D2BB2F  add     rsp, 0x60                                 
+  0x180D2BB33  pop     rdi                                       
+  0x180D2BB34  pop     rsi                                       
+  0x180D2BB35  pop     rbp                                       
+  0x180D2BB36  ret                                               
+
+180D2BB37:
+  0x180D2BB37  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2BB3C  int3                                              
+
+180D2BB3D:
+  0x180D2BB3D  lea     rcx, [rip + 0x18ddccc]                       ; data_2609810
+  0x180D2BB44  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D2BB49  mov     rcx, rax                                  
+  0x180D2BB4C  xor     edx, edx                                  
+  0x180D2BB4E  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D2BB53  int3                                              
+
+180D2BB54:
+  0x180D2BB54  lea     rcx, [rip + 0x18ddcb5]                       ; data_2609810
+  0x180D2BB5B  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D2BB60  mov     rcx, rax                                  
+  0x180D2BB63  xor     edx, edx                                  
+  0x180D2BB65  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D2BB6A  int3                                              
+
+180D2BB6B:
+  0x180D2BB6B  lea     rcx, [rip + 0x18ddc9e]                       ; data_2609810
+  0x180D2BB72  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D2BB77  mov     rcx, rax                                  
+  0x180D2BB7A  xor     edx, edx                                  
+  0x180D2BB7C  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D2BB81  int3                                              
+
+180D2BB82:
+  0x180D2BB82  lea     rcx, [rip + 0x18ddce7]                       ; data_2609870
+  0x180D2BB89  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D2BB8E  mov     rcx, rax                                  
+  0x180D2BB91  xor     edx, edx                                  
+  0x180D2BB93  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D2BB98  int3                                              
+
+180D2BB99:
+  0x180D2BB99  xor     edx, edx                                  
+  0x180D2BB9B  mov     rcx, r15                                  
+  0x180D2BB9E  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D2BBA3  int3                                              
+
+180D2BBA4:
+  0x180D2BBA4  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2BBA9  int3                                              
+
+180D2BBAA:
+  0x180D2BBAA  xor     edx, edx                                  
+  0x180D2BBAC  mov     rcx, rbx                                  
+  0x180D2BBAF  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D2BBB4  int3                                              
+
+180D2BBB5:
+  0x180D2BBB5  xor     edx, edx                                  
+  0x180D2BBB7  mov     rcx, rsi                                  
+  0x180D2BBBA  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D2BBBF  int3                                              
+
+180D2BBC0:
+  0x180D2BBC0  xor     edx, edx                                  
+  0x180D2BBC2  mov     rcx, rsi                                  
+  0x180D2BBC5  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

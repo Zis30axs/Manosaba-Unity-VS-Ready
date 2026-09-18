@@ -1,0 +1,37 @@
+====================================================================================================
+FUNCTION RVA 0xD2B4D0  VA 0x180D2B4D0  size 0x54 (84 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended$$get_MultipliableManager
+  csig   : GigaCreation_NaninovelExtender_ExtendedSpawn_IMultipliableSpawnManager_o* GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended__get_MultipliableManager (GigaCreation_NaninovelExtender_ExtendedSpawn_SpawnExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended :: private IMultipliableSpawnManager get_MultipliableManager()
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.SpawnExtended:
+      +0x68   SubId                          StringParameter
+      +0x70   MatchScreenWidth               BooleanParameter
+  fields of SpawnExtended.<Execute>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SpawnExtended
+      +0x20   asyncToken                     AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D2B4D0  push    rbx                                       
+  0x180D2B4D2  sub     rsp, 0x20                                 
+  0x180D2B4D6  cmp     byte ptr [rip + 0x23b1e76], 0                ; data_30DD353
+  0x180D2B4DD  mov     rbx, rcx                                  
+  0x180D2B4E0  jne     0x180d2b4fa                               
+  0x180D2B4E2  lea     rcx, [rip + 0x2140587]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedSpawn.IMultipliableSpawnManager_TypeInfo
+  0x180D2B4E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2B4EE  lock or dword ptr [rsp], 0                        
+  0x180D2B4F3  mov     byte ptr [rip + 0x23b1e59], 1                ; data_30DD353
+
+180D2B4FA:
+  0x180D2B4FA  mov     rdx, qword ptr [rbx]                      
+  0x180D2B4FD  mov     rcx, rbx                                  
+  0x180D2B500  mov     rax, qword ptr [rdx + 0x258]              
+  0x180D2B507  mov     rdx, qword ptr [rdx + 0x260]              
+  0x180D2B50E  call    rax                                       
+  0x180D2B510  mov     rdx, qword ptr [rip + 0x2140559]             ; TYPE GigaCreation.NaninovelExtender.ExtendedSpawn.IMultipliableSpawnManager_TypeInfo
+  0x180D2B517  mov     rcx, rax                                  
+  0x180D2B51A  add     rsp, 0x20                                 
+  0x180D2B51E  pop     rbx                                       
+  0x180D2B51F  jmp     0x180298020                               

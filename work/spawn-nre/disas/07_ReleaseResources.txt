@@ -1,0 +1,141 @@
+====================================================================================================
+FUNCTION RVA 0xD2C950  VA 0x180D2C950  size 0x136 (310 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn$$ReleaseResources
+  csig   : void GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn__ReleaseResources (GigaCreation_NaninovelExtender_ExtendedSpawn_MultipliableSpawn_o* __this, System_String_o* path, Il2CppObject* holder, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn :: public override void ReleaseResources(string path, object holder)
+  fields of GigaCreation.NaninovelExtender.ExtendedSpawn.MultipliableSpawn:
+      +0x38   _spawnedMap                    readonly Dictionary<string, SpawnedObject>
+      +0x40   _providersManager              readonly IResourceProviderManager
+      +0x48   _loader                        ResourceLoader<GameObject>
+      +0x50   _container                     GameObject
+  fields of MultipliableSpawn.<>c:
+      +0x0    <>9                            static readonly MultipliableSpawn.<>c
+      +0x8    <>9__19_0                      static Func<SpawnedObject, SpawnedObjectState>
+  fields of MultipliableSpawn.<HoldResources>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   path                           string
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   holder                         object
+      +0x30   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+  fields of MultipliableSpawn.<LoadObjectsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   state                          SpawnManager.GameState
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<LoadServiceState>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of MultipliableSpawn.<Spawn>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   <>4__this                      MultipliableSpawn
+      +0x28   path                           string
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter<Resource<GameObject>>
+      +0x50   <>u__2                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<Spawn>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<SpawnedObject>
+      +0x20   subId                          string
+      +0x28   <>4__this                      MultipliableSpawn
+      +0x30   path                           string
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <multipliablePath>5__2         string
+      +0x50   <>u__1                         UniTask.Awaiter<SpawnedObject>
+      +0x60   <>u__2                         UniTask.Awaiter<Resource<GameObject>>
+      +0x70   <>u__3                         UniTask.Awaiter<GameObject>
+  fields of MultipliableSpawn.<SpawnObjectAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   objState                       SpawnedObjectState
+      +0x50   <>4__this                      MultipliableSpawn
+      +0x58   <>u__1                         UniTask.Awaiter<SpawnedObject>
+====================================================================================================
+  0x180D2C950  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D2C955  mov     qword ptr [rsp + 0x18], rbp               
+  0x180D2C95A  mov     qword ptr [rsp + 0x20], rsi               
+  0x180D2C95F  push    rdi                                       
+  0x180D2C960  sub     rsp, 0x30                                 
+  0x180D2C964  mov     rsi, rdx                                  
+  0x180D2C967  mov     qword ptr [rsp + 0x40], 0                 
+  0x180D2C970  mov     rbp, r8                                   
+  0x180D2C973  lea     rdx, [rsp + 0x40]                         
+  0x180D2C978  mov     rbx, rcx                                  
+  0x180D2C97B  xor     r8d, r8d                                  
+  0x180D2C97E  mov     rcx, rsi                                  
+  0x180D2C981  call    0x1805d3870                                  ; -> Naninovel.SpawnConfiguration$$ProcessInputPath
+  0x180D2C986  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2C98A  mov     rdi, rax                                  
+  0x180D2C98D  test    rcx, rcx                                  
+  0x180D2C990  je      0x180d2ca81                               
+  0x180D2C996  mov     r8, qword ptr [rcx]                       
+  0x180D2C999  mov     rdx, rax                                  
+  0x180D2C99C  mov     r9, qword ptr [r8 + 0x368]                
+  0x180D2C9A3  mov     r8, qword ptr [r8 + 0x370]                
+  0x180D2C9AA  call    r9                                        
+  0x180D2C9AD  test    al, al                                    
+  0x180D2C9AF  je      0x180d2ca6c                               
+  0x180D2C9B5  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2C9B9  test    rcx, rcx                                  
+  0x180D2C9BC  je      0x180d2ca81                               
+  0x180D2C9C2  mov     rax, qword ptr [rcx]                      
+  0x180D2C9C5  xor     r9d, r9d                                  
+  0x180D2C9C8  mov     r8, rbp                                   
+  0x180D2C9CB  mov     rdx, rdi                                  
+  0x180D2C9CE  mov     r10, qword ptr [rax + 0x328]              
+  0x180D2C9D5  mov     rax, qword ptr [rax + 0x330]              
+  0x180D2C9DC  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2C9E1  call    r10                                       
+  0x180D2C9E4  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2C9E8  test    rcx, rcx                                  
+  0x180D2C9EB  je      0x180d2ca81                               
+  0x180D2C9F1  mov     r8, qword ptr [rcx]                       
+  0x180D2C9F4  mov     rdx, rdi                                  
+  0x180D2C9F7  mov     rax, qword ptr [r8 + 0x358]               
+  0x180D2C9FE  mov     r8, qword ptr [r8 + 0x360]                
+  0x180D2CA05  call    rax                                       
+  0x180D2CA07  test    eax, eax                                  
+  0x180D2CA09  jne     0x180d2ca6c                               
+  0x180D2CA0B  mov     r8, qword ptr [rbx]                       
+  0x180D2CA0E  mov     rdx, rsi                                  
+  0x180D2CA11  mov     rcx, rbx                                  
+  0x180D2CA14  mov     rax, qword ptr [r8 + 0x2f8]               
+  0x180D2CA1B  mov     r8, qword ptr [r8 + 0x300]                
+  0x180D2CA22  call    rax                                       
+  0x180D2CA24  test    al, al                                    
+  0x180D2CA26  je      0x180d2ca41                               
+  0x180D2CA28  mov     r8, qword ptr [rbx]                       
+  0x180D2CA2B  mov     rdx, rsi                                  
+  0x180D2CA2E  mov     rcx, rbx                                  
+  0x180D2CA31  mov     rax, qword ptr [r8 + 0x2e8]               
+  0x180D2CA38  mov     r8, qword ptr [r8 + 0x2f0]                
+  0x180D2CA3F  call    rax                                       
+
+180D2CA41:
+  0x180D2CA41  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->MultipliableSpawn._loader | <Spawn>d__12.<multipliablePath>5__2
+  0x180D2CA45  test    rcx, rcx                                  
+  0x180D2CA48  je      0x180d2ca81                               
+  0x180D2CA4A  mov     rax, qword ptr [rcx]                      
+  0x180D2CA4D  mov     r9b, 1                                    
+  0x180D2CA50  mov     r8, rbp                                   
+  0x180D2CA53  mov     rdx, rdi                                  
+  0x180D2CA56  mov     r10, qword ptr [rax + 0x328]              
+  0x180D2CA5D  mov     rax, qword ptr [rax + 0x330]              
+  0x180D2CA64  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2CA69  call    r10                                       
+
+180D2CA6C:
+  0x180D2CA6C  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D2CA71  mov     rbp, qword ptr [rsp + 0x50]               
+  0x180D2CA76  mov     rsi, qword ptr [rsp + 0x58]               
+  0x180D2CA7B  add     rsp, 0x30                                 
+  0x180D2CA7F  pop     rdi                                       
+  0x180D2CA80  ret                                               
+
+180D2CA81:
+  0x180D2CA81  call    0x180246730                                  ; THROW NullReferenceException
