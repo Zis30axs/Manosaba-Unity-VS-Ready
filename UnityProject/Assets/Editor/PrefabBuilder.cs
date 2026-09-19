@@ -38,6 +38,17 @@ namespace Manosaba.EditorTools
         private const string OutputEnv = "MANOSABA_PREFAB_OUT";
         private const string FieldDumpEnv = "MANOSABA_PREFAB_FIELD_DUMP";
 
+        /// <summary>
+        /// Object-header keys of a component dump that the builder creates or sets itself, so the applier must not
+        /// touch them.  Everything else under m_* is component data and is applied (m_Enabled included: Renderer and
+        /// Collider carry it too, not only Behaviour).
+        /// </summary>
+        private static readonly HashSet<string> BuilderOwnedKeys = new HashSet<string>
+        {
+            "references", "m_GameObject", "m_Script", "m_Name", "m_EditorClassIdentifier", "m_ObjectHideFlags",
+            "m_CorrespondingSourceObject", "m_PrefabInstance", "m_PrefabAsset",
+        };
+
         [MenuItem("Manosaba/Build Prefabs (from plan)")]
         public static void Run()
         {
@@ -117,6 +128,13 @@ namespace Manosaba.EditorTools
                 result.objects_written += job.objects_written;
                 result.pointers_bound += job.pointers_bound;
                 result.pointers_unbound += job.pointers_unbound;
+                result.pointers_adapted += job.pointers_adapted;
+                result.components_adopted += job.components_adopted;
+                if (job.guid_changed) result.guid_changed++;
+                result.unresolved_target_not_in_plan += job.unresolved_target_not_in_plan;
+                result.unresolved_target_not_built += job.unresolved_target_not_built;
+                result.unresolved_no_reference_entry += job.unresolved_no_reference_entry;
+                result.unresolved_asset_missing += job.unresolved_asset_missing;
                 if (job.warning_count > 0 && result.messages.Count < 60)
                 {
                     result.messages.Add(job.asset_path + ": " + string.Join(" | ", job.messages.Take(3)));
@@ -130,7 +148,10 @@ namespace Manosaba.EditorTools
             Debug.Log($"[PrefabBuilder] {result.status}: built={result.built} partial={result.built_partial} " +
                       $"failed={result.failed} incomplete={result.incomplete} of {result.jobs_total}; " +
                       $"objects created={result.objects_created} written={result.objects_written} " +
-                      $"pointers {result.pointers_bound} bound / {result.pointers_unbound} unbound; wrote {outPath}");
+                      $"pointers {result.pointers_bound} bound ({result.pointers_adapted} type-adapted) / {result.pointers_unbound} unbound " +
+                      $"[not in plan {result.unresolved_target_not_in_plan}, not built {result.unresolved_target_not_built}, " +
+                      $"no reference entry {result.unresolved_no_reference_entry}, asset missing {result.unresolved_asset_missing}]; " +
+                      $"components adopted {result.components_adopted}; GUID changed {result.guid_changed}; wrote {outPath}");
             return result.failed == 0 ? 0 : 1;
         }
 
@@ -244,10 +265,19 @@ namespace Manosaba.EditorTools
                 }
 
                 // ---- create transforms and components ----------------------------------------
-                foreach (Node node in nodes)
+                // Order matters: `AddComponent` of a type that carries [RequireComponent] silently adds the required
+                // component itself, and a DisallowMultipleComponent type (every UI Graphic, every Selectable) then
+                // refuses the planned node for it.  The plan lists nodes sorted by (type, dump file name), which has
+                // nothing to do with the order the components were authored in, so a `LocalizeImage` listed before its
+                // GameObject's `Image` made Unity create the Image, the planned Image node was refused twice, its
+                // node stayed component-less and `LocalizeImage._image` had no target (measured: 64 of 127 `_image`
+                // fields, 30 of 55 LocalizeImages, 34 of 68 PointerStayingSpriteSwapper).  Creation therefore follows
+                // the shipped GameObject.m_Component order, then hoists whatever a type requires (see CreationOrder).
+                // `claimed` is every component already bound to a node: a refused AddComponent may still adopt an
+                // unclaimed component of exactly the planned type that an earlier requirement created.
+                var claimed = new HashSet<int>();
+                foreach (Node node in CreationOrder(nodes))
                 {
-                    if (node.type == "GameObject") continue;
-
                     if (node.type == "Transform" || node.type == "RectTransform")
                     {
                         GameObject owner = ResolveOwner(node, nodes);
@@ -271,6 +301,7 @@ namespace Manosaba.EditorTools
                             RectTransform rt = hasExisting ? existing : owner.AddComponent<RectTransform>();
                             node.rectTransform = rt;
                             node.component = rt;
+                            if (rt != null) claimed.Add(rt.GetInstanceID());
                             node.transform_origin = hasExisting ? "reused" : (rt != null ? "added" : "ADD_FAILED");
                             if (rt == null)
                             {
@@ -283,6 +314,7 @@ namespace Manosaba.EditorTools
                         else
                         {
                             node.component = owner.transform;
+                            claimed.Add(owner.transform.GetInstanceID());
                             node.transform_origin = "owner.transform";
                         }
                         node.gameObject = owner;
@@ -316,6 +348,17 @@ namespace Manosaba.EditorTools
                     Component component = host.AddComponent(type);
                     if (component == null)
                     {
+                        // Refused because an unclaimed component of exactly this type is already on the host (created
+                        // by another component's [RequireComponent]): that component IS this node.
+                        component = AdoptAutoAdded(host, type, claimed);
+                        if (component != null)
+                        {
+                            job.components_adopted++;
+                            FieldDump(job, node, type, "ADOPTED_AUTO_ADDED host=" + host.name);
+                        }
+                    }
+                    if (component == null)
+                    {
                         // Not a failure yet: `AddComponent` is also refused when a component the type *requires*
                         // is missing and cannot be created for us.  `[RequireComponent(typeof(Graphic))]` on
                         // `LeTai.TrueShadow.TrueShadow` is the measured case -- `Graphic` is abstract, so Unity
@@ -330,6 +373,7 @@ namespace Manosaba.EditorTools
                         deferred.Add(new DeferredComponent { node = node, type = type, host = host });
                         continue;
                     }
+                    claimed.Add(component.GetInstanceID());
                     node.component = component;
                     node.gameObject = host;
                     job.objects_created++;
@@ -343,6 +387,7 @@ namespace Manosaba.EditorTools
                 {
                     if (pending.node.component != null) continue;
                     Component retried = pending.host.AddComponent(pending.type);
+                    if (retried == null) retried = AdoptAutoAdded(pending.host, pending.type, claimed);
                     if (retried == null)
                     {
                         job.component_add_failed++;
@@ -351,6 +396,7 @@ namespace Manosaba.EditorTools
                                       .Where(c => c != null).Select(c => c.GetType().Name)));
                         continue;
                     }
+                    claimed.Add(retried.GetInstanceID());
                     pending.node.component = retried;
                     pending.node.gameObject = pending.host;
                     job.objects_created++;
@@ -474,10 +520,20 @@ namespace Manosaba.EditorTools
                     {
                         ResolvePointer = token => ResolvePointer(token, node, nodes, references, repoRoot, job, extraMap),
                         PathPrefix = node.pid + ".",
+                        // Component data lives under m_* (Image.m_Sprite, Graphic.m_Color, TMP m_fontAsset,
+                        // Selectable.m_TargetGraphic, UnityEvent m_PersistentCalls, ...): dropping every m_* key
+                        // left each UI prefab structurally complete and visually empty.  Only the object header the
+                        // builder owns is skipped.
+                        SkipEngineFields = false,
+                        IgnoreKeys = BuilderOwnedKeys,
+                        // An engine field whose default is an object (SpriteRenderer.m_Materials[0]) must survive a
+                        // pointer that cannot be resolved (built-in resources are not in the plan).
+                        PreserveUnresolvedPointers = true,
                     };
                     var report = JsonToSerializedApplier.ApplyAll(new SerializedObject(node.component), node.json, options);
                     job.fields_applied += report.applied;
                     job.pointers_bound += report.pointersBound;
+                    job.pointers_adapted += report.pointersAdapted;
                     job.pointers_unbound += report.pointersUnbound;
                     job.managed_references_applied += report.managedApplied;
                     job.warning_count += report.warnings;
@@ -536,6 +592,11 @@ namespace Manosaba.EditorTools
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(target)));
+                // The prefab's .meta GUID is the shipped one (align_asset_guids.py writes it) and Boot.unity's
+                // `_gamePrefab` plus the Manosaba.Prefabs Addressables group are keyed by it.  Delete + save has
+                // preserved it in every measured run, but that is a property of the Editor session, so it is
+                // checked here for every prefab instead of assumed: a change is reported as GUID_CHANGED.
+                string guidBefore = AssetDatabase.LoadMainAssetAtPath(target) != null ? AssetDatabase.AssetPathToGUID(target) : "";
                 if (AssetDatabase.LoadMainAssetAtPath(target) != null) AssetDatabase.DeleteAsset(target);
 
                 // Count the hierarchy that exists in memory *before* saving: this bisects "the builder
@@ -579,6 +640,15 @@ namespace Manosaba.EditorTools
                 // kept only the root plus its components (CreditsUI 8/3189, WitchBookUI 9/2065).  So the
                 // saved asset is loaded back and counted, and a shortfall is a status, not a footnote.
                 AssetDatabase.ImportAsset(target, ImportAssetOptions.ForceUpdate);
+                job.guid_before = guidBefore;
+                job.guid_after = AssetDatabase.AssetPathToGUID(target);
+                if (guidBefore.Length > 0 && guidBefore != job.guid_after)
+                {
+                    job.guid_changed = true;
+                    job.warnings.Add("GUID changed " + guidBefore + " -> " + job.guid_after +
+                                     " (run tools/unity-rebuild/align_asset_guids.py)");
+                    job.warning_count++;
+                }
                 GameObject saved = savedRoot != null ? savedRoot : AssetDatabase.LoadAssetAtPath<GameObject>(target);
                 if (saved == null)
                 {
@@ -633,14 +703,136 @@ namespace Manosaba.EditorTools
                     job.warning_count++;
                 }
 
-                job.status = job.warning_count == 0 && job.missing_types == 0 && job.pointers_unbound == 0
-                    ? "BUILT"
-                    : "BUILT_PARTIAL";
+                job.status = job.guid_changed
+                    ? "GUID_CHANGED"
+                    : (job.warning_count == 0 && job.missing_types == 0 && job.pointers_unbound == 0
+                        ? "BUILT"
+                        : "BUILT_PARTIAL");
             }
             finally
             {
                 foreach (GameObject go in temp) UnityEngine.Object.DestroyImmediate(go);
             }
+        }
+
+        // -- component creation order -------------------------------------------------------
+
+        /// <summary>
+        /// The non-GameObject nodes in the order their components must be created: the shipped
+        /// GameObject.m_Component order of each GameObject (that is the order Unity itself had them in, which is
+        /// always dependency-correct), nodes no GameObject lists after that, and finally any component whose
+        /// [RequireComponent] dependency the plan lists later hoisted in front of it.
+        /// </summary>
+        private static List<Node> CreationOrder(List<Node> nodes)
+        {
+            var byPid = new Dictionary<string, Node>(StringComparer.Ordinal);
+            foreach (Node n in nodes)
+                if (n.pid != null && !byPid.ContainsKey(n.pid)) byPid[n.pid] = n;
+
+            var ordered = new List<Node>();
+            var seen = new HashSet<Node>();
+            foreach (Node go in nodes)
+            {
+                if (go.type != "GameObject" || !(go.json["m_Component"] is JArray listed)) continue;
+                foreach (JToken entry in listed)
+                {
+                    long pid = ReadPid(entry["component"]);
+                    if (pid != 0 && byPid.TryGetValue(pid.ToString(), out Node member) &&
+                        member.type != "GameObject" && seen.Add(member))
+                        ordered.Add(member);
+                }
+            }
+            foreach (Node n in nodes)
+                if (n.type != "GameObject" && seen.Add(n)) ordered.Add(n);
+
+            return HoistRequiredComponents(ordered);
+        }
+
+        /// <summary>
+        /// Safety net for plans whose GameObject.m_Component order does not satisfy [RequireComponent]:
+        /// within one GameObject, a node whose type requires R is moved behind the first node that provides R
+        /// (R.IsAssignableFrom).  This is what makes `EnableDebugModeButton` ([RequireComponent(typeof(Selectable))])
+        /// wait for the planned `Button`, and `ChoiceHandlerButton` for the planned `TweeningButton`: creating the
+        /// requirer first would make Unity add a plain Selectable/Button of its own and refuse the planned subclass.
+        /// </summary>
+        private static List<Node> HoistRequiredComponents(List<Node> ordered)
+        {
+            var types = new Dictionary<Node, Type>();
+            foreach (Node n in ordered) types[n] = ResolveComponentType(n);
+
+            var byHost = ordered.GroupBy(n => ReadPid(n.json["m_GameObject"])).ToList();
+            var result = new List<Node>(ordered.Count);
+            var placed = new HashSet<Node>();
+            var groupOf = new Dictionary<Node, List<Node>>();
+            foreach (var g in byHost)
+            {
+                List<Node> members = g.ToList();
+                for (int pass = 0; pass < members.Count; pass++)
+                {
+                    bool moved = false;
+                    for (int i = 0; i < members.Count && !moved; i++)
+                    {
+                        Type requirer = types[members[i]];
+                        if (requirer == null) continue;
+                        foreach (Type required in RequiredTypes(requirer))
+                        {
+                            int index = i;
+                            if (members.Take(index).Any(m => types[m] != null && required.IsAssignableFrom(types[m]))) continue;
+                            int provider = members.FindIndex(index + 1, m => types[m] != null && required.IsAssignableFrom(types[m]));
+                            if (provider < 0) continue;
+                            Node moving = members[provider];
+                            members.RemoveAt(provider);
+                            members.Insert(index, moving);
+                            moved = true;
+                            break;
+                        }
+                    }
+                    if (!moved) break;
+                }
+                foreach (Node m in members) groupOf[m] = members;
+            }
+
+            // Re-emit in the original sequence, one host at a time, so the m_Component order between hosts is kept.
+            foreach (Node n in ordered)
+            {
+                if (placed.Contains(n)) continue;
+                foreach (Node m in groupOf[n])
+                {
+                    if (placed.Add(m)) result.Add(m);
+                }
+            }
+            return result;
+        }
+
+        private static readonly Dictionary<Type, List<Type>> RequiredTypeCache = new Dictionary<Type, List<Type>>();
+
+        private static List<Type> RequiredTypes(Type type)
+        {
+            if (RequiredTypeCache.TryGetValue(type, out List<Type> cached)) return cached;
+            var required = new List<Type>();
+            foreach (object attribute in type.GetCustomAttributes(typeof(RequireComponent), true))
+            {
+                var rc = (RequireComponent)attribute;
+                if (rc.m_Type0 != null) required.Add(rc.m_Type0);
+                if (rc.m_Type1 != null) required.Add(rc.m_Type1);
+                if (rc.m_Type2 != null) required.Add(rc.m_Type2);
+            }
+            RequiredTypeCache[type] = required;
+            return required;
+        }
+
+        /// <summary>
+        /// A component of exactly `type` already on the host that no node has claimed: created behind our back by
+        /// another component's [RequireComponent].  Exact-type equality, not assignability, so a plain Button is never
+        /// mistaken for a planned TweeningButton.
+        /// </summary>
+        private static Component AdoptAutoAdded(GameObject host, Type type, HashSet<int> claimed)
+        {
+            foreach (Component c in host.GetComponents(type))
+            {
+                if (c != null && c.GetType() == type && !claimed.Contains(c.GetInstanceID())) return c;
+            }
+            return null;
         }
 
         /// <summary>How many transforms hang below this one (including itself).</summary>
@@ -702,7 +894,13 @@ namespace Manosaba.EditorTools
             {
                 Type hit = asm.GetType("UnityEngine." + shortName, throwOnError: false)
                            ?? asm.GetType("UnityEngine.UI." + shortName, throwOnError: false)
-                           ?? asm.GetType("TMPro." + shortName, throwOnError: false);
+                           ?? asm.GetType("TMPro." + shortName, throwOnError: false)
+                           // PlayableDirector (188 nodes), SortingGroup (59), RotationConstraint (4) were reported as
+                           // "type not found": they live in these engine namespaces.
+                           ?? asm.GetType("UnityEngine.Playables." + shortName, throwOnError: false)
+                           ?? asm.GetType("UnityEngine.Rendering." + shortName, throwOnError: false)
+                           ?? asm.GetType("UnityEngine.Animations." + shortName, throwOnError: false)
+                           ?? asm.GetType("UnityEngine.Timeline." + shortName, throwOnError: false);
                 if (hit != null) return hit;
             }
             return JsonToSerializedApplier.ResolveType(shortName, null);
@@ -794,24 +992,78 @@ namespace Manosaba.EditorTools
             long pathId = token["m_PathID"] != null ? token.Value<long>("m_PathID") : 0;
             if (pathId == 0) return null;
 
+            // Unresolved pointers are classified, because "unbound" alone hid three different problems: a target the
+            // plan never contained (the shipped file points into another asset's object, nothing to build), a target
+            // the plan has but whose component could not be created, and an external asset that is not on disk.
             if (fileId == 0)
             {
                 Node target = nodes.FirstOrDefault(n => n.pid == pathId.ToString());
-                if (target == null) return null;
+                if (target == null)
+                {
+                    job.unresolved_target_not_in_plan++;
+                    return null;
+                }
                 // An object that lives in an extra root's own prefab asset must be referenced through that asset,
                 // not through the live scene object -- otherwise SaveAsPrefabAsset cannot serialise it.
                 if (extraRootObjects != null && extraRootObjects.TryGetValue(target.pid, out UnityEngine.Object mapped))
                     return mapped;
-                return target.component != null ? target.component : (UnityEngine.Object)target.gameObject;
+                UnityEngine.Object live = target.component != null ? target.component : (UnityEngine.Object)target.gameObject;
+                if (live == null) job.unresolved_target_not_built++;
+                return live;
             }
 
             string key = node.pid + ":" + fileId + ":" + pathId;
-            if (!references.TryGetValue(key, out string assetPath)) return null;
-            string full = Path.GetFullPath(Path.Combine(repoRoot, assetPath));
-            string unityPath = full.Replace('\\', '/');
-            int assetsIndex = unityPath.IndexOf("/Assets/", StringComparison.Ordinal);
-            if (assetsIndex >= 0) unityPath = unityPath.Substring(assetsIndex + 1);
+            if (!references.TryGetValue(key, out string assetPath))
+            {
+                job.unresolved_no_reference_entry++;
+                return null;
+            }
+            string unityPath = MapShippedAssetPath(assetPath);
+            if (unityPath == null)
+            {
+                job.unresolved_asset_missing++;
+                if (job.missing_asset_paths.Count < 20 && !job.missing_asset_paths.Contains(assetPath))
+                    job.missing_asset_paths.Add(assetPath);
+                return null;
+            }
             return AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(unityPath);
+        }
+
+        /// <summary>
+        /// The plan carries the SHIPPED asset path (Assets/#WitchTrials/Textures/.../CloseButton_Default.png); the
+        /// rebuilt project keeps generated content elsewhere.  Candidates, first one on disk wins:
+        ///   1. the same path under Assets/GameContent/ (prefabs, materials, ScriptableObjects, plain textures)
+        ///   2. sprite PNGs, which the importer places one per folder:  dir/Name.sprites/Name.png
+        ///   3. fonts and their materials, which live in Assets/GameContent/RuntimeFonts/&lt;Family&gt;/
+        /// Returns null when none exists, which the caller reports as a missing asset (never silently as null).
+        /// </summary>
+        private static string MapShippedAssetPath(string shipped)
+        {
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string p = shipped.Replace('\\', '/');
+            string generated = p.StartsWith("Assets/", StringComparison.Ordinal) ? "Assets/GameContent/" + p.Substring("Assets/".Length) : p;
+
+            var candidates = new List<string> { generated };
+            if (p.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+            {
+                string dir = generated.Substring(0, generated.LastIndexOf('/'));
+                string name = Path.GetFileNameWithoutExtension(generated);
+                candidates.Add(dir + "/" + name + ".sprites/" + name + ".png");
+                // Localized variants: the folder keeps the shipped name (Agreement@Ja.sprites) but the PNG inside has
+                // '@' replaced by '_' (Agreement_Ja.png).  100 pointers (94 distinct sprites; TitleUI, ControlPanel,
+                // OptionsUI, the choice buttons...) were "asset missing" until this candidate existed.
+                if (name.IndexOf('@') >= 0)
+                    candidates.Add(dir + "/" + name + ".sprites/" + name.Replace('@', '_') + ".png");
+            }
+            const string fonts = "Assets/#WitchTrials/Fonts/";
+            if (p.StartsWith(fonts, StringComparison.Ordinal))
+                candidates.Add("Assets/GameContent/RuntimeFonts/" + p.Substring(fonts.Length));
+
+            foreach (string candidate in candidates)
+            {
+                if (File.Exists(Path.Combine(projectRoot, candidate))) return candidate;
+            }
+            return null;
         }
 
         private static long ReadPid(JToken token)
@@ -845,6 +1097,13 @@ namespace Manosaba.EditorTools
             public int objects_written;
             public int pointers_bound;
             public int pointers_unbound;
+            public int pointers_adapted;
+            public int components_adopted;
+            public int guid_changed;
+            public int unresolved_target_not_in_plan;
+            public int unresolved_target_not_built;
+            public int unresolved_no_reference_entry;
+            public int unresolved_asset_missing;
             public List<string> messages = new List<string>();
             public List<JobRecord> jobs = new List<JobRecord>();
         }
@@ -889,6 +1148,22 @@ namespace Manosaba.EditorTools
             public int fields_applied;
             public int pointers_bound;
             public int pointers_unbound;
+            /// <summary>Pointers bound after converting the resolved asset to the field's type (Texture2D -> Sprite, prefab GameObject -> its component).</summary>
+            public int pointers_adapted;
+            /// <summary>Planned components that were already on the host, auto-added by another component's [RequireComponent], and adopted.</summary>
+            public int components_adopted;
+            public bool guid_changed;
+            public string guid_before;
+            public string guid_after;
+            /// <summary>Internal pointer to an object the plan does not contain (the shipped file points into another asset).</summary>
+            public int unresolved_target_not_in_plan;
+            /// <summary>Internal pointer to a planned node whose component could not be created.</summary>
+            public int unresolved_target_not_built;
+            /// <summary>External pointer with no entry in the plan's reference table.</summary>
+            public int unresolved_no_reference_entry;
+            /// <summary>External pointer whose asset is not on disk under any of the mapped locations.</summary>
+            public int unresolved_asset_missing;
+            public List<string> missing_asset_paths = new List<string>();
             public int managed_references_applied;
             public int missing_types;
             public int warning_count;
