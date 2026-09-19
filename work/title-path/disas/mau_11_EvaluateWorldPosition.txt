@@ -1,0 +1,173 @@
+====================================================================================================
+FUNCTION RVA 0x86C630  VA 0x18086C630  size 0x24C (588 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$EvaluateWorldPosition
+  csig   : System_Nullable_float__array* GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object___EvaluateWorldPosition (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, Naninovel_DecimalListParameter_o* scenePosition, bool matchScreenWidth, const MethodInfo_86C630* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086C630  mov     qword ptr [rsp + 8], rbx                  
+  0x18086C635  mov     qword ptr [rsp + 0x20], rsi               
+  0x18086C63A  push    rdi                                       
+  0x18086C63B  sub     rsp, 0x40                                 
+  0x18086C63F  cmp     byte ptr [rip + 0x28702d6], 0                ; data_30DC91C
+  0x18086C646  movzx   edi, r8b                                  
+  0x18086C64A  movaps  xmmword ptr [rsp + 0x30], xmm6            
+  0x18086C64F  mov     rsi, rdx                                  
+  0x18086C652  jne     0x18086c6c1                               
+  0x18086C654  lea     rcx, [rip + 0x25ee6c5]                       ; TYPE System.Nullable<float>[]_TypeInfo
+  0x18086C65B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C660  lock or dword ptr [rsp], 0                        
+  0x18086C665  lea     rcx, [rip + 0x25e58f4]                       ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x18086C66C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C671  lock or dword ptr [rsp], 0                        
+  0x18086C676  lea     rcx, [rip + 0x25e515b]                       ; METHODINFO Method$System.Nullable<float>..ctor()
+  0x18086C67D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C682  lock or dword ptr [rsp], 0                        
+  0x18086C687  lea     rcx, [rip + 0x25e560a]                       ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C68E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C693  lock or dword ptr [rsp], 0                        
+  0x18086C698  lea     rcx, [rip + 0x25e5079]                       ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.ElementAtOrNull()
+  0x18086C69F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C6A4  lock or dword ptr [rsp], 0                        
+  0x18086C6A9  lea     rcx, [rip + 0x25e5060]                       ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x18086C6B0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C6B5  lock or dword ptr [rsp], 0                        
+  0x18086C6BA  mov     byte ptr [rip + 0x287025b], 1                ; data_30DC91C
+
+18086C6C1:
+  0x18086C6C1  mov     r8, qword ptr [rip + 0x25e5898]              ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x18086C6C8  lea     rdx, [rsp + 0x60]                         
+  0x18086C6CD  xor     ebx, ebx                                  
+  0x18086C6CF  mov     byte ptr [rsp + 0x60], dil                
+  0x18086C6D4  lea     rcx, [rsp + 0x58]                         
+  0x18086C6D9  mov     word ptr [rsp + 0x58], bx                 
+  0x18086C6DE  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x18086C6E3  movzx   edx, word ptr [rsp + 0x58]                
+  0x18086C6E8  lea     rcx, [rsp + 0x20]                         
+  0x18086C6ED  xor     r8d, r8d                                  
+  0x18086C6F0  call    0x180cf4eb0                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility$$EvaluateSceneRect
+  0x18086C6F5  mov     rcx, qword ptr [rip + 0x25ee624]             ; TYPE System.Nullable<float>[]_TypeInfo
+  0x18086C6FC  mov     edx, 3                                    
+  0x18086C701  movups  xmm6, xmmword ptr [rax]                   
+  0x18086C704  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x18086C709  mov     rdi, rax                                  
+  0x18086C70C  test    rsi, rsi                                  
+  0x18086C70F  je      0x18086c86b                               
+  0x18086C715  xor     edx, edx                                  
+  0x18086C717  mov     rcx, rsi                                  
+  0x18086C71A  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C71F  test    rax, rax                                  
+  0x18086C722  je      0x18086c78e                               
+  0x18086C724  mov     r8, qword ptr [rip + 0x25e4fe5]              ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x18086C72B  xor     edx, edx                                  
+  0x18086C72D  mov     rcx, rsi                                  
+  0x18086C730  call    0x1808a1eb0                                  ; -> Naninovel.ParameterList<object>$$get_Item
+  0x18086C735  mov     r8, qword ptr [rip + 0x25e555c]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C73C  lea     rdx, [rsp + 0x60]                         
+  0x18086C741  mov     rcx, rax                                  
+  0x18086C744  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C749  movss   xmm1, dword ptr [rsp + 0x60]              
+  0x18086C74F  lea     rdx, [rsp + 0x60]                         
+  0x18086C754  divss   xmm1, dword ptr [rip + 0x2276468]            ; data_2AE2BC4
+  0x18086C75C  mov     r8, qword ptr [rip + 0x25e5075]              ; METHODINFO Method$System.Nullable<float>..ctor()
+  0x18086C763  lea     rcx, [rsp + 0x20]                         
+  0x18086C768  mov     qword ptr [rsp + 0x20], rbx               
+  0x18086C76D  movaps  xmm0, xmm6                                
+  0x18086C770  shufps  xmm0, xmm6, 0xaa                          
+  0x18086C774  mulss   xmm1, xmm0                                
+  0x18086C778  addss   xmm1, xmm6                                
+  0x18086C77C  movss   dword ptr [rsp + 0x60], xmm1              
+  0x18086C782  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x18086C787  mov     rax, qword ptr [rsp + 0x20]               
+  0x18086C78C  jmp     0x18086c791                               
+
+18086C78E:
+  0x18086C78E  mov     rax, rbx                                  
+
+18086C791:
+  0x18086C791  test    rdi, rdi                                  
+  0x18086C794  je      0x18086c877                               
+  0x18086C79A  cmp     dword ptr [rdi + 0x18], ebx               
+  0x18086C79D  jbe     0x18086c871                               
+  0x18086C7A3  mov     edx, 1                                    
+  0x18086C7A8  mov     qword ptr [rdi + 0x20], rax               
+  0x18086C7AC  mov     rcx, rsi                                  
+  0x18086C7AF  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C7B4  test    rax, rax                                  
+  0x18086C7B7  je      0x18086c828                               
+  0x18086C7B9  mov     r8, qword ptr [rip + 0x25e4f50]              ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.get_Item()
+  0x18086C7C0  mov     edx, 1                                    
+  0x18086C7C5  mov     rcx, rsi                                  
+  0x18086C7C8  call    0x1808a1eb0                                  ; -> Naninovel.ParameterList<object>$$get_Item
+  0x18086C7CD  mov     r8, qword ptr [rip + 0x25e54c4]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C7D4  lea     rdx, [rsp + 0x60]                         
+  0x18086C7D9  mov     rcx, rax                                  
+  0x18086C7DC  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C7E1  movss   xmm1, dword ptr [rsp + 0x60]              
+  0x18086C7E7  lea     rdx, [rsp + 0x60]                         
+  0x18086C7EC  divss   xmm1, dword ptr [rip + 0x22763d0]            ; data_2AE2BC4
+  0x18086C7F4  mov     r8, qword ptr [rip + 0x25e4fdd]              ; METHODINFO Method$System.Nullable<float>..ctor()
+  0x18086C7FB  lea     rcx, [rsp + 0x20]                         
+  0x18086C800  mov     qword ptr [rsp + 0x20], rbx               
+  0x18086C805  movaps  xmm0, xmm6                                
+  0x18086C808  shufps  xmm0, xmm6, 0xff                          
+  0x18086C80C  mulss   xmm1, xmm0                                
+  0x18086C810  shufps  xmm6, xmm6, 0x55                          
+  0x18086C814  addss   xmm1, xmm6                                
+  0x18086C818  movss   dword ptr [rsp + 0x60], xmm1              
+  0x18086C81E  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x18086C823  mov     rbx, qword ptr [rsp + 0x20]               
+
+18086C828:
+  0x18086C828  cmp     dword ptr [rdi + 0x18], 1                 
+  0x18086C82C  jbe     0x18086c871                               
+  0x18086C82E  mov     edx, 2                                    
+  0x18086C833  mov     qword ptr [rdi + 0x28], rbx               
+  0x18086C837  mov     rcx, rsi                                  
+  0x18086C83A  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C83F  xor     edx, edx                                  
+  0x18086C841  mov     rcx, rax                                  
+  0x18086C844  call    0x180526c50                                  ; -> Naninovel.NullableFloat$$op_Implicit
+  0x18086C849  cmp     dword ptr [rdi + 0x18], 2                 
+  0x18086C84D  jbe     0x18086c871                               
+  0x18086C84F  mov     rbx, qword ptr [rsp + 0x50]               
+  0x18086C854  mov     rsi, qword ptr [rsp + 0x68]               
+  0x18086C859  movaps  xmm6, xmmword ptr [rsp + 0x30]            
+  0x18086C85E  mov     qword ptr [rdi + 0x30], rax               
+  0x18086C862  mov     rax, rdi                                  
+  0x18086C865  add     rsp, 0x40                                 
+  0x18086C869  pop     rdi                                       
+  0x18086C86A  ret                                               
+
+18086C86B:
+  0x18086C86B  call    0x180246730                                  ; THROW NullReferenceException
+  0x18086C870  int3                                              
+
+18086C871:
+  0x18086C871  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x18086C876  int3                                              
+
+18086C877:
+  0x18086C877  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,183 @@
+====================================================================================================
+FUNCTION RVA 0xD20E80  VA 0x180D20E80  size 0x211 (529 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended$$AttemptScenePosition
+  csig   : System_Nullable_float__array* GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended__AttemptScenePosition (GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended :: private Nullable<float>[] AttemptScenePosition()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended:
+      +0xD0   SubId                          StringParameter
+      +0xD8   MatchScreenWidth               BooleanParameter
+      +0xE0   _actorUtility                  ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>
+      +0xE8   _preloadedDissolveTexture      Texture2D
+  fields of ModifyBackgroundExtended.<>c:
+      +0x0    <>9                            static readonly ModifyBackgroundExtended.<>c
+      +0x8    <>9__17_0                      static Func<IBackgroundActor, bool>
+  fields of ModifyBackgroundExtended.<ApplyAppearanceModification>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          IBackgroundActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Execute>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Modify>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<IBackgroundActor>
+  fields of ModifyBackgroundExtended.<PreloadResources>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D20E80  mov     qword ptr [rsp + 0x20], rbx               
+  0x180D20E85  push    rdi                                       
+  0x180D20E86  sub     rsp, 0x20                                 
+  0x180D20E8A  cmp     byte ptr [rip + 0x23bc497], 0                ; data_30DD328
+  0x180D20E91  mov     rbx, rcx                                  
+  0x180D20E94  jne     0x180d20ed0                               
+  0x180D20E96  lea     rcx, [rip + 0x210dfab]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>.EvaluateWorldPosition()
+  0x180D20E9D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20EA2  lock or dword ptr [rsp], 0                        
+  0x180D20EA7  lea     rcx, [rip + 0x210df7a]                       ; METHODINFO Method$Naninovel.Commands.ModifyActor<IBackgroundActor, BackgroundState, BackgroundMetadata, BackgroundsConfiguration, IBackgroundManager>.get_PosedPosition()
+  0x180D20EAE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20EB3  lock or dword ptr [rsp], 0                        
+  0x180D20EB8  lea     rcx, [rip + 0x210df79]                       ; METHODINFO Method$Naninovel.Commands.ModifyOrthoActor<IBackgroundActor, BackgroundState, BackgroundMetadata, BackgroundsConfiguration, IBackgroundManager>.get_AssignedPosition()
+  0x180D20EBF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20EC4  lock or dword ptr [rsp], 0                        
+  0x180D20EC9  mov     byte ptr [rip + 0x23bc458], 1                ; data_30DD328
+
+180D20ED0:
+  0x180D20ED0  cmp     byte ptr [rip + 0x23bb28d], 0                ; data_30DC164
+  0x180D20ED7  mov     rdi, qword ptr [rbx + 0xb0]               
+  0x180D20EDE  jne     0x180d20ef8                               
+  0x180D20EE0  lea     rcx, [rip + 0x2125729]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20EE7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20EEC  lock or dword ptr [rsp], 0                        
+  0x180D20EF1  mov     byte ptr [rip + 0x23bb26c], 1                ; data_30DC164
+
+180D20EF8:
+  0x180D20EF8  test    rdi, rdi                                  
+  0x180D20EFB  je      0x180d20f12                               
+  0x180D20EFD  mov     rdx, qword ptr [rip + 0x212570c]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20F04  xor     ecx, ecx                                  
+  0x180D20F06  mov     r8, rdi                                   
+  0x180D20F09  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D20F0E  test    al, al                                    
+  0x180D20F10  jne     0x180d20f2a                               
+
+180D20F12:
+  0x180D20F12  mov     rdx, qword ptr [rip + 0x210df0f]             ; METHODINFO Method$Naninovel.Commands.ModifyActor<IBackgroundActor, BackgroundState, BackgroundMetadata, BackgroundsConfiguration, IBackgroundManager>.get_PosedPosition()
+  0x180D20F19  mov     rcx, rbx                                  
+  0x180D20F1C  call    0x18086d3f0                                  ; -> Naninovel.Commands.ModifyActor<object, object, object, object, object>$$get_PosedPosition
+  0x180D20F21  test    rax, rax                                  
+  0x180D20F24  je      0x180d21065                               
+
+180D20F2A:
+  0x180D20F2A  cmp     byte ptr [rip + 0x23bb233], 0                ; data_30DC164
+  0x180D20F31  mov     rdi, qword ptr [rbx + 0xb0]               
+  0x180D20F38  jne     0x180d20f52                               
+  0x180D20F3A  lea     rcx, [rip + 0x21256cf]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20F41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20F46  lock or dword ptr [rsp], 0                        
+  0x180D20F4B  mov     byte ptr [rip + 0x23bb212], 1                ; data_30DC164
+
+180D20F52:
+  0x180D20F52  test    rdi, rdi                                  
+  0x180D20F55  je      0x180d2104c                               
+  0x180D20F5B  mov     rdx, qword ptr [rip + 0x21256ae]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20F62  xor     ecx, ecx                                  
+  0x180D20F64  mov     r8, rdi                                   
+  0x180D20F67  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D20F6C  test    al, al                                    
+  0x180D20F6E  je      0x180d2104c                               
+  0x180D20F74  mov     qword ptr [rsp + 0x38], rbp               
+  0x180D20F79  mov     qword ptr [rsp + 0x40], rsi               
+  0x180D20F7E  xor     edx, edx                                  
+  0x180D20F80  mov     rcx, rbx                                  
+  0x180D20F83  call    0x180d20610                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended$$get_ActorUtility
+  0x180D20F88  cmp     byte ptr [rip + 0x23bc392], 0                ; data_30DD321
+  0x180D20F8F  mov     rsi, rax                                  
+  0x180D20F92  mov     rbp, qword ptr [rbx + 0xb0]               
+  0x180D20F99  jne     0x180d20fb3                               
+  0x180D20F9B  lea     rcx, [rip + 0x2117056]                       ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D20FA2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20FA7  lock or dword ptr [rsp], 0                        
+  0x180D20FAC  mov     byte ptr [rip + 0x23bc36e], 1                ; data_30DD321
+
+180D20FB3:
+  0x180D20FB3  cmp     byte ptr [rip + 0x23bb1aa], 0                ; data_30DC164
+  0x180D20FBA  mov     rdi, qword ptr [rbx + 0xd8]                  ; rbx->ModifyBackgroundExtended.MatchScreenWidth
+  0x180D20FC1  jne     0x180d20fdb                               
+  0x180D20FC3  lea     rcx, [rip + 0x2125646]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20FCA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20FCF  lock or dword ptr [rsp], 0                        
+  0x180D20FD4  mov     byte ptr [rip + 0x23bb189], 1                ; data_30DC164
+
+180D20FDB:
+  0x180D20FDB  test    rdi, rdi                                  
+  0x180D20FDE  je      0x180d2101e                               
+  0x180D20FE0  mov     rdx, qword ptr [rip + 0x2125629]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D20FE7  xor     ecx, ecx                                  
+  0x180D20FE9  mov     r8, rdi                                   
+  0x180D20FEC  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D20FF1  test    al, al                                    
+  0x180D20FF3  je      0x180d2101e                               
+  0x180D20FF5  mov     rcx, qword ptr [rbx + 0xd8]                  ; rbx->ModifyBackgroundExtended.MatchScreenWidth
+  0x180D20FFC  test    rcx, rcx                                  
+  0x180D20FFF  je      0x180d2108c                               
+  0x180D21005  mov     r8, qword ptr [rip + 0x2116fec]              ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D2100C  lea     rdx, [rsp + 0x30]                         
+  0x180D21011  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D21016  movzx   r8d, byte ptr [rsp + 0x30]                
+  0x180D2101C  jmp     0x180d21021                               
+
+180D2101E:
+  0x180D2101E  mov     r8b, 1                                    
+
+180D21021:
+  0x180D21021  test    rsi, rsi                                  
+  0x180D21024  je      0x180d2108c                               
+  0x180D21026  mov     r9, qword ptr [rip + 0x210de1b]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>.EvaluateWorldPosition()
+  0x180D2102D  mov     rdx, rbp                                  
+  0x180D21030  mov     rcx, rsi                                  
+  0x180D21033  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180D21038  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D2103D  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D21042  add     rsp, 0x20                                 
+  0x180D21046  pop     rdi                                       
+  0x180D21047  jmp     0x18086c630                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$EvaluateWorldPosition
+
+180D2104C:
+  0x180D2104C  mov     rdx, qword ptr [rip + 0x210ddd5]             ; METHODINFO Method$Naninovel.Commands.ModifyActor<IBackgroundActor, BackgroundState, BackgroundMetadata, BackgroundsConfiguration, IBackgroundManager>.get_PosedPosition()
+  0x180D21053  mov     rcx, rbx                                  
+  0x180D21056  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D2105B  add     rsp, 0x20                                 
+  0x180D2105F  pop     rdi                                       
+  0x180D21060  jmp     0x18086d3f0                                  ; -> Naninovel.Commands.ModifyActor<object, object, object, object, object>$$get_PosedPosition
+
+180D21065:
+  0x180D21065  mov     rax, qword ptr [rip + 0x210ddcc]             ; METHODINFO Method$Naninovel.Commands.ModifyOrthoActor<IBackgroundActor, BackgroundState, BackgroundMetadata, BackgroundsConfiguration, IBackgroundManager>.get_AssignedPosition()
+  0x180D2106C  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ApplyAppearanceModification>d__18.token | <Execute>d__16.token | <Modify>d__17.token
+  0x180D21070  mov     rdx, qword ptr [rcx + 0xc0]               
+  0x180D21077  mov     rcx, rbx                                  
+  0x180D2107A  mov     rdx, qword ptr [rdx]                      
+  0x180D2107D  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D21082  add     rsp, 0x20                                 
+  0x180D21086  pop     rdi                                       
+  0x180D21087  jmp     0x18086f080                                  ; -> Naninovel.Commands.ModifyOrthoActor<object, object, object, object, object>$$AttemptScenePosition
+
+180D2108C:
+  0x180D2108C  call    0x180246730                                  ; THROW NullReferenceException

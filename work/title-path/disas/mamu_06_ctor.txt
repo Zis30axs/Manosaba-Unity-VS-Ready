@@ -1,0 +1,63 @@
+====================================================================================================
+FUNCTION RVA 0x87CE20  VA 0x18087CE20  size 0xC1 (193 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.MultipliableActorManagerUtility<__Il2CppFullySharedGenericType>$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_MultipliableActorManagerUtility___Il2CppFullySharedGenericType____ctor (GigaCreation_NaninovelExtender_ExtendedActors_MultipliableActorManagerUtility_TActor__o* __this, const MethodInfo_87CE20* method);
+  fields of MultipliableActorManagerUtility.<WaitForCompletionOfPendingAddActorAsync>d__2<TActor>:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      MultipliableActorManagerUtility<TActor>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+====================================================================================================
+  0x18087CE20  mov     qword ptr [rsp + 8], rbx                  
+  0x18087CE25  mov     qword ptr [rsp + 0x10], rsi               
+  0x18087CE2A  push    rdi                                       
+  0x18087CE2B  sub     rsp, 0x20                                 
+  0x18087CE2F  mov     rax, qword ptr [rdx + 0x20]               
+  0x18087CE33  mov     rdi, rdx                                  
+  0x18087CE36  mov     rsi, rcx                                  
+  0x18087CE39  mov     r8, qword ptr [rax + 0xc0]                
+  0x18087CE40  mov     rax, qword ptr [r8 + 0x90]                
+  0x18087CE47  test    byte ptr [rax + 0x135], 1                 
+  0x18087CE4E  jne     0x18087ce58                               
+  0x18087CE50  mov     rcx, rax                                  
+  0x18087CE53  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+18087CE58:
+  0x18087CE58  mov     rcx, rax                                  
+  0x18087CE5B  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x18087CE60  mov     rcx, qword ptr [rdi + 0x20]               
+  0x18087CE64  mov     rbx, rax                                  
+  0x18087CE67  mov     rdx, qword ptr [rcx + 0xc0]               
+  0x18087CE6E  mov     rcx, rax                                  
+  0x18087CE71  mov     rdx, qword ptr [rdx + 0x98]               
+  0x18087CE78  call    0x180c61d70                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor
+  0x18087CE7D  cmp     dword ptr [rip + 0x285c340], 0               ; data_30D91C4
+  0x18087CE84  mov     qword ptr [rsi + 0x10], rbx               
+  0x18087CE88  je      0x18087ced1                               
+  0x18087CE8A  lea     r8, [rsi + 0x10]                          
+  0x18087CE8E  shr     r8, 0xc                                   
+  0x18087CE92  lea     rcx, [rip + 0x28b76e7]                       ; data_3134580
+  0x18087CE99  and     r8d, 0x1fffff                             
+  0x18087CEA0  mov     eax, r8d                                  
+  0x18087CEA3  shr     rax, 6                                    
+  0x18087CEA7  and     r8d, 0x3f                                 
+  0x18087CEAB  lea     rdx, [rcx + rax*8]                        
+  0x18087CEAF  prefetchw byte ptr [rdx]                            
+  0x18087CEB2  nop     dword ptr [rax]                           
+  0x18087CEB6  nop     word ptr [rax + rax]                      
+
+18087CEC0:
+  0x18087CEC0  mov     rax, qword ptr [rdx]                      
+  0x18087CEC3  mov     rcx, rax                                  
+  0x18087CEC6  bts     rcx, r8                                   
+  0x18087CECA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18087CECF  jne     0x18087cec0                               
+
+18087CED1:
+  0x18087CED1  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18087CED6  mov     rsi, qword ptr [rsp + 0x38]               
+  0x18087CEDB  add     rsp, 0x20                                 
+  0x18087CEDF  pop     rdi                                       
+  0x18087CEE0  ret                                               

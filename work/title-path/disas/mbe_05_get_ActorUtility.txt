@@ -1,0 +1,106 @@
+====================================================================================================
+FUNCTION RVA 0xD20610  VA 0x180D20610  size 0xEF (239 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended$$get_ActorUtility
+  csig   : GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_IBackgroundActor__IMultipliableBackgroundManager__o* GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended__get_ActorUtility (GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended :: private ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager> get_ActorUtility()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended:
+      +0xD0   SubId                          StringParameter
+      +0xD8   MatchScreenWidth               BooleanParameter
+      +0xE0   _actorUtility                  ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>
+      +0xE8   _preloadedDissolveTexture      Texture2D
+  fields of ModifyBackgroundExtended.<>c:
+      +0x0    <>9                            static readonly ModifyBackgroundExtended.<>c
+      +0x8    <>9__17_0                      static Func<IBackgroundActor, bool>
+  fields of ModifyBackgroundExtended.<ApplyAppearanceModification>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          IBackgroundActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Execute>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Modify>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<IBackgroundActor>
+  fields of ModifyBackgroundExtended.<PreloadResources>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D20610  push    rdi                                       
+  0x180D20612  sub     rsp, 0x20                                 
+  0x180D20616  cmp     byte ptr [rip + 0x23bcd05], 0                ; data_30DD322
+  0x180D2061D  mov     rdi, rcx                                  
+  0x180D20620  jne     0x180d2064b                               
+  0x180D20622  lea     rcx, [rip + 0x210e84f]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>..ctor()
+  0x180D20629  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2062E  lock or dword ptr [rsp], 0                        
+  0x180D20633  lea     rcx, [rip + 0x210e846]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>_TypeInfo
+  0x180D2063A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2063F  lock or dword ptr [rsp], 0                        
+  0x180D20644  mov     byte ptr [rip + 0x23bccd7], 1                ; data_30DD322
+
+180D2064B:
+  0x180D2064B  mov     rax, qword ptr [rdi + 0xe0]                  ; rdi->ModifyBackgroundExtended._actorUtility
+  0x180D20652  test    rax, rax                                  
+  0x180D20655  jne     0x180d206f9                               
+  0x180D2065B  mov     rdx, qword ptr [rdi]                      
+  0x180D2065E  mov     rcx, rdi                                  
+  0x180D20661  mov     qword ptr [rsp + 0x30], rbx               
+  0x180D20666  mov     qword ptr [rsp + 0x38], rsi               
+  0x180D2066B  mov     rax, qword ptr [rdx + 0x2e8]              
+  0x180D20672  mov     rdx, qword ptr [rdx + 0x2f0]              
+  0x180D20679  call    rax                                       
+  0x180D2067B  mov     rcx, qword ptr [rip + 0x210e7fe]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>_TypeInfo
+  0x180D20682  mov     rbx, rax                                  
+  0x180D20685  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D2068A  mov     r8, qword ptr [rip + 0x210e7e7]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>..ctor()
+  0x180D20691  mov     rdx, rbx                                  
+  0x180D20694  mov     rcx, rax                                  
+  0x180D20697  mov     rsi, rax                                  
+  0x180D2069A  call    0x18086bae0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$.ctor
+  0x180D2069F  cmp     dword ptr [rip + 0x23b8b1e], 0               ; data_30D91C4
+  0x180D206A6  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D206AB  mov     qword ptr [rdi + 0xe0], rsi                  ; rdi->ModifyBackgroundExtended._actorUtility
+  0x180D206B2  je      0x180d206f1                               
+  0x180D206B4  lea     r8, [rdi + 0xe0]                             ; rdi->ModifyBackgroundExtended._actorUtility
+  0x180D206BB  shr     r8, 0xc                                   
+  0x180D206BF  lea     rcx, [rip + 0x2413eba]                       ; data_3134580
+  0x180D206C6  and     r8d, 0x1fffff                             
+  0x180D206CD  mov     eax, r8d                                  
+  0x180D206D0  shr     rax, 6                                    
+  0x180D206D4  and     r8d, 0x3f                                 
+  0x180D206D8  lea     rdx, [rcx + rax*8]                        
+  0x180D206DC  prefetchw byte ptr [rdx]                            
+  0x180D206DF  nop                                               
+
+180D206E0:
+  0x180D206E0  mov     rax, qword ptr [rdx]                      
+  0x180D206E3  mov     rcx, rax                                  
+  0x180D206E6  bts     rcx, r8                                   
+  0x180D206EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D206EF  jne     0x180d206e0                               
+
+180D206F1:
+  0x180D206F1  mov     rax, rsi                                  
+  0x180D206F4  mov     rsi, qword ptr [rsp + 0x38]               
+
+180D206F9:
+  0x180D206F9  add     rsp, 0x20                                 
+  0x180D206FD  pop     rdi                                       
+  0x180D206FE  ret                                               

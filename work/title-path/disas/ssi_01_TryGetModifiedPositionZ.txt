@@ -1,0 +1,94 @@
+====================================================================================================
+FUNCTION RVA 0xCFA4A0  VA 0x180CFA4A0  size 0x10D (269 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.SpecialSubId$$TryGetModifiedPositionZ
+  csig   : bool GigaCreation_NaninovelExtender_Common_SpecialSubId__TryGetModifiedPositionZ (float zOffset, System_String_o* subId, float* z, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.SpecialSubId :: public static bool TryGetModifiedPositionZ(float zOffset, string subId, out float z)
+  fields of SpecialSubId.Id:
+      +0x0    value__                        int
+====================================================================================================
+  0x180CFA4A0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CFA4A5  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CFA4AA  push    rdi                                       
+  0x180CFA4AB  sub     rsp, 0x30                                 
+  0x180CFA4AF  cmp     byte ptr [rip + 0x23e2d8d], 0                ; data_30DD243
+  0x180CFA4B6  mov     rdi, r8                                   
+  0x180CFA4B9  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CFA4BE  mov     rsi, rdx                                  
+  0x180CFA4C1  movaps  xmm6, xmm0                                
+  0x180CFA4C4  jne     0x180cfa4de                               
+  0x180CFA4C6  lea     rcx, [rip + 0x2171283]                       ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<SpecialSubId.Id>()
+  0x180CFA4CD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFA4D2  lock or dword ptr [rsp], 0                        
+  0x180CFA4D7  mov     byte ptr [rip + 0x23e2d65], 1                ; data_30DD243
+
+180CFA4DE:
+  0x180CFA4DE  mov     rbx, qword ptr [rip + 0x217126b]             ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<SpecialSubId.Id>()
+  0x180CFA4E5  mov     dword ptr [rsp + 0x48], 0                 
+  0x180CFA4ED  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180CFA4F2  jne     0x180cfa4fc                               
+  0x180CFA4F4  mov     rcx, rbx                                  
+  0x180CFA4F7  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CFA4FC:
+  0x180CFA4FC  mov     r9, qword ptr [rbx + 0x38]                
+  0x180CFA500  lea     r8, [rsp + 0x48]                          
+  0x180CFA505  mov     dl, 1                                     
+  0x180CFA507  mov     rcx, rsi                                  
+  0x180CFA50A  mov     r9, qword ptr [r9 + 8]                    
+  0x180CFA50E  call    0x180696ba0                                  ; -> FastEnumUtility.FastEnum$$TryParseInternal<__Il2CppFullySharedGenericStructType>
+  0x180CFA513  test    al, al                                    
+  0x180CFA515  je      0x180cfa55a                               
+  0x180CFA517  mov     ecx, dword ptr [rsp + 0x48]               
+  0x180CFA51B  test    ecx, ecx                                  
+  0x180CFA51D  je      0x180cfa54e                               
+  0x180CFA51F  sub     ecx, 1                                    
+  0x180CFA522  je      0x180cfa542                               
+  0x180CFA524  sub     ecx, 1                                    
+  0x180CFA527  je      0x180cfa536                               
+  0x180CFA529  cmp     ecx, 1                                    
+  0x180CFA52C  jne     0x180cfa575                               
+  0x180CFA52E  xorps   xmm6, xmm6                                
+  0x180CFA531  movzx   eax, cl                                   
+  0x180CFA534  jmp     0x180cfa55c                               
+
+180CFA536:
+  0x180CFA536  subss   xmm6, dword ptr [rip + 0x1de866e]            ; data_2AE2BAC
+  0x180CFA53E  mov     al, 1                                     
+  0x180CFA540  jmp     0x180cfa55c                               
+
+180CFA542:
+  0x180CFA542  subss   xmm6, dword ptr [rip + 0x1de864a]            ; data_2AE2B94
+  0x180CFA54A  mov     al, 1                                     
+  0x180CFA54C  jmp     0x180cfa55c                               
+
+180CFA54E:
+  0x180CFA54E  subss   xmm6, dword ptr [rip + 0x1de85c2]            ; data_2AE2B18
+  0x180CFA556  mov     al, 1                                     
+  0x180CFA558  jmp     0x180cfa55c                               
+
+180CFA55A:
+  0x180CFA55A  xor     al, al                                    
+
+180CFA55C:
+  0x180CFA55C  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CFA561  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CFA566  movss   dword ptr [rdi], xmm6                     
+  0x180CFA56A  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CFA56F  add     rsp, 0x30                                 
+  0x180CFA573  pop     rdi                                       
+  0x180CFA574  ret                                               
+
+180CFA575:
+  0x180CFA575  lea     rcx, [rip + 0x214338c]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180CFA57C  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CFA581  mov     rcx, rax                                  
+  0x180CFA584  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180CFA589  xor     edx, edx                                  
+  0x180CFA58B  mov     rcx, rax                                  
+  0x180CFA58E  mov     rbx, rax                                  
+  0x180CFA591  call    0x180f748c0                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180CFA596  lea     rcx, [rip + 0x21711ab]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Common.SpecialSubId.TryGetModifiedPositionZ() => GigaCreation.NaninovelExtender.Common.SpecialSubId$$TryGetModifiedPositionZ
+  0x180CFA59D  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CFA5A2  mov     rdx, rax                                  
+  0x180CFA5A5  mov     rcx, rbx                                  
+  0x180CFA5A8  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

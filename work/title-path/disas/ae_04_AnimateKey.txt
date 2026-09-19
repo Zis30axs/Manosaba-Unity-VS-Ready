@@ -1,0 +1,156 @@
+====================================================================================================
+FUNCTION RVA 0xD28160  VA 0x180D28160  size 0x1F9 (505 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$AnimateKey
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__AnimateKey (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended_o* __this, Naninovel_IActor_o* actor, int32_t keyIndex, Naninovel_AsyncToken_o asyncToken, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended :: protected override UniTask AnimateKey(IActor actor, int keyIndex, AsyncToken asyncToken)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28160  mov     qword ptr [rsp + 8], rbx                  
+  0x180D28165  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D2816A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D2816F  push    rdi                                       
+  0x180D28170  sub     rsp, 0x70                                 
+  0x180D28174  cmp     byte ptr [rip + 0x23b51cc], 0                ; data_30DD347
+  0x180D2817B  mov     rsi, r9                                   
+  0x180D2817E  mov     ebp, r8d                                  
+  0x180D28181  mov     rdi, rdx                                  
+  0x180D28184  mov     rbx, rcx                                  
+  0x180D28187  jne     0x180d281a1                               
+  0x180D28189  lea     rcx, [rip + 0x2106890]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<AnimateExtended.<AnimateKey>d__7>()
+  0x180D28190  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28195  lock or dword ptr [rsp], 0                        
+  0x180D2819A  mov     byte ptr [rip + 0x23b51a6], 1                ; data_30DD347
+
+180D281A1:
+  0x180D281A1  xor     eax, eax                                  
+  0x180D281A3  lea     r9, [rip + 0x23c60f6]                        ; data_30EE2A0
+  0x180D281AA  xorps   xmm0, xmm0                                
+  0x180D281AD  mov     qword ptr [rsp + 0x20], rax               
+  0x180D281B2  mov     qword ptr [rsp + 0x38], rax               
+  0x180D281B7  xorps   xmm1, xmm1                                
+  0x180D281BA  mov     qword ptr [rsp + 0x60], rax               
+  0x180D281BF  mov     eax, dword ptr [rip + 0x23b0fff]             ; data_30D91C4
+  0x180D281C5  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D281CB  movdqa  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D281D1  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180D281D6  test    eax, eax                                  
+  0x180D281D8  je      0x180d2821f                               
+  0x180D281DA  lea     r8, [rsp + 0x28]                          
+  0x180D281DF  shr     r8, 0xc                                   
+  0x180D281E3  and     r8d, 0x1fffff                             
+  0x180D281EA  mov     eax, r8d                                  
+  0x180D281ED  shr     rax, 6                                    
+  0x180D281F1  and     r8d, 0x3f                                 
+  0x180D281F5  lea     rdx, [r9 + rax*8]                         
+  0x180D281F9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D28200:
+  0x180D28200  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D28207  mov     rcx, rax                                  
+  0x180D2820A  bts     rcx, r8                                   
+  0x180D2820E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28217  jne     0x180d28200                               
+  0x180D28219  mov     eax, dword ptr [rip + 0x23b0fa5]             ; data_30D91C4
+
+180D2821F:
+  0x180D2821F  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D28224  test    eax, eax                                  
+  0x180D28226  je      0x180d2826f                               
+  0x180D28228  lea     r8, [rsp + 0x38]                          
+  0x180D2822D  shr     r8, 0xc                                   
+  0x180D28231  and     r8d, 0x1fffff                             
+  0x180D28238  mov     eax, r8d                                  
+  0x180D2823B  shr     rax, 6                                    
+  0x180D2823F  and     r8d, 0x3f                                 
+  0x180D28243  lea     rdx, [r9 + rax*8]                         
+  0x180D28247  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2824E  nop                                               
+
+180D28250:
+  0x180D28250  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D28257  mov     rcx, rax                                  
+  0x180D2825A  bts     rcx, r8                                   
+  0x180D2825E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28267  jne     0x180d28250                               
+  0x180D28269  mov     eax, dword ptr [rip + 0x23b0f55]             ; data_30D91C4
+
+180D2826F:
+  0x180D2826F  mov     qword ptr [rsp + 0x48], rdi               
+  0x180D28274  test    eax, eax                                  
+  0x180D28276  je      0x180d282bf                               
+  0x180D28278  lea     r8, [rsp + 0x48]                          
+  0x180D2827D  shr     r8, 0xc                                   
+  0x180D28281  and     r8d, 0x1fffff                             
+  0x180D28288  mov     eax, r8d                                  
+  0x180D2828B  shr     rax, 6                                    
+  0x180D2828F  and     r8d, 0x3f                                 
+  0x180D28293  lea     rdx, [r9 + rax*8]                         
+  0x180D28297  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2829E  nop                                               
+
+180D282A0:
+  0x180D282A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D282A7  mov     rcx, rax                                  
+  0x180D282AA  bts     rcx, r8                                   
+  0x180D282AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D282B7  jne     0x180d282a0                               
+  0x180D282B9  mov     eax, dword ptr [rip + 0x23b0f05]             ; data_30D91C4
+
+180D282BF:
+  0x180D282BF  mov     dword ptr [rsp + 0x40], ebp               
+  0x180D282C3  movups  xmm0, xmmword ptr [rsi]                   
+  0x180D282C6  movaps  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D282CB  test    eax, eax                                  
+  0x180D282CD  je      0x180d28319                               
+  0x180D282CF  lea     r8, [rsp + 0x50]                          
+  0x180D282D4  shr     r8, 0xc                                   
+  0x180D282D8  and     r8d, 0x1fffff                             
+  0x180D282DF  mov     eax, r8d                                  
+  0x180D282E2  shr     rax, 6                                    
+  0x180D282E6  and     r8d, 0x3f                                 
+  0x180D282EA  lea     rdx, [r9 + rax*8]                         
+  0x180D282EE  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D282F5  nop     word ptr [rax + rax]                      
+
+180D28300:
+  0x180D28300  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D28307  mov     rcx, rax                                  
+  0x180D2830A  bts     rcx, r8                                   
+  0x180D2830E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28317  jne     0x180d28300                               
+
+180D28319:
+  0x180D28319  mov     r8, qword ptr [rip + 0x2106700]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<AnimateExtended.<AnimateKey>d__7>()
+  0x180D28320  lea     rdx, [rsp + 0x20]                         
+  0x180D28325  lea     rcx, [rsp + 0x28]                         
+  0x180D2832A  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D28332  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D28337  xor     edx, edx                                  
+  0x180D28339  lea     rcx, [rsp + 0x28]                         
+  0x180D2833E  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D28343  lea     r11, [rsp + 0x70]                         
+  0x180D28348  mov     rbx, qword ptr [r11 + 0x10]                  ; r11-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2834C  mov     rbp, qword ptr [r11 + 0x18]                  ; r11-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D28350  mov     rsi, qword ptr [r11 + 0x20]                  ; r11-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28354  mov     rsp, r11                                  
+  0x180D28357  pop     rdi                                       
+  0x180D28358  ret                                               

@@ -94,19 +94,38 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD18B70 (kickoff) / 0xD18DD0 (<GetOrAddActor>d__0.MoveNext, 799 B)
+    	// State -1, on the captured `manager` [+0x20], `actorId` [+0x28], `subId` [+0x30]:
+    	//   0x180D18EAD  IMultipliableActorManager<IActor> interface call, method index 0 -> ActorExists(actorId, subId)
+    	//   true  -> 0x180D1905A  interface method index 1 -> GetActor(actorId, subId)          (result returned as is)
+    	//   false -> 0x180D18F29  interface method index 2 -> AddActor(actorId, subId) UniTask, GetAwaiter, await,
+    	//                          SetResult(result)
+    	// (indices are the declaration order of IMultipliableActorManager<T>: ActorExists, GetActor, AddActor.)
+    	// The generic overload below is the same method over `TActor`; the dump lists both.
+    	// Annotated disassembly: work/title-path/disas/mame_01_GetOrAddActor.txt, mame_02_GetOrAddActor_MoveNext.txt
     	[Token(Token = "0x6000057")]
     	[Address(RVA = "0xD18B70", Offset = "0xD17570", VA = "0x180D18B70")]
     	[AsyncStateMachine(typeof(_003CGetOrAddActor_003Ed__0))]
     	public static UniTask<IActor> GetOrAddActor(this IMultipliableActorManager<IActor> manager, string actorId, string subId)
     	{
-    		return default(UniTask<IActor>);
+    		return GetOrAddActorCore(manager, actorId, subId);
+    	}
+
+    	private static async UniTask<IActor> GetOrAddActorCore(IMultipliableActorManager<IActor> manager, string actorId, string subId)
+    	{
+    		return manager.ActorExists(actorId, subId) ? manager.GetActor(actorId, subId) : await manager.AddActor(actorId, subId);
     	}
 
     	[Token(Token = "0x6000058")]
     	[AsyncStateMachine(typeof(_003CGetOrAddActor_003Ed__1<>))]
     	public static UniTask<TActor> GetOrAddActor<TActor>(this IMultipliableActorManager<TActor> manager, string actorId, string subId) where TActor : IActor
     	{
-    		return default(UniTask<TActor>);
+    		return GetOrAddActorCore(manager, actorId, subId);
+    	}
+
+    	private static async UniTask<TActor> GetOrAddActorCore<TActor>(IMultipliableActorManager<TActor> manager, string actorId, string subId) where TActor : IActor
+    	{
+    		return manager.ActorExists(actorId, subId) ? manager.GetActor(actorId, subId) : await manager.AddActor(actorId, subId);
     	}
     }
 }

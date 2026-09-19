@@ -1,0 +1,311 @@
+====================================================================================================
+FUNCTION RVA 0xA06560  VA 0x180A06560  size 0x431 (1073 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility.<PreloadResources>d__7<object, object>$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility__PreloadResources_d__7_object__object___MoveNext (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility__PreloadResources_d__7_TActor__TManager__o __this, const MethodInfo_A06560* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x180A06560  mov     qword ptr [rsp + 0x10], rbx               
+  0x180A06565  mov     qword ptr [rsp + 0x20], rsi               
+  0x180A0656A  mov     qword ptr [rsp + 8], rcx                  
+  0x180A0656F  push    rdi                                       
+  0x180A06570  push    r14                                       
+  0x180A06572  push    r15                                       
+  0x180A06574  sub     rsp, 0x80                                 
+  0x180A0657B  mov     rdi, rdx                                  
+  0x180A0657E  mov     rbx, rcx                                  
+  0x180A06581  cmp     byte ptr [rip + 0x26d6766], 0                ; data_30DCCEE
+  0x180A06588  jne     0x180a065d5                               
+  0x180A0658A  lea     rcx, [rip + 0x242a947]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource>.GetResult()
+  0x180A06591  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180A06596  lock or dword ptr [rsp], 0                        
+  0x180A0659B  lea     rcx, [rip + 0x242a926]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource>.get_IsCompleted()
+  0x180A065A2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180A065A7  lock or dword ptr [rsp], 0                        
+  0x180A065AC  lea     rcx, [rip + 0x2455ab5]                       ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180A065B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180A065B8  lock or dword ptr [rsp], 0                        
+  0x180A065BD  lea     rcx, [rip + 0x242a8fc]                       ; METHODINFO Method$Naninovel.UniTask<Resource>.GetAwaiter()
+  0x180A065C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180A065C9  lock or dword ptr [rsp], 0                        
+  0x180A065CE  mov     byte ptr [rip + 0x26d6719], 1                ; data_30DCCEE
+
+180A065D5:
+  0x180A065D5  xorps   xmm0, xmm0                                
+  0x180A065D8  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180A065DD  xorps   xmm1, xmm1                                
+  0x180A065E0  movups  xmmword ptr [rsp + 0x40], xmm1            
+  0x180A065E5  mov     eax, dword ptr [rbx]                      
+  0x180A065E7  mov     rsi, qword ptr [rbx + 0x18]               
+  0x180A065EB  test    eax, eax                                  
+  0x180A065ED  jne     0x180a06607                               
+  0x180A065EF  movups  xmm0, xmmword ptr [rbx + 0x40]            
+  0x180A065F3  movaps  xmmword ptr [rsp + 0x50], xmm0            
+  0x180A065F8  movups  xmmword ptr [rbx + 0x40], xmm1            
+  0x180A065FC  mov     dword ptr [rbx], 0xffffffff               
+  0x180A06602  jmp     0x180a06745                               
+
+180A06607:
+  0x180A06607  cmp     eax, 1                                    
+  0x180A0660A  jne     0x180a06624                               
+  0x180A0660C  movups  xmm0, xmmword ptr [rbx + 0x50]            
+  0x180A06610  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180A06615  movups  xmmword ptr [rbx + 0x50], xmm1            
+  0x180A06619  mov     dword ptr [rbx], 0xffffffff               
+  0x180A0661F  jmp     0x180a0687e                               
+
+180A06624:
+  0x180A06624  mov     r14, qword ptr [rbx + 0x20]               
+  0x180A06628  mov     r15, qword ptr [rbx + 0x28]               
+  0x180A0662C  test    rsi, rsi                                  
+  0x180A0662F  je      0x180a0698c                               
+  0x180A06635  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A06639  test    byte ptr [rax + 0x135], 1                 
+  0x180A06640  jne     0x180a0664a                               
+  0x180A06642  mov     rcx, rax                                  
+  0x180A06645  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A0664A:
+  0x180A0664A  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A06651  mov     rcx, qword ptr [rax + 0x10]               
+  0x180A06655  mov     qword ptr [rsp + 0x20], rcx               
+  0x180A0665A  mov     r9, r15                                   
+  0x180A0665D  mov     r8, r14                                   
+  0x180A06660  mov     rdx, rsi                                  
+  0x180A06663  lea     rcx, [rsp + 0x60]                         
+  0x180A06668  call    0x18086c150                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$GetOrAddActor
+  0x180A0666D  movaps  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180A06672  movdqa  xmmword ptr [rsp + 0x60], xmm0            
+  0x180A06678  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A0667C  test    byte ptr [rax + 0x135], 1                 
+  0x180A06683  jne     0x180a0668d                               
+  0x180A06685  mov     rcx, rax                                  
+  0x180A06688  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A0668D:
+  0x180A0668D  mov     r8, qword ptr [rax + 0xc0]                
+  0x180A06694  mov     r8, qword ptr [r8 + 0x20]                 
+  0x180A06698  lea     rdx, [rsp + 0x70]                         
+  0x180A0669D  lea     rcx, [rsp + 0x60]                         
+  0x180A066A2  call    0x180972e90                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x180A066A7  movaps  xmm0, xmmword ptr [rsp + 0x70]            
+  0x180A066AC  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180A066B2  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A066B6  test    byte ptr [rax + 0x135], 1                 
+  0x180A066BD  jne     0x180a066c7                               
+  0x180A066BF  mov     rcx, rax                                  
+  0x180A066C2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A066C7:
+  0x180A066C7  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A066CE  mov     r14, qword ptr [rax + 0x38]               
+  0x180A066D2  mov     rax, qword ptr [r14 + 0x20]               
+  0x180A066D6  test    byte ptr [rax + 0x135], 1                 
+  0x180A066DD  jne     0x180a066e7                               
+  0x180A066DF  mov     rcx, rax                                  
+  0x180A066E2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A066E7:
+  0x180A066E7  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A066EE  mov     r15, qword ptr [rax + 0x10]               
+  0x180A066F2  mov     rax, qword ptr [r14 + 0x20]               
+  0x180A066F6  test    byte ptr [rax + 0x135], 1                 
+  0x180A066FD  jne     0x180a06707                               
+  0x180A066FF  mov     rcx, rax                                  
+  0x180A06702  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A06707:
+  0x180A06707  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A0670E  mov     rcx, qword ptr [rax + 8]                  
+  0x180A06712  mov     r8, qword ptr [rcx + 0x80]                
+  0x180A06719  movsxd  rax, dword ptr [r8 + 0x18]                
+  0x180A0671D  lea     r9, [rsp + 0x50]                          
+  0x180A06722  add     r9, rax                                   
+  0x180A06725  mov     rax, qword ptr [r8 + 0x10]                
+  0x180A06729  lea     rcx, [r9 - 0x10]                          
+  0x180A0672D  cmp     dword ptr [rax + 0x28], 0                 
+  0x180A06731  cmovge  rcx, r9                                   
+  0x180A06735  mov     rdx, r15                                  
+  0x180A06738  call    0x180972be0                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x180A0673D  test    al, al                                    
+  0x180A0673F  je      0x180a0690f                               
+
+180A06745:
+  0x180A06745  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A06749  test    byte ptr [rax + 0x135], 1                 
+  0x180A06750  jne     0x180a0675a                               
+  0x180A06752  mov     rcx, rax                                  
+  0x180A06755  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A0675A:
+  0x180A0675A  mov     r8, qword ptr [rax + 0xc0]                
+  0x180A06761  mov     r8, qword ptr [r8 + 0x60]                 
+  0x180A06765  lea     rdx, [rsp + 0xb0]                         
+  0x180A0676D  lea     rcx, [rsp + 0x50]                         
+  0x180A06772  call    0x180bec390                                  ; -> Naninovel.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180A06777  test    rsi, rsi                                  
+  0x180A0677A  je      0x180a06987                               
+  0x180A06780  mov     r8, qword ptr [rsi + 0x10]                
+  0x180A06784  test    r8, r8                                    
+  0x180A06787  je      0x180a06982                               
+  0x180A0678D  mov     ecx, 0xc                                  
+  0x180A06792  mov     r9, qword ptr [rbx + 0x20]                
+  0x180A06796  mov     rdx, qword ptr [rip + 0x24558cb]             ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180A0679D  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180A067A2  test    rax, rax                                  
+  0x180A067A5  je      0x180a068e5                               
+  0x180A067AB  mov     rcx, qword ptr [rbx + 0x30]               
+  0x180A067AF  test    rcx, rcx                                  
+  0x180A067B2  je      0x180a068e5                               
+  0x180A067B8  cmp     dword ptr [rcx + 0x10], 0                 
+  0x180A067BC  jbe     0x180a068e5                               
+  0x180A067C2  mov     qword ptr [rsp + 0x20], 0                 
+  0x180A067CB  mov     r9, qword ptr [rbx + 0x38]                
+  0x180A067CF  mov     r8, rcx                                   
+  0x180A067D2  mov     rdx, rax                                  
+  0x180A067D5  lea     rcx, [rsp + 0x70]                         
+  0x180A067DA  call    0x180535af0                                  ; -> Naninovel.ResourceLoaderExtensions$$LoadOrErr
+  0x180A067DF  movups  xmm0, xmmword ptr [rax]                   
+  0x180A067E2  movups  xmmword ptr [rsp + 0x70], xmm0            
+  0x180A067E7  mov     r8, qword ptr [rip + 0x242a6d2]              ; METHODINFO Method$Naninovel.UniTask<Resource>.GetAwaiter()
+  0x180A067EE  lea     rdx, [rsp + 0x60]                         
+  0x180A067F3  lea     rcx, [rsp + 0x70]                         
+  0x180A067F8  call    0x180972e90                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x180A067FD  movaps  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180A06802  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180A06808  mov     rsi, qword ptr [rip + 0x242a6b9]             ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource>.get_IsCompleted()
+  0x180A0680F  mov     rax, qword ptr [rsi + 0x20]               
+  0x180A06813  test    byte ptr [rax + 0x135], 1                 
+  0x180A0681A  jne     0x180a06824                               
+  0x180A0681C  mov     rcx, rax                                  
+  0x180A0681F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A06824:
+  0x180A06824  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A0682B  mov     r14, qword ptr [rax + 0x10]               
+  0x180A0682F  mov     rax, qword ptr [rsi + 0x20]               
+  0x180A06833  test    byte ptr [rax + 0x135], 1                 
+  0x180A0683A  jne     0x180a06844                               
+  0x180A0683C  mov     rcx, rax                                  
+  0x180A0683F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A06844:
+  0x180A06844  mov     rax, qword ptr [rax + 0xc0]               
+  0x180A0684B  mov     rcx, qword ptr [rax + 8]                  
+  0x180A0684F  mov     r8, qword ptr [rcx + 0x80]                
+  0x180A06856  movsxd  rax, dword ptr [r8 + 0x18]                
+  0x180A0685A  lea     r9, [rsp + 0x40]                          
+  0x180A0685F  add     r9, rax                                   
+  0x180A06862  mov     rax, qword ptr [r8 + 0x10]                
+  0x180A06866  lea     rcx, [r9 - 0x10]                          
+  0x180A0686A  cmp     dword ptr [rax + 0x28], 0                 
+  0x180A0686E  cmovge  rcx, r9                                   
+  0x180A06872  mov     rdx, r14                                  
+  0x180A06875  call    0x180972be0                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x180A0687A  test    al, al                                    
+  0x180A0687C  je      0x180a06899                               
+
+180A0687E:
+  0x180A0687E  mov     r8, qword ptr [rip + 0x242a653]              ; METHODINFO Method$Naninovel.UniTask.Awaiter<Resource>.GetResult()
+  0x180A06885  lea     rdx, [rsp + 0xb0]                         
+  0x180A0688D  lea     rcx, [rsp + 0x40]                         
+  0x180A06892  call    0x180bec390                                  ; -> Naninovel.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180A06897  jmp     0x180a068e5                               
+
+180A06899:
+  0x180A06899  mov     dword ptr [rbx], 1                        
+  0x180A0689F  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180A068A4  movups  xmmword ptr [rbx + 0x50], xmm0            
+  0x180A068A8  lea     rcx, [rbx + 0x50]                         
+  0x180A068AC  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180A068B1  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A068B5  test    byte ptr [rax + 0x135], 1                 
+  0x180A068BC  jne     0x180a068c6                               
+  0x180A068BE  mov     rcx, rax                                  
+  0x180A068C1  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A068C6:
+  0x180A068C6  mov     r9, qword ptr [rax + 0xc0]                
+  0x180A068CD  lea     rcx, [rbx + 8]                            
+  0x180A068D1  mov     r9, qword ptr [r9 + 0x78]                 
+  0x180A068D5  mov     r8, rbx                                   
+  0x180A068D8  lea     rdx, [rsp + 0x40]                         
+  0x180A068DD  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180A068E2  nop                                               
+  0x180A068E3  jmp     0x180a068f6                               
+
+180A068E5:
+  0x180A068E5  mov     dword ptr [rbx], 0xfffffffe               
+  0x180A068EB  lea     rcx, [rbx + 8]                            
+  0x180A068EF  xor     edx, edx                                  
+  0x180A068F1  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180A068F6:
+  0x180A068F6  lea     r11, [rsp + 0x80]                         
+  0x180A068FE  mov     rbx, qword ptr [r11 + 0x28]               
+  0x180A06902  mov     rsi, qword ptr [r11 + 0x38]               
+  0x180A06906  mov     rsp, r11                                  
+  0x180A06909  pop     r15                                       
+  0x180A0690B  pop     r14                                       
+  0x180A0690D  pop     rdi                                       
+  0x180A0690E  ret                                               
+
+180A0690F:
+  0x180A0690F  mov     dword ptr [rbx], 0                        
+  0x180A06915  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180A0691A  movups  xmmword ptr [rbx + 0x40], xmm0            
+  0x180A0691E  lea     rcx, [rbx + 0x40]                         
+  0x180A06922  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180A06927  mov     rax, qword ptr [rdi + 0x20]               
+  0x180A0692B  test    byte ptr [rax + 0x135], 1                 
+  0x180A06932  jne     0x180a0693c                               
+  0x180A06934  mov     rcx, rax                                  
+  0x180A06937  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180A0693C:
+  0x180A0693C  mov     r9, qword ptr [rax + 0xc0]                
+  0x180A06943  lea     rcx, [rbx + 8]                            
+  0x180A06947  mov     r9, qword ptr [r9 + 0x48]                 
+  0x180A0694B  mov     r8, rbx                                   
+  0x180A0694E  lea     rdx, [rsp + 0x50]                         
+  0x180A06953  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180A06958  nop                                               
+  0x180A06959  jmp     0x180a068f6                               
+  0x180A0695B  mov     rcx, qword ptr [rsp + 0xa0]               
+  0x180A06963  mov     dword ptr [rcx], 0xfffffffe               
+  0x180A06969  add     rcx, 8                                    
+  0x180A0696D  xor     r8d, r8d                                  
+  0x180A06970  mov     rdx, qword ptr [rsp + 0xb0]               
+  0x180A06978  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180A0697D  jmp     0x180a068f6                               
+
+180A06982:
+  0x180A06982  call    0x180246730                                  ; THROW NullReferenceException
+
+180A06987:
+  0x180A06987  call    0x180246730                                  ; THROW NullReferenceException
+
+180A0698C:
+  0x180A0698C  call    0x180246730                                  ; THROW NullReferenceException

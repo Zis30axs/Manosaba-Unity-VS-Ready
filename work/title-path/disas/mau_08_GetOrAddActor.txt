@@ -1,0 +1,168 @@
+====================================================================================================
+FUNCTION RVA 0x86C150  VA 0x18086C150  size 0x227 (551 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$GetOrAddActor
+  csig   : Naninovel_UniTask_TActor__o GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object___GetOrAddActor (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, System_String_o* actorId, System_String_o* subId, const MethodInfo_86C150* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086C150  mov     r11, rsp                                  
+  0x18086C153  mov     qword ptr [r11 + 8], rbx                  
+  0x18086C157  mov     qword ptr [r11 + 0x10], rbp               
+  0x18086C15B  mov     qword ptr [r11 + 0x18], rsi               
+  0x18086C15F  mov     qword ptr [r11 + 0x20], rdi               
+  0x18086C163  push    r14                                       
+  0x18086C165  sub     rsp, 0x90                                 
+  0x18086C16C  mov     rbp, qword ptr [rsp + 0xc0]               
+  0x18086C174  xor     eax, eax                                  
+  0x18086C176  mov     qword ptr [r11 - 0x58], rax               
+  0x18086C17A  mov     rbx, rdx                                  
+  0x18086C17D  xorps   xmm0, xmm0                                
+  0x18086C180  xorps   xmm1, xmm1                                
+  0x18086C183  movdqa  xmmword ptr [rsp + 0x60], xmm0            
+  0x18086C189  mov     r14, rcx                                  
+  0x18086C18C  movdqa  xmmword ptr [rsp + 0x70], xmm1            
+  0x18086C192  lea     rcx, [r11 - 0x78]                         
+  0x18086C196  mov     qword ptr [r11 - 0x18], rax               
+  0x18086C19A  mov     rsi, r9                                   
+  0x18086C19D  mov     rax, qword ptr [rbp + 0x20]               
+  0x18086C1A1  mov     rdi, r8                                   
+  0x18086C1A4  mov     rdx, qword ptr [rax + 0xc0]               
+  0x18086C1AB  mov     rdx, qword ptr [rdx + 0x40]               
+  0x18086C1AF  call    0x180355cf0                                  ; -> System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<__Il2CppFullySharedGenericType>$$Create (+2 aliases)
+  0x18086C1B4  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x18086C1B9  lea     r9, [rip + 0x28820e0]                        ; data_30EE2A0
+  0x18086C1C0  mov     eax, dword ptr [rip + 0x286cffe]             ; data_30D91C4
+  0x18086C1C6  movsd   xmm1, qword ptr [rsp + 0x30]              
+  0x18086C1CC  movsd   qword ptr [rsp + 0x58], xmm1              
+  0x18086C1D2  movups  xmmword ptr [rsp + 0x48], xmm0            
+  0x18086C1D7  test    eax, eax                                  
+  0x18086C1D9  je      0x18086c220                               
+  0x18086C1DB  lea     r8, [rsp + 0x48]                          
+  0x18086C1E0  shr     r8, 0xc                                   
+  0x18086C1E4  and     r8d, 0x1fffff                             
+  0x18086C1EB  mov     eax, r8d                                  
+  0x18086C1EE  shr     rax, 6                                    
+  0x18086C1F2  and     r8d, 0x3f                                 
+  0x18086C1F6  lea     rdx, [r9 + rax*8]                         
+  0x18086C1FA  prefetchw byte ptr [rdx + 0x462e0]                  
+
+18086C201:
+  0x18086C201  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18086C208  mov     rcx, rax                                  
+  0x18086C20B  bts     rcx, r8                                   
+  0x18086C20F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18086C218  jne     0x18086c201                               
+  0x18086C21A  mov     eax, dword ptr [rip + 0x286cfa4]             ; data_30D91C4
+
+18086C220:
+  0x18086C220  mov     qword ptr [rsp + 0x60], rbx               
+  0x18086C225  test    eax, eax                                  
+  0x18086C227  je      0x18086c26f                               
+  0x18086C229  lea     r8, [rsp + 0x60]                          
+  0x18086C22E  shr     r8, 0xc                                   
+  0x18086C232  and     r8d, 0x1fffff                             
+  0x18086C239  mov     eax, r8d                                  
+  0x18086C23C  shr     rax, 6                                    
+  0x18086C240  and     r8d, 0x3f                                 
+  0x18086C244  lea     rdx, [r9 + rax*8]                         
+  0x18086C248  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18086C24F  nop                                               
+
+18086C250:
+  0x18086C250  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18086C257  mov     rcx, rax                                  
+  0x18086C25A  bts     rcx, r8                                   
+  0x18086C25E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18086C267  jne     0x18086c250                               
+  0x18086C269  mov     eax, dword ptr [rip + 0x286cf55]             ; data_30D91C4
+
+18086C26F:
+  0x18086C26F  mov     qword ptr [rsp + 0x68], rdi               
+  0x18086C274  test    eax, eax                                  
+  0x18086C276  je      0x18086c2bf                               
+  0x18086C278  lea     r8, [rsp + 0x68]                          
+  0x18086C27D  shr     r8, 0xc                                   
+  0x18086C281  and     r8d, 0x1fffff                             
+  0x18086C288  mov     eax, r8d                                  
+  0x18086C28B  shr     rax, 6                                    
+  0x18086C28F  and     r8d, 0x3f                                 
+  0x18086C293  lea     rdx, [r9 + rax*8]                         
+  0x18086C297  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18086C29E  nop                                               
+
+18086C2A0:
+  0x18086C2A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18086C2A7  mov     rcx, rax                                  
+  0x18086C2AA  bts     rcx, r8                                   
+  0x18086C2AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18086C2B7  jne     0x18086c2a0                               
+  0x18086C2B9  mov     eax, dword ptr [rip + 0x286cf05]             ; data_30D91C4
+
+18086C2BF:
+  0x18086C2BF  mov     qword ptr [rsp + 0x70], rsi               
+  0x18086C2C4  test    eax, eax                                  
+  0x18086C2C6  je      0x18086c309                               
+  0x18086C2C8  lea     r8, [rsp + 0x70]                          
+  0x18086C2CD  shr     r8, 0xc                                   
+  0x18086C2D1  and     r8d, 0x1fffff                             
+  0x18086C2D8  mov     eax, r8d                                  
+  0x18086C2DB  shr     rax, 6                                    
+  0x18086C2DF  and     r8d, 0x3f                                 
+  0x18086C2E3  lea     rdx, [r9 + rax*8]                         
+  0x18086C2E7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18086C2EE  nop                                               
+
+18086C2F0:
+  0x18086C2F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18086C2F7  mov     rcx, rax                                  
+  0x18086C2FA  bts     rcx, r8                                   
+  0x18086C2FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18086C307  jne     0x18086c2f0                               
+
+18086C309:
+  0x18086C309  mov     rax, qword ptr [rbp + 0x20]               
+  0x18086C30D  lea     rdx, [rsp + 0x40]                         
+  0x18086C312  mov     dword ptr [rsp + 0x40], 0xffffffff        
+  0x18086C31A  lea     rcx, [rsp + 0x48]                         
+  0x18086C31F  mov     r8, qword ptr [rax + 0xc0]                
+  0x18086C326  mov     r8, qword ptr [r8 + 0x60]                 
+  0x18086C32A  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x18086C32F  mov     rax, qword ptr [rbp + 0x20]               
+  0x18086C333  lea     rdx, [rsp + 0x20]                         
+  0x18086C338  lea     rcx, [rsp + 0x48]                         
+  0x18086C33D  mov     r8, qword ptr [rax + 0xc0]                
+  0x18086C344  mov     r8, qword ptr [r8 + 0x70]                 
+  0x18086C348  call    0x180be4760                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$get_Task
+  0x18086C34D  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x18086C352  lea     r11, [rsp + 0x90]                         
+  0x18086C35A  mov     rax, r14                                  
+  0x18086C35D  mov     rbx, qword ptr [r11 + 0x10]               
+  0x18086C361  mov     rbp, qword ptr [r11 + 0x18]               
+  0x18086C365  mov     rsi, qword ptr [r11 + 0x20]               
+  0x18086C369  mov     rdi, qword ptr [r11 + 0x28]               
+  0x18086C36D  movups  xmmword ptr [r14], xmm0                   
+  0x18086C371  mov     rsp, r11                                  
+  0x18086C374  pop     r14                                       
+  0x18086C376  ret                                               

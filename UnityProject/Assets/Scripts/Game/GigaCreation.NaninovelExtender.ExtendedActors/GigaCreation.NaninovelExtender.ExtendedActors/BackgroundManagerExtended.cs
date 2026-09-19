@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GigaCreation.NaninovelExtender.Common;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using Naninovel;
@@ -12,7 +15,10 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     [Token(Token = "0x2000005")]
     [UsedImplicitly]
     [InitializeAtRuntime(0, typeof(BackgroundManager))]
-    public class BackgroundManagerExtended : BackgroundManager
+    // The interface list is the one dump.cs declares (line 698679): ModifyActorUtility<,>'s constructor does
+    // `manager as IMultipliableBackgroundManager`, which is null -- and every sub-id call then throws -- when the list is
+    // missing.  The public (actorId, subId) members below are their implementations.
+    public class BackgroundManagerExtended : BackgroundManager, IMultipliableBackgroundManager, IMultipliableActorManager<IBackgroundActor>, IActorManager, IEngineService
     {
     	[StructLayout(3)]
     	[Token(Token = "0x2000007")]
@@ -261,26 +267,64 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     		_utility = new MultipliableActorManagerUtility<IBackgroundActor>();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD10F00, 133 B  (CharacterManagerExtended.ActorExists is the same folded body)
+    	// Inlined IMultipliableActor.BuildId(actorId, subId) (`subId` non-empty -> String.Concat(actorId, "-", subId)),
+    	// then a tail call through vtable offset 0x348 = slot (0x348-0x138)/16 = 33 = ActorManager.ActorExists(string).
+    	// Annotated disassembly: work/title-path/disas/bme_01_ActorExists.txt
     	[Token(Token = "0x6000008")]
     	[Address(RVA = "0xD10F00", Offset = "0xD0F900", VA = "0x180D10F00", Slot = "48")]
     	public bool ActorExists(string actorId, string subId)
     	{
-    		return default(bool);
+    		return ActorExists(IMultipliableActor.BuildId(actorId, subId));
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD10F90, 133 B
+    	// Same shape as ActorExists: BuildId, then vtable offset 0x378 = slot 36 = ActorManager.GetActor(string).
+    	// Annotated disassembly: work/title-path/disas/bme_02_GetActor.txt
     	[Token(Token = "0x6000009")]
     	[Address(RVA = "0xD10F90", Offset = "0xD0F990", VA = "0x180D10F90", Slot = "49")]
     	public IBackgroundActor GetActor(string actorId, string subId)
     	{
-    		return null;
+    		return GetActor(IMultipliableActor.BuildId(actorId, subId));
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD11020 (kickoff) / 0xD11F80 (<AddActor>d__4.MoveNext, 1610 B)
+    	// MoveNext state -1, id = BuildId(actorId [+0x28], subId [+0x30]), `this` = [+0x20]:
+    	//   0x180D1214E  ActorExists(id) (slot 33) true -> 0x180D1247D: Engine.Warn("Actor '" + id +
+    	//                "' was requested to be added, but it already exists.")  (Engine.Warn 0x1805672C0, spot = default),
+    	//                then GetActor(actorId, subId) (0x180D12535) is the result
+    	//   0x180D12174  _utility.PendingAddActorTaskExists(actorId, subId) true -> 0x180D12360: await
+    	//                _utility.WaitForCompletionOfPendingAddActorAsync(actorId, subId); that is the result
+    	//   0x180D1219D  _utility.CreatePendingAddActorTask(actorId, subId)
+    	//   0x180D121BB  actor = await ConstructActorAsync(actorId, subId)
+    	//   0x180D122F7  ManagedActors.Add(id, actor)        (Dictionary<string, IBackgroundActor>.Add on [this+0x28])
+    	//   0x180D12320  _utility.SetResultAndRemovePendingAddActorTask(actorId, subId, actor); result = actor
+    	// Annotated disassembly: work/title-path/disas/bme_03_AddActor.txt, bme_04_AddActor_MoveNext.txt
     	[Token(Token = "0x600000A")]
     	[Address(RVA = "0xD11020", Offset = "0xD0FA20", VA = "0x180D11020", Slot = "50")]
     	[AsyncStateMachine(typeof(_003CAddActor_003Ed__4))]
     	public UniTask<IBackgroundActor> AddActor(string actorId, string subId)
     	{
-    		return default(UniTask<IBackgroundActor>);
+    		return AddActorCore(actorId, subId);
+    	}
+
+    	private async UniTask<IBackgroundActor> AddActorCore(string actorId, string subId)
+    	{
+    		string id = IMultipliableActor.BuildId(actorId, subId);
+    		if (ActorExists(id))
+    		{
+    			Engine.Warn("Actor '" + IMultipliableActor.BuildId(actorId, subId) + "' was requested to be added, but it already exists.");
+    			return GetActor(actorId, subId);
+    		}
+    		if (_utility.PendingAddActorTaskExists(actorId, subId))
+    		{
+    			return await _utility.WaitForCompletionOfPendingAddActorAsync(actorId, subId);
+    		}
+    		_utility.CreatePendingAddActorTask(actorId, subId);
+    		IBackgroundActor actor = await ConstructActorAsync(actorId, subId);
+    		ManagedActors.Add(IMultipliableActor.BuildId(actorId, subId), actor);
+    		_utility.SetResultAndRemovePendingAddActorTask(actorId, subId, actor);
+    		return actor;
     	}
 
     	[Token(Token = "0x600000B")]
@@ -298,28 +342,101 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     		return base.LoadServiceState(stateMap);
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD117E0 (kickoff) / 0xD133A0 (<GetOrAddActor>d__7.MoveNext)
+    	// The id may carry the sub-id ("MainBackground-Overlay", the key AddActor registers under):
+    	//   0x180D134A3  parts = actorId.Split('-')                      (edx = 0x2D, options 0)
+    	//   parts.Length == 1 -> 0x180D134FD  await base.GetOrAddActor(actorId)    (ActorManager.GetOrAddActor)
+    	//   parts.Length == 2 -> 0x180D13639  await GetOrAddActor(parts[0], parts[1])  (the private overload below)
+    	//   otherwise         -> 0x180D13763  Debug.LogError(STR 0x2E2F5F8 + actorId), result null
+    	// The literal (stringliteral.json, UTF-8) is "アクター ID に '-' が 2 つ以上含まれています：".
+    	// The Save/LoadServiceState overrides (RVA 0xD11280 / 0xD11650) still forward to the Naninovel base; their sub-id
+    	// state handling (GameStateExtended / BackgroundStateExtended) is not needed before the title script's `@stop`.
+    	// Annotated disassembly: work/title-path/disas/bme_07_GetOrAddActor_id_MoveNext.txt
     	[Token(Token = "0x600000D")]
     	[Address(RVA = "0xD117E0", Offset = "0xD101E0", VA = "0x180D117E0", Slot = "37")]
     	[AsyncStateMachine(typeof(_003CGetOrAddActor_003Ed__7))]
     	public override UniTask<IBackgroundActor> GetOrAddActor(string actorId)
     	{
-    		return base.GetOrAddActor(actorId);
+    		return GetOrAddActorCore(actorId);
     	}
 
+    	private async UniTask<IBackgroundActor> GetOrAddActorCore(string actorId)
+    	{
+    		string[] parts = actorId.Split('-');
+    		if (parts.Length == 1)
+    		{
+    			return await base.GetOrAddActor(actorId);
+    		}
+    		if (parts.Length == 2)
+    		{
+    			return await GetOrAddActor(parts[0], parts[1]);
+    		}
+    		UnityEngine.Debug.LogError("アクター ID に '-' が 2 つ以上含まれています：" + actorId);
+    		return null;
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD119D0 (kickoff) / 0xD13830 (<GetOrAddActor>d__8.MoveNext, 774 B)
+    	// 0x180D1394D  ActorExists(BuildId(actorId, subId)) (slot 33) -> 0x180D13A69 GetActor(actorId, subId) as the result;
+    	// otherwise 0x180D1396C await AddActor(actorId, subId).
+    	// Annotated disassembly: work/title-path/disas/bme_06_GetOrAddActor_subId_MoveNext.txt
     	[Token(Token = "0x600000E")]
     	[Address(RVA = "0xD119D0", Offset = "0xD103D0", VA = "0x180D119D0")]
     	[AsyncStateMachine(typeof(_003CGetOrAddActor_003Ed__8))]
     	private UniTask<IBackgroundActor> GetOrAddActor(string actorId, string subId)
     	{
-    		return default(UniTask<IBackgroundActor>);
+    		return GetOrAddActorCore(actorId, subId);
     	}
 
+    	private async UniTask<IBackgroundActor> GetOrAddActorCore(string actorId, string subId)
+    	{
+    		return ActorExists(actorId, subId) ? GetActor(actorId, subId) : await AddActor(actorId, subId);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD11C30 (kickoff) / 0xD12600 (<ConstructActorAsync>d__9.MoveNext, 3423 B)
+    	// ActorManager.ConstructActor with the sub-id threaded into the actor constructor, then
+    	// OrthoActorManager.ConstructActor's topmost-Z placement with SpecialSubId's modifier:
+    	//   0x180D12784  meta = Configuration.GetMetadataOrDefault(actorId)
+    	//   0x180D127A3  implType = GetImplementationType(meta)     (vtable offset 0x3D8 = slot 42)
+    	//   0x180D127BB  loader = GetAppearanceLoader(actorId)
+    	//   subId non-empty && typeof(IMultipliableActor).IsAssignableFrom(implType)  (Type slot 0x2B8, 0x180D12820):
+    	//     args = { actorId, subId, meta, loader }  (loader != null, object[4]) or { actorId, subId, meta }  (object[3])
+    	//   otherwise the stock shape:  { actorId, meta, loader } / { actorId, meta }
+    	//   0x180D12922  Activator.CreateInstance(implType, 0x214 = CreateInstance | Public | Instance, null, args, null)
+    	//   (no try/catch and no "Failed to create instance" error, unlike the package's ConstructActor)
+    	//   0x180D12C74  await actor.Initialize()                    (IActor interface slot 13)
+    	//   0x180D12E7F  await new BackgroundState().ApplyToActor(actor)  (BackgroundState vtable 0x188 = slot 5)
+    	//   0x180D13093  z = TopmostZPosition (slot 45, xmm0); SpecialSubId.TryGetModifiedPositionZ(z, subId, out z2) ?
+    	//                z2 : TopmostZPosition again;  actor.ChangePositionZ(z)  (ActorExtensions 0x180448540)
+    	// Annotated disassembly: work/title-path/disas/bme_08_ConstructActorAsync.txt, bme_09_ConstructActorAsync_MoveNext.txt
     	[Token(Token = "0x600000F")]
     	[Address(RVA = "0xD11C30", Offset = "0xD10630", VA = "0x180D11C30")]
     	[AsyncStateMachine(typeof(_003CConstructActorAsync_003Ed__9))]
     	private UniTask<IBackgroundActor> ConstructActorAsync(string actorId, string subId)
     	{
-    		return default(UniTask<IBackgroundActor>);
+    		return ConstructActorAsyncCore(actorId, subId);
+    	}
+
+    	private async UniTask<IBackgroundActor> ConstructActorAsyncCore(string actorId, string subId)
+    	{
+    		BackgroundMetadata meta = Configuration.GetMetadataOrDefault(actorId);
+    		Type implType = GetImplementationType(meta);
+    		IResourceLoader loader = GetAppearanceLoader(actorId);
+    		object[] args;
+    		if (!string.IsNullOrEmpty(subId) && typeof(IMultipliableActor).IsAssignableFrom(implType))
+    		{
+    			args = loader != null ? new object[] { actorId, subId, meta, loader } : new object[] { actorId, subId, meta };
+    		}
+    		else
+    		{
+    			args = loader != null ? new object[] { actorId, meta, loader } : new object[] { actorId, meta };
+    		}
+    		IBackgroundActor actor = (IBackgroundActor)Activator.CreateInstance(implType,
+    			BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.Instance, null, args, null);
+    		await actor.Initialize();
+    		await new BackgroundState().ApplyToActor(actor);
+    		float z = SpecialSubId.TryGetModifiedPositionZ(TopmostZPosition, subId, out float modifiedZ) ? modifiedZ : TopmostZPosition;
+    		actor.ChangePositionZ(z);
+    		return actor;
     	}
     }
 }

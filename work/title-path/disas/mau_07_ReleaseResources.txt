@@ -1,0 +1,75 @@
+====================================================================================================
+FUNCTION RVA 0x86C0A0  VA 0x18086C0A0  size 0xA9 (169 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$ReleaseResources
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object___ReleaseResources (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, System_String_o* id, System_String_o* appearance, Il2CppObject* holder, const MethodInfo_86C0A0* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086C0A0  mov     qword ptr [rsp + 8], rbx                  
+  0x18086C0A5  mov     qword ptr [rsp + 0x10], rbp               
+  0x18086C0AA  mov     qword ptr [rsp + 0x18], rsi               
+  0x18086C0AF  push    rdi                                       
+  0x18086C0B0  sub     rsp, 0x30                                 
+  0x18086C0B4  cmp     byte ptr [rip + 0x287085f], 0                ; data_30DC91A
+  0x18086C0BB  mov     rsi, r9                                   
+  0x18086C0BE  mov     rbx, r8                                   
+  0x18086C0C1  mov     rbp, rdx                                  
+  0x18086C0C4  mov     rdi, rcx                                  
+  0x18086C0C7  jne     0x18086c0f2                               
+  0x18086C0C9  lea     rcx, [rip + 0x25eff98]                       ; TYPE Naninovel.IActorManager_TypeInfo
+  0x18086C0D0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C0D5  lock or dword ptr [rsp], 0                        
+  0x18086C0DA  lea     rcx, [rip + 0x25e5c6f]                       ; TYPE Naninovel.IResourceLoader_TypeInfo
+  0x18086C0E1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C0E6  lock or dword ptr [rsp], 0                        
+  0x18086C0EB  mov     byte ptr [rip + 0x2870828], 1                ; data_30DC91A
+
+18086C0F2:
+  0x18086C0F2  mov     r8, qword ptr [rdi + 0x10]                
+  0x18086C0F6  test    r8, r8                                    
+  0x18086C0F9  je      0x18086c134                               
+  0x18086C0FB  mov     rdx, qword ptr [rip + 0x25eff66]             ; TYPE Naninovel.IActorManager_TypeInfo
+  0x18086C102  mov     ecx, 0xc                                  
+  0x18086C107  mov     r9, rbp                                   
+  0x18086C10A  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x18086C10F  test    rax, rax                                  
+  0x18086C112  je      0x18086c134                               
+  0x18086C114  test    rbx, rbx                                  
+  0x18086C117  je      0x18086c134                               
+  0x18086C119  cmp     dword ptr [rbx + 0x10], 0                 
+  0x18086C11D  jbe     0x18086c134                               
+  0x18086C11F  mov     byte ptr [rsp + 0x28], 1                  
+  0x18086C124  mov     r9, rbx                                   
+  0x18086C127  mov     r8, rax                                   
+  0x18086C12A  mov     qword ptr [rsp + 0x20], rsi               
+  0x18086C12F  call    0x180021c30                                  ; -> sub_21C30 (runtime/helper)
+
+18086C134:
+  0x18086C134  mov     rbx, qword ptr [rsp + 0x40]               
+  0x18086C139  mov     rbp, qword ptr [rsp + 0x48]               
+  0x18086C13E  mov     rsi, qword ptr [rsp + 0x50]               
+  0x18086C143  add     rsp, 0x30                                 
+  0x18086C147  pop     rdi                                       
+  0x18086C148  ret                                               

@@ -1,0 +1,38 @@
+====================================================================================================
+FUNCTION RVA 0xD18B00  VA 0x180D18B00  size 0x69 (105 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.IMultipliableActor$$BuildId
+  csig   : System_String_o* GigaCreation_NaninovelExtender_ExtendedActors_IMultipliableActor__BuildId (System_String_o* actorId, System_String_o* subId, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.IMultipliableActor :: public static string BuildId(string actorId, string subId)
+====================================================================================================
+  0x180D18B00  mov     qword ptr [rsp + 8], rbx                  
+  0x180D18B05  push    rdi                                       
+  0x180D18B06  sub     rsp, 0x20                                 
+  0x180D18B0A  cmp     byte ptr [rip + 0x23c47de], 0                ; data_30DD2EF
+  0x180D18B11  mov     rbx, rdx                                  
+  0x180D18B14  mov     rdi, rcx                                  
+  0x180D18B17  jne     0x180d18b31                               
+  0x180D18B19  lea     rcx, [rip + 0x2138dc0]                       ; STR '-'
+  0x180D18B20  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D18B25  lock or dword ptr [rsp], 0                        
+  0x180D18B2A  mov     byte ptr [rip + 0x23c47be], 1                ; data_30DD2EF
+
+180D18B31:
+  0x180D18B31  test    rbx, rbx                                  
+  0x180D18B34  je      0x180d18b5b                               
+  0x180D18B36  cmp     dword ptr [rbx + 0x10], 0                 
+  0x180D18B3A  jbe     0x180d18b5b                               
+  0x180D18B3C  mov     rdx, qword ptr [rip + 0x2138d9d]             ; STR '-'
+  0x180D18B43  xor     r9d, r9d                                  
+  0x180D18B46  mov     r8, rbx                                   
+  0x180D18B49  mov     rcx, rdi                                  
+  0x180D18B4C  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D18B51  add     rsp, 0x20                                 
+  0x180D18B55  pop     rdi                                       
+  0x180D18B56  jmp     0x180e267a0                                  ; -> System.String$$Concat
+
+180D18B5B:
+  0x180D18B5B  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D18B60  mov     rax, rdi                                  
+  0x180D18B63  add     rsp, 0x20                                 
+  0x180D18B67  pop     rdi                                       
+  0x180D18B68  ret                                               

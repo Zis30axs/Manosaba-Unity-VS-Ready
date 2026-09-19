@@ -1,0 +1,142 @@
+====================================================================================================
+FUNCTION RVA 0xD20AE0  VA 0x180D20AE0  size 0x185 (389 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended$$Modify
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended__Modify (GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended_o* __this, Naninovel_AsyncToken_o token, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended :: protected override UniTask Modify(AsyncToken token)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended:
+      +0xD0   SubId                          StringParameter
+      +0xD8   MatchScreenWidth               BooleanParameter
+      +0xE0   _actorUtility                  ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>
+      +0xE8   _preloadedDissolveTexture      Texture2D
+  fields of ModifyBackgroundExtended.<>c:
+      +0x0    <>9                            static readonly ModifyBackgroundExtended.<>c
+      +0x8    <>9__17_0                      static Func<IBackgroundActor, bool>
+  fields of ModifyBackgroundExtended.<ApplyAppearanceModification>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          IBackgroundActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Execute>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Modify>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<IBackgroundActor>
+  fields of ModifyBackgroundExtended.<PreloadResources>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D20AE0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D20AE5  push    rdi                                       
+  0x180D20AE6  sub     rsp, 0x80                                 
+  0x180D20AED  cmp     byte ptr [rip + 0x23bc832], 0                ; data_30DD326
+  0x180D20AF4  mov     rdi, rdx                                  
+  0x180D20AF7  mov     rbx, rcx                                  
+  0x180D20AFA  jne     0x180d20b14                               
+  0x180D20AFC  lea     rcx, [rip + 0x210e355]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<ModifyBackgroundExtended.<Modify>d__17>()
+  0x180D20B03  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D20B08  lock or dword ptr [rsp], 0                        
+  0x180D20B0D  mov     byte ptr [rip + 0x23bc812], 1                ; data_30DD326
+
+180D20B14:
+  0x180D20B14  mov     eax, dword ptr [rip + 0x23b86aa]             ; data_30D91C4
+  0x180D20B1A  lea     r9, [rip + 0x23cd77f]                        ; data_30EE2A0
+  0x180D20B21  xorps   xmm0, xmm0                                
+  0x180D20B24  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D20B29  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D20B2E  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180D20B33  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D20B38  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D20B3D  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x180D20B42  movups  xmmword ptr [rsp + 0x70], xmm0            
+  0x180D20B47  test    eax, eax                                  
+  0x180D20B49  je      0x180d20b90                               
+  0x180D20B4B  lea     r8, [rsp + 0x28]                          
+  0x180D20B50  shr     r8, 0xc                                   
+  0x180D20B54  and     r8d, 0x1fffff                             
+  0x180D20B5B  mov     eax, r8d                                  
+  0x180D20B5E  shr     rax, 6                                    
+  0x180D20B62  and     r8d, 0x3f                                 
+  0x180D20B66  lea     rdx, [r9 + rax*8]                         
+  0x180D20B6A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D20B71:
+  0x180D20B71  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D20B78  mov     rcx, rax                                  
+  0x180D20B7B  bts     rcx, r8                                   
+  0x180D20B7F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D20B88  jne     0x180d20b71                               
+  0x180D20B8A  mov     eax, dword ptr [rip + 0x23b8634]             ; data_30D91C4
+
+180D20B90:
+  0x180D20B90  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D20B95  test    eax, eax                                  
+  0x180D20B97  je      0x180d20bdf                               
+  0x180D20B99  lea     r8, [rsp + 0x38]                          
+  0x180D20B9E  shr     r8, 0xc                                   
+  0x180D20BA2  and     r8d, 0x1fffff                             
+  0x180D20BA9  mov     eax, r8d                                  
+  0x180D20BAC  shr     rax, 6                                    
+  0x180D20BB0  and     r8d, 0x3f                                 
+  0x180D20BB4  lea     rdx, [r9 + rax*8]                         
+  0x180D20BB8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D20BBF  nop                                               
+
+180D20BC0:
+  0x180D20BC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D20BC7  mov     rcx, rax                                  
+  0x180D20BCA  bts     rcx, r8                                   
+  0x180D20BCE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D20BD7  jne     0x180d20bc0                               
+  0x180D20BD9  mov     eax, dword ptr [rip + 0x23b85e5]             ; data_30D91C4
+
+180D20BDF:
+  0x180D20BDF  movups  xmm0, xmmword ptr [rdi]                   
+  0x180D20BE2  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D20BE7  test    eax, eax                                  
+  0x180D20BE9  je      0x180d20c2a                               
+  0x180D20BEB  lea     r8, [rsp + 0x40]                          
+  0x180D20BF0  shr     r8, 0xc                                   
+  0x180D20BF4  and     r8d, 0x1fffff                             
+  0x180D20BFB  mov     eax, r8d                                  
+  0x180D20BFE  shr     rax, 6                                    
+  0x180D20C02  and     r8d, 0x3f                                 
+  0x180D20C06  lea     rdx, [r9 + rax*8]                         
+  0x180D20C0A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D20C11:
+  0x180D20C11  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D20C18  mov     rcx, rax                                  
+  0x180D20C1B  bts     rcx, r8                                   
+  0x180D20C1F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D20C28  jne     0x180d20c11                               
+
+180D20C2A:
+  0x180D20C2A  mov     r8, qword ptr [rip + 0x210e227]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<ModifyBackgroundExtended.<Modify>d__17>()
+  0x180D20C31  lea     rdx, [rsp + 0x20]                         
+  0x180D20C36  lea     rcx, [rsp + 0x28]                         
+  0x180D20C3B  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D20C43  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D20C48  xor     edx, edx                                  
+  0x180D20C4A  lea     rcx, [rsp + 0x28]                         
+  0x180D20C4F  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D20C54  mov     rbx, qword ptr [rsp + 0x90]               
+  0x180D20C5C  add     rsp, 0x80                                 
+  0x180D20C63  pop     rdi                                       
+  0x180D20C64  ret                                               

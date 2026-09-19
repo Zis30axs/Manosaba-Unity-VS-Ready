@@ -1,0 +1,84 @@
+====================================================================================================
+FUNCTION RVA 0x86BA20  VA 0x18086BA20  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$get_AddressableAssetLoader
+  csig   : GigaCreation_Essentials_AddressablesUtils_IAddressableAssetLoader_o* GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object___get_AddressableAssetLoader (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, const MethodInfo_86BA20* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086BA20  push    rbx                                       
+  0x18086BA22  sub     rsp, 0x20                                 
+  0x18086BA26  cmp     byte ptr [rip + 0x2870eeb], 0                ; data_30DC918
+  0x18086BA2D  mov     rbx, rcx                                  
+  0x18086BA30  jne     0x18086ba5b                               
+  0x18086BA32  lea     rcx, [rip + 0x25e5847]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x18086BA39  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086BA3E  lock or dword ptr [rsp], 0                        
+  0x18086BA43  lea     rcx, [rip + 0x25e671e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x18086BA4A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086BA4F  lock or dword ptr [rsp], 0                        
+  0x18086BA54  mov     byte ptr [rip + 0x2870ebd], 1                ; data_30DC918
+
+18086BA5B:
+  0x18086BA5B  mov     rax, qword ptr [rbx + 0x18]               
+  0x18086BA5F  test    rax, rax                                  
+  0x18086BA62  jne     0x18086bad4                               
+  0x18086BA64  mov     rcx, qword ptr [rip + 0x25e66fd]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x18086BA6B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x18086BA71  jne     0x18086ba78                               
+  0x18086BA73  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+18086BA78:
+  0x18086BA78  mov     rdx, qword ptr [rip + 0x25e5801]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x18086BA7F  mov     cl, 1                                     
+  0x18086BA81  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x18086BA86  cmp     dword ptr [rip + 0x286d737], 0               ; data_30D91C4
+  0x18086BA8D  mov     r9, rax                                   
+  0x18086BA90  mov     qword ptr [rbx + 0x18], rax               
+  0x18086BA94  je      0x18086bad1                               
+  0x18086BA96  lea     r8, [rbx + 0x18]                          
+  0x18086BA9A  shr     r8, 0xc                                   
+  0x18086BA9E  lea     rcx, [rip + 0x28c8adb]                       ; data_3134580
+  0x18086BAA5  and     r8d, 0x1fffff                             
+  0x18086BAAC  mov     eax, r8d                                  
+  0x18086BAAF  shr     rax, 6                                    
+  0x18086BAB3  and     r8d, 0x3f                                 
+  0x18086BAB7  lea     rdx, [rcx + rax*8]                        
+  0x18086BABB  prefetchw byte ptr [rdx]                            
+  0x18086BABE  nop                                               
+
+18086BAC0:
+  0x18086BAC0  mov     rax, qword ptr [rdx]                      
+  0x18086BAC3  mov     rcx, rax                                  
+  0x18086BAC6  bts     rcx, r8                                   
+  0x18086BACA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18086BACF  jne     0x18086bac0                               
+
+18086BAD1:
+  0x18086BAD1  mov     rax, r9                                   
+
+18086BAD4:
+  0x18086BAD4  add     rsp, 0x20                                 
+  0x18086BAD8  pop     rbx                                       
+  0x18086BAD9  ret                                               

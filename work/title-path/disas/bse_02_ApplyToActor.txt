@@ -1,0 +1,45 @@
+====================================================================================================
+FUNCTION RVA 0xD147E0  VA 0x180D147E0  size 0x8A (138 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended$$ApplyToActor
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_ExtendedActors_BackgroundStateExtended__ApplyToActor (GigaCreation_NaninovelExtender_ExtendedActors_BackgroundStateExtended_o* __this, Naninovel_IBackgroundActor_o* actor, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended :: public override UniTask ApplyToActor(IBackgroundActor actor)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended:
+      +0x58   _pivot                         Vector2
+      +0x60   _masked                        bool
+====================================================================================================
+  0x180D147E0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D147E5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D147EA  push    rdi                                       
+  0x180D147EB  sub     rsp, 0x20                                 
+  0x180D147EF  cmp     byte ptr [rip + 0x23c8ae3], 0                ; data_30DD2D9
+  0x180D147F6  mov     rsi, rdx                                  
+  0x180D147F9  mov     rdi, rcx                                  
+  0x180D147FC  jne     0x180d14816                               
+  0x180D147FE  lea     rcx, [rip + 0x211ad2b]                       ; METHODINFO Method$Naninovel.ActorState<IBackgroundActor>.ApplyToActor()
+  0x180D14805  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1480A  lock or dword ptr [rsp], 0                        
+  0x180D1480F  mov     byte ptr [rip + 0x23c8ac3], 1                ; data_30DD2D9
+
+180D14816:
+  0x180D14816  mov     r8, qword ptr [rip + 0x211ad13]              ; METHODINFO Method$Naninovel.ActorState<IBackgroundActor>.ApplyToActor()
+  0x180D1481D  mov     rdx, rsi                                  
+  0x180D14820  mov     rcx, rdi                                  
+  0x180D14823  call    0x180bb89c0                                  ; -> Naninovel.ActorState<__Il2CppFullySharedGenericType>$$ApplyToActor
+  0x180D14828  movss   xmm1, dword ptr [rdi + 0x5c]              
+  0x180D1482D  xor     r8d, r8d                                  
+  0x180D14830  movss   xmm0, dword ptr [rdi + 0x58]                 ; rdi->BackgroundStateExtended._pivot
+  0x180D14835  mov     rcx, rsi                                  
+  0x180D14838  unpcklps xmm0, xmm1                                
+  0x180D1483B  mov     rbx, rax                                  
+  0x180D1483E  movq    rdx, xmm0                                 
+  0x180D14843  call    0x180d10ca0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ActorStateExtendedUtility$$ApplyPivotToActor
+  0x180D14848  movzx   edx, byte ptr [rdi + 0x60]                   ; rdi->BackgroundStateExtended._masked
+  0x180D1484C  xor     r8d, r8d                                  
+  0x180D1484F  mov     rcx, rsi                                  
+  0x180D14852  call    0x180d10d80                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ActorStateExtendedUtility$$ApplyMaskabilityToActor
+  0x180D14857  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D1485C  mov     rax, rbx                                  
+  0x180D1485F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D14864  add     rsp, 0x20                                 
+  0x180D14868  pop     rdi                                       
+  0x180D14869  ret                                               

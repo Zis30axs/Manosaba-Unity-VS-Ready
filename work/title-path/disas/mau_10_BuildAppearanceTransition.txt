@@ -1,0 +1,202 @@
+====================================================================================================
+FUNCTION RVA 0x86C380  VA 0x18086C380  size 0x2A3 (675 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$BuildAppearanceTransition
+  csig   : Naninovel_Transition_o GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object___BuildAppearanceTransition (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, System_String_o* transition, Naninovel_DecimalListParameter_o* paramList, UnityEngine_Texture2D_o* dissolveTexture, const MethodInfo_86C380* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086C380  push    rbx                                       
+  0x18086C382  push    rsi                                       
+  0x18086C383  push    rdi                                       
+  0x18086C384  sub     rsp, 0x90                                 
+  0x18086C38B  cmp     byte ptr [rip + 0x2870589], 0                ; data_30DC91B
+  0x18086C392  mov     rbx, r9                                   
+  0x18086C395  movaps  xmmword ptr [rsp + 0x80], xmm6            
+  0x18086C39D  mov     rdi, r8                                   
+  0x18086C3A0  mov     rsi, rcx                                  
+  0x18086C3A3  jne     0x18086c3f0                               
+  0x18086C3A5  lea     rcx, [rip + 0x25ce4bc]                       ; METHODINFO Method$System.Nullable<Vector4>..ctor()
+  0x18086C3AC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C3B1  lock or dword ptr [rsp], 0                        
+  0x18086C3B6  lea     rcx, [rip + 0x25e58db]                       ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C3BD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C3C2  lock or dword ptr [rsp], 0                        
+  0x18086C3C7  lea     rcx, [rip + 0x25e534a]                       ; METHODINFO Method$Naninovel.ParameterList<NullableFloat>.ElementAtOrNull()
+  0x18086C3CE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C3D3  lock or dword ptr [rsp], 0                        
+  0x18086C3D8  lea     rcx, [rip + 0x25cc489]                       ; TYPE Naninovel.TransitionUtils_TypeInfo
+  0x18086C3DF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C3E4  lock or dword ptr [rsp], 0                        
+  0x18086C3E9  mov     byte ptr [rip + 0x287052b], 1                ; data_30DC91B
+
+18086C3F0:
+  0x18086C3F0  xor     edx, edx                                  
+  0x18086C3F2  mov     rcx, rdi                                  
+  0x18086C3F5  call    0x1805abe50                                  ; -> Naninovel.StringParameter$$op_Implicit
+  0x18086C3FA  mov     rcx, qword ptr [rip + 0x25cc467]             ; TYPE Naninovel.TransitionUtils_TypeInfo
+  0x18086C401  mov     rdi, rax                                  
+  0x18086C404  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x18086C40B  jne     0x18086c412                               
+  0x18086C40D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+18086C412:
+  0x18086C412  xor     edx, edx                                  
+  0x18086C414  mov     rcx, rdi                                  
+  0x18086C417  call    0x1805f3350                                  ; -> Naninovel.TransitionUtils$$ResolveParameterValue
+  0x18086C41C  xor     r8d, r8d                                  
+  0x18086C41F  lea     rcx, [rsp + 0x40]                         
+  0x18086C424  mov     rdx, rax                                  
+  0x18086C427  mov     rdi, rax                                  
+  0x18086C42A  call    0x1805f3630                                  ; -> Naninovel.TransitionUtils$$GetDefaultParams
+  0x18086C42F  cmp     byte ptr [rip + 0x286fd2e], 0                ; data_30DC164
+  0x18086C436  movups  xmm6, xmmword ptr [rax]                   
+  0x18086C439  jne     0x18086c453                               
+  0x18086C43B  lea     rcx, [rip + 0x25da1ce]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x18086C442  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18086C447  lock or dword ptr [rsp], 0                        
+  0x18086C44C  mov     byte ptr [rip + 0x286fd11], 1                ; data_30DC164
+
+18086C453:
+  0x18086C453  test    rbx, rbx                                  
+  0x18086C456  je      0x18086c56a                               
+  0x18086C45C  mov     rdx, qword ptr [rip + 0x25da1ad]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x18086C463  xor     ecx, ecx                                  
+  0x18086C465  mov     r8, rbx                                   
+  0x18086C468  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x18086C46D  test    al, al                                    
+  0x18086C46F  je      0x18086c56a                               
+  0x18086C475  xor     edx, edx                                  
+  0x18086C477  mov     rcx, rbx                                  
+  0x18086C47A  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C47F  test    rax, rax                                  
+  0x18086C482  jne     0x18086c48e                               
+  0x18086C484  xor     edx, edx                                  
+  0x18086C486  movaps  xmm0, xmm6                                
+  0x18086C489  call    0x180526ba0                                  ; -> Naninovel.NullableFloat$$op_Implicit
+
+18086C48E:
+  0x18086C48E  mov     r8, qword ptr [rip + 0x25e5803]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C495  lea     rdx, [rsp + 0xb0]                         
+  0x18086C49D  mov     rcx, rax                                  
+  0x18086C4A0  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C4A5  mov     edx, 1                                    
+  0x18086C4AA  mov     rcx, rbx                                  
+  0x18086C4AD  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C4B2  test    rax, rax                                  
+  0x18086C4B5  jne     0x18086c4c5                               
+  0x18086C4B7  movaps  xmm0, xmm6                                
+  0x18086C4BA  xor     edx, edx                                  
+  0x18086C4BC  shufps  xmm0, xmm6, 0x55                          
+  0x18086C4C0  call    0x180526ba0                                  ; -> Naninovel.NullableFloat$$op_Implicit
+
+18086C4C5:
+  0x18086C4C5  mov     r8, qword ptr [rip + 0x25e57cc]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C4CC  lea     rdx, [rsp + 0xc0]                         
+  0x18086C4D4  mov     rcx, rax                                  
+  0x18086C4D7  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C4DC  mov     edx, 2                                    
+  0x18086C4E1  mov     rcx, rbx                                  
+  0x18086C4E4  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C4E9  test    rax, rax                                  
+  0x18086C4EC  jne     0x18086c4fc                               
+  0x18086C4EE  movaps  xmm0, xmm6                                
+  0x18086C4F1  xor     edx, edx                                  
+  0x18086C4F3  shufps  xmm0, xmm6, 0xaa                          
+  0x18086C4F7  call    0x180526ba0                                  ; -> Naninovel.NullableFloat$$op_Implicit
+
+18086C4FC:
+  0x18086C4FC  mov     r8, qword ptr [rip + 0x25e5795]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C503  lea     rdx, [rsp + 0xc8]                         
+  0x18086C50B  mov     rcx, rax                                  
+  0x18086C50E  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C513  mov     edx, 3                                    
+  0x18086C518  mov     rcx, rbx                                  
+  0x18086C51B  call    0x1800025d0                                  ; -> sub_25D0 (runtime/helper)
+  0x18086C520  test    rax, rax                                  
+  0x18086C523  jne     0x18086c533                               
+  0x18086C525  shufps  xmm6, xmm6, 0xff                          
+  0x18086C529  xor     edx, edx                                  
+  0x18086C52B  movaps  xmm0, xmm6                                
+  0x18086C52E  call    0x180526ba0                                  ; -> Naninovel.NullableFloat$$op_Implicit
+
+18086C533:
+  0x18086C533  mov     r8, qword ptr [rip + 0x25e575e]              ; METHODINFO Method$Naninovel.Nullable<float>.op_Implicit()
+  0x18086C53A  lea     rdx, [rsp + 0x30]                         
+  0x18086C53F  mov     rcx, rax                                  
+  0x18086C542  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x18086C547  movss   xmm1, dword ptr [rsp + 0xc0]              
+  0x18086C550  movss   xmm2, dword ptr [rsp + 0xc8]              
+  0x18086C559  movss   xmm3, dword ptr [rsp + 0x30]              
+  0x18086C55F  movss   xmm6, dword ptr [rsp + 0xb0]              
+  0x18086C568  jmp     0x18086c57f                               
+
+18086C56A:
+  0x18086C56A  movaps  xmm1, xmm6                                
+  0x18086C56D  movaps  xmm2, xmm6                                
+  0x18086C570  movaps  xmm3, xmm6                                
+  0x18086C573  shufps  xmm1, xmm6, 0x55                          
+  0x18086C577  shufps  xmm2, xmm6, 0xaa                          
+  0x18086C57B  shufps  xmm3, xmm6, 0xff                          
+
+18086C57F:
+  0x18086C57F  mov     r8, qword ptr [rip + 0x25ce2e2]              ; METHODINFO Method$System.Nullable<Vector4>..ctor()
+  0x18086C586  lea     rdx, [rsp + 0x40]                         
+  0x18086C58B  shufps  xmm6, xmm6, 0xe1                          
+  0x18086C58F  lea     rcx, [rsp + 0x60]                         
+  0x18086C594  movss   xmm6, xmm1                                
+  0x18086C598  xorps   xmm0, xmm0                                
+  0x18086C59B  shufps  xmm6, xmm6, 0xc6                          
+  0x18086C59F  xor     eax, eax                                  
+  0x18086C5A1  movss   xmm6, xmm2                                
+  0x18086C5A5  mov     dword ptr [rsp + 0x70], eax               
+  0x18086C5A9  shufps  xmm6, xmm6, 0x27                          
+  0x18086C5AD  movss   xmm6, xmm3                                
+  0x18086C5B1  shufps  xmm6, xmm6, 0x39                          
+  0x18086C5B5  movups  xmmword ptr [rsp + 0x40], xmm6            
+  0x18086C5BA  movdqa  xmmword ptr [rsp + 0x40], xmm6            
+  0x18086C5C0  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x18086C5C5  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x18086C5CA  mov     r9, qword ptr [rsp + 0xd0]                
+  0x18086C5D2  lea     r8, [rsp + 0x40]                          
+  0x18086C5D7  xorps   xmm0, xmm0                                
+  0x18086C5DA  mov     qword ptr [rsp + 0x20], 0                 
+  0x18086C5E3  movups  xmmword ptr [rsi], xmm0                   
+  0x18086C5E6  xor     eax, eax                                  
+  0x18086C5E8  mov     rdx, rdi                                  
+  0x18086C5EB  movups  xmmword ptr [rsi + 0x10], xmm0            
+  0x18086C5EF  mov     qword ptr [rsi + 0x20], rax               
+  0x18086C5F3  mov     rcx, rsi                                  
+  0x18086C5F6  movups  xmm0, xmmword ptr [rsp + 0x60]            
+  0x18086C5FB  mov     eax, dword ptr [rsp + 0x70]               
+  0x18086C5FF  mov     dword ptr [rsp + 0x50], eax               
+  0x18086C603  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x18086C608  call    0x1805e9060                                  ; -> Naninovel.Transition$$.ctor
+  0x18086C60D  movaps  xmm6, xmmword ptr [rsp + 0x80]            
+  0x18086C615  mov     rax, rsi                                  
+  0x18086C618  add     rsp, 0x90                                 
+  0x18086C61F  pop     rdi                                       
+  0x18086C620  pop     rsi                                       
+  0x18086C621  pop     rbx                                       
+  0x18086C622  ret                                               

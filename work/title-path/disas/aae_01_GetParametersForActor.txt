@@ -1,0 +1,720 @@
+====================================================================================================
+FUNCTION RVA 0xD1E940  VA 0x180D1E940  size 0xA7E (2686 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended$$GetParametersForActor
+  csig   : System_Collections_Generic_IReadOnlyList_string__o* GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended__GetParametersForActor (GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended_o* __this, System_String_o* actorId, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended :: protected override IReadOnlyList<string> GetParametersForActor(string actorId)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended:
+      +0xA0   EasingTypeNameForPosX          StringParameter
+      +0xA8   EasingTypeNameForPosY          StringParameter
+      +0xB0   Relative                       BooleanParameter
+      +0xB8   Multiplier                     DecimalParameter
+      +0xC0   MatchScreenWidth               BooleanParameter
+  fields of AnimateActorExtended.AdditionalParam:
+      +0x0    value__                        int
+  fields of AnimateActorExtended.<>c:
+      +0x0    <>9                            static readonly AnimateActorExtended.<>c
+      +0x8    <>9__6_0                       static Func<IActorManager, string, bool>
+      +0x10   <>9__7_0                       static Func<string, bool>
+  fields of AnimateActorExtended.<>c__DisplayClass7_0:
+      +0x10   multiplier                     float
+      +0x14   actorScreenPosition            float
+====================================================================================================
+  0x180D1E940  push    rbp                                       
+  0x180D1E942  push    rsi                                       
+  0x180D1E943  push    rdi                                       
+  0x180D1E944  push    r12                                       
+  0x180D1E946  push    r13                                       
+  0x180D1E948  push    r14                                       
+  0x180D1E94A  push    r15                                       
+  0x180D1E94C  sub     rsp, 0xa0                                 
+  0x180D1E953  lea     rbp, [rsp + 0x30]                         
+  0x180D1E958  cmp     byte ptr [rip + 0x23be9b6], 0                ; data_30DD315
+  0x180D1E95F  mov     r14, rdx                                  
+  0x180D1E962  mov     qword ptr [rbp + 0xb0], rbx                  ; rbp->AnimateActorExtended.Relative
+  0x180D1E969  mov     rdi, rcx                                  
+  0x180D1E96C  movaps  xmmword ptr [rbp + 0x60], xmm6            
+  0x180D1E970  movaps  xmmword ptr [rbp + 0x50], xmm7            
+  0x180D1E974  movaps  xmmword ptr [rbp + 0x40], xmm8            
+  0x180D1E979  jne     0x180d1eada                               
+  0x180D1E97F  lea     rcx, [rip + 0x2119ec2]                       ; METHODINFO Method$Naninovel.Engine.FindService<IActorManager, string>()
+  0x180D1E986  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E98B  lock or dword ptr [rsp], 0                        
+  0x180D1E990  lea     rcx, [rip + 0x2133599]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D1E997  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E99C  lock or dword ptr [rsp], 0                        
+  0x180D1E9A1  lea     rcx, [rip + 0x21105a8]                       ; METHODINFO Method$System.Linq.Enumerable.Concat<string>()
+  0x180D1E9A8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E9AD  lock or dword ptr [rsp], 0                        
+  0x180D1E9B2  lea     rcx, [rip + 0x213b1ef]                       ; METHODINFO Method$System.Linq.Enumerable.ToList<string>()
+  0x180D1E9B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E9BE  lock or dword ptr [rsp], 0                        
+  0x180D1E9C3  lea     rcx, [rip + 0x211059e]                       ; METHODINFO Method$FastEnumUtility.FastEnum.GetNames<AnimateActorExtended.AdditionalParam>()
+  0x180D1E9CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E9CF  lock or dword ptr [rsp], 0                        
+  0x180D1E9D4  lea     rcx, [rip + 0x2119e75]                       ; TYPE System.Func<IActorManager, string, bool>_TypeInfo
+  0x180D1E9DB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E9E0  lock or dword ptr [rsp], 0                        
+  0x180D1E9E5  lea     rcx, [rip + 0x213d67c]                       ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180D1E9EC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E9F1  lock or dword ptr [rsp], 0                        
+  0x180D1E9F6  lea     rcx, [rip + 0x213318b]                       ; TYPE Naninovel.IActor_TypeInfo
+  0x180D1E9FD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA02  lock or dword ptr [rsp], 0                        
+  0x180D1EA07  lea     rcx, [rip + 0x2110c5a]                       ; TYPE Naninovel.IBackgroundActor_TypeInfo
+  0x180D1EA0E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA13  lock or dword ptr [rsp], 0                        
+  0x180D1EA18  lea     rcx, [rip + 0x2112631]                       ; TYPE Naninovel.ICharacterActor_TypeInfo
+  0x180D1EA1F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA24  lock or dword ptr [rsp], 0                        
+  0x180D1EA29  lea     rcx, [rip + 0x2124f70]                       ; TYPE System.Collections.Generic.IReadOnlyCollection<string>_TypeInfo
+  0x180D1EA30  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA35  lock or dword ptr [rsp], 0                        
+  0x180D1EA3A  lea     rcx, [rip + 0x2119e5f]                       ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180D1EA41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA46  lock or dword ptr [rsp], 0                        
+  0x180D1EA4B  lea     rcx, [rip + 0x2119e2e]                       ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180D1EA52  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA57  lock or dword ptr [rsp], 0                        
+  0x180D1EA5C  lea     rcx, [rip + 0x213337d]                       ; METHODINFO Method$Naninovel.Nullable<float>.get_Value()
+  0x180D1EA63  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA68  lock or dword ptr [rsp], 0                        
+  0x180D1EA6D  lea     rcx, [rip + 0x213322c]                       ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D1EA74  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA79  lock or dword ptr [rsp], 0                        
+  0x180D1EA7E  lea     rcx, [rip + 0x213383b]                       ; TYPE string[]_TypeInfo
+  0x180D1EA85  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA8A  lock or dword ptr [rsp], 0                        
+  0x180D1EA8F  lea     rcx, [rip + 0x21104da]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c.<GetParametersForActor>b__6_0() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c$$<GetParametersForActor>b__6_0
+  0x180D1EA96  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EA9B  lock or dword ptr [rsp], 0                        
+  0x180D1EAA0  lea     rcx, [rip + 0x21104b1]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+  0x180D1EAA7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EAAC  lock or dword ptr [rsp], 0                        
+  0x180D1EAB1  lea     rcx, [rip + 0x21104a8]                       ; STR "Can't find a manager with `"
+  0x180D1EAB8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EABD  lock or dword ptr [rsp], 0                        
+  0x180D1EAC2  lea     rcx, [rip + 0x211046f]                       ; STR '` actor.'
+  0x180D1EAC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EACE  lock or dword ptr [rsp], 0                        
+  0x180D1EAD3  mov     byte ptr [rip + 0x23be83b], 1                ; data_30DD315
+
+180D1EADA:
+  0x180D1EADA  xor     r8d, r8d                                  
+  0x180D1EADD  mov     rdx, r14                                  
+  0x180D1EAE0  mov     rcx, rdi                                  
+  0x180D1EAE3  call    0x1804d1be0                                  ; -> Naninovel.Commands.AnimateActor$$GetParametersForActor
+  0x180D1EAE8  mov     r13, rax                                  
+  0x180D1EAEB  mov     qword ptr [rbp], rax                      
+  0x180D1EAEF  mov     rax, qword ptr [rip + 0x2110462]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+  0x180D1EAF6  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180D1EAFD  jne     0x180d1eb0e                               
+  0x180D1EAFF  mov     rcx, rax                                  
+  0x180D1EB02  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D1EB07  mov     rax, qword ptr [rip + 0x211044a]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+
+180D1EB0E:
+  0x180D1EB0E  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateActorExtended.Multiplier
+  0x180D1EB15  mov     rsi, qword ptr [rcx + 8]                  
+  0x180D1EB19  test    rsi, rsi                                  
+  0x180D1EB1C  jne     0x180d1ebd3                               
+  0x180D1EB22  cmp     dword ptr [rax + 0xe4], esi               
+  0x180D1EB28  jne     0x180d1eb39                               
+  0x180D1EB2A  mov     rcx, rax                                  
+  0x180D1EB2D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D1EB32  mov     rax, qword ptr [rip + 0x211041f]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+
+180D1EB39:
+  0x180D1EB39  mov     rax, qword ptr [rax + 0xb8]                  ; rax->AnimateActorExtended.Multiplier
+  0x180D1EB40  mov     rcx, qword ptr [rip + 0x2119d09]             ; TYPE System.Func<IActorManager, string, bool>_TypeInfo
+  0x180D1EB47  mov     rbx, qword ptr [rax]                      
+  0x180D1EB4A  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D1EB4F  mov     r8, qword ptr [rip + 0x211041a]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c.<GetParametersForActor>b__6_0() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c$$<GetParametersForActor>b__6_0
+  0x180D1EB56  xor     r9d, r9d                                  
+  0x180D1EB59  mov     rdx, rbx                                  
+  0x180D1EB5C  mov     rcx, rax                                  
+  0x180D1EB5F  mov     rsi, rax                                  
+  0x180D1EB62  call    0x18080e9f0                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor
+  0x180D1EB67  mov     rax, qword ptr [rip + 0x21103ea]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+  0x180D1EB6E  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateActorExtended.Multiplier
+  0x180D1EB75  mov     qword ptr [rcx + 8], rsi                  
+  0x180D1EB79  cmp     dword ptr [rip + 0x23ba644], 0               ; data_30D91C4
+  0x180D1EB80  je      0x180d1ebd3                               
+  0x180D1EB82  mov     rax, qword ptr [rip + 0x21103cf]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c_TypeInfo
+  0x180D1EB89  lea     r9, [rip + 0x24159f0]                        ; data_3134580
+  0x180D1EB90  mov     r8, qword ptr [rax + 0xb8]                   ; rax->AnimateActorExtended.Multiplier
+  0x180D1EB97  add     r8, 8                                     
+  0x180D1EB9B  shr     r8, 0xc                                   
+  0x180D1EB9F  and     r8d, 0x1fffff                             
+  0x180D1EBA6  mov     edx, r8d                                  
+  0x180D1EBA9  shr     rdx, 6                                    
+  0x180D1EBAD  and     r8d, 0x3f                                 
+  0x180D1EBB1  prefetchw byte ptr [r9 + rdx*8]                     
+  0x180D1EBB6  nop     word ptr [rax + rax]                      
+
+180D1EBC0:
+  0x180D1EBC0  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180D1EBC4  mov     rcx, rax                                  
+  0x180D1EBC7  bts     rcx, r8                                   
+  0x180D1EBCB  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180D1EBD1  jne     0x180d1ebc0                               
+
+180D1EBD3:
+  0x180D1EBD3  mov     rcx, qword ptr [rip + 0x2133356]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D1EBDA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D1EBE1  jne     0x180d1ebe8                               
+  0x180D1EBE3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1EBE8:
+  0x180D1EBE8  mov     r8, qword ptr [rip + 0x2119c59]              ; METHODINFO Method$Naninovel.Engine.FindService<IActorManager, string>()
+  0x180D1EBEF  mov     rdx, rsi                                  
+  0x180D1EBF2  mov     rcx, r14                                  
+  0x180D1EBF5  call    0x1806821b0                                  ; -> Naninovel.Engine$$FindService<object, __Il2CppFullySharedGenericType>
+  0x180D1EBFA  test    rax, rax                                  
+  0x180D1EBFD  je      0x180d1f31a                               
+  0x180D1EC03  mov     rdx, qword ptr [rip + 0x213d45e]             ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180D1EC0A  mov     ecx, 7                                    
+  0x180D1EC0F  mov     r9, r14                                   
+  0x180D1EC12  mov     r8, rax                                   
+  0x180D1EC15  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180D1EC1A  mov     r12, rax                                  
+  0x180D1EC1D  call    0x180080250                                  ; -> sub_80250 (runtime/helper)
+  0x180D1EC22  test    rax, rax                                  
+  0x180D1EC25  je      0x180d1f3b9                               
+  0x180D1EC2B  mov     rdx, qword ptr [rip + 0x2124d6e]             ; TYPE System.Collections.Generic.IReadOnlyCollection<string>_TypeInfo
+  0x180D1EC32  xor     ecx, ecx                                  
+  0x180D1EC34  mov     r8, rax                                   
+  0x180D1EC37  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1EC3C  mov     rcx, qword ptr [rip + 0x213367d]             ; TYPE string[]_TypeInfo
+  0x180D1EC43  mov     edx, eax                                  
+  0x180D1EC45  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180D1EC4A  mov     r14, rax                                  
+  0x180D1EC4D  xor     esi, esi                                  
+  0x180D1EC4F  mov     rax, qword ptr [rdi + 0xc0]                  ; rdi->AnimateActorExtended.MatchScreenWidth
+  0x180D1EC56  test    rax, rax                                  
+  0x180D1EC59  jne     0x180d1ec9c                               
+  0x180D1EC5B  mov     rdx, qword ptr [rip + 0x2110a06]             ; TYPE Naninovel.IBackgroundActor_TypeInfo
+  0x180D1EC62  mov     rcx, r12                                  
+  0x180D1EC65  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D1EC6A  test    rax, rax                                  
+  0x180D1EC6D  je      0x180d1ec7a                               
+  0x180D1EC6F  xor     edx, edx                                  
+  0x180D1EC71  mov     cl, 1                                     
+  0x180D1EC73  call    0x1805a5810                                  ; -> Naninovel.BooleanParameter$$op_Implicit
+  0x180D1EC78  jmp     0x180d1ec9c                               
+
+180D1EC7A:
+  0x180D1EC7A  mov     rdx, qword ptr [rip + 0x21123cf]             ; TYPE Naninovel.ICharacterActor_TypeInfo
+  0x180D1EC81  mov     rcx, r12                                  
+  0x180D1EC84  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D1EC89  test    rax, rax                                  
+  0x180D1EC8C  je      0x180d1ec99                               
+  0x180D1EC8E  xor     edx, edx                                  
+  0x180D1EC90  xor     ecx, ecx                                  
+  0x180D1EC92  call    0x1805a5810                                  ; -> Naninovel.BooleanParameter$$op_Implicit
+  0x180D1EC97  jmp     0x180d1ec9c                               
+
+180D1EC99:
+  0x180D1EC99  mov     rax, rsi                                  
+
+180D1EC9C:
+  0x180D1EC9C  xor     edx, edx                                  
+  0x180D1EC9E  mov     rcx, rax                                  
+  0x180D1ECA1  call    0x1805a58c0                                  ; -> Naninovel.BooleanParameter$$op_Implicit
+  0x180D1ECA6  movzx   ebx, ax                                   
+  0x180D1ECA9  mov     word ptr [rbp + 0xb8], ax                    ; rbp->AnimateActorExtended.Multiplier
+  0x180D1ECB0  mov     rax, qword ptr [rip + 0x2119bc9]             ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180D1ECB7  mov     rax, qword ptr [rax + 0x20]               
+  0x180D1ECBB  test    byte ptr [rax + 0x135], 1                 
+  0x180D1ECC2  jne     0x180d1eccc                               
+  0x180D1ECC4  mov     rcx, rax                                  
+  0x180D1ECC7  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1ECCC:
+  0x180D1ECCC  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateActorExtended.MatchScreenWidth
+  0x180D1ECD3  lea     r8, [rbp + 0xb8]                             ; rbp->AnimateActorExtended.Multiplier
+  0x180D1ECDA  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1ECDE  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1ECE5  movsxd  rax, dword ptr [rdx + 0x18]               
+  0x180D1ECE9  add     r8, rax                                   
+  0x180D1ECEC  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__7_0 | <>c__DisplayClass7_0.multiplier
+  0x180D1ECF0  cmp     dword ptr [rax + 0x28], esi               
+  0x180D1ECF3  lea     rcx, [r8 - 0x10]                          
+  0x180D1ECF7  cmovge  rcx, r8                                   
+  0x180D1ECFB  cmp     byte ptr [rcx], sil                       
+  0x180D1ECFE  je      0x180d1ee25                               
+  0x180D1ED04  mov     r13, qword ptr [rip + 0x2119b95]             ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180D1ED0B  mov     rax, qword ptr [r13 + 0x20]               
+  0x180D1ED0F  test    byte ptr [rax + 0x135], 1                 
+  0x180D1ED16  jne     0x180d1ed20                               
+  0x180D1ED18  mov     rcx, rax                                  
+  0x180D1ED1B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1ED20:
+  0x180D1ED20  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateActorExtended.MatchScreenWidth
+  0x180D1ED27  mov     rcx, qword ptr [rax]                      
+  0x180D1ED2A  mov     r15d, dword ptr [rcx + 0xfc]              
+  0x180D1ED31  lea     rax, [r15 + 0xf]                          
+  0x180D1ED35  cmp     rax, r15                                  
+  0x180D1ED38  ja      0x180d1ed44                               
+  0x180D1ED3A  movabs  rax, 0xffffffffffffff0                    
+
+180D1ED44:
+  0x180D1ED44  and     rax, 0xfffffffffffffff0                   
+  0x180D1ED48  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1ED4D  sub     rsp, rax                                  
+  0x180D1ED50  lea     rax, [rsp + 0x30]                         
+  0x180D1ED55  mov     qword ptr [rbp + 0xc8], rax               
+  0x180D1ED5C  mov     rax, qword ptr [r13 + 0x20]               
+  0x180D1ED60  test    byte ptr [rax + 0x135], 1                 
+  0x180D1ED67  jne     0x180d1ed71                               
+  0x180D1ED69  mov     rcx, rax                                  
+  0x180D1ED6C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1ED71:
+  0x180D1ED71  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateActorExtended.MatchScreenWidth
+  0x180D1ED78  mov     r8, r15                                   
+  0x180D1ED7B  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1ED7F  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1ED86  lea     rcx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1ED8D  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D1ED91  add     rcx, rax                                  
+  0x180D1ED94  mov     rax, qword ptr [r9 + 0x30]                
+  0x180D1ED98  cmp     dword ptr [rax + 0x28], esi               
+  0x180D1ED9B  lea     rdx, [rcx - 0x10]                         
+  0x180D1ED9F  cmovge  rdx, rcx                                  
+  0x180D1EDA3  mov     rcx, qword ptr [rbp + 0xc8]               
+  0x180D1EDAA  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1EDAF  mov     rdx, qword ptr [rbp + 0xc8]               
+  0x180D1EDB6  lea     rcx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EDBD  mov     r8, r15                                   
+  0x180D1EDC0  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1EDC5  mov     rcx, qword ptr [rip + 0x23b88ac]             ; data_30D7678
+  0x180D1EDCC  cmp     dword ptr [rcx + 0xe4], esi               
+  0x180D1EDD2  jne     0x180d1edd9                               
+  0x180D1EDD4  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1EDD9:
+  0x180D1EDD9  cmp     byte ptr [rip + 0x23bf49f], sil              ; data_30DE27F
+  0x180D1EDE0  jne     0x180d1ee09                               
+  0x180D1EDE2  lea     rcx, [rip + 0x20f2f57]                       ; STR 'False'
+  0x180D1EDE9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EDEE  lock or dword ptr [rsp], esi                      
+  0x180D1EDF2  lea     rcx, [rip + 0x20f2f4f]                       ; STR 'True'
+  0x180D1EDF9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EDFE  lock or dword ptr [rsp], esi                      
+  0x180D1EE02  mov     byte ptr [rip + 0x23bf476], 1                ; data_30DE27F
+
+180D1EE09:
+  0x180D1EE09  cmp     byte ptr [rbp + 0xb8], sil                   ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EE10  mov     r8, qword ptr [rip + 0x20f2f29]              ; STR 'False'
+  0x180D1EE17  cmovne  r8, qword ptr [rip + 0x20f2f29]              ; STR 'True'
+  0x180D1EE1F  mov     r13, qword ptr [rbp]                      
+  0x180D1EE23  jmp     0x180d1ee28                               
+
+180D1EE25:
+  0x180D1EE25  mov     r8, rsi                                   
+
+180D1EE28:
+  0x180D1EE28  test    r14, r14                                  
+  0x180D1EE2B  je      0x180d1f3b9                               
+  0x180D1EE31  xor     edx, edx                                  
+  0x180D1EE33  mov     rcx, r14                                  
+  0x180D1EE36  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D1EE3B  mov     r8, qword ptr [rip + 0x2132e5e]              ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D1EE42  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EE49  mov     rcx, qword ptr [rdi + 0xb0]                  ; rdi->AnimateActorExtended.Relative
+  0x180D1EE50  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D1EE55  cmp     byte ptr [rbp + 0xb8], sil                   ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EE5C  jne     0x180d1efda                               
+  0x180D1EE62  cmp     byte ptr [rip + 0x23bd2fb], sil              ; data_30DC164
+  0x180D1EE69  mov     rbx, qword ptr [rdi + 0x58]               
+  0x180D1EE6D  jne     0x180d1ee86                               
+  0x180D1EE6F  lea     rcx, [rip + 0x212779a]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1EE76  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EE7B  lock or dword ptr [rsp], esi                      
+  0x180D1EE7F  mov     byte ptr [rip + 0x23bd2de], 1                ; data_30DC164
+
+180D1EE86:
+  0x180D1EE86  test    rbx, rbx                                  
+  0x180D1EE89  je      0x180d1eea6                               
+  0x180D1EE8B  mov     rdx, qword ptr [rip + 0x212777e]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1EE92  xor     ecx, ecx                                  
+  0x180D1EE94  mov     r8, rbx                                   
+  0x180D1EE97  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1EE9C  test    al, al                                    
+  0x180D1EE9E  je      0x180d1eea6                               
+  0x180D1EEA0  mov     rbx, qword ptr [rdi + 0x58]               
+  0x180D1EEA4  jmp     0x180d1eea9                               
+
+180D1EEA6:
+  0x180D1EEA6  mov     rbx, rsi                                  
+
+180D1EEA9:
+  0x180D1EEA9  cmp     byte ptr [rip + 0x23bd35c], sil              ; data_30DC20C
+  0x180D1EEB0  jne     0x180d1eed9                               
+  0x180D1EEB2  lea     rcx, [rip + 0x211aeef]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D1EEB9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EEBE  lock or dword ptr [rsp], esi                      
+  0x180D1EEC2  lea     rcx, [rip + 0x211913f]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1EEC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EECE  lock or dword ptr [rsp], esi                      
+  0x180D1EED2  mov     byte ptr [rip + 0x23bd333], 1                ; data_30DC20C
+
+180D1EED9:
+  0x180D1EED9  test    rbx, rbx                                  
+  0x180D1EEDC  je      0x180d1ef17                               
+  0x180D1EEDE  mov     rdx, qword ptr [rbx]                      
+  0x180D1EEE1  mov     rcx, rbx                                  
+  0x180D1EEE4  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D1EEEB  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D1EEF2  call    rax                                       
+  0x180D1EEF4  test    al, al                                    
+  0x180D1EEF6  je      0x180d1ef17                               
+  0x180D1EEF8  mov     r8, qword ptr [rip + 0x2119109]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1EEFF  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EF06  mov     rcx, rbx                                  
+  0x180D1EF09  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D1EF0E  mov     r15, qword ptr [rbp + 0xb8]                  ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EF15  jmp     0x180d1ef1a                               
+
+180D1EF17:
+  0x180D1EF17  mov     r15, rsi                                  
+
+180D1EF1A:
+  0x180D1EF1A  cmp     byte ptr [rip + 0x23bd243], sil              ; data_30DC164
+  0x180D1EF21  mov     rbx, qword ptr [rdi + 0x60]               
+  0x180D1EF25  jne     0x180d1ef3e                               
+  0x180D1EF27  lea     rcx, [rip + 0x21276e2]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1EF2E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EF33  lock or dword ptr [rsp], esi                      
+  0x180D1EF37  mov     byte ptr [rip + 0x23bd226], 1                ; data_30DC164
+
+180D1EF3E:
+  0x180D1EF3E  test    rbx, rbx                                  
+  0x180D1EF41  je      0x180d1ef5e                               
+  0x180D1EF43  mov     rdx, qword ptr [rip + 0x21276c6]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1EF4A  xor     ecx, ecx                                  
+  0x180D1EF4C  mov     r8, rbx                                   
+  0x180D1EF4F  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1EF54  test    al, al                                    
+  0x180D1EF56  je      0x180d1ef5e                               
+  0x180D1EF58  mov     rbx, qword ptr [rdi + 0x60]               
+  0x180D1EF5C  jmp     0x180d1ef61                               
+
+180D1EF5E:
+  0x180D1EF5E  mov     rbx, rsi                                  
+
+180D1EF61:
+  0x180D1EF61  cmp     byte ptr [rip + 0x23bd2a4], sil              ; data_30DC20C
+  0x180D1EF68  jne     0x180d1ef91                               
+  0x180D1EF6A  lea     rcx, [rip + 0x211ae37]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D1EF71  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EF76  lock or dword ptr [rsp], esi                      
+  0x180D1EF7A  lea     rcx, [rip + 0x2119087]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1EF81  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1EF86  lock or dword ptr [rsp], esi                      
+  0x180D1EF8A  mov     byte ptr [rip + 0x23bd27b], 1                ; data_30DC20C
+
+180D1EF91:
+  0x180D1EF91  test    rbx, rbx                                  
+  0x180D1EF94  je      0x180d1efd2                               
+  0x180D1EF96  mov     rdx, qword ptr [rbx]                      
+  0x180D1EF99  mov     rcx, rbx                                  
+  0x180D1EF9C  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D1EFA3  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D1EFAA  call    rax                                       
+  0x180D1EFAC  test    al, al                                    
+  0x180D1EFAE  je      0x180d1efd2                               
+  0x180D1EFB0  mov     r8, qword ptr [rip + 0x2119051]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1EFB7  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EFBE  mov     rcx, rbx                                  
+  0x180D1EFC1  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D1EFC6  mov     rbx, qword ptr [rbp + 0xb8]                  ; rbp->AnimateActorExtended.Multiplier
+  0x180D1EFCD  jmp     0x180d1f0f6                               
+
+180D1EFD2:
+  0x180D1EFD2  mov     rbx, rsi                                  
+  0x180D1EFD5  jmp     0x180d1f0f6                               
+
+180D1EFDA:
+  0x180D1EFDA  test    r12, r12                                  
+  0x180D1EFDD  je      0x180d1f3b9                               
+  0x180D1EFE3  mov     r8, qword ptr [rip + 0x2132b9e]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D1EFEA  lea     rcx, [rbp]                                
+  0x180D1EFEE  mov     edx, 5                                    
+  0x180D1EFF3  mov     r9, r12                                   
+  0x180D1EFF6  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D1EFFB  xor     r8d, r8d                                  
+  0x180D1EFFE  lea     rcx, [rbp]                                
+  0x180D1F002  movzx   edx, bx                                   
+  0x180D1F005  movsd   xmm6, qword ptr [rax]                     
+  0x180D1F009  mov     eax, dword ptr [rax + 8]                  
+  0x180D1F00C  mov     dword ptr [rbp + 8], eax                  
+  0x180D1F00F  call    0x180cf4eb0                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility$$EvaluateSceneRect
+  0x180D1F014  movups  xmm1, xmmword ptr [rax]                   
+  0x180D1F017  movaps  xmm8, xmm6                                
+  0x180D1F01B  movaps  xmm0, xmm1                                
+  0x180D1F01E  subss   xmm8, xmm1                                
+  0x180D1F023  shufps  xmm0, xmm1, 0xaa                          
+  0x180D1F027  divss   xmm8, xmm0                                
+  0x180D1F02C  cmp     byte ptr [rip + 0x23bd131], sil              ; data_30DC164
+  0x180D1F033  movaps  xmm0, xmm1                                
+  0x180D1F036  mov     rbx, qword ptr [rdi + 0xb8]                  ; rdi->AnimateActorExtended.Multiplier
+  0x180D1F03D  movaps  xmm7, xmm6                                
+  0x180D1F040  shufps  xmm7, xmm7, 0x55                          
+  0x180D1F044  shufps  xmm0, xmm1, 0x55                          
+  0x180D1F048  subss   xmm7, xmm0                                
+  0x180D1F04C  shufps  xmm1, xmm1, 0xff                          
+  0x180D1F050  movsd   qword ptr [rbp], xmm6                     
+  0x180D1F055  divss   xmm7, xmm1                                
+  0x180D1F059  jne     0x180d1f072                               
+  0x180D1F05B  lea     rcx, [rip + 0x21275ae]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F062  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F067  lock or dword ptr [rsp], esi                      
+  0x180D1F06B  mov     byte ptr [rip + 0x23bd0f2], 1                ; data_30DC164
+
+180D1F072:
+  0x180D1F072  test    rbx, rbx                                  
+  0x180D1F075  je      0x180d1f0b9                               
+  0x180D1F077  mov     rdx, qword ptr [rip + 0x2127592]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F07E  xor     ecx, ecx                                  
+  0x180D1F080  mov     r8, rbx                                   
+  0x180D1F083  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1F088  test    al, al                                    
+  0x180D1F08A  je      0x180d1f0b9                               
+  0x180D1F08C  mov     rcx, qword ptr [rdi + 0xb8]                  ; rdi->AnimateActorExtended.Multiplier
+  0x180D1F093  test    rcx, rcx                                  
+  0x180D1F096  je      0x180d1f3b9                               
+  0x180D1F09C  mov     r8, qword ptr [rip + 0x2132d3d]              ; METHODINFO Method$Naninovel.Nullable<float>.get_Value()
+  0x180D1F0A3  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1F0AA  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D1F0AF  movss   xmm6, dword ptr [rbp + 0xb8]                 ; rbp->AnimateActorExtended.Multiplier
+  0x180D1F0B7  jmp     0x180d1f0c1                               
+
+180D1F0B9:
+  0x180D1F0B9  movss   xmm6, dword ptr [rip + 0x1dc375f]            ; data_2AE2820
+
+180D1F0C1:
+  0x180D1F0C1  mov     rdx, qword ptr [rdi + 0x58]               
+  0x180D1F0C5  movaps  xmm3, xmm8                                
+  0x180D1F0C9  movaps  xmm2, xmm6                                
+  0x180D1F0CC  mov     qword ptr [rsp + 0x20], rsi               
+  0x180D1F0D1  mov     rcx, rdi                                  
+  0x180D1F0D4  call    0x180d1f3c0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended$$ModifyKeysAsRelative
+  0x180D1F0D9  mov     rdx, qword ptr [rdi + 0x60]               
+  0x180D1F0DD  movaps  xmm3, xmm7                                
+  0x180D1F0E0  movaps  xmm2, xmm6                                
+  0x180D1F0E3  mov     qword ptr [rsp + 0x20], rsi               
+  0x180D1F0E8  mov     rcx, rdi                                  
+  0x180D1F0EB  mov     r15, rax                                  
+  0x180D1F0EE  call    0x180d1f3c0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended$$ModifyKeysAsRelative
+  0x180D1F0F3  mov     rbx, rax                                  
+
+180D1F0F6:
+  0x180D1F0F6  mov     r8, r15                                   
+  0x180D1F0F9  mov     edx, 1                                    
+  0x180D1F0FE  mov     rcx, r14                                  
+  0x180D1F101  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D1F106  mov     r8, rbx                                   
+  0x180D1F109  mov     edx, 2                                    
+  0x180D1F10E  mov     rcx, r14                                  
+  0x180D1F111  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D1F116  cmp     byte ptr [rip + 0x23bd047], sil              ; data_30DC164
+  0x180D1F11D  mov     rbx, qword ptr [rdi + 0xa0]                  ; rdi->AnimateActorExtended.EasingTypeNameForPosX
+  0x180D1F124  jne     0x180d1f13d                               
+  0x180D1F126  lea     rcx, [rip + 0x21274e3]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F12D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F132  lock or dword ptr [rsp], esi                      
+  0x180D1F136  mov     byte ptr [rip + 0x23bd027], 1                ; data_30DC164
+
+180D1F13D:
+  0x180D1F13D  test    rbx, rbx                                  
+  0x180D1F140  je      0x180d1f160                               
+  0x180D1F142  mov     rdx, qword ptr [rip + 0x21274c7]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F149  xor     ecx, ecx                                  
+  0x180D1F14B  mov     r8, rbx                                   
+  0x180D1F14E  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1F153  test    al, al                                    
+  0x180D1F155  je      0x180d1f160                               
+  0x180D1F157  mov     rbx, qword ptr [rdi + 0xa0]                  ; rdi->AnimateActorExtended.EasingTypeNameForPosX
+  0x180D1F15E  jmp     0x180d1f163                               
+
+180D1F160:
+  0x180D1F160  mov     rbx, rsi                                  
+
+180D1F163:
+  0x180D1F163  cmp     byte ptr [rip + 0x23bd0a2], sil              ; data_30DC20C
+  0x180D1F16A  jne     0x180d1f193                               
+  0x180D1F16C  lea     rcx, [rip + 0x211ac35]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D1F173  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F178  lock or dword ptr [rsp], esi                      
+  0x180D1F17C  lea     rcx, [rip + 0x2118e85]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1F183  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F188  lock or dword ptr [rsp], esi                      
+  0x180D1F18C  mov     byte ptr [rip + 0x23bd079], 1                ; data_30DC20C
+
+180D1F193:
+  0x180D1F193  test    rbx, rbx                                  
+  0x180D1F196  je      0x180d1f1d1                               
+  0x180D1F198  mov     rdx, qword ptr [rbx]                      
+  0x180D1F19B  mov     rcx, rbx                                  
+  0x180D1F19E  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D1F1A5  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D1F1AC  call    rax                                       
+  0x180D1F1AE  test    al, al                                    
+  0x180D1F1B0  je      0x180d1f1d1                               
+  0x180D1F1B2  mov     r8, qword ptr [rip + 0x2118e4f]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1F1B9  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1F1C0  mov     rcx, rbx                                  
+  0x180D1F1C3  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D1F1C8  mov     r8, qword ptr [rbp + 0xb8]                   ; rbp->AnimateActorExtended.Multiplier
+  0x180D1F1CF  jmp     0x180d1f1d4                               
+
+180D1F1D1:
+  0x180D1F1D1  mov     r8, rsi                                   
+
+180D1F1D4:
+  0x180D1F1D4  mov     edx, 3                                    
+  0x180D1F1D9  mov     rcx, r14                                  
+  0x180D1F1DC  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D1F1E1  cmp     byte ptr [rip + 0x23bcf7c], sil              ; data_30DC164
+  0x180D1F1E8  mov     rbx, qword ptr [rdi + 0xa8]                  ; rdi->AnimateActorExtended.EasingTypeNameForPosY
+  0x180D1F1EF  jne     0x180d1f208                               
+  0x180D1F1F1  lea     rcx, [rip + 0x2127418]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F1F8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F1FD  lock or dword ptr [rsp], esi                      
+  0x180D1F201  mov     byte ptr [rip + 0x23bcf5c], 1                ; data_30DC164
+
+180D1F208:
+  0x180D1F208  test    rbx, rbx                                  
+  0x180D1F20B  je      0x180d1f22b                               
+  0x180D1F20D  mov     rdx, qword ptr [rip + 0x21273fc]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D1F214  xor     ecx, ecx                                  
+  0x180D1F216  mov     r8, rbx                                   
+  0x180D1F219  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D1F21E  test    al, al                                    
+  0x180D1F220  je      0x180d1f22b                               
+  0x180D1F222  mov     rbx, qword ptr [rdi + 0xa8]                  ; rdi->AnimateActorExtended.EasingTypeNameForPosY
+  0x180D1F229  jmp     0x180d1f22e                               
+
+180D1F22B:
+  0x180D1F22B  mov     rbx, rsi                                  
+
+180D1F22E:
+  0x180D1F22E  cmp     byte ptr [rip + 0x23bcfd7], sil              ; data_30DC20C
+  0x180D1F235  jne     0x180d1f25e                               
+  0x180D1F237  lea     rcx, [rip + 0x211ab6a]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D1F23E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F243  lock or dword ptr [rsp], esi                      
+  0x180D1F247  lea     rcx, [rip + 0x2118dba]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1F24E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F253  lock or dword ptr [rsp], esi                      
+  0x180D1F257  mov     byte ptr [rip + 0x23bcfae], 1                ; data_30DC20C
+
+180D1F25E:
+  0x180D1F25E  test    rbx, rbx                                  
+  0x180D1F261  je      0x180d1f29a                               
+  0x180D1F263  mov     rdx, qword ptr [rbx]                      
+  0x180D1F266  mov     rcx, rbx                                  
+  0x180D1F269  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D1F270  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D1F277  call    rax                                       
+  0x180D1F279  test    al, al                                    
+  0x180D1F27B  je      0x180d1f29a                               
+  0x180D1F27D  mov     r8, qword ptr [rip + 0x2118d84]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D1F284  lea     rdx, [rbp + 0xb8]                            ; rbp->AnimateActorExtended.Multiplier
+  0x180D1F28B  mov     rcx, rbx                                  
+  0x180D1F28E  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D1F293  mov     rsi, qword ptr [rbp + 0xb8]                  ; rbp->AnimateActorExtended.Multiplier
+
+180D1F29A:
+  0x180D1F29A  mov     r8, rsi                                   
+  0x180D1F29D  mov     edx, 4                                    
+  0x180D1F2A2  mov     rcx, r14                                  
+  0x180D1F2A5  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D1F2AA  mov     r8, qword ptr [rip + 0x210fc9f]              ; METHODINFO Method$System.Linq.Enumerable.Concat<string>()
+  0x180D1F2B1  mov     rdx, r14                                  
+  0x180D1F2B4  mov     rcx, r13                                  
+  0x180D1F2B7  call    0x1806848d0                                  ; -> System.Linq.Enumerable$$Concat<__Il2CppFullySharedGenericType>
+  0x180D1F2BC  mov     rdi, qword ptr [rip + 0x213a8e5]             ; METHODINFO Method$System.Linq.Enumerable.ToList<string>()
+  0x180D1F2C3  mov     rsi, rax                                  
+  0x180D1F2C6  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180D1F2CB  jne     0x180d1f2d5                               
+  0x180D1F2CD  mov     rcx, rdi                                  
+  0x180D1F2D0  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D1F2D5:
+  0x180D1F2D5  test    rsi, rsi                                  
+  0x180D1F2D8  je      0x180d1f397                               
+  0x180D1F2DE  mov     rcx, qword ptr [rdi + 0x38]               
+  0x180D1F2E2  mov     rax, qword ptr [rcx + 8]                  
+  0x180D1F2E6  test    byte ptr [rax + 0x135], 1                 
+  0x180D1F2ED  jne     0x180d1f2f7                               
+  0x180D1F2EF  mov     rcx, rax                                  
+  0x180D1F2F2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1F2F7:
+  0x180D1F2F7  mov     rcx, rax                                  
+  0x180D1F2FA  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D1F2FF  mov     r8, qword ptr [rdi + 0x38]                
+  0x180D1F303  mov     rdx, rsi                                  
+  0x180D1F306  mov     rcx, rax                                  
+  0x180D1F309  mov     rbx, rax                                  
+  0x180D1F30C  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__7_0 | <>c__DisplayClass7_0.multiplier
+  0x180D1F310  call    0x180857de0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D1F315  mov     rax, rbx                                  
+  0x180D1F318  jmp     0x180d1f373                               
+
+180D1F31A:
+  0x180D1F31A  mov     r8, qword ptr [rip + 0x210fc17]              ; STR '` actor.'
+  0x180D1F321  xor     r9d, r9d                                  
+  0x180D1F324  mov     rcx, qword ptr [rip + 0x210fc35]             ; STR "Can't find a manager with `"
+  0x180D1F32B  mov     rdx, r14                                  
+  0x180D1F32E  call    0x180e267a0                                  ; -> System.String$$Concat
+  0x180D1F333  mov     rcx, qword ptr [rip + 0x2132bf6]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D1F33A  mov     rbx, rax                                  
+  0x180D1F33D  xor     eax, eax                                  
+  0x180D1F33F  xorps   xmm6, xmm6                                
+  0x180D1F342  mov     qword ptr [rbp + 0x30], rax               
+  0x180D1F346  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D1F34C  jne     0x180d1f353                               
+  0x180D1F34E  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1F353:
+  0x180D1F353  movsd   xmm0, qword ptr [rbp + 0x30]              
+  0x180D1F358  lea     rdx, [rbp]                                
+  0x180D1F35C  xor     r8d, r8d                                  
+  0x180D1F35F  movsd   qword ptr [rbp + 0x10], xmm0                 ; rbp-><>c.<>9__7_0
+  0x180D1F364  mov     rcx, rbx                                  
+  0x180D1F367  movaps  xmmword ptr [rbp], xmm6                   
+  0x180D1F36B  call    0x1805672c0                                  ; -> Naninovel.Engine$$Warn
+  0x180D1F370  mov     rax, r13                                  
+
+180D1F373:
+  0x180D1F373  mov     rbx, qword ptr [rbp + 0xb0]                  ; rbp->AnimateActorExtended.Relative
+  0x180D1F37A  movaps  xmm6, xmmword ptr [rbp + 0x60]            
+  0x180D1F37E  movaps  xmm7, xmmword ptr [rbp + 0x50]            
+  0x180D1F382  movaps  xmm8, xmmword ptr [rbp + 0x40]            
+  0x180D1F387  lea     rsp, [rbp + 0x70]                         
+  0x180D1F38B  pop     r15                                       
+  0x180D1F38D  pop     r14                                       
+  0x180D1F38F  pop     r13                                       
+  0x180D1F391  pop     r12                                       
+  0x180D1F393  pop     rdi                                       
+  0x180D1F394  pop     rsi                                       
+  0x180D1F395  pop     rbp                                       
+  0x180D1F396  ret                                               
+
+180D1F397:
+  0x180D1F397  lea     rcx, [rip + 0x20f799a]                       ; STR 'source'
+  0x180D1F39E  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D1F3A3  mov     rcx, rax                                  
+  0x180D1F3A6  xor     edx, edx                                  
+  0x180D1F3A8  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D1F3AD  mov     rdx, rdi                                  
+  0x180D1F3B0  mov     rcx, rax                                  
+  0x180D1F3B3  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D1F3B8  int3                                              
+
+180D1F3B9:
+  0x180D1F3B9  call    0x180246730                                  ; THROW NullReferenceException

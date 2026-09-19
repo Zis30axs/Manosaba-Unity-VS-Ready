@@ -1,0 +1,68 @@
+====================================================================================================
+FUNCTION RVA 0xD1F760  VA 0x180D1F760  size 0xA0 (160 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended___ctor (GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended :: public void .ctor()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended:
+      +0xA0   EasingTypeNameForPosX          StringParameter
+      +0xA8   EasingTypeNameForPosY          StringParameter
+      +0xB0   Relative                       BooleanParameter
+      +0xB8   Multiplier                     DecimalParameter
+      +0xC0   MatchScreenWidth               BooleanParameter
+  fields of AnimateActorExtended.AdditionalParam:
+      +0x0    value__                        int
+  fields of AnimateActorExtended.<>c:
+      +0x0    <>9                            static readonly AnimateActorExtended.<>c
+      +0x8    <>9__6_0                       static Func<IActorManager, string, bool>
+      +0x10   <>9__7_0                       static Func<string, bool>
+  fields of AnimateActorExtended.<>c__DisplayClass7_0:
+      +0x10   multiplier                     float
+      +0x14   actorScreenPosition            float
+====================================================================================================
+  0x180D1F760  push    rbx                                       
+  0x180D1F762  sub     rsp, 0x20                                 
+  0x180D1F766  cmp     byte ptr [rip + 0x23bdbaa], 0                ; data_30DD317
+  0x180D1F76D  mov     rbx, rcx                                  
+  0x180D1F770  jne     0x180d1f78a                               
+  0x180D1F772  lea     rcx, [rip + 0x213275f]                       ; TYPE Naninovel.Commands.AnimateActor_TypeInfo
+  0x180D1F779  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F77E  lock or dword ptr [rsp], 0                        
+  0x180D1F783  mov     byte ptr [rip + 0x23bdb8d], 1                ; data_30DD317
+
+180D1F78A:
+  0x180D1F78A  mov     rcx, qword ptr [rip + 0x2132747]             ; TYPE Naninovel.Commands.AnimateActor_TypeInfo
+  0x180D1F791  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D1F798  jne     0x180d1f79f                               
+  0x180D1F79A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1F79F:
+  0x180D1F79F  xor     edx, edx                                  
+  0x180D1F7A1  xor     ecx, ecx                                  
+  0x180D1F7A3  call    0x1805a5810                                  ; -> Naninovel.BooleanParameter$$op_Implicit
+  0x180D1F7A8  cmp     dword ptr [rip + 0x23b9a15], 0               ; data_30D91C4
+  0x180D1F7AF  mov     qword ptr [rbx + 0x38], rax               
+  0x180D1F7B3  je      0x180d1f7f1                               
+  0x180D1F7B5  lea     r8, [rbx + 0x38]                          
+  0x180D1F7B9  shr     r8, 0xc                                   
+  0x180D1F7BD  lea     rcx, [rip + 0x2414dbc]                       ; data_3134580
+  0x180D1F7C4  and     r8d, 0x1fffff                             
+  0x180D1F7CB  mov     eax, r8d                                  
+  0x180D1F7CE  shr     rax, 6                                    
+  0x180D1F7D2  and     r8d, 0x3f                                 
+  0x180D1F7D6  lea     rdx, [rcx + rax*8]                        
+  0x180D1F7DA  prefetchw byte ptr [rdx]                            
+  0x180D1F7DD  nop     dword ptr [rax]                           
+
+180D1F7E0:
+  0x180D1F7E0  mov     rax, qword ptr [rdx]                      
+  0x180D1F7E3  mov     rcx, rax                                  
+  0x180D1F7E6  bts     rcx, r8                                   
+  0x180D1F7EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D1F7EF  jne     0x180d1f7e0                               
+
+180D1F7F1:
+  0x180D1F7F1  xor     edx, edx                                  
+  0x180D1F7F3  mov     rcx, rbx                                  
+  0x180D1F7F6  add     rsp, 0x20                                 
+  0x180D1F7FA  pop     rbx                                       
+  0x180D1F7FB  jmp     0x18059ee30                                  ; -> Naninovel.Command$$.ctor

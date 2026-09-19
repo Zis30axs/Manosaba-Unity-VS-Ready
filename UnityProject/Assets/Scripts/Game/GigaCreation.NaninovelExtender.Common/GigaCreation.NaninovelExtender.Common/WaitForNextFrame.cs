@@ -47,12 +47,23 @@ namespace GigaCreation.NaninovelExtender.Common
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCFA0D0 (kickoff, 282 B) / 0xCFA1F0 (<Execute>d__0.MoveNext, 679 B)
+    	// State 0 does one thing: 0x180CFA270 calls Naninovel.AsyncUtils.DelayFrame(ecx = 1, rdx = &copy of the
+    	// captured `token` [rdi+0x18]) and awaits the returned UniTask through the <>u__1 awaiter; nothing else of the
+    	// command is read.  So the body is `await AsyncUtils.DelayFrame(1, token)`.
+    	// Annotated disassembly: work/title-path/disas/wnf_01_Execute.txt, wnf_02_MoveNext.txt
     	[Token(Token = "0x600001D")]
     	[Address(RVA = "0xCFA0D0", Offset = "0xCF8AD0", VA = "0x180CFA0D0", Slot = "5")]
     	[AsyncStateMachine(typeof(_003CExecute_003Ed__0))]
     	public override UniTask Execute([Optional] AsyncToken token)
     	{
-    		return default(UniTask);
+    		// The recovered body lives in ExecuteCore (the project's async reconstruction convention, see SpawnExtended).
+    		return ExecuteCore(token);
+    	}
+
+    	private async UniTask ExecuteCore(AsyncToken token)
+    	{
+    		await AsyncUtils.DelayFrame(1, token);
     	}
 
     	[Token(Token = "0x600001E")]

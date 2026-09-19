@@ -1,0 +1,99 @@
+====================================================================================================
+FUNCTION RVA 0xD1F900  VA 0x180D1F900  size 0x124 (292 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended.<>c__DisplayClass7_0$$<ModifyKeysAsRelative>b__1
+  csig   : float GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended___c__DisplayClass7_0___ModifyKeysAsRelative_b__1 (GigaCreation_NaninovelExtender_ExtendedActors_AnimateActorExtended___c__DisplayClass7_0_o* __this, System_String_o* key, const MethodInfo* method);
+  dump.cs: AnimateActorExtended.<>c__DisplayClass7_0 :: internal float <ModifyKeysAsRelative>b__1(string key)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateActorExtended:
+      +0xA0   EasingTypeNameForPosX          StringParameter
+      +0xA8   EasingTypeNameForPosY          StringParameter
+      +0xB0   Relative                       BooleanParameter
+      +0xB8   Multiplier                     DecimalParameter
+      +0xC0   MatchScreenWidth               BooleanParameter
+  fields of AnimateActorExtended.AdditionalParam:
+      +0x0    value__                        int
+  fields of AnimateActorExtended.<>c:
+      +0x0    <>9                            static readonly AnimateActorExtended.<>c
+      +0x8    <>9__6_0                       static Func<IActorManager, string, bool>
+      +0x10   <>9__7_0                       static Func<string, bool>
+  fields of AnimateActorExtended.<>c__DisplayClass7_0:
+      +0x10   multiplier                     float
+      +0x14   actorScreenPosition            float
+====================================================================================================
+  0x180D1F900  push    rbp                                       
+  0x180D1F902  push    rdi                                       
+  0x180D1F903  push    r14                                       
+  0x180D1F905  sub     rsp, 0x20                                 
+  0x180D1F909  lea     rbp, [rsp + 0x20]                         
+  0x180D1F90E  cmp     byte ptr [rip + 0x23bda05], 0                ; data_30DD31A
+  0x180D1F915  mov     r14, rcx                                  
+  0x180D1F918  mov     qword ptr [rbp + 0x28], rbx               
+  0x180D1F91C  mov     rbx, rdx                                  
+  0x180D1F91F  mov     qword ptr [rbp + 0x30], rsi               
+  0x180D1F923  jne     0x180d1f93d                               
+  0x180D1F925  lea     rcx, [rip + 0x2131e6c]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1F92C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1F931  lock or dword ptr [rsp], 0                        
+  0x180D1F936  mov     byte ptr [rip + 0x23bd9dd], 1                ; data_30DD31A
+
+180D1F93D:
+  0x180D1F93D  xor     edx, edx                                  
+  0x180D1F93F  mov     rcx, rbx                                  
+  0x180D1F942  call    0x18054cbe0                                  ; -> Naninovel.ParseUtils$$AsInvariantFloat
+  0x180D1F947  mov     rdi, qword ptr [rip + 0x2131e4a]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1F94E  mov     qword ptr [rbp + 0x20], rax               
+  0x180D1F952  mov     rax, qword ptr [rdi + 0x20]               
+  0x180D1F956  test    byte ptr [rax + 0x135], 1                 
+  0x180D1F95D  jne     0x180d1f967                               
+  0x180D1F95F  mov     rcx, rax                                  
+  0x180D1F962  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1F967:
+  0x180D1F967  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateActorExtended.MatchScreenWidth
+  0x180D1F96E  mov     rcx, qword ptr [rax]                      
+  0x180D1F971  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D1F977  lea     rax, [rbx + 0xf]                          
+  0x180D1F97B  cmp     rax, rbx                                  
+  0x180D1F97E  ja      0x180d1f98a                               
+  0x180D1F980  movabs  rax, 0xffffffffffffff0                    
+
+180D1F98A:
+  0x180D1F98A  and     rax, 0xfffffffffffffff0                   
+  0x180D1F98E  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1F993  sub     rsp, rax                                  
+  0x180D1F996  mov     rax, qword ptr [rdi + 0x20]               
+  0x180D1F99A  test    byte ptr [rax + 0x135], 1                 
+  0x180D1F9A1  lea     rsi, [rsp + 0x20]                         
+  0x180D1F9A6  jne     0x180d1f9b0                               
+  0x180D1F9A8  mov     rcx, rax                                  
+  0x180D1F9AB  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1F9B0:
+  0x180D1F9B0  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateActorExtended.MatchScreenWidth
+  0x180D1F9B7  mov     r8, rbx                                   
+  0x180D1F9BA  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1F9BE  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1F9C5  lea     rcx, [rbp + 0x20]                         
+  0x180D1F9C9  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D1F9CD  add     rcx, rax                                  
+  0x180D1F9D0  mov     rax, qword ptr [r9 + 0x30]                
+  0x180D1F9D4  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D1F9D8  lea     rdx, [rcx - 0x10]                         
+  0x180D1F9DC  cmovge  rdx, rcx                                  
+  0x180D1F9E0  mov     rcx, rsi                                  
+  0x180D1F9E3  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1F9E8  mov     r8, rbx                                   
+  0x180D1F9EB  lea     rcx, [rbp + 0x20]                         
+  0x180D1F9EF  mov     rdx, rsi                                  
+  0x180D1F9F2  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1F9F7  movss   xmm0, dword ptr [rbp + 0x20]              
+  0x180D1F9FC  movss   xmm1, dword ptr [r14 + 0x14]                 ; r14-><>c__DisplayClass7_0.actorScreenPosition
+  0x180D1FA02  mulss   xmm0, dword ptr [r14 + 0x10]                 ; r14-><>c.<>9__7_0 | <>c__DisplayClass7_0.multiplier
+  0x180D1FA08  mov     rbx, qword ptr [rbp + 0x28]               
+  0x180D1FA0C  mulss   xmm1, dword ptr [rip + 0x1dc31b0]            ; data_2AE2BC4
+  0x180D1FA14  mov     rsi, qword ptr [rbp + 0x30]               
+  0x180D1FA18  addss   xmm0, xmm1                                
+  0x180D1FA1C  mov     rsp, rbp                                  
+  0x180D1FA1F  pop     r14                                       
+  0x180D1FA21  pop     rdi                                       
+  0x180D1FA22  pop     rbp                                       
+  0x180D1FA23  ret                                               

@@ -1,0 +1,225 @@
+====================================================================================================
+FUNCTION RVA 0xD1E620  VA 0x180D1E620  size 0x317 (791 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended$$ChangePivot
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_SpriteBackgroundExtended__ChangePivot (GigaCreation_NaninovelExtender_ExtendedActors_SpriteBackgroundExtended_o* __this, System_Nullable_float__o x, System_Nullable_float__o y, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended :: public void ChangePivot(Nullable<float> x, Nullable<float> y)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended:
+      +0xB8   <SubId>k__BackingField         readonly string
+====================================================================================================
+  0x180D1E620  push    rbp                                       
+  0x180D1E622  push    r12                                       
+  0x180D1E624  push    r13                                       
+  0x180D1E626  push    r14                                       
+  0x180D1E628  push    r15                                       
+  0x180D1E62A  sub     rsp, 0x40                                 
+  0x180D1E62E  lea     rbp, [rsp + 0x20]                         
+  0x180D1E633  cmp     byte ptr [rip + 0x23becd8], 0                ; data_30DD312
+  0x180D1E63A  mov     qword ptr [rbp + 0x58], rbx               
+  0x180D1E63E  mov     rbx, rdx                                  
+  0x180D1E641  mov     qword ptr [rbp + 0x60], rsi               
+  0x180D1E645  mov     rsi, rcx                                  
+  0x180D1E648  mov     qword ptr [rbp + 0x68], rdi               
+  0x180D1E64C  mov     rdi, r8                                   
+  0x180D1E64F  movaps  xmmword ptr [rbp + 0x10], xmm6            
+  0x180D1E653  jne     0x180d1e67e                               
+  0x180D1E655  lea     rcx, [rip + 0x213313c]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1E65C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E661  lock or dword ptr [rsp], 0                        
+  0x180D1E666  lea     rcx, [rip + 0x213315b]                       ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1E66D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E672  lock or dword ptr [rsp], 0                        
+  0x180D1E677  mov     byte ptr [rip + 0x23bec94], 1                ; data_30DD312
+
+180D1E67E:
+  0x180D1E67E  mov     rdx, qword ptr [rsi]                      
+  0x180D1E681  mov     rcx, rsi                                  
+  0x180D1E684  mov     rax, qword ptr [rdx + 0x538]              
+  0x180D1E68B  mov     rdx, qword ptr [rdx + 0x540]              
+  0x180D1E692  call    rax                                       
+  0x180D1E694  mov     rcx, qword ptr [rip + 0x213312d]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1E69B  mov     r15, rax                                  
+  0x180D1E69E  mov     qword ptr [rbp + 0x50], rbx               
+  0x180D1E6A2  mov     rax, qword ptr [rcx + 0x20]               
+  0x180D1E6A6  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E6AD  jne     0x180d1e6b7                               
+  0x180D1E6AF  mov     rcx, rax                                  
+  0x180D1E6B2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E6B7:
+  0x180D1E6B7  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E6BE  lea     r8, [rbp + 0x50]                          
+  0x180D1E6C2  movabs  r13, 0xffffffffffffff0                    
+  0x180D1E6CC  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1E6D0  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1E6D7  movsxd  rax, dword ptr [rdx + 0x18]               
+  0x180D1E6DB  add     r8, rax                                   
+  0x180D1E6DE  mov     rax, qword ptr [rdx + 0x10]               
+  0x180D1E6E2  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D1E6E6  lea     rcx, [r8 - 0x10]                          
+  0x180D1E6EA  cmovge  rcx, r8                                   
+  0x180D1E6EE  cmp     byte ptr [rcx], 0                         
+  0x180D1E6F1  je      0x180d1e7a4                               
+  0x180D1E6F7  mov     rbx, qword ptr [rip + 0x213309a]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1E6FE  mov     rax, qword ptr [rbx + 0x20]               
+  0x180D1E702  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E709  jne     0x180d1e713                               
+  0x180D1E70B  mov     rcx, rax                                  
+  0x180D1E70E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E713:
+  0x180D1E713  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E71A  mov     rcx, qword ptr [rax]                      
+  0x180D1E71D  mov     r14d, dword ptr [rcx + 0xfc]              
+  0x180D1E724  lea     rax, [r14 + 0xf]                          
+  0x180D1E728  cmp     rax, r14                                  
+  0x180D1E72B  ja      0x180d1e730                               
+  0x180D1E72D  mov     rax, r13                                  
+
+180D1E730:
+  0x180D1E730  and     rax, 0xfffffffffffffff0                   
+  0x180D1E734  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1E739  sub     rsp, rax                                  
+  0x180D1E73C  mov     rax, qword ptr [rbx + 0x20]               
+  0x180D1E740  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E747  lea     r12, [rsp + 0x20]                         
+  0x180D1E74C  jne     0x180d1e756                               
+  0x180D1E74E  mov     rcx, rax                                  
+  0x180D1E751  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E756:
+  0x180D1E756  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E75D  mov     r8, r14                                   
+  0x180D1E760  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1E764  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1E76B  lea     rcx, [rbp + 0x50]                         
+  0x180D1E76F  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D1E773  add     rcx, rax                                  
+  0x180D1E776  mov     rax, qword ptr [r9 + 0x30]                
+  0x180D1E77A  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D1E77E  lea     rdx, [rcx - 0x10]                         
+  0x180D1E782  cmovge  rdx, rcx                                  
+  0x180D1E786  mov     rcx, r12                                  
+  0x180D1E789  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1E78E  mov     r8, r14                                   
+  0x180D1E791  lea     rcx, [rbp + 0x50]                         
+  0x180D1E795  mov     rdx, r12                                  
+  0x180D1E798  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1E79D  movss   xmm6, dword ptr [rbp + 0x50]              
+  0x180D1E7A2  jmp     0x180d1e7cd                               
+
+180D1E7A4:
+  0x180D1E7A4  mov     r8, qword ptr [rsi]                       
+  0x180D1E7A7  lea     rcx, [rbp]                                
+  0x180D1E7AB  mov     rdx, rsi                                  
+  0x180D1E7AE  mov     rax, qword ptr [r8 + 0x328]               
+  0x180D1E7B5  mov     r8, qword ptr [r8 + 0x330]                
+  0x180D1E7BC  call    rax                                       
+  0x180D1E7BE  movsd   xmm6, qword ptr [rax]                     
+  0x180D1E7C2  mov     eax, dword ptr [rax + 8]                  
+  0x180D1E7C5  mov     dword ptr [rbp + 8], eax                  
+  0x180D1E7C8  movsd   qword ptr [rbp], xmm6                     
+
+180D1E7CD:
+  0x180D1E7CD  mov     rax, qword ptr [rip + 0x2132ff4]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1E7D4  mov     qword ptr [rbp + 0x50], rdi               
+  0x180D1E7D8  mov     rax, qword ptr [rax + 0x20]               
+  0x180D1E7DC  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E7E3  jne     0x180d1e7ed                               
+  0x180D1E7E5  mov     rcx, rax                                  
+  0x180D1E7E8  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E7ED:
+  0x180D1E7ED  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E7F4  lea     r8, [rbp + 0x50]                          
+  0x180D1E7F8  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1E7FC  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1E803  movsxd  rax, dword ptr [rdx + 0x18]               
+  0x180D1E807  add     r8, rax                                   
+  0x180D1E80A  mov     rax, qword ptr [rdx + 0x10]               
+  0x180D1E80E  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D1E812  lea     rcx, [r8 - 0x10]                          
+  0x180D1E816  cmovge  rcx, r8                                   
+  0x180D1E81A  cmp     byte ptr [rcx], 0                         
+  0x180D1E81D  je      0x180d1e8cf                               
+  0x180D1E823  mov     rdi, qword ptr [rip + 0x2132f6e]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1E82A  mov     rax, qword ptr [rdi + 0x20]               
+  0x180D1E82E  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E835  jne     0x180d1e83f                               
+  0x180D1E837  mov     rcx, rax                                  
+  0x180D1E83A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E83F:
+  0x180D1E83F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E846  mov     rcx, qword ptr [rax]                      
+  0x180D1E849  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D1E84F  lea     rax, [rbx + 0xf]                          
+  0x180D1E853  cmp     rax, rbx                                  
+  0x180D1E856  ja      0x180d1e85b                               
+  0x180D1E858  mov     rax, r13                                  
+
+180D1E85B:
+  0x180D1E85B  and     rax, 0xfffffffffffffff0                   
+  0x180D1E85F  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1E864  sub     rsp, rax                                  
+  0x180D1E867  mov     rax, qword ptr [rdi + 0x20]               
+  0x180D1E86B  test    byte ptr [rax + 0x135], 1                 
+  0x180D1E872  lea     rsi, [rsp + 0x20]                         
+  0x180D1E877  jne     0x180d1e881                               
+  0x180D1E879  mov     rcx, rax                                  
+  0x180D1E87C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1E881:
+  0x180D1E881  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1E888  mov     r8, rbx                                   
+  0x180D1E88B  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1E88F  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1E896  lea     rcx, [rbp + 0x50]                         
+  0x180D1E89A  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D1E89E  add     rcx, rax                                  
+  0x180D1E8A1  mov     rax, qword ptr [r9 + 0x30]                
+  0x180D1E8A5  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D1E8A9  lea     rdx, [rcx - 0x10]                         
+  0x180D1E8AD  cmovge  rdx, rcx                                  
+  0x180D1E8B1  mov     rcx, rsi                                  
+  0x180D1E8B4  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1E8B9  mov     r8, rbx                                   
+  0x180D1E8BC  lea     rcx, [rbp + 0x50]                         
+  0x180D1E8C0  mov     rdx, rsi                                  
+  0x180D1E8C3  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1E8C8  movss   xmm1, dword ptr [rbp + 0x50]              
+  0x180D1E8CD  jmp     0x180d1e8f1                               
+
+180D1E8CF:
+  0x180D1E8CF  mov     r8, qword ptr [rsi]                       
+  0x180D1E8D2  lea     rcx, [rbp]                                
+  0x180D1E8D6  mov     rdx, rsi                                  
+  0x180D1E8D9  mov     rax, qword ptr [r8 + 0x328]               
+  0x180D1E8E0  mov     r8, qword ptr [r8 + 0x330]                
+  0x180D1E8E7  call    rax                                       
+  0x180D1E8E9  movsd   xmm1, qword ptr [rax]                     
+  0x180D1E8ED  shufps  xmm1, xmm1, 0x55                          
+
+180D1E8F1:
+  0x180D1E8F1  test    r15, r15                                  
+  0x180D1E8F4  je      0x180d1e932                               
+  0x180D1E8F6  mov     r8, qword ptr [r15]                       
+  0x180D1E8F9  mov     rcx, r15                                  
+  0x180D1E8FC  unpcklps xmm6, xmm1                                
+  0x180D1E8FF  movq    rdx, xmm6                                 
+  0x180D1E904  mov     rax, qword ptr [r8 + 0x2b8]               
+  0x180D1E90B  mov     r8, qword ptr [r8 + 0x2c0]                
+  0x180D1E912  call    rax                                       
+  0x180D1E914  mov     rbx, qword ptr [rbp + 0x58]               
+  0x180D1E918  mov     rsi, qword ptr [rbp + 0x60]               
+  0x180D1E91C  mov     rdi, qword ptr [rbp + 0x68]               
+  0x180D1E920  movaps  xmm6, xmmword ptr [rbp + 0x10]            
+  0x180D1E924  lea     rsp, [rbp + 0x20]                         
+  0x180D1E928  pop     r15                                       
+  0x180D1E92A  pop     r14                                       
+  0x180D1E92C  pop     r13                                       
+  0x180D1E92E  pop     r12                                       
+  0x180D1E930  pop     rbp                                       
+  0x180D1E931  ret                                               
+
+180D1E932:
+  0x180D1E932  call    0x180246730                                  ; THROW NullReferenceException

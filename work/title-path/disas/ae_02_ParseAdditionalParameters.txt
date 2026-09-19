@@ -1,0 +1,491 @@
+====================================================================================================
+FUNCTION RVA 0xD27760  VA 0x180D27760  size 0x780 (1920 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseAdditionalParameters
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__ParseAdditionalParameters (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended_o* __this, System_Collections_Generic_IEnumerable_string__o* parameters, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended :: private void ParseAdditionalParameters(IEnumerable<string> parameters)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D27760  mov     qword ptr [rsp + 8], rbx                  
+  0x180D27765  push    rbp                                       
+  0x180D27766  push    rsi                                       
+  0x180D27767  push    rdi                                       
+  0x180D27768  push    r12                                       
+  0x180D2776A  push    r13                                       
+  0x180D2776C  push    r14                                       
+  0x180D2776E  push    r15                                       
+  0x180D27770  mov     rbp, rsp                                  
+  0x180D27773  sub     rsp, 0x70                                 
+  0x180D27777  cmp     byte ptr [rip + 0x23b5bc7], 0                ; data_30DD345
+  0x180D2777E  mov     r14, rdx                                  
+  0x180D27781  mov     r15, rcx                                  
+  0x180D27784  jne     0x180d278c3                               
+  0x180D2778A  lea     rcx, [rip + 0x210739f]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<Nullable<float>>()
+  0x180D27791  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27796  lock or dword ptr [rsp], 0                        
+  0x180D2779B  lea     rcx, [rip + 0x2107376]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<string>()
+  0x180D277A2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277A7  lock or dword ptr [rsp], 0                        
+  0x180D277AC  lea     rcx, [rip + 0x2129afd]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D277B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277B8  lock or dword ptr [rsp], 0                        
+  0x180D277BD  lea     rcx, [rip + 0x210735c]                       ; METHODINFO Method$System.Linq.Enumerable.Select<string, ValueTuple<string, int>>()
+  0x180D277C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277C9  lock or dword ptr [rsp], 0                        
+  0x180D277CE  lea     rcx, [rip + 0x21072db]                       ; METHODINFO Method$System.Linq.Enumerable.ToDictionary<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam, string>()
+  0x180D277D5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277DA  lock or dword ptr [rsp], 0                        
+  0x180D277DF  lea     rcx, [rip + 0x21072da]                       ; TYPE System.Func<ValueTuple<string, int>, string>_TypeInfo
+  0x180D277E6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277EB  lock or dword ptr [rsp], 0                        
+  0x180D277F0  lea     rcx, [rip + 0x210e229]                       ; TYPE System.Func<string, Nullable<float>>_TypeInfo
+  0x180D277F7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D277FC  lock or dword ptr [rsp], 0                        
+  0x180D27801  lea     rcx, [rip + 0x2107288]                       ; TYPE System.Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>_TypeInfo
+  0x180D27808  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2780D  lock or dword ptr [rsp], 0                        
+  0x180D27812  lea     rcx, [rip + 0x2107287]                       ; TYPE System.Func<string, int, ValueTuple<string, int>>_TypeInfo
+  0x180D27819  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2781E  lock or dword ptr [rsp], 0                        
+  0x180D27823  lea     rcx, [rip + 0x21072be]                       ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D2782A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2782F  lock or dword ptr [rsp], 0                        
+  0x180D27834  lea     rcx, [rip + 0x212a725]                       ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x180D2783B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27840  lock or dword ptr [rsp], 0                        
+  0x180D27845  lea     rcx, [rip + 0x21072a4]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_0() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c$$<ParseAdditionalParameters>b__4_0
+  0x180D2784C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27851  lock or dword ptr [rsp], 0                        
+  0x180D27856  lea     rcx, [rip + 0x2107273]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_1() => Naninovel.RuntimeInitializer.<>c$$<Initialize>b__3_7 (+2 aliases)
+  0x180D2785D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27862  lock or dword ptr [rsp], 0                        
+  0x180D27867  lea     rcx, [rip + 0x2107272]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_2() => UnityEngine.UIElements.ConverterGroups.<>c$$<RegisterInt64Converters>b__20_8 (+22 aliases)
+  0x180D2786E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27873  lock or dword ptr [rsp], 0                        
+  0x180D27878  lea     rcx, [rip + 0x21071d9]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0.<ParseAdditionalParameters>b__3() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0$$<ParseAdditionalParameters>b__3
+  0x180D2787F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27884  lock or dword ptr [rsp], 0                        
+  0x180D27889  lea     rcx, [rip + 0x21071d8]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0.<ParseAdditionalParameters>b__4() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0$$<ParseAdditionalParameters>b__4
+  0x180D27890  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27895  lock or dword ptr [rsp], 0                        
+  0x180D2789A  lea     rcx, [rip + 0x2107197]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0_TypeInfo
+  0x180D278A1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D278A6  lock or dword ptr [rsp], 0                        
+  0x180D278AB  lea     rcx, [rip + 0x2107196]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D278B2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D278B7  lock or dword ptr [rsp], 0                        
+  0x180D278BC  mov     byte ptr [rip + 0x23b5a82], 1                ; data_30DD345
+
+180D278C3:
+  0x180D278C3  mov     rcx, qword ptr [rip + 0x210716e]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0_TypeInfo
+  0x180D278CA  xor     edi, edi                                  
+  0x180D278CC  mov     qword ptr [rbp - 0x40], rdi               
+  0x180D278D0  mov     byte ptr [rbp + 0x48], dil                
+  0x180D278D4  mov     qword ptr [rbp - 0x38], rdi               
+  0x180D278D8  mov     qword ptr [rbp - 0x30], rdi               
+  0x180D278DC  mov     qword ptr [rbp - 0x28], rdi               
+  0x180D278E0  mov     qword ptr [rbp - 0x20], rdi               
+  0x180D278E4  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D278E9  mov     r13, rax                                  
+  0x180D278EC  mov     rax, qword ptr [rip + 0x2107155]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D278F3  cmp     dword ptr [rax + 0xe4], edi               
+  0x180D278F9  jne     0x180d2790a                               
+  0x180D278FB  mov     rcx, rax                                  
+  0x180D278FE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27903  mov     rax, qword ptr [rip + 0x210713e]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D2790A:
+  0x180D2790A  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27911  lea     r12, [rip + 0x23c6988]                       ; data_30EE2A0
+  0x180D27918  mov     rsi, qword ptr [rcx + 8]                  
+  0x180D2791C  test    rsi, rsi                                  
+  0x180D2791F  jne     0x180d279d9                               
+  0x180D27925  cmp     dword ptr [rax + 0xe4], edi               
+  0x180D2792B  jne     0x180d2793c                               
+  0x180D2792D  mov     rcx, rax                                  
+  0x180D27930  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27935  mov     rax, qword ptr [rip + 0x210710c]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D2793C:
+  0x180D2793C  mov     rax, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27943  mov     rcx, qword ptr [rip + 0x2107156]             ; TYPE System.Func<string, int, ValueTuple<string, int>>_TypeInfo
+  0x180D2794A  mov     rbx, qword ptr [rax]                      
+  0x180D2794D  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D27952  mov     r8, qword ptr [rip + 0x2107197]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_0() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c$$<ParseAdditionalParameters>b__4_0
+  0x180D27959  xor     r9d, r9d                                  
+  0x180D2795C  mov     rdx, rbx                                  
+  0x180D2795F  mov     rcx, rax                                  
+  0x180D27962  mov     rsi, rax                                  
+  0x180D27965  call    0x18080e9f0                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor
+  0x180D2796A  mov     rax, qword ptr [rip + 0x21070d7]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D27971  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27978  mov     qword ptr [rcx + 8], rsi                  
+  0x180D2797C  cmp     dword ptr [rip + 0x23b1842], edi             ; data_30D91C4
+  0x180D27982  je      0x180d279d9                               
+  0x180D27984  mov     rax, qword ptr [rip + 0x21070bd]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D2798B  mov     r9, qword ptr [rax + 0xb8]                   ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27992  add     r9, 8                                     
+  0x180D27996  shr     r9, 0xc                                   
+  0x180D2799A  and     r9d, 0x1fffff                             
+  0x180D279A1  mov     eax, r9d                                  
+  0x180D279A4  shr     rax, 6                                    
+  0x180D279A8  and     r9d, 0x3f                                 
+  0x180D279AC  lea     r8, [r12 + rax*8]                         
+  0x180D279B0  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x180D279B8  nop     dword ptr [rax + rax]                     
+
+180D279C0:
+  0x180D279C0  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180D279C7  mov     rcx, rax                                  
+  0x180D279CA  bts     rcx, r9                                   
+  0x180D279CE  lock cmpxchg qword ptr [r8 + 0x462e0], rcx             
+  0x180D279D7  jne     0x180d279c0                               
+
+180D279D9:
+  0x180D279D9  mov     r8, qword ptr [rip + 0x2107140]              ; METHODINFO Method$System.Linq.Enumerable.Select<string, ValueTuple<string, int>>()
+  0x180D279E0  mov     rdx, rsi                                  
+  0x180D279E3  mov     rcx, r14                                  
+  0x180D279E6  call    0x1806899f0                                  ; -> System.Linq.Enumerable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D279EB  mov     rdx, qword ptr [rip + 0x2107056]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D279F2  mov     r12, rax                                  
+  0x180D279F5  cmp     dword ptr [rdx + 0xe4], edi               
+  0x180D279FB  jne     0x180d27a0c                               
+  0x180D279FD  mov     rcx, rdx                                  
+  0x180D27A00  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27A05  mov     rdx, qword ptr [rip + 0x210703c]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D27A0C:
+  0x180D27A0C  mov     rcx, qword ptr [rdx + 0xb8]                  ; rdx->AnimateExtended._easingTypeNameForPosY
+  0x180D27A13  mov     r14, qword ptr [rcx + 0x10]                  ; rcx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D27A17  test    r14, r14                                  
+  0x180D27A1A  jne     0x180d27ae0                               
+  0x180D27A20  cmp     dword ptr [rdx + 0xe4], edi               
+  0x180D27A26  jne     0x180d27a37                               
+  0x180D27A28  mov     rcx, rdx                                  
+  0x180D27A2B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27A30  mov     rdx, qword ptr [rip + 0x2107011]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D27A37:
+  0x180D27A37  mov     rax, qword ptr [rdx + 0xb8]                  ; rdx->AnimateExtended._easingTypeNameForPosY
+  0x180D27A3E  mov     rcx, qword ptr [rip + 0x210704b]             ; TYPE System.Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>_TypeInfo
+  0x180D27A45  mov     rbx, qword ptr [rax]                      
+  0x180D27A48  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D27A4D  mov     r8, qword ptr [rip + 0x210707c]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_1() => Naninovel.RuntimeInitializer.<>c$$<Initialize>b__3_7 (+2 aliases)
+  0x180D27A54  xor     r9d, r9d                                  
+  0x180D27A57  mov     rdx, rbx                                  
+  0x180D27A5A  mov     rcx, rax                                  
+  0x180D27A5D  mov     r14, rax                                  
+  0x180D27A60  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D27A65  mov     rax, qword ptr [rip + 0x2106fdc]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D27A6C  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27A73  mov     qword ptr [rcx + 0x10], r14                  ; rcx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D27A77  cmp     dword ptr [rip + 0x23b1747], edi             ; data_30D91C4
+  0x180D27A7D  je      0x180d27ad9                               
+  0x180D27A7F  mov     rax, qword ptr [rip + 0x2106fc2]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D27A86  lea     rcx, [rip + 0x23c6813]                       ; data_30EE2A0
+  0x180D27A8D  mov     r8, qword ptr [rax + 0xb8]                   ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27A94  add     r8, 0x10                                  
+  0x180D27A98  shr     r8, 0xc                                   
+  0x180D27A9C  and     r8d, 0x1fffff                             
+  0x180D27AA3  mov     eax, r8d                                  
+  0x180D27AA6  shr     rax, 6                                    
+  0x180D27AAA  and     r8d, 0x3f                                 
+  0x180D27AAE  lea     rdx, [rcx + rax*8]                        
+  0x180D27AB2  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D27AB9  nop     dword ptr [rax]                           
+
+180D27AC0:
+  0x180D27AC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D27AC7  mov     rcx, rax                                  
+  0x180D27ACA  bts     rcx, r8                                   
+  0x180D27ACE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D27AD7  jne     0x180d27ac0                               
+
+180D27AD9:
+  0x180D27AD9  mov     rdx, qword ptr [rip + 0x2106f68]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D27AE0:
+  0x180D27AE0  cmp     dword ptr [rdx + 0xe4], edi               
+  0x180D27AE6  jne     0x180d27af7                               
+  0x180D27AE8  mov     rcx, rdx                                  
+  0x180D27AEB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27AF0  mov     rdx, qword ptr [rip + 0x2106f51]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D27AF7:
+  0x180D27AF7  mov     rax, qword ptr [rdx + 0xb8]                  ; rdx->AnimateExtended._easingTypeNameForPosY
+  0x180D27AFE  mov     rsi, qword ptr [rax + 0x18]                  ; rax-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D27B02  test    rsi, rsi                                  
+  0x180D27B05  jne     0x180d27bc9                               
+  0x180D27B0B  cmp     dword ptr [rdx + 0xe4], edi               
+  0x180D27B11  jne     0x180d27b22                               
+  0x180D27B13  mov     rcx, rdx                                  
+  0x180D27B16  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D27B1B  mov     rdx, qword ptr [rip + 0x2106f26]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+
+180D27B22:
+  0x180D27B22  mov     rax, qword ptr [rdx + 0xb8]                  ; rdx->AnimateExtended._easingTypeNameForPosY
+  0x180D27B29  mov     rcx, qword ptr [rip + 0x2106f90]             ; TYPE System.Func<ValueTuple<string, int>, string>_TypeInfo
+  0x180D27B30  mov     rbx, qword ptr [rax]                      
+  0x180D27B33  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D27B38  mov     r8, qword ptr [rip + 0x2106fa1]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c.<ParseAdditionalParameters>b__4_2() => UnityEngine.UIElements.ConverterGroups.<>c$$<RegisterInt64Converters>b__20_8 (+22 aliases)
+  0x180D27B3F  xor     r9d, r9d                                  
+  0x180D27B42  mov     rdx, rbx                                  
+  0x180D27B45  mov     rcx, rax                                  
+  0x180D27B48  mov     rsi, rax                                  
+  0x180D27B4B  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D27B50  mov     rax, qword ptr [rip + 0x2106ef1]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D27B57  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27B5E  mov     qword ptr [rcx + 0x18], rsi                  ; rcx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D27B62  cmp     dword ptr [rip + 0x23b165c], edi             ; data_30D91C4
+  0x180D27B68  je      0x180d27bc9                               
+  0x180D27B6A  mov     rax, qword ptr [rip + 0x2106ed7]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c_TypeInfo
+  0x180D27B71  lea     rcx, [rip + 0x23c6728]                       ; data_30EE2A0
+  0x180D27B78  mov     r8, qword ptr [rax + 0xb8]                   ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D27B7F  add     r8, 0x18                                  
+  0x180D27B83  shr     r8, 0xc                                   
+  0x180D27B87  and     r8d, 0x1fffff                             
+  0x180D27B8E  mov     eax, r8d                                  
+  0x180D27B91  shr     rax, 6                                    
+  0x180D27B95  and     r8d, 0x3f                                 
+  0x180D27B99  lea     rdx, [rcx + rax*8]                        
+  0x180D27B9D  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D27BA4  nop     dword ptr [rax]                           
+  0x180D27BA8  nop     dword ptr [rax + rax]                     
+
+180D27BB0:
+  0x180D27BB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D27BB7  mov     rcx, rax                                  
+  0x180D27BBA  bts     rcx, r8                                   
+  0x180D27BBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D27BC7  jne     0x180d27bb0                               
+
+180D27BC9:
+  0x180D27BC9  mov     rbx, qword ptr [rip + 0x2106ee0]             ; METHODINFO Method$System.Linq.Enumerable.ToDictionary<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam, string>()
+  0x180D27BD0  cmp     qword ptr [rbx + 0x38], rdi               
+  0x180D27BD4  jne     0x180d27bde                               
+  0x180D27BD6  mov     rcx, rbx                                  
+  0x180D27BD9  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D27BDE:
+  0x180D27BDE  mov     rax, qword ptr [rbx + 0x38]               
+  0x180D27BE2  xor     r9d, r9d                                  
+  0x180D27BE5  mov     r8, rsi                                   
+  0x180D27BE8  mov     rdx, r14                                  
+  0x180D27BEB  mov     rcx, qword ptr [rax + 0x18]                  ; rax-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D27BEF  mov     qword ptr [rsp + 0x20], rcx               
+  0x180D27BF4  mov     rcx, r12                                  
+  0x180D27BF7  call    0x18068bab0                                  ; -> System.Linq.Enumerable$$ToDictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180D27BFC  mov     r14, rax                                  
+  0x180D27BFF  test    rax, rax                                  
+  0x180D27C02  je      0x180d27edb                               
+  0x180D27C08  mov     rdx, qword ptr [rip + 0x2106ed9]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D27C0F  mov     ecx, 2                                    
+  0x180D27C14  xor     r9d, r9d                                  
+  0x180D27C17  mov     r8, rax                                   
+  0x180D27C1A  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D27C1F  xor     r8d, r8d                                  
+  0x180D27C22  lea     rdx, [rbp - 0x40]                         
+  0x180D27C26  mov     rcx, rax                                  
+  0x180D27C29  call    0x180d27ef0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$TryParseParameter
+  0x180D27C2E  test    al, al                                    
+  0x180D27C30  je      0x180d27cf2                               
+  0x180D27C36  mov     r9, qword ptr [rip + 0x2129673]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D27C3D  lea     r8, [rbp + 0x58]                          
+  0x180D27C41  mov     rcx, qword ptr [rbp - 0x40]               
+  0x180D27C45  xor     edx, edx                                  
+  0x180D27C47  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D27C4C  mov     rcx, qword ptr [rip + 0x23afa25]             ; data_30D7678
+  0x180D27C53  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180D27C59  jne     0x180d27c60                               
+  0x180D27C5B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D27C60:
+  0x180D27C60  mov     rbx, qword ptr [rbp + 0x58]               
+  0x180D27C64  test    rbx, rbx                                  
+  0x180D27C67  je      0x180d27cf2                               
+  0x180D27C6D  cmp     byte ptr [rip + 0x23af91d], dil              ; data_30D7591
+  0x180D27C74  jne     0x180d27c8d                               
+  0x180D27C76  lea     rcx, [rip + 0x213d65b]                       ; METHODINFO Method$System.ReadOnlySpan<char>..ctor()
+  0x180D27C7D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27C82  lock or dword ptr [rsp], edi                      
+  0x180D27C86  mov     byte ptr [rip + 0x23af904], 1                ; data_30D7591
+
+180D27C8D:
+  0x180D27C8D  mov     rcx, qword ptr [rip + 0x23af9e4]             ; data_30D7678
+  0x180D27C94  lea     rax, [rbx + 0x14]                         
+  0x180D27C98  mov     qword ptr [rbp - 0x10], rax               
+  0x180D27C9C  mov     eax, dword ptr [rbx + 0x10]                  ; rbx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D27C9F  mov     dword ptr [rbp - 4], edi                  
+  0x180D27CA2  mov     dword ptr [rbp - 8], eax                  
+  0x180D27CA5  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180D27CAB  jne     0x180d27cb2                               
+  0x180D27CAD  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D27CB2:
+  0x180D27CB2  movaps  xmm0, xmmword ptr [rbp - 0x10]            
+  0x180D27CB6  lea     rdx, [rbp + 0x48]                         
+  0x180D27CBA  xor     r8d, r8d                                  
+  0x180D27CBD  movdqa  xmmword ptr [rbp - 0x10], xmm0            
+  0x180D27CC2  lea     rcx, [rbp - 0x10]                         
+  0x180D27CC6  call    0x180f76a20                                  ; -> System.Boolean$$TryParse
+  0x180D27CCB  test    al, al                                    
+  0x180D27CCD  je      0x180d27cf2                               
+  0x180D27CCF  movzx   eax, byte ptr [rbp + 0x48]                
+  0x180D27CD3  lea     rdx, [rbp + 0x48]                         
+  0x180D27CD7  mov     r8, qword ptr [rip + 0x212a282]              ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x180D27CDE  lea     rcx, [rbp + 0x58]                         
+  0x180D27CE2  mov     byte ptr [rbp + 0x48], al                 
+  0x180D27CE5  mov     word ptr [rbp + 0x58], di                 
+  0x180D27CE9  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180D27CEE  movzx   edi, word ptr [rbp + 0x58]                
+
+180D27CF2:
+  0x180D27CF2  xor     r8d, r8d                                  
+  0x180D27CF5  lea     rcx, [rbp - 0x10]                         
+  0x180D27CF9  movzx   edx, di                                   
+  0x180D27CFC  call    0x180cf4eb0                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraConfigurationUtility$$EvaluateSceneRect
+  0x180D27D01  movups  xmm0, xmmword ptr [rax]                   
+  0x180D27D04  test    r13, r13                                  
+  0x180D27D07  je      0x180d27edb                               
+  0x180D27D0D  movups  xmmword ptr [r13 + 0x10], xmm0               ; r13-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D27D12  mov     rdx, qword ptr [rip + 0x2106dcf]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D27D19  mov     ecx, 2                                    
+  0x180D27D1E  mov     r9d, 1                                    
+  0x180D27D24  mov     r8, r14                                   
+  0x180D27D27  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D27D2C  xor     r8d, r8d                                  
+  0x180D27D2F  lea     rdx, [rbp - 0x38]                         
+  0x180D27D33  mov     rcx, rax                                  
+  0x180D27D36  call    0x180d27ef0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$TryParseParameter
+  0x180D27D3B  test    al, al                                    
+  0x180D27D3D  je      0x180d27d9d                               
+  0x180D27D3F  mov     rdx, qword ptr [r15]                      
+  0x180D27D42  mov     rcx, r15                                  
+  0x180D27D45  mov     rsi, qword ptr [rbp - 0x38]               
+  0x180D27D49  mov     rax, qword ptr [rdx + 0x1e8]              
+  0x180D27D50  mov     rdx, qword ptr [rdx + 0x1f0]              
+  0x180D27D57  call    rax                                       
+  0x180D27D59  mov     rcx, qword ptr [rip + 0x210dcc0]             ; TYPE System.Func<string, Nullable<float>>_TypeInfo
+  0x180D27D60  mov     rdi, rax                                  
+  0x180D27D63  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D27D68  mov     r8, qword ptr [rip + 0x2106ce9]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0.<ParseAdditionalParameters>b__3() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0$$<ParseAdditionalParameters>b__3
+  0x180D27D6F  xor     r9d, r9d                                  
+  0x180D27D72  mov     rdx, r13                                  
+  0x180D27D75  mov     rcx, rax                                  
+  0x180D27D78  mov     rbx, rax                                  
+  0x180D27D7B  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D27D80  mov     rcx, qword ptr [rip + 0x2106da9]             ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<Nullable<float>>()
+  0x180D27D87  mov     r9, rbx                                   
+  0x180D27D8A  mov     qword ptr [rsp + 0x20], rcx               
+  0x180D27D8F  mov     r8, rdi                                   
+  0x180D27D92  mov     rcx, r15                                  
+  0x180D27D95  mov     rdx, rsi                                  
+  0x180D27D98  call    0x180656020                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$AssignKeys<__Il2CppFullySharedGenericType>
+
+180D27D9D:
+  0x180D27D9D  mov     rdx, qword ptr [rip + 0x2106d44]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D27DA4  mov     ecx, 2                                    
+  0x180D27DA9  mov     r9d, ecx                                  
+  0x180D27DAC  mov     r8, r14                                   
+  0x180D27DAF  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D27DB4  xor     r8d, r8d                                  
+  0x180D27DB7  lea     rdx, [rbp - 0x30]                         
+  0x180D27DBB  mov     rcx, rax                                  
+  0x180D27DBE  call    0x180d27ef0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$TryParseParameter
+  0x180D27DC3  test    al, al                                    
+  0x180D27DC5  je      0x180d27e25                               
+  0x180D27DC7  mov     rdx, qword ptr [r15]                      
+  0x180D27DCA  mov     rcx, r15                                  
+  0x180D27DCD  mov     rsi, qword ptr [rbp - 0x30]               
+  0x180D27DD1  mov     rax, qword ptr [rdx + 0x1f8]              
+  0x180D27DD8  mov     rdx, qword ptr [rdx + 0x200]              
+  0x180D27DDF  call    rax                                       
+  0x180D27DE1  mov     rcx, qword ptr [rip + 0x210dc38]             ; TYPE System.Func<string, Nullable<float>>_TypeInfo
+  0x180D27DE8  mov     rdi, rax                                  
+  0x180D27DEB  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D27DF0  mov     r8, qword ptr [rip + 0x2106c71]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0.<ParseAdditionalParameters>b__4() => GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0$$<ParseAdditionalParameters>b__4
+  0x180D27DF7  xor     r9d, r9d                                  
+  0x180D27DFA  mov     rdx, r13                                  
+  0x180D27DFD  mov     rcx, rax                                  
+  0x180D27E00  mov     rbx, rax                                  
+  0x180D27E03  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D27E08  mov     rcx, qword ptr [rip + 0x2106d21]             ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<Nullable<float>>()
+  0x180D27E0F  mov     r9, rbx                                   
+  0x180D27E12  mov     qword ptr [rsp + 0x20], rcx               
+  0x180D27E17  mov     r8, rdi                                   
+  0x180D27E1A  mov     rcx, r15                                  
+  0x180D27E1D  mov     rdx, rsi                                  
+  0x180D27E20  call    0x180656020                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$AssignKeys<__Il2CppFullySharedGenericType>
+
+180D27E25:
+  0x180D27E25  mov     rdx, qword ptr [rip + 0x2106cbc]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D27E2C  mov     ecx, 2                                    
+  0x180D27E31  mov     r9d, 3                                    
+  0x180D27E37  mov     r8, r14                                   
+  0x180D27E3A  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D27E3F  xor     r8d, r8d                                  
+  0x180D27E42  lea     rdx, [rbp - 0x28]                         
+  0x180D27E46  mov     rcx, rax                                  
+  0x180D27E49  call    0x180d27ef0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$TryParseParameter
+  0x180D27E4E  test    al, al                                    
+  0x180D27E50  je      0x180d27e74                               
+  0x180D27E52  mov     rax, qword ptr [rip + 0x2106cbf]             ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<string>()
+  0x180D27E59  xor     r9d, r9d                                  
+  0x180D27E5C  mov     r8, qword ptr [r15 + 0xb0]                   ; r15->AnimateExtended._easingTypeNameForPosX
+  0x180D27E63  mov     rcx, r15                                  
+  0x180D27E66  mov     rdx, qword ptr [rbp - 0x28]               
+  0x180D27E6A  mov     qword ptr [rsp + 0x20], rax               
+  0x180D27E6F  call    0x180656020                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$AssignKeys<__Il2CppFullySharedGenericType>
+
+180D27E74:
+  0x180D27E74  mov     rdx, qword ptr [rip + 0x2106c6d]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<AnimateActorExtended.AdditionalParam, string>_TypeInfo
+  0x180D27E7B  mov     ecx, 2                                    
+  0x180D27E80  mov     r9d, 4                                    
+  0x180D27E86  mov     r8, r14                                   
+  0x180D27E89  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D27E8E  xor     r8d, r8d                                  
+  0x180D27E91  lea     rdx, [rbp - 0x20]                         
+  0x180D27E95  mov     rcx, rax                                  
+  0x180D27E98  call    0x180d27ef0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$TryParseParameter
+  0x180D27E9D  test    al, al                                    
+  0x180D27E9F  je      0x180d27ec3                               
+  0x180D27EA1  mov     rax, qword ptr [rip + 0x2106c70]             ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.AssignKeys<string>()
+  0x180D27EA8  xor     r9d, r9d                                  
+  0x180D27EAB  mov     r8, qword ptr [r15 + 0xb8]                   ; r15->AnimateExtended._easingTypeNameForPosY
+  0x180D27EB2  mov     rcx, r15                                  
+  0x180D27EB5  mov     rdx, qword ptr [rbp - 0x20]               
+  0x180D27EB9  mov     qword ptr [rsp + 0x20], rax               
+  0x180D27EBE  call    0x180656020                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$AssignKeys<__Il2CppFullySharedGenericType>
+
+180D27EC3:
+  0x180D27EC3  mov     rbx, qword ptr [rsp + 0xb0]               
+  0x180D27ECB  add     rsp, 0x70                                 
+  0x180D27ECF  pop     r15                                       
+  0x180D27ED1  pop     r14                                       
+  0x180D27ED3  pop     r13                                       
+  0x180D27ED5  pop     r12                                       
+  0x180D27ED7  pop     rdi                                       
+  0x180D27ED8  pop     rsi                                       
+  0x180D27ED9  pop     rbp                                       
+  0x180D27EDA  ret                                               
+
+180D27EDB:
+  0x180D27EDB  call    0x180246730                                  ; THROW NullReferenceException

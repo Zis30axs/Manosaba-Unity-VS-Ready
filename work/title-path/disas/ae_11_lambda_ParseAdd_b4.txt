@@ -1,0 +1,117 @@
+====================================================================================================
+FUNCTION RVA 0xD28A00  VA 0x180D28A00  size 0x162 (354 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c__DisplayClass4_0$$<ParseAdditionalParameters>b__4
+  csig   : System_Nullable_float__o GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended___c__DisplayClass4_0___ParseAdditionalParameters_b__4 (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended___c__DisplayClass4_0_o* __this, System_String_o* key, const MethodInfo* method);
+  dump.cs: AnimateExtended.<>c__DisplayClass4_0 :: internal Nullable<float> <ParseAdditionalParameters>b__4(string key)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28A00  push    rbp                                       
+  0x180D28A02  push    rdi                                       
+  0x180D28A03  push    r14                                       
+  0x180D28A05  sub     rsp, 0x20                                 
+  0x180D28A09  lea     rbp, [rsp + 0x20]                         
+  0x180D28A0E  cmp     byte ptr [rip + 0x23b4938], 0                ; data_30DD34D
+  0x180D28A15  mov     r14, rcx                                  
+  0x180D28A18  mov     qword ptr [rbp + 0x30], rbx                  ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D28A1C  mov     rbx, rdx                                  
+  0x180D28A1F  mov     qword ptr [rbp + 0x38], rsi               
+  0x180D28A23  jne     0x180d28a4e                               
+  0x180D28A25  lea     rcx, [rip + 0x2128d6c]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D28A2C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28A31  lock or dword ptr [rsp], 0                        
+  0x180D28A36  lea     rcx, [rip + 0x2128d9b]                       ; METHODINFO Method$System.Nullable<float>..ctor()
+  0x180D28A3D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28A42  lock or dword ptr [rsp], 0                        
+  0x180D28A47  mov     byte ptr [rip + 0x23b48ff], 1                ; data_30DD34D
+
+180D28A4E:
+  0x180D28A4E  xor     edx, edx                                  
+  0x180D28A50  mov     rcx, rbx                                  
+  0x180D28A53  call    0x18054cbe0                                  ; -> Naninovel.ParseUtils$$AsInvariantFloat
+  0x180D28A58  mov     rdi, qword ptr [rip + 0x2128d39]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D28A5F  mov     qword ptr [rbp + 0x20], rax                  ; rbp-><>c.<>9__5_0
+  0x180D28A63  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28A67  test    byte ptr [rax + 0x135], 1                 
+  0x180D28A6E  jne     0x180d28a78                               
+  0x180D28A70  mov     rcx, rax                                  
+  0x180D28A73  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28A78:
+  0x180D28A78  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28A7F  mov     rcx, qword ptr [rax]                      
+  0x180D28A82  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D28A88  lea     rax, [rbx + 0xf]                          
+  0x180D28A8C  cmp     rax, rbx                                  
+  0x180D28A8F  ja      0x180d28a9b                               
+  0x180D28A91  movabs  rax, 0xffffffffffffff0                    
+
+180D28A9B:
+  0x180D28A9B  and     rax, 0xfffffffffffffff0                   
+  0x180D28A9F  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D28AA4  sub     rsp, rax                                  
+  0x180D28AA7  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28AAB  test    byte ptr [rax + 0x135], 1                 
+  0x180D28AB2  lea     rsi, [rsp + 0x20]                         
+  0x180D28AB7  jne     0x180d28ac1                               
+  0x180D28AB9  mov     rcx, rax                                  
+  0x180D28ABC  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28AC1:
+  0x180D28AC1  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28AC8  mov     r8, rbx                                   
+  0x180D28ACB  mov     rcx, qword ptr [rax + 8]                  
+  0x180D28ACF  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D28AD6  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28ADA  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D28ADE  add     rcx, rax                                  
+  0x180D28AE1  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><AnimateKey>d__7.asyncToken
+  0x180D28AE5  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D28AE9  lea     rdx, [rcx - 0x10]                         
+  0x180D28AED  cmovge  rdx, rcx                                  
+  0x180D28AF1  mov     rcx, rsi                                  
+  0x180D28AF4  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D28AF9  mov     r8, rbx                                   
+  0x180D28AFC  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28B00  mov     rdx, rsi                                  
+  0x180D28B03  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D28B08  movups  xmm2, xmmword ptr [r14 + 0x10]               ; r14-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D28B0D  movss   xmm1, dword ptr [rbp + 0x20]                 ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28B12  lea     rdx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28B16  divss   xmm1, dword ptr [rip + 0x1dba0a6]            ; data_2AE2BC4
+  0x180D28B1E  mov     r8, qword ptr [rip + 0x2128cb3]              ; METHODINFO Method$System.Nullable<float>..ctor()
+  0x180D28B25  lea     rcx, [rbp + 0x28]                            ; rbp-><AnimateKey>d__7.actor
+  0x180D28B29  mov     qword ptr [rbp + 0x28], 0                    ; rbp-><AnimateKey>d__7.actor
+  0x180D28B31  movaps  xmm0, xmm2                                
+  0x180D28B34  shufps  xmm0, xmm2, 0xff                          
+  0x180D28B38  mulss   xmm1, xmm0                                
+  0x180D28B3C  shufps  xmm2, xmm2, 0x55                          
+  0x180D28B40  addss   xmm1, xmm2                                
+  0x180D28B44  movss   dword ptr [rbp + 0x20], xmm1                 ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28B49  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180D28B4E  mov     rax, qword ptr [rbp + 0x28]                  ; rbp-><AnimateKey>d__7.actor
+  0x180D28B52  mov     rbx, qword ptr [rbp + 0x30]                  ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D28B56  mov     rsi, qword ptr [rbp + 0x38]               
+  0x180D28B5A  mov     rsp, rbp                                  
+  0x180D28B5D  pop     r14                                       
+  0x180D28B5F  pop     rdi                                       
+  0x180D28B60  pop     rbp                                       
+  0x180D28B61  ret                                               

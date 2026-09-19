@@ -1,0 +1,138 @@
+====================================================================================================
+FUNCTION RVA 0xD28360  VA 0x180D28360  size 0x1D2 (466 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseEasing
+  csig   : System_Nullable_EasingType__o GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__ParseEasing (System_Collections_Generic_IReadOnlyList_string__o* easingTypeName, int32_t keyIndex, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended :: private static Nullable<EasingType> ParseEasing(IReadOnlyList<string> easingTypeName, int keyIndex)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28360  push    rsi                                       
+  0x180D28362  push    rdi                                       
+  0x180D28363  sub     rsp, 0x68                                 
+  0x180D28367  cmp     byte ptr [rip + 0x23b4fda], 0                ; data_30DD348
+  0x180D2836E  mov     edi, edx                                  
+  0x180D28370  mov     rsi, rcx                                  
+  0x180D28373  jne     0x180d283e2                               
+  0x180D28375  lea     rcx, [rip + 0x2129f64]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D2837C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28381  lock or dword ptr [rsp], 0                        
+  0x180D28386  lea     rcx, [rip + 0x2128f23]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D2838D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28392  lock or dword ptr [rsp], 0                        
+  0x180D28397  lea     rcx, [rip + 0x214362a]                       ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<EasingType>()
+  0x180D2839E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D283A3  lock or dword ptr [rsp], 0                        
+  0x180D283A8  lea     rcx, [rip + 0x20ec301]                       ; TYPE System.Collections.Generic.IReadOnlyList<string>_TypeInfo
+  0x180D283AF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D283B4  lock or dword ptr [rsp], 0                        
+  0x180D283B9  lea     rcx, [rip + 0x2106668]                       ; METHODINFO Method$System.Nullable<EasingType>..ctor()
+  0x180D283C0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D283C5  lock or dword ptr [rsp], 0                        
+  0x180D283CA  lea     rcx, [rip + 0x2129437]                       ; STR 'Failed to parse `{0}` easing.'
+  0x180D283D1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D283D6  lock or dword ptr [rsp], 0                        
+  0x180D283DB  mov     byte ptr [rip + 0x23b4f66], 1                ; data_30DD348
+
+180D283E2:
+  0x180D283E2  mov     r9, qword ptr [rip + 0x2128ec7]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D283E9  lea     r8, [rsp + 0x80]                          
+  0x180D283F1  mov     edx, edi                                  
+  0x180D283F3  mov     dword ptr [rsp + 0x88], 0                 
+  0x180D283FE  mov     rcx, rsi                                  
+  0x180D28401  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D28406  cmp     qword ptr [rsp + 0x80], 0                 
+  0x180D2840F  je      0x180d28524                               
+  0x180D28415  test    rsi, rsi                                  
+  0x180D28418  je      0x180d2852d                               
+  0x180D2841E  mov     rdx, qword ptr [rip + 0x20ec28b]             ; TYPE System.Collections.Generic.IReadOnlyList<string>_TypeInfo
+  0x180D28425  xor     ecx, ecx                                  
+  0x180D28427  mov     r9d, edi                                  
+  0x180D2842A  mov     qword ptr [rsp + 0x60], rbp               
+  0x180D2842F  mov     r8, rsi                                   
+  0x180D28432  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180D28437  mov     rdi, qword ptr [rip + 0x214358a]             ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<EasingType>()
+  0x180D2843E  mov     rbp, rax                                  
+  0x180D28441  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180D28446  jne     0x180d28450                               
+  0x180D28448  mov     rcx, rdi                                  
+  0x180D2844B  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D28450:
+  0x180D28450  mov     r9, qword ptr [rdi + 0x38]                
+  0x180D28454  lea     r8, [rsp + 0x88]                          
+  0x180D2845C  mov     dl, 1                                     
+  0x180D2845E  mov     rcx, rbp                                  
+  0x180D28461  mov     r9, qword ptr [r9 + 8]                    
+  0x180D28465  call    0x180696ba0                                  ; -> FastEnumUtility.FastEnum$$TryParseInternal<__Il2CppFullySharedGenericStructType>
+  0x180D2846A  mov     rbp, qword ptr [rsp + 0x60]               
+  0x180D2846F  test    al, al                                    
+  0x180D28471  je      0x180d284b8                               
+  0x180D28473  mov     eax, dword ptr [rsp + 0x88]               
+  0x180D2847A  lea     rdx, [rsp + 0x80]                         
+  0x180D28482  mov     r8, qword ptr [rip + 0x210659f]              ; METHODINFO Method$System.Nullable<EasingType>..ctor()
+  0x180D28489  lea     rcx, [rsp + 0x98]                         
+  0x180D28491  mov     dword ptr [rsp + 0x80], eax               
+  0x180D28498  mov     qword ptr [rsp + 0x98], 0                 
+  0x180D284A4  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180D284A9  mov     rax, qword ptr [rsp + 0x98]               
+  0x180D284B1  add     rsp, 0x68                                 
+  0x180D284B5  pop     rdi                                       
+  0x180D284B6  pop     rsi                                       
+  0x180D284B7  ret                                               
+
+180D284B8:
+  0x180D284B8  mov     rdi, qword ptr [rip + 0x2129349]             ; STR 'Failed to parse `{0}` easing.'
+  0x180D284BF  lea     rcx, [rsp + 0x20]                         
+  0x180D284C4  xorps   xmm0, xmm0                                
+  0x180D284C7  xor     r8d, r8d                                  
+  0x180D284CA  mov     rdx, rsi                                  
+  0x180D284CD  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D284D2  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D284D7  call    0x181031d10                                  ; -> System.ParamsArray$$.ctor
+  0x180D284DC  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D284E1  xor     r9d, r9d                                  
+  0x180D284E4  lea     r8, [rsp + 0x40]                          
+  0x180D284E9  movups  xmm1, xmmword ptr [rsp + 0x30]            
+  0x180D284EE  mov     rdx, rdi                                  
+  0x180D284F1  xor     ecx, ecx                                  
+  0x180D284F3  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D284F8  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D284FD  call    0x180e27120                                  ; -> System.String$$FormatHelper
+  0x180D28502  mov     rcx, qword ptr [rip + 0x2129dd7]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D28509  mov     rdi, rax                                  
+  0x180D2850C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D28513  jne     0x180d2851a                               
+  0x180D28515  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2851A:
+  0x180D2851A  xor     edx, edx                                  
+  0x180D2851C  mov     rcx, rdi                                  
+  0x180D2851F  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+
+180D28524:
+  0x180D28524  xor     eax, eax                                  
+  0x180D28526  add     rsp, 0x68                                 
+  0x180D2852A  pop     rdi                                       
+  0x180D2852B  pop     rsi                                       
+  0x180D2852C  ret                                               
+
+180D2852D:
+  0x180D2852D  call    0x180246730                                  ; THROW NullReferenceException

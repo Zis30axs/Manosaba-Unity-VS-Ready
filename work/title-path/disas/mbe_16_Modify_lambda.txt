@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xD212E0  VA 0x180D212E0  size 0x4D (77 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended.<>c$$<Modify>b__17_0
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended___c___Modify_b__17_0 (GigaCreation_NaninovelExtender_ExtendedActors_ModifyBackgroundExtended___c_o* __this, Naninovel_IBackgroundActor_o* actor, const MethodInfo* method);
+  dump.cs: ModifyBackgroundExtended.<>c :: internal bool <Modify>b__17_0(IBackgroundActor actor)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyBackgroundExtended:
+      +0xD0   SubId                          StringParameter
+      +0xD8   MatchScreenWidth               BooleanParameter
+      +0xE0   _actorUtility                  ModifyActorUtility<IBackgroundActor, IMultipliableBackgroundManager>
+      +0xE8   _preloadedDissolveTexture      Texture2D
+  fields of ModifyBackgroundExtended.<>c:
+      +0x0    <>9                            static readonly ModifyBackgroundExtended.<>c
+      +0x8    <>9__17_0                      static Func<IBackgroundActor, bool>
+  fields of ModifyBackgroundExtended.<ApplyAppearanceModification>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          IBackgroundActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Execute>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ModifyBackgroundExtended.<Modify>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<IBackgroundActor>
+  fields of ModifyBackgroundExtended.<PreloadResources>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyBackgroundExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D212E0  push    rbx                                       
+  0x180D212E2  sub     rsp, 0x20                                 
+  0x180D212E6  cmp     byte ptr [rip + 0x23bc03e], 0                ; data_30DD32B
+  0x180D212ED  mov     rbx, rdx                                  
+  0x180D212F0  jne     0x180d2130a                               
+  0x180D212F2  lea     rcx, [rip + 0x213088f]                       ; TYPE Naninovel.IActor_TypeInfo
+  0x180D212F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D212FE  lock or dword ptr [rsp], 0                        
+  0x180D21303  mov     byte ptr [rip + 0x23bc021], 1                ; data_30DD32B
+
+180D2130A:
+  0x180D2130A  test    rbx, rbx                                  
+  0x180D2130D  je      0x180d21328                               
+  0x180D2130F  mov     rdx, qword ptr [rip + 0x2130872]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D21316  mov     ecx, 3                                    
+  0x180D2131B  mov     r8, rbx                                   
+  0x180D2131E  add     rsp, 0x20                                 
+  0x180D21322  pop     rbx                                       
+  0x180D21323  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D21328:
+  0x180D21328  call    0x180246730                                  ; THROW NullReferenceException

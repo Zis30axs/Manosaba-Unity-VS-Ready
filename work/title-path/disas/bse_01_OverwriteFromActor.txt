@@ -1,0 +1,74 @@
+====================================================================================================
+FUNCTION RVA 0xD146E0  VA 0x180D146E0  size 0xF8 (248 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended$$OverwriteFromActor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_BackgroundStateExtended__OverwriteFromActor (GigaCreation_NaninovelExtender_ExtendedActors_BackgroundStateExtended_o* __this, Naninovel_IBackgroundActor_o* actor, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended :: public override void OverwriteFromActor(IBackgroundActor actor)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.BackgroundStateExtended:
+      +0x58   _pivot                         Vector2
+      +0x60   _masked                        bool
+====================================================================================================
+  0x180D146E0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D146E5  push    rdi                                       
+  0x180D146E6  sub     rsp, 0x20                                 
+  0x180D146EA  cmp     byte ptr [rip + 0x23c8be7], 0                ; data_30DD2D8
+  0x180D146F1  mov     rdi, rdx                                  
+  0x180D146F4  mov     rbx, rcx                                  
+  0x180D146F7  jne     0x180d14711                               
+  0x180D146F9  lea     rcx, [rip + 0x211ae80]                       ; METHODINFO Method$Naninovel.ActorState<IBackgroundActor>.OverwriteFromActor()
+  0x180D14700  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D14705  lock or dword ptr [rsp], 0                        
+  0x180D1470A  mov     byte ptr [rip + 0x23c8bc7], 1                ; data_30DD2D8
+
+180D14711:
+  0x180D14711  mov     r8, qword ptr [rip + 0x211ae68]              ; METHODINFO Method$Naninovel.ActorState<IBackgroundActor>.OverwriteFromActor()
+  0x180D14718  mov     rdx, rdi                                  
+  0x180D1471B  mov     rcx, rbx                                  
+  0x180D1471E  call    0x180bb87e0                                  ; -> Naninovel.ActorState<__Il2CppFullySharedGenericType>$$OverwriteFromActor
+  0x180D14723  cmp     byte ptr [rip + 0x23c8b98], 0                ; data_30DD2C2
+  0x180D1472A  jne     0x180d14744                               
+  0x180D1472C  lea     rcx, [rip + 0x211b0f5]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IPivotChangeableActor_TypeInfo
+  0x180D14733  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D14738  lock or dword ptr [rsp], 0                        
+  0x180D1473D  mov     byte ptr [rip + 0x23c8b7e], 1                ; data_30DD2C2
+
+180D14744:
+  0x180D14744  mov     rdx, qword ptr [rip + 0x211b0dd]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IPivotChangeableActor_TypeInfo
+  0x180D1474B  mov     rcx, rdi                                  
+  0x180D1474E  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D14753  test    rax, rax                                  
+  0x180D14756  je      0x180d14784                               
+  0x180D14758  mov     rdx, qword ptr [rip + 0x211b0c9]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IPivotChangeableActor_TypeInfo
+  0x180D1475F  xor     ecx, ecx                                  
+  0x180D14761  mov     r8, rax                                   
+  0x180D14764  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D14769  mov     qword ptr [rsp + 0x30], rax               
+  0x180D1476E  movss   xmm0, dword ptr [rsp + 0x30]              
+  0x180D14774  movss   xmm1, dword ptr [rsp + 0x34]              
+  0x180D1477A  movss   dword ptr [rbx + 0x58], xmm0                 ; rbx->BackgroundStateExtended._pivot
+  0x180D1477F  movss   dword ptr [rbx + 0x5c], xmm1              
+
+180D14784:
+  0x180D14784  cmp     byte ptr [rip + 0x23c8b39], 0                ; data_30DD2C4
+  0x180D1478B  jne     0x180d147a5                               
+  0x180D1478D  lea     rcx, [rip + 0x211b0a4]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor_TypeInfo
+  0x180D14794  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D14799  lock or dword ptr [rsp], 0                        
+  0x180D1479E  mov     byte ptr [rip + 0x23c8b1f], 1                ; data_30DD2C4
+
+180D147A5:
+  0x180D147A5  mov     rdx, qword ptr [rip + 0x211b08c]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor_TypeInfo
+  0x180D147AC  mov     rcx, rdi                                  
+  0x180D147AF  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D147B4  test    rax, rax                                  
+  0x180D147B7  je      0x180d147cd                               
+  0x180D147B9  mov     rdx, qword ptr [rip + 0x211b078]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor_TypeInfo
+  0x180D147C0  xor     ecx, ecx                                  
+  0x180D147C2  mov     r8, rax                                   
+  0x180D147C5  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D147CA  mov     byte ptr [rbx + 0x60], al                    ; rbx->BackgroundStateExtended._masked
+
+180D147CD:
+  0x180D147CD  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D147D2  add     rsp, 0x20                                 
+  0x180D147D6  pop     rdi                                       
+  0x180D147D7  ret                                               

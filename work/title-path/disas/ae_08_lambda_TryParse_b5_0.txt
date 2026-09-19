@@ -1,0 +1,61 @@
+====================================================================================================
+FUNCTION RVA 0xD28840  VA 0x180D28840  size 0x60 (96 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<>c$$<TryParseParameter>b__5_0
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended___c___TryParseParameter_b__5_0 (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended___c_o* __this, System_String_o* s, const MethodInfo* method);
+  dump.cs: AnimateExtended.<>c :: internal bool <TryParseParameter>b__5_0(string s)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28840  sub     rsp, 0x28                                 
+  0x180D28844  mov     rax, qword ptr [rip + 0x23aee95]             ; data_30D76E0
+  0x180D2884B  mov     r9, rdx                                   
+  0x180D2884E  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D28855  mov     rdx, qword ptr [rcx]                      
+  0x180D28858  cmp     r9, rdx                                   
+  0x180D2885B  je      0x180d28897                               
+  0x180D2885D  test    r9, r9                                    
+  0x180D28860  je      0x180d2888e                               
+  0x180D28862  test    rdx, rdx                                  
+  0x180D28865  je      0x180d2888e                               
+  0x180D28867  mov     eax, dword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2886A  cmp     dword ptr [r9 + 0x10], eax                   ; r9-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2886E  jne     0x180d2888e                               
+  0x180D28870  movsxd  r8, dword ptr [r9 + 0x10]                    ; r9-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D28874  lea     rcx, [r9 + 0x14]                          
+  0x180D28878  add     r8, r8                                    
+  0x180D2887B  add     rdx, 0x14                                 
+  0x180D2887F  xor     r9d, r9d                                  
+  0x180D28882  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180D28887  xor     al, 1                                     
+  0x180D28889  add     rsp, 0x28                                 
+  0x180D2888D  ret                                               
+
+180D2888E:
+  0x180D2888E  xor     al, al                                    
+  0x180D28890  xor     al, 1                                     
+  0x180D28892  add     rsp, 0x28                                 
+  0x180D28896  ret                                               
+
+180D28897:
+  0x180D28897  mov     al, 1                                     
+  0x180D28899  xor     al, al                                    
+  0x180D2889B  add     rsp, 0x28                                 
+  0x180D2889F  ret                                               

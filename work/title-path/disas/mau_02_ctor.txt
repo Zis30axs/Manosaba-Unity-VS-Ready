@@ -1,0 +1,88 @@
+====================================================================================================
+FUNCTION RVA 0x86BAE0  VA 0x18086BAE0  size 0xD1 (209 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_object__object____ctor (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_TActor__TManager__o* __this, Naninovel_IActorManager_o* manager, const MethodInfo_86BAE0* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x18086BAE0  mov     qword ptr [rsp + 8], rbx                  
+  0x18086BAE5  mov     qword ptr [rsp + 0x10], rsi               
+  0x18086BAEA  push    rdi                                       
+  0x18086BAEB  sub     rsp, 0x20                                 
+  0x18086BAEF  mov     rax, qword ptr [r8 + 0x20]                
+  0x18086BAF3  mov     rsi, r8                                   
+  0x18086BAF6  mov     rbx, rdx                                  
+  0x18086BAF9  mov     rdi, rcx                                  
+  0x18086BAFC  mov     r9, qword ptr [rax + 0xc0]                
+  0x18086BB03  mov     rax, qword ptr [r9 + 8]                   
+  0x18086BB07  test    byte ptr [rax + 0x135], 1                 
+  0x18086BB0E  jne     0x18086bb18                               
+  0x18086BB10  mov     rcx, rax                                  
+  0x18086BB13  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+18086BB18:
+  0x18086BB18  mov     rdx, rax                                  
+  0x18086BB1B  mov     rcx, rbx                                  
+  0x18086BB1E  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x18086BB23  mov     qword ptr [rdi + 0x10], rax               
+  0x18086BB27  mov     rax, qword ptr [rsi + 0x20]               
+  0x18086BB2B  mov     rcx, qword ptr [rax + 0xc0]               
+  0x18086BB32  mov     rax, qword ptr [rcx + 8]                  
+  0x18086BB36  test    byte ptr [rax + 0x135], 1                 
+  0x18086BB3D  jne     0x18086bb47                               
+  0x18086BB3F  mov     rcx, rax                                  
+  0x18086BB42  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+18086BB47:
+  0x18086BB47  mov     rdx, rax                                  
+  0x18086BB4A  mov     rcx, rbx                                  
+  0x18086BB4D  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x18086BB52  cmp     dword ptr [rip + 0x286d66b], 0               ; data_30D91C4
+  0x18086BB59  je      0x18086bba1                               
+  0x18086BB5B  lea     r8, [rdi + 0x10]                          
+  0x18086BB5F  shr     r8, 0xc                                   
+  0x18086BB63  lea     rcx, [rip + 0x28c8a16]                       ; data_3134580
+  0x18086BB6A  and     r8d, 0x1fffff                             
+  0x18086BB71  mov     eax, r8d                                  
+  0x18086BB74  shr     rax, 6                                    
+  0x18086BB78  and     r8d, 0x3f                                 
+  0x18086BB7C  lea     rdx, [rcx + rax*8]                        
+  0x18086BB80  prefetchw byte ptr [rdx]                            
+  0x18086BB83  nop     dword ptr [rax]                           
+  0x18086BB87  nop     word ptr [rax + rax]                      
+
+18086BB90:
+  0x18086BB90  mov     rax, qword ptr [rdx]                      
+  0x18086BB93  mov     rcx, rax                                  
+  0x18086BB96  bts     rcx, r8                                   
+  0x18086BB9A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18086BB9F  jne     0x18086bb90                               
+
+18086BBA1:
+  0x18086BBA1  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18086BBA6  mov     rsi, qword ptr [rsp + 0x38]               
+  0x18086BBAB  add     rsp, 0x20                                 
+  0x18086BBAF  pop     rdi                                       
+  0x18086BBB0  ret                                               

@@ -759,6 +759,17 @@ G2 PASS   run A/B: found 30,749/30,749   missing 0   GUID 变更 0
 
 剧本资产合计 440 个、**323.8 MB**（平均 753 KB）；对白文本走 `textMap.idToText`（已随资产写入）。
 
+### 15.3a 2026-09-19 更正：上表的「304,280 / 304,280」是假阳性
+
+上面的对账只数了 managed-reference **实例**，没有数**值**。2026-09-17 16:09 生成的 440 个剧本资产里，每个命令实例的参数全是空的
+（`hasValue: 1` 出现 0 次、`playbackSpot.scriptPath` 全空）：当时的 applier 在 managed-reference token 没有 `rid` 时直接 `return`，
+把 `references.RefIds[].data` 整个丢掉了。commit `015c0cf` 修了 applier，但资产此后从未重生成，运行时表现就是
+`@processInput` "No parameters were specified"、`AnimateActor.ActorIds == null`、Blur 找默认 `MainBackground`。
+
+2026-09-19 的修复与新对账口径见 `work/serialization-loss/README.md`：转换器改为**原地更新**（保 GUID），对账改为
+「dump 侧按 applier 消费方式展开 `{rid}` 后的 `hasValue: true` 期望数 vs 实际写入数」——440/440 资产 849,954 = 849,954，
+GUID 变化 0，第二遍原地重跑幂等。`so_convert_result.json` 从此带 `params_with_value_dump/written`，不等即 `CONVERTED_PARTIAL`。
+
 ### 15.4 下一步
 
 1. `DEFERRED_STRUCTURAL 18,355`：prefab/scene 对象图（GameObject/Transform/CanvasRenderer…），
@@ -3297,6 +3308,9 @@ collisions（1 个出货 GUID 对 2 个资产）: 0
 **这个改动是安全的，因为 prefab 的指针绑定走的是路径而不是 GUID**：
 `PrefabBuilder.ResolvePointer` 对 `m_FileID != 0` 的分支是用 `references[node.pid:fileID:pathID]`
 拿到资产路径再 `AssetDatabase.LoadAssetAtPath`，从不查 GUID 表；因此改 `.meta` GUID 不会让已绑定的 3549 个指针失效，
+（**2026-09-19 更正**：这 3549 个「已绑定」指针全部是资产**内部**的 `m_FileID == 0` 指针；`m_FileID > 0` 的 1937 个外部指针
+当时一个都没有绑上——`ResolvePointer` 用的是出货路径 `Assets/#WitchTrials/…`，而资产在 `Assets/GameContent/…`。
+修复与实测见 `work/serialization-loss/README.md` §C。）
 而全局文本改写同时保证了"引用了旧 GUID 的地方"一起被改写（复验残留为 0 就是这个意思）。
 未对齐的 27092 条里，`.wav`（26537）在工程里根本不存在、`.nani`（440）被转成了 `Naninovel.Script` 的 `.asset`
 按 key 寻址，二者都不经由 GUID 引用，故本轮不阻塞。
@@ -3662,3 +3676,34 @@ python tools/unity-rebuild/classify_runtime_resource_log.py tools/unity-rebuild/
 ## 2026-09-18 后续：按用户明确要求提交本地字体
 
 上述“不提交原字体/生成资源”是上一提交的范围；本次单独将三个本地 OTF、对应 TMP/材质及 Unity .meta 纳入 Git，未修改字体字节或原资源目录，未推送远端。字体 SHA256 与上节一致，资源合同检查重新执行 PASS（0 缺项）。这不是字体再分发许可声明；公开分发前仍需自行确认相应许可。本次只改变版本控制状态，不重复声称完成新的 Unity 运行时验收。
+
+## 42. 2026-09-19 记录：序列化丢失的三个流水线根因（剧本参数、`_image`、外部指针）与标题路径存根复原
+
+**现象**（Boot → Naninovel → EntrySequence → System_Title 跑起来之后）：`LocalizeImage._image` 为 null（55 实例中 30 个）、
+`@processInput` "No parameters were specified"、`AnimateActor.Execute:105` NRE（`ActorIds == null`）、Blur 找默认 `MainBackground`、
+`PlaybackSpot.scriptPath` 空串。
+
+**结论：不是单一根因，是重建流水线的三个独立缺陷**（全文与数字见 `work/serialization-loss/README.md`）：
+
+| | 根因 | 修复 | 独立复核 |
+|---|---|---|---|
+| A | 440 个剧本资产由旧 applier 生成，参数全空；`015c0cf` 修了 applier 但从未重跑 | `ScriptableObjectConverter` 原地更新保 GUID + 按 `hasValue` 内容对账 | 849,954/849,954，GUID 变化 0，幂等 |
+| B | `PrefabBuilder` 按计划顺序 `AddComponent`，被 `[RequireComponent]` 自动加的组件顶掉（`Image` 被拒 → `_image` 空） | 按 `m_Component` 顺序 + 依赖提前 + 认领自动添加的同类型组件 | `_image` 63/127 → 127/127 |
+| C | 外部 PPtr 0/1937 绑定（出货路径 ≠ `GameContent` 路径）；`m_*` 引擎字段整体跳过；枚举按索引写 | 路径映射（含 `.sprites/`、`@Ja`→`_Ja`、`RuntimeFonts`）、Sprite/组件类型适配、应用 `m_*`、枚举写原始值、补 Gradient/Vector2Int 等 | `m_Sprite` 0 → 499/656，TMP 字体 0 → 526/542，GUID 变化 0 |
+
+**副作用**：`PrefabBuilder` 的 delete+save 让 Addressables 丢掉了约 150 条 prefab 条目 —— prefab 重建后**必须**跑
+`g3_content_build.ps1 -Group all`（本轮 `AddressablesSetup`：planned 30819 / added 30819 / missing 0；内容构建本身在
+2026-09-19 14:2x 因机器内存不足被中止，**未完成**，见下）。
+
+**标题路径存根复原**（`work/title-path/`，四月 CHS `GameAssembly.dll` 反汇编，`XxxCore` 惯例，逐方法 RVA/槽位注释）：
+`WaitForNextFrame.Execute`、`SpecialSubId.TryGetModifiedPositionZ`、`IMultipliableActor.BuildId`、
+`MultipliableActorManagerUtility<T>`（4）、`MultipliableActorManagerExtensions.GetOrAddActor`（2）、
+`ModifyActorUtility<,>`（8）、`BackgroundManagerExtended`（`ActorExists/GetActor/AddActor/GetOrAddActor×2/ConstructActorAsync`，
+并补回 dump 声明的 `IMultipliableBackgroundManager` 等接口——缺了它 `ModifyActorUtility` 的 `as` 转换得到 null）、
+`ModifyBackgroundExtended`（全部 12 个，含 `Stills` 分支的 `IUnlockableManager.UnlockItem + IStateManager.SaveGlobal`）、
+`AnimateActorExtended.GetParametersForActor/ModifyKeysAsRelative`、`AnimateExtended`（6，含逐坐标缓动）。
+离线 Roslyn（`work/title-path/typecheck_asm.py`）：Common / ExtendedActors 0 error。
+
+**本轮尚未做到**（写在这里，不算完成）：G3 内容构建未完成、G4b 未从 Boot 复跑，所以「A/B/C 的症状消失」与
+「标题脚本到 `@stop`」都还**没有运行时证据**；`BackgroundManagerExtended.Save/LoadServiceState` 仍转发基类；
+`CharacterManagerExtended` 的接口列表同样缺失（同一类 bug，未改）。

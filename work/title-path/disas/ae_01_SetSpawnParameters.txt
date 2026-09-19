@@ -1,0 +1,174 @@
+====================================================================================================
+FUNCTION RVA 0xD27530  VA 0x180D27530  size 0x220 (544 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$SetSpawnParameters
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__SetSpawnParameters (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended_o* __this, System_Collections_Generic_IReadOnlyList_string__o* parameters, bool asap, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended :: public override void SetSpawnParameters(IReadOnlyList<string> parameters, bool asap)
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D27530  push    rdi                                       
+  0x180D27532  push    r12                                       
+  0x180D27534  push    r14                                       
+  0x180D27536  sub     rsp, 0x20                                 
+  0x180D2753A  cmp     byte ptr [rip + 0x23b5e03], 0                ; data_30DD344
+  0x180D27541  movzx   r12d, r8b                                 
+  0x180D27545  mov     rdi, rdx                                  
+  0x180D27548  mov     r14, rcx                                  
+  0x180D2754B  jne     0x180d275a9                               
+  0x180D2754D  lea     rcx, [rip + 0x21075bc]                       ; METHODINFO Method$System.Linq.Enumerable.Skip<string>()
+  0x180D27554  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D27559  lock or dword ptr [rsp], 0                        
+  0x180D2755E  lea     rcx, [rip + 0x2107593]                       ; METHODINFO Method$System.Linq.Enumerable.Take<string>()
+  0x180D27565  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2756A  lock or dword ptr [rsp], 0                        
+  0x180D2756F  lea     rcx, [rip + 0x2132632]                       ; METHODINFO Method$System.Linq.Enumerable.ToList<string>()
+  0x180D27576  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2757B  lock or dword ptr [rsp], 0                        
+  0x180D27580  lea     rcx, [rip + 0x21079e1]                       ; METHODINFO Method$FastEnumUtility.FastEnum.GetNames<AnimateActorExtended.AdditionalParam>()
+  0x180D27587  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2758C  lock or dword ptr [rsp], 0                        
+  0x180D27591  lea     rcx, [rip + 0x211c408]                       ; TYPE System.Collections.Generic.IReadOnlyCollection<string>_TypeInfo
+  0x180D27598  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2759D  lock or dword ptr [rsp], 0                        
+  0x180D275A2  mov     byte ptr [rip + 0x23b5d9b], 1                ; data_30DD344
+
+180D275A9:
+  0x180D275A9  mov     qword ptr [rsp + 0x50], rsi               
+  0x180D275AE  test    rdi, rdi                                  
+  0x180D275B1  je      0x180d27707                               
+  0x180D275B7  mov     rdx, qword ptr [rip + 0x211c3e2]             ; TYPE System.Collections.Generic.IReadOnlyCollection<string>_TypeInfo
+  0x180D275BE  xor     ecx, ecx                                  
+  0x180D275C0  mov     r8, rdi                                   
+  0x180D275C3  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D275C8  mov     esi, eax                                  
+  0x180D275CA  call    0x180080250                                  ; -> sub_80250 (runtime/helper)
+  0x180D275CF  test    rax, rax                                  
+  0x180D275D2  je      0x180d27707                               
+  0x180D275D8  mov     rdx, qword ptr [rip + 0x211c3c1]             ; TYPE System.Collections.Generic.IReadOnlyCollection<string>_TypeInfo
+  0x180D275DF  xor     ecx, ecx                                  
+  0x180D275E1  mov     qword ptr [rsp + 0x40], rbx               
+  0x180D275E6  mov     r8, rax                                   
+  0x180D275E9  mov     qword ptr [rsp + 0x48], rbp               
+  0x180D275EE  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D275F3  mov     r8, qword ptr [rip + 0x21074fe]              ; METHODINFO Method$System.Linq.Enumerable.Take<string>()
+  0x180D275FA  sub     esi, eax                                  
+  0x180D275FC  mov     edx, esi                                  
+  0x180D275FE  mov     rcx, rdi                                  
+  0x180D27601  call    0x18068b270                                  ; -> System.Linq.Enumerable$$Take<__Il2CppFullySharedGenericType>
+  0x180D27606  mov     rbx, qword ptr [rip + 0x213259b]             ; METHODINFO Method$System.Linq.Enumerable.ToList<string>()
+  0x180D2760D  mov     rbp, rax                                  
+  0x180D27610  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180D27615  jne     0x180d2761f                               
+  0x180D27617  mov     rcx, rbx                                  
+  0x180D2761A  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D2761F:
+  0x180D2761F  test    rbp, rbp                                  
+  0x180D27622  je      0x180d2772f                               
+  0x180D27628  mov     qword ptr [rsp + 0x58], r15               
+  0x180D2762D  mov     rcx, qword ptr [rbx + 0x38]               
+  0x180D27631  mov     rax, qword ptr [rcx + 8]                  
+  0x180D27635  test    byte ptr [rax + 0x135], 1                 
+  0x180D2763C  jne     0x180d27646                               
+  0x180D2763E  mov     rcx, rax                                  
+  0x180D27641  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D27646:
+  0x180D27646  mov     rcx, rax                                  
+  0x180D27649  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D2764E  mov     r8, qword ptr [rbx + 0x38]                
+  0x180D27652  mov     rdx, rbp                                  
+  0x180D27655  mov     rcx, rax                                  
+  0x180D27658  mov     r15, rax                                  
+  0x180D2765B  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2765F  call    0x180857de0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D27664  mov     r8, qword ptr [rip + 0x21074a5]              ; METHODINFO Method$System.Linq.Enumerable.Skip<string>()
+  0x180D2766B  mov     edx, esi                                  
+  0x180D2766D  mov     rcx, rdi                                  
+  0x180D27670  call    0x18068aeb0                                  ; -> System.Linq.Enumerable$$Skip<__Il2CppFullySharedGenericType>
+  0x180D27675  mov     rdi, qword ptr [rip + 0x213252c]             ; METHODINFO Method$System.Linq.Enumerable.ToList<string>()
+  0x180D2767C  mov     rsi, rax                                  
+  0x180D2767F  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180D27684  jne     0x180d2768e                               
+  0x180D27686  mov     rcx, rdi                                  
+  0x180D27689  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D2768E:
+  0x180D2768E  test    rsi, rsi                                  
+  0x180D27691  je      0x180d2770d                               
+  0x180D27693  mov     rcx, qword ptr [rdi + 0x38]               
+  0x180D27697  mov     rax, qword ptr [rcx + 8]                  
+  0x180D2769B  test    byte ptr [rax + 0x135], 1                 
+  0x180D276A2  jne     0x180d276ac                               
+  0x180D276A4  mov     rcx, rax                                  
+  0x180D276A7  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D276AC:
+  0x180D276AC  mov     rcx, rax                                  
+  0x180D276AF  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D276B4  mov     r8, qword ptr [rdi + 0x38]                
+  0x180D276B8  mov     rdx, rsi                                  
+  0x180D276BB  mov     rcx, rax                                  
+  0x180D276BE  mov     rbx, rax                                  
+  0x180D276C1  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D276C5  call    0x180857de0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D276CA  xor     r9d, r9d                                  
+  0x180D276CD  movzx   r8d, r12b                                 
+  0x180D276D1  mov     rdx, r15                                  
+  0x180D276D4  mov     rcx, r14                                  
+  0x180D276D7  call    0x1804b1a30                                  ; -> Naninovel.FX.Animate$$SetSpawnParameters
+  0x180D276DC  xor     r8d, r8d                                  
+  0x180D276DF  mov     rdx, rbx                                  
+  0x180D276E2  mov     rcx, r14                                  
+  0x180D276E5  mov     r15, qword ptr [rsp + 0x58]               
+  0x180D276EA  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180D276EF  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180D276F4  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D276F9  add     rsp, 0x20                                 
+  0x180D276FD  pop     r14                                       
+  0x180D276FF  pop     r12                                       
+  0x180D27701  pop     rdi                                       
+  0x180D27702  jmp     0x180d27760                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseAdditionalParameters
+
+180D27707:
+  0x180D27707  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2770C  int3                                              
+
+180D2770D:
+  0x180D2770D  lea     rcx, [rip + 0x20ef624]                       ; STR 'source'
+  0x180D27714  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D27719  mov     rcx, rax                                  
+  0x180D2771C  xor     edx, edx                                  
+  0x180D2771E  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D27723  mov     rdx, rdi                                  
+  0x180D27726  mov     rcx, rax                                  
+  0x180D27729  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D2772E  int3                                              
+
+180D2772F:
+  0x180D2772F  lea     rcx, [rip + 0x20ef602]                       ; STR 'source'
+  0x180D27736  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D2773B  mov     rcx, rax                                  
+  0x180D2773E  xor     edx, edx                                  
+  0x180D27740  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D27745  mov     rdx, rbx                                  
+  0x180D27748  mov     rcx, rax                                  
+  0x180D2774B  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

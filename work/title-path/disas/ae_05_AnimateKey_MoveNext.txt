@@ -1,0 +1,1826 @@
+====================================================================================================
+FUNCTION RVA 0xD28B70  VA 0x180D28B70  size 0x1C6E (7278 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended.<AnimateKey>d__7$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__AnimateKey_d__7__MoveNext (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended__AnimateKey_d__7_o __this, const MethodInfo* method);
+  dump.cs: AnimateExtended.<AnimateKey>d__7 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28B70  mov     qword ptr [rsp + 8], rcx                  
+  0x180D28B75  push    rbp                                       
+  0x180D28B76  push    rsi                                       
+  0x180D28B77  push    rdi                                       
+  0x180D28B78  push    r12                                       
+  0x180D28B7A  push    r13                                       
+  0x180D28B7C  push    r14                                       
+  0x180D28B7E  push    r15                                       
+  0x180D28B80  sub     rsp, 0x1a0                                
+  0x180D28B87  lea     rbp, [rsp + 0x40]                         
+  0x180D28B8C  mov     qword ptr [rbp + 0x1a8], rbx              
+  0x180D28B93  movaps  xmmword ptr [rbp + 0x150], xmm6           
+  0x180D28B9A  movaps  xmmword ptr [rbp + 0x140], xmm7           
+  0x180D28BA1  movaps  xmmword ptr [rbp + 0x130], xmm8           
+  0x180D28BA9  movaps  xmmword ptr [rbp + 0x120], xmm9           
+  0x180D28BB1  movaps  xmmword ptr [rbp + 0x110], xmm10          
+  0x180D28BB9  movaps  xmmword ptr [rbp + 0x100], xmm11          
+  0x180D28BC1  mov     rsi, rcx                                  
+  0x180D28BC4  cmp     byte ptr [rip + 0x23b4783], 0                ; data_30DD34E
+  0x180D28BCB  jne     0x180d28d92                               
+  0x180D28BD1  lea     rcx, [rip + 0x2105e08]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, AnimateExtended.<AnimateKey>d__7>()
+  0x180D28BD8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28BDD  lock or dword ptr [rsp], 0                        
+  0x180D28BE2  lea     rcx, [rip + 0x21296f7]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D28BE9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28BEE  lock or dword ptr [rsp], 0                        
+  0x180D28BF3  lea     rcx, [rip + 0x2128bae]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D28BFA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28BFF  lock or dword ptr [rsp], 0                        
+  0x180D28C04  lea     rcx, [rip + 0x210fcad]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<bool>>()
+  0x180D28C0B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C10  lock or dword ptr [rsp], 0                        
+  0x180D28C15  lea     rcx, [rip + 0x210fca4]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<Vector3>>()
+  0x180D28C1C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C21  lock or dword ptr [rsp], 0                        
+  0x180D28C26  lea     rcx, [rip + 0x2128683]                       ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D28C2D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C32  lock or dword ptr [rsp], 0                        
+  0x180D28C37  lea     rcx, [rip + 0x2128f4a]                       ; TYPE Naninovel.IActor_TypeInfo
+  0x180D28C3E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C43  lock or dword ptr [rsp], 0                        
+  0x180D28C48  lea     rcx, [rip + 0x2142d41]                       ; TYPE System.Collections.Generic.ICollection<UniTask>_TypeInfo
+  0x180D28C4F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C54  lock or dword ptr [rsp], 0                        
+  0x180D28C59  lea     rcx, [rip + 0x2105d88]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IPositionChangeableForEachCoordinateActor_TypeInfo
+  0x180D28C60  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C65  lock or dword ptr [rsp], 0                        
+  0x180D28C6A  lea     rcx, [rip + 0x210ccf7]                       ; METHODINFO Method$Naninovel.LinqUtils.IsIndexValid<Nullable<float>>()
+  0x180D28C71  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C76  lock or dword ptr [rsp], 0                        
+  0x180D28C7B  lea     rcx, [rip + 0x2130c36]                       ; METHODINFO Method$System.Collections.Generic.List<string>.get_Item()
+  0x180D28C82  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C87  lock or dword ptr [rsp], 0                        
+  0x180D28C8C  lea     rcx, [rip + 0x210fc1d]                       ; METHODINFO Method$System.Collections.Generic.List<Nullable<bool>>.get_Item()
+  0x180D28C93  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28C98  lock or dword ptr [rsp], 0                        
+  0x180D28C9D  lea     rcx, [rip + 0x210ccd4]                       ; METHODINFO Method$System.Collections.Generic.List<Nullable<float>>.get_Item()
+  0x180D28CA4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CA9  lock or dword ptr [rsp], 0                        
+  0x180D28CAE  lea     rcx, [rip + 0x210fbe3]                       ; METHODINFO Method$System.Collections.Generic.List<Nullable<Vector3>>.get_Item()
+  0x180D28CB5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CBA  lock or dword ptr [rsp], 0                        
+  0x180D28CBF  lea     rcx, [rip + 0x2128ad2]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D28CC6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CCB  lock or dword ptr [rsp], 0                        
+  0x180D28CD0  lea     rcx, [rip + 0x210fbc9]                       ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180D28CD7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CDC  lock or dword ptr [rsp], 0                        
+  0x180D28CE1  lea     rcx, [rip + 0x210fba0]                       ; METHODINFO Method$System.Nullable<Vector3>.GetValueOrDefault()
+  0x180D28CE8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CED  lock or dword ptr [rsp], 0                        
+  0x180D28CF2  lea     rcx, [rip + 0x2105cff]                       ; METHODINFO Method$System.Nullable<EasingType>.GetValueOrDefault()
+  0x180D28CF9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28CFE  lock or dword ptr [rsp], 0                        
+  0x180D28D03  lea     rcx, [rip + 0x210fb86]                       ; METHODINFO Method$System.Nullable<Transition>..ctor()
+  0x180D28D0A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D0F  lock or dword ptr [rsp], 0                        
+  0x180D28D14  lea     rcx, [rip + 0x2105ce5]                       ; METHODINFO Method$System.Nullable<EasingType>.get_HasValue()
+  0x180D28D1B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D20  lock or dword ptr [rsp], 0                        
+  0x180D28D25  lea     rcx, [rip + 0x210fb4c]                       ; METHODINFO Method$System.Nullable<Vector3>.get_HasValue()
+  0x180D28D2C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D31  lock or dword ptr [rsp], 0                        
+  0x180D28D36  lea     rcx, [rip + 0x210fb43]                       ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180D28D3D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D42  lock or dword ptr [rsp], 0                        
+  0x180D28D47  lea     rcx, [rip + 0x2128a7a]                       ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D28D4E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D53  lock or dword ptr [rsp], 0                        
+  0x180D28D58  lea     rcx, [rip + 0x210fb09]                       ; TYPE Naninovel.TransitionUtils_TypeInfo
+  0x180D28D5F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D64  lock or dword ptr [rsp], 0                        
+  0x180D28D69  lea     rcx, [rip + 0x2129190]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D28D70  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D75  lock or dword ptr [rsp], 0                        
+  0x180D28D7A  lea     rcx, [rip + 0x2105c6f]                       ; STR 'Failed to parse `{0}` color to apply tint animation for `{1}` actor. See the API docs for supported color formats.'
+  0x180D28D81  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28D86  lock or dword ptr [rsp], 0                        
+  0x180D28D8B  mov     byte ptr [rip + 0x23b45bc], 1                ; data_30DD34E
+
+180D28D92:
+  0x180D28D92  xor     eax, eax                                  
+  0x180D28D94  mov     qword ptr [rbp], rax                      
+  0x180D28D98  mov     dword ptr [rbp + 8], eax                  
+  0x180D28D9B  xorps   xmm0, xmm0                                
+  0x180D28D9E  movups  xmmword ptr [rbp + 0x98], xmm0            
+  0x180D28DA5  movups  xmmword ptr [rbp + 0xa8], xmm0            
+  0x180D28DAC  mov     qword ptr [rbp + 0xb8], rax                  ; rbp->AnimateExtended._easingTypeNameForPosY
+  0x180D28DB3  movups  xmmword ptr [rbp + 0x80], xmm0            
+  0x180D28DBA  mov     qword ptr [rbp + 0x40], rax                  ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D28DBE  mov     eax, dword ptr [rsi]                      
+  0x180D28DC0  mov     r14, qword ptr [rsi + 0x18]                  ; rsi-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D28DC4  test    eax, eax                                  
+  0x180D28DC6  jne     0x180d28de1                               
+  0x180D28DC8  mov     rax, qword ptr [rsi + 0x40]                  ; rsi-><AnimateKey>d__7.<>u__1
+  0x180D28DCC  mov     qword ptr [rbp + 0x40], rax                  ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D28DD0  xor     eax, eax                                  
+  0x180D28DD2  mov     qword ptr [rsi + 0x40], rax                  ; rsi-><AnimateKey>d__7.<>u__1
+  0x180D28DD6  mov     dword ptr [rsi], 0xffffffff               
+  0x180D28DDC  jmp     0x180d2a5e7                               
+
+180D28DE1:
+  0x180D28DE1  test    r14, r14                                  
+  0x180D28DE4  je      0x180d2a7d9                               
+  0x180D28DEA  mov     r8, qword ptr [r14 + 0xc0]                   ; r14->AnimateExtended._tasks
+  0x180D28DF1  test    r8, r8                                    
+  0x180D28DF4  je      0x180d2a7d4                               
+  0x180D28DFA  mov     ecx, 3                                    
+  0x180D28DFF  mov     rdx, qword ptr [rip + 0x2142b8a]             ; TYPE System.Collections.Generic.ICollection<UniTask>_TypeInfo
+  0x180D28E06  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D28E0B  mov     rdx, qword ptr [r14]                      
+  0x180D28E0E  mov     rax, qword ptr [rdx + 0x258]              
+  0x180D28E15  mov     rdx, qword ptr [rdx + 0x260]              
+  0x180D28E1C  mov     rcx, r14                                  
+  0x180D28E1F  call    rax                                       
+  0x180D28E21  mov     rdi, rax                                  
+  0x180D28E24  mov     ebx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28E27  mov     rcx, qword ptr [rip + 0x210cb3a]             ; METHODINFO Method$Naninovel.LinqUtils.IsIndexValid<Nullable<float>>()
+  0x180D28E2E  cmp     qword ptr [rcx + 0x38], 0                 
+  0x180D28E33  jne     0x180d28e3a                               
+  0x180D28E35  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D28E3A:
+  0x180D28E3A  test    ebx, ebx                                  
+  0x180D28E3C  js      0x180d2a6c7                               
+  0x180D28E42  test    rdi, rdi                                  
+  0x180D28E45  je      0x180d2a7cf                               
+  0x180D28E4B  cmp     ebx, dword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D28E4E  jge     0x180d2a6c7                               
+  0x180D28E54  mov     rdx, qword ptr [r14]                      
+  0x180D28E57  mov     rax, qword ptr [rdx + 0x258]              
+  0x180D28E5E  mov     rdx, qword ptr [rdx + 0x260]              
+  0x180D28E65  mov     rcx, r14                                  
+  0x180D28E68  call    rax                                       
+  0x180D28E6A  test    rax, rax                                  
+  0x180D28E6D  je      0x180d2a7b6                               
+  0x180D28E73  mov     r9, qword ptr [rip + 0x210cafe]              ; METHODINFO Method$System.Collections.Generic.List<Nullable<float>>.get_Item()
+  0x180D28E7A  lea     r8, [rbp + 0x1b0]                         
+  0x180D28E81  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28E84  mov     rcx, rax                                  
+  0x180D28E87  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D28E8C  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D28E93  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D28E9A  mov     rdi, qword ptr [rip + 0x21288f7]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D28EA1  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28EA5  test    byte ptr [rax + 0x135], 1                 
+  0x180D28EAC  jne     0x180d28eb6                               
+  0x180D28EAE  mov     rcx, rax                                  
+  0x180D28EB1  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28EB6:
+  0x180D28EB6  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28EBD  mov     rcx, qword ptr [rax]                      
+  0x180D28EC0  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D28EC6  lea     rax, [rbx + 0xf]                          
+  0x180D28ECA  movabs  r12, 0xffffffffffffff0                    
+  0x180D28ED4  cmp     rax, rbx                                  
+  0x180D28ED7  ja      0x180d28edc                               
+  0x180D28ED9  mov     rax, r12                                  
+
+180D28EDC:
+  0x180D28EDC  and     rax, 0xfffffffffffffff0                   
+  0x180D28EE0  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D28EE5  sub     rsp, rax                                  
+  0x180D28EE8  lea     r15, [rsp + 0x40]                         
+  0x180D28EED  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28EF1  test    byte ptr [rax + 0x135], 1                 
+  0x180D28EF8  jne     0x180d28f02                               
+  0x180D28EFA  mov     rcx, rax                                  
+  0x180D28EFD  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28F02:
+  0x180D28F02  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28F09  mov     rcx, qword ptr [rax + 8]                  
+  0x180D28F0D  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D28F14  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D28F18  lea     rcx, [rbp + 0x1b8]                        
+  0x180D28F1F  add     rcx, rax                                  
+  0x180D28F22  mov     r8, rbx                                   
+  0x180D28F25  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><AnimateKey>d__7.asyncToken
+  0x180D28F29  lea     rdx, [rcx - 0x10]                         
+  0x180D28F2D  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D28F31  cmovge  rdx, rcx                                  
+  0x180D28F35  mov     rcx, r15                                  
+  0x180D28F38  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D28F3D  mov     r8, rbx                                   
+  0x180D28F40  mov     rdx, r15                                  
+  0x180D28F43  lea     rcx, [rbp + 0x30]                            ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D28F47  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D28F4C  mov     rdx, qword ptr [r14]                      
+  0x180D28F4F  mov     rax, qword ptr [rdx + 0x248]              
+  0x180D28F56  mov     rdx, qword ptr [rdx + 0x250]              
+  0x180D28F5D  mov     rcx, r14                                  
+  0x180D28F60  call    rax                                       
+  0x180D28F62  xor     r8d, r8d                                  
+  0x180D28F65  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28F68  mov     rcx, rax                                  
+  0x180D28F6B  call    0x180d28360                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseEasing
+  0x180D28F70  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D28F77  mov     rax, qword ptr [rip + 0x2105a82]             ; METHODINFO Method$System.Nullable<EasingType>.get_HasValue()
+  0x180D28F7E  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28F82  test    byte ptr [rax + 0x135], 1                 
+  0x180D28F89  jne     0x180d28f93                               
+  0x180D28F8B  mov     rcx, rax                                  
+  0x180D28F8E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28F93:
+  0x180D28F93  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28F9A  mov     rcx, qword ptr [rax + 8]                  
+  0x180D28F9E  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D28FA5  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D28FA9  lea     r8, [rbp + 0x1b8]                         
+  0x180D28FB0  add     r8, rax                                   
+  0x180D28FB3  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D28FB7  lea     rcx, [r8 - 0x10]                          
+  0x180D28FBB  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D28FBF  cmovge  rcx, r8                                   
+  0x180D28FC3  cmp     byte ptr [rcx], 0                         
+  0x180D28FC6  je      0x180d29087                               
+  0x180D28FCC  mov     rdi, qword ptr [rip + 0x2105a25]             ; METHODINFO Method$System.Nullable<EasingType>.GetValueOrDefault()
+  0x180D28FD3  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D28FD7  test    byte ptr [rax + 0x135], 1                 
+  0x180D28FDE  jne     0x180d28fe8                               
+  0x180D28FE0  mov     rcx, rax                                  
+  0x180D28FE3  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D28FE8:
+  0x180D28FE8  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D28FEF  mov     rcx, qword ptr [rax]                      
+  0x180D28FF2  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D28FF8  lea     rax, [rbx + 0xf]                          
+  0x180D28FFC  cmp     rax, rbx                                  
+  0x180D28FFF  ja      0x180d29004                               
+  0x180D29001  mov     rax, r12                                  
+
+180D29004:
+  0x180D29004  and     rax, 0xfffffffffffffff0                   
+  0x180D29008  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D2900D  sub     rsp, rax                                  
+  0x180D29010  lea     r15, [rsp + 0x40]                         
+  0x180D29015  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29019  test    byte ptr [rax + 0x135], 1                 
+  0x180D29020  jne     0x180d2902a                               
+  0x180D29022  mov     rcx, rax                                  
+  0x180D29025  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2902A:
+  0x180D2902A  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29031  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29035  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D2903C  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D29040  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29047  add     rcx, rax                                  
+  0x180D2904A  mov     r8, rbx                                   
+  0x180D2904D  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><AnimateKey>d__7.asyncToken
+  0x180D29051  lea     rdx, [rcx - 0x10]                         
+  0x180D29055  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29059  cmovge  rdx, rcx                                  
+  0x180D2905D  mov     rcx, r15                                  
+  0x180D29060  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D29065  mov     r8, rbx                                   
+  0x180D29068  mov     rdx, r15                                  
+  0x180D2906B  lea     rcx, [rbp + 0x1b0]                        
+  0x180D29072  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D29077  mov     r13d, dword ptr [rbp + 0x1b0]             
+  0x180D2907E  mov     dword ptr [rbp + 0x1b8], r13d             
+  0x180D29085  jmp     0x180d290a6                               
+
+180D29087:
+  0x180D29087  mov     rdx, qword ptr [r14]                      
+  0x180D2908A  mov     rax, qword ptr [rdx + 0x288]              
+  0x180D29091  mov     rdx, qword ptr [rdx + 0x290]              
+  0x180D29098  mov     rcx, r14                                  
+  0x180D2909B  call    rax                                       
+  0x180D2909D  mov     r13d, eax                                 
+  0x180D290A0  mov     dword ptr [rbp + 0x1b8], eax              
+
+180D290A6:
+  0x180D290A6  xor     r8d, r8d                                  
+  0x180D290A9  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D290AC  mov     rcx, qword ptr [r14 + 0xb0]                  ; r14->AnimateExtended._easingTypeNameForPosX
+  0x180D290B3  call    0x180d28360                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseEasing
+  0x180D290B8  mov     rbx, rax                                  
+  0x180D290BB  xor     r8d, r8d                                  
+  0x180D290BE  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D290C1  mov     rcx, qword ptr [r14 + 0xb8]                  ; r14->AnimateExtended._easingTypeNameForPosY
+  0x180D290C8  call    0x180d28360                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$ParseEasing
+  0x180D290CD  mov     rdi, rax                                  
+  0x180D290D0  movss   xmm10, dword ptr [rbp + 0x30]                ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D290D6  movss   dword ptr [rbp], xmm10                    
+  0x180D290DC  mov     dword ptr [rbp + 4], r13d                 
+  0x180D290E0  mov     word ptr [rbp + 8], 0x101                 
+  0x180D290E6  mov     rdx, qword ptr [r14]                      
+  0x180D290E9  mov     rax, qword ptr [rdx + 0x1b8]              
+  0x180D290F0  mov     rdx, qword ptr [rdx + 0x1c0]              
+  0x180D290F7  mov     rcx, r14                                  
+  0x180D290FA  call    rax                                       
+  0x180D290FC  mov     r9, qword ptr [rip + 0x21281ad]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D29103  lea     r8, [rbp + 0x1b0]                         
+  0x180D2910A  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2910D  mov     rcx, rax                                  
+  0x180D29110  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29115  cmp     qword ptr [rbp + 0x1b0], 0                
+  0x180D2911D  je      0x180d2930b                               
+  0x180D29123  mov     rdx, qword ptr [r14]                      
+  0x180D29126  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D2912D  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D29134  mov     rcx, r14                                  
+  0x180D29137  call    rax                                       
+  0x180D29139  mov     r9, qword ptr [rip + 0x2128170]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D29140  lea     r8, [rbp + 0x1b0]                         
+  0x180D29147  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2914A  mov     rcx, rax                                  
+  0x180D2914D  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29152  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29159  test    rax, rax                                  
+  0x180D2915C  je      0x180d291a5                               
+  0x180D2915E  cmp     dword ptr [rax + 0x10], 0                    ; rax-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29162  jbe     0x180d291a5                               
+  0x180D29164  mov     rdx, qword ptr [r14]                      
+  0x180D29167  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D2916E  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D29175  mov     rcx, r14                                  
+  0x180D29178  call    rax                                       
+  0x180D2917A  test    rax, rax                                  
+  0x180D2917D  je      0x180d2a742                               
+  0x180D29183  mov     r9, qword ptr [rip + 0x213072e]              ; METHODINFO Method$System.Collections.Generic.List<string>.get_Item()
+  0x180D2918A  lea     r8, [rbp + 0x1b0]                         
+  0x180D29191  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29194  mov     rcx, rax                                  
+  0x180D29197  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D2919C  mov     rdx, qword ptr [rbp + 0x1b0]              
+  0x180D291A3  jmp     0x180d291ce                               
+
+180D291A5:
+  0x180D291A5  mov     rax, qword ptr [rip + 0x210f6bc]             ; TYPE Naninovel.TransitionUtils_TypeInfo
+  0x180D291AC  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180D291B3  jne     0x180d291c4                               
+  0x180D291B5  mov     rcx, rax                                  
+  0x180D291B8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D291BD  mov     rax, qword ptr [rip + 0x210f6a4]             ; TYPE Naninovel.TransitionUtils_TypeInfo
+
+180D291C4:
+  0x180D291C4  mov     rax, qword ptr [rax + 0xb8]                  ; rax->AnimateExtended._easingTypeNameForPosY
+  0x180D291CB  mov     rdx, qword ptr [rax]                      
+
+180D291CE:
+  0x180D291CE  xorps   xmm0, xmm0                                
+  0x180D291D1  xor     eax, eax                                  
+  0x180D291D3  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D291D7  mov     dword ptr [rbp + 0x60], eax               
+  0x180D291DA  mov     qword ptr [rsp + 0x20], rax               
+  0x180D291DF  xor     r9d, r9d                                  
+  0x180D291E2  lea     r8, [rbp + 0x50]                          
+  0x180D291E6  lea     rcx, [rbp + 0x98]                         
+  0x180D291ED  call    0x1805e9060                                  ; -> Naninovel.Transition$$.ctor
+  0x180D291F2  mov     r15, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D291F9  mov     r12, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D291FD  mov     rdx, qword ptr [r14]                      
+  0x180D29200  mov     rax, qword ptr [rdx + 0x1b8]              
+  0x180D29207  mov     rdx, qword ptr [rdx + 0x1c0]              
+  0x180D2920E  mov     rcx, r14                                  
+  0x180D29211  call    rax                                       
+  0x180D29213  test    rax, rax                                  
+  0x180D29216  je      0x180d2a752                               
+  0x180D2921C  mov     r9, qword ptr [rip + 0x2130695]              ; METHODINFO Method$System.Collections.Generic.List<string>.get_Item()
+  0x180D29223  lea     r8, [rbp + 0x1b0]                         
+  0x180D2922A  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2922D  mov     rcx, rax                                  
+  0x180D29230  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D29235  xorps   xmm0, xmm0                                
+  0x180D29238  movups  xmmword ptr [rbp + 0xc0], xmm0               ; rbp->AnimateExtended._tasks
+  0x180D2923F  movups  xmmword ptr [rbp + 0xd0], xmm0            
+  0x180D29246  movups  xmmword ptr [rbp + 0xe0], xmm0            
+  0x180D2924D  movups  xmm0, xmmword ptr [rbp + 0x98]            
+  0x180D29254  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D29258  movups  xmm1, xmmword ptr [rbp + 0xa8]            
+  0x180D2925F  movaps  xmmword ptr [rbp + 0x60], xmm1            
+  0x180D29263  movsd   xmm0, qword ptr [rbp + 0xb8]                 ; rbp->AnimateExtended._easingTypeNameForPosY
+  0x180D2926B  movsd   qword ptr [rbp + 0x70], xmm0              
+  0x180D29270  mov     r8, qword ptr [rip + 0x210f619]              ; METHODINFO Method$System.Nullable<Transition>..ctor()
+  0x180D29277  lea     rdx, [rbp + 0x50]                         
+  0x180D2927B  lea     rcx, [rbp + 0xc0]                            ; rbp->AnimateExtended._tasks
+  0x180D29282  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180D29287  test    r12, r12                                  
+  0x180D2928A  je      0x180d2a74d                               
+  0x180D29290  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D29294  movaps  xmmword ptr [rbp + 0x20], xmm0               ; rbp-><>c.<>9__5_0
+  0x180D29298  movups  xmm1, xmmword ptr [rbp + 0xc0]               ; rbp->AnimateExtended._tasks
+  0x180D2929F  movaps  xmmword ptr [rbp + 0x50], xmm1            
+  0x180D292A3  movups  xmm0, xmmword ptr [rbp + 0xd0]            
+  0x180D292AA  movaps  xmmword ptr [rbp + 0x60], xmm0            
+  0x180D292AE  movups  xmm1, xmmword ptr [rbp + 0xe0]            
+  0x180D292B5  movaps  xmmword ptr [rbp + 0x70], xmm1            
+  0x180D292B9  movsd   xmm11, qword ptr [rbp]                    
+  0x180D292BF  movsd   qword ptr [rbp + 0x10], xmm11                ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D292C5  mov     eax, dword ptr [rbp + 8]                  
+  0x180D292C8  mov     dword ptr [rbp + 0x18], eax                  ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D292CB  lea     rax, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D292CF  mov     qword ptr [rsp + 0x30], rax               
+  0x180D292D4  lea     rax, [rbp + 0x50]                         
+  0x180D292D8  mov     qword ptr [rsp + 0x28], rax               
+  0x180D292DD  lea     rax, [rbp + 0x10]                            ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D292E1  mov     qword ptr [rsp + 0x20], rax               
+  0x180D292E6  mov     r9, qword ptr [rbp + 0x1b0]               
+  0x180D292ED  mov     r8, r12                                   
+  0x180D292F0  call    0x18001f310                                  ; -> sub_1F310 (runtime/helper)
+  0x180D292F5  test    r15, r15                                  
+  0x180D292F8  je      0x180d2a748                               
+  0x180D292FE  mov     r9, rax                                   
+  0x180D29301  mov     r8, r15                                   
+  0x180D29304  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+  0x180D29309  jmp     0x180d29311                               
+
+180D2930B:
+  0x180D2930B  movsd   xmm11, qword ptr [rbp]                    
+
+180D29311:
+  0x180D29311  mov     rdx, qword ptr [r14]                      
+  0x180D29314  mov     rax, qword ptr [rdx + 0x1d8]              
+  0x180D2931B  mov     rdx, qword ptr [rdx + 0x1e0]              
+  0x180D29322  mov     rcx, r14                                  
+  0x180D29325  call    rax                                       
+  0x180D29327  mov     r9, qword ptr [rip + 0x210f58a]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<bool>>()
+  0x180D2932E  lea     r8, [rbp + 0x1b0]                         
+  0x180D29335  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29338  mov     rcx, rax                                  
+  0x180D2933B  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29340  movzx   eax, word ptr [rbp + 0x1b0]               
+  0x180D29347  mov     word ptr [rbp + 0x1b0], ax                
+  0x180D2934E  mov     rax, qword ptr [rip + 0x210f52b]             ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180D29355  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29359  test    byte ptr [rax + 0x135], 1                 
+  0x180D29360  jne     0x180d2936a                               
+  0x180D29362  mov     rcx, rax                                  
+  0x180D29365  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2936A:
+  0x180D2936A  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29371  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29375  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2937C  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29380  lea     r8, [rbp + 0x1b0]                         
+  0x180D29387  add     r8, rax                                   
+  0x180D2938A  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2938E  lea     rcx, [r8 - 0x10]                          
+  0x180D29392  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29396  cmovge  rcx, r8                                   
+  0x180D2939A  cmp     byte ptr [rcx], 0                         
+  0x180D2939D  je      0x180d29589                               
+  0x180D293A3  mov     rax, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D293AA  mov     qword ptr [rbp + 0x10], rax                  ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D293AE  mov     rax, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D293B2  mov     qword ptr [rbp + 0x30], rax                  ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D293B6  mov     rdx, qword ptr [r14]                      
+  0x180D293B9  mov     rax, qword ptr [rdx + 0x1d8]              
+  0x180D293C0  mov     rdx, qword ptr [rdx + 0x1e0]              
+  0x180D293C7  mov     rcx, r14                                  
+  0x180D293CA  call    rax                                       
+  0x180D293CC  test    rax, rax                                  
+  0x180D293CF  je      0x180d2a761                               
+  0x180D293D5  mov     r9, qword ptr [rip + 0x210f4d4]              ; METHODINFO Method$System.Collections.Generic.List<Nullable<bool>>.get_Item()
+  0x180D293DC  lea     r8, [rbp + 0x1b0]                         
+  0x180D293E3  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D293E6  mov     rcx, rax                                  
+  0x180D293E9  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D293EE  movzx   eax, word ptr [rbp + 0x1b0]               
+  0x180D293F5  mov     word ptr [rbp + 0x1b0], ax                
+  0x180D293FC  mov     r13, qword ptr [rip + 0x210f49d]             ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180D29403  mov     rax, qword ptr [r13 + 0x20]                  ; r13-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29407  test    byte ptr [rax + 0x135], 1                 
+  0x180D2940E  jne     0x180d29418                               
+  0x180D29410  mov     rcx, rax                                  
+  0x180D29413  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29418:
+  0x180D29418  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2941F  mov     rcx, qword ptr [rax]                      
+  0x180D29422  mov     r15d, dword ptr [rcx + 0xfc]              
+  0x180D29429  lea     rax, [r15 + 0xf]                          
+  0x180D2942D  cmp     rax, r15                                  
+  0x180D29430  ja      0x180d2943c                               
+  0x180D29432  movabs  rax, 0xffffffffffffff0                    
+
+180D2943C:
+  0x180D2943C  and     rax, 0xfffffffffffffff0                   
+  0x180D29440  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D29445  sub     rsp, rax                                  
+  0x180D29448  lea     r12, [rsp + 0x40]                         
+  0x180D2944D  mov     rax, qword ptr [r13 + 0x20]                  ; r13-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29451  test    byte ptr [rax + 0x135], 1                 
+  0x180D29458  jne     0x180d29462                               
+  0x180D2945A  mov     rcx, rax                                  
+  0x180D2945D  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29462:
+  0x180D29462  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29469  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2946D  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D29474  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D29478  lea     rcx, [rbp + 0x1b0]                        
+  0x180D2947F  add     rcx, rax                                  
+  0x180D29482  mov     r8, r15                                   
+  0x180D29485  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><AnimateKey>d__7.asyncToken
+  0x180D29489  lea     rdx, [rcx - 0x10]                         
+  0x180D2948D  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29491  cmovge  rdx, rcx                                  
+  0x180D29495  mov     rcx, r12                                  
+  0x180D29498  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D2949D  mov     r8, r15                                   
+  0x180D294A0  mov     rdx, r12                                  
+  0x180D294A3  lea     rcx, [rbp + 0x1b0]                        
+  0x180D294AA  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D294AF  mov     r15, qword ptr [rbp + 0x30]                  ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D294B3  test    r15, r15                                  
+  0x180D294B6  je      0x180d2a75c                               
+  0x180D294BC  movups  xmm6, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D294C0  movss   dword ptr [rbp + 0x30], xmm10                ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D294C6  mov     rax, qword ptr [rbp]                      
+  0x180D294CA  shr     rax, 0x20                                 
+  0x180D294CE  mov     dword ptr [rbp + 0x34], eax               
+  0x180D294D1  mov     byte ptr [rbp + 0x38], 1                  
+  0x180D294D5  mov     eax, dword ptr [rbp + 8]                  
+  0x180D294D8  shr     eax, 8                                    
+  0x180D294DB  mov     byte ptr [rbp + 0x39], al                 
+  0x180D294DE  mov     eax, dword ptr [rbp + 8]                  
+  0x180D294E1  shr     eax, 0x10                                 
+  0x180D294E4  mov     word ptr [rbp + 0x3a], ax                 
+  0x180D294E8  mov     rdx, qword ptr [rip + 0x2128699]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D294EF  mov     r10, qword ptr [r15]                      
+  0x180D294F2  xor     eax, eax                                  
+  0x180D294F4  movzx   ecx, ax                                   
+  0x180D294F7  movzx   r8d, word ptr [r10 + 0x12e]               
+  0x180D294FF  cmp     ax, r8w                                   
+  0x180D29503  jae     0x180d29529                               
+  0x180D29505  mov     r9, qword ptr [r10 + 0xb0]                   ; r10->AnimateExtended._easingTypeNameForPosX
+  0x180D2950C  nop     dword ptr [rax]                           
+
+180D29510:
+  0x180D29510  movzx   eax, cx                                   
+  0x180D29513  add     rax, rax                                  
+  0x180D29516  cmp     qword ptr [r9 + rax*8], rdx               
+  0x180D2951A  je      0x180d2981d                               
+  0x180D29520  inc     cx                                        
+  0x180D29523  cmp     cx, r8w                                   
+  0x180D29527  jb      0x180d29510                               
+
+180D29529:
+  0x180D29529  mov     r8d, 0xf                                  
+  0x180D2952F  mov     rcx, r15                                  
+  0x180D29532  call    0x180243a20                                  ; resolve interface method slot
+
+180D29537:
+  0x180D29537  mov     r10, qword ptr [rax]                      
+  0x180D2953A  movdqa  xmmword ptr [rbp + 0x50], xmm6            
+  0x180D2953F  movsd   xmm0, qword ptr [rbp + 0x30]                 ; rbp-><AnimateKey>d__7.asyncToken
+  0x180D29544  movsd   qword ptr [rbp + 0x20], xmm0                 ; rbp-><>c.<>9__5_0
+  0x180D29549  mov     edx, dword ptr [rbp + 0x38]               
+  0x180D2954C  mov     dword ptr [rbp + 0x28], edx               
+  0x180D2954F  mov     rax, qword ptr [rax + 8]                  
+  0x180D29553  mov     qword ptr [rsp + 0x20], rax               
+  0x180D29558  lea     r9, [rbp + 0x50]                          
+  0x180D2955C  lea     r8, [rbp + 0x20]                             ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29560  movzx   edx, byte ptr [rbp + 0x1b0]               
+  0x180D29567  mov     rcx, r15                                  
+  0x180D2956A  call    r10                                       
+  0x180D2956D  mov     r8, qword ptr [rbp + 0x10]                   ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29571  test    r8, r8                                    
+  0x180D29574  je      0x180d2a757                               
+  0x180D2957A  mov     r9, rax                                   
+  0x180D2957D  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+  0x180D29582  mov     r13d, dword ptr [rbp + 0x1b8]             
+
+180D29589:
+  0x180D29589  mov     r15, qword ptr [rbp]                      
+  0x180D2958D  mov     rdx, qword ptr [r14]                      
+  0x180D29590  mov     rax, qword ptr [rdx + 0x1e8]              
+  0x180D29597  mov     rdx, qword ptr [rdx + 0x1f0]              
+  0x180D2959E  mov     rcx, r14                                  
+  0x180D295A1  call    rax                                       
+  0x180D295A3  mov     r9, qword ptr [rip + 0x21281fe]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D295AA  lea     r8, [rbp + 0x1b0]                         
+  0x180D295B1  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D295B4  mov     rcx, rax                                  
+  0x180D295B7  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D295BC  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D295C3  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D295CA  mov     rax, qword ptr [rip + 0x21281f7]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D295D1  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D295D5  test    byte ptr [rax + 0x135], 1                 
+  0x180D295DC  jne     0x180d295e6                               
+  0x180D295DE  mov     rcx, rax                                  
+  0x180D295E1  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D295E6:
+  0x180D295E6  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D295ED  mov     rcx, qword ptr [rax + 8]                  
+  0x180D295F1  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D295F8  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D295FC  lea     r8, [rbp + 0x1b8]                         
+  0x180D29603  add     r8, rax                                   
+  0x180D29606  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2960A  lea     rcx, [r8 - 0x10]                          
+  0x180D2960E  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29612  cmovge  rcx, r8                                   
+  0x180D29616  cmp     byte ptr [rcx], 0                         
+  0x180D29619  jne     0x180d29743                               
+  0x180D2961F  mov     rdx, qword ptr [r14]                      
+  0x180D29622  mov     rax, qword ptr [rdx + 0x1f8]              
+  0x180D29629  mov     rdx, qword ptr [rdx + 0x200]              
+  0x180D29630  mov     rcx, r14                                  
+  0x180D29633  call    rax                                       
+  0x180D29635  mov     r9, qword ptr [rip + 0x212816c]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D2963C  lea     r8, [rbp + 0x1b0]                         
+  0x180D29643  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29646  mov     rcx, rax                                  
+  0x180D29649  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2964E  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29655  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D2965C  mov     rax, qword ptr [rip + 0x2128165]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29663  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29667  test    byte ptr [rax + 0x135], 1                 
+  0x180D2966E  jne     0x180d29678                               
+  0x180D29670  mov     rcx, rax                                  
+  0x180D29673  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29678:
+  0x180D29678  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2967F  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29683  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2968A  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2968E  lea     r8, [rbp + 0x1b8]                         
+  0x180D29695  add     r8, rax                                   
+  0x180D29698  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2969C  lea     rcx, [r8 - 0x10]                          
+  0x180D296A0  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D296A4  cmovge  rcx, r8                                   
+  0x180D296A8  cmp     byte ptr [rcx], 0                         
+  0x180D296AB  jne     0x180d29743                               
+  0x180D296B1  mov     rdx, qword ptr [r14]                      
+  0x180D296B4  mov     rax, qword ptr [rdx + 0x208]              
+  0x180D296BB  mov     rdx, qword ptr [rdx + 0x210]              
+  0x180D296C2  mov     rcx, r14                                  
+  0x180D296C5  call    rax                                       
+  0x180D296C7  mov     r9, qword ptr [rip + 0x21280da]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D296CE  lea     r8, [rbp + 0x1b0]                         
+  0x180D296D5  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D296D8  mov     rcx, rax                                  
+  0x180D296DB  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D296E0  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D296E7  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D296EE  mov     rax, qword ptr [rip + 0x21280d3]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D296F5  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D296F9  test    byte ptr [rax + 0x135], 1                 
+  0x180D29700  jne     0x180d2970a                               
+  0x180D29702  mov     rcx, rax                                  
+  0x180D29705  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2970A:
+  0x180D2970A  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29711  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29715  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2971C  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29720  lea     r8, [rbp + 0x1b8]                         
+  0x180D29727  add     r8, rax                                   
+  0x180D2972A  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2972E  lea     rcx, [r8 - 0x10]                          
+  0x180D29732  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29736  cmovge  rcx, r8                                   
+  0x180D2973A  cmp     byte ptr [rcx], 0                         
+  0x180D2973D  je      0x180d29fa7                               
+
+180D29743:
+  0x180D29743  mov     rdx, qword ptr [rip + 0x210529e]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IPositionChangeableForEachCoordinateActor_TypeInfo
+  0x180D2974A  mov     rcx, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D2974E  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D29753  mov     r12, rax                                  
+  0x180D29756  mov     rdx, qword ptr [r14]                      
+  0x180D29759  mov     rcx, r14                                  
+  0x180D2975C  mov     rax, qword ptr [rdx + 0x1e8]              
+  0x180D29763  mov     rdx, qword ptr [rdx + 0x1f0]              
+  0x180D2976A  test    r12, r12                                  
+  0x180D2976D  jne     0x180d29b20                               
+  0x180D29773  mov     rdi, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D2977A  mov     rbx, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D2977E  call    rax                                       
+  0x180D29780  mov     r9, qword ptr [rip + 0x2128021]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29787  lea     r8, [rbp + 0x1b0]                         
+  0x180D2978E  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29791  mov     rcx, rax                                  
+  0x180D29794  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29799  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D297A0  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D297A7  mov     rax, qword ptr [rip + 0x212801a]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D297AE  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D297B2  test    byte ptr [rax + 0x135], 1                 
+  0x180D297B9  jne     0x180d297c3                               
+  0x180D297BB  mov     rcx, rax                                  
+  0x180D297BE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D297C3:
+  0x180D297C3  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D297CA  mov     rcx, qword ptr [rax + 8]                  
+  0x180D297CE  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D297D5  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D297D9  lea     r8, [rbp + 0x1b8]                         
+  0x180D297E0  add     r8, rax                                   
+  0x180D297E3  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D297E7  lea     rcx, [r8 - 0x10]                          
+  0x180D297EB  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D297EF  cmovge  rcx, r8                                   
+  0x180D297F3  cmp     byte ptr [rcx], 0                         
+  0x180D297F6  je      0x180d2983f                               
+  0x180D297F8  mov     r8, qword ptr [rip + 0x2127f99]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D297FF  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29806  lea     rcx, [rbp + 0x1b8]                        
+  0x180D2980D  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29812  movss   xmm9, dword ptr [rbp + 0x1b0]             
+  0x180D2981B  jmp     0x180d29866                               
+
+180D2981D:
+  0x180D2981D  movzx   ecx, cx                                   
+  0x180D29820  add     rcx, rcx                                  
+  0x180D29823  mov     eax, dword ptr [r9 + rcx*8 + 8]           
+  0x180D29828  add     eax, 0xf                                  
+  0x180D2982B  cdqe                                              
+  0x180D2982D  shl     rax, 4                                    
+  0x180D29831  add     rax, 0x138                                
+  0x180D29837  add     rax, r10                                  
+  0x180D2983A  jmp     0x180d29537                               
+
+180D2983F:
+  0x180D2983F  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D29843  test    r9, r9                                    
+  0x180D29846  je      0x180d2a77a                               
+  0x180D2984C  mov     edx, 5                                    
+  0x180D29851  mov     r8, qword ptr [rip + 0x2128330]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29858  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2985C  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D29861  movss   xmm9, dword ptr [rax]                     
+
+180D29866:
+  0x180D29866  mov     rdx, qword ptr [r14]                      
+  0x180D29869  mov     rax, qword ptr [rdx + 0x1f8]              
+  0x180D29870  mov     rdx, qword ptr [rdx + 0x200]              
+  0x180D29877  mov     rcx, r14                                  
+  0x180D2987A  call    rax                                       
+  0x180D2987C  mov     r9, qword ptr [rip + 0x2127f25]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29883  lea     r8, [rbp + 0x1b0]                         
+  0x180D2988A  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2988D  mov     rcx, rax                                  
+  0x180D29890  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29895  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D2989C  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D298A3  mov     rax, qword ptr [rip + 0x2127f1e]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D298AA  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D298AE  test    byte ptr [rax + 0x135], 1                 
+  0x180D298B5  jne     0x180d298bf                               
+  0x180D298B7  mov     rcx, rax                                  
+  0x180D298BA  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D298BF:
+  0x180D298BF  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D298C6  mov     rcx, qword ptr [rax + 8]                  
+  0x180D298CA  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D298D1  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D298D5  lea     r8, [rbp + 0x1b8]                         
+  0x180D298DC  add     r8, rax                                   
+  0x180D298DF  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D298E3  lea     rcx, [r8 - 0x10]                          
+  0x180D298E7  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D298EB  cmovge  rcx, r8                                   
+  0x180D298EF  cmp     byte ptr [rcx], 0                         
+  0x180D298F2  je      0x180d29918                               
+  0x180D298F4  mov     r8, qword ptr [rip + 0x2127e9d]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D298FB  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29902  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29909  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D2990E  movss   xmm7, dword ptr [rbp + 0x1b0]             
+  0x180D29916  jmp     0x180d2993f                               
+
+180D29918:
+  0x180D29918  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D2991C  test    r9, r9                                    
+  0x180D2991F  je      0x180d2a775                               
+  0x180D29925  mov     edx, 5                                    
+  0x180D2992A  mov     r8, qword ptr [rip + 0x2128257]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29931  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29935  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D2993A  movss   xmm7, dword ptr [rax + 4]                 
+
+180D2993F:
+  0x180D2993F  mov     rdx, qword ptr [r14]                      
+  0x180D29942  mov     rax, qword ptr [rdx + 0x208]              
+  0x180D29949  mov     rdx, qword ptr [rdx + 0x210]              
+  0x180D29950  mov     rcx, r14                                  
+  0x180D29953  call    rax                                       
+  0x180D29955  mov     r9, qword ptr [rip + 0x2127e4c]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D2995C  lea     r8, [rbp + 0x1b0]                         
+  0x180D29963  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29966  mov     rcx, rax                                  
+  0x180D29969  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2996E  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29975  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D2997C  mov     rax, qword ptr [rip + 0x2127e45]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29983  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29987  test    byte ptr [rax + 0x135], 1                 
+  0x180D2998E  jne     0x180d29998                               
+  0x180D29990  mov     rcx, rax                                  
+  0x180D29993  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29998:
+  0x180D29998  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2999F  mov     rcx, qword ptr [rax + 8]                  
+  0x180D299A3  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D299AA  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D299AE  lea     r8, [rbp + 0x1b8]                         
+  0x180D299B5  add     r8, rax                                   
+  0x180D299B8  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D299BC  lea     rcx, [r8 - 0x10]                          
+  0x180D299C0  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D299C4  cmovge  rcx, r8                                   
+  0x180D299C8  cmp     byte ptr [rcx], 0                         
+  0x180D299CB  je      0x180d299f1                               
+  0x180D299CD  mov     r8, qword ptr [rip + 0x2127dc4]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D299D4  lea     rdx, [rbp + 0x1b0]                        
+  0x180D299DB  lea     rcx, [rbp + 0x1b8]                        
+  0x180D299E2  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D299E7  movss   xmm6, dword ptr [rbp + 0x1b0]             
+  0x180D299EF  jmp     0x180d29a18                               
+
+180D299F1:
+  0x180D299F1  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D299F5  test    r9, r9                                    
+  0x180D299F8  je      0x180d2a770                               
+  0x180D299FE  mov     edx, 5                                    
+  0x180D29A03  mov     r8, qword ptr [rip + 0x212817e]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29A0A  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29A0E  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D29A13  movss   xmm6, dword ptr [rax + 8]                 
+
+180D29A18:
+  0x180D29A18  test    rbx, rbx                                  
+  0x180D29A1B  je      0x180d2a76b                               
+  0x180D29A21  movups  xmm8, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D29A26  movss   dword ptr [rbp + 0x10], xmm10                ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29A2C  mov     rax, r15                                  
+  0x180D29A2F  shr     rax, 0x20                                 
+  0x180D29A33  mov     dword ptr [rbp + 0x14], eax               
+  0x180D29A36  mov     byte ptr [rbp + 0x18], 1                     ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29A3A  mov     r12d, dword ptr [rbp + 8]                 
+  0x180D29A3E  mov     eax, r12d                                 
+  0x180D29A41  shr     eax, 8                                    
+  0x180D29A44  mov     byte ptr [rbp + 0x19], al                 
+  0x180D29A47  mov     eax, r12d                                 
+  0x180D29A4A  shr     eax, 0x10                                 
+  0x180D29A4D  mov     word ptr [rbp + 0x1a], ax                 
+  0x180D29A51  mov     rdx, qword ptr [rip + 0x2128130]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29A58  mov     r10, qword ptr [rbx]                      
+  0x180D29A5B  xor     eax, eax                                  
+  0x180D29A5D  movzx   ecx, ax                                   
+  0x180D29A60  movzx   r8d, word ptr [r10 + 0x12e]               
+  0x180D29A68  cmp     ax, r8w                                   
+  0x180D29A6C  jae     0x180d29a95                               
+  0x180D29A6E  mov     r9, qword ptr [r10 + 0xb0]                   ; r10->AnimateExtended._easingTypeNameForPosX
+  0x180D29A75  nop     word ptr [rax + rax]                      
+
+180D29A80:
+  0x180D29A80  movzx   eax, cx                                   
+  0x180D29A83  add     rax, rax                                  
+  0x180D29A86  cmp     qword ptr [r9 + rax*8], rdx               
+  0x180D29A8A  je      0x180d29b01                               
+  0x180D29A8C  inc     cx                                        
+  0x180D29A8F  cmp     cx, r8w                                   
+  0x180D29A93  jb      0x180d29a80                               
+
+180D29A95:
+  0x180D29A95  mov     r8d, 0x10                                 
+  0x180D29A9B  mov     rcx, rbx                                  
+  0x180D29A9E  call    0x180243a20                                  ; resolve interface method slot
+
+180D29AA3:
+  0x180D29AA3  mov     r10, qword ptr [rax]                      
+  0x180D29AA6  movdqa  xmmword ptr [rbp + 0x50], xmm8            
+  0x180D29AAC  movsd   xmm0, qword ptr [rbp + 0x10]                 ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29AB1  movsd   qword ptr [rbp + 0x20], xmm0                 ; rbp-><>c.<>9__5_0
+  0x180D29AB6  mov     edx, dword ptr [rbp + 0x18]                  ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29AB9  mov     dword ptr [rbp + 0x28], edx               
+  0x180D29ABC  movaps  xmm0, xmm9                                
+  0x180D29AC0  unpcklps xmm0, xmm7                                
+  0x180D29AC3  movsd   qword ptr [rbp + 0x10], xmm0                 ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29AC8  movss   dword ptr [rbp + 0x18], xmm6                 ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29ACD  mov     rax, qword ptr [rax + 8]                  
+  0x180D29AD1  mov     qword ptr [rsp + 0x20], rax               
+  0x180D29AD6  lea     r9, [rbp + 0x50]                          
+  0x180D29ADA  lea     r8, [rbp + 0x20]                             ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29ADE  lea     rdx, [rbp + 0x10]                            ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29AE2  mov     rcx, rbx                                  
+  0x180D29AE5  call    r10                                       
+  0x180D29AE8  test    rdi, rdi                                  
+  0x180D29AEB  je      0x180d2a766                               
+  0x180D29AF1  mov     r9, rax                                   
+  0x180D29AF4  mov     r8, rdi                                   
+  0x180D29AF7  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+  0x180D29AFC  jmp     0x180d29fab                               
+
+180D29B01:
+  0x180D29B01  movzx   ecx, cx                                   
+  0x180D29B04  add     rcx, rcx                                  
+  0x180D29B07  mov     eax, dword ptr [r9 + rcx*8 + 8]           
+  0x180D29B0C  add     eax, 0x10                                 
+  0x180D29B0F  cdqe                                              
+  0x180D29B11  shl     rax, 4                                    
+  0x180D29B15  add     rax, 0x138                                
+  0x180D29B1B  add     rax, r10                                  
+  0x180D29B1E  jmp     0x180d29aa3                               
+
+180D29B20:
+  0x180D29B20  call    rax                                       
+  0x180D29B22  mov     r9, qword ptr [rip + 0x2127c7f]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29B29  lea     r8, [rbp + 0x1b0]                         
+  0x180D29B30  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29B33  mov     rcx, rax                                  
+  0x180D29B36  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29B3B  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29B42  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29B49  mov     rax, qword ptr [rip + 0x2127c78]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29B50  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29B54  test    byte ptr [rax + 0x135], 1                 
+  0x180D29B5B  jne     0x180d29b65                               
+  0x180D29B5D  mov     rcx, rax                                  
+  0x180D29B60  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29B65:
+  0x180D29B65  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29B6C  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29B70  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D29B77  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29B7B  lea     r8, [rbp + 0x1b8]                         
+  0x180D29B82  add     r8, rax                                   
+  0x180D29B85  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29B89  lea     rcx, [r8 - 0x10]                          
+  0x180D29B8D  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29B91  cmovge  rcx, r8                                   
+  0x180D29B95  cmp     byte ptr [rcx], 0                         
+  0x180D29B98  je      0x180d29ca7                               
+  0x180D29B9E  mov     r15, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D29BA5  mov     rdx, qword ptr [r14]                      
+  0x180D29BA8  mov     rax, qword ptr [rdx + 0x1e8]              
+  0x180D29BAF  mov     rdx, qword ptr [rdx + 0x1f0]              
+  0x180D29BB6  mov     rcx, r14                                  
+  0x180D29BB9  call    rax                                       
+  0x180D29BBB  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29BBE  mov     rcx, rax                                  
+  0x180D29BC1  call    0x1800025a0                                  ; -> sub_25A0 (runtime/helper)
+  0x180D29BC6  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29BCD  mov     rdx, qword ptr [rip + 0x2127bf4]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29BD4  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29BDB  call    0x180002550                                  ; -> sub_2550 (runtime/helper)
+  0x180D29BE0  test    al, al                                    
+  0x180D29BE2  je      0x180d29c08                               
+  0x180D29BE4  mov     r8, qword ptr [rip + 0x2127bad]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D29BEB  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29BF2  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29BF9  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29BFE  movss   xmm6, dword ptr [rbp + 0x1b0]             
+  0x180D29C06  jmp     0x180d29c2e                               
+
+180D29C08:
+  0x180D29C08  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D29C0C  test    r9, r9                                    
+  0x180D29C0F  je      0x180d2a784                               
+  0x180D29C15  mov     edx, 5                                    
+  0x180D29C1A  mov     r8, qword ptr [rip + 0x2127f67]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29C21  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29C25  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D29C2A  movss   xmm6, dword ptr [rax]                     
+
+180D29C2E:
+  0x180D29C2E  mov     qword ptr [rbp + 0x1b8], rbx              
+  0x180D29C35  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29C3C  call    0x1800802d0                                  ; -> sub_802D0 (runtime/helper)
+  0x180D29C41  test    al, al                                    
+  0x180D29C43  je      0x180d29c67                               
+  0x180D29C45  mov     r8, qword ptr [rip + 0x2104dac]              ; METHODINFO Method$System.Nullable<EasingType>.GetValueOrDefault()
+  0x180D29C4C  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29C53  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29C5A  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29C5F  mov     eax, dword ptr [rbp + 0x1b0]              
+  0x180D29C65  jmp     0x180d29c6a                               
+
+180D29C67:
+  0x180D29C67  mov     eax, r13d                                 
+
+180D29C6A:
+  0x180D29C6A  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D29C6E  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D29C72  xor     ecx, ecx                                  
+  0x180D29C74  lea     rdx, [rbp + 0x50]                         
+  0x180D29C78  mov     qword ptr [rsp + 0x30], rdx               
+  0x180D29C7D  mov     dword ptr [rsp + 0x28], eax               
+  0x180D29C81  movss   dword ptr [rsp + 0x20], xmm10             
+  0x180D29C88  movaps  xmm3, xmm6                                
+  0x180D29C8B  mov     r8, r12                                   
+  0x180D29C8E  call    0x180080660                                  ; -> sub_80660 (runtime/helper)
+  0x180D29C93  test    r15, r15                                  
+  0x180D29C96  je      0x180d2a77f                               
+  0x180D29C9C  mov     r9, rax                                   
+  0x180D29C9F  mov     r8, r15                                   
+  0x180D29CA2  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+
+180D29CA7:
+  0x180D29CA7  mov     rdx, qword ptr [r14]                      
+  0x180D29CAA  mov     rax, qword ptr [rdx + 0x1f8]              
+  0x180D29CB1  mov     rdx, qword ptr [rdx + 0x200]              
+  0x180D29CB8  mov     rcx, r14                                  
+  0x180D29CBB  call    rax                                       
+  0x180D29CBD  mov     r9, qword ptr [rip + 0x2127ae4]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29CC4  lea     r8, [rbp + 0x1b0]                         
+  0x180D29CCB  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29CCE  mov     rcx, rax                                  
+  0x180D29CD1  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29CD6  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29CDD  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29CE4  mov     rax, qword ptr [rip + 0x2127add]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29CEB  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29CEF  test    byte ptr [rax + 0x135], 1                 
+  0x180D29CF6  jne     0x180d29d00                               
+  0x180D29CF8  mov     rcx, rax                                  
+  0x180D29CFB  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29D00:
+  0x180D29D00  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29D07  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29D0B  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D29D12  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29D16  lea     r8, [rbp + 0x1b8]                         
+  0x180D29D1D  add     r8, rax                                   
+  0x180D29D20  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29D24  lea     rcx, [r8 - 0x10]                          
+  0x180D29D28  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29D2C  cmovge  rcx, r8                                   
+  0x180D29D30  cmp     byte ptr [rcx], 0                         
+  0x180D29D33  je      0x180d29e46                               
+  0x180D29D39  mov     rbx, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D29D40  mov     rdx, qword ptr [r14]                      
+  0x180D29D43  mov     rax, qword ptr [rdx + 0x1f8]              
+  0x180D29D4A  mov     rdx, qword ptr [rdx + 0x200]              
+  0x180D29D51  mov     rcx, r14                                  
+  0x180D29D54  call    rax                                       
+  0x180D29D56  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29D59  mov     rcx, rax                                  
+  0x180D29D5C  call    0x1800025a0                                  ; -> sub_25A0 (runtime/helper)
+  0x180D29D61  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29D68  mov     rdx, qword ptr [rip + 0x2127a59]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29D6F  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29D76  call    0x180002550                                  ; -> sub_2550 (runtime/helper)
+  0x180D29D7B  test    al, al                                    
+  0x180D29D7D  je      0x180d29da3                               
+  0x180D29D7F  mov     r8, qword ptr [rip + 0x2127a12]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D29D86  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29D8D  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29D94  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29D99  movss   xmm6, dword ptr [rbp + 0x1b0]             
+  0x180D29DA1  jmp     0x180d29dca                               
+
+180D29DA3:
+  0x180D29DA3  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D29DA7  test    r9, r9                                    
+  0x180D29DAA  je      0x180d2a78e                               
+  0x180D29DB0  mov     edx, 5                                    
+  0x180D29DB5  mov     r8, qword ptr [rip + 0x2127dcc]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29DBC  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29DC0  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D29DC5  movss   xmm6, dword ptr [rax + 4]                 
+
+180D29DCA:
+  0x180D29DCA  mov     qword ptr [rbp + 0x1b8], rdi              
+  0x180D29DD1  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29DD8  call    0x1800802d0                                  ; -> sub_802D0 (runtime/helper)
+  0x180D29DDD  test    al, al                                    
+  0x180D29DDF  je      0x180d29e03                               
+  0x180D29DE1  mov     r8, qword ptr [rip + 0x2104c10]              ; METHODINFO Method$System.Nullable<EasingType>.GetValueOrDefault()
+  0x180D29DE8  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29DEF  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29DF6  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29DFB  mov     eax, dword ptr [rbp + 0x1b0]              
+  0x180D29E01  jmp     0x180d29e06                               
+
+180D29E03:
+  0x180D29E03  mov     eax, r13d                                 
+
+180D29E06:
+  0x180D29E06  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D29E0A  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D29E0E  mov     ecx, 1                                    
+  0x180D29E13  lea     rdx, [rbp + 0x50]                         
+  0x180D29E17  mov     qword ptr [rsp + 0x30], rdx               
+  0x180D29E1C  mov     dword ptr [rsp + 0x28], eax               
+  0x180D29E20  movss   dword ptr [rsp + 0x20], xmm10             
+  0x180D29E27  movaps  xmm3, xmm6                                
+  0x180D29E2A  mov     r8, r12                                   
+  0x180D29E2D  call    0x180080660                                  ; -> sub_80660 (runtime/helper)
+  0x180D29E32  test    rbx, rbx                                  
+  0x180D29E35  je      0x180d2a789                               
+  0x180D29E3B  mov     r9, rax                                   
+  0x180D29E3E  mov     r8, rbx                                   
+  0x180D29E41  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+
+180D29E46:
+  0x180D29E46  mov     rdx, qword ptr [r14]                      
+  0x180D29E49  mov     rax, qword ptr [rdx + 0x208]              
+  0x180D29E50  mov     rdx, qword ptr [rdx + 0x210]              
+  0x180D29E57  mov     rcx, r14                                  
+  0x180D29E5A  call    rax                                       
+  0x180D29E5C  mov     r9, qword ptr [rip + 0x2127945]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29E63  lea     r8, [rbp + 0x1b0]                         
+  0x180D29E6A  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29E6D  mov     rcx, rax                                  
+  0x180D29E70  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29E75  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29E7C  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29E83  mov     rax, qword ptr [rip + 0x212793e]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29E8A  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29E8E  test    byte ptr [rax + 0x135], 1                 
+  0x180D29E95  jne     0x180d29e9f                               
+  0x180D29E97  mov     rcx, rax                                  
+  0x180D29E9A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D29E9F:
+  0x180D29E9F  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D29EA6  mov     rcx, qword ptr [rax + 8]                  
+  0x180D29EAA  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D29EB1  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D29EB5  lea     r8, [rbp + 0x1b8]                         
+  0x180D29EBC  add     r8, rax                                   
+  0x180D29EBF  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D29EC3  lea     rcx, [r8 - 0x10]                          
+  0x180D29EC7  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D29ECB  cmovge  rcx, r8                                   
+  0x180D29ECF  cmp     byte ptr [rcx], 0                         
+  0x180D29ED2  je      0x180d29fa7                               
+  0x180D29ED8  mov     rbx, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D29EDF  mov     rdx, qword ptr [r14]                      
+  0x180D29EE2  mov     rax, qword ptr [rdx + 0x208]              
+  0x180D29EE9  mov     rdx, qword ptr [rdx + 0x210]              
+  0x180D29EF0  mov     rcx, r14                                  
+  0x180D29EF3  call    rax                                       
+  0x180D29EF5  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29EF8  mov     rcx, rax                                  
+  0x180D29EFB  call    0x1800025a0                                  ; -> sub_25A0 (runtime/helper)
+  0x180D29F00  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29F07  mov     rdx, qword ptr [rip + 0x21278ba]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29F0E  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29F15  call    0x180002550                                  ; -> sub_2550 (runtime/helper)
+  0x180D29F1A  test    al, al                                    
+  0x180D29F1C  je      0x180d29f42                               
+  0x180D29F1E  mov     r8, qword ptr [rip + 0x2127873]              ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D29F25  lea     rdx, [rbp + 0x1b0]                        
+  0x180D29F2C  lea     rcx, [rbp + 0x1b8]                        
+  0x180D29F33  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D29F38  movss   xmm3, dword ptr [rbp + 0x1b0]             
+  0x180D29F40  jmp     0x180d29f69                               
+
+180D29F42:
+  0x180D29F42  mov     r9, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D29F46  test    r9, r9                                    
+  0x180D29F49  je      0x180d2a798                               
+  0x180D29F4F  mov     edx, 5                                    
+  0x180D29F54  mov     r8, qword ptr [rip + 0x2127c2d]              ; TYPE Naninovel.IActor_TypeInfo
+  0x180D29F5B  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29F5F  call    0x1800039f0                                  ; -> sub_39F0 (runtime/helper)
+  0x180D29F64  movss   xmm3, dword ptr [rax + 8]                 
+
+180D29F69:
+  0x180D29F69  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D29F6D  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D29F71  mov     ecx, 2                                    
+  0x180D29F76  lea     rax, [rbp + 0x50]                         
+  0x180D29F7A  mov     qword ptr [rsp + 0x30], rax               
+  0x180D29F7F  mov     dword ptr [rsp + 0x28], r13d              
+  0x180D29F84  movss   dword ptr [rsp + 0x20], xmm10             
+  0x180D29F8B  mov     r8, r12                                   
+  0x180D29F8E  call    0x180080660                                  ; -> sub_80660 (runtime/helper)
+  0x180D29F93  test    rbx, rbx                                  
+  0x180D29F96  je      0x180d2a793                               
+  0x180D29F9C  mov     r9, rax                                   
+  0x180D29F9F  mov     r8, rbx                                   
+  0x180D29FA2  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+
+180D29FA7:
+  0x180D29FA7  mov     r12d, dword ptr [rbp + 8]                 
+
+180D29FAB:
+  0x180D29FAB  mov     rdx, qword ptr [r14]                      
+  0x180D29FAE  mov     rax, qword ptr [rdx + 0x218]              
+  0x180D29FB5  mov     rdx, qword ptr [rdx + 0x220]              
+  0x180D29FBC  mov     rcx, r14                                  
+  0x180D29FBF  call    rax                                       
+  0x180D29FC1  mov     r9, qword ptr [rip + 0x21277e0]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<float>>()
+  0x180D29FC8  lea     r8, [rbp + 0x1b0]                         
+  0x180D29FCF  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29FD2  mov     rcx, rax                                  
+  0x180D29FD5  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D29FDA  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D29FE1  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D29FE8  mov     rax, qword ptr [rip + 0x21277d9]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D29FEF  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D29FF3  test    byte ptr [rax + 0x135], 1                 
+  0x180D29FFA  jne     0x180d2a004                               
+  0x180D29FFC  mov     rcx, rax                                  
+  0x180D29FFF  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2A004:
+  0x180D2A004  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2A00B  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2A00F  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2A016  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2A01A  lea     r8, [rbp + 0x1b8]                         
+  0x180D2A021  add     r8, rax                                   
+  0x180D2A024  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A028  lea     rcx, [r8 - 0x10]                          
+  0x180D2A02C  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D2A030  cmovge  rcx, r8                                   
+  0x180D2A034  cmp     byte ptr [rcx], 0                         
+  0x180D2A037  je      0x180d2a189                               
+  0x180D2A03D  mov     r15, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D2A044  mov     r13, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D2A048  mov     rdx, qword ptr [r14]                      
+  0x180D2A04B  mov     rax, qword ptr [rdx + 0x218]              
+  0x180D2A052  mov     rdx, qword ptr [rdx + 0x220]              
+  0x180D2A059  mov     rcx, r14                                  
+  0x180D2A05C  call    rax                                       
+  0x180D2A05E  test    rax, rax                                  
+  0x180D2A061  je      0x180d2a7a2                               
+  0x180D2A067  mov     r9, qword ptr [rip + 0x210b90a]              ; METHODINFO Method$System.Collections.Generic.List<Nullable<float>>.get_Item()
+  0x180D2A06E  lea     r8, [rbp + 0x1b0]                         
+  0x180D2A075  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A078  mov     rcx, rax                                  
+  0x180D2A07B  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D2A080  mov     rax, qword ptr [rbp + 0x1b0]              
+  0x180D2A087  mov     qword ptr [rbp + 0x1b8], rax              
+  0x180D2A08E  mov     rbx, qword ptr [rip + 0x2127703]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D2A095  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A099  test    byte ptr [rax + 0x135], 1                 
+  0x180D2A0A0  jne     0x180d2a0aa                               
+  0x180D2A0A2  mov     rcx, rax                                  
+  0x180D2A0A5  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2A0AA:
+  0x180D2A0AA  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2A0B1  mov     rcx, qword ptr [rax]                      
+  0x180D2A0B4  mov     edi, dword ptr [rcx + 0xfc]               
+  0x180D2A0BA  lea     rax, [rdi + 0xf]                          
+  0x180D2A0BE  cmp     rax, rdi                                  
+  0x180D2A0C1  ja      0x180d2a0cd                               
+  0x180D2A0C3  movabs  rax, 0xffffffffffffff0                    
+
+180D2A0CD:
+  0x180D2A0CD  and     rax, 0xfffffffffffffff0                   
+  0x180D2A0D1  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D2A0D6  sub     rsp, rax                                  
+  0x180D2A0D9  lea     r12, [rsp + 0x40]                         
+  0x180D2A0DE  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A0E2  test    byte ptr [rax + 0x135], 1                 
+  0x180D2A0E9  jne     0x180d2a0f3                               
+  0x180D2A0EB  mov     rcx, rax                                  
+  0x180D2A0EE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2A0F3:
+  0x180D2A0F3  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2A0FA  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2A0FE  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D2A105  movsxd  rax, dword ptr [r9 + 0x38]                
+  0x180D2A109  lea     rcx, [rbp + 0x1b8]                        
+  0x180D2A110  add     rcx, rax                                  
+  0x180D2A113  mov     r8, rdi                                   
+  0x180D2A116  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><AnimateKey>d__7.asyncToken
+  0x180D2A11A  lea     rdx, [rcx - 0x10]                         
+  0x180D2A11E  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D2A122  cmovge  rdx, rcx                                  
+  0x180D2A126  mov     rcx, r12                                  
+  0x180D2A129  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D2A12E  mov     r8, rdi                                   
+  0x180D2A131  mov     rdx, r12                                  
+  0x180D2A134  lea     rcx, [rbp + 0x1b0]                        
+  0x180D2A13B  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D2A140  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D2A144  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D2A148  movsd   qword ptr [rbp + 0x20], xmm11                ; rbp-><>c.<>9__5_0
+  0x180D2A14E  mov     r12d, dword ptr [rbp + 8]                 
+  0x180D2A152  mov     dword ptr [rbp + 0x28], r12d              
+  0x180D2A156  xor     eax, eax                                  
+  0x180D2A158  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2A15D  lea     r9, [rbp + 0x50]                          
+  0x180D2A161  lea     r8, [rbp + 0x20]                             ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A165  movss   xmm1, dword ptr [rbp + 0x1b0]             
+  0x180D2A16D  mov     rcx, r13                                  
+  0x180D2A170  call    0x180447be0                                  ; -> Naninovel.ActorExtensions$$ChangeRotationZ
+  0x180D2A175  test    r15, r15                                  
+  0x180D2A178  je      0x180d2a79d                               
+  0x180D2A17E  mov     r9, rax                                   
+  0x180D2A181  mov     r8, r15                                   
+  0x180D2A184  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+
+180D2A189:
+  0x180D2A189  mov     rdx, qword ptr [r14]                      
+  0x180D2A18C  mov     rax, qword ptr [rdx + 0x228]              
+  0x180D2A193  mov     rdx, qword ptr [rdx + 0x230]              
+  0x180D2A19A  mov     rcx, r14                                  
+  0x180D2A19D  call    rax                                       
+  0x180D2A19F  mov     r9, qword ptr [rip + 0x210e71a]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<Nullable<Vector3>>()
+  0x180D2A1A6  lea     r8, [rbp + 0x50]                          
+  0x180D2A1AA  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A1AD  mov     rcx, rax                                  
+  0x180D2A1B0  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2A1B5  movaps  xmm0, xmmword ptr [rbp + 0x50]            
+  0x180D2A1B9  movdqa  xmmword ptr [rbp + 0x10], xmm0               ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A1BE  mov     rax, qword ptr [rip + 0x210e6b3]             ; METHODINFO Method$System.Nullable<Vector3>.get_HasValue()
+  0x180D2A1C5  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A1C9  test    byte ptr [rax + 0x135], 1                 
+  0x180D2A1D0  jne     0x180d2a1da                               
+  0x180D2A1D2  mov     rcx, rax                                  
+  0x180D2A1D5  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2A1DA:
+  0x180D2A1DA  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2A1E1  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2A1E5  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2A1EC  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2A1F0  lea     r8, [rbp + 0x10]                             ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A1F4  add     r8, rax                                   
+  0x180D2A1F7  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A1FB  lea     rcx, [r8 - 0x10]                          
+  0x180D2A1FF  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D2A203  cmovge  rcx, r8                                   
+  0x180D2A207  cmp     byte ptr [rcx], 0                         
+  0x180D2A20A  je      0x180d2a3c3                               
+  0x180D2A210  mov     r15, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D2A217  mov     rbx, qword ptr [rsi + 0x28]                  ; rsi-><AnimateKey>d__7.actor
+  0x180D2A21B  mov     rdx, qword ptr [r14]                      
+  0x180D2A21E  mov     rax, qword ptr [rdx + 0x228]              
+  0x180D2A225  mov     rdx, qword ptr [rdx + 0x230]              
+  0x180D2A22C  mov     rcx, r14                                  
+  0x180D2A22F  call    rax                                       
+  0x180D2A231  test    rax, rax                                  
+  0x180D2A234  je      0x180d2a7b1                               
+  0x180D2A23A  mov     r9, qword ptr [rip + 0x210e657]              ; METHODINFO Method$System.Collections.Generic.List<Nullable<Vector3>>.get_Item()
+  0x180D2A241  lea     r8, [rbp + 0x50]                          
+  0x180D2A245  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A248  mov     rcx, rax                                  
+  0x180D2A24B  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D2A250  movaps  xmm0, xmmword ptr [rbp + 0x50]            
+  0x180D2A254  movdqa  xmmword ptr [rbp + 0x10], xmm0               ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A259  mov     rax, qword ptr [rip + 0x210e618]             ; METHODINFO Method$System.Nullable<Vector3>.get_HasValue()
+  0x180D2A260  mov     rax, qword ptr [rax + 0x20]                  ; rax-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A264  test    byte ptr [rax + 0x135], 1                 
+  0x180D2A26B  jne     0x180d2a275                               
+  0x180D2A26D  mov     rcx, rax                                  
+  0x180D2A270  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D2A275:
+  0x180D2A275  mov     rax, qword ptr [rax + 0xc0]                  ; rax->AnimateExtended._tasks
+  0x180D2A27C  mov     rcx, qword ptr [rax + 8]                  
+  0x180D2A280  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D2A287  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2A28B  lea     r8, [rbp + 0x10]                             ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A28F  add     r8, rax                                   
+  0x180D2A292  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A296  lea     rcx, [r8 - 0x10]                          
+  0x180D2A29A  cmp     dword ptr [rax + 0x28], 0                 
+  0x180D2A29E  cmovge  rcx, r8                                   
+  0x180D2A2A2  cmp     byte ptr [rcx], 0                         
+  0x180D2A2A5  je      0x180d2a2c5                               
+  0x180D2A2A7  mov     r8, qword ptr [rip + 0x210e5da]              ; METHODINFO Method$System.Nullable<Vector3>.GetValueOrDefault()
+  0x180D2A2AE  lea     rdx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A2B2  lea     rcx, [rbp + 0x10]                            ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A2B6  call    0x1803321a0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$GetValueOrDefault
+  0x180D2A2BB  movsd   xmm6, qword ptr [rbp + 0x20]                 ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A2C0  mov     edi, dword ptr [rbp + 0x28]                  ; rbp-><AnimateKey>d__7.actor
+  0x180D2A2C3  jmp     0x180d2a2d5                               
+
+180D2A2C5:
+  0x180D2A2C5  lea     rcx, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A2C9  call    0x18046cc90                                  ; -> sub_46CC90 (runtime/helper)
+  0x180D2A2CE  movsd   xmm6, qword ptr [rax]                     
+  0x180D2A2D2  mov     edi, dword ptr [rax + 8]                  
+
+180D2A2D5:
+  0x180D2A2D5  test    rbx, rbx                                  
+  0x180D2A2D8  je      0x180d2a7ac                               
+  0x180D2A2DE  movups  xmm7, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D2A2E2  movss   dword ptr [rbp + 0x10], xmm10                ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A2E8  mov     rax, qword ptr [rbp]                      
+  0x180D2A2EC  shr     rax, 0x20                                 
+  0x180D2A2F0  mov     dword ptr [rbp + 0x14], eax               
+  0x180D2A2F3  mov     byte ptr [rbp + 0x18], 1                     ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2A2F7  mov     eax, r12d                                 
+  0x180D2A2FA  shr     eax, 8                                    
+  0x180D2A2FD  mov     byte ptr [rbp + 0x19], al                 
+  0x180D2A300  mov     eax, r12d                                 
+  0x180D2A303  shr     eax, 0x10                                 
+  0x180D2A306  mov     word ptr [rbp + 0x1a], ax                 
+  0x180D2A30A  mov     rdx, qword ptr [rip + 0x2127877]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D2A311  mov     r10, qword ptr [rbx]                      
+  0x180D2A314  xor     r13d, r13d                                
+  0x180D2A317  movzx   ecx, r13w                                 
+  0x180D2A31B  movzx   r8d, word ptr [r10 + 0x12e]               
+  0x180D2A323  cmp     r13w, r8w                                 
+  0x180D2A327  jae     0x180d2a345                               
+  0x180D2A329  mov     r9, qword ptr [r10 + 0xb0]                   ; r10->AnimateExtended._easingTypeNameForPosX
+
+180D2A330:
+  0x180D2A330  movzx   eax, cx                                   
+  0x180D2A333  add     rax, rax                                  
+  0x180D2A336  cmp     qword ptr [r9 + rax*8], rdx               
+  0x180D2A33A  je      0x180d2a3a4                               
+  0x180D2A33C  inc     cx                                        
+  0x180D2A33F  cmp     cx, r8w                                   
+  0x180D2A343  jb      0x180d2a330                               
+
+180D2A345:
+  0x180D2A345  mov     r8d, 0x12                                 
+  0x180D2A34B  mov     rcx, rbx                                  
+  0x180D2A34E  call    0x180243a20                                  ; resolve interface method slot
+
+180D2A353:
+  0x180D2A353  mov     r10, qword ptr [rax]                      
+  0x180D2A356  movdqa  xmmword ptr [rbp + 0x50], xmm7            
+  0x180D2A35B  movsd   xmm0, qword ptr [rbp + 0x10]                 ; rbp-><>c.<>9__4_1 | <>c__DisplayClass4_0.screenRect
+  0x180D2A360  movsd   qword ptr [rbp + 0x20], xmm0                 ; rbp-><>c.<>9__5_0
+  0x180D2A365  mov     edx, dword ptr [rbp + 0x18]                  ; rbp-><>c.<>9__4_2 | <AnimateKey>d__7.<>4__this
+  0x180D2A368  mov     dword ptr [rbp + 0x28], edx               
+  0x180D2A36B  movsd   qword ptr [rbp], xmm6                     
+  0x180D2A370  mov     dword ptr [rbp + 8], edi                  
+  0x180D2A373  mov     rax, qword ptr [rax + 8]                  
+  0x180D2A377  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2A37C  lea     r9, [rbp + 0x50]                          
+  0x180D2A380  lea     r8, [rbp + 0x20]                             ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A384  lea     rdx, [rbp]                                
+  0x180D2A388  mov     rcx, rbx                                  
+  0x180D2A38B  call    r10                                       
+  0x180D2A38E  test    r15, r15                                  
+  0x180D2A391  je      0x180d2a7a7                               
+  0x180D2A397  mov     r9, rax                                   
+  0x180D2A39A  mov     r8, r15                                   
+  0x180D2A39D  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+  0x180D2A3A2  jmp     0x180d2a3c6                               
+
+180D2A3A4:
+  0x180D2A3A4  movzx   ecx, cx                                   
+  0x180D2A3A7  add     rcx, rcx                                  
+  0x180D2A3AA  mov     eax, dword ptr [r9 + rcx*8 + 8]           
+  0x180D2A3AF  add     eax, 0x12                                 
+  0x180D2A3B2  cdqe                                              
+  0x180D2A3B4  shl     rax, 4                                    
+  0x180D2A3B8  add     rax, 0x138                                
+  0x180D2A3BE  add     rax, r10                                  
+  0x180D2A3C1  jmp     0x180d2a353                               
+
+180D2A3C3:
+  0x180D2A3C3  xor     r13d, r13d                                
+
+180D2A3C6:
+  0x180D2A3C6  mov     rdx, qword ptr [r14]                      
+  0x180D2A3C9  mov     rax, qword ptr [rdx + 0x238]              
+  0x180D2A3D0  mov     rdx, qword ptr [rdx + 0x240]              
+  0x180D2A3D7  mov     rcx, r14                                  
+  0x180D2A3DA  call    rax                                       
+  0x180D2A3DC  mov     r9, qword ptr [rip + 0x2126ecd]              ; METHODINFO Method$System.Linq.Enumerable.ElementAtOrDefault<string>()
+  0x180D2A3E3  lea     r8, [rbp + 0x1b0]                         
+  0x180D2A3EA  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A3ED  mov     rcx, rax                                  
+  0x180D2A3F0  call    0x180685f60                                  ; -> System.Linq.Enumerable$$ElementAtOrDefault<__Il2CppFullySharedGenericType>
+  0x180D2A3F5  cmp     qword ptr [rbp + 0x1b0], 0                
+  0x180D2A3FD  je      0x180d2a4c4                               
+  0x180D2A403  mov     rdx, qword ptr [r14]                      
+  0x180D2A406  mov     rax, qword ptr [rdx + 0x238]              
+  0x180D2A40D  mov     rdx, qword ptr [rdx + 0x240]              
+  0x180D2A414  mov     rcx, r14                                  
+  0x180D2A417  call    rax                                       
+  0x180D2A419  test    rax, rax                                  
+  0x180D2A41C  je      0x180d2a7ca                               
+  0x180D2A422  mov     r9, qword ptr [rip + 0x212f48f]              ; METHODINFO Method$System.Collections.Generic.List<string>.get_Item()
+  0x180D2A429  lea     r8, [rbp + 0x1b0]                         
+  0x180D2A430  mov     edx, dword ptr [rsi + 0x20]                  ; rsi-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A433  mov     rcx, rax                                  
+  0x180D2A436  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180D2A43B  xor     r8d, r8d                                  
+  0x180D2A43E  lea     rdx, [rbp + 0x80]                         
+  0x180D2A445  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x180D2A44C  call    0x18204bbb0                                  ; -> UnityEngine.ColorUtility$$TryParseHtmlString
+  0x180D2A451  test    al, al                                    
+  0x180D2A453  jne     0x180d2a65b                               
+  0x180D2A459  mov     rdx, qword ptr [r14]                      
+  0x180D2A45C  mov     rax, qword ptr [rdx + 0x238]              
+  0x180D2A463  mov     rdx, qword ptr [rdx + 0x240]              
+  0x180D2A46A  mov     rcx, r14                                  
+  0x180D2A46D  call    rax                                       
+  0x180D2A46F  mov     rbx, rax                                  
+  0x180D2A472  mov     r8, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D2A476  test    r8, r8                                    
+  0x180D2A479  je      0x180d2a7bb                               
+  0x180D2A47F  xor     ecx, ecx                                  
+  0x180D2A481  mov     rdx, qword ptr [rip + 0x2127700]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D2A488  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2A48D  xor     r9d, r9d                                  
+  0x180D2A490  mov     r8, rax                                   
+  0x180D2A493  mov     rdx, rbx                                  
+  0x180D2A496  mov     rcx, qword ptr [rip + 0x2104553]             ; STR 'Failed to parse `{0}` color to apply tint animation for `{1}` actor. See the API docs for supported color formats.'
+  0x180D2A49D  call    0x180e26f10                                  ; -> System.String$$Format
+  0x180D2A4A2  mov     rbx, rax                                  
+  0x180D2A4A5  mov     rcx, qword ptr [rip + 0x2127e34]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D2A4AC  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2A4B3  jne     0x180d2a4ba                               
+  0x180D2A4B5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2A4BA:
+  0x180D2A4BA  xor     edx, edx                                  
+  0x180D2A4BC  mov     rcx, rbx                                  
+  0x180D2A4BF  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+
+180D2A4C4:
+  0x180D2A4C4  mov     rbx, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D2A4CB  mov     rcx, qword ptr [rip + 0x2127a2e]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D2A4D2  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2A4D9  jne     0x180d2a4e0                               
+  0x180D2A4DB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2A4E0:
+  0x180D2A4E0  xor     edx, edx                                  
+  0x180D2A4E2  mov     rcx, rbx                                  
+  0x180D2A4E5  call    0x180514ef0                                  ; -> Naninovel.UniTask$$WhenAll
+  0x180D2A4EA  mov     qword ptr [rbp + 0x1b0], rax              
+  0x180D2A4F1  cmp     dword ptr [rip + 0x23aeccc], 0               ; data_30D91C4
+  0x180D2A4F8  je      0x180d2a53d                               
+  0x180D2A4FA  lea     r8, [rbp + 0x1b0]                         
+  0x180D2A501  shr     r8, 0xc                                   
+  0x180D2A505  and     r8d, 0x1fffff                             
+  0x180D2A50C  mov     edx, r8d                                  
+  0x180D2A50F  shr     rdx, 6                                    
+  0x180D2A513  lea     r9, [rip + 0x240a066]                        ; data_3134580
+  0x180D2A51A  and     r8d, 0x3f                                 
+  0x180D2A51E  prefetchw byte ptr [r9 + rdx*8]                     
+
+180D2A523:
+  0x180D2A523  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180D2A527  mov     rcx, rax                                  
+  0x180D2A52A  bts     rcx, r8                                   
+  0x180D2A52E  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180D2A534  jne     0x180d2a523                               
+  0x180D2A536  mov     rax, qword ptr [rbp + 0x1b0]              
+
+180D2A53D:
+  0x180D2A53D  mov     qword ptr [rbp + 0x40], rax                  ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D2A541  cmp     byte ptr [rip + 0x23b1780], 0                ; data_30DBCC8
+  0x180D2A548  jne     0x180d2a562                               
+  0x180D2A54A  lea     rcx, [rip + 0x21279af]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D2A551  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2A556  lock or dword ptr [rsp], 0                        
+  0x180D2A55B  mov     byte ptr [rip + 0x23b1766], 1                ; data_30DBCC8
+
+180D2A562:
+  0x180D2A562  mov     rcx, qword ptr [rip + 0x2127997]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D2A569  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2A570  jne     0x180d2a577                               
+  0x180D2A572  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2A577:
+  0x180D2A577  cmp     byte ptr [rip + 0x23b1728], 0                ; data_30DBCA6
+  0x180D2A57E  jne     0x180d2a598                               
+  0x180D2A580  lea     rcx, [rip + 0x2113429]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D2A587  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2A58C  lock or dword ptr [rsp], 0                        
+  0x180D2A591  mov     byte ptr [rip + 0x23b170e], 1                ; data_30DBCA6
+
+180D2A598:
+  0x180D2A598  mov     r8, qword ptr [rbp + 0x40]                   ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D2A59C  test    r8, r8                                    
+  0x180D2A59F  je      0x180d2a5e7                               
+  0x180D2A5A1  mov     ecx, 1                                    
+  0x180D2A5A6  mov     rdx, qword ptr [rip + 0x2113403]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D2A5AD  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2A5B2  test    al, al                                    
+  0x180D2A5B4  jne     0x180d2a5e7                               
+  0x180D2A5B6  mov     dword ptr [rsi], r13d                     
+  0x180D2A5B9  mov     rax, qword ptr [rbp + 0x40]                  ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D2A5BD  mov     qword ptr [rsi + 0x40], rax                  ; rsi-><AnimateKey>d__7.<>u__1
+  0x180D2A5C1  lea     rcx, [rsi + 0x40]                            ; rsi-><AnimateKey>d__7.<>u__1
+  0x180D2A5C5  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180D2A5CA  lea     rcx, [rsi + 8]                            
+  0x180D2A5CE  mov     r9, qword ptr [rip + 0x210440b]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, AnimateExtended.<AnimateKey>d__7>()
+  0x180D2A5D5  mov     r8, rsi                                   
+  0x180D2A5D8  lea     rdx, [rbp + 0x40]                            ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D2A5DC  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D2A5E1  nop                                               
+  0x180D2A5E2  jmp     0x180d2a6d8                               
+
+180D2A5E7:
+  0x180D2A5E7  cmp     byte ptr [rip + 0x23b16dc], 0                ; data_30DBCCA
+  0x180D2A5EE  jne     0x180d2a608                               
+  0x180D2A5F0  lea     rcx, [rip + 0x2127909]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D2A5F7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2A5FC  lock or dword ptr [rsp], 0                        
+  0x180D2A601  mov     byte ptr [rip + 0x23b16c2], 1                ; data_30DBCCA
+
+180D2A608:
+  0x180D2A608  mov     rcx, qword ptr [rip + 0x21278f1]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D2A60F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D2A616  jne     0x180d2a61d                               
+  0x180D2A618  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D2A61D:
+  0x180D2A61D  cmp     byte ptr [rip + 0x23b1683], 0                ; data_30DBCA7
+  0x180D2A624  jne     0x180d2a63e                               
+  0x180D2A626  lea     rcx, [rip + 0x2113383]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D2A62D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2A632  lock or dword ptr [rsp], 0                        
+  0x180D2A637  mov     byte ptr [rip + 0x23b1669], 1                ; data_30DBCA7
+
+180D2A63E:
+  0x180D2A63E  mov     r8, qword ptr [rbp + 0x40]                   ; rbp-><AnimateKey>d__7.<>u__1
+  0x180D2A642  test    r8, r8                                    
+  0x180D2A645  je      0x180d2a659                               
+  0x180D2A647  mov     ecx, 2                                    
+  0x180D2A64C  mov     rdx, qword ptr [rip + 0x211335d]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D2A653  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2A658  nop                                               
+
+180D2A659:
+  0x180D2A659  jmp     0x180d2a6c7                               
+
+180D2A65B:
+  0x180D2A65B  mov     rbx, qword ptr [r14 + 0xc0]                  ; r14->AnimateExtended._tasks
+  0x180D2A662  mov     r8, qword ptr [rsi + 0x28]                   ; rsi-><AnimateKey>d__7.actor
+  0x180D2A666  test    r8, r8                                    
+  0x180D2A669  je      0x180d2a7c5                               
+  0x180D2A66F  movups  xmm0, xmmword ptr [rsi + 0x30]               ; rsi-><AnimateKey>d__7.asyncToken
+  0x180D2A673  movaps  xmmword ptr [rbp + 0x50], xmm0            
+  0x180D2A677  movsd   qword ptr [rbp + 0x20], xmm11                ; rbp-><>c.<>9__5_0
+  0x180D2A67D  mov     dword ptr [rbp + 0x28], r12d              
+  0x180D2A681  movups  xmm0, xmmword ptr [rbp + 0x80]            
+  0x180D2A688  movdqa  xmmword ptr [rbp + 0x80], xmm0            
+  0x180D2A690  lea     rax, [rbp + 0x50]                         
+  0x180D2A694  mov     qword ptr [rsp + 0x28], rax               
+  0x180D2A699  lea     rax, [rbp + 0x20]                            ; rbp-><>c.<>9__5_0 | <AnimateKey>d__7.keyIndex
+  0x180D2A69D  mov     qword ptr [rsp + 0x20], rax               
+  0x180D2A6A2  lea     r9, [rbp + 0x80]                          
+  0x180D2A6A9  call    0x18001f160                                  ; -> sub_1F160 (runtime/helper)
+  0x180D2A6AE  test    rbx, rbx                                  
+  0x180D2A6B1  je      0x180d2a7c0                               
+  0x180D2A6B7  mov     r9, rax                                   
+  0x180D2A6BA  mov     r8, rbx                                   
+  0x180D2A6BD  call    0x180080050                                  ; -> sub_80050 (runtime/helper)
+  0x180D2A6C2  jmp     0x180d2a4c4                               
+
+180D2A6C7:
+  0x180D2A6C7  mov     dword ptr [rsi], 0xfffffffe               
+  0x180D2A6CD  lea     rcx, [rsi + 8]                            
+  0x180D2A6D1  xor     edx, edx                                  
+  0x180D2A6D3  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180D2A6D8:
+  0x180D2A6D8  mov     rbx, qword ptr [rbp + 0x1a8]              
+  0x180D2A6DF  movaps  xmm6, xmmword ptr [rbp + 0x150]           
+  0x180D2A6E6  movaps  xmm7, xmmword ptr [rbp + 0x140]           
+  0x180D2A6ED  movaps  xmm8, xmmword ptr [rbp + 0x130]           
+  0x180D2A6F5  movaps  xmm9, xmmword ptr [rbp + 0x120]           
+  0x180D2A6FD  movaps  xmm10, xmmword ptr [rbp + 0x110]          
+  0x180D2A705  movaps  xmm11, xmmword ptr [rbp + 0x100]          
+  0x180D2A70D  lea     rsp, [rbp + 0x160]                        
+  0x180D2A714  pop     r15                                       
+  0x180D2A716  pop     r14                                       
+  0x180D2A718  pop     r13                                       
+  0x180D2A71A  pop     r12                                       
+  0x180D2A71C  pop     rdi                                       
+  0x180D2A71D  pop     rsi                                       
+  0x180D2A71E  pop     rbp                                       
+  0x180D2A71F  ret                                               
+  0x180D2A720  mov     rcx, qword ptr [rbp + 0x1a0]              
+  0x180D2A727  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D2A72D  add     rcx, 8                                    
+  0x180D2A731  xor     r8d, r8d                                  
+  0x180D2A734  mov     rdx, qword ptr [rbp + 0x1b0]              
+  0x180D2A73B  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180D2A740  jmp     0x180d2a6d8                               
+
+180D2A742:
+  0x180D2A742  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D2A747  nop                                               
+
+180D2A748:
+  0x180D2A748  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A74D:
+  0x180D2A74D  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A752:
+  0x180D2A752  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A757:
+  0x180D2A757  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A75C:
+  0x180D2A75C  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A761:
+  0x180D2A761  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A766:
+  0x180D2A766  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A76B:
+  0x180D2A76B  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A770:
+  0x180D2A770  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A775:
+  0x180D2A775  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A77A:
+  0x180D2A77A  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A77F:
+  0x180D2A77F  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A784:
+  0x180D2A784  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A789:
+  0x180D2A789  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A78E:
+  0x180D2A78E  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A793:
+  0x180D2A793  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A798:
+  0x180D2A798  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A79D:
+  0x180D2A79D  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7A2:
+  0x180D2A7A2  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7A7:
+  0x180D2A7A7  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7AC:
+  0x180D2A7AC  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7B1:
+  0x180D2A7B1  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7B6:
+  0x180D2A7B6  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7BB:
+  0x180D2A7BB  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7C0:
+  0x180D2A7C0  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7C5:
+  0x180D2A7C5  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7CA:
+  0x180D2A7CA  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7CF:
+  0x180D2A7CF  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7D4:
+  0x180D2A7D4  call    0x180246730                                  ; THROW NullReferenceException
+
+180D2A7D9:
+  0x180D2A7D9  call    0x180246730                                  ; THROW NullReferenceException

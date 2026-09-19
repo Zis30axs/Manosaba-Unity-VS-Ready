@@ -1,0 +1,314 @@
+====================================================================================================
+FUNCTION RVA 0x9E7300  VA 0x1809E7300  size 0x44A (1098 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility.<GetDissolveTexture>d__6<object, object>$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility__GetDissolveTexture_d__6_object__object___MoveNext (GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility__GetDissolveTexture_d__6_TActor__TManager__o __this, const MethodInfo_9E7300* method);
+  fields of ModifyActorUtility.<GetDissolveTexture>d__6<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<Texture2D>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    name                           string
+      +0x0    ct                             CancellationToken
+      +0x0    <>u__1                         UniTask.Awaiter<Texture2D>
+  fields of ModifyActorUtility.<GetOrAddActor>d__9<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+  fields of ModifyActorUtility.<PreloadResources>d__7<TActor,:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x0    <>4__this                      ModifyActorUtility<TActor, TManager>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    appearance                     string
+      +0x0    holder                         object
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+      +0x0    <>u__2                         UniTask.Awaiter<Resource>
+====================================================================================================
+  0x1809E7300  mov     qword ptr [rsp + 8], rcx                  
+  0x1809E7305  push    rbp                                       
+  0x1809E7306  push    rdi                                       
+  0x1809E7307  push    r13                                       
+  0x1809E7309  push    r14                                       
+  0x1809E730B  push    r15                                       
+  0x1809E730D  sub     rsp, 0x90                                 
+  0x1809E7314  lea     rbp, [rsp + 0x30]                         
+  0x1809E7319  mov     qword ptr [rbp + 0x98], rbx               
+  0x1809E7320  mov     qword ptr [rbp + 0xa8], rsi               
+  0x1809E7327  mov     r13, rdx                                  
+  0x1809E732A  mov     rbx, rcx                                  
+  0x1809E732D  cmp     byte ptr [rip + 0x26f597a], 0                ; data_30DCCAE
+  0x1809E7334  jne     0x1809e73a3                               
+  0x1809E7336  lea     rcx, [rip + 0x246c423]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<Texture2D>.SetResult()
+  0x1809E733D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7342  lock or dword ptr [rsp], 0                        
+  0x1809E7347  lea     rcx, [rip + 0x2469ea2]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<Texture2D>.GetResult()
+  0x1809E734E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7353  lock or dword ptr [rsp], 0                        
+  0x1809E7358  lea     rcx, [rip + 0x2469e89]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<Texture2D>.get_IsCompleted()
+  0x1809E735F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7364  lock or dword ptr [rsp], 0                        
+  0x1809E7369  lea     rcx, [rip + 0x2469e70]                       ; METHODINFO Method$GigaCreation.Essentials.AddressablesUtils.IAddressableAssetLoader.GetOrLoadAddressableAsset<Texture2D>()
+  0x1809E7370  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7375  lock or dword ptr [rsp], 0                        
+  0x1809E737A  lea     rcx, [rip + 0x2469e57]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<Texture2D>.GetAwaiter()
+  0x1809E7381  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7386  lock or dword ptr [rsp], 0                        
+  0x1809E738B  lea     rcx, [rip + 0x2466dd6]                       ; STR 'General/Transitions/'
+  0x1809E7392  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7397  lock or dword ptr [rsp], 0                        
+  0x1809E739C  mov     byte ptr [rip + 0x26f590b], 1                ; data_30DCCAE
+
+1809E73A3:
+  0x1809E73A3  xorps   xmm0, xmm0                                
+  0x1809E73A6  xor     eax, eax                                  
+  0x1809E73A8  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809E73AC  mov     qword ptr [rbp + 0x20], rax               
+  0x1809E73B0  mov     eax, dword ptr [rbx]                      
+  0x1809E73B2  mov     rsi, qword ptr [rbx + 0x20]               
+  0x1809E73B6  test    eax, eax                                  
+  0x1809E73B8  jne     0x1809e73e4                               
+  0x1809E73BA  movups  xmm0, xmmword ptr [rbx + 0x38]            
+  0x1809E73BE  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809E73C2  movsd   xmm1, qword ptr [rbx + 0x48]              
+  0x1809E73C7  movsd   qword ptr [rbp + 0x20], xmm1              
+  0x1809E73CC  xorps   xmm0, xmm0                                
+  0x1809E73CF  xor     eax, eax                                  
+  0x1809E73D1  movups  xmmword ptr [rbx + 0x38], xmm0            
+  0x1809E73D5  mov     qword ptr [rbx + 0x48], rax               
+  0x1809E73D9  mov     dword ptr [rbx], 0xffffffff               
+  0x1809E73DF  jmp     0x1809e7627                               
+
+1809E73E4:
+  0x1809E73E4  test    rsi, rsi                                  
+  0x1809E73E7  je      0x1809e7745                               
+  0x1809E73ED  mov     rcx, qword ptr [r13 + 0x20]               
+  0x1809E73F1  test    byte ptr [rcx + 0x135], 1                 
+  0x1809E73F8  jne     0x1809e73ff                               
+  0x1809E73FA  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E73FF:
+  0x1809E73FF  cmp     byte ptr [rip + 0x26f5512], 0                ; data_30DC918
+  0x1809E7406  jne     0x1809e7431                               
+  0x1809E7408  lea     rcx, [rip + 0x2469e71]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x1809E740F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7414  lock or dword ptr [rsp], 0                        
+  0x1809E7419  lea     rcx, [rip + 0x246ad48]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x1809E7420  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7425  lock or dword ptr [rsp], 0                        
+  0x1809E742A  mov     byte ptr [rip + 0x26f54e7], 1                ; data_30DC918
+
+1809E7431:
+  0x1809E7431  mov     rdi, qword ptr [rsi + 0x18]               
+  0x1809E7435  test    rdi, rdi                                  
+  0x1809E7438  jne     0x1809e74bb                               
+  0x1809E743E  mov     rcx, qword ptr [rip + 0x246ad23]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x1809E7445  cmp     dword ptr [rcx + 0xe4], edi               
+  0x1809E744B  jne     0x1809e7452                               
+  0x1809E744D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809E7452:
+  0x1809E7452  mov     rdx, qword ptr [rip + 0x2469e27]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x1809E7459  mov     cl, 1                                     
+  0x1809E745B  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x1809E7460  mov     rdi, rax                                  
+  0x1809E7463  mov     qword ptr [rsi + 0x18], rax               
+  0x1809E7467  cmp     dword ptr [rip + 0x26f1d56], 0               ; data_30D91C4
+  0x1809E746E  je      0x1809e74bb                               
+  0x1809E7470  lea     r8, [rsi + 0x18]                          
+  0x1809E7474  shr     r8, 0xc                                   
+  0x1809E7478  and     r8d, 0x1fffff                             
+  0x1809E747F  mov     eax, r8d                                  
+  0x1809E7482  shr     rax, 6                                    
+  0x1809E7486  lea     r15, [rip + 0x2706e13]                       ; data_30EE2A0
+  0x1809E748D  lea     rdx, [r15 + rax*8]                        
+  0x1809E7491  and     r8d, 0x3f                                 
+  0x1809E7495  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809E749C  nop     dword ptr [rax]                           
+
+1809E74A0:
+  0x1809E74A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809E74A7  mov     rcx, rax                                  
+  0x1809E74AA  bts     rcx, r8                                   
+  0x1809E74AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809E74B7  jne     0x1809e74a0                               
+  0x1809E74B9  jmp     0x1809e74c2                               
+
+1809E74BB:
+  0x1809E74BB  lea     r15, [rip + 0x2706dde]                       ; data_30EE2A0
+
+1809E74C2:
+  0x1809E74C2  xor     r8d, r8d                                  
+  0x1809E74C5  mov     rdx, qword ptr [rbx + 0x28]               
+  0x1809E74C9  mov     rcx, qword ptr [rip + 0x2466c98]             ; STR 'General/Transitions/'
+  0x1809E74D0  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x1809E74D5  mov     rcx, qword ptr [rbx + 0x30]               
+  0x1809E74D9  test    rdi, rdi                                  
+  0x1809E74DC  je      0x1809e7740                               
+  0x1809E74E2  mov     qword ptr [rsp + 0x20], rcx               
+  0x1809E74E7  mov     r9, rax                                   
+  0x1809E74EA  mov     r8, rdi                                   
+  0x1809E74ED  lea     rcx, [rbp + 0x40]                         
+  0x1809E74F1  call    0x180003310                                  ; -> sub_3310 (runtime/helper)
+  0x1809E74F6  movups  xmm0, xmmword ptr [rax]                   
+  0x1809E74F9  movups  xmmword ptr [rbp + 0x28], xmm0            
+  0x1809E74FD  movsd   xmm1, qword ptr [rax + 0x10]              
+  0x1809E7502  movsd   qword ptr [rbp + 0x38], xmm1              
+  0x1809E7507  mov     r14, qword ptr [rip + 0x2469cca]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<Texture2D>.GetAwaiter()
+  0x1809E750E  mov     rax, qword ptr [r14 + 0x20]               
+  0x1809E7512  test    byte ptr [rax + 0x135], 1                 
+  0x1809E7519  jne     0x1809e7523                               
+  0x1809E751B  mov     rcx, rax                                  
+  0x1809E751E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E7523:
+  0x1809E7523  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809E752A  mov     rcx, qword ptr [rax + 0x20]               
+  0x1809E752E  mov     edi, dword ptr [rcx + 0xfc]               
+  0x1809E7534  lea     rax, [rdi + 0xf]                          
+  0x1809E7538  cmp     rax, rdi                                  
+  0x1809E753B  ja      0x1809e7547                               
+  0x1809E753D  movabs  rax, 0xffffffffffffff0                    
+
+1809E7547:
+  0x1809E7547  and     rax, 0xfffffffffffffff0                   
+  0x1809E754B  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809E7550  sub     rsp, rax                                  
+  0x1809E7553  lea     rsi, [rsp + 0x30]                         
+  0x1809E7558  mov     r8, rdi                                   
+  0x1809E755B  xor     edx, edx                                  
+  0x1809E755D  mov     rcx, rsi                                  
+  0x1809E7560  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809E7565  mov     rax, qword ptr [r14 + 0x20]               
+  0x1809E7569  test    byte ptr [rax + 0x135], 1                 
+  0x1809E7570  jne     0x1809e757a                               
+  0x1809E7572  mov     rcx, rax                                  
+  0x1809E7575  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E757A:
+  0x1809E757A  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809E7581  mov     r8, qword ptr [r8 + 0x28]                 
+  0x1809E7585  lea     rdx, [rbp + 0x28]                         
+  0x1809E7589  mov     rcx, rsi                                  
+  0x1809E758C  call    0x180002850                                  ; -> sub_2850 (runtime/helper)
+  0x1809E7591  mov     r8, rdi                                   
+  0x1809E7594  mov     rdx, rsi                                  
+  0x1809E7597  lea     rcx, [rbp + 0x28]                         
+  0x1809E759B  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809E75A0  movups  xmm0, xmmword ptr [rbp + 0x28]            
+  0x1809E75A4  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809E75A8  movsd   xmm1, qword ptr [rbp + 0x38]              
+  0x1809E75AD  movsd   qword ptr [rbp + 0x20], xmm1              
+  0x1809E75B2  mov     rdi, qword ptr [rip + 0x2469c2f]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<Texture2D>.get_IsCompleted()
+  0x1809E75B9  mov     rax, qword ptr [rdi + 0x20]               
+  0x1809E75BD  test    byte ptr [rax + 0x135], 1                 
+  0x1809E75C4  jne     0x1809e75ce                               
+  0x1809E75C6  mov     rcx, rax                                  
+  0x1809E75C9  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E75CE:
+  0x1809E75CE  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809E75D5  mov     rsi, qword ptr [rax + 0x18]               
+  0x1809E75D9  mov     rax, qword ptr [rdi + 0x20]               
+  0x1809E75DD  test    byte ptr [rax + 0x135], 1                 
+  0x1809E75E4  jne     0x1809e75ee                               
+  0x1809E75E6  mov     rcx, rax                                  
+  0x1809E75E9  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E75EE:
+  0x1809E75EE  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809E75F5  mov     rcx, qword ptr [rax + 0x10]               
+  0x1809E75F9  mov     r8, qword ptr [rcx + 0x80]                
+  0x1809E7600  movsxd  rax, dword ptr [r8 + 0x18]                
+  0x1809E7604  lea     r9, [rbp + 0x10]                          
+  0x1809E7608  add     r9, rax                                   
+  0x1809E760B  mov     rax, qword ptr [r8 + 0x10]                
+  0x1809E760F  lea     rcx, [r9 - 0x10]                          
+  0x1809E7613  cmp     dword ptr [rax + 0x28], 0                 
+  0x1809E7617  cmovge  rcx, r9                                   
+  0x1809E761B  mov     rdx, rsi                                  
+  0x1809E761E  call    0x180002920                                  ; -> sub_2920 (runtime/helper)
+  0x1809E7623  test    eax, eax                                  
+  0x1809E7625  je      0x1809e7677                               
+
+1809E7627:
+  0x1809E7627  mov     r8, qword ptr [rip + 0x2469bc2]              ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<Texture2D>.GetResult()
+  0x1809E762E  lea     rdx, [rbp + 0xa0]                         
+  0x1809E7635  lea     rcx, [rbp + 0x10]                         
+  0x1809E7639  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x1809E763E  nop                                               
+  0x1809E763F  mov     dword ptr [rbx], 0xfffffffe               
+  0x1809E7645  lea     rcx, [rbx + 8]                            
+  0x1809E7649  mov     r8, qword ptr [rip + 0x246c110]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<Texture2D>.SetResult()
+  0x1809E7650  mov     rdx, qword ptr [rbp + 0xa0]               
+  0x1809E7657  call    0x180be4d50                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetResult
+
+1809E765C:
+  0x1809E765C  mov     rbx, qword ptr [rbp + 0x98]               
+  0x1809E7663  mov     rsi, qword ptr [rbp + 0xa8]               
+  0x1809E766A  lea     rsp, [rbp + 0x60]                         
+  0x1809E766E  pop     r15                                       
+  0x1809E7670  pop     r14                                       
+  0x1809E7672  pop     r13                                       
+  0x1809E7674  pop     rdi                                       
+  0x1809E7675  pop     rbp                                       
+  0x1809E7676  ret                                               
+
+1809E7677:
+  0x1809E7677  mov     dword ptr [rbx], 0                        
+  0x1809E767D  movups  xmm0, xmmword ptr [rbp + 0x10]            
+  0x1809E7681  movups  xmmword ptr [rbx + 0x38], xmm0            
+  0x1809E7685  movsd   xmm1, qword ptr [rbp + 0x20]              
+  0x1809E768A  movsd   qword ptr [rbx + 0x48], xmm1              
+  0x1809E768F  cmp     dword ptr [rip + 0x26f1b2e], 0               ; data_30D91C4
+  0x1809E7696  je      0x1809e76d9                               
+  0x1809E7698  lea     r8, [rbx + 0x38]                          
+  0x1809E769C  shr     r8, 0xc                                   
+  0x1809E76A0  and     r8d, 0x1fffff                             
+  0x1809E76A7  mov     eax, r8d                                  
+  0x1809E76AA  shr     rax, 6                                    
+  0x1809E76AE  lea     rdx, [r15 + rax*8]                        
+  0x1809E76B2  and     r8d, 0x3f                                 
+  0x1809E76B6  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809E76BD  nop     dword ptr [rax]                           
+
+1809E76C0:
+  0x1809E76C0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809E76C7  mov     rcx, rax                                  
+  0x1809E76CA  bts     rcx, r8                                   
+  0x1809E76CE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809E76D7  jne     0x1809e76c0                               
+
+1809E76D9:
+  0x1809E76D9  mov     rax, qword ptr [r13 + 0x20]               
+  0x1809E76DD  test    byte ptr [rax + 0x135], 1                 
+  0x1809E76E4  jne     0x1809e76ee                               
+  0x1809E76E6  mov     rcx, rax                                  
+  0x1809E76E9  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809E76EE:
+  0x1809E76EE  mov     r9, qword ptr [rax + 0xc0]                
+  0x1809E76F5  mov     r9, qword ptr [r9 + 0x18]                 
+  0x1809E76F9  mov     r8, rbx                                   
+  0x1809E76FC  lea     rdx, [rbp + 0x10]                         
+  0x1809E7700  lea     rcx, [rbx + 8]                            
+  0x1809E7704  call    0x18063d2d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x1809E7709  nop                                               
+  0x1809E770A  jmp     0x1809e765c                               
+  0x1809E770F  mov     rbx, qword ptr [rbp + 0x90]               
+  0x1809E7716  mov     dword ptr [rbx], 0xfffffffe               
+  0x1809E771C  lea     rcx, [rip + 0x246bfad]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<Texture2D>.SetException()
+  0x1809E7723  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809E7728  lea     rcx, [rbx + 8]                            
+  0x1809E772C  mov     r8, rax                                   
+  0x1809E772F  mov     rdx, qword ptr [rbp + 0xa0]               
+  0x1809E7736  call    0x180be4af0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetException
+  0x1809E773B  jmp     0x1809e765c                               
+
+1809E7740:
+  0x1809E7740  call    0x180246730                                  ; THROW NullReferenceException
+
+1809E7745:
+  0x1809E7745  call    0x180246730                                  ; THROW NullReferenceException

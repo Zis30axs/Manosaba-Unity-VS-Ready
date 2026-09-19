@@ -1,0 +1,117 @@
+====================================================================================================
+FUNCTION RVA 0x87CB00  VA 0x18087CB00  size 0x160 (352 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.MultipliableActorManagerUtility<__Il2CppFullySharedGenericType>$$CreatePendingAddActorTask
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_MultipliableActorManagerUtility___Il2CppFullySharedGenericType___CreatePendingAddActorTask (GigaCreation_NaninovelExtender_ExtendedActors_MultipliableActorManagerUtility_TActor__o* __this, System_String_o* actorId, System_String_o* subId, const MethodInfo_87CB00* method);
+  fields of MultipliableActorManagerUtility.<WaitForCompletionOfPendingAddActorAsync>d__2<TActor>:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<TActor>
+      +0x0    <>4__this                      MultipliableActorManagerUtility<TActor>
+      +0x0    actorId                        string
+      +0x0    subId                          string
+      +0x0    <>u__1                         UniTask.Awaiter<TActor>
+====================================================================================================
+  0x18087CB00  mov     qword ptr [rsp + 8], rbx                  
+  0x18087CB05  mov     qword ptr [rsp + 0x10], rbp               
+  0x18087CB0A  mov     qword ptr [rsp + 0x18], rsi               
+  0x18087CB0F  push    rdi                                       
+  0x18087CB10  sub     rsp, 0x40                                 
+  0x18087CB14  cmp     byte ptr [rip + 0x28607d4], 0                ; data_30DD2EF
+  0x18087CB1B  mov     rdi, r9                                   
+  0x18087CB1E  mov     rsi, qword ptr [rcx + 0x10]               
+  0x18087CB22  mov     rbx, r8                                   
+  0x18087CB25  mov     rbp, rdx                                  
+  0x18087CB28  jne     0x18087cb42                               
+  0x18087CB2A  lea     rcx, [rip + 0x25d4daf]                       ; STR '-'
+  0x18087CB31  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18087CB36  lock or dword ptr [rsp], 0                        
+  0x18087CB3B  mov     byte ptr [rip + 0x28607ad], 1                ; data_30DD2EF
+
+18087CB42:
+  0x18087CB42  test    rbx, rbx                                  
+  0x18087CB45  je      0x18087cb65                               
+  0x18087CB47  cmp     dword ptr [rbx + 0x10], 0                 
+  0x18087CB4B  jbe     0x18087cb65                               
+  0x18087CB4D  mov     rdx, qword ptr [rip + 0x25d4d8c]             ; STR '-'
+  0x18087CB54  xor     r9d, r9d                                  
+  0x18087CB57  mov     r8, rbx                                   
+  0x18087CB5A  mov     rcx, rbp                                  
+  0x18087CB5D  call    0x180e267a0                                  ; -> System.String$$Concat
+  0x18087CB62  mov     rbp, rax                                  
+
+18087CB65:
+  0x18087CB65  mov     rax, qword ptr [rdi + 0x20]               
+  0x18087CB69  mov     rcx, qword ptr [rax + 0xc0]               
+  0x18087CB70  mov     rax, qword ptr [rcx + 0x58]               
+  0x18087CB74  test    byte ptr [rax + 0x135], 1                 
+  0x18087CB7B  jne     0x18087cb85                               
+  0x18087CB7D  mov     rcx, rax                                  
+  0x18087CB80  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+18087CB85:
+  0x18087CB85  mov     rcx, rax                                  
+  0x18087CB88  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x18087CB8D  mov     rbx, rax                                  
+  0x18087CB90  test    rsi, rsi                                  
+  0x18087CB93  je      0x18087cc5b                               
+  0x18087CB99  mov     rcx, qword ptr [rdi + 0x20]               
+  0x18087CB9D  mov     rdx, qword ptr [rcx + 0xc0]               
+  0x18087CBA4  mov     rdx, qword ptr [rdx + 8]                  
+  0x18087CBA8  test    byte ptr [rdx + 0x135], 1                 
+  0x18087CBAF  jne     0x18087cbbc                               
+  0x18087CBB1  mov     rcx, rdx                                  
+  0x18087CBB4  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x18087CBB9  mov     rdx, rax                                  
+
+18087CBBC:
+  0x18087CBBC  mov     r10, qword ptr [rsi]                      
+  0x18087CBBF  xor     ecx, ecx                                  
+  0x18087CBC1  movzx   r8d, word ptr [r10 + 0x12e]               
+  0x18087CBC9  cmp     cx, r8w                                   
+  0x18087CBCD  jae     0x18087cbf5                               
+  0x18087CBCF  mov     r9, qword ptr [r10 + 0xb0]                
+  0x18087CBD6  nop     word ptr [rax + rax]                      
+
+18087CBE0:
+  0x18087CBE0  movzx   eax, cx                                   
+  0x18087CBE3  add     rax, rax                                  
+  0x18087CBE6  cmp     qword ptr [r9 + rax*8], rdx               
+  0x18087CBEA  je      0x18087cc3d                               
+  0x18087CBEC  inc     cx                                        
+  0x18087CBEF  cmp     cx, r8w                                   
+  0x18087CBF3  jb      0x18087cbe0                               
+
+18087CBF5:
+  0x18087CBF5  mov     r8d, 1                                    
+  0x18087CBFB  mov     rcx, rsi                                  
+  0x18087CBFE  call    0x180243a20                                  ; resolve interface method slot
+
+18087CC03:
+  0x18087CC03  mov     qword ptr [rsp + 0x30], rbp               
+  0x18087CC08  lea     r9, [rsp + 0x30]                          
+  0x18087CC0D  mov     qword ptr [rsp + 0x38], rbx               
+  0x18087CC12  mov     r8, rsi                                   
+  0x18087CC15  mov     rdx, qword ptr [rax + 8]                  
+  0x18087CC19  mov     qword ptr [rsp + 0x20], rbx               
+  0x18087CC1E  mov     rax, qword ptr [rdx + 0x10]               
+  0x18087CC22  mov     rcx, qword ptr [rdx + 8]                  
+  0x18087CC26  call    rax                                       
+  0x18087CC28  mov     rbx, qword ptr [rsp + 0x50]               
+  0x18087CC2D  mov     rbp, qword ptr [rsp + 0x58]               
+  0x18087CC32  mov     rsi, qword ptr [rsp + 0x60]               
+  0x18087CC37  add     rsp, 0x40                                 
+  0x18087CC3B  pop     rdi                                       
+  0x18087CC3C  ret                                               
+
+18087CC3D:
+  0x18087CC3D  movzx   ecx, cx                                   
+  0x18087CC40  add     rcx, rcx                                  
+  0x18087CC43  mov     eax, dword ptr [r9 + rcx*8 + 8]           
+  0x18087CC48  inc     eax                                       
+  0x18087CC4A  cdqe                                              
+  0x18087CC4C  shl     rax, 4                                    
+  0x18087CC50  add     rax, 0x138                                
+  0x18087CC56  add     rax, r10                                  
+  0x18087CC59  jmp     0x18087cc03                               
+
+18087CC5B:
+  0x18087CC5B  call    0x180246730                                  ; THROW NullReferenceException

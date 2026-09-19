@@ -1,0 +1,73 @@
+====================================================================================================
+FUNCTION RVA 0xD1E410  VA 0x180D1E410  size 0xF3 (243 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended$$get_Masked
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended$$IsMasked
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_SpriteBackgroundExtended__get_Masked (GigaCreation_NaninovelExtender_ExtendedActors_SpriteBackgroundExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended :: public bool get_Masked()
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended :: private bool IsMasked()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended:
+      +0xB8   <SubId>k__BackingField         readonly string
+====================================================================================================
+  0x180D1E410  push    rbx                                       
+  0x180D1E412  sub     rsp, 0x20                                 
+  0x180D1E416  cmp     byte ptr [rip + 0x23beef7], 0                ; data_30DD314
+  0x180D1E41D  mov     rbx, rcx                                  
+  0x180D1E420  jne     0x180d1e44b                               
+  0x180D1E422  lea     rcx, [rip + 0x2110e5f]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds_TypeInfo
+  0x180D1E429  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E42E  lock or dword ptr [rsp], 0                        
+  0x180D1E433  lea     rcx, [rip + 0x2133aee]                       ; TYPE Naninovel.TransitionalSpriteRenderer_TypeInfo
+  0x180D1E43A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E43F  lock or dword ptr [rsp], 0                        
+  0x180D1E444  mov     byte ptr [rip + 0x23beec9], 1                ; data_30DD314
+
+180D1E44B:
+  0x180D1E44B  mov     rdx, qword ptr [rbx]                      
+  0x180D1E44E  mov     rcx, rbx                                  
+  0x180D1E451  mov     rax, qword ptr [rdx + 0x538]              
+  0x180D1E458  mov     rdx, qword ptr [rdx + 0x540]              
+  0x180D1E45F  call    rax                                       
+  0x180D1E461  mov     rcx, rax                                  
+  0x180D1E464  test    rax, rax                                  
+  0x180D1E467  je      0x180d1e4f6                               
+  0x180D1E46D  mov     r9, qword ptr [rax]                       
+  0x180D1E470  mov     r8, qword ptr [rip + 0x2133ab1]              ; TYPE Naninovel.TransitionalSpriteRenderer_TypeInfo
+  0x180D1E477  movzx   eax, byte ptr [r8 + 0x130]                
+  0x180D1E47F  cmp     byte ptr [r9 + 0x130], al                 
+  0x180D1E486  jb      0x180d1e4f6                               
+  0x180D1E488  movzx   edx, al                                   
+  0x180D1E48B  mov     rax, qword ptr [r9 + 0xc8]                
+  0x180D1E492  cmp     qword ptr [rax + rdx*8 - 8], r8           
+  0x180D1E497  jne     0x180d1e4f6                               
+  0x180D1E499  mov     rax, qword ptr [r9 + 0x3e8]               
+  0x180D1E4A0  mov     rdx, qword ptr [r9 + 0x3f0]               
+  0x180D1E4A7  call    rax                                       
+  0x180D1E4A9  mov     rdx, qword ptr [rip + 0x2110dd8]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds_TypeInfo
+  0x180D1E4B0  mov     rbx, rax                                  
+  0x180D1E4B3  cmp     dword ptr [rdx + 0xe4], 0                 
+  0x180D1E4BA  jne     0x180d1e4cb                               
+  0x180D1E4BC  mov     rcx, rdx                                  
+  0x180D1E4BF  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D1E4C4  mov     rdx, qword ptr [rip + 0x2110dbd]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds_TypeInfo
+
+180D1E4CB:
+  0x180D1E4CB  test    rbx, rbx                                  
+  0x180D1E4CE  je      0x180d1e4fe                               
+  0x180D1E4D0  mov     rdx, qword ptr [rdx + 0xb8]                  ; rdx->SpriteBackgroundExtended.<SubId>k__BackingField
+  0x180D1E4D7  xor     r8d, r8d                                  
+  0x180D1E4DA  mov     rcx, rbx                                  
+  0x180D1E4DD  mov     edx, dword ptr [rdx]                      
+  0x180D1E4DF  call    0x182010230                                  ; -> UnityEngine.Material$$GetFloatImpl
+  0x180D1E4E4  movss   xmm1, dword ptr [rip + 0x1dc44cc]            ; data_2AE29B8
+  0x180D1E4EC  add     rsp, 0x20                                 
+  0x180D1E4F0  pop     rbx                                       
+  0x180D1E4F1  jmp     0x180331670                               
+
+180D1E4F6:
+  0x180D1E4F6  xor     al, al                                    
+  0x180D1E4F8  add     rsp, 0x20                                 
+  0x180D1E4FC  pop     rbx                                       
+  0x180D1E4FD  ret                                               
+
+180D1E4FE:
+  0x180D1E4FE  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,138 @@
+====================================================================================================
+FUNCTION RVA 0xD28540  VA 0x180D28540  size 0x1E2 (482 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended___ctor (GigaCreation_NaninovelExtender_ExtendedActors_AnimateExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended :: public void .ctor()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.AnimateExtended:
+      +0xB0   _easingTypeNameForPosX         readonly List<string>
+      +0xB8   _easingTypeNameForPosY         readonly List<string>
+      +0xC0   _tasks                         readonly IList<UniTask>
+  fields of AnimateExtended.<>c:
+      +0x0    <>9                            static readonly AnimateExtended.<>c
+      +0x8    <>9__4_0                       static Func<string, int, ValueTuple<string, int>>
+      +0x10   <>9__4_1                       static Func<ValueTuple<string, int>, AnimateActorExtended.AdditionalParam>
+      +0x18   <>9__4_2                       static Func<ValueTuple<string, int>, string>
+      +0x20   <>9__5_0                       static Func<string, bool>
+  fields of AnimateExtended.<>c__DisplayClass4_0:
+      +0x10   screenRect                     Rect
+  fields of AnimateExtended.<AnimateKey>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AnimateExtended
+      +0x20   keyIndex                       int
+      +0x28   actor                          IActor
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D28540  mov     qword ptr [rsp + 8], rbx                  
+  0x180D28545  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D2854A  push    rdi                                       
+  0x180D2854B  sub     rsp, 0x20                                 
+  0x180D2854F  cmp     byte ptr [rip + 0x23b4df3], 0                ; data_30DD349
+  0x180D28556  mov     rdi, rcx                                  
+  0x180D28559  jne     0x180d285a6                               
+  0x180D2855B  lea     rcx, [rip + 0x2131366]                       ; METHODINFO Method$System.Collections.Generic.List<string>..ctor()
+  0x180D28562  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28567  lock or dword ptr [rsp], 0                        
+  0x180D2856C  lea     rcx, [rip + 0x210d3a5]                       ; METHODINFO Method$System.Collections.Generic.List<UniTask>..ctor()
+  0x180D28573  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28578  lock or dword ptr [rsp], 0                        
+  0x180D2857D  lea     rcx, [rip + 0x210d37c]                       ; TYPE System.Collections.Generic.List<UniTask>_TypeInfo
+  0x180D28584  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D28589  lock or dword ptr [rsp], 0                        
+  0x180D2858E  lea     rcx, [rip + 0x213131b]                       ; TYPE System.Collections.Generic.List<string>_TypeInfo
+  0x180D28595  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2859A  lock or dword ptr [rsp], 0                        
+  0x180D2859F  mov     byte ptr [rip + 0x23b4da3], 1                ; data_30DD349
+
+180D285A6:
+  0x180D285A6  mov     rcx, qword ptr [rip + 0x2131303]             ; TYPE System.Collections.Generic.List<string>_TypeInfo
+  0x180D285AD  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D285B2  mov     rdx, qword ptr [rip + 0x213130f]             ; METHODINFO Method$System.Collections.Generic.List<string>..ctor()
+  0x180D285B9  mov     rcx, rax                                  
+  0x180D285BC  mov     rbx, rax                                  
+  0x180D285BF  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x180D285C4  cmp     dword ptr [rip + 0x23b0bf9], 0               ; data_30D91C4
+  0x180D285CB  lea     rsi, [rip + 0x23c5cce]                       ; data_30EE2A0
+  0x180D285D2  mov     qword ptr [rdi + 0xb0], rbx                  ; rdi->AnimateExtended._easingTypeNameForPosX
+  0x180D285D9  je      0x180d28629                               
+  0x180D285DB  lea     r8, [rdi + 0xb0]                             ; rdi->AnimateExtended._easingTypeNameForPosX
+  0x180D285E2  shr     r8, 0xc                                   
+  0x180D285E6  and     r8d, 0x1fffff                             
+  0x180D285ED  mov     eax, r8d                                  
+  0x180D285F0  shr     rax, 6                                    
+  0x180D285F4  and     r8d, 0x3f                                 
+  0x180D285F8  lea     rdx, [rsi + rax*8]                        
+  0x180D285FC  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D28603  nop     dword ptr [rax]                           
+  0x180D28607  nop     word ptr [rax + rax]                      
+
+180D28610:
+  0x180D28610  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D28617  mov     rcx, rax                                  
+  0x180D2861A  bts     rcx, r8                                   
+  0x180D2861E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28627  jne     0x180d28610                               
+
+180D28629:
+  0x180D28629  mov     rcx, qword ptr [rip + 0x2131280]             ; TYPE System.Collections.Generic.List<string>_TypeInfo
+  0x180D28630  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D28635  mov     rdx, qword ptr [rip + 0x213128c]             ; METHODINFO Method$System.Collections.Generic.List<string>..ctor()
+  0x180D2863C  mov     rcx, rax                                  
+  0x180D2863F  mov     rbx, rax                                  
+  0x180D28642  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x180D28647  cmp     dword ptr [rip + 0x23b0b76], 0               ; data_30D91C4
+  0x180D2864E  mov     qword ptr [rdi + 0xb8], rbx                  ; rdi->AnimateExtended._easingTypeNameForPosY
+  0x180D28655  je      0x180d28699                               
+  0x180D28657  lea     r8, [rdi + 0xb8]                             ; rdi->AnimateExtended._easingTypeNameForPosY
+  0x180D2865E  shr     r8, 0xc                                   
+  0x180D28662  and     r8d, 0x1fffff                             
+  0x180D28669  mov     eax, r8d                                  
+  0x180D2866C  shr     rax, 6                                    
+  0x180D28670  and     r8d, 0x3f                                 
+  0x180D28674  lea     rdx, [rsi + rax*8]                        
+  0x180D28678  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D2867F  nop                                               
+
+180D28680:
+  0x180D28680  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D28687  mov     rcx, rax                                  
+  0x180D2868A  bts     rcx, r8                                   
+  0x180D2868E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28697  jne     0x180d28680                               
+
+180D28699:
+  0x180D28699  mov     rcx, qword ptr [rip + 0x210d260]             ; TYPE System.Collections.Generic.List<UniTask>_TypeInfo
+  0x180D286A0  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D286A5  mov     rdx, qword ptr [rip + 0x210d26c]             ; METHODINFO Method$System.Collections.Generic.List<UniTask>..ctor()
+  0x180D286AC  mov     rcx, rax                                  
+  0x180D286AF  mov     rbx, rax                                  
+  0x180D286B2  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x180D286B7  cmp     dword ptr [rip + 0x23b0b06], 0               ; data_30D91C4
+  0x180D286BE  mov     qword ptr [rdi + 0xc0], rbx                  ; rdi->AnimateExtended._tasks
+  0x180D286C5  je      0x180d28709                               
+  0x180D286C7  lea     r8, [rdi + 0xc0]                             ; rdi->AnimateExtended._tasks
+  0x180D286CE  shr     r8, 0xc                                   
+  0x180D286D2  and     r8d, 0x1fffff                             
+  0x180D286D9  mov     eax, r8d                                  
+  0x180D286DC  shr     rax, 6                                    
+  0x180D286E0  and     r8d, 0x3f                                 
+  0x180D286E4  lea     rdx, [rsi + rax*8]                        
+  0x180D286E8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D286EF  nop                                               
+
+180D286F0:
+  0x180D286F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D286F7  mov     rcx, rax                                  
+  0x180D286FA  bts     rcx, r8                                   
+  0x180D286FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D28707  jne     0x180d286f0                               
+
+180D28709:
+  0x180D28709  xor     edx, edx                                  
+  0x180D2870B  mov     rcx, rdi                                  
+  0x180D2870E  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D28713  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D28718  add     rsp, 0x20                                 
+  0x180D2871C  pop     rdi                                       
+  0x180D2871D  jmp     0x1804b3910                                  ; -> Naninovel.FX.Animate$$.ctor
