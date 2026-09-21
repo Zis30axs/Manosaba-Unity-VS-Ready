@@ -1,0 +1,75 @@
+====================================================================================================
+FUNCTION RVA 0xD23760  VA 0x180D23760  size 0x85 (133 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended$$get_AssignedSubId
+  csig   : System_String_o* GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended__get_AssignedSubId (GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended :: private string get_AssignedSubId()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended:
+      +0xE8   SubId                          StringParameter
+      +0xF0   MatchScreenWidth               BooleanParameter
+      +0xF8   _actorUtility                  ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>
+      +0x100  _preloadedDissolveTexture      Texture2D
+  fields of ModifyCharacterExtended.<>c:
+      +0x0    <>9                            static readonly ModifyCharacterExtended.<>c
+      +0x8    <>9__15_0                      static Func<ICharacterActor, bool>
+  fields of ModifyCharacterExtended.<ApplyAppearanceModification>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          ICharacterActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyCharacterExtended.<Modify>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ICharacterActor>
+  fields of ModifyCharacterExtended.<PreloadResources>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D23760  push    rbx                                       
+  0x180D23762  sub     rsp, 0x20                                 
+  0x180D23766  cmp     byte ptr [rip + 0x23b8a9f], 0                ; data_30DC20C
+  0x180D2376D  mov     rbx, qword ptr [rcx + 0xe8]                  ; rcx->ModifyCharacterExtended.SubId
+  0x180D23774  jne     0x180d2379f                               
+  0x180D23776  lea     rcx, [rip + 0x211662b]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D2377D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23782  lock or dword ptr [rsp], 0                        
+  0x180D23787  lea     rcx, [rip + 0x211487a]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D2378E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23793  lock or dword ptr [rsp], 0                        
+  0x180D23798  mov     byte ptr [rip + 0x23b8a6d], 1                ; data_30DC20C
+
+180D2379F:
+  0x180D2379F  test    rbx, rbx                                  
+  0x180D237A2  je      0x180d237dd                               
+  0x180D237A4  mov     rdx, qword ptr [rbx]                      
+  0x180D237A7  mov     rcx, rbx                                  
+  0x180D237AA  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D237B1  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D237B8  call    rax                                       
+  0x180D237BA  test    al, al                                    
+  0x180D237BC  je      0x180d237dd                               
+  0x180D237BE  mov     r8, qword ptr [rip + 0x2114843]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D237C5  lea     rdx, [rsp + 0x30]                         
+  0x180D237CA  mov     rcx, rbx                                  
+  0x180D237CD  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D237D2  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D237D7  add     rsp, 0x20                                 
+  0x180D237DB  pop     rbx                                       
+  0x180D237DC  ret                                               
+
+180D237DD:
+  0x180D237DD  xor     eax, eax                                  
+  0x180D237DF  add     rsp, 0x20                                 
+  0x180D237E3  pop     rbx                                       
+  0x180D237E4  ret                                               

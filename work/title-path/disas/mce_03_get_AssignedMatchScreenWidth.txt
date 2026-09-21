@@ -1,0 +1,88 @@
+====================================================================================================
+FUNCTION RVA 0xD237F0  VA 0x180D237F0  size 0xAF (175 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended$$get_AssignedMatchScreenWidth
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended__get_AssignedMatchScreenWidth (GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended :: private bool get_AssignedMatchScreenWidth()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended:
+      +0xE8   SubId                          StringParameter
+      +0xF0   MatchScreenWidth               BooleanParameter
+      +0xF8   _actorUtility                  ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>
+      +0x100  _preloadedDissolveTexture      Texture2D
+  fields of ModifyCharacterExtended.<>c:
+      +0x0    <>9                            static readonly ModifyCharacterExtended.<>c
+      +0x8    <>9__15_0                      static Func<ICharacterActor, bool>
+  fields of ModifyCharacterExtended.<ApplyAppearanceModification>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          ICharacterActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyCharacterExtended.<Modify>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ICharacterActor>
+  fields of ModifyCharacterExtended.<PreloadResources>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D237F0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D237F5  push    rdi                                       
+  0x180D237F6  sub     rsp, 0x20                                 
+  0x180D237FA  cmp     byte ptr [rip + 0x23b9b2f], 0                ; data_30DD330
+  0x180D23801  mov     rbx, rcx                                  
+  0x180D23804  jne     0x180d2381e                               
+  0x180D23806  lea     rcx, [rip + 0x21147eb]                       ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D2380D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23812  lock or dword ptr [rsp], 0                        
+  0x180D23817  mov     byte ptr [rip + 0x23b9b12], 1                ; data_30DD330
+
+180D2381E:
+  0x180D2381E  cmp     byte ptr [rip + 0x23b893f], 0                ; data_30DC164
+  0x180D23825  mov     rdi, qword ptr [rbx + 0xf0]                  ; rbx->ModifyCharacterExtended.MatchScreenWidth
+  0x180D2382C  jne     0x180d23846                               
+  0x180D2382E  lea     rcx, [rip + 0x2122ddb]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D23835  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2383A  lock or dword ptr [rsp], 0                        
+  0x180D2383F  mov     byte ptr [rip + 0x23b891e], 1                ; data_30DC164
+
+180D23846:
+  0x180D23846  test    rdi, rdi                                  
+  0x180D23849  je      0x180d2388d                               
+  0x180D2384B  mov     rdx, qword ptr [rip + 0x2122dbe]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D23852  xor     ecx, ecx                                  
+  0x180D23854  mov     r8, rdi                                   
+  0x180D23857  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2385C  test    al, al                                    
+  0x180D2385E  je      0x180d2388d                               
+  0x180D23860  mov     rcx, qword ptr [rbx + 0xf0]                  ; rbx->ModifyCharacterExtended.MatchScreenWidth
+  0x180D23867  test    rcx, rcx                                  
+  0x180D2386A  je      0x180d2389a                               
+  0x180D2386C  mov     r8, qword ptr [rip + 0x2114785]              ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D23873  lea     rdx, [rsp + 0x30]                         
+  0x180D23878  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D2387D  movzx   eax, byte ptr [rsp + 0x30]                
+  0x180D23882  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D23887  add     rsp, 0x20                                 
+  0x180D2388B  pop     rdi                                       
+  0x180D2388C  ret                                               
+
+180D2388D:
+  0x180D2388D  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D23892  mov     al, 1                                     
+  0x180D23894  add     rsp, 0x20                                 
+  0x180D23898  pop     rdi                                       
+  0x180D23899  ret                                               
+
+180D2389A:
+  0x180D2389A  call    0x180246730                                  ; THROW NullReferenceException

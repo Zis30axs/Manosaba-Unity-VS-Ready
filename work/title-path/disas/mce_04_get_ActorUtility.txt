@@ -1,0 +1,100 @@
+====================================================================================================
+FUNCTION RVA 0xD238A0  VA 0x180D238A0  size 0xEF (239 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended$$get_ActorUtility
+  csig   : GigaCreation_NaninovelExtender_ExtendedActors_ModifyActorUtility_ICharacterActor__IMultipliableCharacterManager__o* GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended__get_ActorUtility (GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended :: private ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager> get_ActorUtility()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended:
+      +0xE8   SubId                          StringParameter
+      +0xF0   MatchScreenWidth               BooleanParameter
+      +0xF8   _actorUtility                  ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>
+      +0x100  _preloadedDissolveTexture      Texture2D
+  fields of ModifyCharacterExtended.<>c:
+      +0x0    <>9                            static readonly ModifyCharacterExtended.<>c
+      +0x8    <>9__15_0                      static Func<ICharacterActor, bool>
+  fields of ModifyCharacterExtended.<ApplyAppearanceModification>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          ICharacterActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyCharacterExtended.<Modify>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ICharacterActor>
+  fields of ModifyCharacterExtended.<PreloadResources>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D238A0  push    rdi                                       
+  0x180D238A2  sub     rsp, 0x20                                 
+  0x180D238A6  cmp     byte ptr [rip + 0x23b9a84], 0                ; data_30DD331
+  0x180D238AD  mov     rdi, rcx                                  
+  0x180D238B0  jne     0x180d238db                               
+  0x180D238B2  lea     rcx, [rip + 0x210b457]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>..ctor()
+  0x180D238B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D238BE  lock or dword ptr [rsp], 0                        
+  0x180D238C3  lea     rcx, [rip + 0x210b44e]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>_TypeInfo
+  0x180D238CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D238CF  lock or dword ptr [rsp], 0                        
+  0x180D238D4  mov     byte ptr [rip + 0x23b9a56], 1                ; data_30DD331
+
+180D238DB:
+  0x180D238DB  mov     rax, qword ptr [rdi + 0xf8]                  ; rdi->ModifyCharacterExtended._actorUtility
+  0x180D238E2  test    rax, rax                                  
+  0x180D238E5  jne     0x180d23989                               
+  0x180D238EB  mov     rdx, qword ptr [rdi]                      
+  0x180D238EE  mov     rcx, rdi                                  
+  0x180D238F1  mov     qword ptr [rsp + 0x30], rbx               
+  0x180D238F6  mov     qword ptr [rsp + 0x38], rsi               
+  0x180D238FB  mov     rax, qword ptr [rdx + 0x2e8]              
+  0x180D23902  mov     rdx, qword ptr [rdx + 0x2f0]              
+  0x180D23909  call    rax                                       
+  0x180D2390B  mov     rcx, qword ptr [rip + 0x210b406]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>_TypeInfo
+  0x180D23912  mov     rbx, rax                                  
+  0x180D23915  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D2391A  mov     r8, qword ptr [rip + 0x210b3ef]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>..ctor()
+  0x180D23921  mov     rdx, rbx                                  
+  0x180D23924  mov     rcx, rax                                  
+  0x180D23927  mov     rsi, rax                                  
+  0x180D2392A  call    0x18086bae0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$.ctor
+  0x180D2392F  cmp     dword ptr [rip + 0x23b588e], 0               ; data_30D91C4
+  0x180D23936  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D2393B  mov     qword ptr [rdi + 0xf8], rsi                  ; rdi->ModifyCharacterExtended._actorUtility
+  0x180D23942  je      0x180d23981                               
+  0x180D23944  lea     r8, [rdi + 0xf8]                             ; rdi->ModifyCharacterExtended._actorUtility
+  0x180D2394B  shr     r8, 0xc                                   
+  0x180D2394F  lea     rcx, [rip + 0x2410c2a]                       ; data_3134580
+  0x180D23956  and     r8d, 0x1fffff                             
+  0x180D2395D  mov     eax, r8d                                  
+  0x180D23960  shr     rax, 6                                    
+  0x180D23964  and     r8d, 0x3f                                 
+  0x180D23968  lea     rdx, [rcx + rax*8]                        
+  0x180D2396C  prefetchw byte ptr [rdx]                            
+  0x180D2396F  nop                                               
+
+180D23970:
+  0x180D23970  mov     rax, qword ptr [rdx]                      
+  0x180D23973  mov     rcx, rax                                  
+  0x180D23976  bts     rcx, r8                                   
+  0x180D2397A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D2397F  jne     0x180d23970                               
+
+180D23981:
+  0x180D23981  mov     rax, rsi                                  
+  0x180D23984  mov     rsi, qword ptr [rsp + 0x38]               
+
+180D23989:
+  0x180D23989  add     rsp, 0x20                                 
+  0x180D2398D  pop     rdi                                       
+  0x180D2398E  ret                                               

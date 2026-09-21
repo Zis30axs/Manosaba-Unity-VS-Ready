@@ -1,0 +1,177 @@
+====================================================================================================
+FUNCTION RVA 0xD23F90  VA 0x180D23F90  size 0x211 (529 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended$$AttemptScenePosition
+  csig   : System_Nullable_float__array* GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended__AttemptScenePosition (GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended :: private Nullable<float>[] AttemptScenePosition()
+  fields of GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended:
+      +0xE8   SubId                          StringParameter
+      +0xF0   MatchScreenWidth               BooleanParameter
+      +0xF8   _actorUtility                  ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>
+      +0x100  _preloadedDissolveTexture      Texture2D
+  fields of ModifyCharacterExtended.<>c:
+      +0x0    <>9                            static readonly ModifyCharacterExtended.<>c
+      +0x8    <>9__15_0                      static Func<ICharacterActor, bool>
+  fields of ModifyCharacterExtended.<ApplyAppearanceModification>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          ICharacterActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyCharacterExtended.<Modify>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ICharacterActor>
+  fields of ModifyCharacterExtended.<PreloadResources>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D23F90  mov     qword ptr [rsp + 0x20], rbx               
+  0x180D23F95  push    rdi                                       
+  0x180D23F96  sub     rsp, 0x20                                 
+  0x180D23F9A  cmp     byte ptr [rip + 0x23b9395], 0                ; data_30DD336
+  0x180D23FA1  mov     rbx, rcx                                  
+  0x180D23FA4  jne     0x180d23fe0                               
+  0x180D23FA6  lea     rcx, [rip + 0x210ad13]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>.EvaluateWorldPosition()
+  0x180D23FAD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23FB2  lock or dword ptr [rsp], 0                        
+  0x180D23FB7  lea     rcx, [rip + 0x210ad0a]                       ; METHODINFO Method$Naninovel.Commands.ModifyActor<ICharacterActor, CharacterState, CharacterMetadata, CharactersConfiguration, ICharacterManager>.get_PosedPosition()
+  0x180D23FBE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23FC3  lock or dword ptr [rsp], 0                        
+  0x180D23FC8  lea     rcx, [rip + 0x210aca1]                       ; METHODINFO Method$Naninovel.Commands.ModifyOrthoActor<ICharacterActor, CharacterState, CharacterMetadata, CharactersConfiguration, ICharacterManager>.get_AssignedPosition()
+  0x180D23FCF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23FD4  lock or dword ptr [rsp], 0                        
+  0x180D23FD9  mov     byte ptr [rip + 0x23b9356], 1                ; data_30DD336
+
+180D23FE0:
+  0x180D23FE0  cmp     byte ptr [rip + 0x23b817d], 0                ; data_30DC164
+  0x180D23FE7  mov     rdi, qword ptr [rbx + 0xb0]               
+  0x180D23FEE  jne     0x180d24008                               
+  0x180D23FF0  lea     rcx, [rip + 0x2122619]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D23FF7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D23FFC  lock or dword ptr [rsp], 0                        
+  0x180D24001  mov     byte ptr [rip + 0x23b815c], 1                ; data_30DC164
+
+180D24008:
+  0x180D24008  test    rdi, rdi                                  
+  0x180D2400B  je      0x180d24022                               
+  0x180D2400D  mov     rdx, qword ptr [rip + 0x21225fc]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D24014  xor     ecx, ecx                                  
+  0x180D24016  mov     r8, rdi                                   
+  0x180D24019  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2401E  test    al, al                                    
+  0x180D24020  jne     0x180d2403a                               
+
+180D24022:
+  0x180D24022  mov     rdx, qword ptr [rip + 0x210ac9f]             ; METHODINFO Method$Naninovel.Commands.ModifyActor<ICharacterActor, CharacterState, CharacterMetadata, CharactersConfiguration, ICharacterManager>.get_PosedPosition()
+  0x180D24029  mov     rcx, rbx                                  
+  0x180D2402C  call    0x18086d3f0                                  ; -> Naninovel.Commands.ModifyActor<object, object, object, object, object>$$get_PosedPosition
+  0x180D24031  test    rax, rax                                  
+  0x180D24034  je      0x180d24175                               
+
+180D2403A:
+  0x180D2403A  cmp     byte ptr [rip + 0x23b8123], 0                ; data_30DC164
+  0x180D24041  mov     rdi, qword ptr [rbx + 0xb0]               
+  0x180D24048  jne     0x180d24062                               
+  0x180D2404A  lea     rcx, [rip + 0x21225bf]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D24051  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D24056  lock or dword ptr [rsp], 0                        
+  0x180D2405B  mov     byte ptr [rip + 0x23b8102], 1                ; data_30DC164
+
+180D24062:
+  0x180D24062  test    rdi, rdi                                  
+  0x180D24065  je      0x180d2415c                               
+  0x180D2406B  mov     rdx, qword ptr [rip + 0x212259e]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D24072  xor     ecx, ecx                                  
+  0x180D24074  mov     r8, rdi                                   
+  0x180D24077  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D2407C  test    al, al                                    
+  0x180D2407E  je      0x180d2415c                               
+  0x180D24084  mov     qword ptr [rsp + 0x38], rbp               
+  0x180D24089  mov     qword ptr [rsp + 0x40], rsi               
+  0x180D2408E  xor     edx, edx                                  
+  0x180D24090  mov     rcx, rbx                                  
+  0x180D24093  call    0x180d238a0                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended$$get_ActorUtility
+  0x180D24098  cmp     byte ptr [rip + 0x23b9291], 0                ; data_30DD330
+  0x180D2409F  mov     rsi, rax                                  
+  0x180D240A2  mov     rbp, qword ptr [rbx + 0xb0]               
+  0x180D240A9  jne     0x180d240c3                               
+  0x180D240AB  lea     rcx, [rip + 0x2113f46]                       ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D240B2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D240B7  lock or dword ptr [rsp], 0                        
+  0x180D240BC  mov     byte ptr [rip + 0x23b926d], 1                ; data_30DD330
+
+180D240C3:
+  0x180D240C3  cmp     byte ptr [rip + 0x23b809a], 0                ; data_30DC164
+  0x180D240CA  mov     rdi, qword ptr [rbx + 0xf0]                  ; rbx->ModifyCharacterExtended.MatchScreenWidth
+  0x180D240D1  jne     0x180d240eb                               
+  0x180D240D3  lea     rcx, [rip + 0x2122536]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D240DA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D240DF  lock or dword ptr [rsp], 0                        
+  0x180D240E4  mov     byte ptr [rip + 0x23b8079], 1                ; data_30DC164
+
+180D240EB:
+  0x180D240EB  test    rdi, rdi                                  
+  0x180D240EE  je      0x180d2412e                               
+  0x180D240F0  mov     rdx, qword ptr [rip + 0x2122519]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D240F7  xor     ecx, ecx                                  
+  0x180D240F9  mov     r8, rdi                                   
+  0x180D240FC  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D24101  test    al, al                                    
+  0x180D24103  je      0x180d2412e                               
+  0x180D24105  mov     rcx, qword ptr [rbx + 0xf0]                  ; rbx->ModifyCharacterExtended.MatchScreenWidth
+  0x180D2410C  test    rcx, rcx                                  
+  0x180D2410F  je      0x180d2419c                               
+  0x180D24115  mov     r8, qword ptr [rip + 0x2113edc]              ; METHODINFO Method$Naninovel.Nullable<bool>.get_Value()
+  0x180D2411C  lea     rdx, [rsp + 0x30]                         
+  0x180D24121  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D24126  movzx   r8d, byte ptr [rsp + 0x30]                
+  0x180D2412C  jmp     0x180d24131                               
+
+180D2412E:
+  0x180D2412E  mov     r8b, 1                                    
+
+180D24131:
+  0x180D24131  test    rsi, rsi                                  
+  0x180D24134  je      0x180d2419c                               
+  0x180D24136  mov     r9, qword ptr [rip + 0x210ab83]              ; METHODINFO Method$GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<ICharacterActor, IMultipliableCharacterManager>.EvaluateWorldPosition()
+  0x180D2413D  mov     rdx, rbp                                  
+  0x180D24140  mov     rcx, rsi                                  
+  0x180D24143  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180D24148  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D2414D  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D24152  add     rsp, 0x20                                 
+  0x180D24156  pop     rdi                                       
+  0x180D24157  jmp     0x18086c630                                  ; -> GigaCreation.NaninovelExtender.ExtendedActors.ModifyActorUtility<object, object>$$EvaluateWorldPosition
+
+180D2415C:
+  0x180D2415C  mov     rdx, qword ptr [rip + 0x210ab65]             ; METHODINFO Method$Naninovel.Commands.ModifyActor<ICharacterActor, CharacterState, CharacterMetadata, CharactersConfiguration, ICharacterManager>.get_PosedPosition()
+  0x180D24163  mov     rcx, rbx                                  
+  0x180D24166  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D2416B  add     rsp, 0x20                                 
+  0x180D2416F  pop     rdi                                       
+  0x180D24170  jmp     0x18086d3f0                                  ; -> Naninovel.Commands.ModifyActor<object, object, object, object, object>$$get_PosedPosition
+
+180D24175:
+  0x180D24175  mov     rax, qword ptr [rip + 0x210aaf4]             ; METHODINFO Method$Naninovel.Commands.ModifyOrthoActor<ICharacterActor, CharacterState, CharacterMetadata, CharactersConfiguration, ICharacterManager>.get_AssignedPosition()
+  0x180D2417C  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ApplyAppearanceModification>d__16.token | <Modify>d__15.token | <PreloadResources>d__13.<>u__1
+  0x180D24180  mov     rdx, qword ptr [rcx + 0xc0]               
+  0x180D24187  mov     rcx, rbx                                  
+  0x180D2418A  mov     rdx, qword ptr [rdx]                      
+  0x180D2418D  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180D24192  add     rsp, 0x20                                 
+  0x180D24196  pop     rdi                                       
+  0x180D24197  jmp     0x18086f080                                  ; -> Naninovel.Commands.ModifyOrthoActor<object, object, object, object, object>$$AttemptScenePosition
+
+180D2419C:
+  0x180D2419C  call    0x180246730                                  ; THROW NullReferenceException
