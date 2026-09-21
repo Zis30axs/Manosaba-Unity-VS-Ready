@@ -1764,13 +1764,15 @@ namespace Manosaba.Integration
                     .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
                 object manager = managerType == null ? null : getService?.MakeGenericMethod(managerType).Invoke(null, null);
                 if (manager == null) { evidence.choice_pick_error = "IChoiceHandlerManager service is null"; return; }
-                // IActorManager<...>.Actors is declared on a base interface of IChoiceHandlerManager
-                object actors = manager.GetType().GetProperty("Actors")?.GetValue(manager);
+                // ActorManager implements Actors explicitly (IActorManager.Actors), so it is read through the interface
+                Type actorManagerType = Type.GetType("Naninovel.IActorManager, Elringus.Naninovel.Runtime");
+                object actors = actorManagerType?.GetProperty("Actors")?.GetValue(manager);
                 if (!(actors is System.Collections.IEnumerable list)) { evidence.choice_pick_error = "Actors is " + (actors?.GetType().Name ?? "null"); return; }
                 int actorCount = 0;
                 foreach (object actor in list)
                 {
                     actorCount++;
+                    if (!actorType.IsInstanceOfType(actor)) continue;
                     object rawChoices = actorType.GetProperty("Choices")?.GetValue(actor);
                     if (!(rawChoices is System.Collections.IList choices) || choices.Count == 0)
                     {

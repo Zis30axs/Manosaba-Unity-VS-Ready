@@ -3744,3 +3744,48 @@ auto-advance 快照 `index=14 playing=False`（`@stop`），`ui_visibility` 中 
 **探针（`Assets/Scripts/Runtime/ManosabaGameStart.cs`）的教训**：诊断代码本身会改变被测对象。第 11、13 轮的"UI 两套"
 都不是游戏代码的问题；现在所有会重复调用引擎方法的诊断都是 opt-in（`MANOSABA_GAMESTART_REINVOKE_POSTINIT=1`），
 捕获包装保证原委托只调用一次，`ui_visibility` 字段直接给出 TitleUI 是否显示。
+
+## 44. 2026-09-22 记录：从标题按「New Game」走进剧情（G4b 第 15–26 轮）
+
+**结论（第 23 轮起）**：内容目录重建（G3）之后，从标题按 New Game，**Adv01 → Adv02 → Adv03 → Adv04 连播 35 秒，Exception / 剧本报错 /
+InvalidKeyException 全为 0**，停在第 1103 行的开场动画 `@playMovie Act01_Opening`（G4b 以 `-nographics` 运行，无图形设备）。探针加
+opt-in 的"跳过动画"（`MANOSABA_GAMESTART_SKIP_MOVIES=1`，等同玩家的跳过输入 `IMoviePlayer.Stop`）后，第 24 轮越过动画进入 Adv05，
+停在第 82 行的 `@choice`。**下面是第 22 轮之前的记录**：标题按 New Game 后，`@goto` 重置状态 → `System_Subroutine` → `Act01_Chapter01_Adv01`（38 条命令）→ Adv02
+（播到第 275 条）→ Adv03（第 128 条）已经能连续播放，异常只剩字体材质的 `InvalidKeyException`；再往后每推进一步，
+就撞上下一类"原生方法体是桩"的缺口。本节记录这条链上的每一步：症状 → 根因 → 修复。
+
+| 轮 | 停点 / 症状 | 根因 | 修复（commit） |
+|---|---|---|---|
+| 15–16 | 标题干净 | —— | 构造函数初始化器、FontMaterialChanger 等补全 |
+| 18 | `@goto` 执行了状态重置并卸载标题脚本，新剧本因文本打印器的 Awake / ProcessRubyTags 桩起不来 | `RevealableTextPrinterPanelModified`、`RevealableTextModified` | `94b86a5` |
+| 19 | Adv01 播到第一句台词，异常 0 | —— | `21fb554` |
+| 20 | Adv02 播到 #275；`@goto Adv03` 失败："Already continuation registered, can not await twice" | `AddressablesManager.GetOrLoadAddressableAssetCore`：并发等待者应轮询 `pending.Status`，而不是再 await 同一个未 `Preserve` 的 UniTask | `417694e`（按 `<GetOrLoadAddressableAsset>d__22.MoveNext` 重写） |
+| 21 | Adv03 播到 #128；下一个剧本预加载抛 NRE：`MoviePlayer.HoldResources` 里 `videoLoader` 为 null | `MoviePlayerExtended.InitializeService` / `SetupAudioSource` 是桩（基类初始化没跑） | `a924023` |
+| 22 | `@char` 之前全是空操作，现在真的执行，System_Subroutine 预加载 16 个角色 → `GetImplementationType` 抛错 | `ModifyCharacterExtended`、`CharacterManagerExtended` 的子 ID 路径、`LayeredCharacterExtended.Initialize` 为桩（22,880 处 `@char`）；Yuki / Warden / Jailer* / 13 个 Creature* 的实现类 `DicedSpriteCharacterExtended` 因 SpriteDicing 缺失被 `#if` 排除 | `5efc3ab`（角色命令链）；`3be50b7`（SpriteDicing 嵌入包 + Diced 角色） |
+| 23 | Adv01 → 04 连播，异常 0 | —— | G3 重建后（`fcb2c09`）；证据 `g4b_round23_atlas_fonts.*` |
+| 24 | 越过开场动画进入 Adv05；第 82 行 `@choice button:ChoiceButtons/Adv/Bad` → `ChoiceHandlerPanel.AddChoiceButton` → `Instantiate(null)` | 预制件资产本身正常（`Editor/PrefabReferenceProbe` 逐个列出组件脚本与序列化引用）；`ChoiceHandlerPanelModified.LoadCustomButtonPrefab` 返回 null，`Initialize` 从未把 `_customChoiceButtonData` 建成 `_customButtons` | 按反汇编复原两者与 `CustomChoiceButtonData` 的两个共享 getter（`16301cd`） |
+| 25 | 选项可以添加（无异常），播放在 `@stop` 处等待玩家 | 探针的选项点击未命中 | 探针 opt-in `MANOSABA_GAMESTART_PICK_CHOICES=1`（`IChoiceHandlerActor.HandleChoice`）加诊断 |
+
+**第 22 轮看起来像"退步"（21 播到 Adv03，22 停在 `@goto`），其实是前进**：第 21 轮之所以能走，是因为 `ModifyCharacterExtended.Modify` 什么也不做；
+第 22 轮它开始真的创建角色，缺口才暴露出来。
+
+**流水线层的三处修复**（都不是运行时补丁）：
+1. **TMP 字体材质变体**（`FontMaterialData._fontMaterialReference`，出货 GUID 的 `AssetReferenceT<Material>`）：14 个变体是本地再生的
+   （`RuntimeResourceRepair`），GUID 与目录里的都对不上、也没有 Addressables 条目 → 23 次 `InvalidKeyException`。
+   `align_asset_guids.resolve()` 增加 `Fonts/<Family>/*.mat → RuntimeFonts` 规则（字体 `.asset` 不对齐：`RuntimeResourceRepair`
+   强制它们保持已跟踪的再生 GUID），`RuntimeResourceRepair` 为每个变体建 `Manosaba.RuntimeFonts` 条目（出货地址
+   `Naninovel/Fonts/<字体>/Materials/<变体>`），`Verify` 按地址加载检查。（`b20fc29`）
+2. **SpriteDicing**：Naninovel 的 `DicedSprite*` 被 `#if SPRITE_DICING_AVAILABLE` 包着，该符号由 Naninovel asmdef 的 `versionDefines`
+   按包 `com.elringus.spritedicing` 是否存在来定义。把原来放在 `Assets/Scripts/Game` 下的 `Elringus.SpriteDicing.Runtime` 骨架
+   搬进嵌入包 `Packages/com.elringus.spritedicing`（`autoReferenced: true`，让 Assembly-CSharp-Editor 也看得到），并在 Naninovel 的
+   Runtime / Editor asmdef 里显式加 `Elringus.SpriteDicing.Runtime` 引用（它们按 GUID 引用真包，GUID 在这里解析不到）。
+   `DicedSpriteAtlas` 只剩 `sprites` / `textures` / `GetSprite`（线性按名查找），全部复原；`DicedSpriteCharacterExtended` 的 31 个成员按反汇编复原。
+   （`3be50b7`；PROVENANCE 里记载的"SpriteDicing 集成被编译排除"缺口就此关闭。）
+3. **DicedSpriteAtlas 资产**：18 个角色图集（Yuki、Warden、Jailer A/B/C、13 个 Creature*）在工程里只有 PNG，没有图集 ScriptableObject。
+   `Editor/DicedSpriteAtlasBuilder` 按导入台账 + `res/**/*.asset.json` 的 path id 重建每个图集的 `sprites` / `textures` 列表
+   （指向已导入的单张 PNG，Sprite 名即原名），并输出 `diced_atlas_plan.json`；`a13f_plan_addressables.py` 读它，
+   图集作为**一个**条目挂在出货地址下，导出的 Sprite / 贴图叶子行不再作为条目（否则同一地址下有 13–66 个 Sprite，
+   `LoadAssetAsync<DicedSpriteAtlas>` 找不到图集）。计划条目 30,819 → 30,382（−455 叶子 + 18 图集）。
+
+**还没做 / 已知偏差**：图集里的 Sprite 是整张 quad，不是 SpriteDicing 的骰子网格（`DicedSpriteActor` 只读 `Sprite.vertices/uv/triangles/texture`，
+画面相同）；`RenderToTexture` 的常数（正交 0..100）未逐字节对照；`ChangePivot` 的回退取的是 `Position` 而不是 `Pivot`（出货代码如此，已在注释里标明）。
