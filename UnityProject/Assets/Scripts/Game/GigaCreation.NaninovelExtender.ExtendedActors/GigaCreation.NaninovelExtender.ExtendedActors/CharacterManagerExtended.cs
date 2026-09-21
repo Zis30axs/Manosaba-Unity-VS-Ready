@@ -13,7 +13,8 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     [Token(Token = "0x200000E")]
     [UsedImplicitly]
     [InitializeAtRuntime(0, typeof(CharacterManager))]
-    public class CharacterManagerExtended : CharacterManager
+    // Interface list as shipped (dump.cs TypeDefIndex 16396); the generated source had dropped all three.
+    public class CharacterManagerExtended : CharacterManager, ICharacterManagerExtended, IMultipliableCharacterManager, IMultipliableActorManager<ICharacterActor>
     {
     	[StructLayout(3)]
     	[Token(Token = "0x2000011")]

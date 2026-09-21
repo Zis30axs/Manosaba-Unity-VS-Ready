@@ -14,7 +14,9 @@ namespace GigaCreation.NaninovelExtender.Localization
     [Token(Token = "0x2000006")]
     [UsedImplicitly]
     [InitializeAtRuntime(0, typeof(Naninovel.LocalizationManager))]
-    public class LocalizationManagerExtended : Naninovel.LocalizationManager
+    // Interface list as shipped (dump.cs TypeDefIndex 17666): without ILocalizationManagerExtended,
+    // Engine.GetService<ILocalizationManagerExtended>() finds no service and OptionsUi.Initialize stalls engine init.
+    public class LocalizationManagerExtended : Naninovel.LocalizationManager, ILocalizationManagerExtended
     {
     	[StructLayout(3)]
     	[Token(Token = "0x2000009")]
