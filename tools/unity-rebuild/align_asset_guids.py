@@ -134,6 +134,16 @@ def resolve(location, known):
     if directory and stem:
         tails.append("%s/%s.sprites/%s" % (directory, stem, filename))
 
+    # The TMP font variants are regenerated locally (RuntimeResourceRepair): `Assets/#WitchTrials/Fonts/<Family>/<f>.mat`
+    # became `Assets/GameContent/RuntimeFonts/<Family>/<f>.mat`.  Only the materials are aligned: the font `.asset`s keep
+    # the tracked regeneration GUIDs that RuntimeResourceRepair enforces (nothing references them by GUID), whereas the
+    # materials are referenced by their shipped GUID (FontMaterialData._fontMaterialReference, an AssetReferenceT<Material>).
+    fonts_marker = "#WitchTrials/Fonts/"
+    if ext == ".mat" and directory.startswith(fonts_marker):
+        candidate = "UnityProject/Assets/GameContent/RuntimeFonts/" + tail[len(fonts_marker):]
+        if candidate in known:
+            return candidate
+
     for prefix in PREFIX_CANDIDATES:
         head = "UnityProject/Assets/" + (prefix + "/" if prefix else "")
         for candidate_tail in tails:
