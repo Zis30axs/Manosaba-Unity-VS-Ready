@@ -1,0 +1,113 @@
+====================================================================================================
+FUNCTION RVA 0xD364D0  VA 0x180D364D0  size 0x164 (356 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.ChoiceHandlerPanelModified$$LoadCustomButtonPrefab
+  csig   : Naninovel_UI_ChoiceHandlerButton_o* GigaCreation_NaninovelExtender_Ui_ChoiceHandlerPanelModified__LoadCustomButtonPrefab (GigaCreation_NaninovelExtender_Ui_ChoiceHandlerPanelModified_o* __this, System_String_o* path, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ChoiceHandlerPanelModified :: protected override ChoiceHandlerButton LoadCustomButtonPrefab(string path)
+  fields of ChoiceHandlerPanelModified.<>c:
+      +0x0    <>9                            static readonly ChoiceHandlerPanelModified.<>c
+      +0x8    <>9__2_0                       static Func<CustomChoiceButtonData, string>
+      +0x10   <>9__2_1                       static Func<CustomChoiceButtonData, ChoiceHandlerButton>
+====================================================================================================
+  0x180D364D0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D364D5  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D364DA  push    rdi                                       
+  0x180D364DB  sub     rsp, 0x20                                 
+  0x180D364DF  cmp     byte ptr [rip + 0x23a6eb7], 0                ; data_30DD39D
+  0x180D364E6  mov     rsi, rdx                                  
+  0x180D364E9  mov     rdi, rcx                                  
+  0x180D364EC  jne     0x180d36528                               
+  0x180D364EE  lea     rcx, [rip + 0x211bdeb]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D364F5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D364FA  lock or dword ptr [rsp], 0                        
+  0x180D364FF  lea     rcx, [rip + 0x20fb27a]                       ; TYPE System.Collections.Generic.IDictionary<string, ChoiceHandlerButton>_TypeInfo
+  0x180D36506  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3650B  lock or dword ptr [rsp], 0                        
+  0x180D36510  lea     rcx, [rip + 0x20fb279]                       ; STR 'ßx’kÖ«¥Ñ¥Í¥ë¤Ë¥«¥¹¥¿¥à¥Ü¥¿¥ó¤¬µÇåh¤µ¤ì¤Æ¤¤¤Þ¤»¤ó£º'
+  0x180D36517  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3651C  lock or dword ptr [rsp], 0                        
+  0x180D36521  mov     byte ptr [rip + 0x23a6e75], 1                ; data_30DD39D
+
+180D36528:
+  0x180D36528  mov     rbx, qword ptr [rdi + 0x120]              
+  0x180D3652F  xor     ecx, ecx                                  
+  0x180D36531  mov     qword ptr [rsp + 0x30], rcx               
+  0x180D36536  test    rbx, rbx                                  
+  0x180D36539  je      0x180d3662f                               
+  0x180D3653F  mov     r10, qword ptr [rbx]                      
+  0x180D36542  mov     r9, qword ptr [rip + 0x20fb237]              ; TYPE System.Collections.Generic.IDictionary<string, ChoiceHandlerButton>_TypeInfo
+  0x180D36549  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180D36551  cmp     cx, dx                                    
+  0x180D36554  jae     0x180d36578                               
+  0x180D36556  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180D3655D  nop     dword ptr [rax]                           
+
+180D36560:
+  0x180D36560  movzx   eax, cx                                   
+  0x180D36563  add     rax, rax                                  
+  0x180D36566  cmp     qword ptr [r8 + rax*8], r9                
+  0x180D3656A  je      0x180d365f8                               
+  0x180D36570  inc     cx                                        
+  0x180D36573  cmp     cx, dx                                    
+  0x180D36576  jb      0x180d36560                               
+
+180D36578:
+  0x180D36578  mov     r8d, 7                                    
+  0x180D3657E  mov     rdx, r9                                   
+  0x180D36581  mov     rcx, rbx                                  
+  0x180D36584  call    0x180243a20                                  ; resolve interface method slot
+
+180D36589:
+  0x180D36589  mov     r10, qword ptr [rax]                      
+  0x180D3658C  lea     r8, [rsp + 0x30]                          
+  0x180D36591  mov     r9, qword ptr [rax + 8]                   
+  0x180D36595  mov     rdx, rsi                                  
+  0x180D36598  mov     rcx, rbx                                  
+  0x180D3659B  call    r10                                       
+  0x180D3659E  test    al, al                                    
+  0x180D365A0  jne     0x180d3661a                               
+  0x180D365A2  mov     rcx, qword ptr [rip + 0x20fb1e7]             ; STR 'ßx’kÖ«¥Ñ¥Í¥ë¤Ë¥«¥¹¥¿¥à¥Ü¥¿¥ó¤¬µÇåh¤µ¤ì¤Æ¤¤¤Þ¤»¤ó£º'
+  0x180D365A9  xor     r8d, r8d                                  
+  0x180D365AC  mov     rdx, rsi                                  
+  0x180D365AF  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x180D365B4  mov     rcx, qword ptr [rip + 0x211bd25]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D365BB  mov     rbx, rax                                  
+  0x180D365BE  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D365C5  jne     0x180d365cc                               
+  0x180D365C7  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D365CC:
+  0x180D365CC  xor     r8d, r8d                                  
+  0x180D365CF  mov     rdx, rdi                                  
+  0x180D365D2  mov     rcx, rbx                                  
+  0x180D365D5  call    0x181fef000                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180D365DA  xor     r8d, r8d                                  
+  0x180D365DD  mov     rdx, rsi                                  
+  0x180D365E0  mov     rcx, rdi                                  
+  0x180D365E3  call    0x1806167a0                                  ; -> Naninovel.UI.ChoiceHandlerPanel$$LoadCustomButtonPrefab
+  0x180D365E8  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D365ED  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D365F2  add     rsp, 0x20                                 
+  0x180D365F6  pop     rdi                                       
+  0x180D365F7  ret                                               
+
+180D365F8:
+  0x180D365F8  movzx   ecx, cx                                   
+  0x180D365FB  add     rcx, rcx                                  
+  0x180D365FE  mov     eax, dword ptr [r8 + rcx*8 + 8]           
+  0x180D36603  add     eax, 7                                    
+  0x180D36606  cdqe                                              
+  0x180D36608  shl     rax, 4                                    
+  0x180D3660C  add     rax, 0x138                                
+  0x180D36612  add     rax, r10                                  
+  0x180D36615  jmp     0x180d36589                               
+
+180D3661A:
+  0x180D3661A  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D3661F  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D36624  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D36629  add     rsp, 0x20                                 
+  0x180D3662D  pop     rdi                                       
+  0x180D3662E  ret                                               
+
+180D3662F:
+  0x180D3662F  call    0x180246730                                  ; THROW NullReferenceException
