@@ -1,0 +1,24 @@
+====================================================================================================
+FUNCTION RVA 0xCD6780  VA 0x180CD6780  size 0x2D (45 bytes)
+  managed: GigaCreation.Essentials.Ui.ButtonExtendedBase$$OnDisable
+  csig   : void GigaCreation_Essentials_Ui_ButtonExtendedBase__OnDisable (GigaCreation_Essentials_Ui_ButtonExtendedBase_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ButtonExtendedBase :: protected override void OnDisable()
+  fields of GigaCreation.Essentials.Ui.ButtonExtendedBase:
+      +0x108  _disposables                   readonly CompositeDisposable
+      +0x110  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CD6780  push    rbx                                       
+  0x180CD6782  sub     rsp, 0x20                                 
+  0x180CD6786  xor     edx, edx                                  
+  0x180CD6788  mov     rbx, rcx                                  
+  0x180CD678B  call    0x1824990f0                                  ; -> UnityEngine.UI.Selectable$$OnDisable
+  0x180CD6790  mov     rcx, qword ptr [rbx + 0x108]                 ; rbx->ButtonExtendedBase._disposables
+  0x180CD6797  test    rcx, rcx                                  
+  0x180CD679A  je      0x180cd67a8                               
+  0x180CD679C  xor     edx, edx                                  
+  0x180CD679E  add     rsp, 0x20                                 
+  0x180CD67A2  pop     rbx                                       
+  0x180CD67A3  jmp     0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+
+180CD67A8:
+  0x180CD67A8  call    0x180246730                                  ; THROW NullReferenceException

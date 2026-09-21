@@ -1,0 +1,90 @@
+====================================================================================================
+FUNCTION RVA 0xCD67B0  VA 0x180CD67B0  size 0x156 (342 bytes)
+  managed: GigaCreation.Essentials.Ui.ButtonExtendedBase$$Initialize
+  csig   : void GigaCreation_Essentials_Ui_ButtonExtendedBase__Initialize (GigaCreation_Essentials_Ui_ButtonExtendedBase_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ButtonExtendedBase :: protected virtual void Initialize()
+  fields of GigaCreation.Essentials.Ui.ButtonExtendedBase:
+      +0x108  _disposables                   readonly CompositeDisposable
+      +0x110  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CD67B0  push    rsi                                       
+  0x180CD67B2  sub     rsp, 0x30                                 
+  0x180CD67B6  cmp     byte ptr [rip + 0x240698e], 0                ; data_30DD14B
+  0x180CD67BD  mov     rsi, rcx                                  
+  0x180CD67C0  jne     0x180cd67fc                               
+  0x180CD67C2  lea     rcx, [rip + 0x217baa7]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180CD67C9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD67CE  lock or dword ptr [rsp], 0                        
+  0x180CD67D3  lea     rcx, [rip + 0x217ba8e]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CD67DA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD67DF  lock or dword ptr [rsp], 0                        
+  0x180CD67E4  lea     rcx, [rip + 0x217ba75]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CD67EB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD67F0  lock or dword ptr [rsp], 0                        
+  0x180CD67F5  mov     byte ptr [rip + 0x240694f], 1                ; data_30DD14B
+
+180CD67FC:
+  0x180CD67FC  mov     qword ptr [rsp + 0x40], rbx               
+  0x180CD6801  xor     edx, edx                                  
+  0x180CD6803  mov     rcx, rsi                                  
+  0x180CD6806  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CD680B  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD6810  test    rax, rax                                  
+  0x180CD6813  je      0x180cd6901                               
+  0x180CD6819  mov     rcx, qword ptr [rip + 0x217ba50]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CD6820  mov     rdi, qword ptr [rax + 0x10]               
+  0x180CD6824  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD6829  mov     rbx, rax                                  
+  0x180CD682C  test    rsi, rsi                                  
+  0x180CD682F  je      0x180cd6901                               
+  0x180CD6835  mov     r8, qword ptr [rsi]                       
+  0x180CD6838  xor     r9d, r9d                                  
+  0x180CD683B  mov     rdx, rsi                                  
+  0x180CD683E  mov     rcx, rax                                  
+  0x180CD6841  mov     r8, qword ptr [r8 + 0x400]                
+  0x180CD6848  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CD684D  mov     r8, qword ptr [rip + 0x217ba0c]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CD6854  mov     rdx, rbx                                  
+  0x180CD6857  mov     rcx, rdi                                  
+  0x180CD685A  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CD685F  mov     rcx, qword ptr [rip + 0x217ba02]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CD6866  lea     r9, [rsp + 0x50]                          
+  0x180CD686B  mov     rdx, qword ptr [rsi + 0x108]                 ; rsi->ButtonExtendedBase._disposables
+  0x180CD6872  mov     r8, rsi                                   
+  0x180CD6875  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CD687A  mov     rcx, rax                                  
+  0x180CD687D  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CD6882  xor     edx, edx                                  
+  0x180CD6884  mov     rcx, rsi                                  
+  0x180CD6887  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD688C  test    rax, rax                                  
+  0x180CD688F  je      0x180cd6901                               
+  0x180CD6891  mov     rcx, qword ptr [rip + 0x217b9d8]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CD6898  mov     rdi, qword ptr [rax + 0x18]               
+  0x180CD689C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD68A1  mov     r8, qword ptr [rsi]                       
+  0x180CD68A4  xor     r9d, r9d                                  
+  0x180CD68A7  mov     rdx, rsi                                  
+  0x180CD68AA  mov     rcx, rax                                  
+  0x180CD68AD  mov     rbx, rax                                  
+  0x180CD68B0  mov     r8, qword ptr [r8 + 0x410]                
+  0x180CD68B7  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CD68BC  mov     r8, qword ptr [rip + 0x217b99d]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CD68C3  mov     rdx, rbx                                  
+  0x180CD68C6  mov     rcx, rdi                                  
+  0x180CD68C9  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CD68CE  mov     rcx, qword ptr [rip + 0x217b993]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CD68D5  lea     r9, [rsp + 0x50]                          
+  0x180CD68DA  mov     rdx, qword ptr [rsi + 0x108]                 ; rsi->ButtonExtendedBase._disposables
+  0x180CD68E1  mov     r8, rsi                                   
+  0x180CD68E4  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CD68E9  mov     rcx, rax                                  
+  0x180CD68EC  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CD68F1  mov     rdi, qword ptr [rsp + 0x48]               
+  0x180CD68F6  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CD68FB  add     rsp, 0x30                                 
+  0x180CD68FF  pop     rsi                                       
+  0x180CD6900  ret                                               
+
+180CD6901:
+  0x180CD6901  call    0x180246730                                  ; THROW NullReferenceException

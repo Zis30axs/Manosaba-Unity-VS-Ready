@@ -1,0 +1,131 @@
+====================================================================================================
+FUNCTION RVA 0xCD6910  VA 0x180CD6910  size 0x181 (385 bytes)
+  managed: GigaCreation.Essentials.Ui.ButtonExtendedBase$$DoStateTransition
+  csig   : void GigaCreation_Essentials_Ui_ButtonExtendedBase__DoStateTransition (GigaCreation_Essentials_Ui_ButtonExtendedBase_o* __this, int32_t state, bool instant, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ButtonExtendedBase :: protected override void DoStateTransition(Selectable.SelectionState state, bool instant)
+  fields of GigaCreation.Essentials.Ui.ButtonExtendedBase:
+      +0x108  _disposables                   readonly CompositeDisposable
+      +0x110  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CD6910  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD6915  push    rdi                                       
+  0x180CD6916  sub     rsp, 0x40                                 
+  0x180CD691A  mov     edi, edx                                  
+  0x180CD691C  mov     rbx, rcx                                  
+  0x180CD691F  xor     edx, edx                                  
+  0x180CD6921  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD6926  test    rax, rax                                  
+  0x180CD6929  je      0x180cd6a17                               
+  0x180CD692F  xor     edx, edx                                  
+  0x180CD6931  mov     rcx, rax                                  
+  0x180CD6934  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CD6939  test    al, al                                    
+  0x180CD693B  je      0x180cd6980                               
+  0x180CD693D  mov     ecx, edi                                  
+  0x180CD693F  test    edi, edi                                  
+  0x180CD6941  je      0x180cd69f4                               
+  0x180CD6947  sub     ecx, 1                                    
+  0x180CD694A  je      0x180cd69d1                               
+  0x180CD6950  sub     ecx, 1                                    
+  0x180CD6953  je      0x180cd69ae                               
+  0x180CD6955  sub     ecx, 1                                    
+  0x180CD6958  je      0x180cd698b                               
+  0x180CD695A  cmp     ecx, 1                                    
+  0x180CD695D  jne     0x180cd6a1d                               
+  0x180CD6963  xor     edx, edx                                  
+  0x180CD6965  mov     rcx, rbx                                  
+  0x180CD6968  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD696D  test    rax, rax                                  
+  0x180CD6970  je      0x180cd6a17                               
+  0x180CD6976  xor     edx, edx                                  
+  0x180CD6978  mov     rcx, rax                                  
+  0x180CD697B  call    0x180ceabf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToDisabled
+
+180CD6980:
+  0x180CD6980  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD6985  add     rsp, 0x40                                 
+  0x180CD6989  pop     rdi                                       
+  0x180CD698A  ret                                               
+
+180CD698B:
+  0x180CD698B  xor     edx, edx                                  
+  0x180CD698D  mov     rcx, rbx                                  
+  0x180CD6990  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD6995  test    rax, rax                                  
+  0x180CD6998  je      0x180cd6a17                               
+  0x180CD699A  xor     edx, edx                                  
+  0x180CD699C  mov     rcx, rax                                  
+  0x180CD699F  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD69A4  add     rsp, 0x40                                 
+  0x180CD69A8  pop     rdi                                       
+  0x180CD69A9  jmp     0x180ceab70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToSelected
+
+180CD69AE:
+  0x180CD69AE  xor     edx, edx                                  
+  0x180CD69B0  mov     rcx, rbx                                  
+  0x180CD69B3  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD69B8  test    rax, rax                                  
+  0x180CD69BB  je      0x180cd6a17                               
+  0x180CD69BD  xor     edx, edx                                  
+  0x180CD69BF  mov     rcx, rax                                  
+  0x180CD69C2  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD69C7  add     rsp, 0x40                                 
+  0x180CD69CB  pop     rdi                                       
+  0x180CD69CC  jmp     0x180ceaaf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToPressed
+
+180CD69D1:
+  0x180CD69D1  xor     edx, edx                                  
+  0x180CD69D3  mov     rcx, rbx                                  
+  0x180CD69D6  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD69DB  test    rax, rax                                  
+  0x180CD69DE  je      0x180cd6a17                               
+  0x180CD69E0  xor     edx, edx                                  
+  0x180CD69E2  mov     rcx, rax                                  
+  0x180CD69E5  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD69EA  add     rsp, 0x40                                 
+  0x180CD69EE  pop     rdi                                       
+  0x180CD69EF  jmp     0x180ceaa70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToHighlighted
+
+180CD69F4:
+  0x180CD69F4  xor     edx, edx                                  
+  0x180CD69F6  mov     rcx, rbx                                  
+  0x180CD69F9  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD69FE  test    rax, rax                                  
+  0x180CD6A01  je      0x180cd6a17                               
+  0x180CD6A03  xor     edx, edx                                  
+  0x180CD6A05  mov     rcx, rax                                  
+  0x180CD6A08  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD6A0D  add     rsp, 0x40                                 
+  0x180CD6A11  pop     rdi                                       
+  0x180CD6A12  jmp     0x180cea9f0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToNormal
+
+180CD6A17:
+  0x180CD6A17  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CD6A1C  int3                                              
+
+180CD6A1D:
+  0x180CD6A1D  lea     rcx, [rip + 0x219290c]                       ; TYPE UnityEngine.UI.Selectable.SelectionState_TypeInfo
+  0x180CD6A24  mov     dword ptr [rsp + 0x30], edi               
+  0x180CD6A28  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CD6A2D  mov     rcx, rax                                  
+  0x180CD6A30  lea     rdx, [rsp + 0x30]                         
+  0x180CD6A35  call    0x180246570                                  ; il2cpp_value_box
+  0x180CD6A3A  lea     rcx, [rip + 0x2166ec7]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180CD6A41  mov     rbx, rax                                  
+  0x180CD6A44  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CD6A49  mov     rcx, rax                                  
+  0x180CD6A4C  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180CD6A51  lea     rcx, [rip + 0x2145ca0]                       ; STR 'state'
+  0x180CD6A58  mov     rdi, rax                                  
+  0x180CD6A5B  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CD6A60  mov     rdx, rax                                  
+  0x180CD6A63  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CD6A6C  xor     r9d, r9d                                  
+  0x180CD6A6F  mov     r8, rbx                                   
+  0x180CD6A72  mov     rcx, rdi                                  
+  0x180CD6A75  call    0x180f749a0                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180CD6A7A  lea     rcx, [rip + 0x2192897]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.ButtonExtendedBase.DoStateTransition() => GigaCreation.Essentials.Ui.ButtonExtendedBase$$DoStateTransition
+  0x180CD6A81  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CD6A86  mov     rdx, rax                                  
+  0x180CD6A89  mov     rcx, rdi                                  
+  0x180CD6A8C  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

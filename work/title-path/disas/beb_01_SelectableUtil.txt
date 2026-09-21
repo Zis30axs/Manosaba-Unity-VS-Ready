@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xCD6650  VA 0x180CD6650  size 0xCF (207 bytes)
+  managed: GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  csig   : GigaCreation_Essentials_Ui_SelectableUtility_o* GigaCreation_Essentials_Ui_ButtonExtendedBase__get_SelectableUtil (GigaCreation_Essentials_Ui_ButtonExtendedBase_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ButtonExtendedBase :: private SelectableUtility get_SelectableUtil()
+  fields of GigaCreation.Essentials.Ui.ButtonExtendedBase:
+      +0x108  _disposables                   readonly CompositeDisposable
+      +0x110  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CD6650  push    rdi                                       
+  0x180CD6652  sub     rsp, 0x20                                 
+  0x180CD6656  cmp     byte ptr [rip + 0x2406aed], 0                ; data_30DD14A
+  0x180CD665D  mov     rdi, rcx                                  
+  0x180CD6660  jne     0x180cd667a                               
+  0x180CD6662  lea     rcx, [rip + 0x2192d37]                       ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CD6669  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD666E  lock or dword ptr [rsp], 0                        
+  0x180CD6673  mov     byte ptr [rip + 0x2406ad0], 1                ; data_30DD14A
+
+180CD667A:
+  0x180CD667A  mov     rax, qword ptr [rdi + 0x110]                 ; rdi->ButtonExtendedBase._selectableUtil
+  0x180CD6681  test    rax, rax                                  
+  0x180CD6684  jne     0x180cd6719                               
+  0x180CD668A  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CD668F  xor     edx, edx                                  
+  0x180CD6691  mov     rcx, rdi                                  
+  0x180CD6694  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CD6699  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CD669E  mov     rcx, qword ptr [rip + 0x2192cfb]             ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CD66A5  mov     rbx, rax                                  
+  0x180CD66A8  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD66AD  xor     r8d, r8d                                  
+  0x180CD66B0  mov     rdx, rbx                                  
+  0x180CD66B3  mov     rcx, rax                                  
+  0x180CD66B6  mov     rsi, rax                                  
+  0x180CD66B9  call    0x180cea820                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$.ctor
+  0x180CD66BE  cmp     dword ptr [rip + 0x2402aff], 0               ; data_30D91C4
+  0x180CD66C5  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD66CA  mov     qword ptr [rdi + 0x110], rsi                 ; rdi->ButtonExtendedBase._selectableUtil
+  0x180CD66D1  je      0x180cd6711                               
+  0x180CD66D3  lea     r8, [rdi + 0x110]                            ; rdi->ButtonExtendedBase._selectableUtil
+  0x180CD66DA  shr     r8, 0xc                                   
+  0x180CD66DE  lea     rcx, [rip + 0x245de9b]                       ; data_3134580
+  0x180CD66E5  and     r8d, 0x1fffff                             
+  0x180CD66EC  mov     eax, r8d                                  
+  0x180CD66EF  shr     rax, 6                                    
+  0x180CD66F3  and     r8d, 0x3f                                 
+  0x180CD66F7  lea     rdx, [rcx + rax*8]                        
+  0x180CD66FB  prefetchw byte ptr [rdx]                            
+  0x180CD66FE  nop                                               
+
+180CD6700:
+  0x180CD6700  mov     rax, qword ptr [rdx]                      
+  0x180CD6703  mov     rcx, rax                                  
+  0x180CD6706  bts     rcx, r8                                   
+  0x180CD670A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CD670F  jne     0x180cd6700                               
+
+180CD6711:
+  0x180CD6711  mov     rax, rsi                                  
+  0x180CD6714  mov     rsi, qword ptr [rsp + 0x38]               
+
+180CD6719:
+  0x180CD6719  add     rsp, 0x20                                 
+  0x180CD671D  pop     rdi                                       
+  0x180CD671E  ret                                               

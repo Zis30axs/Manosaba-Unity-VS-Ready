@@ -1,0 +1,32 @@
+====================================================================================================
+FUNCTION RVA 0xCDB570  VA 0x180CDB570  size 0x3D (61 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningButton$$OnEnablingChanged
+  csig   : void GigaCreation_Essentials_Ui_TweeningButton__OnEnablingChanged (GigaCreation_Essentials_Ui_TweeningButton_o* __this, bool isEnabled, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningButton :: protected override void OnEnablingChanged(bool isEnabled)
+  fields of GigaCreation.Essentials.Ui.TweeningButton:
+      +0x118  _transform                     Transform
+      +0x120  _canvasGroup                   CanvasGroup
+      +0x128  _scaleUpWhenHighlighted        bool
+      +0x130  _scaleUtil                     ScaleUtility
+      +0x138  _fadeOutWhenDisabled           bool
+      +0x140  _fadeUtil                      FadeUtility
+====================================================================================================
+  0x180CDB570  sub     rsp, 0x28                                 
+  0x180CDB574  cmp     byte ptr [rcx + 0x138], 0                    ; rcx->TweeningButton._fadeOutWhenDisabled
+  0x180CDB57B  je      0x180cdb5a3                               
+  0x180CDB57D  mov     rax, qword ptr [rcx + 0x140]                 ; rcx->TweeningButton._fadeUtil
+  0x180CDB584  test    rax, rax                                  
+  0x180CDB587  je      0x180cdb5a8                               
+  0x180CDB589  movzx   r8d, dl                                   
+  0x180CDB58D  xor     r9d, r9d                                  
+  0x180CDB590  mov     rdx, qword ptr [rcx + 0x120]                 ; rcx->TweeningButton._canvasGroup
+  0x180CDB597  mov     rcx, rax                                  
+  0x180CDB59A  add     rsp, 0x28                                 
+  0x180CDB59E  jmp     0x180cdbcc0                                  ; -> GigaCreation.Essentials.Ui.FadeUtility$$Fade
+
+180CDB5A3:
+  0x180CDB5A3  add     rsp, 0x28                                 
+  0x180CDB5A7  ret                                               
+
+180CDB5A8:
+  0x180CDB5A8  call    0x180246730                                  ; THROW NullReferenceException

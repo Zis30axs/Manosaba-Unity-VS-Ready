@@ -38,16 +38,26 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private FadeUtility _fadeUtil;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCDB530 -- flag +0x128; tail call ScaleUtility.Scale(+0x130, _transform +0x118)
     	[Token(Token = "0x600004A")]
     	[Address(RVA = "0xCDB530", Offset = "0xCD9F30", VA = "0x180CDB530", Slot = "44")]
     	protected override void OnHighlightingChanged(bool isHighlighted)
     	{
+    		if (_scaleUpWhenHighlighted)
+    		{
+    			_scaleUtil.Scale(_transform, isHighlighted);
+    		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCDB570 -- flag +0x138; tail call FadeUtility.Fade(+0x140, _canvasGroup +0x120)
     	[Token(Token = "0x600004B")]
     	[Address(RVA = "0xCDB570", Offset = "0xCD9F70", VA = "0x180CDB570", Slot = "45")]
     	protected override void OnEnablingChanged(bool isEnabled)
     	{
+    		if (_fadeOutWhenDisabled)
+    		{
+    			_fadeUtil.Fade(_canvasGroup, isEnabled);
+    		}
     	}
 
     	[Token(Token = "0x600004C")]

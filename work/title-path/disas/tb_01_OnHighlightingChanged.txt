@@ -1,0 +1,32 @@
+====================================================================================================
+FUNCTION RVA 0xCDB530  VA 0x180CDB530  size 0x3D (61 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningButton$$OnHighlightingChanged
+  csig   : void GigaCreation_Essentials_Ui_TweeningButton__OnHighlightingChanged (GigaCreation_Essentials_Ui_TweeningButton_o* __this, bool isHighlighted, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningButton :: protected override void OnHighlightingChanged(bool isHighlighted)
+  fields of GigaCreation.Essentials.Ui.TweeningButton:
+      +0x118  _transform                     Transform
+      +0x120  _canvasGroup                   CanvasGroup
+      +0x128  _scaleUpWhenHighlighted        bool
+      +0x130  _scaleUtil                     ScaleUtility
+      +0x138  _fadeOutWhenDisabled           bool
+      +0x140  _fadeUtil                      FadeUtility
+====================================================================================================
+  0x180CDB530  sub     rsp, 0x28                                 
+  0x180CDB534  cmp     byte ptr [rcx + 0x128], 0                    ; rcx->TweeningButton._scaleUpWhenHighlighted
+  0x180CDB53B  je      0x180cdb563                               
+  0x180CDB53D  mov     rax, qword ptr [rcx + 0x130]                 ; rcx->TweeningButton._scaleUtil
+  0x180CDB544  test    rax, rax                                  
+  0x180CDB547  je      0x180cdb568                               
+  0x180CDB549  movzx   r8d, dl                                   
+  0x180CDB54D  xor     r9d, r9d                                  
+  0x180CDB550  mov     rdx, qword ptr [rcx + 0x118]                 ; rcx->TweeningButton._transform
+  0x180CDB557  mov     rcx, rax                                  
+  0x180CDB55A  add     rsp, 0x28                                 
+  0x180CDB55E  jmp     0x180cdcde0                                  ; -> GigaCreation.Essentials.Ui.ScaleUtility$$Scale
+
+180CDB563:
+  0x180CDB563  add     rsp, 0x28                                 
+  0x180CDB567  ret                                               
+
+180CDB568:
+  0x180CDB568  call    0x180246730                                  ; THROW NullReferenceException

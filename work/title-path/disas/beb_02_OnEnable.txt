@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xCD6720  VA 0x180CD6720  size 0x54 (84 bytes)
+  managed: GigaCreation.Essentials.Ui.ButtonExtendedBase$$OnEnable
+  csig   : void GigaCreation_Essentials_Ui_ButtonExtendedBase__OnEnable (GigaCreation_Essentials_Ui_ButtonExtendedBase_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ButtonExtendedBase :: protected override void OnEnable()
+  fields of GigaCreation.Essentials.Ui.ButtonExtendedBase:
+      +0x108  _disposables                   readonly CompositeDisposable
+      +0x110  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CD6720  push    rbx                                       
+  0x180CD6722  sub     rsp, 0x20                                 
+  0x180CD6726  xor     edx, edx                                  
+  0x180CD6728  mov     rbx, rcx                                  
+  0x180CD672B  call    0x182498b80                                  ; -> UnityEngine.UI.Selectable$$OnEnable
+  0x180CD6730  xor     edx, edx                                  
+  0x180CD6732  mov     rcx, rbx                                  
+  0x180CD6735  call    0x180cd6650                                  ; -> GigaCreation.Essentials.Ui.ButtonExtendedBase$$get_SelectableUtil
+  0x180CD673A  test    rax, rax                                  
+  0x180CD673D  je      0x180cd676f                               
+  0x180CD673F  xor     edx, edx                                  
+  0x180CD6741  mov     rcx, rax                                  
+  0x180CD6744  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CD6749  test    al, al                                    
+  0x180CD674B  je      0x180cd6769                               
+  0x180CD674D  mov     rdx, qword ptr [rbx]                      
+  0x180CD6750  mov     rcx, rbx                                  
+  0x180CD6753  mov     rax, qword ptr [rdx + 0x3e8]              
+  0x180CD675A  mov     rdx, qword ptr [rdx + 0x3f0]              
+  0x180CD6761  add     rsp, 0x20                                 
+  0x180CD6765  pop     rbx                                       
+  0x180CD6766  jmp     rax                                       
+
+180CD6769:
+  0x180CD6769  add     rsp, 0x20                                 
+  0x180CD676D  pop     rbx                                       
+  0x180CD676E  ret                                               
+
+180CD676F:
+  0x180CD676F  call    0x180246730                                  ; THROW NullReferenceException

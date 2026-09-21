@@ -1,0 +1,121 @@
+====================================================================================================
+FUNCTION RVA 0xCEA820  VA 0x180CEA820  size 0x1CE (462 bytes)
+  managed: GigaCreation.Essentials.Ui.SelectableUtility$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_SelectableUtility___ctor (GigaCreation_Essentials_Ui_SelectableUtility_o* __this, UnityEngine_GameObject_o* go, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SelectableUtility :: public void .ctor(GameObject go)
+  fields of GigaCreation.Essentials.Ui.SelectableUtility:
+      +0x10   _isHighlighted                 readonly ReactiveProperty<bool>
+      +0x18   _isEnabled                     readonly ReactiveProperty<bool>
+      +0x20   _gameObject                    readonly GameObject
+====================================================================================================
+  0x180CEA820  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CEA825  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CEA82A  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CEA82F  push    rdi                                       
+  0x180CEA830  sub     rsp, 0x20                                 
+  0x180CEA834  cmp     byte ptr [rip + 0x23f2999], 0                ; data_30DD1D4
+  0x180CEA83B  mov     rsi, rdx                                  
+  0x180CEA83E  mov     rdi, rcx                                  
+  0x180CEA841  jne     0x180cea86c                               
+  0x180CEA843  lea     rcx, [rip + 0x217062e]                       ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
+  0x180CEA84A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA84F  lock or dword ptr [rsp], 0                        
+  0x180CEA854  lea     rcx, [rip + 0x2170615]                       ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
+  0x180CEA85B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA860  lock or dword ptr [rsp], 0                        
+  0x180CEA865  mov     byte ptr [rip + 0x23f2968], 1                ; data_30DD1D4
+
+180CEA86C:
+  0x180CEA86C  mov     rcx, qword ptr [rip + 0x21705fd]             ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
+  0x180CEA873  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEA878  mov     r8, qword ptr [rip + 0x21705f9]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
+  0x180CEA87F  lea     rdx, [rsp + 0x30]                         
+  0x180CEA884  mov     rcx, rax                                  
+  0x180CEA887  mov     byte ptr [rsp + 0x30], 0                  
+  0x180CEA88C  mov     rbx, rax                                  
+  0x180CEA88F  call    0x1808c4a20                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CEA894  cmp     dword ptr [rip + 0x23ee929], 0               ; data_30D91C4
+  0x180CEA89B  lea     rbp, [rip + 0x24039fe]                       ; data_30EE2A0
+  0x180CEA8A2  mov     qword ptr [rdi + 0x10], rbx                  ; rdi->SelectableUtility._isHighlighted
+  0x180CEA8A6  je      0x180cea8f9                               
+  0x180CEA8A8  lea     r8, [rdi + 0x10]                             ; rdi->SelectableUtility._isHighlighted
+  0x180CEA8AC  shr     r8, 0xc                                   
+  0x180CEA8B0  and     r8d, 0x1fffff                             
+  0x180CEA8B7  mov     eax, r8d                                  
+  0x180CEA8BA  shr     rax, 6                                    
+  0x180CEA8BE  lea     rdx, [rax*8]                              
+  0x180CEA8C6  add     rdx, rbp                                  
+  0x180CEA8C9  and     r8d, 0x3f                                 
+  0x180CEA8CD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEA8D4  nop     dword ptr [rax]                           
+  0x180CEA8D8  nop     dword ptr [rax + rax]                     
+
+180CEA8E0:
+  0x180CEA8E0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEA8E7  mov     rcx, rax                                  
+  0x180CEA8EA  bts     rcx, r8                                   
+  0x180CEA8EE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEA8F7  jne     0x180cea8e0                               
+
+180CEA8F9:
+  0x180CEA8F9  mov     rcx, qword ptr [rip + 0x2170570]             ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
+  0x180CEA900  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEA905  mov     r8, qword ptr [rip + 0x217056c]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
+  0x180CEA90C  lea     rdx, [rsp + 0x30]                         
+  0x180CEA911  mov     rcx, rax                                  
+  0x180CEA914  mov     byte ptr [rsp + 0x30], 1                  
+  0x180CEA919  mov     rbx, rax                                  
+  0x180CEA91C  call    0x1808c4a20                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CEA921  mov     eax, dword ptr [rip + 0x23ee89d]             ; data_30D91C4
+  0x180CEA927  mov     qword ptr [rdi + 0x18], rbx                  ; rdi->SelectableUtility._isEnabled
+  0x180CEA92B  test    eax, eax                                  
+  0x180CEA92D  je      0x180cea97f                               
+  0x180CEA92F  lea     r8, [rdi + 0x18]                             ; rdi->SelectableUtility._isEnabled
+  0x180CEA933  shr     r8, 0xc                                   
+  0x180CEA937  and     r8d, 0x1fffff                             
+  0x180CEA93E  mov     eax, r8d                                  
+  0x180CEA941  shr     rax, 6                                    
+  0x180CEA945  lea     rdx, [rax*8]                              
+  0x180CEA94D  add     rdx, rbp                                  
+  0x180CEA950  and     r8d, 0x3f                                 
+  0x180CEA954  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEA95B  nop     dword ptr [rax + rax]                     
+
+180CEA960:
+  0x180CEA960  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEA967  mov     rcx, rax                                  
+  0x180CEA96A  bts     rcx, r8                                   
+  0x180CEA96E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEA977  jne     0x180cea960                               
+  0x180CEA979  mov     eax, dword ptr [rip + 0x23ee845]             ; data_30D91C4
+
+180CEA97F:
+  0x180CEA97F  mov     qword ptr [rdi + 0x20], rsi                  ; rdi->SelectableUtility._gameObject
+  0x180CEA983  test    eax, eax                                  
+  0x180CEA985  je      0x180cea9d9                               
+  0x180CEA987  lea     r8, [rdi + 0x20]                             ; rdi->SelectableUtility._gameObject
+  0x180CEA98B  shr     r8, 0xc                                   
+  0x180CEA98F  and     r8d, 0x1fffff                             
+  0x180CEA996  mov     eax, r8d                                  
+  0x180CEA999  shr     rax, 6                                    
+  0x180CEA99D  lea     rdx, [rax*8]                              
+  0x180CEA9A5  add     rdx, rbp                                  
+  0x180CEA9A8  and     r8d, 0x3f                                 
+  0x180CEA9AC  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEA9B3  nop     dword ptr [rax]                           
+  0x180CEA9B7  nop     word ptr [rax + rax]                      
+
+180CEA9C0:
+  0x180CEA9C0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEA9C7  mov     rcx, rax                                  
+  0x180CEA9CA  bts     rcx, r8                                   
+  0x180CEA9CE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEA9D7  jne     0x180cea9c0                               
+
+180CEA9D9:
+  0x180CEA9D9  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CEA9DE  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180CEA9E3  mov     rsi, qword ptr [rsp + 0x48]               
+  0x180CEA9E8  add     rsp, 0x20                                 
+  0x180CEA9EC  pop     rdi                                       
+  0x180CEA9ED  ret                                               

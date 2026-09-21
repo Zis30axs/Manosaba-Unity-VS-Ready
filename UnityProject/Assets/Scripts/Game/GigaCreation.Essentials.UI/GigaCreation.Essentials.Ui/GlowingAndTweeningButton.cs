@@ -24,10 +24,17 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private LabelGlowUtility _labelGlowUtil;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD6B60 -- TweeningButton.OnEnablingChanged inlined, then with _glowWhenEnabled
+    	//   (+0x150) LabelGlowUtility.Glow(+0x158, _label +0x148)
     	[Token(Token = "0x6000011")]
     	[Address(RVA = "0xCD6B60", Offset = "0xCD5560", VA = "0x180CD6B60", Slot = "45")]
     	protected override void OnEnablingChanged(bool isEnabled)
     	{
+    		base.OnEnablingChanged(isEnabled);
+    		if (_glowWhenEnabled)
+    		{
+    			_labelGlowUtil.Glow(_label, isEnabled);
+    		}
     	}
 
     	[Token(Token = "0x6000012")]

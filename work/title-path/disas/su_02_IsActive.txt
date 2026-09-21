@@ -1,0 +1,110 @@
+====================================================================================================
+FUNCTION RVA 0xCEA6C0  VA 0x180CEA6C0  size 0x157 (343 bytes)
+  managed: GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  csig   : bool GigaCreation_Essentials_Ui_SelectableUtility__get_IsActive (GigaCreation_Essentials_Ui_SelectableUtility_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SelectableUtility :: public bool get_IsActive()
+  fields of GigaCreation.Essentials.Ui.SelectableUtility:
+      +0x10   _isHighlighted                 readonly ReactiveProperty<bool>
+      +0x18   _isEnabled                     readonly ReactiveProperty<bool>
+      +0x20   _gameObject                    readonly GameObject
+====================================================================================================
+  0x180CEA6C0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CEA6C5  push    rsi                                       
+  0x180CEA6C6  sub     rsp, 0x20                                 
+  0x180CEA6CA  cmp     byte ptr [rip + 0x23fecd4], 0                ; data_30E93A5
+  0x180CEA6D1  mov     rsi, rcx                                  
+  0x180CEA6D4  mov     rbx, qword ptr [rcx + 0x20]                  ; rcx->SelectableUtility._gameObject
+  0x180CEA6D8  jne     0x180cea6f2                               
+  0x180CEA6DA  lea     rcx, [rip + 0x216a4d7]                       ; TYPE UnityEngine.Application_TypeInfo
+  0x180CEA6E1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA6E6  lock or dword ptr [rsp], 0                        
+  0x180CEA6EB  mov     byte ptr [rip + 0x23fecb3], 1                ; data_30E93A5
+
+180CEA6F2:
+  0x180CEA6F2  mov     rcx, qword ptr [rip + 0x216a4bf]             ; TYPE UnityEngine.Application_TypeInfo
+  0x180CEA6F9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA700  jne     0x180cea707                               
+  0x180CEA702  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA707:
+  0x180CEA707  cmp     byte ptr [rip + 0x23fb83a], 0                ; data_30E5F48
+  0x180CEA70E  jne     0x180cea74a                               
+  0x180CEA710  lea     rcx, [rip + 0x216a4a1]                       ; TYPE UnityEngine.Application_TypeInfo
+  0x180CEA717  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA71C  lock or dword ptr [rsp], 0                        
+  0x180CEA721  lea     rcx, [rip + 0x21736d8]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Object>()
+  0x180CEA728  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA72D  lock or dword ptr [rsp], 0                        
+  0x180CEA732  lea     rcx, [rip + 0x2153757]                       ; STR 'obj'
+  0x180CEA739  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA73E  lock or dword ptr [rsp], 0                        
+  0x180CEA743  mov     byte ptr [rip + 0x23fb7fe], 1                ; data_30E5F48
+
+180CEA74A:
+  0x180CEA74A  test    rbx, rbx                                  
+  0x180CEA74D  je      0x180cea7d6                               
+  0x180CEA753  mov     qword ptr [rsp + 0x30], rdi               
+  0x180CEA758  mov     rdi, qword ptr [rbx + 0x10]                  ; rbx->SelectableUtility._isHighlighted
+  0x180CEA75C  test    rdi, rdi                                  
+  0x180CEA75F  je      0x180cea805                               
+  0x180CEA765  mov     rcx, qword ptr [rip + 0x216a44c]             ; TYPE UnityEngine.Application_TypeInfo
+  0x180CEA76C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA773  jne     0x180cea77a                               
+  0x180CEA775  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA77A:
+  0x180CEA77A  mov     rax, qword ptr [rip + 0x23fb827]             ; data_30E5FA8
+  0x180CEA781  test    rax, rax                                  
+  0x180CEA784  jne     0x180cea79e                               
+  0x180CEA786  lea     rcx, [rip + 0x1903ce3]                       ; data_25EE470
+  0x180CEA78D  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CEA792  test    rax, rax                                  
+  0x180CEA795  je      0x180cea7e8                               
+  0x180CEA797  mov     qword ptr [rip + 0x23fb80a], rax             ; data_30E5FA8
+
+180CEA79E:
+  0x180CEA79E  mov     rcx, rdi                                  
+  0x180CEA7A1  call    rax                                       
+  0x180CEA7A3  test    al, al                                    
+  0x180CEA7A5  jne     0x180cea7b7                               
+  0x180CEA7A7  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180CEA7AC  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CEA7B1  add     rsp, 0x20                                 
+  0x180CEA7B5  pop     rsi                                       
+  0x180CEA7B6  ret                                               
+
+180CEA7B7:
+  0x180CEA7B7  mov     rcx, qword ptr [rsi + 0x20]                  ; rsi->SelectableUtility._gameObject
+  0x180CEA7BB  test    rcx, rcx                                  
+  0x180CEA7BE  je      0x180cea7ff                               
+  0x180CEA7C0  xor     edx, edx                                  
+  0x180CEA7C2  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180CEA7C7  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CEA7CC  add     rsp, 0x20                                 
+  0x180CEA7D0  pop     rsi                                       
+  0x180CEA7D1  jmp     0x182067460                                  ; -> UnityEngine.GameObject$$get_activeInHierarchy
+
+180CEA7D6:
+  0x180CEA7D6  mov     rdx, qword ptr [rip + 0x21536b3]             ; STR 'obj'
+  0x180CEA7DD  xor     r8d, r8d                                  
+  0x180CEA7E0  xor     ecx, ecx                                  
+  0x180CEA7E2  call    0x18208de60                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowArgumentNullException
+  0x180CEA7E7  int3                                              
+
+180CEA7E8:
+  0x180CEA7E8  lea     rcx, [rip + 0x1903c81]                       ; data_25EE470
+  0x180CEA7EF  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CEA7F4  mov     rcx, rax                                  
+  0x180CEA7F7  xor     edx, edx                                  
+  0x180CEA7F9  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CEA7FE  int3                                              
+
+180CEA7FF:
+  0x180CEA7FF  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CEA804  int3                                              
+
+180CEA805:
+  0x180CEA805  mov     rdx, qword ptr [rip + 0x2153684]             ; STR 'obj'
+  0x180CEA80C  xor     r8d, r8d                                  
+  0x180CEA80F  mov     rcx, rbx                                  
+  0x180CEA812  call    0x18208de60                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowArgumentNullException

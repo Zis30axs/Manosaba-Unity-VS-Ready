@@ -1,0 +1,218 @@
+====================================================================================================
+FUNCTION RVA 0xCDCDE0  VA 0x180CDCDE0  size 0x340 (832 bytes)
+  managed: GigaCreation.Essentials.Ui.ScaleUtility$$Scale
+  csig   : void GigaCreation_Essentials_Ui_ScaleUtility__Scale (GigaCreation_Essentials_Ui_ScaleUtility_o* __this, UnityEngine_Transform_o* transform, bool scaleUp, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ScaleUtility :: public void Scale(Transform transform, bool scaleUp)
+  fields of GigaCreation.Essentials.Ui.ScaleUtility:
+      +0x10   _scaleOnHighlighted            float
+      +0x14   _tweenDuration                 float
+      +0x18   _motion                        MotionHandle
+====================================================================================================
+  0x180CDCDE0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDCDE5  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CDCDEA  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CDCDEF  push    rbp                                       
+  0x180CDCDF0  mov     rbp, rsp                                  
+  0x180CDCDF3  sub     rsp, 0x80                                 
+  0x180CDCDFA  cmp     byte ptr [rip + 0x240036e], 0                ; data_30DD16F
+  0x180CDCE01  movzx   esi, r8b                                  
+  0x180CDCE05  mov     rdi, rdx                                  
+  0x180CDCE08  mov     rbx, rcx                                  
+  0x180CDCE0B  jne     0x180cdce58                               
+  0x180CDCE0D  lea     rcx, [rip + 0x218a3ac]                       ; METHODINFO Method$LitMotion.Extensions.LitMotionTransformExtensions.BindToLocalScale<NoOptions, Vector3MotionAdapter>()
+  0x180CDCE14  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCE19  lock or dword ptr [rsp], 0                        
+  0x180CDCE1E  lea     rcx, [rip + 0x217e723]                       ; METHODINFO Method$LitMotion.MotionBuilder<Vector3, NoOptions, Vector3MotionAdapter>.WithEase()
+  0x180CDCE25  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCE2A  lock or dword ptr [rsp], 0                        
+  0x180CDCE2F  lea     rcx, [rip + 0x218a37a]                       ; METHODINFO Method$LitMotion.MotionBuilder<Vector3, NoOptions, Vector3MotionAdapter>.WithScheduler()
+  0x180CDCE36  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCE3B  lock or dword ptr [rsp], 0                        
+  0x180CDCE40  lea     rcx, [rip + 0x2176619]                       ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CDCE47  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCE4C  lock or dword ptr [rsp], 0                        
+  0x180CDCE51  mov     byte ptr [rip + 0x2400317], 1                ; data_30DD16F
+
+180CDCE58:
+  0x180CDCE58  movsd   xmm0, qword ptr [rbx + 0x18]                 ; rbx->ScaleUtility._motion
+  0x180CDCE5D  lea     rcx, [rbp - 0x50]                         
+  0x180CDCE61  mov     eax, dword ptr [rbx + 0x20]               
+  0x180CDCE64  movsd   qword ptr [rbp - 0x50], xmm0              
+  0x180CDCE69  mov     dword ptr [rbp - 0x48], eax               
+  0x180CDCE6C  call    0x180cd57c0                                  ; -> sub_CD57C0 (runtime/helper)
+  0x180CDCE71  test    al, al                                    
+  0x180CDCE73  je      0x180cdce90                               
+  0x180CDCE75  movsd   xmm0, qword ptr [rbx + 0x18]                 ; rbx->ScaleUtility._motion
+  0x180CDCE7A  lea     rcx, [rbp - 0x50]                         
+  0x180CDCE7E  mov     eax, dword ptr [rbx + 0x20]               
+  0x180CDCE81  mov     dl, 1                                     
+  0x180CDCE83  movsd   qword ptr [rbp - 0x50], xmm0              
+  0x180CDCE88  mov     dword ptr [rbp - 0x48], eax               
+  0x180CDCE8B  call    0x180cd58f0                                  ; -> sub_CD58F0 (runtime/helper)
+
+180CDCE90:
+  0x180CDCE90  mov     qword ptr [rsp + 0x90], r14               
+  0x180CDCE98  movaps  xmmword ptr [rsp + 0x70], xmm6            
+  0x180CDCE9D  test    sil, sil                                  
+  0x180CDCEA0  je      0x180cdcf04                               
+  0x180CDCEA2  cmp     byte ptr [rip + 0x23fa685], 0                ; data_30D752E
+  0x180CDCEA9  jne     0x180cdcec3                               
+  0x180CDCEAB  lea     rcx, [rip + 0x217f1ae]                       ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180CDCEB2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCEB7  lock or dword ptr [rsp], 0                        
+  0x180CDCEBC  mov     byte ptr [rip + 0x23fa66b], 1                ; data_30D752E
+
+180CDCEC3:
+  0x180CDCEC3  movss   xmm4, dword ptr [rbx + 0x10]                 ; rbx->ScaleUtility._scaleOnHighlighted
+  0x180CDCEC8  mov     rax, qword ptr [rip + 0x217f191]             ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180CDCECF  movaps  xmm6, xmm4                                
+  0x180CDCED2  movaps  xmm2, xmm4                                
+  0x180CDCED5  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CDCEDC  movsd   xmm1, qword ptr [rcx + 0xc]               
+  0x180CDCEE1  mulss   xmm4, dword ptr [rcx + 0x14]                 ; rcx->ScaleUtility._tweenDuration
+  0x180CDCEE6  movaps  xmm0, xmm1                                
+  0x180CDCEE9  shufps  xmm0, xmm0, 0x55                          
+  0x180CDCEED  mulss   xmm2, xmm0                                
+  0x180CDCEF1  mulss   xmm6, xmm1                                
+  0x180CDCEF5  movsd   qword ptr [rbp - 0x30], xmm1              
+  0x180CDCEFA  unpcklps xmm6, xmm2                                
+  0x180CDCEFD  movd    r14d, xmm4                                
+  0x180CDCF02  jmp     0x180cdcf3c                               
+
+180CDCF04:
+  0x180CDCF04  cmp     byte ptr [rip + 0x23fa623], 0                ; data_30D752E
+  0x180CDCF0B  jne     0x180cdcf25                               
+  0x180CDCF0D  lea     rcx, [rip + 0x217f14c]                       ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180CDCF14  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCF19  lock or dword ptr [rsp], 0                        
+  0x180CDCF1E  mov     byte ptr [rip + 0x23fa609], 1                ; data_30D752E
+
+180CDCF25:
+  0x180CDCF25  mov     rax, qword ptr [rip + 0x217f134]             ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180CDCF2C  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CDCF33  movsd   xmm6, qword ptr [rcx + 0xc]               
+  0x180CDCF38  mov     r14d, dword ptr [rcx + 0x14]                 ; rcx->ScaleUtility._tweenDuration
+
+180CDCF3C:
+  0x180CDCF3C  test    rdi, rdi                                  
+  0x180CDCF3F  je      0x180cdd0f9                               
+  0x180CDCF45  cmp     byte ptr [rip + 0x240bdf1], 0                ; data_30E8D3D
+  0x180CDCF4C  jne     0x180cdcf66                               
+  0x180CDCF4E  lea     rcx, [rip + 0x218e88b]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180CDCF55  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCF5A  lock or dword ptr [rsp], 0                        
+  0x180CDCF5F  mov     byte ptr [rip + 0x240bdd7], 1                ; data_30E8D3D
+
+180CDCF66:
+  0x180CDCF66  xor     eax, eax                                  
+  0x180CDCF68  mov     qword ptr [rbp - 0x50], rax               
+  0x180CDCF6C  mov     dword ptr [rbp - 0x48], eax               
+  0x180CDCF6F  mov     rsi, qword ptr [rdi + 0x10]                  ; rdi->ScaleUtility._scaleOnHighlighted
+  0x180CDCF73  test    rsi, rsi                                  
+  0x180CDCF76  je      0x180cdd116                               
+  0x180CDCF7C  mov     rax, qword ptr [rip + 0x240be65]             ; data_30E8DE8
+  0x180CDCF83  test    rax, rax                                  
+  0x180CDCF86  jne     0x180cdcfa4                               
+  0x180CDCF88  lea     rcx, [rip + 0x192cd71]                       ; data_2609D00
+  0x180CDCF8F  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CDCF94  test    rax, rax                                  
+  0x180CDCF97  je      0x180cdd0ff                               
+  0x180CDCF9D  mov     qword ptr [rip + 0x240be44], rax             ; data_30E8DE8
+
+180CDCFA4:
+  0x180CDCFA4  lea     rdx, [rbp - 0x50]                         
+  0x180CDCFA8  movaps  xmmword ptr [rsp + 0x60], xmm7            
+  0x180CDCFAD  mov     rcx, rsi                                  
+  0x180CDCFB0  call    rax                                       
+  0x180CDCFB2  cmp     byte ptr [rip + 0x2400674], 0                ; data_30DD62D
+  0x180CDCFB9  movsd   xmm0, qword ptr [rbp - 0x50]              
+  0x180CDCFBE  mov     eax, dword ptr [rbp - 0x48]               
+  0x180CDCFC1  movss   xmm7, dword ptr [rbx + 0x14]                 ; rbx->ScaleUtility._tweenDuration
+  0x180CDCFC6  movsd   qword ptr [rbp - 0x30], xmm0              
+  0x180CDCFCB  movsd   qword ptr [rbp - 0x40], xmm6              
+  0x180CDCFD0  mov     dword ptr [rbp - 0x38], r14d              
+  0x180CDCFD4  mov     dword ptr [rbp - 0x28], eax               
+  0x180CDCFD7  jne     0x180cdcff1                               
+  0x180CDCFD9  lea     rcx, [rip + 0x211ec90]                       ; METHODINFO Method$LitMotion.LMotion.Create<Vector3, NoOptions, Vector3MotionAdapter>()
+  0x180CDCFE0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCFE5  lock or dword ptr [rsp], 0                        
+  0x180CDCFEA  mov     byte ptr [rip + 0x240063c], 1                ; data_30DD62D
+
+180CDCFF1:
+  0x180CDCFF1  mov     rax, qword ptr [rip + 0x211ec78]             ; METHODINFO Method$LitMotion.LMotion.Create<Vector3, NoOptions, Vector3MotionAdapter>()
+  0x180CDCFF8  lea     r8, [rbp - 0x40]                          
+  0x180CDCFFC  movaps  xmm3, xmm7                                
+  0x180CDCFFF  mov     qword ptr [rsp + 0x20], rax               
+  0x180CDD004  lea     rdx, [rbp - 0x30]                         
+  0x180CDD008  lea     rcx, [rbp - 0x50]                         
+  0x180CDD00C  call    0x1806ea5e0                                  ; -> LitMotion.LMotion$$Create<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180CDD011  movaps  xmm0, xmmword ptr [rbp - 0x50]            
+  0x180CDD015  lea     rdx, [rbp - 0x30]                         
+  0x180CDD019  mov     r9, qword ptr [rip + 0x217e528]              ; METHODINFO Method$LitMotion.MotionBuilder<Vector3, NoOptions, Vector3MotionAdapter>.WithEase()
+  0x180CDD020  lea     rcx, [rbp - 0x40]                         
+  0x180CDD024  mov     r8d, 5                                    
+  0x180CDD02A  movdqa  xmmword ptr [rbp - 0x30], xmm0            
+  0x180CDD02F  call    0x1803567f0                                  ; -> LitMotion.MotionBuilder<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>$$WithEase
+  0x180CDD034  mov     r8, qword ptr [rip + 0x2176425]              ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CDD03B  movaps  xmm0, xmmword ptr [rbp - 0x40]            
+  0x180CDD03F  movaps  xmm7, xmmword ptr [rsp + 0x60]            
+  0x180CDD044  movdqa  xmmword ptr [rbp - 0x30], xmm0            
+  0x180CDD049  cmp     dword ptr [r8 + 0xe4], 0                  
+  0x180CDD051  jne     0x180cdd062                               
+  0x180CDD053  mov     rcx, r8                                   
+  0x180CDD056  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDD05B  mov     r8, qword ptr [rip + 0x21763fe]              ; TYPE LitMotion.MotionScheduler_TypeInfo
+
+180CDD062:
+  0x180CDD062  mov     r8, qword ptr [r8 + 0xb8]                 
+  0x180CDD069  lea     rdx, [rbp - 0x30]                         
+  0x180CDD06D  mov     r9, qword ptr [rip + 0x218a13c]              ; METHODINFO Method$LitMotion.MotionBuilder<Vector3, NoOptions, Vector3MotionAdapter>.WithScheduler()
+  0x180CDD074  lea     rcx, [rbp - 0x40]                         
+  0x180CDD078  mov     r8, qword ptr [r8 + 0x60]                 
+  0x180CDD07C  call    0x180356930                                  ; -> LitMotion.MotionBuilder<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>$$WithScheduler
+  0x180CDD081  movaps  xmm0, xmmword ptr [rbp - 0x40]            
+  0x180CDD085  lea     rdx, [rbp - 0x40]                         
+  0x180CDD089  mov     r9, qword ptr [rip + 0x218a130]              ; METHODINFO Method$LitMotion.Extensions.LitMotionTransformExtensions.BindToLocalScale<NoOptions, Vector3MotionAdapter>()
+  0x180CDD090  lea     rcx, [rbp - 0x30]                         
+  0x180CDD094  mov     r8, rdi                                   
+  0x180CDD097  movdqa  xmmword ptr [rbp - 0x40], xmm0            
+  0x180CDD09C  call    0x1807078c0                                  ; -> LitMotion.Extensions.LitMotionTransformExtensions$$BindToPosition<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType> (+4 aliases)
+  0x180CDD0A1  movsd   xmm0, qword ptr [rbp - 0x30]              
+  0x180CDD0A6  lea     rdx, [rbp - 0x40]                         
+  0x180CDD0AA  mov     eax, dword ptr [rbp - 0x28]               
+  0x180CDD0AD  lea     rcx, [rbp - 0x30]                         
+  0x180CDD0B1  xor     r9d, r9d                                  
+  0x180CDD0B4  movsd   qword ptr [rbp - 0x40], xmm0              
+  0x180CDD0B9  mov     r8, rdi                                   
+  0x180CDD0BC  mov     dword ptr [rbp - 0x38], eax               
+  0x180CDD0BF  call    0x180da5150                                  ; -> LitMotion.MotionHandleExtensions$$AddTo
+  0x180CDD0C4  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180CDD0C9  lea     r11, [rsp + 0x80]                         
+  0x180CDD0D1  mov     r14, qword ptr [rsp + 0x90]               
+  0x180CDD0D9  mov     rsi, qword ptr [r11 + 0x20]               
+  0x180CDD0DD  movsd   xmm0, qword ptr [rax]                     
+  0x180CDD0E1  mov     ecx, dword ptr [rax + 8]                  
+  0x180CDD0E4  mov     rdi, qword ptr [r11 + 0x28]               
+  0x180CDD0E8  movsd   qword ptr [rbx + 0x18], xmm0                 ; rbx->ScaleUtility._motion
+  0x180CDD0ED  mov     dword ptr [rbx + 0x20], ecx               
+  0x180CDD0F0  mov     rbx, qword ptr [r11 + 0x18]                  ; r11->ScaleUtility._motion
+  0x180CDD0F4  mov     rsp, r11                                  
+  0x180CDD0F7  pop     rbp                                       
+  0x180CDD0F8  ret                                               
+
+180CDD0F9:
+  0x180CDD0F9  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDD0FE  int3                                              
+
+180CDD0FF:
+  0x180CDD0FF  lea     rcx, [rip + 0x192cbfa]                       ; data_2609D00
+  0x180CDD106  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CDD10B  mov     rcx, rax                                  
+  0x180CDD10E  xor     edx, edx                                  
+  0x180CDD110  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CDD115  int3                                              
+
+180CDD116:
+  0x180CDD116  xor     edx, edx                                  
+  0x180CDD118  mov     rcx, rdi                                  
+  0x180CDD11B  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

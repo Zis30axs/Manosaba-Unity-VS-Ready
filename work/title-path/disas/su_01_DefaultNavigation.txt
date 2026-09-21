@@ -1,0 +1,21 @@
+====================================================================================================
+FUNCTION RVA 0xCEA6A0  VA 0x180CEA6A0  size 0x14 (20 bytes)
+  managed: UnityEngine.UIElements.DefaultEventSystem.LegacyInputProcessor.NoInput$$GetLastPenContactEvent
+  managed: TMPro.TextProcessingElement$$get_Undefined
+  managed: GigaCreation.Essentials.Ui.SelectableUtility$$get_DefaultNavigation
+  csig   : UnityEngine_PenData_o UnityEngine_UIElements_DefaultEventSystem_LegacyInputProcessor_NoInput__GetLastPenContactEvent (UnityEngine_UIElements_DefaultEventSystem_LegacyInputProcessor_NoInput_o* __this, const MethodInfo* method);
+  dump.cs: DefaultEventSystem.LegacyInputProcessor.NoInput :: public PenData GetLastPenContactEvent()
+  dump.cs: TMPro.TextProcessingElement :: public static TextProcessingElement get_Undefined()
+  dump.cs: GigaCreation.Essentials.Ui.SelectableUtility :: public static Navigation get_DefaultNavigation()
+  fields of GigaCreation.Essentials.Ui.SelectableUtility:
+      +0x10   _isHighlighted                 readonly ReactiveProperty<bool>
+      +0x18   _isEnabled                     readonly ReactiveProperty<bool>
+      +0x20   _gameObject                    readonly GameObject
+====================================================================================================
+  0x180CEA6A0  xorps   xmm0, xmm0                                
+  0x180CEA6A3  xor     eax, eax                                  
+  0x180CEA6A5  movups  xmmword ptr [rcx], xmm0                   
+  0x180CEA6A8  movups  xmmword ptr [rcx + 0x10], xmm0               ; rcx->SelectableUtility._isHighlighted
+  0x180CEA6AC  mov     qword ptr [rcx + 0x20], rax                  ; rcx->SelectableUtility._gameObject
+  0x180CEA6B0  mov     rax, rcx                                  
+  0x180CEA6B3  ret                                               

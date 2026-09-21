@@ -1,0 +1,44 @@
+====================================================================================================
+FUNCTION RVA 0xCD6B60  VA 0x180CD6B60  size 0x70 (112 bytes)
+  managed: GigaCreation.Essentials.Ui.GlowingAndTweeningButton$$OnEnablingChanged
+  csig   : void GigaCreation_Essentials_Ui_GlowingAndTweeningButton__OnEnablingChanged (GigaCreation_Essentials_Ui_GlowingAndTweeningButton_o* __this, bool isEnabled, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GlowingAndTweeningButton :: protected override void OnEnablingChanged(bool isEnabled)
+  fields of GigaCreation.Essentials.Ui.GlowingAndTweeningButton:
+      +0x148  _label                         TextMeshProUGUI
+      +0x150  _glowWhenEnabled               bool
+      +0x158  _labelGlowUtil                 LabelGlowUtility
+====================================================================================================
+  0x180CD6B60  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD6B65  push    rdi                                       
+  0x180CD6B66  sub     rsp, 0x20                                 
+  0x180CD6B6A  cmp     byte ptr [rcx + 0x138], 0                 
+  0x180CD6B71  movzx   edi, dl                                   
+  0x180CD6B74  mov     rbx, rcx                                  
+  0x180CD6B77  je      0x180cd6b98                               
+  0x180CD6B79  mov     rcx, qword ptr [rcx + 0x140]              
+  0x180CD6B80  test    rcx, rcx                                  
+  0x180CD6B83  je      0x180cd6bcb                               
+  0x180CD6B85  movzx   r8d, dl                                   
+  0x180CD6B89  xor     r9d, r9d                                  
+  0x180CD6B8C  mov     rdx, qword ptr [rbx + 0x120]              
+  0x180CD6B93  call    0x180cdbcc0                                  ; -> GigaCreation.Essentials.Ui.FadeUtility$$Fade
+
+180CD6B98:
+  0x180CD6B98  cmp     byte ptr [rbx + 0x150], 0                    ; rbx->GlowingAndTweeningButton._glowWhenEnabled
+  0x180CD6B9F  je      0x180cd6bc0                               
+  0x180CD6BA1  mov     rcx, qword ptr [rbx + 0x158]                 ; rbx->GlowingAndTweeningButton._labelGlowUtil
+  0x180CD6BA8  test    rcx, rcx                                  
+  0x180CD6BAB  je      0x180cd6bcb                               
+  0x180CD6BAD  mov     rdx, qword ptr [rbx + 0x148]                 ; rbx->GlowingAndTweeningButton._label
+  0x180CD6BB4  xor     r9d, r9d                                  
+  0x180CD6BB7  movzx   r8d, dil                                  
+  0x180CD6BBB  call    0x180cdc0a0                                  ; -> GigaCreation.Essentials.Ui.LabelGlowUtility$$Glow
+
+180CD6BC0:
+  0x180CD6BC0  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD6BC5  add     rsp, 0x20                                 
+  0x180CD6BC9  pop     rdi                                       
+  0x180CD6BCA  ret                                               
+
+180CD6BCB:
+  0x180CD6BCB  call    0x180246730                                  ; THROW NullReferenceException

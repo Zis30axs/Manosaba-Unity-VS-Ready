@@ -1,0 +1,41 @@
+====================================================================================================
+FUNCTION RVA 0xCEAB70  VA 0x180CEAB70  size 0x73 (115 bytes)
+  managed: GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToSelected
+  csig   : void GigaCreation_Essentials_Ui_SelectableUtility__OnStateTransitionToSelected (GigaCreation_Essentials_Ui_SelectableUtility_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SelectableUtility :: public void OnStateTransitionToSelected()
+  fields of GigaCreation.Essentials.Ui.SelectableUtility:
+      +0x10   _isHighlighted                 readonly ReactiveProperty<bool>
+      +0x18   _isEnabled                     readonly ReactiveProperty<bool>
+      +0x20   _gameObject                    readonly GameObject
+====================================================================================================
+  0x180CEAB70  push    rbx                                       
+  0x180CEAB72  sub     rsp, 0x20                                 
+  0x180CEAB76  cmp     byte ptr [rip + 0x23f265b], 0                ; data_30DD1D8
+  0x180CEAB7D  mov     rbx, rcx                                  
+  0x180CEAB80  jne     0x180ceab9a                               
+  0x180CEAB82  lea     rcx, [rip + 0x217037f]                       ; METHODINFO Method$UniRx.ReactiveProperty<bool>.set_Value()
+  0x180CEAB89  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAB8E  lock or dword ptr [rsp], 0                        
+  0x180CEAB93  mov     byte ptr [rip + 0x23f263e], 1                ; data_30DD1D8
+
+180CEAB9A:
+  0x180CEAB9A  mov     rcx, qword ptr [rbx + 0x10]                  ; rbx->SelectableUtility._isHighlighted
+  0x180CEAB9E  test    rcx, rcx                                  
+  0x180CEABA1  je      0x180ceabde                               
+  0x180CEABA3  mov     r8, qword ptr [rip + 0x217035e]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>.set_Value()
+  0x180CEABAA  lea     rdx, [rsp + 0x30]                         
+  0x180CEABAF  mov     byte ptr [rsp + 0x30], 1                  
+  0x180CEABB4  call    0x1808c46b0                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$set_Value
+  0x180CEABB9  mov     rcx, qword ptr [rbx + 0x18]                  ; rbx->SelectableUtility._isEnabled
+  0x180CEABBD  test    rcx, rcx                                  
+  0x180CEABC0  je      0x180ceabde                               
+  0x180CEABC2  mov     r8, qword ptr [rip + 0x217033f]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>.set_Value()
+  0x180CEABC9  lea     rdx, [rsp + 0x30]                         
+  0x180CEABCE  mov     byte ptr [rsp + 0x30], 1                  
+  0x180CEABD3  call    0x1808c46b0                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$set_Value
+  0x180CEABD8  add     rsp, 0x20                                 
+  0x180CEABDC  pop     rbx                                       
+  0x180CEABDD  ret                                               
+
+180CEABDE:
+  0x180CEABDE  call    0x180246730                                  ; THROW NullReferenceException
