@@ -1747,11 +1747,51 @@ namespace Manosaba.Integration
             }
         }
 
+        /// <summary>
+        /// Opt-in (MANOSABA_GAMESTART_PICK_CHOICES=1): a visible choice handler with pending choices gets its first choice picked
+        /// (IChoiceHandlerActor.HandleChoice(id), the call the panel's button click ends in), so the story does not stop at every
+        /// `@choice`.  Every pick is recorded as `script#line: id` in the evidence.
+        /// </summary>
+        private static void PickFirstChoice(GameStartEvidence evidence)
+        {
+            if (Environment.GetEnvironmentVariable("MANOSABA_GAMESTART_PICK_CHOICES") != "1") return;
+            try
+            {
+                Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
+                Type managerType = Type.GetType("Naninovel.IChoiceHandlerManager, Elringus.Naninovel.Runtime");
+                Type actorType = Type.GetType("Naninovel.IChoiceHandlerActor, Elringus.Naninovel.Runtime");
+                MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
+                object manager = managerType == null ? null : getService?.MakeGenericMethod(managerType).Invoke(null, null);
+                if (manager == null) return;
+                // IActorManager<...>.Actors is declared on a base interface of IChoiceHandlerManager
+                object actors = manager.GetType().GetProperty("Actors")?.GetValue(manager);
+                if (!(actors is System.Collections.IEnumerable list)) return;
+                foreach (object actor in list)
+                {
+                    if (!(actorType.GetProperty("Choices")?.GetValue(actor) is System.Collections.IList choices) || choices.Count == 0) continue;
+                    object choice = choices[0];
+                    string id = choice.GetType().GetProperty("Id")?.GetValue(choice) as string
+                                ?? choice.GetType().GetField("Id")?.GetValue(choice) as string;
+                    if (string.IsNullOrEmpty(id)) continue;
+                    actorType.GetMethod("HandleChoice")?.Invoke(actor, new object[] { id });
+                    evidence.choice_picks++;
+                    evidence.choice_pick_log += (evidence.choice_pick_log.Length > 0 ? " | " : "") + id;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                evidence.choice_pick_error = Describe(ex);
+            }
+        }
+
         private static string TryAdvanceAndSnapshot(object player, Type playerType, MethodInfo setSkipEnabled,
                                                      MethodInfo setWaitingForInputEnabled,
                                                      GameStartEvidence evidence, float elapsed)
         {
             SkipPlayingMovie(evidence);
+            PickFirstChoice(evidence);
             try
             {
                 bool waiting = playerType.GetProperty("WaitingForInput")?.GetValue(player) is bool w && w;
@@ -2426,6 +2466,9 @@ namespace Manosaba.Integration
             public int auto_advance_transitions;
             public int auto_advance_wait_releases;
             public int movie_skips;             // MANOSABA_GAMESTART_SKIP_MOVIES=1: movies stopped like a user's skip input
+            public int choice_picks;            // MANOSABA_GAMESTART_PICK_CHOICES=1: first choice picked like a click
+            public string choice_pick_log = "";
+            public string choice_pick_error = "";
             public string movie_skip_error = "";
             public string auto_advance_trace = "";
             public string auto_advance_final = "";
