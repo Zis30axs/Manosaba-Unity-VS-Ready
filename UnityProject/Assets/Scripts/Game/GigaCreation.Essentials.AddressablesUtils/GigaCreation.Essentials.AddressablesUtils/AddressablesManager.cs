@@ -656,55 +656,56 @@ namespace GigaCreation.Essentials.AddressablesUtils
     		return GetOrLoadAddressableAssetCore<T>(address, ct);
     	}
 
-    	// RECONSTRUCTED | Confidence: B | the recovered body of the `string` overload (see the note above).
-    	// One `UniTask<T>` await and one non-generic `UniTask` await, matching d__22's two awaiter slots.
+    	// RECONSTRUCTED | Confidence: A | <GetOrLoadAddressableAsset>d__22<T>.MoveNext at 0x9EC5D0 (shared generic body)
+    	// Annotated disassembly: work/title-path/disas/am_d__22_MoveNext.txt
+    	// - `await IAddressablesManager.InitializeAsync(ct)` (task_5__2 / <>u__1).
+    	// - A concurrent load of the same address is NOT awaited: after `_pendingLoadAssetTasks.TryGetValue` (0x1809ECC92) the
+    	//   waiter polls `while (task.Status == Pending) await UniTask.Yield(ct)` (IUniTaskSource.GetStatus at 0x1809ECD45,
+    	//   UniTask.Yield(ct, cancelImmediately: false) at 0x1809ECDC5).  Awaiting the stored task instead threw
+    	//   "Already continuation registered, can not await twice" on the second waiter and faulted the whole @goto
+    	//   (G4b round 20, 2026-09-22: two @back preloads of one dissolve texture in Act01_Chapter01_Adv03).
+    	// - `_loadedAssets.TryGetValue` (IDictionary slot 7, 0x1809ED0DD): a hit that is not a T logs
+    	//   `ロードするアセットの型指定が不正です：{address}, {nameof(T)}` (String.Concat with the folded literal ", T" at
+    	//   0x1809ED5D7) and returns default.
+    	// - Otherwise Addressables.LoadAssetAsync<T> (0x1809ED175), `_handles.Add(handle)` (0x1809ED201), a source linked from
+    	//   ct and LoadAssetCts.Token (0x1809ED29F), `handle.ToUniTask(cancellationToken: linkedCts.Token)` (progress null,
+    	//   timing 8 = Update, cancelImmediately and autoReleaseWhenCanceled false, 0x1809ED72E) `.Preserve()` (0x1809ED778) so
+    	//   its status stays readable after completion, `.AsUniTask()` (0x1809ED867) stored in _pendingLoadAssetTasks
+    	//   (0x1809ED88D); after the await `_loadedAssets[address] = asset`; the pending entry is removed in the finally
+    	//   (IDictionary<string, UniTask>.Remove at the tail).  There is no Status check on the handle: a failed load
+    	//   surfaces as the ToUniTask exception, as it did in round 20 (InvalidKeyException for a missing font material).
     	private async UniTask<T> GetOrLoadAddressableAssetCore<T>(string address, CancellationToken ct)
     	{
-    		// 1. The one-time Addressables gate every async member of this class begins with
-    		//    (spec section 6.1: d__22 and d__23 each hold `task_5__2 : UniTask` + `<>u__1 : UniTask.Awaiter`
-    		//    ahead of the `<>u__2 : UniTask<T>.Awaiter`, and the interface's own `InitializeAsync` is the
-    		//    only declared one-time entry point, guarded by the static InitializeUcs).
     		await IAddressablesManager.InitializeAsync(ct);
-
-    		// 2. Fast path: "get OR load" -- a second request for the same address must not reload it.
-    		if (_loadedAssets.TryGetValue(address, out object cached) && cached is T cachedAsset)
-    			return cachedAsset;
-
-    		// 3. Coalesce a concurrent request for the same address onto the in-flight load. The dictionary
-    		//    holds the NON-generic projection of that load (that is why the field is IDictionary<string,
-    		//    UniTask>), and the value is read back out of _loadedAssets afterwards.
     		if (_pendingLoadAssetTasks.TryGetValue(address, out UniTask pending))
     		{
-    			await pending;
-    			return _loadedAssets.TryGetValue(address, out object loaded) && loaded is T loadedAsset
-    				? loadedAsset
-    				: default;
+    			while (pending.Status == UniTaskStatus.Pending)
+    			{
+    				await UniTask.Yield(ct);
+    			}
     		}
-
-    		// 4. Link the caller's token with the manager-wide LoadAssetCts so Dispose() can abort in-flight
-    		//    loads (ReleaseHandles cancels exactly this source, spec section 3.3).
-    		using CancellationTokenSource linkedCts =
-    			CancellationTokenSource.CreateLinkedTokenSource(ct, LoadAssetCts.Token);
-
+    		if (_loadedAssets.TryGetValue(address, out object loaded))
+    		{
+    			if (loaded is T loadedAsset)
+    			{
+    				return loadedAsset;
+    			}
+    			UnityEngine.Debug.LogError("ロードするアセットの型指定が不正です：" + address + ", " + nameof(T));
+    			return default;
+    		}
     		AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address);
-
-    		// 5. The handle must be retained: ReleaseHandles() releases what _handles holds, and the bundles
-    		//    would otherwise be unloaded while the asset is still in use.
     		_handles.Add(handle);
-
-    		UniTask<T> task = handle.ToUniTask(cancellationToken: linkedCts.Token, cancelImmediately: true);
-    		_pendingLoadAssetTasks[address] = task;
+    		using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, LoadAssetCts.Token);
+    		UniTask<T> task = handle.ToUniTask(cancellationToken: linkedCts.Token).Preserve();
+    		_pendingLoadAssetTasks[address] = task.AsUniTask();
     		try
     		{
     			T asset = await task;
-    			if (handle.Status != AsyncOperationStatus.Succeeded) return default;
-
     			_loadedAssets[address] = asset;
     			return asset;
     		}
     		finally
     		{
-    			// Removed here so a faulted or cancelled load does not poison the address forever.
     			_pendingLoadAssetTasks.Remove(address);
     		}
     	}

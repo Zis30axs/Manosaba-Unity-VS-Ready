@@ -1,0 +1,2052 @@
+====================================================================================================
+FUNCTION RVA 0x9EC5D0  VA 0x1809EC5D0  size 0x1D8A (7562 bytes)
+  managed: GigaCreation.Essentials.AddressablesUtils.AddressablesManager.<GetOrLoadAddressableAsset>d__22<__Il2CppFullySharedGenericType>$$MoveNext
+  csig   : void GigaCreation_Essentials_AddressablesUtils_AddressablesManager__GetOrLoadAddressableAsset_d__22___Il2CppFullySharedGenericType___MoveNext (GigaCreation_Essentials_AddressablesUtils_AddressablesManager__GetOrLoadAddressableAsset_d__22_T__o __this, const MethodInfo_9EC5D0* method);
+  fields of GigaCreation.Essentials.AddressablesUtils.AddressablesManager:
+      +0x10   _handles                       readonly IList<AsyncOperationHandle>
+      +0x18   _loadedAssets                  readonly IDictionary<string, object>
+      +0x20   _pendingLoadAssetTasks         readonly IDictionary<string, UniTask>
+      +0x28   _webRequestManager             IWebRequestManager
+      +0x30   _additionalCatalogLocationsWithoutExt IReadOnlyList<string>
+      +0x38   _loadAssetCts                  CancellationTokenSource
+      +0x40   <IsAdditionalCatalogLoaded>k__BackingField bool
+      +0x48   <ResourceLocations>k__BackingField List<IResourceLocation>
+  fields of AddressablesManager.SettingsJson:
+      +0x10   m_CatalogLocations             AddressablesManager.SettingsJsonCatalogLocations[]
+  fields of AddressablesManager.SettingsJsonCatalogLocations:
+      +0x10   m_Keys                         string[]
+      +0x18   m_InternalId                   string
+  fields of AddressablesManager.<>c:
+      +0x0    <>9                            static readonly AddressablesManager.<>c
+      +0x8    <>9__18_0                      static Func<AddressablesManager.SettingsJsonCatalogLocations, string>
+      +0x10   <>9__18_1                      static Func<AddressablesManager.SettingsJsonCatalogLocations, string>
+      +0x18   <>9__26_0                      static Func<AsyncOperationHandle, bool>
+      +0x20   <>9__27_0                      static Func<AdditionalCatalogData, string>
+  fields of AddressablesManager.<CheckIfAdditionalCatalogExistsAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<bool>
+      +0x20   <>4__this                      AddressablesManager
+      +0x28   ct                             CancellationToken
+      +0x30   <>7__wrap1                     IEnumerator<string>
+      +0x38   <>u__1                         UniTask.Awaiter<string>
+      +0x50   <>u__2                         TaskAwaiter<string>
+  fields of AddressablesManager.<CheckIfMainCatalogExistsAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<bool>
+      +0x20   ct                             CancellationToken
+      +0x28   <>4__this                      AddressablesManager
+      +0x30   <settingJsonPath>5__2          string
+      +0x38   <>u__1                         TaskAwaiter<string>
+      +0x40   <>u__2                         UniTask.Awaiter<string>
+  fields of AddressablesManager.<GetOrLoadAddressableAsset>d__22<T>:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<T>
+      +0x0    <>4__this                      AddressablesManager
+      +0x0    address                        string
+      +0x0    ct                             CancellationToken
+      +0x0    <task>5__2                     UniTask
+      +0x0    <linkedCts>5__3                CancellationTokenSource
+      +0x0    <>u__1                         UniTask.Awaiter
+      +0x0    <>u__2                         UniTask.Awaiter<T>
+  fields of AddressablesManager.<GetOrLoadAddressableAsset>d__23<T>:
+      +0x0    <>1__state                     int
+      +0x0    <>t__builder                   AsyncUniTaskMethodBuilder<T>
+      +0x0    <>4__this                      AddressablesManager
+      +0x0    reference                      AssetReference
+      +0x0    ct                             CancellationToken
+      +0x0    <task>5__2                     UniTask
+      +0x0    <>u__1                         UniTask.Awaiter
+      +0x0    <>u__2                         UniTask.Awaiter<T>
+  fields of AddressablesManager.<GetResourceLocationsAsync>d__21:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<List<IResourceLocation>>
+      +0x20   <>4__this                      AddressablesManager
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<List<IResourceLocation>>
+  fields of AddressablesManager.<LoadAdditionalCatalogAsync>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<bool>
+      +0x20   <>4__this                      AddressablesManager
+      +0x28   ct                             CancellationToken
+      +0x30   <>7__wrap1                     IEnumerator<string>
+      +0x38   <jsonLocation>5__3             string
+      +0x40   <>u__1                         UniTask.Awaiter<IResourceLocator>
+  fields of AddressablesManager.<LoadResourceLocationsAsync>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<List<IResourceLocation>>
+      +0x20   <>4__this                      AddressablesManager
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<IList<IResourceLocation>>
+====================================================================================================
+  0x1809EC5D0  mov     qword ptr [rsp + 0x10], rdx               
+  0x1809EC5D5  mov     qword ptr [rsp + 8], rcx                  
+  0x1809EC5DA  push    rbp                                       
+  0x1809EC5DB  push    rbx                                       
+  0x1809EC5DC  push    rsi                                       
+  0x1809EC5DD  push    rdi                                       
+  0x1809EC5DE  push    r12                                       
+  0x1809EC5E0  push    r13                                       
+  0x1809EC5E2  push    r14                                       
+  0x1809EC5E4  push    r15                                       
+  0x1809EC5E6  sub     rsp, 0x1a8                                
+  0x1809EC5ED  lea     rbp, [rsp + 0x40]                         
+  0x1809EC5F2  movaps  xmmword ptr [rbp + 0x150], xmm6           
+  0x1809EC5F9  movaps  xmmword ptr [rbp + 0x140], xmm7           
+  0x1809EC600  cmp     byte ptr [rip + 0x26f06ad], 0                ; data_30DCCB4
+  0x1809EC607  jne     0x1809ec6c5                               
+  0x1809EC60D  lea     rcx, [rip + 0x246ec54]                       ; TYPE UnityEngine.AddressableAssets.Addressables_TypeInfo
+  0x1809EC614  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC619  lock or dword ptr [rsp], 0                        
+  0x1809EC61E  lea     rcx, [rip + 0x2465133]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x1809EC625  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC62A  lock or dword ptr [rsp], 0                        
+  0x1809EC62F  lea     rcx, [rip + 0x2465caa]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x1809EC636  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC63B  lock or dword ptr [rsp], 0                        
+  0x1809EC640  lea     rcx, [rip + 0x24148c1]                       ; TYPE System.Collections.Generic.ICollection<AsyncOperationHandle>_TypeInfo
+  0x1809EC647  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC64C  lock or dword ptr [rsp], 0                        
+  0x1809EC651  lea     rcx, [rip + 0x2461ad0]                       ; TYPE System.Collections.Generic.IDictionary<string, object>_TypeInfo
+  0x1809EC658  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC65D  lock or dword ptr [rsp], 0                        
+  0x1809EC662  lea     rcx, [rip + 0x2461aef]                       ; TYPE System.Collections.Generic.IDictionary<string, UniTask>_TypeInfo
+  0x1809EC669  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC66E  lock or dword ptr [rsp], 0                        
+  0x1809EC673  lea     rcx, [rip + 0x2465ad6]                       ; TYPE System.IDisposable_TypeInfo
+  0x1809EC67A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC67F  lock or dword ptr [rsp], 0                        
+  0x1809EC684  lea     rcx, [rip + 0x2465a7d]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x1809EC68B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC690  lock or dword ptr [rsp], 0                        
+  0x1809EC695  lea     rcx, [rip + 0x2461a84]                       ; STR 'ロードするアセットの型指定が不正です：'
+  0x1809EC69C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC6A1  lock or dword ptr [rsp], 0                        
+  0x1809EC6A6  lea     rcx, [rip + 0x2461a6b]                       ; STR ', T'
+  0x1809EC6AD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809EC6B2  lock or dword ptr [rsp], 0                        
+  0x1809EC6B7  mov     byte ptr [rip + 0x26f05f6], 1                ; data_30DCCB4
+  0x1809EC6BE  mov     rdx, qword ptr [rbp + 0x1b8]              
+
+1809EC6C5:
+  0x1809EC6C5  mov     rax, qword ptr [rdx + 0x20]                  ; rdx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EC6C9  test    byte ptr [rax + 0x135], 1                 
+  0x1809EC6D0  jne     0x1809ec6e1                               
+  0x1809EC6D2  mov     rcx, rax                                  
+  0x1809EC6D5  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EC6DA  mov     rdx, qword ptr [rbp + 0x1b8]              
+
+1809EC6E1:
+  0x1809EC6E1  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EC6E8  mov     rcx, qword ptr [rax + 0x28]                  ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809EC6EC  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x1809EC6F2  mov     dword ptr [rbp + 0x1c8], ebx              
+  0x1809EC6F8  mov     rax, qword ptr [rdx + 0x20]                  ; rdx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EC6FC  test    byte ptr [rax + 0x135], 1                 
+  0x1809EC703  jne     0x1809ec714                               
+  0x1809EC705  mov     rcx, rax                                  
+  0x1809EC708  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EC70D  mov     rdx, qword ptr [rbp + 0x1b8]              
+
+1809EC714:
+  0x1809EC714  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EC71B  mov     rcx, qword ptr [rax + 0x58]               
+  0x1809EC71F  mov     esi, dword ptr [rcx + 0xfc]               
+  0x1809EC725  mov     dword ptr [rbp + 0x70], esi               
+  0x1809EC728  mov     rax, qword ptr [rdx + 0x20]                  ; rdx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EC72C  test    byte ptr [rax + 0x135], 1                 
+  0x1809EC733  jne     0x1809ec73d                               
+  0x1809EC735  mov     rcx, rax                                  
+  0x1809EC738  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EC73D:
+  0x1809EC73D  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EC744  mov     rcx, qword ptr [rax + 0x80]               
+  0x1809EC74B  mov     ecx, dword ptr [rcx + 0xfc]               
+  0x1809EC751  mov     qword ptr [rbp + 0x80], rcx               
+  0x1809EC758  mov     rdi, rbx                                  
+  0x1809EC75B  lea     rax, [rbx + 0xf]                          
+  0x1809EC75F  cmp     rax, rbx                                  
+  0x1809EC762  movabs  rbx, 0xffffffffffffff0                    
+  0x1809EC76C  ja      0x1809ec771                               
+  0x1809EC76E  mov     rax, rbx                                  
+
+1809EC771:
+  0x1809EC771  and     rax, 0xfffffffffffffff0                   
+  0x1809EC775  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC77A  sub     rsp, rax                                  
+  0x1809EC77D  lea     r15, [rsp + 0x40]                         
+  0x1809EC782  mov     qword ptr [rbp + 0x108], r15              
+  0x1809EC789  mov     qword ptr [rbp + 0x110], r15              
+  0x1809EC790  lea     rax, [rdi + 0xf]                          
+  0x1809EC794  cmp     rax, rdi                                  
+  0x1809EC797  ja      0x1809ec79c                               
+  0x1809EC799  mov     rax, rbx                                  
+
+1809EC79C:
+  0x1809EC79C  and     rax, 0xfffffffffffffff0                   
+  0x1809EC7A0  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC7A5  sub     rsp, rax                                  
+  0x1809EC7A8  lea     rax, [rsp + 0x40]                         
+  0x1809EC7AD  mov     qword ptr [rbp + 0xc8], rax               
+  0x1809EC7B4  mov     qword ptr [rbp + 0x118], rax              
+  0x1809EC7BB  lea     rax, [rcx + 0xf]                          
+  0x1809EC7BF  cmp     rax, rcx                                  
+  0x1809EC7C2  ja      0x1809ec7c7                               
+  0x1809EC7C4  mov     rax, rbx                                  
+
+1809EC7C7:
+  0x1809EC7C7  and     rax, 0xfffffffffffffff0                   
+  0x1809EC7CB  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC7D0  sub     rsp, rax                                  
+  0x1809EC7D3  lea     rax, [rsp + 0x40]                         
+  0x1809EC7D8  mov     qword ptr [rbp + 0xb0], rax               
+  0x1809EC7DF  lea     rax, [rsi + 0xf]                          
+  0x1809EC7E3  cmp     rax, rsi                                  
+  0x1809EC7E6  ja      0x1809ec7eb                               
+  0x1809EC7E8  mov     rax, rbx                                  
+
+1809EC7EB:
+  0x1809EC7EB  and     rax, 0xfffffffffffffff0                   
+  0x1809EC7EF  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC7F4  sub     rsp, rax                                  
+  0x1809EC7F7  lea     rax, [rsp + 0x40]                         
+  0x1809EC7FC  mov     qword ptr [rbp + 0xf0], rax               
+  0x1809EC803  lea     rax, [rsi + 0xf]                          
+  0x1809EC807  cmp     rax, rsi                                  
+  0x1809EC80A  ja      0x1809ec80f                               
+  0x1809EC80C  mov     rax, rbx                                  
+
+1809EC80F:
+  0x1809EC80F  and     rax, 0xfffffffffffffff0                   
+  0x1809EC813  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC818  sub     rsp, rax                                  
+  0x1809EC81B  lea     rax, [rsp + 0x40]                         
+  0x1809EC820  mov     qword ptr [rbp + 0xf8], rax               
+  0x1809EC827  lea     rax, [rsi + 0xf]                          
+  0x1809EC82B  cmp     rax, rsi                                  
+  0x1809EC82E  ja      0x1809ec833                               
+  0x1809EC830  mov     rax, rbx                                  
+
+1809EC833:
+  0x1809EC833  and     rax, 0xfffffffffffffff0                   
+  0x1809EC837  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC83C  sub     rsp, rax                                  
+  0x1809EC83F  lea     rax, [rsp + 0x40]                         
+  0x1809EC844  mov     qword ptr [rbp + 0xa0], rax               
+  0x1809EC84B  lea     rax, [rsi + 0xf]                          
+  0x1809EC84F  cmp     rax, rsi                                  
+  0x1809EC852  ja      0x1809ec857                               
+  0x1809EC854  mov     rax, rbx                                  
+
+1809EC857:
+  0x1809EC857  and     rax, 0xfffffffffffffff0                   
+  0x1809EC85B  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC860  sub     rsp, rax                                  
+  0x1809EC863  lea     rax, [rsp + 0x40]                         
+  0x1809EC868  mov     qword ptr [rbp + 0x100], rax              
+  0x1809EC86F  lea     rax, [rdi + 0xf]                          
+  0x1809EC873  cmp     rax, rdi                                  
+  0x1809EC876  ja      0x1809ec87b                               
+  0x1809EC878  mov     rax, rbx                                  
+
+1809EC87B:
+  0x1809EC87B  and     rax, 0xfffffffffffffff0                   
+  0x1809EC87F  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC884  sub     rsp, rax                                  
+  0x1809EC887  lea     rax, [rsp + 0x40]                         
+  0x1809EC88C  mov     qword ptr [rbp + 0x88], rax               
+  0x1809EC893  mov     r8, rdi                                   
+  0x1809EC896  xor     edx, edx                                  
+  0x1809EC898  mov     rcx, rax                                  
+  0x1809EC89B  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC8A0  xor     r12d, r12d                                
+  0x1809EC8A3  mov     qword ptr [rbp + 0x78], r12               
+  0x1809EC8A7  xorps   xmm7, xmm7                                
+  0x1809EC8AA  xor     eax, eax                                  
+  0x1809EC8AC  mov     qword ptr [rbp + 0x50], rax                  ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809EC8B0  lea     rax, [rsi + 0xf]                          
+  0x1809EC8B4  cmp     rax, rsi                                  
+  0x1809EC8B7  ja      0x1809ec8bc                               
+  0x1809EC8B9  mov     rax, rbx                                  
+
+1809EC8BC:
+  0x1809EC8BC  and     rax, 0xfffffffffffffff0                   
+  0x1809EC8C0  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC8C5  sub     rsp, rax                                  
+  0x1809EC8C8  lea     rax, [rsp + 0x40]                         
+  0x1809EC8CD  mov     qword ptr [rbp + 0xa8], rax               
+  0x1809EC8D4  mov     r8, rsi                                   
+  0x1809EC8D7  xor     edx, edx                                  
+  0x1809EC8D9  mov     rcx, rax                                  
+  0x1809EC8DC  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC8E1  lea     rax, [rdi + 0xf]                          
+  0x1809EC8E5  cmp     rax, rdi                                  
+  0x1809EC8E8  ja      0x1809ec8ed                               
+  0x1809EC8EA  mov     rax, rbx                                  
+
+1809EC8ED:
+  0x1809EC8ED  and     rax, 0xfffffffffffffff0                   
+  0x1809EC8F1  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC8F6  sub     rsp, rax                                  
+  0x1809EC8F9  lea     rax, [rsp + 0x40]                         
+  0x1809EC8FE  mov     qword ptr [rbp + 0xc0], rax               
+  0x1809EC905  mov     r8, rdi                                   
+  0x1809EC908  xor     edx, edx                                  
+  0x1809EC90A  mov     rcx, rax                                  
+  0x1809EC90D  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC912  xorps   xmm0, xmm0                                
+  0x1809EC915  movups  xmmword ptr [rbp + 0x30], xmm0               ; rbp-><GetResourceLocationsAsync>d__21.<>u__1 | <LoadResourceLocationsAsync>d__25.<>u__1
+  0x1809EC919  lea     rax, [rdi + 0xf]                          
+  0x1809EC91D  cmp     rax, rdi                                  
+  0x1809EC920  ja      0x1809ec925                               
+  0x1809EC922  mov     rax, rbx                                  
+
+1809EC925:
+  0x1809EC925  and     rax, 0xfffffffffffffff0                   
+  0x1809EC929  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC92E  sub     rsp, rax                                  
+  0x1809EC931  lea     r14, [rsp + 0x40]                         
+  0x1809EC936  mov     r8, rdi                                   
+  0x1809EC939  xor     edx, edx                                  
+  0x1809EC93B  mov     rcx, r14                                  
+  0x1809EC93E  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC943  lea     rax, [rsi + 0xf]                          
+  0x1809EC947  cmp     rax, rsi                                  
+  0x1809EC94A  ja      0x1809ec94f                               
+  0x1809EC94C  mov     rax, rbx                                  
+
+1809EC94F:
+  0x1809EC94F  and     rax, 0xfffffffffffffff0                   
+  0x1809EC953  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC958  sub     rsp, rax                                  
+  0x1809EC95B  lea     r13, [rsp + 0x40]                         
+  0x1809EC960  mov     r8, rsi                                   
+  0x1809EC963  xor     edx, edx                                  
+  0x1809EC965  mov     rcx, r13                                  
+  0x1809EC968  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC96D  mov     rcx, qword ptr [rbp + 0x80]               
+  0x1809EC974  lea     rax, [rcx + 0xf]                          
+  0x1809EC978  cmp     rax, rcx                                  
+  0x1809EC97B  ja      0x1809ec980                               
+  0x1809EC97D  mov     rax, rbx                                  
+
+1809EC980:
+  0x1809EC980  and     rax, 0xfffffffffffffff0                   
+  0x1809EC984  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809EC989  sub     rsp, rax                                  
+  0x1809EC98C  lea     rax, [rsp + 0x40]                         
+  0x1809EC991  mov     qword ptr [rbp + 0xb8], rax               
+  0x1809EC998  mov     r8, rcx                                   
+  0x1809EC99B  xor     edx, edx                                  
+  0x1809EC99D  mov     rcx, rax                                  
+  0x1809EC9A0  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809EC9A5  mov     dword ptr [rbp + 0x98], r12d              
+  0x1809EC9AC  mov     r9, qword ptr [rbp + 0x1b8]               
+  0x1809EC9B3  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EC9B7  test    byte ptr [rax + 0x135], 1                 
+  0x1809EC9BE  jne     0x1809ec9cf                               
+  0x1809EC9C0  mov     rcx, rax                                  
+  0x1809EC9C3  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EC9C8  mov     r9, qword ptr [rbp + 0x1b8]               
+
+1809EC9CF:
+  0x1809EC9CF  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EC9D6  mov     rcx, qword ptr [rax]                      
+  0x1809EC9D9  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EC9E0  movsxd  r8, dword ptr [rdx + 0x18]                   ; rdx->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809EC9E4  mov     r10, qword ptr [rbp + 0x1b0]              
+  0x1809EC9EB  add     r8, r10                                   
+  0x1809EC9EE  mov     rax, qword ptr [rdx + 0x10]                  ; rdx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809EC9F2  lea     rcx, [r8 - 0x10]                          
+  0x1809EC9F6  cmp     dword ptr [rax + 0x28], r12d                 ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EC9FA  cmovge  rcx, r8                                   
+  0x1809EC9FE  mov     eax, dword ptr [rcx]                      
+  0x1809ECA00  mov     dword ptr [rbp + 0x1c0], eax              
+  0x1809ECA06  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECA0A  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECA11  jne     0x1809eca22                               
+  0x1809ECA13  mov     rcx, rax                                  
+  0x1809ECA16  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECA1B  mov     r10, qword ptr [rbp + 0x1b0]              
+
+1809ECA22:
+  0x1809ECA22  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECA29  mov     rcx, qword ptr [rax]                      
+  0x1809ECA2C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECA33  movsxd  r8, dword ptr [rdx + 0x58]                
+  0x1809ECA37  add     r8, r10                                   
+  0x1809ECA3A  mov     rax, qword ptr [rdx + 0x50]                  ; rdx-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ECA3E  lea     rcx, [r8 - 0x10]                          
+  0x1809ECA42  cmp     dword ptr [rax + 0x28], r12d                 ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECA46  cmovge  rcx, r8                                   
+  0x1809ECA4A  mov     rax, qword ptr [rcx]                      
+  0x1809ECA4D  mov     qword ptr [rbp], rax                      
+  0x1809ECA51  mov     eax, dword ptr [rbp + 0x1c0]              
+  0x1809ECA57  test    eax, eax                                  
+  0x1809ECA59  jne     0x1809ecbbe                               
+  0x1809ECA5F  mov     r9, qword ptr [rbp + 0x1b8]               
+  0x1809ECA66  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECA6A  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECA71  jne     0x1809eca82                               
+  0x1809ECA73  mov     rcx, rax                                  
+  0x1809ECA76  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECA7B  mov     r9, qword ptr [rbp + 0x1b8]               
+
+1809ECA82:
+  0x1809ECA82  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECA89  mov     rcx, qword ptr [rax]                      
+  0x1809ECA8C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECA93  movsxd  r8, dword ptr [rdx + 0xf8]                
+  0x1809ECA9A  mov     r10, qword ptr [rbp + 0x1b0]              
+  0x1809ECAA1  add     r8, r10                                   
+  0x1809ECAA4  mov     rax, qword ptr [rdx + 0xf0]               
+  0x1809ECAAB  lea     rcx, [r8 - 0x10]                          
+  0x1809ECAAF  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECAB3  cmovge  rcx, r8                                   
+  0x1809ECAB7  movups  xmm0, xmmword ptr [rcx]                   
+  0x1809ECABA  movaps  xmmword ptr [rbp + 0x30], xmm0               ; rbp-><GetResourceLocationsAsync>d__21.<>u__1 | <LoadResourceLocationsAsync>d__25.<>u__1
+  0x1809ECABE  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECAC2  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECAC9  jne     0x1809ecada                               
+  0x1809ECACB  mov     rcx, rax                                  
+  0x1809ECACE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECAD3  mov     r10, qword ptr [rbp + 0x1b0]              
+
+1809ECADA:
+  0x1809ECADA  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECAE1  mov     rcx, qword ptr [rax]                      
+  0x1809ECAE4  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECAEB  movsxd  r8, dword ptr [rdx + 0xf8]                
+  0x1809ECAF2  add     r8, r10                                   
+  0x1809ECAF5  mov     rax, qword ptr [rdx + 0xf0]               
+  0x1809ECAFC  lea     rcx, [r8 - 0x10]                          
+  0x1809ECB00  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECB04  cmovge  rcx, r8                                   
+  0x1809ECB08  xorps   xmm0, xmm0                                
+  0x1809ECB0B  movups  xmmword ptr [rcx], xmm0                   
+  0x1809ECB0E  mov     dword ptr [rbp + 0x1c0], 0xffffffff       
+  0x1809ECB18  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ECB1F  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECB23  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECB2A  jne     0x1809ecb34                               
+  0x1809ECB2C  mov     rcx, rax                                  
+  0x1809ECB2F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ECB34:
+  0x1809ECB34  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECB3B  mov     rcx, qword ptr [rax]                      
+  0x1809ECB3E  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECB45  movsxd  r8, dword ptr [rdx + 0x18]                   ; rdx->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809ECB49  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ECB50  mov     rax, qword ptr [rdx + 0x10]                  ; rdx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ECB54  lea     r9, [r8 - 0x10]                           
+  0x1809ECB58  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECB5C  cmovge  r9, r8                                    
+  0x1809ECB60  mov     dword ptr [r9], 0xffffffff                
+  0x1809ECB67  lea     rsi, [rip + 0x2701732]                       ; data_30EE2A0
+  0x1809ECB6E  cmp     dword ptr [rip + 0x26ec64f], 0               ; data_30D91C4
+  0x1809ECB75  je      0x1809ecfd2                               
+  0x1809ECB7B  shr     r9, 0xc                                   
+  0x1809ECB7F  and     r9d, 0x1fffff                             
+  0x1809ECB86  mov     eax, r9d                                  
+  0x1809ECB89  shr     rax, 6                                    
+  0x1809ECB8D  lea     rdx, [rsi + rax*8]                        
+  0x1809ECB91  and     r9d, 0x3f                                 
+  0x1809ECB95  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809ECB9C  nop     dword ptr [rax]                           
+
+1809ECBA0:
+  0x1809ECBA0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809ECBA7  mov     rcx, rax                                  
+  0x1809ECBAA  bts     rcx, r9                                   
+  0x1809ECBAE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809ECBB7  jne     0x1809ecba0                               
+  0x1809ECBB9  jmp     0x1809ecfd2                               
+
+1809ECBBE:
+  0x1809ECBBE  cmp     eax, 1                                    
+  0x1809ECBC1  je      0x1809ed626                               
+  0x1809ECBC7  mov     rax, qword ptr [rbp]                      
+  0x1809ECBCB  test    rax, rax                                  
+  0x1809ECBCE  je      0x1809ee1a9                               
+  0x1809ECBD4  mov     rbx, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECBD8  mov     r9, qword ptr [rbp + 0x1b8]               
+  0x1809ECBDF  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECBE3  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECBEA  jne     0x1809ecbfb                               
+  0x1809ECBEC  mov     rcx, rax                                  
+  0x1809ECBEF  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECBF4  mov     r9, qword ptr [rbp + 0x1b8]               
+
+1809ECBFB:
+  0x1809ECBFB  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECC02  mov     rcx, qword ptr [rax]                      
+  0x1809ECC05  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECC0C  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809ECC10  mov     r11, qword ptr [rbp + 0x1b0]              
+  0x1809ECC17  add     r8, r11                                   
+  0x1809ECC1A  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809ECC1E  lea     rcx, [r8 - 0x10]                          
+  0x1809ECC22  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECC26  cmovge  rcx, r8                                   
+  0x1809ECC2A  mov     rdi, qword ptr [rcx]                      
+  0x1809ECC2D  test    rbx, rbx                                  
+  0x1809ECC30  je      0x1809ee1a4                               
+  0x1809ECC36  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECC3A  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECC41  jne     0x1809ecc52                               
+  0x1809ECC43  mov     rcx, rax                                  
+  0x1809ECC46  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECC4B  mov     r11, qword ptr [rbp + 0x1b0]              
+
+1809ECC52:
+  0x1809ECC52  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECC59  mov     rcx, qword ptr [rax]                      
+  0x1809ECC5C  mov     r10, qword ptr [rcx + 0x80]               
+  0x1809ECC63  movsxd  rax, dword ptr [r10 + 0xb8]               
+  0x1809ECC6A  add     r11, rax                                  
+  0x1809ECC6D  mov     rax, qword ptr [r10 + 0xb0]               
+  0x1809ECC74  lea     rcx, [r11 - 0x10]                         
+  0x1809ECC78  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECC7C  cmovge  rcx, r11                                  
+  0x1809ECC80  mov     qword ptr [rsp + 0x20], rcx               
+  0x1809ECC85  mov     r9, rdi                                   
+  0x1809ECC88  mov     r8, rbx                                   
+  0x1809ECC8B  mov     rdx, qword ptr [rip + 0x24614c6]             ; TYPE System.Collections.Generic.IDictionary<string, UniTask>_TypeInfo
+  0x1809ECC92  call    0x1800661a0                                  ; -> sub_661A0 (runtime/helper)
+  0x1809ECC97  lea     rsi, [rip + 0x2701602]                       ; data_30EE2A0
+  0x1809ECC9E  test    al, al                                    
+  0x1809ECCA0  je      0x1809ed016                               
+
+1809ECCA6:
+  0x1809ECCA6  mov     rcx, qword ptr [rip + 0x246545b]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x1809ECCAD  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ECCB4  jne     0x1809eccbb                               
+  0x1809ECCB6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ECCBB:
+  0x1809ECCBB  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ECCC2  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECCC6  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECCCD  jne     0x1809eccd7                               
+  0x1809ECCCF  mov     rcx, rax                                  
+  0x1809ECCD2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ECCD7:
+  0x1809ECCD7  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECCDE  mov     rcx, qword ptr [rax]                      
+  0x1809ECCE1  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECCE8  movsxd  r8, dword ptr [rdx + 0xb8]                
+  0x1809ECCEF  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ECCF6  mov     rax, qword ptr [rdx + 0xb0]               
+  0x1809ECCFD  lea     rbx, [r8 - 0x10]                          
+  0x1809ECD01  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECD05  cmovge  rbx, r8                                   
+  0x1809ECD09  cmp     byte ptr [rip + 0x26ea806], 0                ; data_30D7516
+  0x1809ECD10  jne     0x1809ecd2a                               
+  0x1809ECD12  lea     rcx, [rip + 0x246444f]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ECD19  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809ECD1E  lock or dword ptr [rsp], 0                        
+  0x1809ECD23  mov     byte ptr [rip + 0x26ea7ec], 1                ; data_30D7516
+
+1809ECD2A:
+  0x1809ECD2A  cmp     qword ptr [rbx], 0                        
+  0x1809ECD2E  je      0x1809ed016                               
+  0x1809ECD34  xor     ecx, ecx                                  
+  0x1809ECD36  movzx   r9d, word ptr [rbx + 8]                   
+  0x1809ECD3B  mov     r8, qword ptr [rbx]                       
+  0x1809ECD3E  mov     rdx, qword ptr [rip + 0x2464423]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ECD45  call    0x180003000                                  ; -> sub_3000 (runtime/helper)
+  0x1809ECD4A  test    eax, eax                                  
+  0x1809ECD4C  jne     0x1809ed016                               
+  0x1809ECD52  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ECD59  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECD5D  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECD64  jne     0x1809ecd6e                               
+  0x1809ECD66  mov     rcx, rax                                  
+  0x1809ECD69  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ECD6E:
+  0x1809ECD6E  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECD75  mov     rcx, qword ptr [rax]                      
+  0x1809ECD78  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECD7F  movsxd  r8, dword ptr [rdx + 0x98]                
+  0x1809ECD86  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ECD8D  mov     rax, qword ptr [rdx + 0x90]               
+  0x1809ECD94  lea     rbx, [r8 - 0x10]                          
+  0x1809ECD98  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECD9C  cmovge  rbx, r8                                   
+  0x1809ECDA0  mov     rbx, qword ptr [rbx]                      
+  0x1809ECDA3  mov     rcx, qword ptr [rip + 0x246535e]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x1809ECDAA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ECDB1  jne     0x1809ecdb8                               
+  0x1809ECDB3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ECDB8:
+  0x1809ECDB8  xor     r9d, r9d                                  
+  0x1809ECDBB  xor     r8d, r8d                                  
+  0x1809ECDBE  mov     rdx, rbx                                  
+  0x1809ECDC1  lea     rcx, [rbp + 0x40]                            ; rbp->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ECDC5  call    0x18180c760                                  ; -> Cysharp.Threading.Tasks.UniTask$$Yield
+  0x1809ECDCA  movups  xmm0, xmmword ptr [rax]                   
+  0x1809ECDCD  movaps  xmmword ptr [rbp + 0x10], xmm0               ; rbp->AddressablesManager._handles | <>c.<>9__18_1
+  0x1809ECDD1  cmp     dword ptr [rip + 0x26ec3ec], 0               ; data_30D91C4
+  0x1809ECDD8  je      0x1809ece1d                               
+  0x1809ECDDA  lea     r8, [rbp + 0x10]                             ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ECDDE  shr     r8, 0xc                                   
+  0x1809ECDE2  and     r8d, 0x1fffff                             
+  0x1809ECDE9  mov     eax, r8d                                  
+  0x1809ECDEC  shr     rax, 6                                    
+  0x1809ECDF0  lea     rdx, [rsi + rax*8]                        
+  0x1809ECDF4  and     r8d, 0x3f                                 
+  0x1809ECDF8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809ECDFF  nop                                               
+
+1809ECE00:
+  0x1809ECE00  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809ECE07  mov     rcx, rax                                  
+  0x1809ECE0A  bts     rcx, r8                                   
+  0x1809ECE0E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809ECE17  jne     0x1809ece00                               
+  0x1809ECE19  movaps  xmm0, xmmword ptr [rbp + 0x10]               ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+
+1809ECE1D:
+  0x1809ECE1D  movdqa  xmmword ptr [rbp + 0x30], xmm0               ; rbp-><GetResourceLocationsAsync>d__21.<>u__1 | <LoadResourceLocationsAsync>d__25.<>u__1
+  0x1809ECE22  cmp     byte ptr [rip + 0x26ea6f4], 0                ; data_30D751D
+  0x1809ECE29  jne     0x1809ece43                               
+  0x1809ECE2B  lea     rcx, [rip + 0x24652d6]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x1809ECE32  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809ECE37  lock or dword ptr [rsp], 0                        
+  0x1809ECE3C  mov     byte ptr [rip + 0x26ea6da], 1                ; data_30D751D
+
+1809ECE43:
+  0x1809ECE43  mov     rcx, qword ptr [rip + 0x24652be]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x1809ECE4A  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ECE51  jne     0x1809ece58                               
+  0x1809ECE53  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ECE58:
+  0x1809ECE58  cmp     byte ptr [rip + 0x26ea6b7], 0                ; data_30D7516
+  0x1809ECE5F  jne     0x1809ece79                               
+  0x1809ECE61  lea     rcx, [rip + 0x2464300]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ECE68  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809ECE6D  lock or dword ptr [rsp], 0                        
+  0x1809ECE72  mov     byte ptr [rip + 0x26ea69d], 1                ; data_30D7516
+
+1809ECE79:
+  0x1809ECE79  mov     r8, qword ptr [rbp + 0x30]                   ; rbp->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ECE7D  test    r8, r8                                    
+  0x1809ECE80  je      0x1809ecfd2                               
+  0x1809ECE86  xor     ecx, ecx                                  
+  0x1809ECE88  movzx   r9d, word ptr [rbp + 0x38]                   ; rbp->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809ECE8D  mov     rdx, qword ptr [rip + 0x24642d4]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ECE94  call    0x180003000                                  ; -> sub_3000 (runtime/helper)
+  0x1809ECE99  test    eax, eax                                  
+  0x1809ECE9B  jne     0x1809ecfd2                               
+  0x1809ECEA1  mov     dword ptr [rbp + 0x1c0], r12d             
+  0x1809ECEA8  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ECEAF  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECEB3  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECEBA  jne     0x1809ecec4                               
+  0x1809ECEBC  mov     rcx, rax                                  
+  0x1809ECEBF  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ECEC4:
+  0x1809ECEC4  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECECB  mov     rdx, qword ptr [rax]                      
+  0x1809ECECE  xor     r8d, r8d                                  
+  0x1809ECED1  mov     rdx, qword ptr [rdx + 0x80]               
+  0x1809ECED8  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809ECEDF  call    0x180005390                                  ; -> sub_5390 (runtime/helper)
+  0x1809ECEE4  movaps  xmm6, xmmword ptr [rbp + 0x30]               ; rbp->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ECEE8  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ECEEF  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECEF3  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECEFA  jne     0x1809ecf04                               
+  0x1809ECEFC  mov     rcx, rax                                  
+  0x1809ECEFF  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ECF04:
+  0x1809ECF04  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECF0B  mov     rcx, qword ptr [rax]                      
+  0x1809ECF0E  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECF15  movsxd  r8, dword ptr [rdx + 0xf8]                
+  0x1809ECF1C  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ECF23  mov     rax, qword ptr [rdx + 0xf0]               
+  0x1809ECF2A  lea     rdx, [r8 - 0x10]                          
+  0x1809ECF2E  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECF32  cmovge  rdx, r8                                   
+  0x1809ECF36  movups  xmmword ptr [rdx], xmm6                   
+  0x1809ECF39  call    0x180246130                                  ; -> sub_246130 (runtime/helper)
+  0x1809ECF3E  mov     r9, qword ptr [rbp + 0x1b8]               
+  0x1809ECF45  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECF49  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECF50  jne     0x1809ecf61                               
+  0x1809ECF52  mov     rcx, rax                                  
+  0x1809ECF55  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECF5A  mov     r9, qword ptr [rbp + 0x1b8]               
+
+1809ECF61:
+  0x1809ECF61  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECF68  mov     rbx, qword ptr [rax + 0x10]                  ; rax->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ECF6C  mov     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ECF73  mov     rdi, r8                                   
+  0x1809ECF76  mov     rax, qword ptr [r9 + 0x20]                   ; r9->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ECF7A  test    byte ptr [rax + 0x135], 1                 
+  0x1809ECF81  jne     0x1809ecf92                               
+  0x1809ECF83  mov     rcx, rax                                  
+  0x1809ECF86  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ECF8B  mov     r8, qword ptr [rbp + 0x1b0]               
+
+1809ECF92:
+  0x1809ECF92  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ECF99  mov     rcx, qword ptr [rax]                      
+  0x1809ECF9C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ECFA3  movsxd  rcx, dword ptr [rdx + 0x38]                  ; rdx->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809ECFA7  add     rcx, r8                                   
+  0x1809ECFAA  mov     rax, qword ptr [rdx + 0x30]                  ; rdx->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ECFAE  lea     r10, [rcx - 0x10]                         
+  0x1809ECFB2  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ECFB6  cmovge  r10, rcx                                  
+  0x1809ECFBA  mov     r9, rbx                                   
+  0x1809ECFBD  mov     r8, rdi                                   
+  0x1809ECFC0  lea     rdx, [rbp + 0x30]                            ; rbp->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ECFC4  mov     rcx, r10                                  
+  0x1809ECFC7  call    0x180356170                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x1809ECFCC  nop                                               
+  0x1809ECFCD  jmp     0x1809edfb7                               
+
+1809ECFD2:
+  0x1809ECFD2  cmp     byte ptr [rip + 0x26ea543], 0                ; data_30D751C
+  0x1809ECFD9  jne     0x1809ecff3                               
+  0x1809ECFDB  lea     rcx, [rip + 0x2464186]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ECFE2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809ECFE7  lock or dword ptr [rsp], 0                        
+  0x1809ECFEC  mov     byte ptr [rip + 0x26ea529], 1                ; data_30D751C
+
+1809ECFF3:
+  0x1809ECFF3  mov     r8, qword ptr [rbp + 0x30]                   ; rbp->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ECFF7  test    r8, r8                                    
+  0x1809ECFFA  je      0x1809ecca6                               
+  0x1809ED000  movzx   r9d, word ptr [rbp + 0x38]                   ; rbp->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809ED005  mov     rdx, qword ptr [rip + 0x246415c]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x1809ED00C  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+  0x1809ED011  jmp     0x1809ecca6                               
+
+1809ED016:
+  0x1809ED016  mov     rax, qword ptr [rbp]                      
+  0x1809ED01A  test    rax, rax                                  
+  0x1809ED01D  je      0x1809ee19f                               
+  0x1809ED023  mov     rbx, qword ptr [rax + 0x18]                  ; rax->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809ED027  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED02E  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED032  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED039  jne     0x1809ed043                               
+  0x1809ED03B  mov     rcx, rax                                  
+  0x1809ED03E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED043:
+  0x1809ED043  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED04A  mov     rcx, qword ptr [rax]                      
+  0x1809ED04D  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED054  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809ED058  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED05F  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809ED063  lea     rcx, [r8 - 0x10]                          
+  0x1809ED067  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED06B  cmovge  rcx, r8                                   
+  0x1809ED06F  mov     rdi, qword ptr [rcx]                      
+  0x1809ED072  test    rbx, rbx                                  
+  0x1809ED075  je      0x1809ee19a                               
+  0x1809ED07B  mov     r9, qword ptr [rip + 0x24610a6]              ; TYPE System.Collections.Generic.IDictionary<string, object>_TypeInfo
+  0x1809ED082  mov     r10, qword ptr [rbx]                      
+  0x1809ED085  movzx   ecx, r12w                                 
+  0x1809ED089  movzx   edx, word ptr [r10 + 0x12e]               
+  0x1809ED091  cmp     r12w, dx                                  
+  0x1809ED095  jae     0x1809ed0b8                               
+  0x1809ED097  mov     r8, qword ptr [r10 + 0xb0]                
+  0x1809ED09E  nop                                               
+
+1809ED0A0:
+  0x1809ED0A0  movzx   eax, cx                                   
+  0x1809ED0A3  add     rax, rax                                  
+  0x1809ED0A6  cmp     qword ptr [r8 + rax*8], r9                
+  0x1809ED0AA  je      0x1809ed2ef                               
+  0x1809ED0B0  inc     cx                                        
+  0x1809ED0B3  cmp     cx, dx                                    
+  0x1809ED0B6  jb      0x1809ed0a0                               
+
+1809ED0B8:
+  0x1809ED0B8  mov     r8d, 7                                    
+  0x1809ED0BE  mov     rdx, r9                                   
+  0x1809ED0C1  mov     rcx, rbx                                  
+  0x1809ED0C4  call    0x180243a20                                  ; resolve interface method slot
+  0x1809ED0C9  mov     r9, rax                                   
+
+1809ED0CC:
+  0x1809ED0CC  mov     rax, qword ptr [r9]                       
+  0x1809ED0CF  mov     r9, qword ptr [r9 + 8]                    
+  0x1809ED0D3  lea     r8, [rbp + 0x78]                          
+  0x1809ED0D7  mov     rdx, rdi                                  
+  0x1809ED0DA  mov     rcx, rbx                                  
+  0x1809ED0DD  call    rax                                       
+  0x1809ED0DF  test    al, al                                    
+  0x1809ED0E1  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED0E8  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED0EC  jne     0x1809ed313                               
+  0x1809ED0F2  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED0F9  jne     0x1809ed103                               
+  0x1809ED0FB  mov     rcx, rax                                  
+  0x1809ED0FE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED103:
+  0x1809ED103  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED10A  mov     rcx, qword ptr [rax]                      
+  0x1809ED10D  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED114  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809ED118  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED11F  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809ED123  lea     rcx, [r8 - 0x10]                          
+  0x1809ED127  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED12B  cmovge  rcx, r8                                   
+  0x1809ED12F  mov     rbx, qword ptr [rcx]                      
+  0x1809ED132  mov     rcx, qword ptr [rip + 0x246e12f]             ; TYPE UnityEngine.AddressableAssets.Addressables_TypeInfo
+  0x1809ED139  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ED140  jne     0x1809ed147                               
+  0x1809ED142  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ED147:
+  0x1809ED147  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED14E  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED152  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED159  jne     0x1809ed163                               
+  0x1809ED15B  mov     rcx, rax                                  
+  0x1809ED15E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED163:
+  0x1809ED163  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809ED16A  mov     r8, qword ptr [r8 + 0x30]                    ; r8->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ED16E  mov     rdx, rbx                                  
+  0x1809ED171  lea     rcx, [rbp + 0x10]                            ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED175  call    0x18064d5e0                                  ; -> UnityEngine.AddressableAssets.Addressables$$LoadAssetAsync<__Il2CppFullySharedGenericType>
+  0x1809ED17A  movups  xmm7, xmmword ptr [rbp + 0x10]               ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED17E  movsd   xmm6, qword ptr [rbp + 0x20]                 ; rbp->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED183  mov     rax, qword ptr [rbp]                      
+  0x1809ED187  test    rax, rax                                  
+  0x1809ED18A  je      0x1809ee16f                               
+  0x1809ED190  mov     rbx, qword ptr [rax + 0x10]                  ; rax->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED194  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED19B  mov     rcx, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED19F  test    byte ptr [rcx + 0x135], 1                 
+  0x1809ED1A6  jne     0x1809ed1ad                               
+  0x1809ED1A8  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED1AD:
+  0x1809ED1AD  xorps   xmm0, xmm0                                
+  0x1809ED1B0  xor     eax, eax                                  
+  0x1809ED1B2  movups  xmmword ptr [rbp + 0x40], xmm0               ; rbp-><CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED1B6  mov     qword ptr [rbp + 0x50], rax                  ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ED1BA  mov     qword ptr [rsp + 0x20], r12               
+  0x1809ED1BF  mov     r9, qword ptr [rbp + 0x20]                   ; rbp->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED1C3  movdqa  xmm0, xmm7                                
+  0x1809ED1C7  psrldq  xmm0, 8                                   
+  0x1809ED1CC  movd    r8d, xmm0                                 
+  0x1809ED1D1  movq    rdx, xmm7                                 
+  0x1809ED1D6  lea     rcx, [rbp + 0x40]                            ; rbp->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED1DA  call    0x1808d9010                                  ; -> UnityEngine.UIElements.CanStartDragArgs$$.ctor (+3 aliases)
+  0x1809ED1DF  test    rbx, rbx                                  
+  0x1809ED1E2  je      0x1809ee16a                               
+  0x1809ED1E8  movups  xmm0, xmmword ptr [rbp + 0x40]               ; rbp->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED1EC  movaps  xmmword ptr [rbp + 0x10], xmm0               ; rbp->AddressablesManager._handles | <>c.<>9__18_1
+  0x1809ED1F0  movsd   xmm1, qword ptr [rbp + 0x50]                 ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ED1F5  movsd   qword ptr [rbp + 0x20], xmm1                 ; rbp->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED1FA  lea     r9, [rbp + 0x10]                             ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED1FE  mov     r8, rbx                                   
+  0x1809ED201  call    0x1800660f0                                  ; -> sub_660F0 (runtime/helper)
+  0x1809ED206  mov     rcx, qword ptr [rbp]                      
+  0x1809ED20A  test    rcx, rcx                                  
+  0x1809ED20D  je      0x1809ee165                               
+  0x1809ED213  xor     edx, edx                                  
+  0x1809ED215  call    0x180cbea00                                  ; -> GigaCreation.Essentials.AddressablesUtils.AddressablesManager$$get_LoadAssetCts
+  0x1809ED21A  test    rax, rax                                  
+  0x1809ED21D  je      0x1809ee160                               
+  0x1809ED223  xor     edx, edx                                  
+  0x1809ED225  mov     rcx, rax                                  
+  0x1809ED228  call    0x1810a22f0                                  ; -> System.Threading.CancellationTokenSource$$get_Token
+  0x1809ED22D  mov     rdi, rax                                  
+  0x1809ED230  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED237  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED23B  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED242  jne     0x1809ed24c                               
+  0x1809ED244  mov     rcx, rax                                  
+  0x1809ED247  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED24C:
+  0x1809ED24C  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED253  mov     rcx, qword ptr [rax]                      
+  0x1809ED256  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED25D  movsxd  r8, dword ptr [rdx + 0x98]                
+  0x1809ED264  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED26B  mov     rax, qword ptr [rdx + 0x90]               
+  0x1809ED272  lea     rbx, [r8 - 0x10]                          
+  0x1809ED276  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED27A  cmovge  rbx, r8                                   
+  0x1809ED27E  mov     rbx, qword ptr [rbx]                      
+  0x1809ED281  mov     rcx, qword ptr [rip + 0x24644d0]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x1809ED288  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ED28F  jne     0x1809ed296                               
+  0x1809ED291  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ED296:
+  0x1809ED296  xor     r8d, r8d                                  
+  0x1809ED299  mov     rdx, rbx                                  
+  0x1809ED29C  mov     rcx, rdi                                  
+  0x1809ED29F  call    0x1810a37e0                                  ; -> System.Threading.CancellationTokenSource$$CreateLinkedTokenSource
+  0x1809ED2A4  mov     rbx, rax                                  
+  0x1809ED2A7  mov     rcx, qword ptr [rbp + 0x1b8]              
+  0x1809ED2AE  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED2B2  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED2B9  jne     0x1809ed2c3                               
+  0x1809ED2BB  mov     rcx, rax                                  
+  0x1809ED2BE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED2C3:
+  0x1809ED2C3  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED2CA  mov     rcx, qword ptr [rax]                      
+  0x1809ED2CD  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED2D4  add     rdx, 0xc0                                 
+  0x1809ED2DB  mov     r8, rbx                                   
+  0x1809ED2DE  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809ED2E5  call    0x180005330                                  ; -> sub_5330 (runtime/helper)
+  0x1809ED2EA  jmp     0x1809ed632                               
+
+1809ED2EF:
+  0x1809ED2EF  movzx   ecx, cx                                   
+  0x1809ED2F2  add     rcx, rcx                                  
+  0x1809ED2F5  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x1809ED2FA  add     ecx, 7                                    
+  0x1809ED2FD  movsxd  r9, ecx                                   
+  0x1809ED300  shl     r9, 4                                     
+  0x1809ED304  add     r9, 0x138                                 
+  0x1809ED30B  add     r9, r10                                   
+  0x1809ED30E  jmp     0x1809ed0cc                               
+
+1809ED313:
+  0x1809ED313  mov     rdi, qword ptr [rbp + 0x78]               
+  0x1809ED317  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED31E  jne     0x1809ed328                               
+  0x1809ED320  mov     rcx, rax                                  
+  0x1809ED323  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED328:
+  0x1809ED328  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED32F  mov     rbx, qword ptr [rax + 0x28]                  ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809ED333  test    byte ptr [rbx + 0x135], 1                 
+  0x1809ED33A  jne     0x1809ed347                               
+  0x1809ED33C  mov     rcx, rbx                                  
+  0x1809ED33F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ED344  mov     rbx, rax                                  
+
+1809ED347:
+  0x1809ED347  test    rdi, rdi                                  
+  0x1809ED34A  je      0x1809ed57b                               
+  0x1809ED350  mov     rsi, qword ptr [rdi]                      
+  0x1809ED353  mov     rdx, rsi                                  
+  0x1809ED356  mov     rcx, rbx                                  
+  0x1809ED359  call    0x1802a06d0                                  ; -> sub_2A06D0 (runtime/helper)
+  0x1809ED35E  test    al, al                                    
+  0x1809ED360  jne     0x1809ed3bc                               
+  0x1809ED362  test    byte ptr [rsi + 0x136], 0x10              
+  0x1809ED369  je      0x1809ed57b                               
+  0x1809ED36F  test    byte ptr [rbx + 0x118], 0x20              
+  0x1809ED376  jne     0x1809ed384                               
+  0x1809ED378  cmp     byte ptr [rbx + 0x2a], 0x13               
+  0x1809ED37C  je      0x1809ed384                               
+  0x1809ED37E  cmp     byte ptr [rbx + 0x2a], 0x1e               
+  0x1809ED382  jne     0x1809ed3a5                               
+
+1809ED384:
+  0x1809ED384  cmp     qword ptr [rbx + 0x70], 0                 
+  0x1809ED389  je      0x1809ed3a5                               
+  0x1809ED38B  mov     rax, qword ptr [rbx + 0x70]               
+  0x1809ED38F  mov     rdx, qword ptr [rax + 0x28]                  ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809ED393  test    rdx, rdx                                  
+  0x1809ED396  je      0x1809ed3a5                               
+  0x1809ED398  mov     rcx, rdi                                  
+  0x1809ED39B  call    0x180247c80                                  ; -> sub_247C80 (runtime/helper)
+  0x1809ED3A0  test    rax, rax                                  
+  0x1809ED3A3  jne     0x1809ed3bc                               
+
+1809ED3A5:
+  0x1809ED3A5  mov     rax, r12                                  
+  0x1809ED3A8  cmp     rbx, qword ptr [rip + 0x26ea2b1]             ; data_30D7660
+  0x1809ED3AF  cmove   rax, rdi                                  
+  0x1809ED3B3  test    rax, rax                                  
+  0x1809ED3B6  je      0x1809ed57b                               
+
+1809ED3BC:
+  0x1809ED3BC  mov     rdi, qword ptr [rbp + 0x78]               
+  0x1809ED3C0  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED3C7  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED3CB  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED3D2  jne     0x1809ed3dc                               
+  0x1809ED3D4  mov     rcx, rax                                  
+  0x1809ED3D7  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED3DC:
+  0x1809ED3DC  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED3E3  mov     rbx, qword ptr [rax + 0x28]                  ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809ED3E7  test    byte ptr [rbx + 0x135], 1                 
+  0x1809ED3EE  jne     0x1809ed3fb                               
+  0x1809ED3F0  mov     rcx, rbx                                  
+  0x1809ED3F3  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809ED3F8  mov     rbx, rax                                  
+
+1809ED3FB:
+  0x1809ED3FB  mov     eax, dword ptr [rbx + 0x28]                  ; rbx->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809ED3FE  shr     eax, 0x1f                                 
+  0x1809ED401  test    al, al                                    
+  0x1809ED403  je      0x1809ed4ab                               
+  0x1809ED409  cmp     qword ptr [rbx + 0x60], 0                 
+  0x1809ED40E  je      0x1809ed488                               
+  0x1809ED410  test    byte ptr [rbx + 0x135], 8                 
+  0x1809ED417  je      0x1809ed488                               
+  0x1809ED419  test    rdi, rdi                                  
+  0x1809ED41C  je      0x1809ed42b                               
+  0x1809ED41E  mov     rax, qword ptr [rbx + 0x40]                  ; rbx->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED422  cmp     qword ptr [rdi], rax                      
+  0x1809ED425  jne     0x1809ee174                               
+
+1809ED42B:
+  0x1809ED42B  mov     rcx, qword ptr [rbx + 0x80]               
+  0x1809ED432  movsxd  rdx, dword ptr [rcx + 0x38]                  ; rcx->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809ED436  add     rdx, r15                                  
+  0x1809ED439  mov     rax, qword ptr [rcx + 0x30]                  ; rcx->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809ED43D  lea     r9, [rdx - 0x10]                          
+  0x1809ED441  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED445  cmovge  r9, rdx                                   
+  0x1809ED449  mov     rax, qword ptr [rbx + 0x40]                  ; rbx->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED44D  mov     r8d, dword ptr [rax + 0xf8]               
+  0x1809ED454  sub     r8d, 0x10                                 
+  0x1809ED458  mov     rcx, r9                                   
+  0x1809ED45B  test    rdi, rdi                                  
+  0x1809ED45E  jne     0x1809ed473                               
+  0x1809ED460  xor     edx, edx                                  
+  0x1809ED462  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809ED467  xor     al, al                                    
+  0x1809ED469  mov     rcx, r15                                  
+  0x1809ED46C  mov     byte ptr [rcx], al                        
+  0x1809ED46E  jmp     0x1809ed52e                               
+
+1809ED473:
+  0x1809ED473  lea     rdx, [rdi + 0x10]                            ; rdi->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED477  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED47C  mov     al, 1                                     
+  0x1809ED47E  mov     rcx, r15                                  
+  0x1809ED481  mov     byte ptr [rcx], al                        
+  0x1809ED483  jmp     0x1809ed52e                               
+
+1809ED488:
+  0x1809ED488  test    rdi, rdi                                  
+  0x1809ED48B  je      0x1809ee18a                               
+  0x1809ED491  mov     rcx, qword ptr [rdi]                      
+  0x1809ED494  mov     rax, qword ptr [rbx + 0x40]                  ; rbx->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED498  cmp     qword ptr [rcx + 0x40], rax                  ; rcx-><CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED49C  jne     0x1809ee17f                               
+  0x1809ED4A2  lea     r15, [rdi + 0x10]                            ; rdi->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED4A6  jmp     0x1809ed52e                               
+
+1809ED4AB:
+  0x1809ED4AB  test    rdi, rdi                                  
+  0x1809ED4AE  jne     0x1809ed4b5                               
+  0x1809ED4B0  mov     rax, r12                                  
+  0x1809ED4B3  jmp     0x1809ed52b                               
+
+1809ED4B5:
+  0x1809ED4B5  mov     rsi, qword ptr [rdi]                      
+  0x1809ED4B8  mov     rdx, rsi                                  
+  0x1809ED4BB  mov     rcx, rbx                                  
+  0x1809ED4BE  call    0x1802a06d0                                  ; -> sub_2A06D0 (runtime/helper)
+  0x1809ED4C3  test    al, al                                    
+  0x1809ED4C5  je      0x1809ed4cc                               
+  0x1809ED4C7  mov     rax, rdi                                  
+  0x1809ED4CA  jmp     0x1809ed52b                               
+
+1809ED4CC:
+  0x1809ED4CC  test    byte ptr [rsi + 0x136], 0x10              
+  0x1809ED4D3  je      0x1809ee18f                               
+  0x1809ED4D9  test    byte ptr [rbx + 0x118], 0x20              
+  0x1809ED4E0  jne     0x1809ed4ee                               
+  0x1809ED4E2  cmp     byte ptr [rbx + 0x2a], 0x13               
+  0x1809ED4E6  je      0x1809ed4ee                               
+  0x1809ED4E8  cmp     byte ptr [rbx + 0x2a], 0x1e               
+  0x1809ED4EC  jne     0x1809ed514                               
+
+1809ED4EE:
+  0x1809ED4EE  cmp     qword ptr [rbx + 0x70], 0                 
+  0x1809ED4F3  je      0x1809ed514                               
+  0x1809ED4F5  mov     rax, qword ptr [rbx + 0x70]               
+  0x1809ED4F9  mov     rdx, qword ptr [rax + 0x28]                  ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809ED4FD  test    rdx, rdx                                  
+  0x1809ED500  je      0x1809ed514                               
+  0x1809ED502  mov     rcx, rdi                                  
+  0x1809ED505  call    0x180247c80                                  ; -> sub_247C80 (runtime/helper)
+  0x1809ED50A  test    rax, rax                                  
+  0x1809ED50D  je      0x1809ed514                               
+  0x1809ED50F  mov     rax, rdi                                  
+  0x1809ED512  jmp     0x1809ed52b                               
+
+1809ED514:
+  0x1809ED514  mov     rax, r12                                  
+  0x1809ED517  cmp     rbx, qword ptr [rip + 0x26ea142]             ; data_30D7660
+  0x1809ED51E  cmove   rax, rdi                                  
+  0x1809ED522  test    rax, rax                                  
+  0x1809ED525  je      0x1809ee18f                               
+
+1809ED52B:
+  0x1809ED52B  mov     qword ptr [r15], rax                      
+
+1809ED52E:
+  0x1809ED52E  mov     r13d, dword ptr [rbp + 0x1c8]             
+  0x1809ED535  mov     r8d, r13d                                 
+  0x1809ED538  mov     rdx, r15                                  
+  0x1809ED53B  mov     rcx, r14                                  
+  0x1809ED53E  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED543  mov     r8d, r13d                                 
+  0x1809ED546  mov     rdx, r14                                  
+  0x1809ED549  mov     rcx, qword ptr [rbp + 0xc8]               
+  0x1809ED550  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED555  mov     r8d, r13d                                 
+  0x1809ED558  mov     rdx, qword ptr [rbp + 0xc8]               
+  0x1809ED55F  mov     rbx, qword ptr [rbp + 0x88]               
+  0x1809ED566  mov     rcx, rbx                                  
+  0x1809ED569  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED56E  nop                                               
+  0x1809ED56F  lea     rsi, [rip + 0x2700d2a]                       ; data_30EE2A0
+  0x1809ED576  jmp     0x1809edd55                               
+
+1809ED57B:
+  0x1809ED57B  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED582  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED586  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED58D  jne     0x1809ed597                               
+  0x1809ED58F  mov     rcx, rax                                  
+  0x1809ED592  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED597:
+  0x1809ED597  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED59E  mov     rcx, qword ptr [rax]                      
+  0x1809ED5A1  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED5A8  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809ED5AC  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED5B3  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809ED5B7  lea     rdx, [r8 - 0x10]                          
+  0x1809ED5BB  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED5BF  cmovge  rdx, r8                                   
+  0x1809ED5C3  xor     r9d, r9d                                  
+  0x1809ED5C6  mov     r8, qword ptr [rip + 0x2460b4b]              ; STR ', T'
+  0x1809ED5CD  mov     rdx, qword ptr [rdx]                      
+  0x1809ED5D0  mov     rcx, qword ptr [rip + 0x2460b49]             ; STR 'ロードするアセットの型指定が不正です：'
+  0x1809ED5D7  call    0x180e267a0                                  ; -> System.String$$Concat
+  0x1809ED5DC  mov     rbx, rax                                  
+  0x1809ED5DF  mov     rcx, qword ptr [rip + 0x2464cfa]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x1809ED5E6  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1809ED5ED  jne     0x1809ed5f4                               
+  0x1809ED5EF  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1809ED5F4:
+  0x1809ED5F4  xor     edx, edx                                  
+  0x1809ED5F6  mov     rcx, rbx                                  
+  0x1809ED5F9  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+  0x1809ED5FE  mov     r13d, dword ptr [rbp + 0x1c8]             
+  0x1809ED605  mov     r8d, r13d                                 
+  0x1809ED608  xor     edx, edx                                  
+  0x1809ED60A  mov     rbx, qword ptr [rbp + 0x88]               
+  0x1809ED611  mov     rcx, rbx                                  
+  0x1809ED614  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809ED619  nop                                               
+  0x1809ED61A  lea     rsi, [rip + 0x2700c7f]                       ; data_30EE2A0
+  0x1809ED621  jmp     0x1809edd55                               
+
+1809ED626:
+  0x1809ED626  lea     rsi, [rip + 0x2700c73]                       ; data_30EE2A0
+  0x1809ED62D  movsd   xmm6, qword ptr [rbp + 0x50]                 ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+
+1809ED632:
+  0x1809ED632  mov     qword ptr [rbp + 0xd0], r12               
+  0x1809ED639  lea     rax, [rbp + 0x1c0]                        
+  0x1809ED640  mov     qword ptr [rbp + 0xd8], rax               
+  0x1809ED647  lea     rax, [rbp + 0x1b0]                        
+  0x1809ED64E  mov     qword ptr [rbp + 0xe0], rax               
+  0x1809ED655  lea     rax, [rbp + 0x1b8]                        
+  0x1809ED65C  mov     qword ptr [rbp + 0xe8], rax               
+  0x1809ED663  cmp     dword ptr [rbp + 0x1c0], 1                
+  0x1809ED66A  je      0x1809ed89b                               
+  0x1809ED670  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED677  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED67B  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED682  jne     0x1809ed68c                               
+  0x1809ED684  mov     rcx, rax                                  
+  0x1809ED687  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED68C:
+  0x1809ED68C  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED693  mov     rcx, qword ptr [rax]                      
+  0x1809ED696  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED69D  movsxd  r8, dword ptr [rdx + 0xd8]                
+  0x1809ED6A4  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED6AB  mov     rax, qword ptr [rdx + 0xd0]               
+  0x1809ED6B2  lea     rcx, [r8 - 0x10]                          
+  0x1809ED6B6  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED6BA  cmovge  rcx, r8                                   
+  0x1809ED6BE  mov     rcx, qword ptr [rcx]                      
+  0x1809ED6C1  test    rcx, rcx                                  
+  0x1809ED6C4  je      0x1809ee1b9                               
+  0x1809ED6CA  xor     edx, edx                                  
+  0x1809ED6CC  call    0x1810a22f0                                  ; -> System.Threading.CancellationTokenSource$$get_Token
+  0x1809ED6D1  mov     rbx, rax                                  
+  0x1809ED6D4  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED6DB  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED6DF  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED6E6  jne     0x1809ed6f0                               
+  0x1809ED6E8  mov     rcx, rax                                  
+  0x1809ED6EB  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED6F0:
+  0x1809ED6F0  movaps  xmmword ptr [rbp + 0x40], xmm7               ; rbp-><CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED6F4  movsd   qword ptr [rbp + 0x50], xmm6                 ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ED6F9  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED700  mov     rcx, qword ptr [rax + 0x50]                  ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ED704  mov     qword ptr [rsp + 0x38], rcx               
+  0x1809ED709  mov     rsi, qword ptr [rbp + 0xf0]               
+  0x1809ED710  mov     qword ptr [rsp + 0x30], rsi               
+  0x1809ED715  mov     byte ptr [rsp + 0x28], 0                  
+  0x1809ED71A  mov     byte ptr [rsp + 0x20], 0                  
+  0x1809ED71F  mov     r9, rbx                                   
+  0x1809ED722  xor     edx, edx                                  
+  0x1809ED724  mov     r8d, 8                                    
+  0x1809ED72A  lea     rcx, [rbp + 0x40]                            ; rbp->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED72E  call    0x18064e330                                  ; -> Cysharp.Threading.Tasks.AddressablesAsyncExtensions$$ToUniTask<__Il2CppFullySharedGenericType>
+  0x1809ED733  mov     edi, dword ptr [rbp + 0x70]               
+  0x1809ED736  mov     r8d, edi                                  
+  0x1809ED739  mov     rdx, rsi                                  
+  0x1809ED73C  mov     rcx, r13                                  
+  0x1809ED73F  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED744  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED74B  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED74F  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED756  jne     0x1809ed760                               
+  0x1809ED758  mov     rcx, rax                                  
+  0x1809ED75B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED760:
+  0x1809ED760  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809ED767  mov     r8, qword ptr [r8 + 0x60]                 
+  0x1809ED76B  mov     rbx, qword ptr [rbp + 0xf8]               
+  0x1809ED772  mov     rdx, rbx                                  
+  0x1809ED775  mov     rcx, r13                                  
+  0x1809ED778  call    0x180971500                                  ; -> Cysharp.Threading.Tasks.UniTask<__Il2CppFullySharedGenericType>$$Preserve
+  0x1809ED77D  mov     r8, rdi                                   
+  0x1809ED780  mov     rdx, rbx                                  
+  0x1809ED783  mov     r13, qword ptr [rbp + 0xa8]               
+  0x1809ED78A  mov     rcx, r13                                  
+  0x1809ED78D  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED792  mov     rax, qword ptr [rbp]                      
+  0x1809ED796  test    rax, rax                                  
+  0x1809ED799  je      0x1809ee1b4                               
+  0x1809ED79F  mov     rsi, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED7A3  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED7AA  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED7AE  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED7B5  jne     0x1809ed7bf                               
+  0x1809ED7B7  mov     rcx, rax                                  
+  0x1809ED7BA  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED7BF:
+  0x1809ED7BF  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED7C6  mov     rcx, qword ptr [rax]                      
+  0x1809ED7C9  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED7D0  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809ED7D4  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809ED7DB  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809ED7DF  lea     rcx, [r8 - 0x10]                          
+  0x1809ED7E3  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED7E7  cmovge  rcx, r8                                   
+  0x1809ED7EB  mov     r14, qword ptr [rcx]                      
+  0x1809ED7EE  mov     r8, rdi                                   
+  0x1809ED7F1  mov     rdx, r13                                  
+  0x1809ED7F4  mov     rcx, qword ptr [rbp + 0xa0]               
+  0x1809ED7FB  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED800  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED807  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED80B  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED812  jne     0x1809ed81c                               
+  0x1809ED814  mov     rcx, rax                                  
+  0x1809ED817  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED81C:
+  0x1809ED81C  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED823  mov     rbx, qword ptr [rax + 0x70]               
+  0x1809ED827  mov     r8, rdi                                   
+  0x1809ED82A  mov     rdx, qword ptr [rbp + 0xa0]               
+  0x1809ED831  mov     rcx, qword ptr [rbp + 0x100]              
+  0x1809ED838  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED83D  mov     rdi, rax                                  
+  0x1809ED840  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED844  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED84B  jne     0x1809ed855                               
+  0x1809ED84D  mov     rcx, rax                                  
+  0x1809ED850  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED855:
+  0x1809ED855  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809ED85C  mov     r8, qword ptr [r8 + 0x58]                 
+  0x1809ED860  mov     rdx, rdi                                  
+  0x1809ED863  lea     rcx, [rbp + 0x10]                            ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED867  call    0x180971780                                  ; -> Cysharp.Threading.Tasks.UniTask<__Il2CppFullySharedGenericType>$$AsUniTask
+  0x1809ED86C  test    rsi, rsi                                  
+  0x1809ED86F  je      0x1809ee1af                               
+  0x1809ED875  movaps  xmm0, xmmword ptr [rbp + 0x10]               ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED879  movdqa  xmmword ptr [rbp + 0x10], xmm0               ; rbp->AddressablesManager._handles | <>c.<>9__18_1
+  0x1809ED87E  lea     rax, [rbp + 0x10]                            ; rbp->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809ED882  mov     qword ptr [rsp + 0x20], rax               
+  0x1809ED887  mov     r9, r14                                   
+  0x1809ED88A  mov     r8, rsi                                   
+  0x1809ED88D  call    0x180066010                                  ; -> sub_66010 (runtime/helper)
+  0x1809ED892  lea     rsi, [rip + 0x2700a07]                       ; data_30EE2A0
+  0x1809ED899  jmp     0x1809ed8a2                               
+
+1809ED89B:
+  0x1809ED89B  mov     r13, qword ptr [rbp + 0xa8]               
+
+1809ED8A2:
+  0x1809ED8A2  mov     qword ptr [rbp + 0x40], r12                  ; rbp-><CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809ED8A6  lea     rax, [rbp + 0x1c0]                        
+  0x1809ED8AD  mov     qword ptr [rbp + 0x48], rax                  ; rbp->AddressablesManager.<ResourceLocations>k__BackingField
+  0x1809ED8B1  lea     rax, [rbp]                                
+  0x1809ED8B5  mov     qword ptr [rbp + 0x50], rax                  ; rbp-><CheckIfAdditionalCatalogExistsAsync>d__19.<>u__2
+  0x1809ED8B9  lea     rax, [rbp + 0x1b0]                        
+  0x1809ED8C0  mov     qword ptr [rbp + 0x58], rax               
+  0x1809ED8C4  lea     rax, [rbp + 0x1b8]                        
+  0x1809ED8CB  mov     qword ptr [rbp + 0x60], rax               
+  0x1809ED8CF  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED8D6  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED8DA  cmp     dword ptr [rbp + 0x1c0], 1                
+  0x1809ED8E1  jne     0x1809ed9ff                               
+  0x1809ED8E7  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED8EE  jne     0x1809ed8f8                               
+  0x1809ED8F0  mov     rcx, rax                                  
+  0x1809ED8F3  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED8F8:
+  0x1809ED8F8  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED8FF  mov     rcx, qword ptr [rax]                      
+  0x1809ED902  mov     r9, qword ptr [rcx + 0x80]                
+  0x1809ED909  movsxd  r10, dword ptr [r9 + 0x118]               
+  0x1809ED910  add     r10, qword ptr [rbp + 0x1b0]              
+  0x1809ED917  mov     rdi, qword ptr [rbp + 0x80]               
+  0x1809ED91E  mov     rax, qword ptr [r9 + 0x110]               
+  0x1809ED925  lea     rdx, [r10 - 0x10]                         
+  0x1809ED929  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED92D  cmovge  rdx, r10                                  
+  0x1809ED931  mov     r8d, edi                                  
+  0x1809ED934  mov     rcx, qword ptr [rbp + 0xb0]               
+  0x1809ED93B  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED940  mov     r8d, edi                                  
+  0x1809ED943  mov     rdx, qword ptr [rbp + 0xb0]               
+  0x1809ED94A  mov     r14, qword ptr [rbp + 0xb8]               
+  0x1809ED951  mov     rcx, r14                                  
+  0x1809ED954  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809ED959  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED960  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED964  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED96B  jne     0x1809ed975                               
+  0x1809ED96D  mov     rcx, rax                                  
+  0x1809ED970  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED975:
+  0x1809ED975  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED97C  mov     rcx, qword ptr [rax]                      
+  0x1809ED97F  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809ED986  movsxd  r9, dword ptr [rdx + 0x118]               
+  0x1809ED98D  add     r9, qword ptr [rbp + 0x1b0]               
+  0x1809ED994  mov     r8d, edi                                  
+  0x1809ED997  mov     rax, qword ptr [rdx + 0x110]              
+  0x1809ED99E  lea     rcx, [r9 - 0x10]                          
+  0x1809ED9A2  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809ED9A6  cmovge  rcx, r9                                   
+  0x1809ED9AA  xor     edx, edx                                  
+  0x1809ED9AC  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809ED9B1  mov     dword ptr [rbp + 0x1c0], 0xffffffff       
+  0x1809ED9BB  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809ED9C2  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809ED9C6  test    byte ptr [rax + 0x135], 1                 
+  0x1809ED9CD  jne     0x1809ed9d7                               
+  0x1809ED9CF  mov     rcx, rax                                  
+  0x1809ED9D2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809ED9D7:
+  0x1809ED9D7  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809ED9DE  mov     rdx, qword ptr [rax]                      
+  0x1809ED9E1  mov     r8d, 0xffffffff                           
+  0x1809ED9E7  mov     rdx, qword ptr [rdx + 0x80]               
+  0x1809ED9EE  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809ED9F5  call    0x180005390                                  ; -> sub_5390 (runtime/helper)
+  0x1809ED9FA  jmp     0x1809eda7f                               
+
+1809ED9FF:
+  0x1809ED9FF  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDA06  jne     0x1809eda10                               
+  0x1809EDA08  mov     rcx, rax                                  
+  0x1809EDA0B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDA10:
+  0x1809EDA10  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809EDA17  mov     r8, qword ptr [r8 + 0x78]                 
+  0x1809EDA1B  mov     rbx, qword ptr [rbp + 0xb0]               
+  0x1809EDA22  mov     rdx, rbx                                  
+  0x1809EDA25  mov     rcx, r13                                  
+  0x1809EDA28  call    0x180331a90                                  ; -> Cysharp.Threading.Tasks.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x1809EDA2D  mov     rdi, qword ptr [rbp + 0x80]               
+  0x1809EDA34  mov     r8d, edi                                  
+  0x1809EDA37  mov     rdx, rbx                                  
+  0x1809EDA3A  mov     r14, qword ptr [rbp + 0xb8]               
+  0x1809EDA41  mov     rcx, r14                                  
+  0x1809EDA44  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDA49  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDA50  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDA54  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDA5B  jne     0x1809eda65                               
+  0x1809EDA5D  mov     rcx, rax                                  
+  0x1809EDA60  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDA65:
+  0x1809EDA65  mov     rdx, qword ptr [rax + 0xc0]               
+  0x1809EDA6C  mov     rdx, qword ptr [rdx + 0x88]               
+  0x1809EDA73  mov     rcx, r14                                  
+  0x1809EDA76  call    0x180331b60                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x1809EDA7B  test    al, al                                    
+  0x1809EDA7D  je      0x1809edadf                               
+
+1809EDA7F:
+  0x1809EDA7F  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDA86  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDA8A  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDA91  jne     0x1809eda9b                               
+  0x1809EDA93  mov     rcx, rax                                  
+  0x1809EDA96  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDA9B:
+  0x1809EDA9B  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809EDAA2  mov     r8, qword ptr [r8 + 0xa8]                 
+  0x1809EDAA9  mov     rdx, r15                                  
+  0x1809EDAAC  mov     rcx, r14                                  
+  0x1809EDAAF  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x1809EDAB4  mov     r13d, dword ptr [rbp + 0x1c8]             
+  0x1809EDABB  mov     r8d, r13d                                 
+  0x1809EDABE  mov     rdx, r15                                  
+  0x1809EDAC1  mov     r14, qword ptr [rbp + 0xc0]               
+  0x1809EDAC8  mov     rcx, r14                                  
+  0x1809EDACB  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDAD0  nop                                               
+  0x1809EDAD1  lea     rcx, [rbp + 0x48]                            ; rbp->AddressablesManager.<ResourceLocations>k__BackingField
+  0x1809EDAD5  call    0x1809ee2c0                                  ; -> sub_9EE2C0 (runtime/helper)
+  0x1809EDADA  jmp     0x1809edc5e                               
+
+1809EDADF:
+  0x1809EDADF  mov     dword ptr [rbp + 0x1c0], 1                
+  0x1809EDAE9  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDAF0  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDAF4  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDAFB  jne     0x1809edb05                               
+  0x1809EDAFD  mov     rcx, rax                                  
+  0x1809EDB00  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDB05:
+  0x1809EDB05  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDB0C  mov     rdx, qword ptr [rax]                      
+  0x1809EDB0F  mov     r8d, 1                                    
+  0x1809EDB15  mov     rdx, qword ptr [rdx + 0x80]               
+  0x1809EDB1C  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809EDB23  call    0x180005390                                  ; -> sub_5390 (runtime/helper)
+  0x1809EDB28  mov     r8d, edi                                  
+  0x1809EDB2B  mov     rdx, r14                                  
+  0x1809EDB2E  mov     rcx, rbx                                  
+  0x1809EDB31  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDB36  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDB3D  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDB41  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDB48  jne     0x1809edb52                               
+  0x1809EDB4A  mov     rcx, rax                                  
+  0x1809EDB4D  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDB52:
+  0x1809EDB52  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDB59  mov     rcx, qword ptr [rax]                      
+  0x1809EDB5C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDB63  add     rdx, 0x100                                
+  0x1809EDB6A  mov     r9d, edi                                  
+  0x1809EDB6D  mov     r8, rbx                                   
+  0x1809EDB70  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809EDB77  call    0x1802463e0                                  ; -> sub_2463E0 (runtime/helper)
+  0x1809EDB7C  mov     rcx, qword ptr [rbp + 0x1b8]              
+  0x1809EDB83  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDB87  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDB8E  jne     0x1809edb9f                               
+  0x1809EDB90  mov     rcx, rax                                  
+  0x1809EDB93  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EDB98  mov     rcx, qword ptr [rbp + 0x1b8]              
+
+1809EDB9F:
+  0x1809EDB9F  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDBA6  mov     rbx, qword ptr [rax + 0x98]               
+  0x1809EDBAD  mov     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EDBB4  mov     rdi, r8                                   
+  0x1809EDBB7  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDBBB  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDBC2  jne     0x1809edbd3                               
+  0x1809EDBC4  mov     rcx, rax                                  
+  0x1809EDBC7  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EDBCC  mov     r8, qword ptr [rbp + 0x1b0]               
+
+1809EDBD3:
+  0x1809EDBD3  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDBDA  mov     rcx, qword ptr [rax]                      
+  0x1809EDBDD  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDBE4  movsxd  rcx, dword ptr [rdx + 0x38]                  ; rdx->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809EDBE8  add     rcx, r8                                   
+  0x1809EDBEB  mov     rax, qword ptr [rdx + 0x30]                  ; rdx->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809EDBEF  lea     r10, [rcx - 0x10]                         
+  0x1809EDBF3  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDBF7  cmovge  r10, rcx                                  
+  0x1809EDBFB  mov     r9, rbx                                   
+  0x1809EDBFE  mov     r8, rdi                                   
+  0x1809EDC01  mov     rdx, r14                                  
+  0x1809EDC04  mov     rcx, r10                                  
+  0x1809EDC07  call    0x180356170                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x1809EDC0C  nop                                               
+  0x1809EDC0D  lea     rcx, [rbp + 0x48]                            ; rbp->AddressablesManager.<ResourceLocations>k__BackingField
+  0x1809EDC11  call    0x1809ee2c0                                  ; -> sub_9EE2C0 (runtime/helper)
+  0x1809EDC16  nop                                               
+  0x1809EDC17  lea     rcx, [rbp + 0xd8]                         
+  0x1809EDC1E  call    0x1809ee1e0                                  ; -> sub_9EE1E0 (runtime/helper)
+  0x1809EDC23  nop                                               
+  0x1809EDC24  jmp     0x1809edfb7                               
+  0x1809EDC29  lea     rcx, [rbp + 0x48]                            ; rbp->AddressablesManager.<ResourceLocations>k__BackingField
+  0x1809EDC2D  call    0x1809ee2c0                                  ; -> sub_9EE2C0 (runtime/helper)
+  0x1809EDC32  mov     rcx, qword ptr [rbp + 0x40]                  ; rbp->AddressablesManager.<IsAdditionalCatalogLoaded>k__BackingField | <CheckIfMainCatalogExistsAsync>d__18.<>u__2 | <LoadAdditionalCatalogAsync>d__20.<>u__1
+  0x1809EDC36  test    rcx, rcx                                  
+  0x1809EDC39  jne     0x1809ee1be                               
+  0x1809EDC3F  xor     r12d, r12d                                
+  0x1809EDC42  lea     rsi, [rip + 0x2700657]                       ; data_30EE2A0
+  0x1809EDC49  mov     r13d, dword ptr [rbp + 0x1c8]             
+  0x1809EDC50  mov     r15, qword ptr [rbp + 0x108]              
+  0x1809EDC57  mov     r14, qword ptr [rbp + 0xc0]               
+
+1809EDC5E:
+  0x1809EDC5E  mov     rax, qword ptr [rbp]                      
+  0x1809EDC62  test    rax, rax                                  
+  0x1809EDC65  je      0x1809ee1c8                               
+  0x1809EDC6B  mov     rbx, qword ptr [rax + 0x18]                  ; rax->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809EDC6F  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDC76  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDC7A  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDC81  jne     0x1809edc8b                               
+  0x1809EDC83  mov     rcx, rax                                  
+  0x1809EDC86  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDC8B:
+  0x1809EDC8B  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDC92  mov     rcx, qword ptr [rax]                      
+  0x1809EDC95  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDC9C  movsxd  r8, dword ptr [rdx + 0x78]                
+  0x1809EDCA0  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EDCA7  mov     rax, qword ptr [rdx + 0x70]               
+  0x1809EDCAB  lea     rcx, [r8 - 0x10]                          
+  0x1809EDCAF  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDCB3  cmovge  rcx, r8                                   
+  0x1809EDCB7  mov     rdi, qword ptr [rcx]                      
+  0x1809EDCBA  mov     r8d, r13d                                 
+  0x1809EDCBD  mov     rdx, r14                                  
+  0x1809EDCC0  mov     rcx, r15                                  
+  0x1809EDCC3  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDCC8  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDCCF  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDCD3  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDCDA  jne     0x1809edce4                               
+  0x1809EDCDC  mov     rcx, rax                                  
+  0x1809EDCDF  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDCE4:
+  0x1809EDCE4  mov     rcx, qword ptr [rax + 0xc0]               
+  0x1809EDCEB  mov     rdx, r15                                  
+  0x1809EDCEE  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809EDCF2  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x1809EDCF7  test    rbx, rbx                                  
+  0x1809EDCFA  je      0x1809ee1c3                               
+  0x1809EDD00  mov     ecx, 5                                    
+  0x1809EDD05  mov     qword ptr [rsp + 0x20], rax               
+  0x1809EDD0A  mov     r9, rdi                                   
+  0x1809EDD0D  mov     r8, rbx                                   
+  0x1809EDD10  mov     rdx, qword ptr [rip + 0x2460411]             ; TYPE System.Collections.Generic.IDictionary<string, object>_TypeInfo
+  0x1809EDD17  call    0x180008000                                  ; -> sub_8000 (runtime/helper)
+  0x1809EDD1C  mov     r8d, r13d                                 
+  0x1809EDD1F  mov     rdx, r14                                  
+  0x1809EDD22  mov     rcx, qword ptr [rbp + 0xc8]               
+  0x1809EDD29  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDD2E  mov     r8d, r13d                                 
+  0x1809EDD31  mov     rdx, qword ptr [rbp + 0xc8]               
+  0x1809EDD38  mov     rbx, qword ptr [rbp + 0x88]               
+  0x1809EDD3F  mov     rcx, rbx                                  
+  0x1809EDD42  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDD47  nop                                               
+  0x1809EDD48  lea     rcx, [rbp + 0xd8]                         
+  0x1809EDD4F  call    0x1809ee1e0                                  ; -> sub_9EE1E0 (runtime/helper)
+  0x1809EDD54  nop                                               
+
+1809EDD55:
+  0x1809EDD55  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDD5C  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDD60  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDD67  jne     0x1809edd71                               
+  0x1809EDD69  mov     rcx, rax                                  
+  0x1809EDD6C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDD71:
+  0x1809EDD71  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDD78  mov     rcx, qword ptr [rax]                      
+  0x1809EDD7B  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDD82  movsxd  r8, dword ptr [rdx + 0x18]                   ; rdx->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809EDD86  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EDD8D  mov     rax, qword ptr [rdx + 0x10]                  ; rdx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809EDD91  lea     r9, [r8 - 0x10]                           
+  0x1809EDD95  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDD99  cmovge  r9, r8                                    
+  0x1809EDD9D  mov     dword ptr [r9], 0xfffffffe                
+  0x1809EDDA4  cmp     dword ptr [rip + 0x26eb419], 0               ; data_30D91C4
+  0x1809EDDAB  je      0x1809edde9                               
+  0x1809EDDAD  shr     r9, 0xc                                   
+  0x1809EDDB1  and     r9d, 0x1fffff                             
+  0x1809EDDB8  mov     eax, r9d                                  
+  0x1809EDDBB  shr     rax, 6                                    
+  0x1809EDDBF  lea     rdx, [rsi + rax*8]                        
+  0x1809EDDC3  and     r9d, 0x3f                                 
+  0x1809EDDC7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809EDDCE  nop                                               
+
+1809EDDD0:
+  0x1809EDDD0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809EDDD7  mov     rcx, rax                                  
+  0x1809EDDDA  bts     rcx, r9                                   
+  0x1809EDDDE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809EDDE7  jne     0x1809eddd0                               
+
+1809EDDE9:
+  0x1809EDDE9  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDDF0  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDDF4  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDDFB  jne     0x1809ede05                               
+  0x1809EDDFD  mov     rcx, rax                                  
+  0x1809EDE00  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDE05:
+  0x1809EDE05  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDE0C  mov     rcx, qword ptr [rax]                      
+  0x1809EDE0F  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDE16  movsxd  r8, dword ptr [rdx + 0xb8]                
+  0x1809EDE1D  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EDE24  mov     rax, qword ptr [rdx + 0xb0]               
+  0x1809EDE2B  lea     rcx, [r8 - 0x10]                          
+  0x1809EDE2F  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDE33  cmovge  rcx, r8                                   
+  0x1809EDE37  xorps   xmm0, xmm0                                
+  0x1809EDE3A  movups  xmmword ptr [rcx], xmm0                   
+  0x1809EDE3D  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDE44  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDE48  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDE4F  jne     0x1809ede59                               
+  0x1809EDE51  mov     rcx, rax                                  
+  0x1809EDE54  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDE59:
+  0x1809EDE59  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDE60  mov     rcx, qword ptr [rax]                      
+  0x1809EDE63  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDE6A  movsxd  r8, dword ptr [rdx + 0xd8]                
+  0x1809EDE71  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EDE78  mov     rax, qword ptr [rdx + 0xd0]               
+  0x1809EDE7F  lea     r9, [r8 - 0x10]                           
+  0x1809EDE83  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDE87  cmovge  r9, r8                                    
+  0x1809EDE8B  mov     qword ptr [r9], r12                       
+  0x1809EDE8E  cmp     dword ptr [rip + 0x26eb32f], 0               ; data_30D91C4
+  0x1809EDE95  je      0x1809eded9                               
+  0x1809EDE97  shr     r9, 0xc                                   
+  0x1809EDE9B  and     r9d, 0x1fffff                             
+  0x1809EDEA2  mov     eax, r9d                                  
+  0x1809EDEA5  shr     rax, 6                                    
+  0x1809EDEA9  lea     r8, [rsi + rax*8]                         
+  0x1809EDEAD  and     r9d, 0x3f                                 
+  0x1809EDEB1  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x1809EDEB9  nop     dword ptr [rax]                           
+
+1809EDEC0:
+  0x1809EDEC0  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x1809EDEC7  mov     rcx, rax                                  
+  0x1809EDECA  bts     rcx, r9                                   
+  0x1809EDECE  lock cmpxchg qword ptr [r8 + 0x462e0], rcx             
+  0x1809EDED7  jne     0x1809edec0                               
+
+1809EDED9:
+  0x1809EDED9  mov     r8d, r13d                                 
+  0x1809EDEDC  mov     rdx, rbx                                  
+  0x1809EDEDF  mov     rbx, qword ptr [rbp + 0x110]              
+  0x1809EDEE6  mov     rcx, rbx                                  
+  0x1809EDEE9  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDEEE  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDEF5  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDEF9  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDF00  jne     0x1809edf0a                               
+  0x1809EDF02  mov     rcx, rax                                  
+  0x1809EDF05  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDF0A:
+  0x1809EDF0A  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDF11  mov     rdi, qword ptr [rax + 0xb8]               
+  0x1809EDF18  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDF1F  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDF23  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDF2A  jne     0x1809edf34                               
+  0x1809EDF2C  mov     rcx, rax                                  
+  0x1809EDF2F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDF34:
+  0x1809EDF34  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDF3B  mov     r8, qword ptr [rax + 0x28]                   ; rax->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809EDF3F  mov     eax, dword ptr [r8 + 0x28]                   ; r8->AddressablesManager._webRequestManager | <CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this
+  0x1809EDF43  shr     eax, 0x1f                                 
+  0x1809EDF46  test    al, al                                    
+  0x1809EDF48  je      0x1809edf61                               
+  0x1809EDF4A  mov     r8d, r13d                                 
+  0x1809EDF4D  mov     rdx, rbx                                  
+  0x1809EDF50  mov     rcx, qword ptr [rbp + 0x118]              
+  0x1809EDF57  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809EDF5C  mov     rbx, rax                                  
+  0x1809EDF5F  jmp     0x1809edf64                               
+
+1809EDF61:
+  0x1809EDF61  mov     rbx, qword ptr [rbx]                      
+
+1809EDF64:
+  0x1809EDF64  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EDF6B  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EDF6F  test    byte ptr [rax + 0x135], 1                 
+  0x1809EDF76  jne     0x1809edf80                               
+  0x1809EDF78  mov     rcx, rax                                  
+  0x1809EDF7B  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EDF80:
+  0x1809EDF80  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EDF87  mov     rcx, qword ptr [rax]                      
+  0x1809EDF8A  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EDF91  movsxd  r9, dword ptr [rdx + 0x38]                   ; rdx->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809EDF95  add     r9, qword ptr [rbp + 0x1b0]               
+  0x1809EDF9C  mov     rax, qword ptr [rdx + 0x30]                  ; rdx->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809EDFA0  lea     rcx, [r9 - 0x10]                          
+  0x1809EDFA4  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EDFA8  cmovge  rcx, r9                                   
+  0x1809EDFAC  mov     r8, rdi                                   
+  0x1809EDFAF  mov     rdx, rbx                                  
+  0x1809EDFB2  call    0x1803564e0                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetResult
+
+1809EDFB7:
+  0x1809EDFB7  movaps  xmm6, xmmword ptr [rbp + 0x150]           
+  0x1809EDFBE  movaps  xmm7, xmmword ptr [rbp + 0x140]           
+  0x1809EDFC5  lea     rsp, [rbp + 0x168]                        
+  0x1809EDFCC  pop     r15                                       
+  0x1809EDFCE  pop     r14                                       
+  0x1809EDFD0  pop     r13                                       
+  0x1809EDFD2  pop     r12                                       
+  0x1809EDFD4  pop     rdi                                       
+  0x1809EDFD5  pop     rsi                                       
+  0x1809EDFD6  pop     rbx                                       
+  0x1809EDFD7  pop     rbp                                       
+  0x1809EDFD8  ret                                               
+  0x1809EDFD9  lea     rcx, [rbp + 0xd8]                         
+  0x1809EDFE0  call    0x1809ee1e0                                  ; -> sub_9EE1E0 (runtime/helper)
+  0x1809EDFE5  mov     rcx, qword ptr [rbp + 0xd0]               
+  0x1809EDFEC  test    rcx, rcx                                  
+  0x1809EDFEF  jne     0x1809ee1ce                               
+  0x1809EDFF5  mov     eax, dword ptr [rbp + 0x98]               
+  0x1809EDFFB  dec     eax                                       
+  0x1809EDFFD  movsxd  rcx, eax                                  
+  0x1809EE000  mov     rdi, qword ptr [rbp + rcx*8 + 0x90]       
+  0x1809EE008  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EE00F  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE013  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE01A  jne     0x1809ee024                               
+  0x1809EE01C  mov     rcx, rax                                  
+  0x1809EE01F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE024:
+  0x1809EE024  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE02B  mov     rdx, qword ptr [rax]                      
+  0x1809EE02E  mov     r8d, 0xfffffffe                           
+  0x1809EE034  mov     rdx, qword ptr [rdx + 0x80]               
+  0x1809EE03B  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809EE042  call    0x180005390                                  ; -> sub_5390 (runtime/helper)
+  0x1809EE047  mov     r11, qword ptr [rbp + 0x1b8]              
+  0x1809EE04E  mov     rax, qword ptr [r11 + 0x20]                  ; r11->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE052  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE059  jne     0x1809ee063                               
+  0x1809EE05B  mov     rcx, rax                                  
+  0x1809EE05E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE063:
+  0x1809EE063  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE06A  mov     rcx, qword ptr [rax]                      
+  0x1809EE06D  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EE074  movsxd  r8, dword ptr [rdx + 0xb8]                
+  0x1809EE07B  add     r8, qword ptr [rbp + 0x1b0]               
+  0x1809EE082  mov     rax, qword ptr [rdx + 0xb0]               
+  0x1809EE089  lea     rcx, [r8 - 0x10]                          
+  0x1809EE08D  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EE091  cmovge  rcx, r8                                   
+  0x1809EE095  xorps   xmm0, xmm0                                
+  0x1809EE098  movups  xmmword ptr [rcx], xmm0                   
+  0x1809EE09B  mov     rax, qword ptr [rbp + 0x1b8]              
+  0x1809EE0A2  mov     rax, qword ptr [rax + 0x20]                  ; rax->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE0A6  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE0AD  jne     0x1809ee0b7                               
+  0x1809EE0AF  mov     rcx, rax                                  
+  0x1809EE0B2  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE0B7:
+  0x1809EE0B7  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE0BE  mov     rcx, qword ptr [rax]                      
+  0x1809EE0C1  mov     rdx, qword ptr [rcx + 0x80]               
+  0x1809EE0C8  add     rdx, 0xc0                                 
+  0x1809EE0CF  xor     r8d, r8d                                  
+  0x1809EE0D2  mov     rcx, qword ptr [rbp + 0x1b0]              
+  0x1809EE0D9  call    0x180005330                                  ; -> sub_5330 (runtime/helper)
+  0x1809EE0DE  mov     r11, qword ptr [rbp + 0x1b8]              
+  0x1809EE0E5  mov     rax, qword ptr [r11 + 0x20]                  ; r11->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE0E9  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE0F0  jne     0x1809ee101                               
+  0x1809EE0F2  mov     rcx, rax                                  
+  0x1809EE0F5  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+  0x1809EE0FA  mov     r11, qword ptr [rbp + 0x1b8]              
+
+1809EE101:
+  0x1809EE101  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE108  mov     rbx, qword ptr [rax + 0xb0]               
+  0x1809EE10F  mov     rax, qword ptr [r11 + 0x20]                  ; r11->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE113  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE11A  jne     0x1809ee124                               
+  0x1809EE11C  mov     rcx, rax                                  
+  0x1809EE11F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE124:
+  0x1809EE124  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE12B  mov     rcx, qword ptr [rax]                      
+  0x1809EE12E  mov     r9, qword ptr [rcx + 0x80]                
+  0x1809EE135  movsxd  r10, dword ptr [r9 + 0x38]                   ; r9->AddressablesManager._loadAssetCts | <CheckIfAdditionalCatalogExistsAsync>d__19.<>u__1 | <CheckIfMainCatalogExistsAsync>d__18.<>u__1
+  0x1809EE139  add     r10, qword ptr [rbp + 0x1b0]              
+  0x1809EE140  mov     rax, qword ptr [r9 + 0x30]                   ; r9->AddressablesManager._additionalCatalogLocationsWithoutExt | <CheckIfAdditionalCatalogExistsAsync>d__19.<>7__wrap1 | <CheckIfMainCatalogExistsAsync>d__18.<settingJsonPath>5__2
+  0x1809EE144  lea     rcx, [r10 - 0x10]                         
+  0x1809EE148  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EE14C  cmovge  rcx, r10                                  
+  0x1809EE150  mov     r8, rbx                                   
+  0x1809EE153  mov     rdx, rdi                                  
+  0x1809EE156  call    0x180356390                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetException
+  0x1809EE15B  jmp     0x1809edfb7                               
+
+1809EE160:
+  0x1809EE160  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE165:
+  0x1809EE165  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE16A:
+  0x1809EE16A  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE16F:
+  0x1809EE16F  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE174:
+  0x1809EE174  mov     rdx, rax                                  
+  0x1809EE177  mov     rcx, rdi                                  
+  0x1809EE17A  call    0x180246ec0                                  ; -> sub_246EC0 (runtime/helper)
+
+1809EE17F:
+  0x1809EE17F  mov     rdx, rbx                                  
+  0x1809EE182  mov     rcx, rdi                                  
+  0x1809EE185  call    0x180246ec0                                  ; -> sub_246EC0 (runtime/helper)
+
+1809EE18A:
+  0x1809EE18A  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE18F:
+  0x1809EE18F  mov     rdx, rbx                                  
+  0x1809EE192  mov     rcx, rdi                                  
+  0x1809EE195  call    0x180246ec0                                  ; -> sub_246EC0 (runtime/helper)
+
+1809EE19A:
+  0x1809EE19A  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE19F:
+  0x1809EE19F  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1A4:
+  0x1809EE1A4  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1A9:
+  0x1809EE1A9  call    0x180246730                                  ; THROW NullReferenceException
+  0x1809EE1AE  nop                                               
+
+1809EE1AF:
+  0x1809EE1AF  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1B4:
+  0x1809EE1B4  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1B9:
+  0x1809EE1B9  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1BE:
+  0x1809EE1BE  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+
+1809EE1C3:
+  0x1809EE1C3  call    0x180246730                                  ; THROW NullReferenceException
+
+1809EE1C8:
+  0x1809EE1C8  call    0x180246730                                  ; THROW NullReferenceException
+  0x1809EE1CD  nop                                               
+
+1809EE1CE:
+  0x1809EE1CE  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x1809EE1D3  int3                                              
+  0x1809EE1D4  int3                                              
+  0x1809EE1D5  int3                                              
+  0x1809EE1D6  int3                                              
+  0x1809EE1D7  int3                                              
+  0x1809EE1D8  int3                                              
+  0x1809EE1D9  int3                                              
+  0x1809EE1DA  int3                                              
+  0x1809EE1DB  int3                                              
+  0x1809EE1DC  int3                                              
+  0x1809EE1DD  int3                                              
+  0x1809EE1DE  int3                                              
+  0x1809EE1DF  int3                                              
+  0x1809EE1E0  push    rbx                                       
+  0x1809EE1E2  sub     rsp, 0x20                                 
+  0x1809EE1E6  mov     rbx, rcx                                  
+  0x1809EE1E9  mov     rax, qword ptr [rcx]                      
+  0x1809EE1EC  cmp     dword ptr [rax], 0                        
+  0x1809EE1EF  jge     0x1809ee2b2                               
+  0x1809EE1F5  mov     rax, qword ptr [rcx + 0x10]                  ; rcx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809EE1F9  mov     rdx, qword ptr [rax]                      
+  0x1809EE1FC  mov     rax, qword ptr [rdx + 0x20]                  ; rdx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE200  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE207  jne     0x1809ee211                               
+  0x1809EE209  mov     rcx, rax                                  
+  0x1809EE20C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE211:
+  0x1809EE211  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE218  mov     rcx, qword ptr [rax]                      
+  0x1809EE21B  mov     rax, qword ptr [rbx + 8]                  
+  0x1809EE21F  mov     r8, qword ptr [rcx + 0x80]                
+  0x1809EE226  movsxd  r9, dword ptr [r8 + 0xd8]                 
+  0x1809EE22D  add     r9, qword ptr [rax]                       
+  0x1809EE230  mov     rax, qword ptr [r8 + 0xd0]                
+  0x1809EE237  lea     rcx, [r9 - 0x10]                          
+  0x1809EE23B  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EE23F  cmovge  rcx, r9                                   
+  0x1809EE243  cmp     qword ptr [rcx], 0                        
+  0x1809EE247  je      0x1809ee2b2                               
+  0x1809EE249  mov     rax, qword ptr [rbx + 0x10]                  ; rbx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809EE24D  mov     rcx, qword ptr [rax]                      
+  0x1809EE250  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE254  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE25B  jne     0x1809ee265                               
+  0x1809EE25D  mov     rcx, rax                                  
+  0x1809EE260  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE265:
+  0x1809EE265  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE26C  mov     rcx, qword ptr [rax]                      
+  0x1809EE26F  mov     rax, qword ptr [rbx + 8]                  
+  0x1809EE273  mov     r8, qword ptr [rcx + 0x80]                
+  0x1809EE27A  movsxd  r9, dword ptr [r8 + 0xd8]                 
+  0x1809EE281  add     r9, qword ptr [rax]                       
+  0x1809EE284  mov     rax, qword ptr [r8 + 0xd0]                
+  0x1809EE28B  lea     rcx, [r9 - 0x10]                          
+  0x1809EE28F  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EE293  cmovge  rcx, r9                                   
+  0x1809EE297  mov     r8, qword ptr [rcx]                       
+  0x1809EE29A  test    r8, r8                                    
+  0x1809EE29D  je      0x1809ee2b8                               
+  0x1809EE29F  mov     rdx, qword ptr [rip + 0x2463eaa]             ; TYPE System.IDisposable_TypeInfo
+  0x1809EE2A6  xor     ecx, ecx                                  
+  0x1809EE2A8  add     rsp, 0x20                                 
+  0x1809EE2AC  pop     rbx                                       
+  0x1809EE2AD  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+1809EE2B2:
+  0x1809EE2B2  add     rsp, 0x20                                 
+  0x1809EE2B6  pop     rbx                                       
+  0x1809EE2B7  ret                                               
+
+1809EE2B8:
+  0x1809EE2B8  call    0x180246730                                  ; THROW NullReferenceException
+  0x1809EE2BD  int3                                              
+  0x1809EE2BE  int3                                              
+  0x1809EE2BF  int3                                              
+  0x1809EE2C0  push    rbx                                       
+  0x1809EE2C2  sub     rsp, 0x20                                 
+  0x1809EE2C6  mov     rbx, rcx                                  
+  0x1809EE2C9  mov     rax, qword ptr [rcx]                      
+  0x1809EE2CC  cmp     dword ptr [rax], 0                        
+  0x1809EE2CF  jge     0x1809ee34f                               
+  0x1809EE2D1  mov     rax, qword ptr [rcx + 8]                  
+  0x1809EE2D5  mov     qword ptr [rsp + 0x30], rdi               
+  0x1809EE2DA  mov     rcx, qword ptr [rax]                      
+  0x1809EE2DD  test    rcx, rcx                                  
+  0x1809EE2E0  je      0x1809ee355                               
+  0x1809EE2E2  mov     rax, qword ptr [rbx + 0x18]                  ; rbx->AddressablesManager._loadedAssets | SettingsJsonCatalogLocations.m_InternalId | <>c.<>9__26_0
+  0x1809EE2E6  mov     rdi, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE2EA  mov     rcx, qword ptr [rax]                      
+  0x1809EE2ED  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->AddressablesManager._pendingLoadAssetTasks | <>c.<>9__27_0 | <CheckIfAdditionalCatalogExistsAsync>d__19.<>4__this
+  0x1809EE2F1  test    byte ptr [rax + 0x135], 1                 
+  0x1809EE2F8  jne     0x1809ee302                               
+  0x1809EE2FA  mov     rcx, rax                                  
+  0x1809EE2FD  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809EE302:
+  0x1809EE302  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809EE309  mov     rcx, qword ptr [rax]                      
+  0x1809EE30C  mov     rax, qword ptr [rbx + 0x10]                  ; rbx->AddressablesManager._handles | SettingsJson.m_CatalogLocations | SettingsJsonCatalogLocations.m_Keys
+  0x1809EE310  mov     r9, qword ptr [rcx + 0x80]                
+  0x1809EE317  movsxd  r8, dword ptr [r9 + 0x78]                 
+  0x1809EE31B  add     r8, qword ptr [rax]                       
+  0x1809EE31E  mov     rax, qword ptr [r9 + 0x70]                
+  0x1809EE322  test    rdi, rdi                                  
+  0x1809EE325  je      0x1809ee355                               
+  0x1809EE327  cmp     dword ptr [rax + 0x28], 0                    ; rax-><CheckIfAdditionalCatalogExistsAsync>d__19.ct | <CheckIfMainCatalogExistsAsync>d__18.<>4__this | <GetResourceLocationsAsync>d__21.ct
+  0x1809EE32B  lea     r9, [r8 - 0x10]                           
+  0x1809EE32F  mov     rdx, qword ptr [rip + 0x245fe22]             ; TYPE System.Collections.Generic.IDictionary<string, UniTask>_TypeInfo
+  0x1809EE336  mov     ecx, 6                                    
+  0x1809EE33B  cmovge  r9, r8                                    
+  0x1809EE33F  mov     r8, rdi                                   
+  0x1809EE342  mov     r9, qword ptr [r9]                        
+  0x1809EE345  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x1809EE34A  mov     rdi, qword ptr [rsp + 0x30]               
+
+1809EE34F:
+  0x1809EE34F  add     rsp, 0x20                                 
+  0x1809EE353  pop     rbx                                       
+  0x1809EE354  ret                                               
+
+1809EE355:
+  0x1809EE355  call    0x180246730                                  ; THROW NullReferenceException
