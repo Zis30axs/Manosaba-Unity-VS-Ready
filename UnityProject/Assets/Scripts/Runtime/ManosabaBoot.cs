@@ -269,15 +269,14 @@ namespace Manosaba.Integration
             }
 
             // --- shipped Addressables catalog (reference) ---------------------------------
-            // Only for the Player smoke gate.  The shipped catalog still names the original `Assembly-CSharp`, and
-            // Addressables' BinaryStorageBuffer logs a FileNotFoundException (8 of them) for every such type while it
-            // parses -- noise in every Editor Play session and G4b run, where this reference file is never used (the
-            // game loads the project's own catalog).
-            // The game-start gate (G4b, MANOSABA_GAMESTART=1) also passes the smoke flag; it measures the boot chain,
-            // not this reference file, so the parse is left to the plain smoke gate.
+            // Only in the standalone Player's smoke run (G5, "the Player can read the shipped catalog with the real
+            // runtime").  The shipped catalog still names the original `Assembly-CSharp`, and Addressables'
+            // BinaryStorageBuffer logs a FileNotFoundException (8 of them) for every such type while it parses --
+            // noise in every Editor Play session and in the Editor gates (G4, G4b), which never use this reference
+            // file (the game loads the project's own catalog).  Keyed on the Editor, not on MANOSABA_GAMESTART: G5
+            // sets that variable too, and its catalog check must keep running.
             string shippedCatalog = Path.Combine(Application.streamingAssetsPath, "shipped-aa", "catalog.bin");
-            bool gameStartRun = Environment.GetEnvironmentVariable("MANOSABA_GAMESTART") == "1";
-            report.catalog = HasFlag(SmokeFlag) && !gameStartRun
+            report.catalog = HasFlag(SmokeFlag) && !Application.isEditor
                 ? ProbeCatalog(shippedCatalog)
                 : new CatalogProbe { status = "SKIPPED", path = shippedCatalog };
 
