@@ -1,0 +1,103 @@
+====================================================================================================
+FUNCTION RVA 0xCD24C0  VA 0x180CD24C0  size 0x68 (104 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizationManager$$OnLocaleChangedAsObservable
+  csig   : System_IObservable_LocaleKind__o* GigaCreation_Essentials_Localization_LocalizationManager__OnLocaleChangedAsObservable (GigaCreation_Essentials_Localization_LocalizationManager_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizationManager :: public IObservable<LocaleKind> OnLocaleChangedAsObservable()
+  fields of GigaCreation.Essentials.Localization.LocalizationManager:
+      +0x10   _localeData                    readonly IDictionary<LocaleKind, LocaleDataItem>
+      +0x18   _localeChangedSubject          readonly ISubject<LocaleKind>
+      +0x20   _addressableAssetLoader        IAddressableAssetLoader
+      +0x28   <SourceLocale>k__BackingField  readonly LocaleKind
+      +0x2C   <CurrentLocale>k__BackingField LocaleKind
+      +0x30   <CurrentFontAsset>k__BackingField TMP_FontAsset
+  fields of LocalizationManager.Settings:
+      +0x10   SelectedLocale                 string
+  fields of LocalizationManager.OnChangeTask:
+      +0x0    Handler                        readonly Func<LocaleChangedArgs, UniTask>
+      +0x8    Priority                       readonly int
+  fields of LocalizationManager.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManager.<>c:
+      +0x0    <>9                            static readonly LocalizationManager.<>c
+      +0x8    <>9__32_0                      static Func<LocalizationManager.OnChangeTask, int>
+      +0x10   <>9__35_0                      static Func<Folder, string>
+  fields of LocalizationManager.<>c__DisplayClass33_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<>c__DisplayClass34_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<InitializeService>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<LoadServiceState>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       SettingsStateMap
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<RetrieveAvailableLocales>d__35:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManager.<SelectLocale>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         string
+      +0x28   <eventArgs>5__2                LocaleChangedArgs
+      +0x38   <>7__wrap2                     InteractionBlocker
+      +0x40   <>7__wrap3                     IEnumerator<LocalizationManager.OnChangeTask>
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      LocalizationManager
+      +0x18   ct                             CancellationToken
+  fields of LocalizationManager.<ChangeLocaleAsync>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         LocaleKind
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<ValueTuple<TMP_FontAsset, Material[]>>
+  fields of LocalizationManager.<GetOrLoadFontAssetAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<TMP_FontAsset>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   locale                         LocaleKind
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter<TMP_FontAsset>
+  fields of LocalizationManager.<GetOrLoadFontMaterialsAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Material[]>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   ct                             CancellationToken
+      +0x30   locale                         LocaleKind
+      +0x38   <>u__1                         UniTask.Awaiter<Material[]>
+====================================================================================================
+  0x180CD24C0  push    rbx                                       
+  0x180CD24C2  sub     rsp, 0x20                                 
+  0x180CD24C6  cmp     byte ptr [rip + 0x240ac5a], 0                ; data_30DD127
+  0x180CD24CD  mov     rbx, rcx                                  
+  0x180CD24D0  jne     0x180cd24fb                               
+  0x180CD24D2  lea     rcx, [rip + 0x21950c7]                       ; METHODINFO Method$UniRx.Observable.AsObservable<LocaleKind>()
+  0x180CD24D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD24DE  lock or dword ptr [rsp], 0                        
+  0x180CD24E3  lea     rcx, [rip + 0x218738e]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CD24EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD24EF  lock or dword ptr [rsp], 0                        
+  0x180CD24F4  mov     byte ptr [rip + 0x240ac2c], 1                ; data_30DD127
+
+180CD24FB:
+  0x180CD24FB  mov     rcx, qword ptr [rip + 0x2187376]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CD2502  mov     rbx, qword ptr [rbx + 0x18]                  ; rbx->LocalizationManager._localeChangedSubject | <InitializeService>d__25.<>4__this | <LoadServiceState>d__29.stateMap
+  0x180CD2506  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD250D  jne     0x180cd2514                               
+  0x180CD250F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CD2514:
+  0x180CD2514  mov     rdx, qword ptr [rip + 0x2195085]             ; METHODINFO Method$UniRx.Observable.AsObservable<LocaleKind>()
+  0x180CD251B  mov     rcx, rbx                                  
+  0x180CD251E  add     rsp, 0x20                                 
+  0x180CD2522  pop     rbx                                       
+  0x180CD2523  jmp     0x1807248e0                                  ; -> UniRx.Observable$$AsObservable<__Il2CppFullySharedGenericType>

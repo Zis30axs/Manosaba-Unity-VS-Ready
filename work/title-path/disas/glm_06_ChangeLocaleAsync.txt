@@ -1,0 +1,188 @@
+====================================================================================================
+FUNCTION RVA 0xCD1EE0  VA 0x180CD1EE0  size 0x1BB (443 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizationManager$$ChangeLocaleAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o GigaCreation_Essentials_Localization_LocalizationManager__ChangeLocaleAsync (GigaCreation_Essentials_Localization_LocalizationManager_o* __this, int32_t locale, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizationManager :: public UniTask ChangeLocaleAsync(LocaleKind locale, CancellationToken ct)
+  fields of GigaCreation.Essentials.Localization.LocalizationManager:
+      +0x10   _localeData                    readonly IDictionary<LocaleKind, LocaleDataItem>
+      +0x18   _localeChangedSubject          readonly ISubject<LocaleKind>
+      +0x20   _addressableAssetLoader        IAddressableAssetLoader
+      +0x28   <SourceLocale>k__BackingField  readonly LocaleKind
+      +0x2C   <CurrentLocale>k__BackingField LocaleKind
+      +0x30   <CurrentFontAsset>k__BackingField TMP_FontAsset
+  fields of LocalizationManager.Settings:
+      +0x10   SelectedLocale                 string
+  fields of LocalizationManager.OnChangeTask:
+      +0x0    Handler                        readonly Func<LocaleChangedArgs, UniTask>
+      +0x8    Priority                       readonly int
+  fields of LocalizationManager.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManager.<>c:
+      +0x0    <>9                            static readonly LocalizationManager.<>c
+      +0x8    <>9__32_0                      static Func<LocalizationManager.OnChangeTask, int>
+      +0x10   <>9__35_0                      static Func<Folder, string>
+  fields of LocalizationManager.<>c__DisplayClass33_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<>c__DisplayClass34_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<InitializeService>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<LoadServiceState>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       SettingsStateMap
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<RetrieveAvailableLocales>d__35:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManager.<SelectLocale>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         string
+      +0x28   <eventArgs>5__2                LocaleChangedArgs
+      +0x38   <>7__wrap2                     InteractionBlocker
+      +0x40   <>7__wrap3                     IEnumerator<LocalizationManager.OnChangeTask>
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      LocalizationManager
+      +0x18   ct                             CancellationToken
+  fields of LocalizationManager.<ChangeLocaleAsync>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         LocaleKind
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<ValueTuple<TMP_FontAsset, Material[]>>
+  fields of LocalizationManager.<GetOrLoadFontAssetAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<TMP_FontAsset>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   locale                         LocaleKind
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter<TMP_FontAsset>
+  fields of LocalizationManager.<GetOrLoadFontMaterialsAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Material[]>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   ct                             CancellationToken
+      +0x30   locale                         LocaleKind
+      +0x38   <>u__1                         UniTask.Awaiter<Material[]>
+====================================================================================================
+  0x180CD1EE0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD1EE5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180CD1EEA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CD1EEF  push    rdi                                       
+  0x180CD1EF0  sub     rsp, 0x80                                 
+  0x180CD1EF7  cmp     byte ptr [rip + 0x240b226], 0                ; data_30DD124
+  0x180CD1EFE  mov     rbx, r9                                   
+  0x180CD1F01  mov     esi, r8d                                  
+  0x180CD1F04  mov     rdi, rdx                                  
+  0x180CD1F07  mov     rbp, rcx                                  
+  0x180CD1F0A  jne     0x180cd1f24                               
+  0x180CD1F0C  lea     rcx, [rip + 0x21956bd]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<LocalizationManager.<ChangeLocaleAsync>d__17>()
+  0x180CD1F13  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1F18  lock or dword ptr [rsp], 0                        
+  0x180CD1F1D  mov     byte ptr [rip + 0x240b200], 1                ; data_30DD124
+
+180CD1F24:
+  0x180CD1F24  xor     eax, eax                                  
+  0x180CD1F26  lea     r9, [rip + 0x241c373]                        ; data_30EE2A0
+  0x180CD1F2D  xorps   xmm0, xmm0                                
+  0x180CD1F30  mov     qword ptr [rsp + 0x30], rax               
+  0x180CD1F35  mov     qword ptr [rsp + 0x48], rax               
+  0x180CD1F3A  xorps   xmm1, xmm1                                
+  0x180CD1F3D  mov     qword ptr [rsp + 0x50], rax               
+  0x180CD1F42  mov     qword ptr [rsp + 0x58], rax               
+  0x180CD1F47  mov     eax, dword ptr [rip + 0x2407277]             ; data_30D91C4
+  0x180CD1F4D  movdqa  xmmword ptr [rsp + 0x60], xmm0            
+  0x180CD1F53  movdqa  xmmword ptr [rsp + 0x70], xmm1            
+  0x180CD1F59  movups  xmmword ptr [rsp + 0x38], xmm0            
+  0x180CD1F5E  test    eax, eax                                  
+  0x180CD1F60  je      0x180cd1faf                               
+  0x180CD1F62  lea     r8, [rsp + 0x38]                          
+  0x180CD1F67  shr     r8, 0xc                                   
+  0x180CD1F6B  and     r8d, 0x1fffff                             
+  0x180CD1F72  mov     eax, r8d                                  
+  0x180CD1F75  shr     rax, 6                                    
+  0x180CD1F79  and     r8d, 0x3f                                 
+  0x180CD1F7D  lea     rdx, [r9 + rax*8]                         
+  0x180CD1F81  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD1F88  nop     dword ptr [rax + rax]                     
+
+180CD1F90:
+  0x180CD1F90  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD1F97  mov     rcx, rax                                  
+  0x180CD1F9A  bts     rcx, r8                                   
+  0x180CD1F9E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD1FA7  jne     0x180cd1f90                               
+  0x180CD1FA9  mov     eax, dword ptr [rip + 0x2407215]             ; data_30D91C4
+
+180CD1FAF:
+  0x180CD1FAF  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CD1FB4  test    eax, eax                                  
+  0x180CD1FB6  je      0x180cd1fff                               
+  0x180CD1FB8  lea     r8, [rsp + 0x48]                          
+  0x180CD1FBD  shr     r8, 0xc                                   
+  0x180CD1FC1  and     r8d, 0x1fffff                             
+  0x180CD1FC8  mov     eax, r8d                                  
+  0x180CD1FCB  shr     rax, 6                                    
+  0x180CD1FCF  and     r8d, 0x3f                                 
+  0x180CD1FD3  lea     rdx, [r9 + rax*8]                         
+  0x180CD1FD7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD1FDE  nop                                               
+
+180CD1FE0:
+  0x180CD1FE0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD1FE7  mov     rcx, rax                                  
+  0x180CD1FEA  bts     rcx, r8                                   
+  0x180CD1FEE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD1FF7  jne     0x180cd1fe0                               
+  0x180CD1FF9  mov     eax, dword ptr [rip + 0x24071c5]             ; data_30D91C4
+
+180CD1FFF:
+  0x180CD1FFF  mov     dword ptr [rsp + 0x50], esi               
+  0x180CD2003  mov     qword ptr [rsp + 0x58], rbx               
+  0x180CD2008  test    eax, eax                                  
+  0x180CD200A  je      0x180cd204b                               
+  0x180CD200C  lea     r8, [rsp + 0x58]                          
+  0x180CD2011  shr     r8, 0xc                                   
+  0x180CD2015  and     r8d, 0x1fffff                             
+  0x180CD201C  mov     eax, r8d                                  
+  0x180CD201F  shr     rax, 6                                    
+  0x180CD2023  and     r8d, 0x3f                                 
+  0x180CD2027  lea     rdx, [r9 + rax*8]                         
+  0x180CD202B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CD2032:
+  0x180CD2032  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD2039  mov     rcx, rax                                  
+  0x180CD203C  bts     rcx, r8                                   
+  0x180CD2040  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD2049  jne     0x180cd2032                               
+
+180CD204B:
+  0x180CD204B  mov     r8, qword ptr [rip + 0x219557e]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<LocalizationManager.<ChangeLocaleAsync>d__17>()
+  0x180CD2052  lea     rdx, [rsp + 0x30]                         
+  0x180CD2057  lea     rcx, [rsp + 0x38]                         
+  0x180CD205C  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180CD2064  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CD2069  lea     rdx, [rsp + 0x38]                         
+  0x180CD206E  lea     rcx, [rsp + 0x20]                         
+  0x180CD2073  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180CD2078  lea     r11, [rsp + 0x80]                         
+  0x180CD2080  mov     rbx, qword ptr [r11 + 0x10]                  ; r11->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2084  mov     rsi, qword ptr [r11 + 0x20]                  ; r11->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2088  movups  xmm0, xmmword ptr [rax]                   
+  0x180CD208B  mov     rax, rbp                                  
+  0x180CD208E  movups  xmmword ptr [rbp], xmm0                   
+  0x180CD2092  mov     rbp, qword ptr [r11 + 0x18]                  ; r11->LocalizationManager._localeChangedSubject | <InitializeService>d__25.<>4__this | <LoadServiceState>d__29.stateMap
+  0x180CD2096  mov     rsp, r11                                  
+  0x180CD2099  pop     rdi                                       
+  0x180CD209A  ret                                               

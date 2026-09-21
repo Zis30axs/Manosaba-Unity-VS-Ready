@@ -1,0 +1,439 @@
+====================================================================================================
+FUNCTION RVA 0xCD29F0  VA 0x180CD29F0  size 0x4F3 (1267 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizationManager.<GetOrLoadFontAssetAsync>d__18$$MoveNext
+  csig   : void GigaCreation_Essentials_Localization_LocalizationManager__GetOrLoadFontAssetAsync_d__18__MoveNext (GigaCreation_Essentials_Localization_LocalizationManager__GetOrLoadFontAssetAsync_d__18_o __this, const MethodInfo* method);
+  dump.cs: LocalizationManager.<GetOrLoadFontAssetAsync>d__18 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Localization.LocalizationManager:
+      +0x10   _localeData                    readonly IDictionary<LocaleKind, LocaleDataItem>
+      +0x18   _localeChangedSubject          readonly ISubject<LocaleKind>
+      +0x20   _addressableAssetLoader        IAddressableAssetLoader
+      +0x28   <SourceLocale>k__BackingField  readonly LocaleKind
+      +0x2C   <CurrentLocale>k__BackingField LocaleKind
+      +0x30   <CurrentFontAsset>k__BackingField TMP_FontAsset
+  fields of LocalizationManager.Settings:
+      +0x10   SelectedLocale                 string
+  fields of LocalizationManager.OnChangeTask:
+      +0x0    Handler                        readonly Func<LocaleChangedArgs, UniTask>
+      +0x8    Priority                       readonly int
+  fields of LocalizationManager.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManager.<>c:
+      +0x0    <>9                            static readonly LocalizationManager.<>c
+      +0x8    <>9__32_0                      static Func<LocalizationManager.OnChangeTask, int>
+      +0x10   <>9__35_0                      static Func<Folder, string>
+  fields of LocalizationManager.<>c__DisplayClass33_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<>c__DisplayClass34_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<InitializeService>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<LoadServiceState>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       SettingsStateMap
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<RetrieveAvailableLocales>d__35:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManager.<SelectLocale>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         string
+      +0x28   <eventArgs>5__2                LocaleChangedArgs
+      +0x38   <>7__wrap2                     InteractionBlocker
+      +0x40   <>7__wrap3                     IEnumerator<LocalizationManager.OnChangeTask>
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      LocalizationManager
+      +0x18   ct                             CancellationToken
+  fields of LocalizationManager.<ChangeLocaleAsync>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         LocaleKind
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<ValueTuple<TMP_FontAsset, Material[]>>
+  fields of LocalizationManager.<GetOrLoadFontAssetAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<TMP_FontAsset>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   locale                         LocaleKind
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter<TMP_FontAsset>
+  fields of LocalizationManager.<GetOrLoadFontMaterialsAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Material[]>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   ct                             CancellationToken
+      +0x30   locale                         LocaleKind
+      +0x38   <>u__1                         UniTask.Awaiter<Material[]>
+====================================================================================================
+  0x180CD29F0  mov     qword ptr [rsp + 8], rcx                  
+  0x180CD29F5  push    rbp                                       
+  0x180CD29F6  push    rbx                                       
+  0x180CD29F7  push    rsi                                       
+  0x180CD29F8  push    rdi                                       
+  0x180CD29F9  push    r12                                       
+  0x180CD29FB  push    r14                                       
+  0x180CD29FD  push    r15                                       
+  0x180CD29FF  sub     rsp, 0x90                                 
+  0x180CD2A06  lea     rbp, [rsp + 0x30]                         
+  0x180CD2A0B  mov     rdi, rcx                                  
+  0x180CD2A0E  cmp     byte ptr [rip + 0x240a715], 0                ; data_30DD12A
+  0x180CD2A15  jne     0x180cd2a95                               
+  0x180CD2A17  lea     rcx, [rip + 0x2194b12]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<TMP_FontAsset>.AwaitUnsafeOnCompleted<UniTask.Awaiter<TMP_FontAsset>, LocalizationManager.<GetOrLoadFontAssetAsync>d__18>()
+  0x180CD2A1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A23  lock or dword ptr [rsp], 0                        
+  0x180CD2A28  lea     rcx, [rip + 0x2194af9]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<TMP_FontAsset>.SetResult()
+  0x180CD2A2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A34  lock or dword ptr [rsp], 0                        
+  0x180CD2A39  lea     rcx, [rip + 0x2194b10]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<TMP_FontAsset>.GetResult()
+  0x180CD2A40  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A45  lock or dword ptr [rsp], 0                        
+  0x180CD2A4A  lea     rcx, [rip + 0x2194af7]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<TMP_FontAsset>.get_IsCompleted()
+  0x180CD2A51  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A56  lock or dword ptr [rsp], 0                        
+  0x180CD2A5B  lea     rcx, [rip + 0x2194ade]                       ; METHODINFO Method$GigaCreation.Essentials.AddressablesUtils.IAddressableAssetLoader.GetOrLoadAddressableAsset<TMP_FontAsset>()
+  0x180CD2A62  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A67  lock or dword ptr [rsp], 0                        
+  0x180CD2A6C  lea     rcx, [rip + 0x2194ac5]                       ; TYPE System.Collections.Generic.IDictionary<LocaleKind, LocaleDataItem>_TypeInfo
+  0x180CD2A73  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A78  lock or dword ptr [rsp], 0                        
+  0x180CD2A7D  lea     rcx, [rip + 0x2194a8c]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<TMP_FontAsset>.GetAwaiter()
+  0x180CD2A84  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2A89  lock or dword ptr [rsp], 0                        
+  0x180CD2A8E  mov     byte ptr [rip + 0x240a695], 1                ; data_30DD12A
+
+180CD2A95:
+  0x180CD2A95  xor     r12d, r12d                                
+  0x180CD2A98  mov     qword ptr [rbp + 0xb0], r12               
+  0x180CD2A9F  xorps   xmm0, xmm0                                
+  0x180CD2AA2  xor     eax, eax                                  
+  0x180CD2AA4  movups  xmmword ptr [rbp + 0x10], xmm0               ; rbp->LocalizationManager._localeData | <>c.<>9__35_0 | <>c__DisplayClass33_0.handler
+  0x180CD2AA8  mov     qword ptr [rbp + 0x20], rax                  ; rbp->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2AAC  mov     eax, dword ptr [rdi]                      
+  0x180CD2AAE  mov     rbx, qword ptr [rdi + 0x20]                  ; rdi->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2AB2  test    eax, eax                                  
+  0x180CD2AB4  jne     0x180cd2ae0                               
+  0x180CD2AB6  movups  xmm0, xmmword ptr [rdi + 0x38]               ; rdi-><SelectLocale>d__32.<>7__wrap2 | <GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2ABA  movups  xmmword ptr [rbp + 0x10], xmm0               ; rbp->LocalizationManager._localeData | <>c.<>9__35_0 | <>c__DisplayClass33_0.handler
+  0x180CD2ABE  movsd   xmm1, qword ptr [rdi + 0x48]                 ; rdi-><SelectLocale>d__32.<>u__1
+  0x180CD2AC3  movsd   qword ptr [rbp + 0x20], xmm1                 ; rbp->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2AC8  xorps   xmm0, xmm0                                
+  0x180CD2ACB  xor     eax, eax                                  
+  0x180CD2ACD  movups  xmmword ptr [rdi + 0x38], xmm0               ; rdi-><GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2AD1  mov     qword ptr [rdi + 0x48], rax                  ; rdi-><SelectLocale>d__32.<>u__1
+  0x180CD2AD5  mov     dword ptr [rdi], 0xffffffff               
+  0x180CD2ADB  jmp     0x180cd2d8c                               
+
+180CD2AE0:
+  0x180CD2AE0  test    rbx, rbx                                  
+  0x180CD2AE3  je      0x180cd2ede                               
+  0x180CD2AE9  mov     rsi, qword ptr [rbx + 0x10]                  ; rbx->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2AED  mov     r14d, dword ptr [rdi + 0x28]                 ; rdi->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2AF1  test    rsi, rsi                                  
+  0x180CD2AF4  je      0x180cd2ed9                               
+  0x180CD2AFA  mov     r9, qword ptr [rip + 0x2194a37]              ; TYPE System.Collections.Generic.IDictionary<LocaleKind, LocaleDataItem>_TypeInfo
+  0x180CD2B01  mov     r10, qword ptr [rsi]                      
+  0x180CD2B04  movzx   ecx, r12w                                 
+  0x180CD2B08  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CD2B10  cmp     r12w, dx                                  
+  0x180CD2B14  jae     0x180cd2b38                               
+  0x180CD2B16  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CD2B1D  nop     dword ptr [rax]                           
+
+180CD2B20:
+  0x180CD2B20  movzx   eax, cx                                   
+  0x180CD2B23  add     rax, rax                                  
+  0x180CD2B26  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CD2B2A  je      0x180cd2dd0                               
+  0x180CD2B30  inc     cx                                        
+  0x180CD2B33  cmp     cx, dx                                    
+  0x180CD2B36  jb      0x180cd2b20                               
+
+180CD2B38:
+  0x180CD2B38  mov     r8d, 7                                    
+  0x180CD2B3E  mov     rdx, r9                                   
+  0x180CD2B41  mov     rcx, rsi                                  
+  0x180CD2B44  call    0x180243a20                                  ; resolve interface method slot
+  0x180CD2B49  mov     r9, rax                                   
+
+180CD2B4C:
+  0x180CD2B4C  mov     rax, qword ptr [r9]                       
+  0x180CD2B4F  mov     r9, qword ptr [r9 + 8]                    
+  0x180CD2B53  lea     r8, [rbp + 0xb0]                          
+  0x180CD2B5A  mov     edx, r14d                                 
+  0x180CD2B5D  mov     rcx, rsi                                  
+  0x180CD2B60  call    rax                                       
+  0x180CD2B62  test    al, al                                    
+  0x180CD2B64  jne     0x180cd2b83                               
+  0x180CD2B66  mov     r8, qword ptr [rbx + 0x10]                   ; rbx->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2B6A  test    r8, r8                                    
+  0x180CD2B6D  je      0x180cd2ec9                               
+  0x180CD2B73  mov     r9d, dword ptr [rbx + 0x28]                  ; rbx->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2B77  call    0x18007f490                                  ; -> sub_7F490 (runtime/helper)
+  0x180CD2B7C  mov     qword ptr [rbp + 0xb0], rax               
+
+180CD2B83:
+  0x180CD2B83  xor     edx, edx                                  
+  0x180CD2B85  mov     rcx, rbx                                  
+  0x180CD2B88  call    0x180cd1cf0                                  ; -> GigaCreation.Essentials.Localization.LocalizationManager$$get_AddressableAssetLoader
+  0x180CD2B8D  mov     rsi, rax                                  
+  0x180CD2B90  mov     rax, qword ptr [rbp + 0xb0]               
+  0x180CD2B97  test    rax, rax                                  
+  0x180CD2B9A  je      0x180cd2ed4                               
+  0x180CD2BA0  mov     r15, qword ptr [rax + 0x10]                  ; rax->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2BA4  mov     rbx, qword ptr [rdi + 0x30]                  ; rdi->LocalizationManager.<CurrentFontAsset>k__BackingField | <ChangeLocaleAsync>d__17.<>u__1 | <GetOrLoadFontAssetAsync>d__18.ct
+  0x180CD2BA8  test    rsi, rsi                                  
+  0x180CD2BAB  je      0x180cd2ecf                               
+  0x180CD2BB1  mov     r14, qword ptr [rip + 0x2194988]             ; METHODINFO Method$GigaCreation.Essentials.AddressablesUtils.IAddressableAssetLoader.GetOrLoadAddressableAsset<TMP_FontAsset>()
+  0x180CD2BB8  movzx   r11d, word ptr [r14 + 0x50]               
+  0x180CD2BBD  mov     r9, qword ptr [r14 + 0x20]                   ; r14->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2BC1  mov     r10, qword ptr [rsi]                      
+  0x180CD2BC4  movzx   ecx, r12w                                 
+  0x180CD2BC8  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CD2BD0  cmp     r12w, dx                                  
+  0x180CD2BD4  jae     0x180cd2bf8                               
+  0x180CD2BD6  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CD2BDD  nop     dword ptr [rax]                           
+
+180CD2BE0:
+  0x180CD2BE0  movzx   eax, cx                                   
+  0x180CD2BE3  add     rax, rax                                  
+  0x180CD2BE6  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CD2BEA  je      0x180cd2df4                               
+  0x180CD2BF0  inc     cx                                        
+  0x180CD2BF3  cmp     cx, dx                                    
+  0x180CD2BF6  jb      0x180cd2be0                               
+
+180CD2BF8:
+  0x180CD2BF8  movzx   r8d, r11w                                 
+  0x180CD2BFC  mov     rdx, r9                                   
+  0x180CD2BFF  mov     rcx, rsi                                  
+  0x180CD2C02  call    0x180243a20                                  ; resolve interface method slot
+
+180CD2C07:
+  0x180CD2C07  mov     rcx, qword ptr [rax + 8]                  
+  0x180CD2C0B  mov     rdx, r12                                  
+  0x180CD2C0E  test    byte ptr [rcx + 0x53], 2                  
+  0x180CD2C12  je      0x180cd2c1f                               
+  0x180CD2C14  mov     rax, qword ptr [rcx + 0x40]                  ; rcx-><SelectLocale>d__32.<>7__wrap3
+  0x180CD2C18  mov     rdx, qword ptr [rax + 8]                  
+  0x180CD2C1C  mov     rcx, qword ptr [rax]                      
+
+180CD2C1F:
+  0x180CD2C1F  mov     qword ptr [rbp + 0x28], rcx                  ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2C23  mov     qword ptr [rbp + 0x30], rdx                  ; rbp->LocalizationManager.<CurrentFontAsset>k__BackingField | <ChangeLocaleAsync>d__17.<>u__1 | <GetOrLoadFontAssetAsync>d__18.ct
+  0x180CD2C27  mov     rax, qword ptr [r14 + 0x40]                  ; r14-><SelectLocale>d__32.<>7__wrap3
+  0x180CD2C2B  mov     rcx, qword ptr [rax + 0x10]                  ; rax->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2C2F  mov     qword ptr [rbp + 0x38], rcx                  ; rbp-><SelectLocale>d__32.<>7__wrap2 | <GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2C33  mov     dl, 1                                     
+  0x180CD2C35  lea     rcx, [rbp + 0x28]                            ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2C39  call    0x18028cc10                                  ; -> sub_28CC10 (runtime/helper)
+  0x180CD2C3E  mov     r10, qword ptr [rax + 8]                  
+  0x180CD2C42  mov     qword ptr [rsp + 0x20], rax               
+  0x180CD2C47  mov     r9, rbx                                   
+  0x180CD2C4A  mov     r8, r15                                   
+  0x180CD2C4D  mov     rdx, rsi                                  
+  0x180CD2C50  lea     rcx, [rbp + 0x40]                            ; rbp-><SelectLocale>d__32.<>7__wrap3
+  0x180CD2C54  call    r10                                       
+  0x180CD2C57  movups  xmm0, xmmword ptr [rax]                   
+  0x180CD2C5A  movups  xmmword ptr [rbp + 0x28], xmm0               ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2C5E  movsd   xmm1, qword ptr [rax + 0x10]                 ; rax->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2C63  movsd   qword ptr [rbp + 0x38], xmm1                 ; rbp-><SelectLocale>d__32.<>7__wrap2 | <GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2C68  mov     r14, qword ptr [rip + 0x21948a1]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<TMP_FontAsset>.GetAwaiter()
+  0x180CD2C6F  mov     rax, qword ptr [r14 + 0x20]                  ; r14->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2C73  test    byte ptr [rax + 0x135], 1                 
+  0x180CD2C7A  jne     0x180cd2c84                               
+  0x180CD2C7C  mov     rcx, rax                                  
+  0x180CD2C7F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD2C84:
+  0x180CD2C84  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD2C8B  mov     rcx, qword ptr [rax + 0x20]                  ; rax->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2C8F  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180CD2C95  lea     rax, [rbx + 0xf]                          
+  0x180CD2C99  cmp     rax, rbx                                  
+  0x180CD2C9C  ja      0x180cd2ca8                               
+  0x180CD2C9E  movabs  rax, 0xffffffffffffff0                    
+
+180CD2CA8:
+  0x180CD2CA8  and     rax, 0xfffffffffffffff0                   
+  0x180CD2CAC  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CD2CB1  sub     rsp, rax                                  
+  0x180CD2CB4  lea     rsi, [rsp + 0x30]                         
+  0x180CD2CB9  mov     r8, rbx                                   
+  0x180CD2CBC  xor     edx, edx                                  
+  0x180CD2CBE  mov     rcx, rsi                                  
+  0x180CD2CC1  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x180CD2CC6  mov     rax, qword ptr [r14 + 0x20]                  ; r14->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2CCA  test    byte ptr [rax + 0x135], 1                 
+  0x180CD2CD1  jne     0x180cd2cdb                               
+  0x180CD2CD3  mov     rcx, rax                                  
+  0x180CD2CD6  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD2CDB:
+  0x180CD2CDB  mov     r8, qword ptr [rax + 0xc0]                
+  0x180CD2CE2  mov     r8, qword ptr [r8 + 0x28]                    ; r8->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2CE6  lea     rdx, [rbp + 0x28]                            ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2CEA  mov     rcx, rsi                                  
+  0x180CD2CED  call    0x180002850                                  ; -> sub_2850 (runtime/helper)
+  0x180CD2CF2  mov     r8, rbx                                   
+  0x180CD2CF5  mov     rdx, rsi                                  
+  0x180CD2CF8  lea     rcx, [rbp + 0x28]                            ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2CFC  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CD2D01  movups  xmm0, xmmword ptr [rbp + 0x28]               ; rbp->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2D05  movups  xmmword ptr [rbp + 0x10], xmm0               ; rbp->LocalizationManager._localeData | <>c.<>9__35_0 | <>c__DisplayClass33_0.handler
+  0x180CD2D09  movsd   xmm1, qword ptr [rbp + 0x38]                 ; rbp-><SelectLocale>d__32.<>7__wrap2 | <GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2D0E  movsd   qword ptr [rbp + 0x20], xmm1                 ; rbp->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2D13  mov     rbx, qword ptr [rip + 0x219482e]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<TMP_FontAsset>.get_IsCompleted()
+  0x180CD2D1A  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2D1E  test    byte ptr [rax + 0x135], 1                 
+  0x180CD2D25  jne     0x180cd2d2f                               
+  0x180CD2D27  mov     rcx, rax                                  
+  0x180CD2D2A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD2D2F:
+  0x180CD2D2F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD2D36  mov     rsi, qword ptr [rax + 0x18]                  ; rax->LocalizationManager._localeChangedSubject | <InitializeService>d__25.<>4__this | <LoadServiceState>d__29.stateMap
+  0x180CD2D3A  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2D3E  test    byte ptr [rax + 0x135], 1                 
+  0x180CD2D45  jne     0x180cd2d4f                               
+  0x180CD2D47  mov     rcx, rax                                  
+  0x180CD2D4A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD2D4F:
+  0x180CD2D4F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD2D56  mov     rcx, qword ptr [rax + 0x10]                  ; rax->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2D5A  mov     r8, qword ptr [rcx + 0x80]                
+  0x180CD2D61  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8->LocalizationManager._localeChangedSubject | <InitializeService>d__25.<>4__this | <LoadServiceState>d__29.stateMap
+  0x180CD2D65  lea     r9, [rbp + 0x10]                             ; rbp->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2D69  add     r9, rax                                   
+  0x180CD2D6C  mov     rax, qword ptr [r8 + 0x10]                   ; r8->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2D70  lea     rcx, [r9 - 0x10]                          
+  0x180CD2D74  cmp     dword ptr [rax + 0x28], 0                    ; rax->LocalizationManager.<SourceLocale>k__BackingField | <LoadServiceState>d__29.<>u__1 | <SelectLocale>d__32.<eventArgs>5__2
+  0x180CD2D78  cmovge  rcx, r9                                   
+  0x180CD2D7C  mov     rdx, rsi                                  
+  0x180CD2D7F  call    0x180002920                                  ; -> sub_2920 (runtime/helper)
+  0x180CD2D84  test    eax, eax                                  
+  0x180CD2D86  je      0x180cd2e16                               
+
+180CD2D8C:
+  0x180CD2D8C  mov     r8, qword ptr [rip + 0x21947bd]              ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<TMP_FontAsset>.GetResult()
+  0x180CD2D93  lea     rdx, [rbp + 0xb8]                         
+  0x180CD2D9A  lea     rcx, [rbp + 0x10]                            ; rbp->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2D9E  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180CD2DA3  nop                                               
+  0x180CD2DA4  mov     dword ptr [rdi], 0xfffffffe               
+  0x180CD2DAA  lea     rcx, [rdi + 8]                            
+  0x180CD2DAE  mov     r8, qword ptr [rip + 0x2194773]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<TMP_FontAsset>.SetResult()
+  0x180CD2DB5  mov     rdx, qword ptr [rbp + 0xb8]               
+  0x180CD2DBC  call    0x1803564e0                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetResult
+
+180CD2DC1:
+  0x180CD2DC1  lea     rsp, [rbp + 0x60]                         
+  0x180CD2DC5  pop     r15                                       
+  0x180CD2DC7  pop     r14                                       
+  0x180CD2DC9  pop     r12                                       
+  0x180CD2DCB  pop     rdi                                       
+  0x180CD2DCC  pop     rsi                                       
+  0x180CD2DCD  pop     rbx                                       
+  0x180CD2DCE  pop     rbp                                       
+  0x180CD2DCF  ret                                               
+
+180CD2DD0:
+  0x180CD2DD0  movzx   ecx, cx                                   
+  0x180CD2DD3  add     rcx, rcx                                  
+  0x180CD2DD6  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CD2DDB  add     ecx, 7                                    
+  0x180CD2DDE  movsxd  r9, ecx                                   
+  0x180CD2DE1  shl     r9, 4                                     
+  0x180CD2DE5  add     r9, 0x138                                 
+  0x180CD2DEC  add     r9, r10                                   
+  0x180CD2DEF  jmp     0x180cd2b4c                               
+
+180CD2DF4:
+  0x180CD2DF4  movzx   edx, cx                                   
+  0x180CD2DF7  add     rdx, rdx                                  
+  0x180CD2DFA  mov     eax, dword ptr [r8 + rdx*8 + 8]           
+  0x180CD2DFF  add     eax, r11d                                 
+  0x180CD2E02  cdqe                                              
+  0x180CD2E04  shl     rax, 4                                    
+  0x180CD2E08  add     rax, 0x138                                
+  0x180CD2E0E  add     rax, r10                                  
+  0x180CD2E11  jmp     0x180cd2c07                               
+
+180CD2E16:
+  0x180CD2E16  mov     dword ptr [rdi], r12d                     
+  0x180CD2E19  movups  xmm0, xmmword ptr [rbp + 0x10]               ; rbp->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2E1D  movups  xmmword ptr [rdi + 0x38], xmm0               ; rdi-><GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2E21  movsd   xmm1, qword ptr [rbp + 0x20]                 ; rbp->LocalizationManager._addressableAssetLoader | <InitializeService>d__25.<>u__1 | <LoadServiceState>d__29.<>4__this
+  0x180CD2E26  movsd   qword ptr [rdi + 0x48], xmm1                 ; rdi-><SelectLocale>d__32.<>u__1
+  0x180CD2E2B  cmp     dword ptr [rip + 0x2406392], 0               ; data_30D91C4
+  0x180CD2E32  je      0x180cd2e71                               
+  0x180CD2E34  lea     r8, [rdi + 0x38]                             ; rdi-><SelectLocale>d__32.<>7__wrap2 | <GetOrLoadFontAssetAsync>d__18.<>u__1 | <GetOrLoadFontMaterialsAsync>d__19.<>u__1
+  0x180CD2E38  shr     r8, 0xc                                   
+  0x180CD2E3C  and     r8d, 0x1fffff                             
+  0x180CD2E43  mov     eax, r8d                                  
+  0x180CD2E46  shr     rax, 6                                    
+  0x180CD2E4A  lea     rcx, [rip + 0x246172f]                       ; data_3134580
+  0x180CD2E51  lea     rdx, [rcx + rax*8]                        
+  0x180CD2E55  and     r8d, 0x3f                                 
+  0x180CD2E59  prefetchw byte ptr [rdx]                            
+  0x180CD2E5C  nop     dword ptr [rax]                           
+
+180CD2E60:
+  0x180CD2E60  mov     rax, qword ptr [rdx]                      
+  0x180CD2E63  mov     rcx, rax                                  
+  0x180CD2E66  bts     rcx, r8                                   
+  0x180CD2E6A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CD2E6F  jne     0x180cd2e60                               
+
+180CD2E71:
+  0x180CD2E71  lea     rcx, [rdi + 8]                            
+  0x180CD2E75  mov     r9, qword ptr [rip + 0x21946b4]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<TMP_FontAsset>.AwaitUnsafeOnCompleted<UniTask.Awaiter<TMP_FontAsset>, LocalizationManager.<GetOrLoadFontAssetAsync>d__18>()
+  0x180CD2E7C  mov     r8, rdi                                   
+  0x180CD2E7F  lea     rdx, [rbp + 0x10]                            ; rbp->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD2E83  call    0x180356170                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CD2E88  nop                                               
+  0x180CD2E89  jmp     0x180cd2dc1                               
+  0x180CD2E8E  mov     rbx, qword ptr [rbp + 0xa0]               
+  0x180CD2E95  mov     dword ptr [rbx], 0xfffffffe               
+  0x180CD2E9B  lea     rcx, [rip + 0x2194666]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<TMP_FontAsset>.SetException()
+  0x180CD2EA2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD2EA7  lea     rcx, [rbx + 8]                            
+  0x180CD2EAB  mov     r8, rax                                   
+  0x180CD2EAE  mov     rdx, qword ptr [rbp + 0xb8]               
+  0x180CD2EB5  call    0x180356390                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetException
+  0x180CD2EBA  lea     rsp, [rbp + 0x60]                         
+  0x180CD2EBE  pop     r15                                       
+  0x180CD2EC0  pop     r14                                       
+  0x180CD2EC2  pop     r12                                       
+  0x180CD2EC4  pop     rdi                                       
+  0x180CD2EC5  pop     rsi                                       
+  0x180CD2EC6  pop     rbx                                       
+  0x180CD2EC7  pop     rbp                                       
+  0x180CD2EC8  ret                                               
+
+180CD2EC9:
+  0x180CD2EC9  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CD2ECE  nop                                               
+
+180CD2ECF:
+  0x180CD2ECF  call    0x180246730                                  ; THROW NullReferenceException
+
+180CD2ED4:
+  0x180CD2ED4  call    0x180246730                                  ; THROW NullReferenceException
+
+180CD2ED9:
+  0x180CD2ED9  call    0x180246730                                  ; THROW NullReferenceException
+
+180CD2EDE:
+  0x180CD2EDE  call    0x180246730                                  ; THROW NullReferenceException

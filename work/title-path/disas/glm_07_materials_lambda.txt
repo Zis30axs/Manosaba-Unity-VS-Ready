@@ -1,0 +1,118 @@
+====================================================================================================
+FUNCTION RVA 0xCD2530  VA 0x180CD2530  size 0x8F (143 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizationManager.<>c__DisplayClass19_0$$<GetOrLoadFontMaterialsAsync>b__0
+  csig   : Cysharp_Threading_Tasks_UniTask_Material__o GigaCreation_Essentials_Localization_LocalizationManager___c__DisplayClass19_0___GetOrLoadFontMaterialsAsync_b__0 (GigaCreation_Essentials_Localization_LocalizationManager___c__DisplayClass19_0_o* __this, UnityEngine_AddressableAssets_AssetReferenceT_Material__o* reference, const MethodInfo* method);
+  dump.cs: LocalizationManager.<>c__DisplayClass19_0 :: internal UniTask<Material> <GetOrLoadFontMaterialsAsync>b__0(AssetReferenceT<Material> reference)
+  fields of GigaCreation.Essentials.Localization.LocalizationManager:
+      +0x10   _localeData                    readonly IDictionary<LocaleKind, LocaleDataItem>
+      +0x18   _localeChangedSubject          readonly ISubject<LocaleKind>
+      +0x20   _addressableAssetLoader        IAddressableAssetLoader
+      +0x28   <SourceLocale>k__BackingField  readonly LocaleKind
+      +0x2C   <CurrentLocale>k__BackingField LocaleKind
+      +0x30   <CurrentFontAsset>k__BackingField TMP_FontAsset
+  fields of LocalizationManager.Settings:
+      +0x10   SelectedLocale                 string
+  fields of LocalizationManager.OnChangeTask:
+      +0x0    Handler                        readonly Func<LocaleChangedArgs, UniTask>
+      +0x8    Priority                       readonly int
+  fields of LocalizationManager.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManager.<>c:
+      +0x0    <>9                            static readonly LocalizationManager.<>c
+      +0x8    <>9__32_0                      static Func<LocalizationManager.OnChangeTask, int>
+      +0x10   <>9__35_0                      static Func<Folder, string>
+  fields of LocalizationManager.<>c__DisplayClass33_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<>c__DisplayClass34_0:
+      +0x10   handler                        Func<LocaleChangedArgs, UniTask>
+  fields of LocalizationManager.<InitializeService>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<LoadServiceState>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       SettingsStateMap
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<RetrieveAvailableLocales>d__35:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManager.<SelectLocale>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         string
+      +0x28   <eventArgs>5__2                LocaleChangedArgs
+      +0x38   <>7__wrap2                     InteractionBlocker
+      +0x40   <>7__wrap3                     IEnumerator<LocalizationManager.OnChangeTask>
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of LocalizationManager.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      LocalizationManager
+      +0x18   ct                             CancellationToken
+  fields of LocalizationManager.<ChangeLocaleAsync>d__17:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManager
+      +0x20   locale                         LocaleKind
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter<ValueTuple<TMP_FontAsset, Material[]>>
+  fields of LocalizationManager.<GetOrLoadFontAssetAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<TMP_FontAsset>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   locale                         LocaleKind
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter<TMP_FontAsset>
+  fields of LocalizationManager.<GetOrLoadFontMaterialsAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Material[]>
+      +0x20   <>4__this                      LocalizationManager
+      +0x28   ct                             CancellationToken
+      +0x30   locale                         LocaleKind
+      +0x38   <>u__1                         UniTask.Awaiter<Material[]>
+====================================================================================================
+  0x180CD2530  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD2535  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CD253A  push    rdi                                       
+  0x180CD253B  sub     rsp, 0x50                                 
+  0x180CD253F  cmp     byte ptr [rip + 0x240abe2], 0                ; data_30DD128
+  0x180CD2546  mov     rsi, r8                                   
+  0x180CD2549  mov     rbx, rdx                                  
+  0x180CD254C  mov     rdi, rcx                                  
+  0x180CD254F  jne     0x180cd2569                               
+  0x180CD2551  lea     rcx, [rip + 0x2195040]                       ; METHODINFO Method$GigaCreation.Essentials.AddressablesUtils.IAddressableAssetLoader.GetOrLoadAddressableAsset<Material>()
+  0x180CD2558  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD255D  lock or dword ptr [rsp], 0                        
+  0x180CD2562  mov     byte ptr [rip + 0x240abbf], 1                ; data_30DD128
+
+180CD2569:
+  0x180CD2569  mov     rcx, qword ptr [rbx + 0x10]                  ; rbx->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD256D  test    rcx, rcx                                  
+  0x180CD2570  je      0x180cd25ba                               
+  0x180CD2572  xor     edx, edx                                  
+  0x180CD2574  call    0x180cd1cf0                                  ; -> GigaCreation.Essentials.Localization.LocalizationManager$$get_AddressableAssetLoader
+  0x180CD2579  mov     rcx, qword ptr [rbx + 0x18]                  ; rbx->LocalizationManager._localeChangedSubject | <InitializeService>d__25.<>4__this | <LoadServiceState>d__29.stateMap
+  0x180CD257D  test    rax, rax                                  
+  0x180CD2580  je      0x180cd25ba                               
+  0x180CD2582  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CD2587  mov     r9, rsi                                   
+  0x180CD258A  lea     rcx, [rsp + 0x30]                         
+  0x180CD258F  mov     r8, rax                                   
+  0x180CD2592  call    0x18007f520                                  ; -> sub_7F520 (runtime/helper)
+  0x180CD2597  mov     rbx, qword ptr [rsp + 0x60]               
+  0x180CD259C  mov     rsi, qword ptr [rsp + 0x68]               
+  0x180CD25A1  movups  xmm0, xmmword ptr [rax]                   
+  0x180CD25A4  movsd   xmm1, qword ptr [rax + 0x10]                 ; rax->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD25A9  mov     rax, rdi                                  
+  0x180CD25AC  movups  xmmword ptr [rdi], xmm0                   
+  0x180CD25AF  movsd   qword ptr [rdi + 0x10], xmm1                 ; rdi->LocalizationManager._localeData | Settings.SelectedLocale | <>c.<>9__35_0
+  0x180CD25B4  add     rsp, 0x50                                 
+  0x180CD25B8  pop     rdi                                       
+  0x180CD25B9  ret                                               
+
+180CD25BA:
+  0x180CD25BA  call    0x180246730                                  ; THROW NullReferenceException

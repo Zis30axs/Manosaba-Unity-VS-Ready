@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -220,7 +221,16 @@ namespace GigaCreation.Essentials.Localization
     		[Address(RVA = "0xCD1CF0", Offset = "0xCD06F0", VA = "0x180CD1CF0")]
     		get
     		{
-    			return null;
+    			// RECONSTRUCTED | Confidence: A | RVA: 0xCD1CF0 -- lazily cached service lookup:
+    			//   [this+0x20] (_addressableAssetLoader) non-null -> return it; otherwise
+    			//   ServiceLocator.Get<IAddressablesManager>(cl = 1: includeDerivedType) stored to +0x20 and returned
+    			//   (IAddressablesManager extends IAddressableAssetLoader).
+    			// Annotated disassembly: work/title-path/disas/glm_01_get_AddressableAssetLoader.txt
+    			if (_addressableAssetLoader == null)
+    			{
+    				_addressableAssetLoader = ServiceLocator.Get<IAddressablesManager>(true);
+    			}
+    			return _addressableAssetLoader;
     		}
     	}
 
@@ -239,7 +249,24 @@ namespace GigaCreation.Essentials.Localization
     	[AsyncStateMachine(typeof(_003CChangeLocaleAsync_003Ed__17))]
     	public UniTask ChangeLocaleAsync(LocaleKind locale, [Optional] CancellationToken ct)
     	{
-    		return default(UniTask);
+    		return ChangeLocaleAsyncCore(locale, ct);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD1EE0 (kickoff) / 0xCD25C0 (<ChangeLocaleAsync>d__17.MoveNext)
+    	//   0x180CD2699  CurrentLocale (+0x2C) = locale
+    	//   0x180CD26B5 / 0x180CD26EC  GetOrLoadFontAssetAsync(locale, ct), GetOrLoadFontMaterialsAsync(locale, ct)
+    	//   0x180CD275D  ValueTuple<UniTask<TMP_FontAsset>, UniTask<Material[]>> awaited through
+    	//                UniTaskExtensions.GetAwaiter<TMP_FontAsset, Material[]> (the tuple await = WhenAll)
+    	//   0x180CD2863  CurrentFontAsset (+0x30) = result.Item1; Item2 (the materials) is not stored: awaiting it only
+    	//                makes sure the materials are loaded into the loader's cache
+    	//   0x180CD28D3  _localeChangedSubject.OnNext(locale)   (IObserver<LocaleKind> slot 0)
+    	// Annotated disassembly: work/title-path/disas/glm_02_ChangeLocaleAsync_MoveNext.txt
+    	private async UniTask ChangeLocaleAsyncCore(LocaleKind locale, CancellationToken ct)
+    	{
+    		CurrentLocale = locale;
+    		(TMP_FontAsset fontAsset, Material[] _) = await (GetOrLoadFontAssetAsync(locale, ct), GetOrLoadFontMaterialsAsync(locale, ct));
+    		CurrentFontAsset = fontAsset;
+    		_localeChangedSubject.OnNext(locale);
     	}
 
     	[Token(Token = "0x6000028")]
@@ -247,7 +274,22 @@ namespace GigaCreation.Essentials.Localization
     	[AsyncStateMachine(typeof(_003CGetOrLoadFontAssetAsync_003Ed__18))]
     	public UniTask<TMP_FontAsset> GetOrLoadFontAssetAsync(LocaleKind locale, [Optional] CancellationToken ct)
     	{
-    		return default(UniTask<TMP_FontAsset>);
+    		return GetOrLoadFontAssetAsyncCore(locale, ct);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD20A0 (kickoff) / 0xCD29F0 (<GetOrLoadFontAssetAsync>d__18.MoveNext)
+    	//   0x180CD2B60  _localeData.TryGetValue(locale, out item)   (IDictionary<LocaleKind, LocaleDataItem> slot 7)
+    	//   0x180CD2B77  on false: item = _localeData[SourceLocale]   (+0x28)
+    	//   0x180CD2C54  await AddressableAssetLoader.GetOrLoadAddressableAsset<TMP_FontAsset>(item.FontAssetReference (+0x10), ct)
+    	//   0x180CD2DBC  SetResult(the loaded font)
+    	// Annotated disassembly: work/title-path/disas/glm_03_GetOrLoadFontAssetAsync_MoveNext.txt
+    	private async UniTask<TMP_FontAsset> GetOrLoadFontAssetAsyncCore(LocaleKind locale, CancellationToken ct)
+    	{
+    		if (!_localeData.TryGetValue(locale, out LocaleDataItem item))
+    		{
+    			item = _localeData[SourceLocale];
+    		}
+    		return await AddressableAssetLoader.GetOrLoadAddressableAsset<TMP_FontAsset>(item.FontAssetReference, ct);
     	}
 
     	[Token(Token = "0x6000029")]
@@ -255,7 +297,24 @@ namespace GigaCreation.Essentials.Localization
     	[AsyncStateMachine(typeof(_003CGetOrLoadFontMaterialsAsync_003Ed__19))]
     	public UniTask<Material[]> GetOrLoadFontMaterialsAsync(LocaleKind locale, [Optional] CancellationToken ct)
     	{
-    		return default(UniTask<Material[]>);
+    		return GetOrLoadFontMaterialsAsyncCore(locale, ct);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD22B0 (kickoff) / 0xCD2F20 (<GetOrLoadFontMaterialsAsync>d__19.MoveNext)
+    	//   <>c__DisplayClass19_0 captures this (+0x10) and ct (+0x18)
+    	//   0x180CD319D  _localeData.TryGetValue(locale, out item); on false item = _localeData[SourceLocale]
+    	//   0x180CD3241  item.FontMaterialReference (+0x18).Select(<>c__DisplayClass19_0.b__0)  (EnumerableAsyncExtensions.Select,
+    	//                i.e. Enumerable.Select) -> ToArray -> await the UniTask<Material>[] (UniTaskExtensions.GetAwaiter<Material>)
+    	//   b__0 (0xCD2530): this.AddressableAssetLoader.GetOrLoadAddressableAsset<Material>(reference, ct)
+    	// Annotated disassembly: work/title-path/disas/glm_04_GetOrLoadFontMaterialsAsync_MoveNext.txt, glm_07_materials_lambda.txt
+    	private async UniTask<Material[]> GetOrLoadFontMaterialsAsyncCore(LocaleKind locale, CancellationToken ct)
+    	{
+    		if (!_localeData.TryGetValue(locale, out LocaleDataItem item))
+    		{
+    			item = _localeData[SourceLocale];
+    		}
+    		return await EnumerableAsyncExtensions.Select(item.FontMaterialReference,
+    			reference => AddressableAssetLoader.GetOrLoadAddressableAsset<Material>(reference, ct)).ToArray();
     	}
 
     	[Token(Token = "0x600002A")]
