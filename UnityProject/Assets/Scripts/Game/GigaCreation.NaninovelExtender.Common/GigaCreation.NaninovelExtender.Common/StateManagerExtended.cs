@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GigaCreation.Essentials.Ui;
 using Il2CppDummyDll;
 using JetBrains.Annotations;
 using Naninovel;
@@ -281,19 +283,15 @@ namespace GigaCreation.NaninovelExtender.Common
     	[Token(Token = "0x1700000D")]
     	public bool IsSoftResetting
     	{
+    		// RECONSTRUCTED | Confidence: A | auto-property, backing field +0xC0 (set around a soft reset)
     		[Token(Token = "0x6000065")]
     		[Address(RVA = "0xC54930", Offset = "0xC53330", VA = "0x180C54930", Slot = "89")]
     		[CompilerGenerated]
-    		get
-    		{
-    			return default(bool);
-    		}
+    		get;
     		[Token(Token = "0x6000066")]
     		[Address(RVA = "0xCC8360", Offset = "0xCC6D60", VA = "0x180CC8360")]
     		[CompilerGenerated]
-    		private set
-    		{
-    		}
+    		private set;
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0xCFF280, 8 B
@@ -348,20 +346,72 @@ namespace GigaCreation.NaninovelExtender.Common
     		return UniTask.CompletedTask;
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCFF4B0 (builder stub); MoveNext 0xD00F50, one await state.
+    	// The body lives in ResetStateAsyncCore (XxxCore convention; <ResetStateAsync>d__7 metadata stays), the same
+    	// shape as Naninovel's StateManager.ResetState(IReadOnlyCollection<string>): Engine.Services.Select(<>c.b__7_0
+    	// GetType).Where(<>c__DisplayClass7_0.b__1: name or any interface name excluded).ToArray(), then the Type overload
+    	// (0xCFF6B0) with the same soft flag and tasks.
+    	// Annotated disassembly: work/title-path/disas/sme_01_ResetStateAsync_str_MoveNext.txt
     	[Token(Token = "0x6000069")]
     	[Address(RVA = "0xCFF4B0", Offset = "0xCFDEB0", VA = "0x180CFF4B0", Slot = "90")]
     	[AsyncStateMachine(typeof(_003CResetStateAsync_003Ed__7))]
     	public UniTask ResetStateAsync(IReadOnlyCollection<string> exclude, bool soft = false, params Func<UniTask>[] tasks)
     	{
-    		return default(UniTask);
+    		return ResetStateAsyncCore(exclude, soft, tasks);
     	}
 
+    	private async UniTask ResetStateAsyncCore(IReadOnlyCollection<string> exclude, bool soft, Func<UniTask>[] tasks)
+    	{
+    		IEnumerable<Type> serviceTypes = Engine.Services.Select((IEngineService service) => service.GetType());
+    		Type[] excludeTypes = serviceTypes.Where((Type t) => exclude.Contains(t.Name) || t.GetInterfaces().Any((Type i) => exclude.Contains(i.Name))).ToArray();
+    		await ResetStateAsync(excludeTypes, soft, tasks);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCFF6B0 (builder stub); MoveNext 0xD01550, two await states.
+    	// The body lives in ResetStateAsyncCore (XxxCore convention; <ResetStateAsync>d__8 metadata stays):
+    	// - Not soft: Naninovel.StateManager.ResetState(exclude, tasks) (0x1805DF140) awaited, nothing else.
+    	// - Soft: IsSoftResetting (+0xC0) = true; a NaninovelInteractionBlocker(Array.Empty, ["Skip"]) held (<>7__wrap1);
+    	//   _naniScriptPlayer (+0xB8)?.Playlist?.ReleaseResources(); Engine.Reset(exclude); each non-null task (<>c.b__8_0)
+    	//   awaited in turn; IsSoftResetting = false.  Unlike the base there is no OnResetStarted/Finished and no
+    	//   PerformOnGameDeserializeTasks.
+    	// Annotated disassembly: work/title-path/disas/sme_02_ResetStateAsync_type_MoveNext.txt
     	[Token(Token = "0x600006A")]
     	[Address(RVA = "0xCFF6B0", Offset = "0xCFE0B0", VA = "0x180CFF6B0", Slot = "91")]
     	[AsyncStateMachine(typeof(_003CResetStateAsync_003Ed__8))]
     	public UniTask ResetStateAsync(IReadOnlyCollection<Type> exclude, bool soft = false, params Func<UniTask>[] tasks)
     	{
-    		return default(UniTask);
+    		return ResetStateAsyncCore(exclude, soft, tasks);
+    	}
+
+    	private async UniTask ResetStateAsyncCore(IReadOnlyCollection<Type> exclude, bool soft, Func<UniTask>[] tasks)
+    	{
+    		if (!soft)
+    		{
+    			await base.ResetState(exclude, tasks);
+    			return;
+    		}
+    		IsSoftResetting = true;
+    		using (new NaninovelInteractionBlocker(Array.Empty<ICancelEventBlockable>(), "Skip"))
+    		{
+    			// Shipped null tests: 0x180D017EF test r8 (player) / 0x180D017F9 test rax (Playlist), each skipping the release.
+    			if (_naniScriptPlayer != null)
+    			{
+    				ScriptPlaylist playlist = _naniScriptPlayer.Playlist;
+    				if (playlist != null)
+    				{
+    					playlist.ReleaseResources();
+    				}
+    			}
+    			Engine.Reset(exclude);
+    			if (tasks != null)
+    			{
+    				foreach (Func<UniTask> task in tasks.Where((Func<UniTask> t) => t != null))
+    				{
+    					await task();
+    				}
+    			}
+    		}
+    		IsSoftResetting = false;
     	}
 
     	[Token(Token = "0x600006B")]

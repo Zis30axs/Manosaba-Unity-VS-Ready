@@ -53,6 +53,9 @@ namespace Manosaba.Integration
         private const string AutoAdvanceEnv = "MANOSABA_GAMESTART_AUTO_ADVANCE";
         /// <summary>Duration of the opt-in script-player advance window.</summary>
         private const string AutoAdvanceSecondsEnv = "MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS";
+        /// <summary>Opt-in: after auto-advance, press TitleUI's New Game button and watch where playback goes.</summary>
+        private const string PressNewGameEnv = "MANOSABA_GAMESTART_PRESS_NEW_GAME";
+        private const string PressNewGameSecondsEnv = "MANOSABA_GAMESTART_PRESS_NEW_GAME_SECONDS";
         private const float WindowSeconds = 4f;
 
         /// <summary>The chain observation window: 2 x the per-phase window, or the value from the environment.</summary>
@@ -521,6 +524,11 @@ namespace Manosaba.Integration
             {
                 yield return DriveScriptPlayer(evidence);
                 // Re-sample after the driver so the final script/spot is also present in the ordinary fields.
+                CollectNaninovelState(evidence);
+            }
+            if (Environment.GetEnvironmentVariable(PressNewGameEnv) == "1")
+            {
+                yield return PressNewGameAndObserve(evidence);
                 CollectNaninovelState(evidence);
             }
             // The post-initialization chain is where the engine stops (progress freezes at 0.750), so it gets its
@@ -2181,12 +2189,91 @@ namespace Manosaba.Integration
             }
         }
 
+        private static readonly List<string> s_playedPaths = new List<string>();
+
         private static void OnScriptPlay(object script)
         {
-            if (++s_playTraceCount > 8) return;
             string path = script?.GetType().GetProperty("Path")?.GetValue(script) as string;
+            lock (s_playedPaths) s_playedPaths.Add(path + "@" +
+                Time.realtimeSinceStartup.ToString("F2", CultureInfo.InvariantCulture));
+            if (++s_playTraceCount > 8) return;
             Debug.Log("[ManosabaGameStart] OnPlay #" + s_playTraceCount + " " + path + " t=" +
                       Time.realtimeSinceStartup.ToString("F2", CultureInfo.InvariantCulture) + " frame=" + Time.frameCount);
+        }
+
+        /// <summary>
+        /// Presses TitleUI's New Game button the way a player would (`_newGameButton.onClick.Invoke()`: the button's
+        /// own subscriptions -- sfx, `StartGame()` -> `ResumeAtLabel("StartGame")` -- all run), then samples the script
+        /// player for a while: script, playback spot, playing / waiting.  The goal is the first story script actually
+        /// playing after the `@goto` of System_Title (GotoModified, the loading screen and the state reset in between).
+        /// </summary>
+        private static IEnumerator PressNewGameAndObserve (GameStartEvidence evidence)
+        {
+            float seconds = 30f;
+            if (float.TryParse(Environment.GetEnvironmentVariable(PressNewGameSecondsEnv), NumberStyles.Float,
+                    CultureInfo.InvariantCulture, out float configured) && configured > 0f) seconds = configured;
+            object player = null;
+            Type playerType = Type.GetType("Naninovel.IScriptPlayer, Elringus.Naninovel.Runtime");
+            int playedBefore;
+            lock (s_playedPaths) playedBefore = s_playedPaths.Count;
+            try
+            {
+                Type titleUiType = Type.GetType("WitchTrials.Views.TitleUi, WitchTrials.Game");
+                if (titleUiType == null) { evidence.new_game = "TitleUi type not found"; yield break; }
+                UnityEngine.Object titleUi = UnityEngine.Object.FindFirstObjectByType(titleUiType);
+                if (titleUi == null) { evidence.new_game = "no TitleUi instance"; yield break; }
+                FieldInfo buttonField = titleUiType.GetField("_newGameButton", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (!(buttonField?.GetValue(titleUi) is UnityEngine.UI.Button button) || !button)
+                {
+                    evidence.new_game = "TitleUi._newGameButton missing";
+                    yield break;
+                }
+                Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
+                MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
+                player = getService != null && playerType != null ? getService.MakeGenericMethod(playerType).Invoke(null, null) : null;
+                button.onClick.Invoke();
+                evidence.new_game = "PRESSED";
+                Debug.Log("[ManosabaGameStart] New Game pressed (TitleUi._newGameButton.onClick)");
+            }
+            catch (Exception ex)
+            {
+                evidence.new_game = "press threw: " + Describe(ex);
+                yield break;
+            }
+
+            var trace = new List<string>();
+            string last = null;
+            float started = Time.realtimeSinceStartup;
+            while (Time.realtimeSinceStartup < started + seconds)
+            {
+                string sample;
+                try
+                {
+                    object played = playerType?.GetProperty("PlayedScript")?.GetValue(player);
+                    string script = played?.GetType().GetProperty("Path")?.GetValue(played) as string;
+                    object spot = playerType?.GetProperty("PlaybackSpot")?.GetValue(player);
+                    bool playing = playerType?.GetProperty("Playing")?.GetValue(player) is bool p && p;
+                    bool waiting = playerType?.GetProperty("WaitingForInput")?.GetValue(player) is bool w && w;
+                    sample = (script ?? "(no-script)") + " " + (spot?.ToString() ?? "(no-spot)") +
+                             " playing=" + playing + " waiting=" + waiting;
+                }
+                catch (Exception ex)
+                {
+                    sample = "sample threw: " + Describe(ex);
+                }
+                if (sample != last)
+                {
+                    trace.Add((Time.realtimeSinceStartup - started).ToString("F1", CultureInfo.InvariantCulture) + "s " + sample);
+                    last = sample;
+                }
+                yield return new WaitForSecondsRealtime(0.25f);
+            }
+            evidence.new_game_trace = string.Join(" | ", trace);
+            evidence.new_game_final = last ?? "";
+            lock (s_playedPaths) evidence.new_game_on_play = string.Join(" ", s_playedPaths.Skip(playedBefore));
+            evidence.new_game_ui_visibility = DescribeManagedUiVisibility();
+            WritePartial(evidence);
         }
 
         private static string Describe(Exception ex)
@@ -2290,6 +2377,12 @@ namespace Manosaba.Integration
             public string auto_advance_final = "";
             public string auto_advance_restore = "";
             public string ui_visibility = "";   // managed UIs after auto-advance (DescribeManagedUiVisibility)
+            // Opt-in New Game press after auto-advance (MANOSABA_GAMESTART_PRESS_NEW_GAME=1).
+            public string new_game = "not run";
+            public string new_game_trace = "";
+            public string new_game_final = "";
+            public string new_game_on_play = "";
+            public string new_game_ui_visibility = "";
             public List<string> played_scripts = new List<string>();   // consumed by gate G6's runtime coverage
             public string component_type;
             public bool addressables_field_found;
