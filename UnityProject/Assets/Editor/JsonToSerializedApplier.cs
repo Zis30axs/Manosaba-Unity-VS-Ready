@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -66,6 +67,8 @@ namespace Manosaba.EditorTools
             public int pointersUnbound;
             /// <summary>Pointers bound only after converting the resolved asset to the field's type (see AdaptToFieldType).</summary>
             public int pointersAdapted;
+            /// <summary>String leaves that name a type in the renamed Assembly-CSharp (see RemapAssemblyQualifiedName).</summary>
+            public int assemblyNamesRemapped;
             public int managedTotal;
             public int managedApplied;
             public int managedFailed;
@@ -199,7 +202,10 @@ namespace Manosaba.EditorTools
             // field is mistaken for an array and silently left empty.
             if (prop.propertyType == SerializedPropertyType.String)
             {
-                prop.stringValue = token.Type == JTokenType.String ? token.Value<string>() : token.ToString();
+                string text = token.Type == JTokenType.String ? token.Value<string>() : token.ToString();
+                string remapped = RemapAssemblyQualifiedName(text);
+                if (!ReferenceEquals(remapped, text)) report.assemblyNamesRemapped++;
+                prop.stringValue = remapped;
                 report.applied++;
                 report.leavesWritten++;
                 return;
@@ -607,6 +613,32 @@ namespace Manosaba.EditorTools
         public static string Alias(string assembly)
         {
             return assembly == "Assembly-CSharp" ? "WitchTrials.Game" : assembly;
+        }
+
+        // "Namespace.Type, Assembly[, Version=..][, Culture=..][, PublicKeyToken=..]", generic arguments included.
+        private static readonly Regex AssemblyQualifiedTypeName = new Regex(
+            @"^[A-Za-z_][\w.+`]*(\[.*\])?, [A-Za-z_][\w.\-]*(, Version=[^,\]]+)?(, Culture=[^,\]]+)?(, PublicKeyToken=[^,\]]+)?$",
+            RegexOptions.CultureInvariant);
+
+        // The assembly token itself; the look-ahead keeps Assembly-CSharp-firstpass / -Editor untouched.
+        private static readonly Regex RenamedAssemblyToken = new Regex(@"(?<=, )Assembly-CSharp(?=\s*(,|\]|$))",
+            RegexOptions.CultureInvariant);
+
+        /// <summary>
+        /// A string that IS an assembly-qualified type name and names the shipped Assembly-CSharp gets the
+        /// reconstruction's name for that assembly (<see cref="Alias"/>).  The shipped data stores such names verbatim:
+        /// Naninovel's ActorMetadata.Implementation (`WitchTrials.Views.WitchTrialsBackground, Assembly-CSharp, ...`),
+        /// which ActorManager resolves through Type.GetType -- with the old name the engine never finished initializing
+        /// ("actor implementation type for 'IBackgroundActor' is not found", G4b round 2) -- and UnityEvent's
+        /// PersistentCall.m_TargetAssemblyTypeName on the title/option/save buttons (21 in 8 prefabs).  Any other string
+        /// is returned as the same instance, so callers can count rewrites with ReferenceEquals.
+        /// </summary>
+        public static string RemapAssemblyQualifiedName(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.IndexOf("Assembly-CSharp", StringComparison.Ordinal) < 0) return value;
+            if (!AssemblyQualifiedTypeName.IsMatch(value)) return value;
+            string remapped = RenamedAssemblyToken.Replace(value, Alias("Assembly-CSharp"));
+            return remapped == value ? value : remapped;
         }
 
         public static Type ResolveType(string typeName, string assemblyName)

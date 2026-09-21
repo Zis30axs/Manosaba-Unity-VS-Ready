@@ -510,7 +510,14 @@ namespace Manosaba.EditorTools
                         Skip(row, path, kind, "the current field is " + property.propertyType + ", not a string");
                         return;
                     }
-                    property.stringValue = DecodedString(token) ?? "";
+                    // Type names in the renamed Assembly-CSharp (ActorMetadata.Implementation for the WitchTrials
+                    // background and the debate printer) are rewritten to the reconstruction's assembly name, the same
+                    // rule the prefab/scenario applier uses (JsonToSerializedApplier.RemapAssemblyQualifiedName).
+                    string decoded = DecodedString(token) ?? "";
+                    string remapped = JsonToSerializedApplier.RemapAssemblyQualifiedName(decoded);
+                    if (!ReferenceEquals(remapped, decoded))
+                        row.notes.Add(path + ": assembly-qualified type name remapped: " + decoded + " -> " + remapped);
+                    property.stringValue = remapped;
                     row.fields_applied++;
                     return;
 
