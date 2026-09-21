@@ -1,0 +1,148 @@
+====================================================================================================
+FUNCTION RVA 0xD33440  VA 0x180D33440  size 0x216 (534 bytes)
+  managed: GigaCreation.NaninovelExtender.Movies.MoviePlayerExtended$$SetupAudioSource
+  csig   : UnityEngine_AudioSource_o* GigaCreation_NaninovelExtender_Movies_MoviePlayerExtended__SetupAudioSource (GigaCreation_NaninovelExtender_Movies_MoviePlayerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Movies.MoviePlayerExtended :: protected override AudioSource SetupAudioSource()
+====================================================================================================
+  0x180D33440  push    rdi                                       
+  0x180D33442  sub     rsp, 0x20                                 
+  0x180D33446  cmp     byte ptr [rip + 0x23a9f3a], 0                ; data_30DD387
+  0x180D3344D  mov     rdi, rcx                                  
+  0x180D33450  jne     0x180d3349d                               
+  0x180D33452  lea     rcx, [rip + 0x2121ee7]                       ; METHODINFO Method$System.Linq.Enumerable.FirstOrDefault<AudioMixerGroup>()
+  0x180D33459  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3345E  lock or dword ptr [rsp], 0                        
+  0x180D33463  lea     rcx, [rip + 0x21099de]                       ; METHODINFO Method$UnityEngine.GameObject.AddComponent<AudioSource>()
+  0x180D3346A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3346F  lock or dword ptr [rsp], 0                        
+  0x180D33474  lea     rcx, [rip + 0x211e9e5]                       ; TYPE Naninovel.IAudioManager_TypeInfo
+  0x180D3347B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D33480  lock or dword ptr [rsp], 0                        
+  0x180D33485  lea     rcx, [rip + 0x211ee04]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3348C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D33491  lock or dword ptr [rsp], 0                        
+  0x180D33496  mov     byte ptr [rip + 0x23a9eea], 1                ; data_30DD387
+
+180D3349D:
+  0x180D3349D  mov     rdx, qword ptr [rdi]                      
+  0x180D334A0  mov     rcx, rdi                                  
+  0x180D334A3  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D334A8  mov     qword ptr [rsp + 0x40], rsi               
+  0x180D334AD  mov     rax, qword ptr [rdx + 0x268]              
+  0x180D334B4  mov     rdx, qword ptr [rdx + 0x270]              
+  0x180D334BB  call    rax                                       
+  0x180D334BD  test    rax, rax                                  
+  0x180D334C0  je      0x180d33651                               
+  0x180D334C6  xor     edx, edx                                  
+  0x180D334C8  mov     rcx, rax                                  
+  0x180D334CB  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D334D0  test    rax, rax                                  
+  0x180D334D3  je      0x180d33651                               
+  0x180D334D9  mov     rdx, qword ptr [rip + 0x2109968]             ; METHODINFO Method$UnityEngine.GameObject.AddComponent<AudioSource>()
+  0x180D334E0  mov     rcx, rax                                  
+  0x180D334E3  call    0x1806b68f0                                  ; -> UnityEngine.GameObject$$AddComponent<object>
+  0x180D334E8  mov     rbx, rax                                  
+  0x180D334EB  test    rax, rax                                  
+  0x180D334EE  je      0x180d33651                               
+  0x180D334F4  xor     r8d, r8d                                  
+  0x180D334F7  xor     edx, edx                                  
+  0x180D334F9  mov     rcx, rax                                  
+  0x180D334FC  call    0x181fc69a0                                  ; -> UnityEngine.AudioSource$$set_playOnAwake
+  0x180D33501  xor     r8d, r8d                                  
+  0x180D33504  mov     dl, 1                                     
+  0x180D33506  mov     rcx, rbx                                  
+  0x180D33509  call    0x181fc76c0                                  ; -> UnityEngine.AudioSource$$set_bypassReverbZones
+  0x180D3350E  xor     r8d, r8d                                  
+  0x180D33511  mov     dl, 1                                     
+  0x180D33513  mov     rcx, rbx                                  
+  0x180D33516  call    0x181fc7420                                  ; -> UnityEngine.AudioSource$$set_bypassEffects
+  0x180D3351B  mov     rax, qword ptr [rdi + 0x88]               
+  0x180D33522  test    rax, rax                                  
+  0x180D33525  je      0x180d33651                               
+  0x180D3352B  movss   xmm1, dword ptr [rax + 0x20]              
+  0x180D33530  xor     r8d, r8d                                  
+  0x180D33533  mov     rcx, rbx                                  
+  0x180D33536  call    0x181fc5110                                  ; -> UnityEngine.AudioSource$$set_volume
+  0x180D3353B  mov     r8, qword ptr [rdi + 0x80]                
+  0x180D33542  test    r8, r8                                    
+  0x180D33545  je      0x180d33651                               
+  0x180D3354B  call    0x180005e30                                  ; -> sub_5E30 (runtime/helper)
+  0x180D33550  mov     rcx, qword ptr [rip + 0x211ed39]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D33557  mov     rsi, rax                                  
+  0x180D3355A  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D33561  jne     0x180d33568                               
+  0x180D33563  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D33568:
+  0x180D33568  cmp     byte ptr [rip + 0x23b52bf], 0                ; data_30E882E
+  0x180D3356F  jne     0x180d33589                               
+  0x180D33571  lea     rcx, [rip + 0x211ed18]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D33578  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3357D  lock or dword ptr [rsp], 0                        
+  0x180D33582  mov     byte ptr [rip + 0x23b52a5], 1                ; data_30E882E
+
+180D33589:
+  0x180D33589  mov     rcx, qword ptr [rip + 0x211ed00]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D33590  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D33597  jne     0x180d3359e                               
+  0x180D33599  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3359E:
+  0x180D3359E  cmp     byte ptr [rip + 0x23b528a], 0                ; data_30E882F
+  0x180D335A5  jne     0x180d335bf                               
+  0x180D335A7  lea     rcx, [rip + 0x211ece2]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D335AE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D335B3  lock or dword ptr [rsp], 0                        
+  0x180D335B8  mov     byte ptr [rip + 0x23b5270], 1                ; data_30E882F
+
+180D335BF:
+  0x180D335BF  test    rsi, rsi                                  
+  0x180D335C2  je      0x180d3363e                               
+  0x180D335C4  mov     rcx, qword ptr [rip + 0x211ecc5]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D335CB  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D335D2  jne     0x180d335d9                               
+  0x180D335D4  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D335D9:
+  0x180D335D9  cmp     qword ptr [rsi + 0x10], 0                 
+  0x180D335DE  je      0x180d3363e                               
+  0x180D335E0  mov     r8, qword ptr [rdi + 0x80]                
+  0x180D335E7  test    r8, r8                                    
+  0x180D335EA  je      0x180d33651                               
+  0x180D335EC  call    0x180005e30                                  ; -> sub_5E30 (runtime/helper)
+  0x180D335F1  mov     rdx, qword ptr [rdi + 0x88]               
+  0x180D335F8  test    rdx, rdx                                  
+  0x180D335FB  je      0x180d33651                               
+  0x180D335FD  test    rax, rax                                  
+  0x180D33600  je      0x180d33651                               
+  0x180D33602  mov     rdx, qword ptr [rdx + 0x18]               
+  0x180D33606  xor     r8d, r8d                                  
+  0x180D33609  mov     rcx, rax                                  
+  0x180D3360C  call    0x181fcb4c0                                  ; -> UnityEngine.Audio.AudioMixer$$FindMatchingGroups
+  0x180D33611  test    rax, rax                                  
+  0x180D33614  je      0x180d33631                               
+  0x180D33616  mov     r8, qword ptr [rip + 0x2121d23]              ; METHODINFO Method$System.Linq.Enumerable.FirstOrDefault<AudioMixerGroup>()
+  0x180D3361D  lea     rdx, [rsp + 0x30]                         
+  0x180D33622  mov     rcx, rax                                  
+  0x180D33625  call    0x180686b90                                  ; -> System.Linq.Enumerable$$FirstOrDefault<__Il2CppFullySharedGenericType>
+  0x180D3362A  mov     rdx, qword ptr [rsp + 0x30]               
+  0x180D3362F  jmp     0x180d33633                               
+
+180D33631:
+  0x180D33631  xor     edx, edx                                  
+
+180D33633:
+  0x180D33633  xor     r8d, r8d                                  
+  0x180D33636  mov     rcx, rbx                                  
+  0x180D33639  call    0x181fc57d0                                  ; -> UnityEngine.AudioSource$$set_outputAudioMixerGroup
+
+180D3363E:
+  0x180D3363E  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D33643  mov     rax, rbx                                  
+  0x180D33646  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D3364B  add     rsp, 0x20                                 
+  0x180D3364F  pop     rdi                                       
+  0x180D33650  ret                                               
+
+180D33651:
+  0x180D33651  call    0x180246730                                  ; THROW NullReferenceException

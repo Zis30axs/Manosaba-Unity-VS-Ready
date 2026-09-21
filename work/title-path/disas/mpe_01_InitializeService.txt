@@ -1,0 +1,100 @@
+====================================================================================================
+FUNCTION RVA 0xD332E0  VA 0x180D332E0  size 0x152 (338 bytes)
+  managed: GigaCreation.NaninovelExtender.Movies.MoviePlayerExtended$$InitializeService
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Movies_MoviePlayerExtended__InitializeService (GigaCreation_NaninovelExtender_Movies_MoviePlayerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Movies.MoviePlayerExtended :: public override UniTask InitializeService()
+====================================================================================================
+  0x180D332E0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D332E5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D332EA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D332EF  push    rdi                                       
+  0x180D332F0  sub     rsp, 0x20                                 
+  0x180D332F4  xor     edx, edx                                  
+  0x180D332F6  mov     rdi, rcx                                  
+  0x180D332F9  call    0x1805966d0                                  ; -> Naninovel.MoviePlayer$$InitializeService
+  0x180D332FE  mov     rdx, qword ptr [rdi]                      
+  0x180D33301  mov     rbx, rax                                  
+  0x180D33304  mov     rcx, rdi                                  
+  0x180D33307  mov     rax, qword ptr [rdx + 0x268]              
+  0x180D3330E  mov     rdx, qword ptr [rdx + 0x270]              
+  0x180D33315  call    rax                                       
+  0x180D33317  test    rax, rax                                  
+  0x180D3331A  je      0x180d3340b                               
+  0x180D33320  mov     edx, 1                                    
+  0x180D33325  xor     r8d, r8d                                  
+  0x180D33328  mov     rcx, rax                                  
+  0x180D3332B  call    0x1824d3150                                  ; -> UnityEngine.Video.VideoPlayer$$set_controlledAudioTrackCount
+  0x180D33330  mov     rdx, qword ptr [rdi]                      
+  0x180D33333  mov     rcx, rdi                                  
+  0x180D33336  mov     rax, qword ptr [rdx + 0x268]              
+  0x180D3333D  mov     rdx, qword ptr [rdx + 0x270]              
+  0x180D33344  call    rax                                       
+  0x180D33346  mov     rsi, rax                                  
+  0x180D33349  test    rax, rax                                  
+  0x180D3334C  je      0x180d3340b                               
+  0x180D33352  cmp     byte ptr [rip + 0x23ba418], 0                ; data_30ED771
+  0x180D33359  jne     0x180d33373                               
+  0x180D3335B  lea     rcx, [rip + 0x20c8a8e]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<VideoPlayer>()
+  0x180D33362  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D33367  lock or dword ptr [rsp], 0                        
+  0x180D3336C  mov     byte ptr [rip + 0x23ba3fe], 1                ; data_30ED771
+
+180D33373:
+  0x180D33373  mov     rbp, qword ptr [rsi + 0x10]               
+  0x180D33377  test    rbp, rbp                                  
+  0x180D3337A  je      0x180d33428                               
+  0x180D33380  mov     rax, qword ptr [rip + 0x23ba489]             ; data_30ED810
+  0x180D33387  test    rax, rax                                  
+  0x180D3338A  jne     0x180d333a4                               
+  0x180D3338C  lea     rcx, [rip + 0x18f8afd]                       ; data_262BE90
+  0x180D33393  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D33398  test    rax, rax                                  
+  0x180D3339B  je      0x180d33411                               
+  0x180D3339D  mov     qword ptr [rip + 0x23ba46c], rax             ; data_30ED810
+
+180D333A4:
+  0x180D333A4  mov     edx, 1                                    
+  0x180D333A9  mov     rcx, rbp                                  
+  0x180D333AC  call    rax                                       
+  0x180D333AE  mov     rdx, qword ptr [rdi]                      
+  0x180D333B1  mov     rcx, rdi                                  
+  0x180D333B4  mov     rax, qword ptr [rdx + 0x268]              
+  0x180D333BB  mov     rdx, qword ptr [rdx + 0x270]              
+  0x180D333C2  call    rax                                       
+  0x180D333C4  mov     rdx, qword ptr [rdi]                      
+  0x180D333C7  mov     rcx, rdi                                  
+  0x180D333CA  mov     rsi, rax                                  
+  0x180D333CD  mov     r8, qword ptr [rdx + 0x278]               
+  0x180D333D4  mov     rdx, qword ptr [rdx + 0x280]              
+  0x180D333DB  call    r8                                        
+  0x180D333DE  test    rsi, rsi                                  
+  0x180D333E1  je      0x180d3340b                               
+  0x180D333E3  xor     edx, edx                                  
+  0x180D333E5  xor     r9d, r9d                                  
+  0x180D333E8  mov     r8, rax                                   
+  0x180D333EB  mov     rcx, rsi                                  
+  0x180D333EE  call    0x1824d3430                                  ; -> UnityEngine.Video.VideoPlayer$$SetTargetAudioSource
+  0x180D333F3  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180D333F8  mov     rax, rbx                                  
+  0x180D333FB  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D33400  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D33405  add     rsp, 0x20                                 
+  0x180D33409  pop     rdi                                       
+  0x180D3340A  ret                                               
+
+180D3340B:
+  0x180D3340B  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D33410  int3                                              
+
+180D33411:
+  0x180D33411  lea     rcx, [rip + 0x18f8a78]                       ; data_262BE90
+  0x180D33418  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D3341D  mov     rcx, rax                                  
+  0x180D33420  xor     edx, edx                                  
+  0x180D33422  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D33427  int3                                              
+
+180D33428:
+  0x180D33428  xor     edx, edx                                  
+  0x180D3342A  mov     rcx, rsi                                  
+  0x180D3342D  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
