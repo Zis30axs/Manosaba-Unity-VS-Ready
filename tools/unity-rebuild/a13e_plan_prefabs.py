@@ -70,10 +70,15 @@ def dest_for(asset_path: str) -> str:
     return os.path.join(CONTENT, rel.replace("/", os.sep))
 
 
+# (bundle, pid) -> object type, from the same index: classifies the intra-bundle pointers nothing resolves
+PID_TYPE = {}
+
+
 def load_index():
     """ASSET path -> list of object rows; and (bundle, pid) -> our asset path."""
     by_asset = defaultdict(list)
     pid_to_asset = {}
+    global PID_TYPE
     with open(INDEX, encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
             asset_path = (row.get("asset_path") or "").strip()
@@ -83,7 +88,39 @@ def load_index():
             path_id = (row.get("path_id") or "").strip()
             if bundle and path_id and (row.get("type") or "") != "MonoScript":
                 pid_to_asset.setdefault((bundle.lower(), path_id), asset_path)
+            if bundle and path_id:
+                PID_TYPE.setdefault((bundle.lower(), path_id), (row.get("type") or "").strip())
     return by_asset, pid_to_asset
+
+
+LEDGER = os.path.join(OUT_DIR, "a13_import_ledger.csv")
+
+
+def load_ledger():
+    """(bundle, pid) -> project file (Assets/...) of an object the importer already wrote out as a standalone asset.
+
+    A prefab dump points at Sprites and Texture2Ds that live in the SAME bundle as the prefab (GalleryUI.prefab ->
+    its own SlotLocked / SlotLoading textures, every LayeredCharacters prefab -> its 300+ sprites).  Those objects are
+    not part of the object graph the builder recreates, so an intra-file pointer to them had nowhere to go; the
+    import ledger (a13_import_ledger.csv, status IMPORTED) already says which file each one became."""
+    sidecar = {}
+    if not os.path.exists(LEDGER):
+        return sidecar
+    with open(LEDGER, encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh):
+            if (row.get("status") or "") != "IMPORTED":
+                continue
+            if (row.get("type") or "") not in ("Sprite", "Texture2D", "Material", "AudioClip", "TextAsset"):
+                continue
+            target = (row.get("target_path") or "").replace("\\", "/")
+            marker = "UnityProject/Assets/"
+            if marker not in target:
+                continue
+            bundle = os.path.basename((row.get("bundle") or "").replace("\\", "/")).lower()
+            pid = (row.get("path_id") or "").strip()
+            if bundle and pid:
+                sidecar.setdefault((bundle, pid), "Assets/" + target.split(marker, 1)[1])
+    return sidecar
 
 
 def load_cab_index():
@@ -163,6 +200,7 @@ def main():
 
     by_asset, pid_to_asset = load_index()
     cab_index = load_cab_index()
+    ledger = load_ledger()
     externals_cache = ExternalsCache()
 
     scripts = {}
@@ -231,6 +269,7 @@ def main():
 
         resolved_refs = {}
         unresolved = Counter()
+        intra_unresolved = Counter()
         for record in objects:
             with open(os.path.join(REPO, record["dump"].replace("/", os.sep)), encoding="utf-8") as fh:
                 try:
@@ -245,6 +284,17 @@ def main():
                     continue
                 if file_id == 0:
                     stats["ptr_intra"] += 1
+                    if str(path_id) not in pid_to_dump:
+                        sidecar = ledger.get((bundle.lower(), str(path_id))) if bundles else None
+                        key = f"{record['pid']}:0:{path_id}"
+                        if sidecar:
+                            resolved_refs[key] = sidecar
+                            stats["ptr_intra_sidecar_resolved"] += 1
+                        else:
+                            stats["ptr_intra_not_in_plan"] += 1
+                            target_type = PID_TYPE.get((bundle.lower(), str(path_id)), "?") if bundles else "?"
+                            stats["ptr_intra_not_in_plan:" + (target_type or "?")] += 1
+                            intra_unresolved[target_type or "?"] += 1
                     continue
                 externals = externals_per_cab.get(main_cab, [])
                 cab = externals[file_id - 1] if 0 < file_id <= len(externals) else ""
@@ -272,6 +322,7 @@ def main():
             "objects": objects,
             "references": resolved_refs,
             "unresolved_counts": dict(unresolved),
+            "intra_not_in_plan_by_type": dict(intra_unresolved),
         })
         stats["assets"] += 1
 

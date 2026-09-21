@@ -1,0 +1,38 @@
+# excerpt of the 2026-09-21 13:08 full PrefabBuilder run (no per-job unload): last import + native crash
+38877:Start importing Assets/GameContent/#WitchTrials/Prefabs/General/PerspectiveStage/Court.prefab using Guid(fe189a37759e94cd0b5dcb4b55bb8dd9) (PrefabImporter) -> (artifact id: 'd2040df2c67ccad6f3d205435cb2b176') in 0.0400468 seconds
+38881:Start importing Assets/GameContent/#WitchTrials/Prefabs/General/PerspectiveStage/Court.prefab using Guid(fe189a37759e94cd0b5dcb4b55bb8dd9) (PrefabImporter) -> (artifact id: 'd2040df2c67ccad6f3d205435cb2b176') in 0.038638 seconds
+
+=================================================================
+	Native Crash Reporting
+=================================================================
+Got a UNKNOWN while executing native code. This usually indicates
+a fatal error in the mono runtime or one of the native libraries 
+used by your application.
+=================================================================
+
+=================================================================
+	Managed Stacktrace:
+=================================================================
+	  at <unknown> <0xffffffff>
+	  at UnityEditor.AssetDatabase:LoadAssetAtPath_Injected <0x0006c>
+	  at UnityEditor.AssetDatabase:LoadAssetAtPath <0x0024a>
+	  at UnityEditor.AssetDatabase:LoadAssetAtPath <0x0003a>
+	  at Manosaba.EditorTools.PrefabBuilder:ResolvePointer <0x00402>
+	  at <>c__DisplayClass12_5:<BuildOne>b__20 <0x0005a>
+	  at Manosaba.EditorTools.JsonToSerializedApplier:Apply <0x00cf1>
+	  at Manosaba.EditorTools.JsonToSerializedApplier:ApplyAll <0x00602>
+	  at <>c__DisplayClass12_0:<BuildOne>g__ApplyFields|8 <0x0048a>
+	  at Manosaba.EditorTools.PrefabBuilder:BuildOne <0x06e4a>
+	  at Manosaba.EditorTools.PrefabBuilder:Execute <0x0113a>
+39697:0x0000011248D8B7ED (Mono JIT Code) (wrapper managed-to-native) UnityEditor.AssetDatabase:LoadAssetAtPath_Injected (UnityEngine.Bindings.ManagedSpanWrapper&,System.Type)
+39698:0x0000011248D8B38B (Mono JIT Code) UnityEditor.AssetDatabase:LoadAssetAtPath (string,System.Type)
+39699:0x0000011248D8B0EB (Mono JIT Code) UnityEditor.AssetDatabase:LoadAssetAtPath<T_REF> (string)
+39700:0x000001131FC6A5F3 (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:1021] Manosaba.EditorTools.PrefabBuilder:ResolvePointer (Newtonsoft.Json.Linq.JToken,Manosaba.EditorTools.PrefabBuilder/Node,System.Collections.Generic.List`1<Manosaba.EditorTools.PrefabBuilder/Node>,System.Collections.Generic.Dictionary`2<string, string>,string,Manosaba.EditorTools.PrefabBuilder/JobRecord,System.Collections.Generic.Dictionary`2<string, UnityEngine.Object>) 
+39701:0x000001131FC6A17B (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:522] Manosaba.EditorTools.PrefabBuilder/<>c__DisplayClass12_5:<BuildOne>b__20 (Newtonsoft.Json.Linq.JToken) 
+39702:0x000001131FC1BA62 (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\JsonToSerializedApplier.cs:269] Manosaba.EditorTools.JsonToSerializedApplier:Apply (UnityEditor.SerializedProperty,Newtonsoft.Json.Linq.JToken,string,UnityEditor.SerializedObject,System.Collections.Generic.Dictionary`2<long, Newtonsoft.Json.Linq.JToken>,System.Collections.Generic.List`1<Manosaba.EditorTools.JsonToSerializedApplier/PendingRef>,Manosaba.EditorTools.JsonToSerializedApplier/Options,Manosaba.EditorTools.JsonToSerializedApplier/Report) 
+39703:0x000001131FC19B93 (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\JsonToSerializedApplier.cs:116] Manosaba.EditorTools.JsonToSerializedApplier:ApplyAll (UnityEditor.SerializedObject,Newtonsoft.Json.Linq.JObject,Manosaba.EditorTools.JsonToSerializedApplier/Options) 
+39704:0x000001131FC18B2B (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:534] Manosaba.EditorTools.PrefabBuilder/<>c__DisplayClass12_0:<BuildOne>g__ApplyFields|8 (Manosaba.EditorTools.PrefabBuilder/Node,System.Collections.Generic.Dictionary`2<string, UnityEngine.Object>) 
+39705:0x000001131EBFAB8B (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:582] Manosaba.EditorTools.PrefabBuilder:BuildOne (string,Newtonsoft.Json.Linq.JToken,Manosaba.EditorTools.PrefabBuilder/JobRecord) 
+39706:0x000001131D22CB2B (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:116] Manosaba.EditorTools.PrefabBuilder:Execute () 
+39707:0x000001131D22B24B (Mono JIT Code) [E:\Manosaba-VSCodeReady\UnityProject\Assets\Editor\PrefabBuilder.cs:55] Manosaba.EditorTools.PrefabBuilder:Run () 
+39708:0x000001129125D3A5 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void (object,intptr,intptr,intptr)

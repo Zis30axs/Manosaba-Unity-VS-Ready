@@ -129,6 +129,8 @@ namespace Manosaba.EditorTools
                 result.pointers_bound += job.pointers_bound;
                 result.pointers_unbound += job.pointers_unbound;
                 result.pointers_adapted += job.pointers_adapted;
+                result.pointers_sidecar += job.pointers_sidecar;
+                result.assembly_names_remapped += job.assembly_names_remapped;
                 result.components_adopted += job.components_adopted;
                 if (job.guid_changed) result.guid_changed++;
                 result.unresolved_target_not_in_plan += job.unresolved_target_not_in_plan;
@@ -148,7 +150,7 @@ namespace Manosaba.EditorTools
             Debug.Log($"[PrefabBuilder] {result.status}: built={result.built} partial={result.built_partial} " +
                       $"failed={result.failed} incomplete={result.incomplete} of {result.jobs_total}; " +
                       $"objects created={result.objects_created} written={result.objects_written} " +
-                      $"pointers {result.pointers_bound} bound ({result.pointers_adapted} type-adapted) / {result.pointers_unbound} unbound " +
+                      $"pointers {result.pointers_bound} bound ({result.pointers_adapted} type-adapted, {result.pointers_sidecar} via ledger) / {result.pointers_unbound} unbound " +
                       $"[not in plan {result.unresolved_target_not_in_plan}, not built {result.unresolved_target_not_built}, " +
                       $"no reference entry {result.unresolved_no_reference_entry}, asset missing {result.unresolved_asset_missing}]; " +
                       $"components adopted {result.components_adopted}; GUID changed {result.guid_changed}; wrote {outPath}");
@@ -534,6 +536,7 @@ namespace Manosaba.EditorTools
                     job.fields_applied += report.applied;
                     job.pointers_bound += report.pointersBound;
                     job.pointers_adapted += report.pointersAdapted;
+                    job.assembly_names_remapped += report.assemblyNamesRemapped;
                     job.pointers_unbound += report.pointersUnbound;
                     job.managed_references_applied += report.managedApplied;
                     job.warning_count += report.warnings;
@@ -712,6 +715,11 @@ namespace Manosaba.EditorTools
             finally
             {
                 foreach (GameObject go in temp) UnityEngine.Object.DestroyImmediate(go);
+                // Every ledger-bound pointer loads a texture into the Editor, and a batch session never unloads on
+                // its own: the 2026-09-21 full build (2,191 such pointers) died with a native crash inside
+                // LoadAssetAtPath on job 137 of 156 after 55 identical Reenact_* jobs had loaded fine.
+                EditorUtility.UnloadUnusedAssetsImmediate();
+                GC.Collect();
             }
         }
 
@@ -1000,6 +1008,30 @@ namespace Manosaba.EditorTools
                 Node target = nodes.FirstOrDefault(n => n.pid == pathId.ToString());
                 if (target == null)
                 {
+                    // An object of the SAME bundle that the plan does not rebuild (a Sprite or Texture2D the importer
+                    // wrote out as its own file): the planner records it as a `pid:0:pathId` reference from the import
+                    // ledger, and it is loaded like any external asset.  GalleryUI's SlotLocked/SlotLoading textures
+                    // (whose absence threw in CGGalleryGridSlot.Awake) and the LayeredCharacters sprites (2,000+)
+                    // were "not in plan" before this.
+                    string sidecarKey = node.pid + ":0:" + pathId;
+                    if (references.TryGetValue(sidecarKey, out string sidecarPath))
+                    {
+                        string sidecarUnityPath = MapShippedAssetPath(sidecarPath);
+                        if (sidecarUnityPath == null)
+                        {
+                            job.unresolved_asset_missing++;
+                            if (job.missing_asset_paths.Count < 20 && !job.missing_asset_paths.Contains(sidecarPath))
+                                job.missing_asset_paths.Add(sidecarPath);
+                            return null;
+                        }
+                        // Counted only once the asset is really loaded; the applier then converts it to the field's
+                        // type (a sprite-mode PNG's Texture2D -> its Sprite sub-asset for SpriteRenderer.m_Sprite)
+                        // exactly as for an external pointer, and counts the binding in pointers_bound.
+                        UnityEngine.Object sidecarAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(sidecarUnityPath);
+                        if (sidecarAsset != null) job.pointers_sidecar++;
+                        else job.unresolved_asset_missing++;
+                        return sidecarAsset;
+                    }
                     job.unresolved_target_not_in_plan++;
                     return null;
                 }
@@ -1041,7 +1073,8 @@ namespace Manosaba.EditorTools
         {
             string projectRoot = Directory.GetParent(Application.dataPath).FullName;
             string p = shipped.Replace('\\', '/');
-            string generated = p.StartsWith("Assets/", StringComparison.Ordinal) ? "Assets/GameContent/" + p.Substring("Assets/".Length) : p;
+            string generated = p.StartsWith("Assets/GameContent/", StringComparison.Ordinal) ? p     // ledger paths are already project paths
+                : p.StartsWith("Assets/", StringComparison.Ordinal) ? "Assets/GameContent/" + p.Substring("Assets/".Length) : p;
 
             var candidates = new List<string> { generated };
             if (p.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
@@ -1098,6 +1131,8 @@ namespace Manosaba.EditorTools
             public int pointers_bound;
             public int pointers_unbound;
             public int pointers_adapted;
+            public int pointers_sidecar;
+            public int assembly_names_remapped;
             public int components_adopted;
             public int guid_changed;
             public int unresolved_target_not_in_plan;
@@ -1150,6 +1185,10 @@ namespace Manosaba.EditorTools
             public int pointers_unbound;
             /// <summary>Pointers bound after converting the resolved asset to the field's type (Texture2D -> Sprite, prefab GameObject -> its component).</summary>
             public int pointers_adapted;
+            /// <summary>Intra-bundle pointers (fileId 0) bound through the import ledger's standalone asset.</summary>
+            public int pointers_sidecar;
+            /// <summary>String fields naming a type in the renamed Assembly-CSharp (UnityEvent m_TargetAssemblyTypeName).</summary>
+            public int assembly_names_remapped;
             /// <summary>Planned components that were already on the host, auto-added by another component's [RequireComponent], and adopted.</summary>
             public int components_adopted;
             public bool guid_changed;

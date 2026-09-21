@@ -50,11 +50,52 @@ Naninovel 命令参数全空（`@processInput` 无参数、`AnimateActor.ActorId
 * 实测（全量 156 个 prefab）：0 failed / 0 incomplete / **0 GUID 变化**；`m_Sprite` 0/656 → 499/656（其余 78 见下）；
   TMP 非默认字体 0/542 → 526/542；探针 17 个 prefab 上 `_image` 109/109、sprite 407/407（dump 里非空的全部还原）。
 
+## D. 同 bundle 内指针（`m_FileID == 0`）指向计划外对象：2,191 个经导入台账绑定（2026-09-21）
+
+* `m_FileID == 0` 的指针目标不一定是 prefab 自己的 GameObject/组件：`GalleryStillGridSlot.lockedTexture/loadingTexture`、
+  `RawImage.m_Texture`、`LayeredCharacters/*` 与 `Reenact_*` 的 `SpriteRenderer.m_Sprite` 都指向**同一 bundle** 里被导入器单独写成
+  `.png` 的 Texture2D/Sprite。规划器 `a13e_plan_prefabs.py` 对 `fileId == 0` 一律 `continue`，builder 只能记 `not in plan`。
+  G4b 第 2 轮的直接后果：`CGGalleryGridSlot.Awake` 的 `AssertRequiredObjects` 抛 27 次 `UnityException`。
+* 修复：规划器读 `a13_import_ledger.csv`（`status == IMPORTED`，按 `(bundle, path_id)`，0 个键有多个目标）把这类指针写成
+  `pid:0:pathId` 引用；`PrefabBuilder.ResolvePointer` 在 `target == null` 时查这张表并加载，之后 applier 的 `AdaptToFieldType`
+  照常把 Texture2D 换成 Sprite 子资产。只有真正加载到资产才记 `pointers_sidecar`。
+* 副作用与修复：每个这类指针都把一张贴图载入 Editor，batch 会话不会自动卸载；第一次全量在第 137/156 个 job
+  （`Reenact_Ch01_E01_S01`，前面 55 个同形 job 都成功）于 `LoadAssetAtPath` 内原生崩溃，同一 job 单独构建成功。现在每个 job 结束
+  `EditorUtility.UnloadUnusedAssetsImmediate()` + `GC.Collect()`，全量期间 Unity 常驻约 1.9 GB，无崩溃。
+* 实测（全量 156，读回 YAML 核对）：
+
+| | 修复前 | 修复后 |
+|---|---|---|
+| pointers bound | 8,595 | **10,786**（+2,191，全部经台账） |
+| pointers unbound | 5,274 | 3,083 |
+| internal，目标不在计划里 | 4,829 | 2,638 |
+| GUID 变化 / failed / incomplete | 0 / 0 / 0 | 0 / 0 / 0 |
+| `GalleryUI_GalleryStillSlot` 的 `lockedTexture`/`loadingTexture`/`m_Texture` | null | 分别指向 `GalleryUI.png`/`~1`/`~2` 的 GUID |
+| `Ema.prefab` / `Reenact_Ch01_E01_S01.prefab` 的 `m_Sprite` 空指针 | — | 0/126、0/23 |
+
+`align_asset_guids.py` dry run：`need remapping: 0`。
+
+## E. 出货数据里的程序集限定类型名仍写 `Assembly-CSharp`（2026-09-21）
+
+* 重建把 `Assembly-CSharp` 改名为 `WitchTrials.Game`（`apply_game_sources.py` 的 `REMAP`，避免与 Unity 预定义程序集冲突和程序集环）。
+  applier 的 managed-reference 路径早已按 `Alias()` 改名，但**字符串字段**原样照抄出货值：
+  * `BackgroundsConfiguration.ActorMetadata.Implementation`（4 处，`WitchTrialsBackground`）与 `TextPrintersConfiguration`（1 处，
+    `DebateTextPrinter`）：`ActorManager.GetImplementationType` 按名字查类型失败，G4b 第 2 轮引擎停在 `ScriptPlaylist.LoadResources`
+    （`'WitchTrials.Views.WitchTrialsBackground, Assembly-CSharp, ...' actor implementation type for 'IBackgroundActor' is not found`，
+    `initialize_completion: STILL RUNNING after 60s`）。
+  * UnityEvent `PersistentCall.m_TargetAssemblyTypeName`：8 个 UI prefab（TitleUI 3、OptionsUI 5、SaveLoadUI 5 …）共 21 处。
+* 修复：`JsonToSerializedApplier.RemapAssemblyQualifiedName`——字符串**整体**是程序集限定类型名（含泛型参数）且程序集记号正好是
+  `Assembly-CSharp` 时改成 `WitchTrials.Game`（`-firstpass`/`-Editor` 不动，其他字符串原样返回）。applier 的字符串分支与
+  `NaninovelConfigBuilder` 的字符串分支都走它，并分别计数（`assembly_names_remapped`）/记入行 `notes`。
+* 实测：`NaninovelConfigBuilder` 重跑后 25 个配置资产里只有这 5 个字符串与提交版不同（其余 23 个逐字节相同）；8 个 UI prefab 重建
+  `assembly_names_remapped = 21`、GUID 变化 0，全工程 prefab 里 `Assembly-CSharp` 出现 0 次。
+* 出货 `ProjectResources`（`unitycommon/projectresources`）里还有 3 个 `Type` 字符串，但它不是配置资产、不被导入（Naninovel 构建时自己生成）。
+
 ## 全量 156 个 prefab 之后**仍然**未绑定的（已分类，非静默）
 
 | 类别 | 数量 | 说明 |
 |---|---|---|
-| internal，目标不在计划里 | 4,829 | 主要是 `LayeredCharacters/*.prefab` 的 `SpriteRenderer.m_Sprite`（2,064）/`m_Materials`（2,065）、`PlayableDirector`（681）：指向**同一 bundle** 里的 Sprite/Material/TimelineAsset，计划只含 GameObject/组件层级。需要按 (bundle, path_id) 查 `res/_index.csv` 的规划器增强；**不影响标题路径**（TitleUI/ControlPanel/OptionsUI 0 unbound） |
+| internal，目标不在计划里 | 2,638（builder 实际遇到的；规划器全数 2,881） | 按目标类型（规划器 `ptr_intra_not_in_plan:<type>`）：Material 2,161、MonoBehaviour 418（TimelineAsset 等）、AnimationClip 206、Mesh 31、Camera 28、AnimatorController 18、其他 19。Material/AnimationClip/MonoBehaviour 在导入台账里都是 `DEFERRED_COMPOSITE`（shader 不可恢复、需要动画对象图、需要类型映射），**不是**本修复能绑定的；`PreserveUnresolvedPointers` 让 `m_Materials[0]` 保持 Sprites-Default。**不影响标题路径** |
 | internal，目标建不出 | 340 | 30 个 `UiPolygon.PolygonImage`（类型缺失，连带 30 个 TrueShadow 加不上）+ Game.prefab 里 3 个 stripped 组件 |
 | 外部资产不在磁盘 | 40 | `Fonts/Common/Arial`、`DebatePrinterStyleSheet`、`LogMessageStyleSheet`、`EndingCredits`、`TrialsClockFont` 这 5 个 TMP 字体资产从未重建 |
 | 外部但计划里没有引用条目 | 65 | 内置 Mesh 等（fileId 2） |
