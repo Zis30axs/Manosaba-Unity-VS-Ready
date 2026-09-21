@@ -1763,13 +1763,20 @@ namespace Manosaba.Integration
                 MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
                 object manager = managerType == null ? null : getService?.MakeGenericMethod(managerType).Invoke(null, null);
-                if (manager == null) return;
+                if (manager == null) { evidence.choice_pick_error = "IChoiceHandlerManager service is null"; return; }
                 // IActorManager<...>.Actors is declared on a base interface of IChoiceHandlerManager
                 object actors = manager.GetType().GetProperty("Actors")?.GetValue(manager);
-                if (!(actors is System.Collections.IEnumerable list)) return;
+                if (!(actors is System.Collections.IEnumerable list)) { evidence.choice_pick_error = "Actors is " + (actors?.GetType().Name ?? "null"); return; }
+                int actorCount = 0;
                 foreach (object actor in list)
                 {
-                    if (!(actorType.GetProperty("Choices")?.GetValue(actor) is System.Collections.IList choices) || choices.Count == 0) continue;
+                    actorCount++;
+                    object rawChoices = actorType.GetProperty("Choices")?.GetValue(actor);
+                    if (!(rawChoices is System.Collections.IList choices) || choices.Count == 0)
+                    {
+                        evidence.choice_pick_error = "actors=" + actorCount + " choices=" + (rawChoices == null ? "null" : rawChoices.GetType().Name);
+                        continue;
+                    }
                     object choice = choices[0];
                     string id = choice.GetType().GetProperty("Id")?.GetValue(choice) as string
                                 ?? choice.GetType().GetField("Id")?.GetValue(choice) as string;
