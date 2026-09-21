@@ -1,0 +1,268 @@
+====================================================================================================
+FUNCTION RVA 0xCDB820  VA 0x180CDB820  size 0x3A6 (934 bytes)
+  managed: GigaCreation.Essentials.Ui.CancelEventBlocker$$Dispose
+  csig   : void GigaCreation_Essentials_Ui_CancelEventBlocker__Dispose (GigaCreation_Essentials_Ui_CancelEventBlocker_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.CancelEventBlocker :: public virtual void Dispose()
+  fields of GigaCreation.Essentials.Ui.CancelEventBlocker:
+      +0x10   _blockables                    readonly ICancelEventBlockable[]
+  fields of CancelEventBlocker.<>c:
+      +0x0    <>9                            static readonly CancelEventBlocker.<>c
+      +0x8    <>9__3_0                       static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CDB820  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDB825  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CDB82A  push    rdi                                       
+  0x180CDB82B  sub     rsp, 0x40                                 
+  0x180CDB82F  mov     rbx, rcx                                  
+  0x180CDB832  cmp     byte ptr [rip + 0x240192e], 0                ; data_30DD167
+  0x180CDB839  jne     0x180cdb8df                               
+  0x180CDB83F  lea     rcx, [rip + 0x218d6fa]                       ; METHODINFO Method$System.Linq.Enumerable.Where<ICancelEventBlockable>()
+  0x180CDB846  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB84B  lock or dword ptr [rsp], 0                        
+  0x180CDB850  lea     rcx, [rip + 0x218d751]                       ; TYPE System.Func<ICancelEventBlockable, bool>_TypeInfo
+  0x180CDB857  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB85C  lock or dword ptr [rsp], 0                        
+  0x180CDB861  lea     rcx, [rip + 0x218d6f0]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CDB868  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB86D  lock or dword ptr [rsp], 0                        
+  0x180CDB872  lea     rcx, [rip + 0x21768d7]                       ; TYPE System.IDisposable_TypeInfo
+  0x180CDB879  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB87E  lock or dword ptr [rsp], 0                        
+  0x180CDB883  lea     rcx, [rip + 0x218d716]                       ; TYPE System.Collections.Generic.IEnumerable<ICancelEventBlockable>_TypeInfo
+  0x180CDB88A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB88F  lock or dword ptr [rsp], 0                        
+  0x180CDB894  lea     rcx, [rip + 0x218d6ed]                       ; TYPE System.Collections.Generic.IEnumerator<ICancelEventBlockable>_TypeInfo
+  0x180CDB89B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB8A0  lock or dword ptr [rsp], 0                        
+  0x180CDB8A5  lea     rcx, [rip + 0x2176374]                       ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CDB8AC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB8B1  lock or dword ptr [rsp], 0                        
+  0x180CDB8B6  lea     rcx, [rip + 0x218d6ab]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.CancelEventBlocker.<>c.<Dispose>b__3_0() => GigaCreation.Essentials.Ui.CancelEventBlocker.<>c$$<Dispose>b__3_0
+  0x180CDB8BD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB8C2  lock or dword ptr [rsp], 0                        
+  0x180CDB8C7  lea     rcx, [rip + 0x218d65a]                       ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+  0x180CDB8CE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB8D3  lock or dword ptr [rsp], 0                        
+  0x180CDB8D8  mov     byte ptr [rip + 0x2401888], 1                ; data_30DD167
+
+180CDB8DF:
+  0x180CDB8DF  cmp     qword ptr [rbx + 0x10], 0                    ; rbx->CancelEventBlocker._blockables
+  0x180CDB8E4  je      0x180cdbb9a                               
+  0x180CDB8EA  mov     rsi, qword ptr [rbx + 0x10]                  ; rbx->CancelEventBlocker._blockables
+  0x180CDB8EE  mov     rcx, qword ptr [rip + 0x218d633]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+  0x180CDB8F5  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDB8FC  jne     0x180cdb90a                               
+  0x180CDB8FE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDB903  mov     rcx, qword ptr [rip + 0x218d61e]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+
+180CDB90A:
+  0x180CDB90A  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CDB911  mov     rdi, qword ptr [rax + 8]                  
+  0x180CDB915  test    rdi, rdi                                  
+  0x180CDB918  jne     0x180cdb9d1                               
+  0x180CDB91E  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180CDB924  jne     0x180cdb932                               
+  0x180CDB926  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDB92B  mov     rcx, qword ptr [rip + 0x218d5f6]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+
+180CDB932:
+  0x180CDB932  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CDB939  mov     rbx, qword ptr [rax]                      
+  0x180CDB93C  mov     rcx, qword ptr [rip + 0x218d665]             ; TYPE System.Func<ICancelEventBlockable, bool>_TypeInfo
+  0x180CDB943  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDB948  mov     rdi, rax                                  
+  0x180CDB94B  xor     r9d, r9d                                  
+  0x180CDB94E  mov     r8, qword ptr [rip + 0x218d613]              ; METHODINFO Method$GigaCreation.Essentials.Ui.CancelEventBlocker.<>c.<Dispose>b__3_0() => GigaCreation.Essentials.Ui.CancelEventBlocker.<>c$$<Dispose>b__3_0
+  0x180CDB955  mov     rdx, rbx                                  
+  0x180CDB958  mov     rcx, rax                                  
+  0x180CDB95B  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CDB960  mov     rax, qword ptr [rip + 0x218d5c1]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+  0x180CDB967  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CDB96E  mov     qword ptr [rcx + 8], rdi                  
+  0x180CDB972  mov     rax, qword ptr [rip + 0x218d5af]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker.<>c_TypeInfo
+  0x180CDB979  mov     r10, qword ptr [rax + 0xb8]               
+  0x180CDB980  add     r10, 8                                    
+  0x180CDB984  cmp     dword ptr [rip + 0x23fd839], 0               ; data_30D91C4
+  0x180CDB98B  je      0x180cdb9d1                               
+  0x180CDB98D  shr     r10, 0xc                                  
+  0x180CDB991  and     r10d, 0x1fffff                            
+  0x180CDB998  mov     eax, r10d                                 
+  0x180CDB99B  shr     rax, 6                                    
+  0x180CDB99F  lea     rcx, [rip + 0x2458bda]                       ; data_3134580
+  0x180CDB9A6  lea     r9, [rcx + rax*8]                         
+  0x180CDB9AA  and     r10d, 0x3f                                
+  0x180CDB9AE  prefetchw byte ptr [r9]                             
+  0x180CDB9B2  nop     dword ptr [rax]                           
+  0x180CDB9B6  nop     word ptr [rax + rax]                      
+
+180CDB9C0:
+  0x180CDB9C0  mov     rax, qword ptr [r9]                       
+  0x180CDB9C3  mov     r8, rax                                   
+  0x180CDB9C6  bts     r8, r10                                   
+  0x180CDB9CA  lock cmpxchg qword ptr [r9], r8                        
+  0x180CDB9CF  jne     0x180cdb9c0                               
+
+180CDB9D1:
+  0x180CDB9D1  mov     r8, qword ptr [rip + 0x218d568]              ; METHODINFO Method$System.Linq.Enumerable.Where<ICancelEventBlockable>()
+  0x180CDB9D8  mov     rdx, rdi                                  
+  0x180CDB9DB  mov     rcx, rsi                                  
+  0x180CDB9DE  call    0x18068c2c0                                  ; -> System.Linq.Enumerable$$Where<__Il2CppFullySharedGenericType>
+  0x180CDB9E3  test    rax, rax                                  
+  0x180CDB9E6  je      0x180cdbbc1                               
+  0x180CDB9EC  xor     ecx, ecx                                  
+  0x180CDB9EE  mov     r8, rax                                   
+  0x180CDB9F1  mov     rdx, qword ptr [rip + 0x218d5a8]             ; TYPE System.Collections.Generic.IEnumerable<ICancelEventBlockable>_TypeInfo
+  0x180CDB9F8  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CDB9FD  mov     qword ptr [rsp + 0x50], rax               
+  0x180CDBA02  xor     esi, esi                                  
+  0x180CDBA04  mov     qword ptr [rsp + 0x28], rsi               
+  0x180CDBA09  lea     rbx, [rsp + 0x50]                         
+  0x180CDBA0E  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CDBA13  nop     dword ptr [rax]                           
+  0x180CDBA17  nop     word ptr [rax + rax]                      
+
+180CDBA20:
+  0x180CDBA20  mov     r8, qword ptr [rsp + 0x50]                
+  0x180CDBA25  test    r8, r8                                    
+  0x180CDBA28  je      0x180cdbbb5                               
+  0x180CDBA2E  xor     ecx, ecx                                  
+  0x180CDBA30  mov     rdx, qword ptr [rip + 0x21761e9]             ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CDBA37  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CDBA3C  test    al, al                                    
+  0x180CDBA3E  je      0x180cdbb5b                               
+  0x180CDBA44  mov     rdi, qword ptr [rsp + 0x50]               
+  0x180CDBA49  test    rdi, rdi                                  
+  0x180CDBA4C  je      0x180cdbbb0                               
+  0x180CDBA52  mov     r9, qword ptr [rip + 0x218d52f]              ; TYPE System.Collections.Generic.IEnumerator<ICancelEventBlockable>_TypeInfo
+  0x180CDBA59  mov     r10, qword ptr [rdi]                      
+  0x180CDBA5C  movzx   eax, si                                   
+  0x180CDBA5F  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDBA67  cmp     si, dx                                    
+  0x180CDBA6A  jae     0x180cdba98                               
+  0x180CDBA6C  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDBA73  nop     dword ptr [rax]                           
+  0x180CDBA77  nop     word ptr [rax + rax]                      
+
+180CDBA80:
+  0x180CDBA80  movzx   ecx, ax                                   
+  0x180CDBA83  add     rcx, rcx                                  
+  0x180CDBA86  cmp     qword ptr [r8 + rcx*8], r9                
+  0x180CDBA8A  je      0x180cdbb1d                               
+  0x180CDBA90  inc     ax                                        
+  0x180CDBA93  cmp     ax, dx                                    
+  0x180CDBA96  jb      0x180cdba80                               
+
+180CDBA98:
+  0x180CDBA98  xor     r8d, r8d                                  
+  0x180CDBA9B  mov     rdx, r9                                   
+  0x180CDBA9E  mov     rcx, rdi                                  
+  0x180CDBAA1  call    0x180243a20                                  ; resolve interface method slot
+  0x180CDBAA6  mov     rdx, rax                                  
+
+180CDBAA9:
+  0x180CDBAA9  mov     rax, qword ptr [rdx]                      
+  0x180CDBAAC  mov     rdx, qword ptr [rdx + 8]                  
+  0x180CDBAB0  mov     rcx, rdi                                  
+  0x180CDBAB3  call    rax                                       
+  0x180CDBAB5  mov     rdi, rax                                  
+  0x180CDBAB8  test    rax, rax                                  
+  0x180CDBABB  je      0x180cdbbaa                               
+  0x180CDBAC1  mov     r9, qword ptr [rip + 0x218d490]              ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CDBAC8  mov     r10, qword ptr [rax]                      
+  0x180CDBACB  movzx   ecx, si                                   
+  0x180CDBACE  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDBAD6  cmp     si, dx                                    
+  0x180CDBAD9  jae     0x180cdbaf6                               
+  0x180CDBADB  mov     r8, qword ptr [r10 + 0xb0]                
+
+180CDBAE2:
+  0x180CDBAE2  movzx   eax, cx                                   
+  0x180CDBAE5  add     rax, rax                                  
+  0x180CDBAE8  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CDBAEC  je      0x180cdbb3b                               
+  0x180CDBAEE  inc     cx                                        
+  0x180CDBAF1  cmp     cx, dx                                    
+  0x180CDBAF4  jb      0x180cdbae2                               
+
+180CDBAF6:
+  0x180CDBAF6  mov     r8d, 1                                    
+  0x180CDBAFC  mov     rdx, r9                                   
+  0x180CDBAFF  mov     rcx, rdi                                  
+  0x180CDBB02  call    0x180243a20                                  ; resolve interface method slot
+  0x180CDBB07  mov     r8, rax                                   
+
+180CDBB0A:
+  0x180CDBB0A  mov     rax, qword ptr [r8]                       
+  0x180CDBB0D  mov     r8, qword ptr [r8 + 8]                    
+  0x180CDBB11  xor     edx, edx                                  
+  0x180CDBB13  mov     rcx, rdi                                  
+  0x180CDBB16  call    rax                                       
+  0x180CDBB18  jmp     0x180cdba20                               
+
+180CDBB1D:
+  0x180CDBB1D  movzx   ecx, ax                                   
+  0x180CDBB20  add     rcx, rcx                                  
+  0x180CDBB23  movsxd  rdx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDBB28  shl     rdx, 4                                    
+  0x180CDBB2C  add     rdx, 0x138                                
+  0x180CDBB33  add     rdx, r10                                  
+  0x180CDBB36  jmp     0x180cdbaa9                               
+
+180CDBB3B:
+  0x180CDBB3B  movzx   ecx, cx                                   
+  0x180CDBB3E  add     rcx, rcx                                  
+  0x180CDBB41  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDBB46  inc     ecx                                       
+  0x180CDBB48  movsxd  r8, ecx                                   
+  0x180CDBB4B  shl     r8, 4                                     
+  0x180CDBB4F  add     r8, 0x138                                 
+  0x180CDBB56  add     r8, r10                                   
+  0x180CDBB59  jmp     0x180cdbb0a                               
+
+180CDBB5B:
+  0x180CDBB5B  cmp     qword ptr [rbx], 0                        
+  0x180CDBB5F  je      0x180cdbb72                               
+  0x180CDBB61  xor     ecx, ecx                                  
+  0x180CDBB63  mov     r8, qword ptr [rbx]                       
+  0x180CDBB66  mov     rdx, qword ptr [rip + 0x21765e3]             ; TYPE System.IDisposable_TypeInfo
+  0x180CDBB6D  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CDBB72:
+  0x180CDBB72  jmp     0x180cdbb9a                               
+  0x180CDBB74  mov     r8, qword ptr [rsp + 0x30]                
+  0x180CDBB79  cmp     qword ptr [r8], 0                         
+  0x180CDBB7D  je      0x180cdbb90                               
+  0x180CDBB7F  xor     ecx, ecx                                  
+  0x180CDBB81  mov     r8, qword ptr [r8]                        
+  0x180CDBB84  mov     rdx, qword ptr [rip + 0x21765c5]             ; TYPE System.IDisposable_TypeInfo
+  0x180CDBB8B  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CDBB90:
+  0x180CDBB90  mov     rcx, qword ptr [rsp + 0x28]               
+  0x180CDBB95  test    rcx, rcx                                  
+  0x180CDBB98  jne     0x180cdbbbb                               
+
+180CDBB9A:
+  0x180CDBB9A  mov     rbx, qword ptr [rsp + 0x58]               
+  0x180CDBB9F  mov     rsi, qword ptr [rsp + 0x60]               
+  0x180CDBBA4  add     rsp, 0x40                                 
+  0x180CDBBA8  pop     rdi                                       
+  0x180CDBBA9  ret                                               
+
+180CDBBAA:
+  0x180CDBBAA  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDBBAF  nop                                               
+
+180CDBBB0:
+  0x180CDBBB0  call    0x180246730                                  ; THROW NullReferenceException
+
+180CDBBB5:
+  0x180CDBBB5  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDBBBA  nop                                               
+
+180CDBBBB:
+  0x180CDBBBB  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x180CDBBC0  int3                                              
+
+180CDBBC1:
+  0x180CDBBC1  call    0x180246730                                  ; THROW NullReferenceException

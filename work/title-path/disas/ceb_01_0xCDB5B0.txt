@@ -1,0 +1,87 @@
+====================================================================================================
+FUNCTION RVA 0xCDB5B0  VA 0x180CDB5B0  size 0xF9 (249 bytes)
+  managed: GigaCreation.Essentials.Ui.CancelEventBlocker$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_CancelEventBlocker___ctor (GigaCreation_Essentials_Ui_CancelEventBlocker_o* __this, GigaCreation_Essentials_Ui_ICancelEventBlockable_o* blockable, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.CancelEventBlocker :: public void .ctor(ICancelEventBlockable blockable)
+  fields of GigaCreation.Essentials.Ui.CancelEventBlocker:
+      +0x10   _blockables                    readonly ICancelEventBlockable[]
+  fields of CancelEventBlocker.<>c:
+      +0x0    <>9                            static readonly CancelEventBlocker.<>c
+      +0x8    <>9__3_0                       static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CDB5B0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CDB5B5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CDB5BA  push    rdi                                       
+  0x180CDB5BB  sub     rsp, 0x20                                 
+  0x180CDB5BF  cmp     byte ptr [rip + 0x2401b9f], 0                ; data_30DD165
+  0x180CDB5C6  mov     rdi, rdx                                  
+  0x180CDB5C9  mov     rsi, rcx                                  
+  0x180CDB5CC  jne     0x180cdb5e6                               
+  0x180CDB5CE  lea     rcx, [rip + 0x217e42b]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable[]_TypeInfo
+  0x180CDB5D5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB5DA  lock or dword ptr [rsp], 0                        
+  0x180CDB5DF  mov     byte ptr [rip + 0x2401b7f], 1                ; data_30DD165
+
+180CDB5E6:
+  0x180CDB5E6  mov     rcx, qword ptr [rip + 0x217e413]             ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable[]_TypeInfo
+  0x180CDB5ED  mov     edx, 1                                    
+  0x180CDB5F2  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CDB5F7  mov     rbx, rax                                  
+  0x180CDB5FA  test    rax, rax                                  
+  0x180CDB5FD  je      0x180cdb68e                               
+  0x180CDB603  test    rdi, rdi                                  
+  0x180CDB606  je      0x180cdb61c                               
+  0x180CDB608  mov     rdx, qword ptr [rax]                      
+  0x180CDB60B  mov     rcx, rdi                                  
+  0x180CDB60E  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CDB612  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CDB617  test    rax, rax                                  
+  0x180CDB61A  je      0x180cdb694                               
+
+180CDB61C:
+  0x180CDB61C  cmp     dword ptr [rbx + 0x18], 0                 
+  0x180CDB620  jbe     0x180cdb6a4                               
+  0x180CDB626  cmp     dword ptr [rip + 0x23fdb97], 0               ; data_30D91C4
+  0x180CDB62D  mov     qword ptr [rbx + 0x20], rdi               
+  0x180CDB631  je      0x180cdb671                               
+  0x180CDB633  lea     r8, [rbx + 0x20]                          
+  0x180CDB637  shr     r8, 0xc                                   
+  0x180CDB63B  lea     rcx, [rip + 0x2458f3e]                       ; data_3134580
+  0x180CDB642  and     r8d, 0x1fffff                             
+  0x180CDB649  mov     eax, r8d                                  
+  0x180CDB64C  shr     rax, 6                                    
+  0x180CDB650  and     r8d, 0x3f                                 
+  0x180CDB654  lea     rdx, [rcx + rax*8]                        
+  0x180CDB658  prefetchw byte ptr [rdx]                            
+  0x180CDB65B  nop     dword ptr [rax + rax]                     
+
+180CDB660:
+  0x180CDB660  mov     rax, qword ptr [rdx]                      
+  0x180CDB663  mov     rcx, rax                                  
+  0x180CDB666  bts     rcx, r8                                   
+  0x180CDB66A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CDB66F  jne     0x180cdb660                               
+
+180CDB671:
+  0x180CDB671  xor     r8d, r8d                                  
+  0x180CDB674  mov     rdx, rbx                                  
+  0x180CDB677  mov     rcx, rsi                                  
+  0x180CDB67A  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CDB67F  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CDB684  add     rsp, 0x20                                 
+  0x180CDB688  pop     rdi                                       
+  0x180CDB689  jmp     0x180cdb6b0                                  ; -> GigaCreation.Essentials.Ui.CancelEventBlocker$$.ctor
+
+180CDB68E:
+  0x180CDB68E  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDB693  int3                                              
+
+180CDB694:
+  0x180CDB694  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CDB699  mov     rcx, rax                                  
+  0x180CDB69C  xor     edx, edx                                  
+  0x180CDB69E  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180CDB6A3  int3                                              
+
+180CDB6A4:
+  0x180CDB6A4  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

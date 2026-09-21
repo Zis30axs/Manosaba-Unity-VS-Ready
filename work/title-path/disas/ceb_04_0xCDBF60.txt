@@ -1,0 +1,105 @@
+====================================================================================================
+FUNCTION RVA 0xCDBF60  VA 0x180CDBF60  size 0x136 (310 bytes)
+  managed: GigaCreation.Essentials.Ui.ICancelEventBlockable$$get_Exists
+  csig   : bool GigaCreation_Essentials_Ui_ICancelEventBlockable__get_Exists (GigaCreation_Essentials_Ui_ICancelEventBlockable_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.ICancelEventBlockable :: public virtual bool get_Exists()
+  fields of GigaCreation.Essentials.Ui.CancelEventBlocker:
+      +0x10   _blockables                    readonly ICancelEventBlockable[]
+  fields of CancelEventBlocker.<>c:
+      +0x0    <>9                            static readonly CancelEventBlocker.<>c
+      +0x8    <>9__3_0                       static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CDBF60  push    rdi                                       
+  0x180CDBF62  sub     rsp, 0x20                                 
+  0x180CDBF66  cmp     byte ptr [rip + 0x24011fe], 0                ; data_30DD16B
+  0x180CDBF6D  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CDBF72  mov     rsi, rcx                                  
+  0x180CDBF75  jne     0x180cdbf8f                               
+  0x180CDBF77  lea     rcx, [rip + 0x2176312]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDBF7E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDBF83  lock or dword ptr [rsp], 0                        
+  0x180CDBF88  mov     byte ptr [rip + 0x24011dc], 1                ; data_30DD16B
+
+180CDBF8F:
+  0x180CDBF8F  mov     rdx, qword ptr [rip + 0x21762fa]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDBF96  cmp     dword ptr [rdx + 0xe4], 0                 
+  0x180CDBF9D  jne     0x180cdbfae                               
+  0x180CDBF9F  mov     rcx, rdx                                  
+  0x180CDBFA2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDBFA7  mov     rdx, qword ptr [rip + 0x21762e2]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CDBFAE:
+  0x180CDBFAE  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CDBFB3  xor     ebx, ebx                                  
+  0x180CDBFB5  test    rsi, rsi                                  
+  0x180CDBFB8  jne     0x180cdbfbe                               
+  0x180CDBFBA  mov     edi, ebx                                  
+  0x180CDBFBC  jmp     0x180cdbff2                               
+
+180CDBFBE:
+  0x180CDBFBE  mov     r8, qword ptr [rsi]                       
+  0x180CDBFC1  movzx   eax, byte ptr [rdx + 0x130]               
+  0x180CDBFC8  cmp     byte ptr [r8 + 0x130], al                 
+  0x180CDBFCF  jb      0x180cdbfe7                               
+  0x180CDBFD1  movzx   ecx, al                                   
+  0x180CDBFD4  mov     rax, qword ptr [r8 + 0xc8]                
+  0x180CDBFDB  cmp     qword ptr [rax + rcx*8 - 8], rdx          
+  0x180CDBFE0  mov     eax, 1                                    
+  0x180CDBFE5  je      0x180cdbfe9                               
+
+180CDBFE7:
+  0x180CDBFE7  mov     eax, ebx                                  
+
+180CDBFE9:
+  0x180CDBFE9  test    eax, eax                                  
+  0x180CDBFEB  mov     rdi, rbx                                  
+  0x180CDBFEE  cmovne  rdi, rsi                                  
+
+180CDBFF2:
+  0x180CDBFF2  cmp     byte ptr [rip + 0x240c835], 0                ; data_30E882E
+  0x180CDBFF9  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CDBFFE  jne     0x180cdc01f                               
+  0x180CDC000  lea     rcx, [rip + 0x2176289]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDC007  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDC00C  lock or dword ptr [rsp], 0                        
+  0x180CDC011  mov     rdx, qword ptr [rip + 0x2176278]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDC018  mov     byte ptr [rip + 0x240c80f], 1                ; data_30E882E
+
+180CDC01F:
+  0x180CDC01F  cmp     dword ptr [rdx + 0xe4], 0                 
+  0x180CDC026  jne     0x180cdc037                               
+  0x180CDC028  mov     rcx, rdx                                  
+  0x180CDC02B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDC030  mov     rdx, qword ptr [rip + 0x2176259]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CDC037:
+  0x180CDC037  cmp     byte ptr [rip + 0x240c7f1], 0                ; data_30E882F
+  0x180CDC03E  jne     0x180cdc05f                               
+  0x180CDC040  lea     rcx, [rip + 0x2176249]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDC047  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDC04C  lock or dword ptr [rsp], 0                        
+  0x180CDC051  mov     rdx, qword ptr [rip + 0x2176238]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDC058  mov     byte ptr [rip + 0x240c7d0], 1                ; data_30E882F
+
+180CDC05F:
+  0x180CDC05F  test    rdi, rdi                                  
+  0x180CDC062  je      0x180cdc088                               
+  0x180CDC064  cmp     dword ptr [rdx + 0xe4], 0                 
+  0x180CDC06B  jne     0x180cdc075                               
+  0x180CDC06D  mov     rcx, rdx                                  
+  0x180CDC070  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDC075:
+  0x180CDC075  cmp     qword ptr [rdi + 0x10], 0                    ; rdi->CancelEventBlocker._blockables
+  0x180CDC07A  setne   al                                        
+  0x180CDC07D  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CDC082  add     rsp, 0x20                                 
+  0x180CDC086  pop     rdi                                       
+  0x180CDC087  ret                                               
+
+180CDC088:
+  0x180CDC088  movzx   eax, bl                                   
+  0x180CDC08B  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CDC090  add     rsp, 0x20                                 
+  0x180CDC094  pop     rdi                                       
+  0x180CDC095  ret                                               

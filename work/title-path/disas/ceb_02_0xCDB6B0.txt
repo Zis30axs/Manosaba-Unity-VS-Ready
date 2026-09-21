@@ -1,0 +1,126 @@
+====================================================================================================
+FUNCTION RVA 0xCDB6B0  VA 0x180CDB6B0  size 0x161 (353 bytes)
+  managed: GigaCreation.Essentials.Ui.CancelEventBlocker$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_CancelEventBlocker___ctor (GigaCreation_Essentials_Ui_CancelEventBlocker_o* __this, GigaCreation_Essentials_Ui_ICancelEventBlockable_array* blockables, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.CancelEventBlocker :: public void .ctor(ICancelEventBlockable[] blockables)
+  fields of GigaCreation.Essentials.Ui.CancelEventBlocker:
+      +0x10   _blockables                    readonly ICancelEventBlockable[]
+  fields of CancelEventBlocker.<>c:
+      +0x0    <>9                            static readonly CancelEventBlocker.<>c
+      +0x8    <>9__3_0                       static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CDB6B0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDB6B5  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CDB6BA  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CDB6BF  push    rdi                                       
+  0x180CDB6C0  sub     rsp, 0x20                                 
+  0x180CDB6C4  cmp     byte ptr [rip + 0x2401a9b], 0                ; data_30DD166
+  0x180CDB6CB  mov     rdi, rdx                                  
+  0x180CDB6CE  mov     rbx, rcx                                  
+  0x180CDB6D1  jne     0x180cdb6eb                               
+  0x180CDB6D3  lea     rcx, [rip + 0x218d87e]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CDB6DA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB6DF  lock or dword ptr [rsp], 0                        
+  0x180CDB6E4  mov     byte ptr [rip + 0x2401a7b], 1                ; data_30DD166
+
+180CDB6EB:
+  0x180CDB6EB  cmp     dword ptr [rip + 0x23fdad2], 0               ; data_30D91C4
+  0x180CDB6F2  mov     qword ptr [rbx + 0x10], rdi                  ; rbx->CancelEventBlocker._blockables
+  0x180CDB6F6  je      0x180cdb731                               
+  0x180CDB6F8  lea     r8, [rbx + 0x10]                             ; rbx->CancelEventBlocker._blockables
+  0x180CDB6FC  shr     r8, 0xc                                   
+  0x180CDB700  lea     rcx, [rip + 0x2458e79]                       ; data_3134580
+  0x180CDB707  and     r8d, 0x1fffff                             
+  0x180CDB70E  mov     eax, r8d                                  
+  0x180CDB711  shr     rax, 6                                    
+  0x180CDB715  and     r8d, 0x3f                                 
+  0x180CDB719  lea     rdx, [rcx + rax*8]                        
+  0x180CDB71D  prefetchw byte ptr [rdx]                            
+
+180CDB720:
+  0x180CDB720  mov     rax, qword ptr [rdx]                      
+  0x180CDB723  mov     rcx, rax                                  
+  0x180CDB726  bts     rcx, r8                                   
+  0x180CDB72A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CDB72F  jne     0x180cdb720                               
+
+180CDB731:
+  0x180CDB731  mov     rsi, qword ptr [rbx + 0x10]                  ; rbx->CancelEventBlocker._blockables
+  0x180CDB735  xor     ebp, ebp                                  
+  0x180CDB737  mov     qword ptr [rsp + 0x30], r14               
+  0x180CDB73C  mov     edi, ebp                                  
+  0x180CDB73E  mov     eax, ebp                                  
+  0x180CDB740  test    rsi, rsi                                  
+  0x180CDB743  je      0x180cdb80c                               
+  0x180CDB749  lea     r14, [rsi + 0x20]                         
+  0x180CDB74D  nop     dword ptr [rax]                           
+
+180CDB750:
+  0x180CDB750  cmp     eax, dword ptr [rsi + 0x18]               
+  0x180CDB753  jge     0x180cdb7ec                               
+  0x180CDB759  cmp     edi, dword ptr [rsi + 0x18]               
+  0x180CDB75C  jae     0x180cdb806                               
+  0x180CDB762  mov     rbx, qword ptr [r14]                      
+  0x180CDB765  test    rbx, rbx                                  
+  0x180CDB768  je      0x180cdb80c                               
+  0x180CDB76E  mov     r10, qword ptr [rbx]                      
+  0x180CDB771  movzx   eax, bp                                   
+  0x180CDB774  mov     r9, qword ptr [rip + 0x218d7dd]              ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CDB77B  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDB783  cmp     bp, dx                                    
+  0x180CDB786  jae     0x180cdb7a4                               
+  0x180CDB788  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDB78F  nop                                               
+
+180CDB790:
+  0x180CDB790  movzx   ecx, ax                                   
+  0x180CDB793  add     rcx, rcx                                  
+  0x180CDB796  cmp     qword ptr [r8 + rcx*8], r9                
+  0x180CDB79A  je      0x180cdb7ce                               
+  0x180CDB79C  inc     ax                                        
+  0x180CDB79F  cmp     ax, dx                                    
+  0x180CDB7A2  jb      0x180cdb790                               
+
+180CDB7A4:
+  0x180CDB7A4  mov     r8d, 1                                    
+  0x180CDB7AA  mov     rdx, r9                                   
+  0x180CDB7AD  mov     rcx, rbx                                  
+  0x180CDB7B0  call    0x180243a20                                  ; resolve interface method slot
+
+180CDB7B5:
+  0x180CDB7B5  mov     r9, qword ptr [rax]                       
+  0x180CDB7B8  mov     dl, 1                                     
+  0x180CDB7BA  mov     r8, qword ptr [rax + 8]                   
+  0x180CDB7BE  mov     rcx, rbx                                  
+  0x180CDB7C1  call    r9                                        
+  0x180CDB7C4  inc     edi                                       
+  0x180CDB7C6  add     r14, 8                                    
+  0x180CDB7CA  mov     eax, edi                                  
+  0x180CDB7CC  jmp     0x180cdb750                               
+
+180CDB7CE:
+  0x180CDB7CE  movzx   ecx, ax                                   
+  0x180CDB7D1  add     rcx, rcx                                  
+  0x180CDB7D4  mov     eax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDB7D9  inc     eax                                       
+  0x180CDB7DB  cdqe                                              
+  0x180CDB7DD  shl     rax, 4                                    
+  0x180CDB7E1  add     rax, 0x138                                
+  0x180CDB7E7  add     rax, r10                                  
+  0x180CDB7EA  jmp     0x180cdb7b5                               
+
+180CDB7EC:
+  0x180CDB7EC  mov     r14, qword ptr [rsp + 0x30]               
+  0x180CDB7F1  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CDB7F6  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180CDB7FB  mov     rsi, qword ptr [rsp + 0x48]               
+  0x180CDB800  add     rsp, 0x20                                 
+  0x180CDB804  pop     rdi                                       
+  0x180CDB805  ret                                               
+
+180CDB806:
+  0x180CDB806  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180CDB80B  int3                                              
+
+180CDB80C:
+  0x180CDB80C  call    0x180246730                                  ; THROW NullReferenceException
