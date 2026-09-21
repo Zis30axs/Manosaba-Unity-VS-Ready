@@ -1,0 +1,150 @@
+====================================================================================================
+FUNCTION RVA 0xD1A040  VA 0x180D1A040  size 0x1D3 (467 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$ChangePositionYAsync
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__ChangePositionYAsync (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, float positionY, float duration, int32_t easingType, Naninovel_AsyncToken_o asyncToken, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: public UniTask ChangePositionYAsync(float positionY, float duration, EasingType easingType = 0, AsyncToken asyncToken)
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1A040  mov     qword ptr [rsp + 8], rbx                  
+  0x180D1A045  push    rdi                                       
+  0x180D1A046  sub     rsp, 0x90                                 
+  0x180D1A04D  cmp     byte ptr [rip + 0x23c32a3], 0                ; data_30DD2F7
+  0x180D1A054  mov     edi, r9d                                  
+  0x180D1A057  movaps  xmmword ptr [rsp + 0x80], xmm6            
+  0x180D1A05F  mov     rbx, rcx                                  
+  0x180D1A062  movaps  xmmword ptr [rsp + 0x70], xmm7            
+  0x180D1A067  movaps  xmm6, xmm2                                
+  0x180D1A06A  movaps  xmm7, xmm1                                
+  0x180D1A06D  jne     0x180d1a087                               
+  0x180D1A06F  lea     rcx, [rip + 0x2115172]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28>()
+  0x180D1A076  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A07B  lock or dword ptr [rsp], 0                        
+  0x180D1A080  mov     byte ptr [rip + 0x23c3270], 1                ; data_30DD2F7
+
+180D1A087:
+  0x180D1A087  mov     ecx, dword ptr [rip + 0x23bf137]             ; data_30D91C4
+  0x180D1A08D  lea     r9, [rip + 0x23d420c]                        ; data_30EE2A0
+  0x180D1A094  xor     eax, eax                                  
+  0x180D1A096  xorps   xmm0, xmm0                                
+  0x180D1A099  mov     qword ptr [rsp + 0x20], rax               
+  0x180D1A09E  xorps   xmm1, xmm1                                
+  0x180D1A0A1  mov     qword ptr [rsp + 0x38], rax               
+  0x180D1A0A6  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D1A0AC  movdqa  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D1A0B2  mov     qword ptr [rsp + 0x60], rax               
+  0x180D1A0B7  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180D1A0BC  test    ecx, ecx                                  
+  0x180D1A0BE  je      0x180d1a111                               
+  0x180D1A0C0  lea     r8, [rsp + 0x28]                          
+  0x180D1A0C5  shr     r8, 0xc                                   
+  0x180D1A0C9  and     r8d, 0x1fffff                             
+  0x180D1A0D0  mov     edx, r8d                                  
+  0x180D1A0D3  shr     rdx, 6                                    
+  0x180D1A0D7  and     r8d, 0x3f                                 
+  0x180D1A0DB  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180D1A0E4  nop     dword ptr [rax]                           
+  0x180D1A0E8  nop     dword ptr [rax + rax]                     
+
+180D1A0F0:
+  0x180D1A0F0  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180D1A0F8  mov     rcx, rax                                  
+  0x180D1A0FB  bts     rcx, r8                                   
+  0x180D1A0FF  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180D1A109  jne     0x180d1a0f0                               
+  0x180D1A10B  mov     ecx, dword ptr [rip + 0x23bf0b3]             ; data_30D91C4
+
+180D1A111:
+  0x180D1A111  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D1A116  test    ecx, ecx                                  
+  0x180D1A118  je      0x180d1a161                               
+  0x180D1A11A  lea     r8, [rsp + 0x38]                          
+  0x180D1A11F  shr     r8, 0xc                                   
+  0x180D1A123  and     r8d, 0x1fffff                             
+  0x180D1A12A  mov     edx, r8d                                  
+  0x180D1A12D  shr     rdx, 6                                    
+  0x180D1A131  and     r8d, 0x3f                                 
+  0x180D1A135  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180D1A13E  nop                                               
+
+180D1A140:
+  0x180D1A140  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180D1A148  mov     rcx, rax                                  
+  0x180D1A14B  bts     rcx, r8                                   
+  0x180D1A14F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180D1A159  jne     0x180d1a140                               
+  0x180D1A15B  mov     ecx, dword ptr [rip + 0x23bf063]             ; data_30D91C4
+
+180D1A161:
+  0x180D1A161  mov     rax, qword ptr [rsp + 0xc0]               
+  0x180D1A169  movss   dword ptr [rsp + 0x40], xmm7              
+  0x180D1A16F  movss   dword ptr [rsp + 0x44], xmm6              
+  0x180D1A175  mov     dword ptr [rsp + 0x48], edi               
+  0x180D1A179  movups  xmm0, xmmword ptr [rax]                   
+  0x180D1A17C  movaps  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D1A181  test    ecx, ecx                                  
+  0x180D1A183  je      0x180d1a1cb                               
+  0x180D1A185  lea     r8, [rsp + 0x50]                          
+  0x180D1A18A  shr     r8, 0xc                                   
+  0x180D1A18E  and     r8d, 0x1fffff                             
+  0x180D1A195  mov     edx, r8d                                  
+  0x180D1A198  shr     rdx, 6                                    
+  0x180D1A19C  and     r8d, 0x3f                                 
+  0x180D1A1A0  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180D1A1A9  nop     dword ptr [rax]                           
+
+180D1A1B0:
+  0x180D1A1B0  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180D1A1B8  mov     rcx, rax                                  
+  0x180D1A1BB  bts     rcx, r8                                   
+  0x180D1A1BF  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180D1A1C9  jne     0x180d1a1b0                               
+
+180D1A1CB:
+  0x180D1A1CB  mov     r8, qword ptr [rip + 0x2115016]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28>()
+  0x180D1A1D2  lea     rdx, [rsp + 0x20]                         
+  0x180D1A1D7  lea     rcx, [rsp + 0x28]                         
+  0x180D1A1DC  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D1A1E4  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D1A1E9  xor     edx, edx                                  
+  0x180D1A1EB  lea     rcx, [rsp + 0x28]                         
+  0x180D1A1F0  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D1A1F5  mov     rbx, qword ptr [rsp + 0xa0]               
+  0x180D1A1FD  movaps  xmm6, xmmword ptr [rsp + 0x80]            
+  0x180D1A205  movaps  xmm7, xmmword ptr [rsp + 0x70]            
+  0x180D1A20A  add     rsp, 0x90                                 
+  0x180D1A211  pop     rdi                                       
+  0x180D1A212  ret                                               

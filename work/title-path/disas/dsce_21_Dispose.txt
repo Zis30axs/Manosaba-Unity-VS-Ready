@@ -1,0 +1,63 @@
+====================================================================================================
+FUNCTION RVA 0xD1AB60  VA 0x180D1AB60  size 0x5A (90 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$Dispose
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__Dispose (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: public override void Dispose()
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1AB60  push    rbx                                       
+  0x180D1AB62  sub     rsp, 0x20                                 
+  0x180D1AB66  cmp     byte ptr [rip + 0x23c2790], 0                ; data_30DD2FD
+  0x180D1AB6D  mov     rbx, rcx                                  
+  0x180D1AB70  jne     0x180d1ab8a                               
+  0x180D1AB72  lea     rcx, [rip + 0x21145f7]                       ; METHODINFO Method$Naninovel.DicedSpriteActor<CharacterMetadata>.Dispose()
+  0x180D1AB79  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1AB7E  lock or dword ptr [rsp], 0                        
+  0x180D1AB83  mov     byte ptr [rip + 0x23c2773], 1                ; data_30DD2FD
+
+180D1AB8A:
+  0x180D1AB8A  mov     rcx, qword ptr [rbx + 0xf0]               
+  0x180D1AB91  xor     edx, edx                                  
+  0x180D1AB93  call    0x18054be20                                  ; -> Naninovel.ObjectUtils$$DestroyOrImmediate
+  0x180D1AB98  mov     rcx, qword ptr [rbx + 0xf8]               
+  0x180D1AB9F  xor     edx, edx                                  
+  0x180D1ABA1  call    0x18054be20                                  ; -> Naninovel.ObjectUtils$$DestroyOrImmediate
+  0x180D1ABA6  mov     rdx, qword ptr [rip + 0x21145c3]             ; METHODINFO Method$Naninovel.DicedSpriteActor<CharacterMetadata>.Dispose()
+  0x180D1ABAD  mov     rcx, rbx                                  
+  0x180D1ABB0  add     rsp, 0x20                                 
+  0x180D1ABB4  pop     rbx                                       
+  0x180D1ABB5  jmp     0x180c54db0                                  ; -> Naninovel.DicedSpriteActor<object>$$Dispose

@@ -1,0 +1,209 @@
+====================================================================================================
+FUNCTION RVA 0xD1A8F0  VA 0x180D1A8F0  size 0x26C (620 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$SetBehaviourScale
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__SetBehaviourScale (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, UnityEngine_Vector3_o scale, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: protected override void SetBehaviourScale(Vector3 scale)
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1A8F0  push    rbp                                       
+  0x180D1A8F2  push    r14                                       
+  0x180D1A8F4  push    r15                                       
+  0x180D1A8F6  sub     rsp, 0x60                                 
+  0x180D1A8FA  lea     rbp, [rsp + 0x20]                         
+  0x180D1A8FF  cmp     byte ptr [rip + 0x23c29f6], 0                ; data_30DD2FC
+  0x180D1A906  mov     r15, rdx                                  
+  0x180D1A909  mov     qword ptr [rbp + 0x68], rbx               
+  0x180D1A90D  mov     qword ptr [rbp + 0x70], rsi               
+  0x180D1A911  mov     rsi, rcx                                  
+  0x180D1A914  mov     qword ptr [rbp + 0x78], rdi               
+  0x180D1A918  movaps  xmmword ptr [rbp + 0x30], xmm6               ; rbp-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1A91C  movaps  xmmword ptr [rbp + 0x20], xmm7               ; rbp-><ChangePosition>d__32.position
+  0x180D1A920  jne     0x180d1a95c                               
+  0x180D1A922  lea     rcx, [rip + 0x211481f]                       ; METHODINFO Method$Naninovel.MonoBehaviourActor<CharacterMetadata>.SetBehaviourScale()
+  0x180D1A929  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A92E  lock or dword ptr [rsp], 0                        
+  0x180D1A933  lea     rcx, [rip + 0x2136e5e]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1A93A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A93F  lock or dword ptr [rsp], 0                        
+  0x180D1A944  lea     rcx, [rip + 0x2136e7d]                       ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1A94B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A950  lock or dword ptr [rsp], 0                        
+  0x180D1A955  mov     byte ptr [rip + 0x23c29a0], 1                ; data_30DD2FC
+
+180D1A95C:
+  0x180D1A95C  mov     rax, qword ptr [rsi + 0x108]              
+  0x180D1A963  mov     qword ptr [rbp + 0x60], rax               
+  0x180D1A967  mov     rax, qword ptr [rip + 0x2136e5a]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1A96E  mov     rax, qword ptr [rax + 0x20]                  ; rax-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A972  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A979  jne     0x180d1a983                               
+  0x180D1A97B  mov     rcx, rax                                  
+  0x180D1A97E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A983:
+  0x180D1A983  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A98A  lea     r8, [rbp + 0x60]                          
+  0x180D1A98E  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1A992  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1A999  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><ChangePosition>d__32.<>4__this | <ChangePositionXAsync>d__27.<>4__this | <ChangePositionYAsync>d__28.<>4__this
+  0x180D1A99D  add     r8, rax                                   
+  0x180D1A9A0  mov     rax, qword ptr [rdx + 0x10]               
+  0x180D1A9A4  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1A9A8  lea     rcx, [r8 - 0x10]                          
+  0x180D1A9AC  cmovge  rcx, r8                                   
+  0x180D1A9B0  cmp     byte ptr [rcx], 0                         
+  0x180D1A9B3  je      0x180d1aa6c                               
+  0x180D1A9B9  mov     rbx, qword ptr [rip + 0x2136dd8]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1A9C0  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A9C4  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A9CB  jne     0x180d1a9d5                               
+  0x180D1A9CD  mov     rcx, rax                                  
+  0x180D1A9D0  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A9D5:
+  0x180D1A9D5  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A9DC  mov     rcx, qword ptr [rax]                      
+  0x180D1A9DF  mov     edi, dword ptr [rcx + 0xfc]               
+  0x180D1A9E5  lea     rax, [rdi + 0xf]                          
+  0x180D1A9E9  cmp     rax, rdi                                  
+  0x180D1A9EC  ja      0x180d1a9f8                               
+  0x180D1A9EE  movabs  rax, 0xffffffffffffff0                    
+
+180D1A9F8:
+  0x180D1A9F8  and     rax, 0xfffffffffffffff0                   
+  0x180D1A9FC  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1AA01  sub     rsp, rax                                  
+  0x180D1AA04  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1AA08  test    byte ptr [rax + 0x135], 1                 
+  0x180D1AA0F  lea     r14, [rsp + 0x20]                         
+  0x180D1AA14  jne     0x180d1aa1e                               
+  0x180D1AA16  mov     rcx, rax                                  
+  0x180D1AA19  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1AA1E:
+  0x180D1AA1E  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1AA25  mov     r8, rdi                                   
+  0x180D1AA28  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1AA2C  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1AA33  lea     rcx, [rbp + 0x60]                         
+  0x180D1AA37  movsxd  rax, dword ptr [r9 + 0x38]                   ; r9-><ChangePosition>d__32.asyncToken
+  0x180D1AA3B  add     rcx, rax                                  
+  0x180D1AA3E  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1AA42  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1AA46  lea     rdx, [rcx - 0x10]                         
+  0x180D1AA4A  cmovge  rdx, rcx                                  
+  0x180D1AA4E  mov     rcx, r14                                  
+  0x180D1AA51  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1AA56  mov     r8, rdi                                   
+  0x180D1AA59  lea     rcx, [rbp + 0x60]                         
+  0x180D1AA5D  mov     rdx, r14                                  
+  0x180D1AA60  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1AA65  movss   xmm7, dword ptr [rbp + 0x60]              
+  0x180D1AA6A  jmp     0x180d1aa74                               
+
+180D1AA6C:
+  0x180D1AA6C  movss   xmm7, dword ptr [rip + 0x1dc7dac]            ; data_2AE2820
+
+180D1AA74:
+  0x180D1AA74  mov     rdx, qword ptr [rsi]                      
+  0x180D1AA77  mov     rcx, rsi                                  
+  0x180D1AA7A  mov     rax, qword ptr [rdx + 0x3b8]              
+  0x180D1AA81  mov     rdx, qword ptr [rdx + 0x3c0]              
+  0x180D1AA88  call    rax                                       
+  0x180D1AA8A  movsd   xmm0, qword ptr [r15]                     
+  0x180D1AA8F  mov     rdi, rax                                  
+  0x180D1AA92  movss   xmm1, dword ptr [r15 + 4]                 
+  0x180D1AA98  movss   xmm2, dword ptr [r15 + 8]                 
+  0x180D1AA9E  mulss   xmm0, xmm7                                
+  0x180D1AAA2  mulss   xmm1, xmm7                                
+  0x180D1AAA6  mulss   xmm2, xmm7                                
+  0x180D1AAAA  test    rax, rax                                  
+  0x180D1AAAD  je      0x180d1ab35                               
+  0x180D1AAB3  cmp     byte ptr [rip + 0x23ce284], 0                ; data_30E8D3E
+  0x180D1AABA  unpcklps xmm0, xmm1                                
+  0x180D1AABD  movsd   qword ptr [rbp], xmm0                     
+  0x180D1AAC2  movss   dword ptr [rbp + 8], xmm2                 
+  0x180D1AAC7  jne     0x180d1aae1                               
+  0x180D1AAC9  lea     rcx, [rip + 0x2150d10]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D1AAD0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1AAD5  lock or dword ptr [rsp], 0                        
+  0x180D1AADA  mov     byte ptr [rip + 0x23ce25d], 1                ; data_30E8D3E
+
+180D1AAE1:
+  0x180D1AAE1  mov     rbx, qword ptr [rdi + 0x10]               
+  0x180D1AAE5  test    rbx, rbx                                  
+  0x180D1AAE8  je      0x180d1ab52                               
+  0x180D1AAEA  mov     rax, qword ptr [rip + 0x23ce2ff]             ; data_30E8DF0
+  0x180D1AAF1  test    rax, rax                                  
+  0x180D1AAF4  jne     0x180d1ab0e                               
+  0x180D1AAF6  lea     rcx, [rip + 0x18ef263]                       ; data_2609D60
+  0x180D1AAFD  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1AB02  test    rax, rax                                  
+  0x180D1AB05  je      0x180d1ab3b                               
+  0x180D1AB07  mov     qword ptr [rip + 0x23ce2e2], rax             ; data_30E8DF0
+
+180D1AB0E:
+  0x180D1AB0E  lea     rdx, [rbp]                                
+  0x180D1AB12  mov     rcx, rbx                                  
+  0x180D1AB15  call    rax                                       
+  0x180D1AB17  mov     rbx, qword ptr [rbp + 0x68]               
+  0x180D1AB1B  mov     rsi, qword ptr [rbp + 0x70]               
+  0x180D1AB1F  mov     rdi, qword ptr [rbp + 0x78]               
+  0x180D1AB23  movaps  xmm6, xmmword ptr [rbp + 0x30]               ; rbp-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1AB27  movaps  xmm7, xmmword ptr [rbp + 0x20]               ; rbp-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1AB2B  lea     rsp, [rbp + 0x40]                            ; rbp-><ChangePositionXAsync>d__27.<>u__1 | <ChangePositionYAsync>d__28.<>u__1 | <ChangePositionZAsync>d__29.<>u__1
+  0x180D1AB2F  pop     r15                                       
+  0x180D1AB31  pop     r14                                       
+  0x180D1AB33  pop     rbp                                       
+  0x180D1AB34  ret                                               
+
+180D1AB35:
+  0x180D1AB35  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D1AB3A  int3                                              
+
+180D1AB3B:
+  0x180D1AB3B  lea     rcx, [rip + 0x18ef21e]                       ; data_2609D60
+  0x180D1AB42  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1AB47  mov     rcx, rax                                  
+  0x180D1AB4A  xor     edx, edx                                  
+  0x180D1AB4C  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1AB51  int3                                              
+
+180D1AB52:
+  0x180D1AB52  xor     edx, edx                                  
+  0x180D1AB54  mov     rcx, rdi                                  
+  0x180D1AB57  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

@@ -1,0 +1,105 @@
+====================================================================================================
+FUNCTION RVA 0x63CA50  VA 0x18063CA50  size 0x130 (304 bytes)
+  managed: SpriteDicing.DicedSpriteAtlas$$GetSprite
+  csig   : UnityEngine_Sprite_o* SpriteDicing_DicedSpriteAtlas__GetSprite (SpriteDicing_DicedSpriteAtlas_o* __this, System_String_o* name, const MethodInfo* method);
+  dump.cs: SpriteDicing.DicedSpriteAtlas :: public Sprite GetSprite(string name)
+  fields of SpriteDicing.DicedSpriteAtlas:
+      +0x18   sprites                        List<Sprite>
+      +0x20   textures                       List<Texture2D>
+====================================================================================================
+  0x18063CA50  mov     qword ptr [rsp + 0x10], rbx               
+  0x18063CA55  mov     qword ptr [rsp + 0x18], rsi               
+  0x18063CA5A  push    rdi                                       
+  0x18063CA5B  sub     rsp, 0x20                                 
+  0x18063CA5F  cmp     byte ptr [rip + 0x2a9fc0d], 0                ; data_30DC673
+  0x18063CA66  mov     rdi, rdx                                  
+  0x18063CA69  mov     rsi, rcx                                  
+  0x18063CA6C  jne     0x18063ca97                               
+  0x18063CA6E  lea     rcx, [rip + 0x27d813b]                       ; METHODINFO Method$System.Collections.Generic.List<Sprite>.get_Count()
+  0x18063CA75  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CA7A  lock or dword ptr [rsp], 0                        
+  0x18063CA7F  lea     rcx, [rip + 0x27d8122]                       ; METHODINFO Method$System.Collections.Generic.List<Sprite>.get_Item()
+  0x18063CA86  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CA8B  lock or dword ptr [rsp], 0                        
+  0x18063CA90  mov     byte ptr [rip + 0x2a9fbdc], 1                ; data_30DC673
+
+18063CA97:
+  0x18063CA97  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi->DicedSpriteAtlas.sprites
+  0x18063CA9B  xor     ebx, ebx                                  
+  0x18063CA9D  mov     eax, ebx                                  
+  0x18063CA9F  test    rcx, rcx                                  
+  0x18063CAA2  je      0x18063cb7b                               
+  0x18063CAA8  nop     dword ptr [rax + rax]                     
+
+18063CAB0:
+  0x18063CAB0  cmp     eax, dword ptr [rcx + 0x18]                  ; rcx->DicedSpriteAtlas.sprites
+  0x18063CAB3  jge     0x18063cb69                               
+  0x18063CAB9  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi->DicedSpriteAtlas.sprites
+  0x18063CABD  test    rcx, rcx                                  
+  0x18063CAC0  je      0x18063cb7b                               
+  0x18063CAC6  mov     r9, qword ptr [rip + 0x27d80db]              ; METHODINFO Method$System.Collections.Generic.List<Sprite>.get_Item()
+  0x18063CACD  lea     r8, [rsp + 0x30]                          
+  0x18063CAD2  mov     edx, ebx                                  
+  0x18063CAD4  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x18063CAD9  mov     rcx, qword ptr [rsp + 0x30]               
+  0x18063CADE  test    rcx, rcx                                  
+  0x18063CAE1  je      0x18063cb7b                               
+  0x18063CAE7  xor     edx, edx                                  
+  0x18063CAE9  call    0x182073890                                  ; -> UnityEngine.Object$$GetName
+  0x18063CAEE  cmp     rax, rdi                                  
+  0x18063CAF1  je      0x18063cb38                               
+  0x18063CAF3  test    rax, rax                                  
+  0x18063CAF6  je      0x18063cb26                               
+  0x18063CAF8  test    rdi, rdi                                  
+  0x18063CAFB  je      0x18063cb26                               
+  0x18063CAFD  mov     ecx, dword ptr [rdi + 0x10]               
+  0x18063CB00  cmp     dword ptr [rax + 0x10], ecx               
+  0x18063CB03  jne     0x18063cb26                               
+  0x18063CB05  movsxd  r8, dword ptr [rax + 0x10]                
+  0x18063CB09  lea     rdx, [rdi + 0x14]                         
+  0x18063CB0D  add     r8, r8                                    
+  0x18063CB10  lea     rcx, [rax + 0x14]                         
+  0x18063CB14  xor     r9d, r9d                                  
+  0x18063CB17  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x18063CB1C  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi->DicedSpriteAtlas.sprites
+  0x18063CB20  test    al, al                                    
+  0x18063CB22  jne     0x18063cb3c                               
+  0x18063CB24  jmp     0x18063cb2a                               
+
+18063CB26:
+  0x18063CB26  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi->DicedSpriteAtlas.sprites
+
+18063CB2A:
+  0x18063CB2A  inc     ebx                                       
+  0x18063CB2C  mov     eax, ebx                                  
+  0x18063CB2E  test    rcx, rcx                                  
+  0x18063CB31  je      0x18063cb7b                               
+  0x18063CB33  jmp     0x18063cab0                               
+
+18063CB38:
+  0x18063CB38  mov     rcx, qword ptr [rsi + 0x18]                  ; rsi->DicedSpriteAtlas.sprites
+
+18063CB3C:
+  0x18063CB3C  test    rcx, rcx                                  
+  0x18063CB3F  je      0x18063cb7b                               
+  0x18063CB41  mov     r9, qword ptr [rip + 0x27d8060]              ; METHODINFO Method$System.Collections.Generic.List<Sprite>.get_Item()
+  0x18063CB48  lea     r8, [rsp + 0x30]                          
+  0x18063CB4D  mov     edx, ebx                                  
+  0x18063CB4F  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x18063CB54  mov     rax, qword ptr [rsp + 0x30]               
+  0x18063CB59  mov     rbx, qword ptr [rsp + 0x38]               
+  0x18063CB5E  mov     rsi, qword ptr [rsp + 0x40]               
+  0x18063CB63  add     rsp, 0x20                                 
+  0x18063CB67  pop     rdi                                       
+  0x18063CB68  ret                                               
+
+18063CB69:
+  0x18063CB69  mov     rbx, qword ptr [rsp + 0x38]               
+  0x18063CB6E  xor     eax, eax                                  
+  0x18063CB70  mov     rsi, qword ptr [rsp + 0x40]               
+  0x18063CB75  add     rsp, 0x20                                 
+  0x18063CB79  pop     rdi                                       
+  0x18063CB7A  ret                                               
+
+18063CB7B:
+  0x18063CB7B  call    0x180246730                                  ; THROW NullReferenceException

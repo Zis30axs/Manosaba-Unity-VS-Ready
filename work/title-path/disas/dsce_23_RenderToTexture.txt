@@ -1,0 +1,450 @@
+====================================================================================================
+FUNCTION RVA 0xD1B050  VA 0x180D1B050  size 0x671 (1649 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$RenderToTexture
+  csig   : UnityEngine_RenderTexture_o* GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__RenderToTexture (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, UnityEngine_Sprite_o* dicedSprite, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: protected override RenderTexture RenderToTexture(Sprite dicedSprite)
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1B050  push    rbp                                       
+  0x180D1B052  push    rbx                                       
+  0x180D1B053  push    rdi                                       
+  0x180D1B054  lea     rbp, [rsp - 0x50]                         
+  0x180D1B059  sub     rsp, 0x150                                
+  0x180D1B060  cmp     byte ptr [rip + 0x23c2298], 0                ; data_30DD2FF
+  0x180D1B067  mov     rbx, rdx                                  
+  0x180D1B06A  mov     rdi, rcx                                  
+  0x180D1B06D  jne     0x180d1b087                               
+  0x180D1B06F  lea     rcx, [rip + 0x21152aa]                       ; TYPE UnityEngine.Graphics_TypeInfo
+  0x180D1B076  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B07B  lock or dword ptr [rsp], 0                        
+  0x180D1B080  mov     byte ptr [rip + 0x23c2278], 1                ; data_30DD2FF
+
+180D1B087:
+  0x180D1B087  mov     qword ptr [rsp + 0x170], rsi              
+  0x180D1B08F  movaps  xmmword ptr [rsp + 0x140], xmm6           
+  0x180D1B097  movaps  xmmword ptr [rsp + 0x130], xmm7           
+  0x180D1B09F  movaps  xmmword ptr [rsp + 0x120], xmm8           
+  0x180D1B0A8  movaps  xmmword ptr [rsp + 0x110], xmm9           
+  0x180D1B0B1  test    rbx, rbx                                  
+  0x180D1B0B4  je      0x180d1b5dd                               
+  0x180D1B0BA  cmp     byte ptr [rip + 0x23cac85], 0                ; data_30E5D46
+  0x180D1B0C1  jne     0x180d1b0db                               
+  0x180D1B0C3  lea     rcx, [rip + 0x2142e36]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Sprite>()
+  0x180D1B0CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B0CF  lock or dword ptr [rsp], 0                        
+  0x180D1B0D4  mov     byte ptr [rip + 0x23cac6b], 1                ; data_30E5D46
+
+180D1B0DB:
+  0x180D1B0DB  xorps   xmm0, xmm0                                
+  0x180D1B0DE  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D1B0E3  mov     rsi, qword ptr [rbx + 0x10]               
+  0x180D1B0E7  test    rsi, rsi                                  
+  0x180D1B0EA  je      0x180d1b6b7                               
+  0x180D1B0F0  mov     rax, qword ptr [rip + 0x23cacc9]             ; data_30E5DC0
+  0x180D1B0F7  test    rax, rax                                  
+  0x180D1B0FA  jne     0x180d1b118                               
+  0x180D1B0FC  lea     rcx, [rip + 0x18d21bd]                       ; data_25ED2C0
+  0x180D1B103  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B108  test    rax, rax                                  
+  0x180D1B10B  je      0x180d1b5e3                               
+  0x180D1B111  mov     qword ptr [rip + 0x23caca8], rax             ; data_30E5DC0
+
+180D1B118:
+  0x180D1B118  lea     rdx, [rsp + 0x50]                         
+  0x180D1B11D  mov     rcx, rsi                                  
+  0x180D1B120  call    rax                                       
+  0x180D1B122  movss   xmm8, dword ptr [rip + 0x1dc7a99]            ; data_2AE2BC4
+  0x180D1B12B  movss   xmm7, dword ptr [rsp + 0x50]              
+  0x180D1B131  movss   xmm9, dword ptr [rsp + 0x54]              
+  0x180D1B138  divss   xmm7, xmm8                                
+  0x180D1B13D  divss   xmm9, xmm8                                
+  0x180D1B142  cmp     byte ptr [rip + 0x23cabfd], 0                ; data_30E5D46
+  0x180D1B149  jne     0x180d1b163                               
+  0x180D1B14B  lea     rcx, [rip + 0x2142dae]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Sprite>()
+  0x180D1B152  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B157  lock or dword ptr [rsp], 0                        
+  0x180D1B15C  mov     byte ptr [rip + 0x23cabe3], 1                ; data_30E5D46
+
+180D1B163:
+  0x180D1B163  xorps   xmm0, xmm0                                
+  0x180D1B166  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D1B16B  mov     rsi, qword ptr [rbx + 0x10]               
+  0x180D1B16F  test    rsi, rsi                                  
+  0x180D1B172  je      0x180d1b6ac                               
+  0x180D1B178  mov     rax, qword ptr [rip + 0x23cac41]             ; data_30E5DC0
+  0x180D1B17F  test    rax, rax                                  
+  0x180D1B182  jne     0x180d1b1a0                               
+  0x180D1B184  lea     rcx, [rip + 0x18d2135]                       ; data_25ED2C0
+  0x180D1B18B  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B190  test    rax, rax                                  
+  0x180D1B193  je      0x180d1b5fa                               
+  0x180D1B199  mov     qword ptr [rip + 0x23cac20], rax             ; data_30E5DC0
+
+180D1B1A0:
+  0x180D1B1A0  lea     rdx, [rsp + 0x40]                         
+  0x180D1B1A5  mov     rcx, rsi                                  
+  0x180D1B1A8  call    rax                                       
+  0x180D1B1AA  movss   xmm6, dword ptr [rsp + 0x40]              
+  0x180D1B1B0  addss   xmm6, dword ptr [rsp + 0x48]              
+  0x180D1B1B6  divss   xmm6, xmm8                                
+  0x180D1B1BB  subss   xmm6, xmm7                                
+  0x180D1B1BF  movss   xmm7, dword ptr [rsp + 0x44]              
+  0x180D1B1C5  addss   xmm7, dword ptr [rsp + 0x4c]              
+  0x180D1B1CB  andps   xmm6, xmmword ptr [rip + 0x1dc882e]          ; data_2AE3A00
+  0x180D1B1D2  divss   xmm7, xmm8                                
+  0x180D1B1D7  subss   xmm7, xmm9                                
+  0x180D1B1DC  andps   xmm7, xmmword ptr [rip + 0x1dc881d]          ; data_2AE3A00
+  0x180D1B1E3  mov     rax, qword ptr [rdi + 0xe8]               
+  0x180D1B1EA  test    rax, rax                                  
+  0x180D1B1ED  je      0x180d1b5dd                               
+  0x180D1B1F3  movaps  xmm0, xmm6                                
+  0x180D1B1F6  mulss   xmm0, dword ptr [rax + 0x38]                 ; rax-><ChangePosition>d__32.asyncToken
+  0x180D1B1FB  call    0x1804b4070                                  ; -> sub_4B4070 (runtime/helper)
+  0x180D1B200  mov     esi, eax                                  
+  0x180D1B202  mov     rcx, qword ptr [rdi + 0xe8]               
+  0x180D1B209  test    rcx, rcx                                  
+  0x180D1B20C  je      0x180d1b5dd                               
+  0x180D1B212  movaps  xmm0, xmm7                                
+  0x180D1B215  mov     qword ptr [rsp + 0x180], r14              
+  0x180D1B21D  mulss   xmm0, dword ptr [rcx + 0x38]                 ; rcx-><ChangePosition>d__32.asyncToken
+  0x180D1B222  movaps  xmmword ptr [rsp + 0x100], xmm10          
+  0x180D1B22B  call    0x1804b4070                                  ; -> sub_4B4070 (runtime/helper)
+  0x180D1B230  xor     r9d, r9d                                  
+  0x180D1B233  xor     r8d, r8d                                  
+  0x180D1B236  mov     edx, eax                                  
+  0x180D1B238  mov     ecx, esi                                  
+  0x180D1B23A  call    0x182046980                                  ; -> UnityEngine.RenderTexture$$GetTemporary
+  0x180D1B23F  xor     edx, edx                                  
+  0x180D1B241  mov     rcx, rbx                                  
+  0x180D1B244  mov     r14, rax                                  
+  0x180D1B247  call    0x181fd5e60                                  ; -> UnityEngine.Sprite$$get_pivot
+  0x180D1B24C  mov     qword ptr [rbp + 0x78], rax               
+  0x180D1B250  movss   xmm9, dword ptr [rbp + 0x78]              
+  0x180D1B256  movss   xmm10, dword ptr [rbp + 0x7c]             
+  0x180D1B25C  divss   xmm9, xmm6                                
+  0x180D1B261  divss   xmm10, xmm7                               
+  0x180D1B266  cmp     byte ptr [rip + 0x23caae0], 0                ; data_30E5D4D
+  0x180D1B26D  jne     0x180d1b287                               
+  0x180D1B26F  lea     rcx, [rip + 0x2142c8a]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Sprite>()
+  0x180D1B276  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B27B  lock or dword ptr [rsp], 0                        
+  0x180D1B280  mov     byte ptr [rip + 0x23caac6], 1                ; data_30E5D4D
+
+180D1B287:
+  0x180D1B287  mov     rsi, qword ptr [rbx + 0x10]               
+  0x180D1B28B  test    rsi, rsi                                  
+  0x180D1B28E  je      0x180d1b6a1                               
+  0x180D1B294  mov     rax, qword ptr [rip + 0x23cab5d]             ; data_30E5DF8
+  0x180D1B29B  test    rax, rax                                  
+  0x180D1B29E  jne     0x180d1b2bc                               
+  0x180D1B2A0  lea     rcx, [rip + 0x18d2231]                       ; data_25ED4D8
+  0x180D1B2A7  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B2AC  test    rax, rax                                  
+  0x180D1B2AF  je      0x180d1b611                               
+  0x180D1B2B5  mov     qword ptr [rip + 0x23cab3c], rax             ; data_30E5DF8
+
+180D1B2BC:
+  0x180D1B2BC  movaps  xmmword ptr [rsp + 0xf0], xmm11           
+  0x180D1B2C5  mov     rcx, rsi                                  
+  0x180D1B2C8  movaps  xmmword ptr [rsp + 0xe0], xmm12           
+  0x180D1B2D1  call    rax                                       
+  0x180D1B2D3  movss   xmm2, dword ptr [rip + 0x1dc744d]            ; data_2AE2728
+  0x180D1B2DB  movaps  xmm1, xmm6                                
+  0x180D1B2DE  divss   xmm9, xmm0                                
+  0x180D1B2E3  divss   xmm10, xmm0                               
+  0x180D1B2E8  movaps  xmm0, xmm7                                
+  0x180D1B2EB  mulss   xmm9, xmm6                                
+  0x180D1B2F0  mulss   xmm10, xmm7                               
+  0x180D1B2F5  mulss   xmm1, xmm2                                
+  0x180D1B2F9  mulss   xmm0, xmm2                                
+  0x180D1B2FD  subss   xmm9, xmm1                                
+  0x180D1B302  subss   xmm10, xmm0                               
+  0x180D1B307  mulss   xmm6, xmm2                                
+  0x180D1B30B  mulss   xmm7, xmm2                                
+  0x180D1B30F  mov     rax, qword ptr [rip + 0x23cce8a]             ; data_30E81A0
+  0x180D1B316  xorps   xmm0, xmm0                                
+  0x180D1B319  movaps  xmm11, xmm6                               
+  0x180D1B31D  movaps  xmm12, xmm7                               
+  0x180D1B321  xorps   xmm11, xmmword ptr [rip + 0x1dc8717]         ; data_2AE3A40
+  0x180D1B329  xorps   xmm12, xmmword ptr [rip + 0x1dc870f]         ; data_2AE3A40
+  0x180D1B331  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x180D1B336  movups  xmmword ptr [rsp + 0x70], xmm0            
+  0x180D1B33B  movups  xmmword ptr [rbp - 0x80], xmm0            
+  0x180D1B33F  movups  xmmword ptr [rbp - 0x70], xmm0            
+  0x180D1B343  test    rax, rax                                  
+  0x180D1B346  jne     0x180d1b364                               
+  0x180D1B348  lea     rcx, [rip + 0x18e7d51]                       ; data_26030A0
+  0x180D1B34F  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B354  test    rax, rax                                  
+  0x180D1B357  je      0x180d1b628                               
+  0x180D1B35D  mov     qword ptr [rip + 0x23cce3c], rax             ; data_30E81A0
+
+180D1B364:
+  0x180D1B364  lea     rcx, [rsp + 0x60]                         
+  0x180D1B369  movaps  xmm3, xmm7                                
+  0x180D1B36C  mov     qword ptr [rsp + 0x30], rcx               
+  0x180D1B371  movaps  xmm2, xmm12                               
+  0x180D1B375  movss   dword ptr [rsp + 0x28], xmm8              
+  0x180D1B37C  movaps  xmm1, xmm6                                
+  0x180D1B37F  xorps   xmm8, xmm8                                
+  0x180D1B383  movaps  xmm0, xmm11                               
+  0x180D1B387  movss   dword ptr [rsp + 0x20], xmm8              
+  0x180D1B38E  call    rax                                       
+  0x180D1B390  mov     rcx, qword ptr [rip + 0x2114f89]             ; TYPE UnityEngine.Graphics_TypeInfo
+  0x180D1B397  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D1B39E  jne     0x180d1b3a5                               
+  0x180D1B3A0  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1B3A5:
+  0x180D1B3A5  xor     edx, edx                                  
+  0x180D1B3A7  mov     rcx, r14                                  
+  0x180D1B3AA  call    0x181ffc8c0                                  ; -> UnityEngine.Graphics$$SetRenderTarget
+  0x180D1B3AF  mov     rax, qword ptr [rip + 0x23cb6aa]             ; data_30E6A60
+  0x180D1B3B6  xorps   xmm0, xmm0                                
+  0x180D1B3B9  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D1B3BF  test    rax, rax                                  
+  0x180D1B3C2  jne     0x180d1b3e0                               
+  0x180D1B3C4  lea     rcx, [rip + 0x18d9a45]                       ; data_25F4E10
+  0x180D1B3CB  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B3D0  test    rax, rax                                  
+  0x180D1B3D3  je      0x180d1b63f                               
+  0x180D1B3D9  mov     qword ptr [rip + 0x23cb680], rax             ; data_30E6A60
+
+180D1B3E0:
+  0x180D1B3E0  movss   xmm3, dword ptr [rip + 0x1dc7438]            ; data_2AE2820
+  0x180D1B3E8  lea     r8, [rsp + 0x50]                          
+  0x180D1B3ED  mov     dl, 1                                     
+  0x180D1B3EF  movzx   ecx, dl                                   
+  0x180D1B3F2  call    rax                                       
+  0x180D1B3F4  mov     rax, qword ptr [rip + 0x23cb61d]             ; data_30E6A18
+  0x180D1B3FB  test    rax, rax                                  
+  0x180D1B3FE  jne     0x180d1b41c                               
+  0x180D1B400  lea     rcx, [rip + 0x18d9301]                       ; data_25F4708
+  0x180D1B407  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B40C  test    rax, rax                                  
+  0x180D1B40F  je      0x180d1b656                               
+  0x180D1B415  mov     qword ptr [rip + 0x23cb5fc], rax             ; data_30E6A18
+
+180D1B41C:
+  0x180D1B41C  call    rax                                       
+  0x180D1B41E  movups  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180D1B423  mov     rax, qword ptr [rip + 0x23cb626]             ; data_30E6A50
+  0x180D1B42A  movups  xmm1, xmmword ptr [rsp + 0x70]            
+  0x180D1B42F  movaps  xmmword ptr [rbp - 0x60], xmm0            
+  0x180D1B433  movaps  xmmword ptr [rbp - 0x50], xmm1            
+  0x180D1B437  movups  xmm0, xmmword ptr [rbp - 0x80]            
+  0x180D1B43B  movups  xmm1, xmmword ptr [rbp - 0x70]            
+  0x180D1B43F  movaps  xmmword ptr [rbp - 0x40], xmm0            
+  0x180D1B443  movaps  xmmword ptr [rbp - 0x30], xmm1            
+  0x180D1B447  test    rax, rax                                  
+  0x180D1B44A  jne     0x180d1b468                               
+  0x180D1B44C  lea     rcx, [rip + 0x18d940d]                       ; data_25F4860
+  0x180D1B453  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B458  test    rax, rax                                  
+  0x180D1B45B  je      0x180d1b66d                               
+  0x180D1B461  mov     qword ptr [rip + 0x23cb5e8], rax             ; data_30E6A50
+
+180D1B468:
+  0x180D1B468  lea     rcx, [rbp - 0x60]                         
+  0x180D1B46C  call    rax                                       
+  0x180D1B46E  mov     rsi, qword ptr [rdi + 0xf0]               
+  0x180D1B475  xor     edx, edx                                  
+  0x180D1B477  mov     rcx, rbx                                  
+  0x180D1B47A  call    0x181fd58c0                                  ; -> UnityEngine.Sprite$$get_texture
+  0x180D1B47F  test    rsi, rsi                                  
+  0x180D1B482  je      0x180d1b69b                               
+  0x180D1B488  xor     r8d, r8d                                  
+  0x180D1B48B  mov     rdx, rax                                  
+  0x180D1B48E  mov     rcx, rsi                                  
+  0x180D1B491  call    0x18200bcd0                                  ; -> UnityEngine.Material$$set_mainTexture
+  0x180D1B496  mov     rcx, qword ptr [rdi + 0xf0]               
+  0x180D1B49D  test    rcx, rcx                                  
+  0x180D1B4A0  je      0x180d1b69b                               
+  0x180D1B4A6  xor     r8d, r8d                                  
+  0x180D1B4A9  xor     edx, edx                                  
+  0x180D1B4AB  call    0x18200eb50                                  ; -> UnityEngine.Material$$SetPass
+  0x180D1B4B0  mov     rbx, qword ptr [rdi + 0xf8]               
+  0x180D1B4B7  cmp     byte ptr [rip + 0x23bc071], 0                ; data_30D752F
+  0x180D1B4BE  jne     0x180d1b4d8                               
+  0x180D1B4C0  lea     rcx, [rip + 0x21148c1]                       ; TYPE UnityEngine.Quaternion_TypeInfo
+  0x180D1B4C7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B4CC  lock or dword ptr [rsp], 0                        
+  0x180D1B4D1  mov     byte ptr [rip + 0x23bc057], 1                ; data_30D752F
+
+180D1B4D8:
+  0x180D1B4D8  cmp     byte ptr [rip + 0x23cb4b8], 0                ; data_30E6997
+  0x180D1B4DF  mov     rax, qword ptr [rip + 0x21148a2]             ; TYPE UnityEngine.Quaternion_TypeInfo
+  0x180D1B4E6  mov     rdx, qword ptr [rax + 0xb8]               
+  0x180D1B4ED  movups  xmm6, xmmword ptr [rdx]                   
+  0x180D1B4F0  jne     0x180d1b50a                               
+  0x180D1B4F2  lea     rcx, [rip + 0x2114e27]                       ; TYPE UnityEngine.Graphics_TypeInfo
+  0x180D1B4F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B4FE  lock or dword ptr [rsp], 0                        
+  0x180D1B503  mov     byte ptr [rip + 0x23cb48d], 1                ; data_30E6997
+
+180D1B50A:
+  0x180D1B50A  mov     rcx, qword ptr [rip + 0x2114e0f]             ; TYPE UnityEngine.Graphics_TypeInfo
+  0x180D1B511  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D1B518  jne     0x180d1b51f                               
+  0x180D1B51A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D1B51F:
+  0x180D1B51F  unpcklps xmm9, xmm10                               
+  0x180D1B523  lea     r8, [rsp + 0x50]                          
+  0x180D1B528  mov     r9d, 0xffffffff                           
+  0x180D1B52E  movsd   qword ptr [rsp + 0x40], xmm9              
+  0x180D1B535  lea     rdx, [rsp + 0x40]                         
+  0x180D1B53A  movss   dword ptr [rsp + 0x48], xmm8              
+  0x180D1B541  mov     rcx, rbx                                  
+  0x180D1B544  movdqa  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D1B54A  mov     qword ptr [rsp + 0x20], 0                 
+  0x180D1B553  call    0x181ffaeb0                                  ; -> UnityEngine.Graphics$$DrawMeshNow
+  0x180D1B558  mov     rax, qword ptr [rip + 0x23cb4c1]             ; data_30E6A20
+  0x180D1B55F  test    rax, rax                                  
+  0x180D1B562  jne     0x180d1b580                               
+  0x180D1B564  lea     rcx, [rip + 0x18d91bd]                       ; data_25F4728
+  0x180D1B56B  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1B570  test    rax, rax                                  
+  0x180D1B573  je      0x180d1b684                               
+  0x180D1B579  mov     qword ptr [rip + 0x23cb4a0], rax             ; data_30E6A20
+
+180D1B580:
+  0x180D1B580  call    rax                                       
+  0x180D1B582  movaps  xmm11, xmmword ptr [rsp + 0xf0]           
+  0x180D1B58B  mov     rax, r14                                  
+  0x180D1B58E  mov     r14, qword ptr [rsp + 0x180]              
+  0x180D1B596  movaps  xmm12, xmmword ptr [rsp + 0xe0]           
+  0x180D1B59F  movaps  xmm10, xmmword ptr [rsp + 0x100]          
+  0x180D1B5A8  movaps  xmm9, xmmword ptr [rsp + 0x110]           
+  0x180D1B5B1  movaps  xmm8, xmmword ptr [rsp + 0x120]           
+  0x180D1B5BA  movaps  xmm7, xmmword ptr [rsp + 0x130]           
+  0x180D1B5C2  movaps  xmm6, xmmword ptr [rsp + 0x140]           
+  0x180D1B5CA  mov     rsi, qword ptr [rsp + 0x170]              
+  0x180D1B5D2  add     rsp, 0x150                                
+  0x180D1B5D9  pop     rdi                                       
+  0x180D1B5DA  pop     rbx                                       
+  0x180D1B5DB  pop     rbp                                       
+  0x180D1B5DC  ret                                               
+
+180D1B5DD:
+  0x180D1B5DD  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D1B5E2  int3                                              
+
+180D1B5E3:
+  0x180D1B5E3  lea     rcx, [rip + 0x18d1cd6]                       ; data_25ED2C0
+  0x180D1B5EA  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B5EF  mov     rcx, rax                                  
+  0x180D1B5F2  xor     edx, edx                                  
+  0x180D1B5F4  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B5F9  int3                                              
+
+180D1B5FA:
+  0x180D1B5FA  lea     rcx, [rip + 0x18d1cbf]                       ; data_25ED2C0
+  0x180D1B601  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B606  mov     rcx, rax                                  
+  0x180D1B609  xor     edx, edx                                  
+  0x180D1B60B  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B610  int3                                              
+
+180D1B611:
+  0x180D1B611  lea     rcx, [rip + 0x18d1ec0]                       ; data_25ED4D8
+  0x180D1B618  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B61D  mov     rcx, rax                                  
+  0x180D1B620  xor     edx, edx                                  
+  0x180D1B622  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B627  int3                                              
+
+180D1B628:
+  0x180D1B628  lea     rcx, [rip + 0x18e7a71]                       ; data_26030A0
+  0x180D1B62F  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B634  mov     rcx, rax                                  
+  0x180D1B637  xor     edx, edx                                  
+  0x180D1B639  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B63E  int3                                              
+
+180D1B63F:
+  0x180D1B63F  lea     rcx, [rip + 0x18d97ca]                       ; data_25F4E10
+  0x180D1B646  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B64B  mov     rcx, rax                                  
+  0x180D1B64E  xor     edx, edx                                  
+  0x180D1B650  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B655  int3                                              
+
+180D1B656:
+  0x180D1B656  lea     rcx, [rip + 0x18d90ab]                       ; data_25F4708
+  0x180D1B65D  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B662  mov     rcx, rax                                  
+  0x180D1B665  xor     edx, edx                                  
+  0x180D1B667  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B66C  int3                                              
+
+180D1B66D:
+  0x180D1B66D  lea     rcx, [rip + 0x18d91ec]                       ; data_25F4860
+  0x180D1B674  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B679  mov     rcx, rax                                  
+  0x180D1B67C  xor     edx, edx                                  
+  0x180D1B67E  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B683  int3                                              
+
+180D1B684:
+  0x180D1B684  lea     rcx, [rip + 0x18d909d]                       ; data_25F4728
+  0x180D1B68B  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1B690  mov     rcx, rax                                  
+  0x180D1B693  xor     edx, edx                                  
+  0x180D1B695  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1B69A  int3                                              
+
+180D1B69B:
+  0x180D1B69B  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D1B6A0  int3                                              
+
+180D1B6A1:
+  0x180D1B6A1  xor     edx, edx                                  
+  0x180D1B6A3  mov     rcx, rbx                                  
+  0x180D1B6A6  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D1B6AB  int3                                              
+
+180D1B6AC:
+  0x180D1B6AC  xor     edx, edx                                  
+  0x180D1B6AE  mov     rcx, rbx                                  
+  0x180D1B6B1  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D1B6B6  int3                                              
+
+180D1B6B7:
+  0x180D1B6B7  xor     edx, edx                                  
+  0x180D1B6B9  mov     rcx, rbx                                  
+  0x180D1B6BC  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

@@ -89,16 +89,21 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	[Token(Token = "0x1700000F")]
     	public bool Masked
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD1CF30, 243 B (folded with IsMasked: the getter is IsMasked inlined)
+    		// Annotated disassembly: work/title-path/disas/lce_05_get_Masked_IsMasked.txt
     		[Token(Token = "0x600008C")]
     		[Address(RVA = "0xD1CF30", Offset = "0xD1B930", VA = "0x180D1CF30", Slot = "78")]
     		get
     		{
-    			return default(bool);
+    			return IsMasked();
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD1D030, 258 B (folded with ChangeMaskability)
+    		// Annotated disassembly: work/title-path/disas/lce_06_set_Masked_ChangeMaskability.txt
     		[Token(Token = "0x600008D")]
     		[Address(RVA = "0xD1D030", Offset = "0xD1BA30", VA = "0x180D1D030", Slot = "79")]
     		set
     		{
+    			ChangeMaskability(value);
     		}
     	}
 
@@ -143,16 +148,29 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     		SubId = subId;
     	}
 
+    	// RECONSTRUCTED | Confidence: B | RVA: 0xD1D250, 791 B (folded with DicedSpriteCharacterExtended.ChangePivot; renderer slot 64 here)
+    	// Each coordinate is x.GetValueOrDefault() when HasValue, otherwise the coordinate of the vtable +0x328 = slot 31 getter, i.e.
+    	// Position (recorded as shipped, see DicedSpriteCharacterExtended.ChangePivot); the result goes to the renderer's slot 24 set_Pivot.
+    	// Annotated disassembly: work/title-path/disas/lce_07_ChangePivot.txt
     	[Token(Token = "0x6000090")]
     	[Address(RVA = "0xD1D250", Offset = "0xD1BC50", VA = "0x180D1D250", Slot = "77")]
     	public void ChangePivot(float? x, float? y)
     	{
+    		TransitionalRenderer.Pivot = new Vector2(x ?? Position.x, y ?? Position.y);
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD1D030, 258 B
+    	// Identical (folded) to DicedSpriteCharacterExtended's 0xD191E0 / 0xD192E0 with the LayeredActor renderer accessor (vtable +0x538 = slot 64):
+    	// TransitionalRenderer `as TransitionalSpriteRenderer`, its SpriteMaterial (vtable +0x3E8, slot 43) and the StencilComp property id:
+    	// masked is Stencil Comparison 3 (Equal, 0x2AE29B8), unmasked 8 (Always, 0x2AE2AA4).
     	[Token(Token = "0x6000091")]
     	[Address(RVA = "0xD1D030", Offset = "0xD1BA30", VA = "0x180D1D030", Slot = "80")]
     	public void ChangeMaskability(bool enable)
     	{
+    		if (TransitionalRenderer is TransitionalSpriteRenderer spriteRenderer)
+    		{
+    			spriteRenderer.SpriteMaterial.SetFloat(IMaskabilityChangeableActor.ShaderPropertyIds.StencilComp, enable ? 3f : 8f);
+    		}
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0xD1D570 (kickoff) / 0xD1D690 (<Initialize>d__13.MoveNext, 1116 B)
@@ -179,11 +197,19 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     		Behaviour.transform.SetParent(GetOrCreateParent(), true);
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD1CF30, 243 B
+    	// Identical (folded) to DicedSpriteCharacterExtended's 0xD191E0 / 0xD192E0 with the LayeredActor renderer accessor (vtable +0x538 = slot 64):
+    	// TransitionalRenderer `as TransitionalSpriteRenderer`, its SpriteMaterial (vtable +0x3E8, slot 43) and the StencilComp property id:
+    	// masked is Stencil Comparison 3 (Equal, 0x2AE29B8), unmasked 8 (Always, 0x2AE2AA4).
     	[Token(Token = "0x6000093")]
     	[Address(RVA = "0xD1CF30", Offset = "0xD1B930", VA = "0x180D1CF30")]
     	private bool IsMasked()
     	{
-    		return default(bool);
+    		if (TransitionalRenderer is TransitionalSpriteRenderer spriteRenderer)
+    		{
+    			return Mathf.Approximately(spriteRenderer.SpriteMaterial.GetFloat(IMaskabilityChangeableActor.ShaderPropertyIds.StencilComp), 3f);
+    		}
+    		return false;
     	}
     }
 }

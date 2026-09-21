@@ -1,0 +1,26 @@
+====================================================================================================
+FUNCTION RVA 0xD18AA0  VA 0x180D18AA0  size 0x59 (89 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds$$.cctor
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_IMaskabilityChangeableActor_ShaderPropertyIds___cctor (const MethodInfo* method);
+  dump.cs: IMaskabilityChangeableActor.ShaderPropertyIds :: private static void .cctor()
+====================================================================================================
+  0x180D18AA0  sub     rsp, 0x28                                 
+  0x180D18AA4  cmp     byte ptr [rip + 0x23c4843], 0                ; data_30DD2EE
+  0x180D18AAB  jne     0x180d18ad6                               
+  0x180D18AAD  lea     rcx, [rip + 0x21167d4]                       ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds_TypeInfo
+  0x180D18AB4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D18AB9  lock or dword ptr [rsp], 0                        
+  0x180D18ABE  lea     rcx, [rip + 0x21167e3]                       ; STR '_StencilComp'
+  0x180D18AC5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D18ACA  lock or dword ptr [rsp], 0                        
+  0x180D18ACF  mov     byte ptr [rip + 0x23c4818], 1                ; data_30DD2EE
+
+180D18AD6:
+  0x180D18AD6  mov     rcx, qword ptr [rip + 0x21167cb]             ; STR '_StencilComp'
+  0x180D18ADD  xor     edx, edx                                  
+  0x180D18ADF  call    0x182004180                                  ; -> UnityEngine.Shader$$PropertyToID
+  0x180D18AE4  mov     rcx, qword ptr [rip + 0x211679d]             ; TYPE GigaCreation.NaninovelExtender.ExtendedActors.IMaskabilityChangeableActor.ShaderPropertyIds_TypeInfo
+  0x180D18AEB  mov     rdx, qword ptr [rcx + 0xb8]               
+  0x180D18AF2  mov     dword ptr [rdx], eax                      
+  0x180D18AF4  add     rsp, 0x28                                 
+  0x180D18AF8  ret                                               

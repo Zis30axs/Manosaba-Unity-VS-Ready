@@ -1,0 +1,95 @@
+====================================================================================================
+FUNCTION RVA 0xD19470  VA 0x180D19470  size 0xCA (202 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$get_NaniCharacterManager
+  csig   : GigaCreation_NaninovelExtender_ExtendedActors_ICharacterManagerExtended_o* GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__get_NaniCharacterManager (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: private ICharacterManagerExtended get_NaniCharacterManager()
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D19470  push    rbx                                       
+  0x180D19472  sub     rsp, 0x20                                 
+  0x180D19476  cmp     byte ptr [rip + 0x23c3e76], 0                ; data_30DD2F3
+  0x180D1947D  mov     rbx, rcx                                  
+  0x180D19480  jne     0x180d194ab                               
+  0x180D19482  lea     rcx, [rip + 0x2115d77]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<ICharacterManagerExtended>()
+  0x180D19489  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1948E  lock or dword ptr [rsp], 0                        
+  0x180D19493  lea     rcx, [rip + 0x2138a96]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D1949A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1949F  lock or dword ptr [rsp], 0                        
+  0x180D194A4  mov     byte ptr [rip + 0x23c3e48], 1                ; data_30DD2F3
+
+180D194AB:
+  0x180D194AB  mov     rax, qword ptr [rbx + 0x120]              
+  0x180D194B2  test    rax, rax                                  
+  0x180D194B5  jne     0x180d19534                               
+  0x180D194B7  mov     rcx, qword ptr [rip + 0x2138a72]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D194BE  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D194C4  jne     0x180d194cb                               
+  0x180D194C6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D194CB:
+  0x180D194CB  mov     rcx, qword ptr [rip + 0x2115d2e]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<ICharacterManagerExtended>()
+  0x180D194D2  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D194D7  cmp     dword ptr [rip + 0x23bfce6], 0               ; data_30D91C4
+  0x180D194DE  mov     r9, rax                                   
+  0x180D194E1  mov     qword ptr [rbx + 0x120], rax              
+  0x180D194E8  je      0x180d19531                               
+  0x180D194EA  lea     r8, [rbx + 0x120]                         
+  0x180D194F1  shr     r8, 0xc                                   
+  0x180D194F5  lea     rcx, [rip + 0x241b084]                       ; data_3134580
+  0x180D194FC  and     r8d, 0x1fffff                             
+  0x180D19503  mov     eax, r8d                                  
+  0x180D19506  shr     rax, 6                                    
+  0x180D1950A  and     r8d, 0x3f                                 
+  0x180D1950E  lea     rdx, [rcx + rax*8]                        
+  0x180D19512  prefetchw byte ptr [rdx]                            
+  0x180D19515  nop     word ptr [rax + rax]                      
+
+180D19520:
+  0x180D19520  mov     rax, qword ptr [rdx]                      
+  0x180D19523  mov     rcx, rax                                  
+  0x180D19526  bts     rcx, r8                                   
+  0x180D1952A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D1952F  jne     0x180d19520                               
+
+180D19531:
+  0x180D19531  mov     rax, r9                                   
+
+180D19534:
+  0x180D19534  add     rsp, 0x20                                 
+  0x180D19538  pop     rbx                                       
+  0x180D19539  ret                                               

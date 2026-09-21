@@ -1,0 +1,258 @@
+====================================================================================================
+FUNCTION RVA 0xD1A400  VA 0x180D1A400  size 0x317 (791 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$ChangePivot
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__ChangePivot (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, System_Nullable_float__o x, System_Nullable_float__o y, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: public void ChangePivot(Nullable<float> x, Nullable<float> y)
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1A400  push    rbp                                       
+  0x180D1A402  push    r12                                       
+  0x180D1A404  push    r13                                       
+  0x180D1A406  push    r14                                       
+  0x180D1A408  push    r15                                       
+  0x180D1A40A  sub     rsp, 0x40                                 
+  0x180D1A40E  lea     rbp, [rsp + 0x20]                         
+  0x180D1A413  cmp     byte ptr [rip + 0x23c2edf], 0                ; data_30DD2F9
+  0x180D1A41A  mov     qword ptr [rbp + 0x58], rbx               
+  0x180D1A41E  mov     rbx, rdx                                  
+  0x180D1A421  mov     qword ptr [rbp + 0x60], rsi               
+  0x180D1A425  mov     rsi, rcx                                  
+  0x180D1A428  mov     qword ptr [rbp + 0x68], rdi               
+  0x180D1A42C  mov     rdi, r8                                   
+  0x180D1A42F  movaps  xmmword ptr [rbp + 0x10], xmm6            
+  0x180D1A433  jne     0x180d1a45e                               
+  0x180D1A435  lea     rcx, [rip + 0x213735c]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1A43C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A441  lock or dword ptr [rsp], 0                        
+  0x180D1A446  lea     rcx, [rip + 0x213737b]                       ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1A44D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1A452  lock or dword ptr [rsp], 0                        
+  0x180D1A457  mov     byte ptr [rip + 0x23c2e9b], 1                ; data_30DD2F9
+
+180D1A45E:
+  0x180D1A45E  mov     rdx, qword ptr [rsi]                      
+  0x180D1A461  mov     rcx, rsi                                  
+  0x180D1A464  mov     rax, qword ptr [rdx + 0x528]              
+  0x180D1A46B  mov     rdx, qword ptr [rdx + 0x530]              
+  0x180D1A472  call    rax                                       
+  0x180D1A474  mov     rcx, qword ptr [rip + 0x213734d]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1A47B  mov     r15, rax                                  
+  0x180D1A47E  mov     qword ptr [rbp + 0x50], rbx               
+  0x180D1A482  mov     rax, qword ptr [rcx + 0x20]                  ; rcx-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A486  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A48D  jne     0x180d1a497                               
+  0x180D1A48F  mov     rcx, rax                                  
+  0x180D1A492  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A497:
+  0x180D1A497  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A49E  lea     r8, [rbp + 0x50]                          
+  0x180D1A4A2  movabs  r13, 0xffffffffffffff0                    
+  0x180D1A4AC  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1A4B0  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1A4B7  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><ChangePosition>d__32.<>4__this | <ChangePositionXAsync>d__27.<>4__this | <ChangePositionYAsync>d__28.<>4__this
+  0x180D1A4BB  add     r8, rax                                   
+  0x180D1A4BE  mov     rax, qword ptr [rdx + 0x10]               
+  0x180D1A4C2  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1A4C6  lea     rcx, [r8 - 0x10]                          
+  0x180D1A4CA  cmovge  rcx, r8                                   
+  0x180D1A4CE  cmp     byte ptr [rcx], 0                         
+  0x180D1A4D1  je      0x180d1a584                               
+  0x180D1A4D7  mov     rbx, qword ptr [rip + 0x21372ba]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1A4DE  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A4E2  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A4E9  jne     0x180d1a4f3                               
+  0x180D1A4EB  mov     rcx, rax                                  
+  0x180D1A4EE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A4F3:
+  0x180D1A4F3  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A4FA  mov     rcx, qword ptr [rax]                      
+  0x180D1A4FD  mov     r14d, dword ptr [rcx + 0xfc]              
+  0x180D1A504  lea     rax, [r14 + 0xf]                          
+  0x180D1A508  cmp     rax, r14                                  
+  0x180D1A50B  ja      0x180d1a510                               
+  0x180D1A50D  mov     rax, r13                                  
+
+180D1A510:
+  0x180D1A510  and     rax, 0xfffffffffffffff0                   
+  0x180D1A514  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1A519  sub     rsp, rax                                  
+  0x180D1A51C  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A520  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A527  lea     r12, [rsp + 0x20]                         
+  0x180D1A52C  jne     0x180d1a536                               
+  0x180D1A52E  mov     rcx, rax                                  
+  0x180D1A531  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A536:
+  0x180D1A536  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A53D  mov     r8, r14                                   
+  0x180D1A540  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1A544  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1A54B  lea     rcx, [rbp + 0x50]                         
+  0x180D1A54F  movsxd  rax, dword ptr [r9 + 0x38]                   ; r9-><ChangePosition>d__32.asyncToken
+  0x180D1A553  add     rcx, rax                                  
+  0x180D1A556  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1A55A  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1A55E  lea     rdx, [rcx - 0x10]                         
+  0x180D1A562  cmovge  rdx, rcx                                  
+  0x180D1A566  mov     rcx, r12                                  
+  0x180D1A569  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1A56E  mov     r8, r14                                   
+  0x180D1A571  lea     rcx, [rbp + 0x50]                         
+  0x180D1A575  mov     rdx, r12                                  
+  0x180D1A578  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1A57D  movss   xmm6, dword ptr [rbp + 0x50]              
+  0x180D1A582  jmp     0x180d1a5ad                               
+
+180D1A584:
+  0x180D1A584  mov     r8, qword ptr [rsi]                       
+  0x180D1A587  lea     rcx, [rbp]                                
+  0x180D1A58B  mov     rdx, rsi                                  
+  0x180D1A58E  mov     rax, qword ptr [r8 + 0x328]               
+  0x180D1A595  mov     r8, qword ptr [r8 + 0x330]                
+  0x180D1A59C  call    rax                                       
+  0x180D1A59E  movsd   xmm6, qword ptr [rax]                     
+  0x180D1A5A2  mov     eax, dword ptr [rax + 8]                  
+  0x180D1A5A5  mov     dword ptr [rbp + 8], eax                  
+  0x180D1A5A8  movsd   qword ptr [rbp], xmm6                     
+
+180D1A5AD:
+  0x180D1A5AD  mov     rax, qword ptr [rip + 0x2137214]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180D1A5B4  mov     qword ptr [rbp + 0x50], rdi               
+  0x180D1A5B8  mov     rax, qword ptr [rax + 0x20]                  ; rax-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A5BC  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A5C3  jne     0x180d1a5cd                               
+  0x180D1A5C5  mov     rcx, rax                                  
+  0x180D1A5C8  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A5CD:
+  0x180D1A5CD  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A5D4  lea     r8, [rbp + 0x50]                          
+  0x180D1A5D8  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1A5DC  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1A5E3  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><ChangePosition>d__32.<>4__this | <ChangePositionXAsync>d__27.<>4__this | <ChangePositionYAsync>d__28.<>4__this
+  0x180D1A5E7  add     r8, rax                                   
+  0x180D1A5EA  mov     rax, qword ptr [rdx + 0x10]               
+  0x180D1A5EE  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1A5F2  lea     rcx, [r8 - 0x10]                          
+  0x180D1A5F6  cmovge  rcx, r8                                   
+  0x180D1A5FA  cmp     byte ptr [rcx], 0                         
+  0x180D1A5FD  je      0x180d1a6af                               
+  0x180D1A603  mov     rdi, qword ptr [rip + 0x213718e]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180D1A60A  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A60E  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A615  jne     0x180d1a61f                               
+  0x180D1A617  mov     rcx, rax                                  
+  0x180D1A61A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A61F:
+  0x180D1A61F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A626  mov     rcx, qword ptr [rax]                      
+  0x180D1A629  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180D1A62F  lea     rax, [rbx + 0xf]                          
+  0x180D1A633  cmp     rax, rbx                                  
+  0x180D1A636  ja      0x180d1a63b                               
+  0x180D1A638  mov     rax, r13                                  
+
+180D1A63B:
+  0x180D1A63B  and     rax, 0xfffffffffffffff0                   
+  0x180D1A63F  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180D1A644  sub     rsp, rax                                  
+  0x180D1A647  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A64B  test    byte ptr [rax + 0x135], 1                 
+  0x180D1A652  lea     rsi, [rsp + 0x20]                         
+  0x180D1A657  jne     0x180d1a661                               
+  0x180D1A659  mov     rcx, rax                                  
+  0x180D1A65C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D1A661:
+  0x180D1A661  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D1A668  mov     r8, rbx                                   
+  0x180D1A66B  mov     rcx, qword ptr [rax + 8]                  
+  0x180D1A66F  mov     r9, qword ptr [rcx + 0x80]                
+  0x180D1A676  lea     rcx, [rbp + 0x50]                         
+  0x180D1A67A  movsxd  rax, dword ptr [r9 + 0x38]                   ; r9-><ChangePosition>d__32.asyncToken
+  0x180D1A67E  add     rcx, rax                                  
+  0x180D1A681  mov     rax, qword ptr [r9 + 0x30]                   ; r9-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1A685  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1A689  lea     rdx, [rcx - 0x10]                         
+  0x180D1A68D  cmovge  rdx, rcx                                  
+  0x180D1A691  mov     rcx, rsi                                  
+  0x180D1A694  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1A699  mov     r8, rbx                                   
+  0x180D1A69C  lea     rcx, [rbp + 0x50]                         
+  0x180D1A6A0  mov     rdx, rsi                                  
+  0x180D1A6A3  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180D1A6A8  movss   xmm1, dword ptr [rbp + 0x50]              
+  0x180D1A6AD  jmp     0x180d1a6d1                               
+
+180D1A6AF:
+  0x180D1A6AF  mov     r8, qword ptr [rsi]                       
+  0x180D1A6B2  lea     rcx, [rbp]                                
+  0x180D1A6B6  mov     rdx, rsi                                  
+  0x180D1A6B9  mov     rax, qword ptr [r8 + 0x328]               
+  0x180D1A6C0  mov     r8, qword ptr [r8 + 0x330]                
+  0x180D1A6C7  call    rax                                       
+  0x180D1A6C9  movsd   xmm1, qword ptr [rax]                     
+  0x180D1A6CD  shufps  xmm1, xmm1, 0x55                          
+
+180D1A6D1:
+  0x180D1A6D1  test    r15, r15                                  
+  0x180D1A6D4  je      0x180d1a712                               
+  0x180D1A6D6  mov     r8, qword ptr [r15]                       
+  0x180D1A6D9  mov     rcx, r15                                  
+  0x180D1A6DC  unpcklps xmm6, xmm1                                
+  0x180D1A6DF  movq    rdx, xmm6                                 
+  0x180D1A6E4  mov     rax, qword ptr [r8 + 0x2b8]               
+  0x180D1A6EB  mov     r8, qword ptr [r8 + 0x2c0]                
+  0x180D1A6F2  call    rax                                       
+  0x180D1A6F4  mov     rbx, qword ptr [rbp + 0x58]               
+  0x180D1A6F8  mov     rsi, qword ptr [rbp + 0x60]               
+  0x180D1A6FC  mov     rdi, qword ptr [rbp + 0x68]               
+  0x180D1A700  movaps  xmm6, xmmword ptr [rbp + 0x10]            
+  0x180D1A704  lea     rsp, [rbp + 0x20]                            ; rbp-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1A708  pop     r15                                       
+  0x180D1A70A  pop     r14                                       
+  0x180D1A70C  pop     r13                                       
+  0x180D1A70E  pop     r12                                       
+  0x180D1A710  pop     rbp                                       
+  0x180D1A711  ret                                               
+
+180D1A712:
+  0x180D1A712  call    0x180246730                                  ; THROW NullReferenceException

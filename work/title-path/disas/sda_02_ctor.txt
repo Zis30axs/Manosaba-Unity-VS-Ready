@@ -1,0 +1,93 @@
+====================================================================================================
+FUNCTION RVA 0x63CB90  VA 0x18063CB90  size 0x162 (354 bytes)
+  managed: SpriteDicing.DicedSpriteAtlas$$.ctor
+  csig   : void SpriteDicing_DicedSpriteAtlas___ctor (SpriteDicing_DicedSpriteAtlas_o* __this, const MethodInfo* method);
+  dump.cs: SpriteDicing.DicedSpriteAtlas :: public void .ctor()
+  fields of SpriteDicing.DicedSpriteAtlas:
+      +0x18   sprites                        List<Sprite>
+      +0x20   textures                       List<Texture2D>
+====================================================================================================
+  0x18063CB90  mov     qword ptr [rsp + 8], rbx                  
+  0x18063CB95  mov     qword ptr [rsp + 0x10], rsi               
+  0x18063CB9A  push    rdi                                       
+  0x18063CB9B  sub     rsp, 0x20                                 
+  0x18063CB9F  cmp     byte ptr [rip + 0x2a9face], 0                ; data_30DC674
+  0x18063CBA6  mov     rdi, rcx                                  
+  0x18063CBA9  jne     0x18063cbf6                               
+  0x18063CBAB  lea     rcx, [rip + 0x27d7fee]                       ; METHODINFO Method$System.Collections.Generic.List<Sprite>..ctor()
+  0x18063CBB2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CBB7  lock or dword ptr [rsp], 0                        
+  0x18063CBBC  lea     rcx, [rip + 0x27d7fd5]                       ; METHODINFO Method$System.Collections.Generic.List<Texture2D>..ctor()
+  0x18063CBC3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CBC8  lock or dword ptr [rsp], 0                        
+  0x18063CBCD  lea     rcx, [rip + 0x27d7fbc]                       ; TYPE System.Collections.Generic.List<Texture2D>_TypeInfo
+  0x18063CBD4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CBD9  lock or dword ptr [rsp], 0                        
+  0x18063CBDE  lea     rcx, [rip + 0x27d7fa3]                       ; TYPE System.Collections.Generic.List<Sprite>_TypeInfo
+  0x18063CBE5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18063CBEA  lock or dword ptr [rsp], 0                        
+  0x18063CBEF  mov     byte ptr [rip + 0x2a9fa7e], 1                ; data_30DC674
+
+18063CBF6:
+  0x18063CBF6  mov     rcx, qword ptr [rip + 0x27d7f8b]             ; TYPE System.Collections.Generic.List<Sprite>_TypeInfo
+  0x18063CBFD  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x18063CC02  mov     rdx, qword ptr [rip + 0x27d7f97]             ; METHODINFO Method$System.Collections.Generic.List<Sprite>..ctor()
+  0x18063CC09  mov     rcx, rax                                  
+  0x18063CC0C  mov     rbx, rax                                  
+  0x18063CC0F  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x18063CC14  cmp     dword ptr [rip + 0x2a9c5a9], 0               ; data_30D91C4
+  0x18063CC1B  lea     rsi, [rip + 0x2ab167e]                       ; data_30EE2A0
+  0x18063CC22  mov     qword ptr [rdi + 0x18], rbx                  ; rdi->DicedSpriteAtlas.sprites
+  0x18063CC26  je      0x18063cc69                               
+  0x18063CC28  lea     r8, [rdi + 0x18]                             ; rdi->DicedSpriteAtlas.sprites
+  0x18063CC2C  shr     r8, 0xc                                   
+  0x18063CC30  and     r8d, 0x1fffff                             
+  0x18063CC37  mov     eax, r8d                                  
+  0x18063CC3A  shr     rax, 6                                    
+  0x18063CC3E  and     r8d, 0x3f                                 
+  0x18063CC42  lea     rdx, [rsi + rax*8]                        
+  0x18063CC46  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18063CC4D  nop     dword ptr [rax]                           
+
+18063CC50:
+  0x18063CC50  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18063CC57  mov     rcx, rax                                  
+  0x18063CC5A  bts     rcx, r8                                   
+  0x18063CC5E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18063CC67  jne     0x18063cc50                               
+
+18063CC69:
+  0x18063CC69  mov     rcx, qword ptr [rip + 0x27d7f20]             ; TYPE System.Collections.Generic.List<Texture2D>_TypeInfo
+  0x18063CC70  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x18063CC75  mov     rdx, qword ptr [rip + 0x27d7f1c]             ; METHODINFO Method$System.Collections.Generic.List<Texture2D>..ctor()
+  0x18063CC7C  mov     rcx, rax                                  
+  0x18063CC7F  mov     rbx, rax                                  
+  0x18063CC82  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x18063CC87  cmp     dword ptr [rip + 0x2a9c536], 0               ; data_30D91C4
+  0x18063CC8E  mov     qword ptr [rdi + 0x20], rbx                  ; rdi->DicedSpriteAtlas.textures
+  0x18063CC92  je      0x18063ccd9                               
+  0x18063CC94  lea     r8, [rdi + 0x20]                             ; rdi->DicedSpriteAtlas.textures
+  0x18063CC98  shr     r8, 0xc                                   
+  0x18063CC9C  and     r8d, 0x1fffff                             
+  0x18063CCA3  mov     eax, r8d                                  
+  0x18063CCA6  shr     rax, 6                                    
+  0x18063CCAA  and     r8d, 0x3f                                 
+  0x18063CCAE  lea     rdx, [rsi + rax*8]                        
+  0x18063CCB2  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18063CCB9  nop     dword ptr [rax]                           
+
+18063CCC0:
+  0x18063CCC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18063CCC7  mov     rcx, rax                                  
+  0x18063CCCA  bts     rcx, r8                                   
+  0x18063CCCE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18063CCD7  jne     0x18063ccc0                               
+
+18063CCD9:
+  0x18063CCD9  xor     edx, edx                                  
+  0x18063CCDB  mov     rcx, rdi                                  
+  0x18063CCDE  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18063CCE3  mov     rsi, qword ptr [rsp + 0x38]               
+  0x18063CCE8  add     rsp, 0x20                                 
+  0x18063CCEC  pop     rdi                                       
+  0x18063CCED  jmp     0x18206c970                                  ; -> UnityEngine.ScriptableObject$$.ctor

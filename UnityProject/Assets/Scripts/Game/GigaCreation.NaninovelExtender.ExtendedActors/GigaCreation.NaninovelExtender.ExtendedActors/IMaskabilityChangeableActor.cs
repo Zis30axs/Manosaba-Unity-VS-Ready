@@ -1,4 +1,5 @@
 ﻿using Il2CppDummyDll;
+using UnityEngine;
 
 namespace GigaCreation.NaninovelExtender.ExtendedActors
 {
@@ -10,7 +11,8 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	{
     		[Token(Token = "0x4000059")]
     		[FieldOffset(Offset = "0x0")]
-    		public static readonly int StencilComp;
+    		// RECONSTRUCTED | Confidence: A | .cctor RVA 0xD18AA0: Shader.PropertyToID("_StencilComp") (0x182004180)
+    		public static readonly int StencilComp = Shader.PropertyToID("_StencilComp");
     	}
 
     	[Token(Token = "0x17000005")]

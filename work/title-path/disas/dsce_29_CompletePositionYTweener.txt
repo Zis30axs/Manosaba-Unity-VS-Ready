@@ -1,0 +1,84 @@
+====================================================================================================
+FUNCTION RVA 0xD1B8F0  VA 0x180D1B8F0  size 0xA2 (162 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended$$CompletePositionYTweener
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended__CompletePositionYTweener (GigaCreation_NaninovelExtender_ExtendedActors_DicedSpriteCharacterExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.DicedSpriteCharacterExtended :: private void CompletePositionYTweener()
+  fields of DicedSpriteCharacterExtended.<ChangePosition>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   position                       Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionXAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionX                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionYAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionY                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of DicedSpriteCharacterExtended.<ChangePositionZAsync>d__29:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      DicedSpriteCharacterExtended
+      +0x20   positionZ                      float
+      +0x24   duration                       float
+      +0x28   easingType                     EasingType
+      +0x30   asyncToken                     AsyncToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1B8F0  push    rbx                                       
+  0x180D1B8F2  sub     rsp, 0x20                                 
+  0x180D1B8F6  cmp     byte ptr [rip + 0x23c1a06], 0                ; data_30DD303
+  0x180D1B8FD  mov     rbx, rcx                                  
+  0x180D1B900  jne     0x180d1b92b                               
+  0x180D1B902  lea     rcx, [rip + 0x213594f]                       ; METHODINFO Method$Naninovel.Tweener<FloatTween>.CompleteInstantly()
+  0x180D1B909  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B90E  lock or dword ptr [rsp], 0                        
+  0x180D1B913  lea     rcx, [rip + 0x213592e]                       ; METHODINFO Method$Naninovel.Tweener<FloatTween>.get_Running()
+  0x180D1B91A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1B91F  lock or dword ptr [rsp], 0                        
+  0x180D1B924  mov     byte ptr [rip + 0x23c19d8], 1                ; data_30DD303
+
+180D1B92B:
+  0x180D1B92B  mov     r8, qword ptr [rbx + 0xd8]                
+  0x180D1B932  test    r8, r8                                    
+  0x180D1B935  je      0x180d1b98d                               
+  0x180D1B937  mov     rax, qword ptr [rip + 0x213590a]             ; METHODINFO Method$Naninovel.Tweener<FloatTween>.get_Running()
+  0x180D1B93E  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ChangePosition>d__32.position | <ChangePositionXAsync>d__27.positionX | <ChangePositionYAsync>d__28.positionY
+  0x180D1B942  mov     rax, qword ptr [rcx + 0xc0]               
+  0x180D1B949  mov     rcx, qword ptr [rax]                      
+  0x180D1B94C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180D1B953  movsxd  rax, dword ptr [rdx + 0x38]                  ; rdx-><ChangePosition>d__32.asyncToken
+  0x180D1B957  add     r8, rax                                   
+  0x180D1B95A  mov     rax, qword ptr [rdx + 0x30]                  ; rdx-><ChangePositionXAsync>d__27.asyncToken | <ChangePositionYAsync>d__28.asyncToken | <ChangePositionZAsync>d__29.asyncToken
+  0x180D1B95E  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ChangePositionXAsync>d__27.easingType | <ChangePositionYAsync>d__28.easingType | <ChangePositionZAsync>d__29.easingType
+  0x180D1B962  lea     rcx, [r8 - 0x10]                          
+  0x180D1B966  cmovge  rcx, r8                                   
+  0x180D1B96A  cmp     byte ptr [rcx], 0                         
+  0x180D1B96D  je      0x180d1b987                               
+  0x180D1B96F  mov     rdx, qword ptr [rip + 0x21358e2]             ; METHODINFO Method$Naninovel.Tweener<FloatTween>.CompleteInstantly()
+  0x180D1B976  mov     rcx, qword ptr [rbx + 0xd8]               
+  0x180D1B97D  add     rsp, 0x20                                 
+  0x180D1B981  pop     rbx                                       
+  0x180D1B982  jmp     0x180965910                                  ; -> Naninovel.Tweener<__Il2CppFullySharedGenericStructType>$$CompleteInstantly
+
+180D1B987:
+  0x180D1B987  add     rsp, 0x20                                 
+  0x180D1B98B  pop     rbx                                       
+  0x180D1B98C  ret                                               
+
+180D1B98D:
+  0x180D1B98D  call    0x180246730                                  ; THROW NullReferenceException
