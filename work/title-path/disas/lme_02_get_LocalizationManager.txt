@@ -1,0 +1,96 @@
+====================================================================================================
+FUNCTION RVA 0xD310E0  VA 0x180D310E0  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$get_LocalizationManager
+  csig   : GigaCreation_Essentials_Localization_ILocalizationManager_o* GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__get_LocalizationManager (GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended :: private ILocalizationManager get_LocalizationManager()
+  fields of GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended:
+      +0x48   _validLocales                  readonly List<string>
+      +0x50   _localizationManager           ILocalizationManager
+      +0x58   _defaultLocaleSelector         IDefaultLocaleSelector
+  fields of LocalizationManagerExtended.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManagerExtended.<>c:
+      +0x0    <>9                            static readonly LocalizationManagerExtended.<>c
+      +0x8    <>9__14_0                      static Func<Folder, string>
+  fields of LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<IEnumerable<string>>
+      +0x20   <>4__this                      LocalizationManagerExtended
+      +0x28   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManagerExtended.<RetrieveAvailableLocales>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter<IEnumerable<string>>
+  fields of LocalizationManagerExtended.<SelectLocale>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         LocaleKind
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+  fields of LocalizationManagerExtended.<SelectLocale>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         string
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D310E0  push    rbx                                       
+  0x180D310E2  sub     rsp, 0x20                                 
+  0x180D310E6  cmp     byte ptr [rip + 0x23ac28b], 0                ; data_30DD378
+  0x180D310ED  mov     rbx, rcx                                  
+  0x180D310F0  jne     0x180d3111b                               
+  0x180D310F2  lea     rcx, [rip + 0x2120fc7]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180D310F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D310FE  lock or dword ptr [rsp], 0                        
+  0x180D31103  lea     rcx, [rip + 0x212105e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D3110A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3110F  lock or dword ptr [rsp], 0                        
+  0x180D31114  mov     byte ptr [rip + 0x23ac25d], 1                ; data_30DD378
+
+180D3111B:
+  0x180D3111B  mov     rax, qword ptr [rbx + 0x50]                  ; rbx->LocalizationManagerExtended._localizationManager
+  0x180D3111F  test    rax, rax                                  
+  0x180D31122  jne     0x180d31194                               
+  0x180D31124  mov     rcx, qword ptr [rip + 0x212103d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D3112B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D31131  jne     0x180d31138                               
+  0x180D31133  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D31138:
+  0x180D31138  mov     rdx, qword ptr [rip + 0x2120f81]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180D3113F  mov     cl, 1                                     
+  0x180D31141  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180D31146  cmp     dword ptr [rip + 0x23a8077], 0               ; data_30D91C4
+  0x180D3114D  mov     r9, rax                                   
+  0x180D31150  mov     qword ptr [rbx + 0x50], rax                  ; rbx->LocalizationManagerExtended._localizationManager
+  0x180D31154  je      0x180d31191                               
+  0x180D31156  lea     r8, [rbx + 0x50]                             ; rbx->LocalizationManagerExtended._localizationManager
+  0x180D3115A  shr     r8, 0xc                                   
+  0x180D3115E  lea     rcx, [rip + 0x240341b]                       ; data_3134580
+  0x180D31165  and     r8d, 0x1fffff                             
+  0x180D3116C  mov     eax, r8d                                  
+  0x180D3116F  shr     rax, 6                                    
+  0x180D31173  and     r8d, 0x3f                                 
+  0x180D31177  lea     rdx, [rcx + rax*8]                        
+  0x180D3117B  prefetchw byte ptr [rdx]                            
+  0x180D3117E  nop                                               
+
+180D31180:
+  0x180D31180  mov     rax, qword ptr [rdx]                      
+  0x180D31183  mov     rcx, rax                                  
+  0x180D31186  bts     rcx, r8                                   
+  0x180D3118A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3118F  jne     0x180d31180                               
+
+180D31191:
+  0x180D31191  mov     rax, r9                                   
+
+180D31194:
+  0x180D31194  add     rsp, 0x20                                 
+  0x180D31198  pop     rbx                                       
+  0x180D31199  ret                                               

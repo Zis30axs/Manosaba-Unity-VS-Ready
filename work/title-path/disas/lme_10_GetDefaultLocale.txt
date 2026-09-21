@@ -1,0 +1,69 @@
+====================================================================================================
+FUNCTION RVA 0xD31740  VA 0x180D31740  size 0x5D (93 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$GetDefaultLocale
+  csig   : System_String_o* GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__GetDefaultLocale (GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended :: protected override string GetDefaultLocale()
+  fields of GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended:
+      +0x48   _validLocales                  readonly List<string>
+      +0x50   _localizationManager           ILocalizationManager
+      +0x58   _defaultLocaleSelector         IDefaultLocaleSelector
+  fields of LocalizationManagerExtended.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManagerExtended.<>c:
+      +0x0    <>9                            static readonly LocalizationManagerExtended.<>c
+      +0x8    <>9__14_0                      static Func<Folder, string>
+  fields of LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<IEnumerable<string>>
+      +0x20   <>4__this                      LocalizationManagerExtended
+      +0x28   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManagerExtended.<RetrieveAvailableLocales>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter<IEnumerable<string>>
+  fields of LocalizationManagerExtended.<SelectLocale>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         LocaleKind
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+  fields of LocalizationManagerExtended.<SelectLocale>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         string
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D31740  push    rbx                                       
+  0x180D31742  sub     rsp, 0x20                                 
+  0x180D31746  cmp     byte ptr [rip + 0x23abc31], 0                ; data_30DD37E
+  0x180D3174D  mov     rbx, rcx                                  
+  0x180D31750  jne     0x180d3176a                               
+  0x180D31752  lea     rcx, [rip + 0x20febdf]                       ; TYPE GigaCreation.Essentials.Localization.IDefaultLocaleSelector_TypeInfo
+  0x180D31759  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3175E  lock or dword ptr [rsp], 0                        
+  0x180D31763  mov     byte ptr [rip + 0x23abc14], 1                ; data_30DD37E
+
+180D3176A:
+  0x180D3176A  xor     edx, edx                                  
+  0x180D3176C  mov     rcx, rbx                                  
+  0x180D3176F  call    0x180d311a0                                  ; -> GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$get_DefaultLocaleSelector
+  0x180D31774  test    rax, rax                                  
+  0x180D31777  je      0x180d31798                               
+  0x180D31779  mov     rdx, qword ptr [rip + 0x20febb8]             ; TYPE GigaCreation.Essentials.Localization.IDefaultLocaleSelector_TypeInfo
+  0x180D31780  xor     ecx, ecx                                  
+  0x180D31782  mov     r8, rax                                   
+  0x180D31785  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3178A  xor     edx, edx                                  
+  0x180D3178C  mov     ecx, eax                                  
+  0x180D3178E  add     rsp, 0x20                                 
+  0x180D31792  pop     rbx                                       
+  0x180D31793  jmp     0x180cd13b0                                  ; -> GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToTagName
+
+180D31798:
+  0x180D31798  call    0x180246730                                  ; THROW NullReferenceException

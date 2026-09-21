@@ -1,0 +1,399 @@
+====================================================================================================
+FUNCTION RVA 0xD31F20  VA 0x180D31F20  size 0x5C0 (1472 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended.<RetrieveAvailableLocales>d__12$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__RetrieveAvailableLocales_d__12__MoveNext (GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__RetrieveAvailableLocales_d__12_o __this, const MethodInfo* method);
+  dump.cs: LocalizationManagerExtended.<RetrieveAvailableLocales>d__12 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended:
+      +0x48   _validLocales                  readonly List<string>
+      +0x50   _localizationManager           ILocalizationManager
+      +0x58   _defaultLocaleSelector         IDefaultLocaleSelector
+  fields of LocalizationManagerExtended.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManagerExtended.<>c:
+      +0x0    <>9                            static readonly LocalizationManagerExtended.<>c
+      +0x8    <>9__14_0                      static Func<Folder, string>
+  fields of LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<IEnumerable<string>>
+      +0x20   <>4__this                      LocalizationManagerExtended
+      +0x28   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManagerExtended.<RetrieveAvailableLocales>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter<IEnumerable<string>>
+  fields of LocalizationManagerExtended.<SelectLocale>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         LocaleKind
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+  fields of LocalizationManagerExtended.<SelectLocale>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         string
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D31F20  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D31F25  mov     qword ptr [rsp + 0x20], rsi               
+  0x180D31F2A  mov     qword ptr [rsp + 8], rcx                  
+  0x180D31F2F  push    rdi                                       
+  0x180D31F30  push    r14                                       
+  0x180D31F32  push    r15                                       
+  0x180D31F34  sub     rsp, 0xc0                                 
+  0x180D31F3B  mov     rdi, rcx                                  
+  0x180D31F3E  cmp     byte ptr [rip + 0x23ab43e], 0                ; data_30DD383
+  0x180D31F45  jne     0x180d31feb                               
+  0x180D31F4B  lea     rcx, [rip + 0x20fe2f6]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<IEnumerable<string>>, LocalizationManagerExtended.<RetrieveAvailableLocales>d__12>()
+  0x180D31F52  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31F57  lock or dword ptr [rsp], 0                        
+  0x180D31F5C  lea     rcx, [rip + 0x20fe31d]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<IEnumerable<string>>.GetResult()
+  0x180D31F63  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31F68  lock or dword ptr [rsp], 0                        
+  0x180D31F6D  lea     rcx, [rip + 0x20fe314]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<IEnumerable<string>>.get_IsCompleted()
+  0x180D31F74  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31F79  lock or dword ptr [rsp], 0                        
+  0x180D31F7E  lea     rcx, [rip + 0x212900b]                       ; TYPE System.Collections.Generic.ICollection<string>_TypeInfo
+  0x180D31F85  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31F8A  lock or dword ptr [rsp], 0                        
+  0x180D31F8F  lea     rcx, [rip + 0x20fe3a2]                       ; TYPE GigaCreation.Essentials.Localization.IDefaultLocaleSelector_TypeInfo
+  0x180D31F96  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31F9B  lock or dword ptr [rsp], 0                        
+  0x180D31FA0  lea     rcx, [rip + 0x2114ce9]                       ; METHODINFO Method$System.Collections.Generic.List<string>.AddRange()
+  0x180D31FA7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31FAC  lock or dword ptr [rsp], 0                        
+  0x180D31FB1  lea     rcx, [rip + 0x2127580]                       ; METHODINFO Method$System.Collections.Generic.List<string>.Add()
+  0x180D31FB8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31FBD  lock or dword ptr [rsp], 0                        
+  0x180D31FC2  lea     rcx, [rip + 0x2114caf]                       ; METHODINFO Method$System.Collections.Generic.List<string>.Clear()
+  0x180D31FC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31FCE  lock or dword ptr [rsp], 0                        
+  0x180D31FD3  lea     rcx, [rip + 0x20fe28e]                       ; METHODINFO Method$Naninovel.UniTask<IEnumerable<string>>.GetAwaiter()
+  0x180D31FDA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D31FDF  lock or dword ptr [rsp], 0                        
+  0x180D31FE4  mov     byte ptr [rip + 0x23ab398], 1                ; data_30DD383
+
+180D31FEB:
+  0x180D31FEB  xorps   xmm0, xmm0                                
+  0x180D31FEE  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D31FF3  mov     eax, dword ptr [rdi]                      
+  0x180D31FF5  mov     rbx, qword ptr [rdi + 0x18]                  ; rdi-><RetrieveAvailableLocales>d__12.<>4__this | <SelectLocale>d__10.<>4__this | <SelectLocale>d__11.<>4__this
+  0x180D31FF9  test    eax, eax                                  
+  0x180D31FFB  jne     0x180d32018                               
+  0x180D31FFD  movups  xmm0, xmmword ptr [rdi + 0x20]               ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D32001  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D32006  xorps   xmm1, xmm1                                
+  0x180D32009  movups  xmmword ptr [rdi + 0x20], xmm1               ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D3200D  mov     dword ptr [rdi], 0xffffffff               
+  0x180D32013  jmp     0x180d32239                               
+
+180D32018:
+  0x180D32018  test    rbx, rbx                                  
+  0x180D3201B  je      0x180d324db                               
+  0x180D32021  cmp     byte ptr [rip + 0x23ab357], 0                ; data_30DD37F
+  0x180D32028  jne     0x180d32064                               
+  0x180D3202A  lea     rcx, [rip + 0x20fe2c7]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.Create()
+  0x180D32031  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32036  lock or dword ptr [rsp], 0                        
+  0x180D3203B  lea     rcx, [rip + 0x20fe28e]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.Start<LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14>()
+  0x180D32042  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32047  lock or dword ptr [rsp], 0                        
+  0x180D3204C  lea     rcx, [rip + 0x20fe28d]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.get_Task()
+  0x180D32053  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32058  lock or dword ptr [rsp], 0                        
+  0x180D3205D  mov     byte ptr [rip + 0x23ab31b], 1                ; data_30DD37F
+
+180D32064:
+  0x180D32064  mov     qword ptr [rsp + 0x50], 0                 
+  0x180D3206D  xorps   xmm0, xmm0                                
+  0x180D32070  movdqu  xmmword ptr [rsp + 0x70], xmm0            
+  0x180D32076  mov     qword ptr [rsp + 0x80], 0                 
+  0x180D32082  mov     rdx, qword ptr [rip + 0x20fe26f]             ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.Create()
+  0x180D32089  lea     rcx, [rsp + 0x90]                         
+  0x180D32091  call    0x180355cf0                                  ; -> System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder<__Il2CppFullySharedGenericType>$$Create (+2 aliases)
+  0x180D32096  movups  xmm0, xmmword ptr [rsp + 0x90]            
+  0x180D3209E  movups  xmmword ptr [rsp + 0x58], xmm0            
+  0x180D320A3  movsd   xmm1, qword ptr [rsp + 0xa0]              
+  0x180D320AC  movsd   qword ptr [rsp + 0x68], xmm1              
+  0x180D320B2  mov     eax, dword ptr [rip + 0x23a710c]             ; data_30D91C4
+  0x180D320B8  lea     r14, [rip + 0x23bc1e1]                       ; data_30EE2A0
+  0x180D320BF  test    eax, eax                                  
+  0x180D320C1  je      0x180d3210f                               
+  0x180D320C3  lea     r8, [rsp + 0x58]                          
+  0x180D320C8  shr     r8, 0xc                                   
+  0x180D320CC  and     r8d, 0x1fffff                             
+  0x180D320D3  mov     eax, r8d                                  
+  0x180D320D6  shr     rax, 6                                    
+  0x180D320DA  lea     rdx, [r14 + rax*8]                        
+  0x180D320DE  and     r8d, 0x3f                                 
+  0x180D320E2  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D320E9  nop     dword ptr [rax]                           
+
+180D320F0:
+  0x180D320F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D320F7  mov     rcx, rax                                  
+  0x180D320FA  bts     rcx, r8                                   
+  0x180D320FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D32107  jne     0x180d320f0                               
+  0x180D32109  mov     eax, dword ptr [rip + 0x23a70b5]             ; data_30D91C4
+
+180D3210F:
+  0x180D3210F  mov     qword ptr [rsp + 0x70], rbx               
+  0x180D32114  test    eax, eax                                  
+  0x180D32116  je      0x180d32159                               
+  0x180D32118  lea     r8, [rsp + 0x70]                          
+  0x180D3211D  shr     r8, 0xc                                   
+  0x180D32121  and     r8d, 0x1fffff                             
+  0x180D32128  mov     eax, r8d                                  
+  0x180D3212B  shr     rax, 6                                    
+  0x180D3212F  lea     rdx, [r14 + rax*8]                        
+  0x180D32133  and     r8d, 0x3f                                 
+  0x180D32137  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D3213E  nop                                               
+
+180D32140:
+  0x180D32140  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D32147  mov     rcx, rax                                  
+  0x180D3214A  bts     rcx, r8                                   
+  0x180D3214E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D32157  jne     0x180d32140                               
+
+180D32159:
+  0x180D32159  mov     dword ptr [rsp + 0x50], 0xffffffff        
+  0x180D32161  mov     r8, qword ptr [rip + 0x20fe168]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.Start<LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14>()
+  0x180D32168  lea     rdx, [rsp + 0x50]                         
+  0x180D3216D  lea     rcx, [rsp + 0x58]                         
+  0x180D32172  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D32177  mov     r8, qword ptr [rip + 0x20fe162]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<IEnumerable<string>>.get_Task()
+  0x180D3217E  lea     rdx, [rsp + 0x40]                         
+  0x180D32183  lea     rcx, [rsp + 0x58]                         
+  0x180D32188  call    0x180be4760                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$get_Task
+  0x180D3218D  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D32192  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D32198  mov     r8, qword ptr [rip + 0x20fe0c9]              ; METHODINFO Method$Naninovel.UniTask<IEnumerable<string>>.GetAwaiter()
+  0x180D3219F  lea     rdx, [rsp + 0x90]                         
+  0x180D321A7  lea     rcx, [rsp + 0x40]                         
+  0x180D321AC  call    0x180972e90                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x180D321B1  movaps  xmm0, xmmword ptr [rsp + 0x90]            
+  0x180D321B9  movdqa  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D321BF  mov     rsi, qword ptr [rip + 0x20fe0c2]             ; METHODINFO Method$Naninovel.UniTask.Awaiter<IEnumerable<string>>.get_IsCompleted()
+  0x180D321C6  mov     rax, qword ptr [rsi + 0x20]                  ; rsi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D321CA  test    byte ptr [rax + 0x135], 1                 
+  0x180D321D1  jne     0x180d321db                               
+  0x180D321D3  mov     rcx, rax                                  
+  0x180D321D6  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D321DB:
+  0x180D321DB  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D321E2  mov     r15, qword ptr [rax + 0x10]               
+  0x180D321E6  mov     rax, qword ptr [rsi + 0x20]                  ; rsi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D321EA  test    byte ptr [rax + 0x135], 1                 
+  0x180D321F1  jne     0x180d321fb                               
+  0x180D321F3  mov     rcx, rax                                  
+  0x180D321F6  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D321FB:
+  0x180D321FB  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D32202  mov     rcx, qword ptr [rax + 8]                  
+  0x180D32206  mov     r8, qword ptr [rcx + 0x80]                
+  0x180D3220D  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8-><RetrieveAvailableLocales>d__12.<>4__this | <SelectLocale>d__10.<>4__this | <SelectLocale>d__11.<>4__this
+  0x180D32211  lea     r9, [rsp + 0x20]                          
+  0x180D32216  add     r9, rax                                   
+  0x180D32219  mov     rax, qword ptr [r8 + 0x10]                
+  0x180D3221D  lea     rcx, [r9 - 0x10]                          
+  0x180D32221  cmp     dword ptr [rax + 0x28], 0                    ; rax-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D32225  cmovge  rcx, r9                                   
+  0x180D32229  mov     rdx, r15                                  
+  0x180D3222C  call    0x180972be0                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x180D32231  test    al, al                                    
+  0x180D32233  je      0x180d32413                               
+
+180D32239:
+  0x180D32239  mov     r8, qword ptr [rip + 0x20fe040]              ; METHODINFO Method$Naninovel.UniTask.Awaiter<IEnumerable<string>>.GetResult()
+  0x180D32240  lea     rdx, [rsp + 0xf0]                         
+  0x180D32248  lea     rcx, [rsp + 0x20]                         
+  0x180D3224D  call    0x180bec390                                  ; -> Naninovel.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180D32252  test    rbx, rbx                                  
+  0x180D32255  je      0x180d324d6                               
+  0x180D3225B  mov     rdx, qword ptr [rbx]                      
+  0x180D3225E  mov     rax, qword ptr [rdx + 0x288]              
+  0x180D32265  mov     rdx, qword ptr [rdx + 0x290]              
+  0x180D3226C  mov     rcx, rbx                                  
+  0x180D3226F  call    rax                                       
+  0x180D32271  test    rax, rax                                  
+  0x180D32274  je      0x180d324d1                               
+  0x180D3227A  mov     rcx, rax                                  
+  0x180D3227D  call    0x180029640                                  ; -> sub_29640 (runtime/helper)
+  0x180D32282  mov     rdx, qword ptr [rbx]                      
+  0x180D32285  mov     rax, qword ptr [rdx + 0x288]              
+  0x180D3228C  mov     rdx, qword ptr [rdx + 0x290]              
+  0x180D32293  mov     rcx, rbx                                  
+  0x180D32296  call    rax                                       
+  0x180D32298  mov     rsi, rax                                  
+  0x180D3229B  mov     rdx, qword ptr [rbx]                      
+  0x180D3229E  mov     r8, qword ptr [rdx + 0x268]               
+  0x180D322A5  mov     rdx, qword ptr [rdx + 0x270]              
+  0x180D322AC  mov     rcx, rbx                                  
+  0x180D322AF  call    r8                                        
+  0x180D322B2  test    rax, rax                                  
+  0x180D322B5  je      0x180d324cc                               
+  0x180D322BB  test    rsi, rsi                                  
+  0x180D322BE  je      0x180d324c7                               
+  0x180D322C4  mov     r8, qword ptr [rip + 0x212726d]              ; METHODINFO Method$System.Collections.Generic.List<string>.Add()
+  0x180D322CB  mov     rdx, qword ptr [rax + 0x28]                  ; rax-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D322CF  mov     rcx, rsi                                  
+  0x180D322D2  call    0x180331f40                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Add
+  0x180D322D7  mov     rdx, qword ptr [rbx]                      
+  0x180D322DA  mov     rax, qword ptr [rdx + 0x288]              
+  0x180D322E1  mov     rdx, qword ptr [rdx + 0x290]              
+  0x180D322E8  mov     rcx, rbx                                  
+  0x180D322EB  call    rax                                       
+  0x180D322ED  test    rax, rax                                  
+  0x180D322F0  je      0x180d324c2                               
+  0x180D322F6  mov     rcx, qword ptr [rip + 0x2114993]             ; METHODINFO Method$System.Collections.Generic.List<string>.AddRange()
+  0x180D322FD  mov     rdx, qword ptr [rcx + 0x20]                  ; rcx-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D32301  mov     r9, qword ptr [rdx + 0xc0]                
+  0x180D32308  mov     r9, qword ptr [r9 + 0x90]                 
+  0x180D3230F  mov     r8, qword ptr [rsp + 0xf0]                
+  0x180D32317  mov     edx, dword ptr [rax + 0x18]                  ; rax-><RetrieveAvailableLocales>d__12.<>4__this | <SelectLocale>d__10.<>4__this | <SelectLocale>d__11.<>4__this
+  0x180D3231A  mov     rcx, rax                                  
+  0x180D3231D  call    0x18085acb0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$InsertRange
+  0x180D32322  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->LocalizationManagerExtended._validLocales
+  0x180D32326  test    rcx, rcx                                  
+  0x180D32329  je      0x180d324bd                               
+  0x180D3232F  call    0x180029640                                  ; -> sub_29640 (runtime/helper)
+  0x180D32334  xor     edx, edx                                  
+  0x180D32336  mov     rcx, rbx                                  
+  0x180D32339  call    0x180d311a0                                  ; -> GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$get_DefaultLocaleSelector
+  0x180D3233E  test    rax, rax                                  
+  0x180D32341  je      0x180d324b8                               
+  0x180D32347  mov     ecx, 1                                    
+  0x180D3234C  mov     r8, rax                                   
+  0x180D3234F  mov     rdx, qword ptr [rip + 0x20fdfe2]             ; TYPE GigaCreation.Essentials.Localization.IDefaultLocaleSelector_TypeInfo
+  0x180D32356  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3235B  test    rax, rax                                  
+  0x180D3235E  je      0x180d323a1                               
+  0x180D32360  xor     ecx, ecx                                  
+  0x180D32362  mov     r8, rax                                   
+  0x180D32365  mov     rdx, qword ptr [rip + 0x2128c24]             ; TYPE System.Collections.Generic.ICollection<string>_TypeInfo
+  0x180D3236C  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D32371  test    eax, eax                                  
+  0x180D32373  jle     0x180d323a1                               
+  0x180D32375  xor     edx, edx                                  
+  0x180D32377  mov     rcx, rbx                                  
+  0x180D3237A  call    0x180d311a0                                  ; -> GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$get_DefaultLocaleSelector
+  0x180D3237F  test    rax, rax                                  
+  0x180D32382  je      0x180d324ae                               
+  0x180D32388  mov     ecx, 1                                    
+  0x180D3238D  mov     r8, rax                                   
+  0x180D32390  mov     rdx, qword ptr [rip + 0x20fdfa1]             ; TYPE GigaCreation.Essentials.Localization.IDefaultLocaleSelector_TypeInfo
+  0x180D32397  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3239C  mov     r8, rax                                   
+  0x180D3239F  jmp     0x180d323ba                               
+
+180D323A1:
+  0x180D323A1  mov     rdx, qword ptr [rbx]                      
+  0x180D323A4  mov     rax, qword ptr [rdx + 0x288]              
+  0x180D323AB  mov     rdx, qword ptr [rdx + 0x290]              
+  0x180D323B2  mov     rcx, rbx                                  
+  0x180D323B5  call    rax                                       
+  0x180D323B7  mov     r8, rax                                   
+
+180D323BA:
+  0x180D323BA  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx->LocalizationManagerExtended._validLocales
+  0x180D323BE  test    rcx, rcx                                  
+  0x180D323C1  je      0x180d324b3                               
+  0x180D323C7  mov     rax, qword ptr [rip + 0x21148c2]             ; METHODINFO Method$System.Collections.Generic.List<string>.AddRange()
+  0x180D323CE  mov     rdx, qword ptr [rax + 0x20]                  ; rax-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D323D2  mov     r9, qword ptr [rdx + 0xc0]                
+  0x180D323D9  mov     r9, qword ptr [r9 + 0x90]                 
+  0x180D323E0  mov     edx, dword ptr [rcx + 0x18]                  ; rcx-><RetrieveAvailableLocales>d__12.<>4__this | <SelectLocale>d__10.<>4__this | <SelectLocale>d__11.<>4__this
+  0x180D323E3  call    0x18085acb0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$InsertRange
+  0x180D323E8  nop                                               
+  0x180D323E9  mov     dword ptr [rdi], 0xfffffffe               
+  0x180D323EF  lea     rcx, [rdi + 8]                            
+  0x180D323F3  xor     edx, edx                                  
+  0x180D323F5  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180D323FA:
+  0x180D323FA  lea     r11, [rsp + 0xc0]                         
+  0x180D32402  mov     rbx, qword ptr [r11 + 0x28]                  ; r11-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D32406  mov     rsi, qword ptr [r11 + 0x38]               
+  0x180D3240A  mov     rsp, r11                                  
+  0x180D3240D  pop     r15                                       
+  0x180D3240F  pop     r14                                       
+  0x180D32411  pop     rdi                                       
+  0x180D32412  ret                                               
+
+180D32413:
+  0x180D32413  mov     dword ptr [rdi], 0                        
+  0x180D32419  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D3241E  movups  xmmword ptr [rdi + 0x20], xmm0               ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D32422  cmp     dword ptr [rip + 0x23a6d9b], 0               ; data_30D91C4
+  0x180D32429  je      0x180d32469                               
+  0x180D3242B  lea     r8, [rdi + 0x20]                             ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D3242F  shr     r8, 0xc                                   
+  0x180D32433  and     r8d, 0x1fffff                             
+  0x180D3243A  mov     eax, r8d                                  
+  0x180D3243D  shr     rax, 6                                    
+  0x180D32441  lea     rdx, [r14 + rax*8]                        
+  0x180D32445  and     r8d, 0x3f                                 
+  0x180D32449  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D32450:
+  0x180D32450  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D32457  mov     rcx, rax                                  
+  0x180D3245A  bts     rcx, r8                                   
+  0x180D3245E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D32467  jne     0x180d32450                               
+
+180D32469:
+  0x180D32469  lea     rcx, [rdi + 8]                            
+  0x180D3246D  mov     r9, qword ptr [rip + 0x20fddd4]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<IEnumerable<string>>, LocalizationManagerExtended.<RetrieveAvailableLocales>d__12>()
+  0x180D32474  mov     r8, rdi                                   
+  0x180D32477  lea     rdx, [rsp + 0x20]                         
+  0x180D3247C  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D32481  nop                                               
+  0x180D32482  jmp     0x180d323fa                               
+  0x180D32487  mov     rcx, qword ptr [rsp + 0xe0]               
+  0x180D3248F  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D32495  add     rcx, 8                                    
+  0x180D32499  xor     r8d, r8d                                  
+  0x180D3249C  mov     rdx, qword ptr [rsp + 0xf0]               
+  0x180D324A4  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180D324A9  jmp     0x180d323fa                               
+
+180D324AE:
+  0x180D324AE  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324B3:
+  0x180D324B3  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324B8:
+  0x180D324B8  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324BD:
+  0x180D324BD  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324C2:
+  0x180D324C2  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324C7:
+  0x180D324C7  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324CC:
+  0x180D324CC  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324D1:
+  0x180D324D1  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324D6:
+  0x180D324D6  call    0x180246730                                  ; THROW NullReferenceException
+
+180D324DB:
+  0x180D324DB  call    0x180246730                                  ; THROW NullReferenceException

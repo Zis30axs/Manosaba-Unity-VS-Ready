@@ -34,6 +34,11 @@ def main():
         i = args.index("--out")
         keep_out = args[i + 1]
         del args[i:i + 2]
+    src_override = None
+    while "--src" in args:                   # source folder when the assembly is not under Assets/Scripts/Game/<asm>
+        i = args.index("--src")
+        src_override = args[i + 1]
+        del args[i:i + 2]
     while "--ref" in args:
         i = args.index("--ref")
         extra_refs.append(args[i + 1])
@@ -48,7 +53,7 @@ def main():
     out_dll = next(q for q in quoted if q.endswith(".dll"))
     refs = [q for q in quoted if q.lower().endswith(".dll") and q != out_dll] + extra_refs
     defines = [q for q in quoted if re.fullmatch(r"[A-Z0-9_]+", q)]
-    src_dir = os.path.join(PROJECT, "Assets", "Scripts", "Game", asm)
+    src_dir = src_override or os.path.join(PROJECT, "Assets", "Scripts", "Game", asm)
     sources = [os.path.join(dp, f) for dp, _, fs in os.walk(src_dir) for f in fs if f.endswith(".cs")]
     sources = [over.get(os.path.basename(s), s) for s in sources]
     tmp = tempfile.mkdtemp(prefix="tc_asm_")

@@ -1,0 +1,358 @@
+====================================================================================================
+FUNCTION RVA 0xD324F0  VA 0x180D324F0  size 0x4E0 (1248 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended.<SelectLocale>d__10$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__SelectLocale_d__10__MoveNext (GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__SelectLocale_d__10_o __this, const MethodInfo* method);
+  dump.cs: LocalizationManagerExtended.<SelectLocale>d__10 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended:
+      +0x48   _validLocales                  readonly List<string>
+      +0x50   _localizationManager           ILocalizationManager
+      +0x58   _defaultLocaleSelector         IDefaultLocaleSelector
+  fields of LocalizationManagerExtended.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManagerExtended.<>c:
+      +0x0    <>9                            static readonly LocalizationManagerExtended.<>c
+      +0x8    <>9__14_0                      static Func<Folder, string>
+  fields of LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<IEnumerable<string>>
+      +0x20   <>4__this                      LocalizationManagerExtended
+      +0x28   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManagerExtended.<RetrieveAvailableLocales>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter<IEnumerable<string>>
+  fields of LocalizationManagerExtended.<SelectLocale>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         LocaleKind
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+  fields of LocalizationManagerExtended.<SelectLocale>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         string
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D324F0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D324F5  mov     qword ptr [rsp + 8], rcx                  
+  0x180D324FA  push    rsi                                       
+  0x180D324FB  push    rdi                                       
+  0x180D324FC  push    r14                                       
+  0x180D324FE  sub     rsp, 0x70                                 
+  0x180D32502  movaps  xmmword ptr [rsp + 0x60], xmm6            
+  0x180D32507  mov     rdi, rcx                                  
+  0x180D3250A  cmp     byte ptr [rip + 0x23aae73], 0                ; data_30DD384
+  0x180D32511  jne     0x180d3256f                               
+  0x180D32513  lea     rcx, [rip + 0x20fdcf6]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, LocalizationManagerExtended.<SelectLocale>d__10>()
+  0x180D3251A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3251F  lock or dword ptr [rsp], 0                        
+  0x180D32524  lea     rcx, [rip + 0x20fdcbd]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, LocalizationManagerExtended.<SelectLocale>d__10>()
+  0x180D3252B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32530  lock or dword ptr [rsp], 0                        
+  0x180D32535  lea     rcx, [rip + 0x20fdcbc]                       ; TYPE GigaCreation.Essentials.Localization.ILocalizationManager_TypeInfo
+  0x180D3253C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32541  lock or dword ptr [rsp], 0                        
+  0x180D32546  lea     rcx, [rip + 0x211f9b3]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D3254D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32552  lock or dword ptr [rsp], 0                        
+  0x180D32557  lea     rcx, [rip + 0x211fbaa]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D3255E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32563  lock or dword ptr [rsp], 0                        
+  0x180D32568  mov     byte ptr [rip + 0x23aae15], 1                ; data_30DD384
+
+180D3256F:
+  0x180D3256F  xorps   xmm0, xmm0                                
+  0x180D32572  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D32577  xor     ebx, ebx                                  
+  0x180D32579  mov     qword ptr [rsp + 0xa0], rbx               
+  0x180D32581  mov     eax, dword ptr [rdi]                      
+  0x180D32583  mov     rsi, qword ptr [rdi + 0x18]                  ; rdi-><RetrieveAvailableLocales>d__12.<>4__this | <SelectLocale>d__10.<>4__this | <SelectLocale>d__11.<>4__this
+  0x180D32587  test    eax, eax                                  
+  0x180D32589  jne     0x180d325ad                               
+  0x180D3258B  movups  xmm0, xmmword ptr [rdi + 0x30]               ; rdi-><SelectLocale>d__10.<>u__1 | <SelectLocale>d__11.<>u__1
+  0x180D3258F  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D32594  xorps   xmm1, xmm1                                
+  0x180D32597  movups  xmmword ptr [rdi + 0x30], xmm1               ; rdi-><SelectLocale>d__10.<>u__1 | <SelectLocale>d__11.<>u__1
+  0x180D3259B  mov     dword ptr [rdi], 0xffffffff               
+  0x180D325A1  lea     r14, [rip + 0x23bbcf8]                       ; data_30EE2A0
+  0x180D325A8  jmp     0x180d32706                               
+
+180D325AD:
+  0x180D325AD  cmp     eax, 1                                    
+  0x180D325B0  jne     0x180d325cf                               
+  0x180D325B2  mov     rax, qword ptr [rdi + 0x40]                  ; rdi-><SelectLocale>d__10.<>u__2 | <SelectLocale>d__11.<>u__2
+  0x180D325B6  mov     qword ptr [rsp + 0xa0], rax               
+  0x180D325BE  xor     eax, eax                                  
+  0x180D325C0  mov     qword ptr [rdi + 0x40], rax                  ; rdi-><SelectLocale>d__10.<>u__2 | <SelectLocale>d__11.<>u__2
+  0x180D325C4  mov     dword ptr [rdi], 0xffffffff               
+  0x180D325CA  jmp     0x180d328ca                               
+
+180D325CF:
+  0x180D325CF  xor     edx, edx                                  
+  0x180D325D1  mov     ecx, dword ptr [rdi + 0x20]                  ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D325D4  call    0x180cd13b0                                  ; -> GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToTagName
+  0x180D325D9  test    rsi, rsi                                  
+  0x180D325DC  je      0x180d329cb                               
+  0x180D325E2  xor     r8d, r8d                                  
+  0x180D325E5  mov     rdx, rax                                  
+  0x180D325E8  mov     rcx, rsi                                  
+  0x180D325EB  call    0x180588580                                  ; -> Naninovel.LocalizationManager$$SelectLocale (+1 aliases)
+  0x180D325F0  mov     qword ptr [rdi + 0x28], rax                  ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D325F4  lea     r14, [rip + 0x23bbca5]                       ; data_30EE2A0
+  0x180D325FB  cmp     dword ptr [rip + 0x23a6bc2], 0               ; data_30D91C4
+  0x180D32602  je      0x180d32649                               
+  0x180D32604  lea     r8, [rdi + 0x28]                             ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D32608  shr     r8, 0xc                                   
+  0x180D3260C  and     r8d, 0x1fffff                             
+  0x180D32613  mov     eax, r8d                                  
+  0x180D32616  shr     rax, 6                                    
+  0x180D3261A  lea     rdx, [r14 + rax*8]                        
+  0x180D3261E  and     r8d, 0x3f                                 
+  0x180D32622  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D32629  nop     dword ptr [rax]                           
+
+180D32630:
+  0x180D32630  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D32637  mov     rcx, rax                                  
+  0x180D3263A  bts     rcx, r8                                   
+  0x180D3263E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D32647  jne     0x180d32630                               
+
+180D32649:
+  0x180D32649  xor     edx, edx                                  
+  0x180D3264B  mov     rcx, rsi                                  
+  0x180D3264E  call    0x180d310e0                                  ; -> GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$get_LocalizationManager
+  0x180D32653  mov     ecx, dword ptr [rdi + 0x20]                  ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>4__this | <RetrieveAvailableLocales>d__12.<>u__1 | <SelectLocale>d__10.locale
+  0x180D32656  test    rax, rax                                  
+  0x180D32659  je      0x180d329c6                               
+  0x180D3265F  mov     qword ptr [rsp + 0x28], rbx               
+  0x180D32664  mov     dword ptr [rsp + 0x20], ecx               
+  0x180D32668  mov     r9, rax                                   
+  0x180D3266B  mov     r8, qword ptr [rip + 0x20fdb86]              ; TYPE GigaCreation.Essentials.Localization.ILocalizationManager_TypeInfo
+  0x180D32672  lea     rcx, [rsp + 0x50]                         
+  0x180D32677  call    0x180003d50                                  ; -> sub_3D50 (runtime/helper)
+  0x180D3267C  movups  xmm6, xmmword ptr [rax]                   
+  0x180D3267F  mov     rcx, qword ptr [rip + 0x211fa82]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D32686  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D3268D  jne     0x180d32694                               
+  0x180D3268F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D32694:
+  0x180D32694  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D32699  cmp     dword ptr [rip + 0x23a6b24], 0               ; data_30D91C4
+  0x180D326A0  je      0x180d326ee                               
+  0x180D326A2  lea     r8, [rsp + 0x50]                          
+  0x180D326A7  shr     r8, 0xc                                   
+  0x180D326AB  and     r8d, 0x1fffff                             
+  0x180D326B2  mov     eax, r8d                                  
+  0x180D326B5  shr     rax, 6                                    
+  0x180D326B9  lea     rdx, [r14 + rax*8]                        
+  0x180D326BD  and     r8d, 0x3f                                 
+  0x180D326C1  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D326C8  nop     dword ptr [rax + rax]                     
+
+180D326D0:
+  0x180D326D0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D326D7  mov     rcx, rax                                  
+  0x180D326DA  bts     rcx, r8                                   
+  0x180D326DE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D326E7  jne     0x180d326d0                               
+  0x180D326E9  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+
+180D326EE:
+  0x180D326EE  movdqa  xmmword ptr [rsp + 0x40], xmm6            
+  0x180D326F4  lea     rcx, [rsp + 0x40]                         
+  0x180D326F9  call    0x1803314b0                                  ; -> sub_3314B0 (runtime/helper)
+  0x180D326FE  test    al, al                                    
+  0x180D32700  je      0x180d3296d                               
+
+180D32706:
+  0x180D32706  cmp     byte ptr [rip + 0x23a4e0f], 0                ; data_30D751C
+  0x180D3270D  jne     0x180d32727                               
+  0x180D3270F  lea     rcx, [rip + 0x211ea52]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D32716  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3271B  lock or dword ptr [rsp], 0                        
+  0x180D32720  mov     byte ptr [rip + 0x23a4df5], 1                ; data_30D751C
+
+180D32727:
+  0x180D32727  mov     r8, qword ptr [rsp + 0x40]                
+  0x180D3272C  test    r8, r8                                    
+  0x180D3272F  je      0x180d32743                               
+  0x180D32731  movzx   r9d, word ptr [rsp + 0x48]                
+  0x180D32737  mov     rdx, qword ptr [rip + 0x211ea2a]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D3273E  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+
+180D32743:
+  0x180D32743  mov     rcx, qword ptr [rip + 0x211f7b6]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D3274A  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D32751  jne     0x180d32758                               
+  0x180D32753  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D32758:
+  0x180D32758  mov     rax, qword ptr [rdi + 0x28]                  ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D3275C  mov     qword ptr [rsp + 0xa8], rax               
+  0x180D32764  cmp     dword ptr [rip + 0x23a6a59], 0               ; data_30D91C4
+  0x180D3276B  je      0x180d327c1                               
+  0x180D3276D  lea     r8, [rsp + 0xa8]                          
+  0x180D32775  shr     r8, 0xc                                   
+  0x180D32779  and     r8d, 0x1fffff                             
+  0x180D32780  mov     eax, r8d                                  
+  0x180D32783  shr     rax, 6                                    
+  0x180D32787  lea     rdx, [r14 + rax*8]                        
+  0x180D3278B  and     r8d, 0x3f                                 
+  0x180D3278F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D32796  nop     word ptr [rax + rax]                      
+
+180D327A0:
+  0x180D327A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D327A7  mov     rcx, rax                                  
+  0x180D327AA  bts     rcx, r8                                   
+  0x180D327AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D327B7  jne     0x180d327a0                               
+  0x180D327B9  mov     rax, qword ptr [rsp + 0xa8]               
+
+180D327C1:
+  0x180D327C1  mov     qword ptr [rsp + 0xa0], rax               
+  0x180D327C9  cmp     byte ptr [rip + 0x23a94f8], 0                ; data_30DBCC8
+  0x180D327D0  jne     0x180d327ea                               
+  0x180D327D2  lea     rcx, [rip + 0x211f727]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D327D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D327DE  lock or dword ptr [rsp], 0                        
+  0x180D327E3  mov     byte ptr [rip + 0x23a94de], 1                ; data_30DBCC8
+
+180D327EA:
+  0x180D327EA  mov     rcx, qword ptr [rip + 0x211f70f]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D327F1  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D327F8  jne     0x180d327ff                               
+  0x180D327FA  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D327FF:
+  0x180D327FF  cmp     byte ptr [rip + 0x23a94a0], 0                ; data_30DBCA6
+  0x180D32806  jne     0x180d32820                               
+  0x180D32808  lea     rcx, [rip + 0x210b1a1]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D3280F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32814  lock or dword ptr [rsp], 0                        
+  0x180D32819  mov     byte ptr [rip + 0x23a9486], 1                ; data_30DBCA6
+
+180D32820:
+  0x180D32820  mov     r8, qword ptr [rsp + 0xa0]                
+  0x180D32828  test    r8, r8                                    
+  0x180D3282B  je      0x180d328ca                               
+  0x180D32831  mov     ecx, 1                                    
+  0x180D32836  mov     rdx, qword ptr [rip + 0x210b173]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D3283D  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D32842  test    al, al                                    
+  0x180D32844  jne     0x180d328ca                               
+  0x180D3284A  mov     dword ptr [rdi], 1                        
+  0x180D32850  mov     rax, qword ptr [rsp + 0xa0]               
+  0x180D32858  mov     qword ptr [rdi + 0x40], rax                  ; rdi-><SelectLocale>d__10.<>u__2 | <SelectLocale>d__11.<>u__2
+  0x180D3285C  cmp     dword ptr [rip + 0x23a6961], 0               ; data_30D91C4
+  0x180D32863  je      0x180d328a9                               
+  0x180D32865  lea     r8, [rdi + 0x40]                             ; rdi-><SelectLocale>d__10.<>u__2 | <SelectLocale>d__11.<>u__2
+  0x180D32869  shr     r8, 0xc                                   
+  0x180D3286D  and     r8d, 0x1fffff                             
+  0x180D32874  mov     eax, r8d                                  
+  0x180D32877  shr     rax, 6                                    
+  0x180D3287B  lea     rdx, [r14 + rax*8]                        
+  0x180D3287F  and     r8d, 0x3f                                 
+  0x180D32883  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D3288A  nop     word ptr [rax + rax]                      
+
+180D32890:
+  0x180D32890  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D32897  mov     rcx, rax                                  
+  0x180D3289A  bts     rcx, r8                                   
+  0x180D3289E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D328A7  jne     0x180d32890                               
+
+180D328A9:
+  0x180D328A9  lea     rcx, [rdi + 8]                            
+  0x180D328AD  mov     r9, qword ptr [rip + 0x20fd95c]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, LocalizationManagerExtended.<SelectLocale>d__10>()
+  0x180D328B4  mov     r8, rdi                                   
+  0x180D328B7  lea     rdx, [rsp + 0xa0]                         
+  0x180D328BF  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D328C4  nop                                               
+  0x180D328C5  jmp     0x180d32957                               
+
+180D328CA:
+  0x180D328CA  cmp     byte ptr [rip + 0x23a93f9], 0                ; data_30DBCCA
+  0x180D328D1  jne     0x180d328eb                               
+  0x180D328D3  lea     rcx, [rip + 0x211f626]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D328DA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D328DF  lock or dword ptr [rsp], 0                        
+  0x180D328E4  mov     byte ptr [rip + 0x23a93df], 1                ; data_30DBCCA
+
+180D328EB:
+  0x180D328EB  mov     rcx, qword ptr [rip + 0x211f60e]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D328F2  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D328F9  jne     0x180d32900                               
+  0x180D328FB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D32900:
+  0x180D32900  cmp     byte ptr [rip + 0x23a93a0], 0                ; data_30DBCA7
+  0x180D32907  jne     0x180d32921                               
+  0x180D32909  lea     rcx, [rip + 0x210b0a0]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D32910  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D32915  lock or dword ptr [rsp], 0                        
+  0x180D3291A  mov     byte ptr [rip + 0x23a9386], 1                ; data_30DBCA7
+
+180D32921:
+  0x180D32921  mov     r8, qword ptr [rsp + 0xa0]                
+  0x180D32929  test    r8, r8                                    
+  0x180D3292C  je      0x180d32940                               
+  0x180D3292E  mov     ecx, 2                                    
+  0x180D32933  mov     rdx, qword ptr [rip + 0x210b076]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180D3293A  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3293F  nop                                               
+
+180D32940:
+  0x180D32940  mov     dword ptr [rdi], 0xfffffffe               
+  0x180D32946  xor     eax, eax                                  
+  0x180D32948  mov     qword ptr [rdi + 0x28], rax                  ; rdi-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D3294C  lea     rcx, [rdi + 8]                            
+  0x180D32950  xor     edx, edx                                  
+  0x180D32952  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180D32957:
+  0x180D32957  mov     rbx, qword ptr [rsp + 0x98]               
+  0x180D3295F  movaps  xmm6, xmmword ptr [rsp + 0x60]            
+  0x180D32964  add     rsp, 0x70                                 
+  0x180D32968  pop     r14                                       
+  0x180D3296A  pop     rdi                                       
+  0x180D3296B  pop     rsi                                       
+  0x180D3296C  ret                                               
+
+180D3296D:
+  0x180D3296D  mov     dword ptr [rdi], ebx                      
+  0x180D3296F  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D32974  movups  xmmword ptr [rdi + 0x30], xmm0               ; rdi-><SelectLocale>d__10.<>u__1 | <SelectLocale>d__11.<>u__1
+  0x180D32978  lea     rcx, [rdi + 0x30]                            ; rdi-><SelectLocale>d__10.<>u__1 | <SelectLocale>d__11.<>u__1
+  0x180D3297C  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180D32981  lea     rcx, [rdi + 8]                            
+  0x180D32985  mov     r9, qword ptr [rip + 0x20fd85c]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, LocalizationManagerExtended.<SelectLocale>d__10>()
+  0x180D3298C  mov     r8, rdi                                   
+  0x180D3298F  lea     rdx, [rsp + 0x40]                         
+  0x180D32994  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D32999  nop                                               
+  0x180D3299A  jmp     0x180d32957                               
+  0x180D3299C  mov     rcx, qword ptr [rsp + 0x90]               
+  0x180D329A4  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D329AA  xor     eax, eax                                  
+  0x180D329AC  mov     qword ptr [rcx + 0x28], rax                  ; rcx-><GetAvailableLocaleTagsAsync>d__14.<>u__1 | <SelectLocale>d__10.<task>5__2 | <SelectLocale>d__11.<task>5__2
+  0x180D329B0  add     rcx, 8                                    
+  0x180D329B4  xor     r8d, r8d                                  
+  0x180D329B7  mov     rdx, qword ptr [rsp + 0xa8]               
+  0x180D329BF  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180D329C4  jmp     0x180d32957                               
+
+180D329C6:
+  0x180D329C6  call    0x180246730                                  ; THROW NullReferenceException
+
+180D329CB:
+  0x180D329CB  call    0x180246730                                  ; THROW NullReferenceException

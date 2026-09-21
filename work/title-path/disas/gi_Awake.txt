@@ -1,0 +1,82 @@
+====================================================================================================
+FUNCTION RVA 0x30FA80  VA 0x18030FA80  size 0xE3 (227 bytes)
+  managed: WitchTrials.Views.GameInitializer$$Awake
+  csig   : void WitchTrials_Views_GameInitializer__Awake (WitchTrials_Views_GameInitializer_o* __this, const MethodInfo* method);
+  dump.cs: WitchTrials.Views.GameInitializer :: private void Awake()
+  fields of WitchTrials.Views.GameInitializer:
+      +0x20   _gamePrefab                    AssetReferenceGameObject
+      +0x28   _steamManager                  SteamManager
+      +0x30   _splashScreen                  SplashScreen
+      +0x38   _gamePrefabInstanceName        string
+      +0x40   _addressablesManager           IAddressablesManager
+  fields of GameInitializer.<InitializeAsync>d__8:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      GameInitializer
+      +0x28   <defaultLocalePresenter>5__2   DefaultLocalePresenter
+      +0x30   <loadDefaultLocaleTask>5__3    UniTask
+      +0x40   <splashScreenTask>5__4         UniTask
+      +0x50   <entrySequence>5__5            EntrySequence
+      +0x58   <>u__1                         UniTask.Awaiter
+      +0x68   <>u__2                         UniTask.Awaiter<GameObject>
+====================================================================================================
+  0x18030FA80  mov     qword ptr [rsp + 8], rbx                  
+  0x18030FA85  push    rdi                                       
+  0x18030FA86  sub     rsp, 0x20                                 
+  0x18030FA8A  cmp     byte ptr [rip + 0x2dc976b], 0                ; data_30D91FC
+  0x18030FA91  mov     rdi, rcx                                  
+  0x18030FA94  jne     0x18030fad0                               
+  0x18030FA96  lea     rcx, [rip + 0x2b426db]                       ; TYPE GigaCreation.Essentials.AddressablesUtils.AddressablesManager_TypeInfo
+  0x18030FA9D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18030FAA2  lock or dword ptr [rsp], 0                        
+  0x18030FAA7  lea     rcx, [rip + 0x2b426c2]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<IAddressablesManager>()
+  0x18030FAAE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18030FAB3  lock or dword ptr [rsp], 0                        
+  0x18030FAB8  lea     rcx, [rip + 0x2b426a9]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x18030FABF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18030FAC4  lock or dword ptr [rsp], 0                        
+  0x18030FAC9  mov     byte ptr [rip + 0x2dc972c], 1                ; data_30D91FC
+
+18030FAD0:
+  0x18030FAD0  mov     rcx, qword ptr [rip + 0x2b426a1]             ; TYPE GigaCreation.Essentials.AddressablesUtils.AddressablesManager_TypeInfo
+  0x18030FAD7  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x18030FADC  xor     edx, edx                                  
+  0x18030FADE  mov     rcx, rax                                  
+  0x18030FAE1  mov     rbx, rax                                  
+  0x18030FAE4  call    0x180cbfdf0                                  ; -> GigaCreation.Essentials.AddressablesUtils.AddressablesManager$$.ctor
+  0x18030FAE9  cmp     dword ptr [rip + 0x2dc96d4], 0               ; data_30D91C4
+  0x18030FAF0  mov     qword ptr [rdi + 0x40], rbx                  ; rdi->GameInitializer._addressablesManager | <InitializeAsync>d__8.<splashScreenTask>5__4
+  0x18030FAF4  je      0x18030fb31                               
+  0x18030FAF6  lea     r8, [rdi + 0x40]                             ; rdi->GameInitializer._addressablesManager | <InitializeAsync>d__8.<splashScreenTask>5__4
+  0x18030FAFA  shr     r8, 0xc                                   
+  0x18030FAFE  lea     rcx, [rip + 0x2e24a7b]                       ; data_3134580
+  0x18030FB05  and     r8d, 0x1fffff                             
+  0x18030FB0C  mov     eax, r8d                                  
+  0x18030FB0F  shr     rax, 6                                    
+  0x18030FB13  and     r8d, 0x3f                                 
+  0x18030FB17  lea     rdx, [rcx + rax*8]                        
+  0x18030FB1B  prefetchw byte ptr [rdx]                            
+  0x18030FB1E  nop                                               
+
+18030FB20:
+  0x18030FB20  mov     rax, qword ptr [rdx]                      
+  0x18030FB23  mov     rcx, rax                                  
+  0x18030FB26  bts     rcx, r8                                   
+  0x18030FB2A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18030FB2F  jne     0x18030fb20                               
+
+18030FB31:
+  0x18030FB31  mov     rcx, qword ptr [rip + 0x2b42630]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x18030FB38  mov     rbx, qword ptr [rdi + 0x40]                  ; rdi->GameInitializer._addressablesManager | <InitializeAsync>d__8.<splashScreenTask>5__4
+  0x18030FB3C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x18030FB43  jne     0x18030fb4a                               
+  0x18030FB45  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+18030FB4A:
+  0x18030FB4A  mov     rdx, qword ptr [rip + 0x2b4261f]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<IAddressablesManager>()
+  0x18030FB51  mov     rcx, rbx                                  
+  0x18030FB54  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18030FB59  add     rsp, 0x20                                 
+  0x18030FB5D  pop     rdi                                       
+  0x18030FB5E  jmp     0x180752130                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Register<object>

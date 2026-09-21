@@ -219,10 +219,15 @@ namespace WitchTrials.Views
     	// Native evidence (annotated disassembly: tools/unity-rebuild/out/logs/disas_gateinitializer.md,
     	// produced by work/reversing/disas.py; fields of the state machine are listed there too):
     	//
-    	//   il2cpp_codegen_object_new + TYPE DefaultLocalePresenter_TypeInfo
+    	//   il2cpp_codegen_object_new + TYPE DefaultLocalePresenter_TypeInfo (0x18031011C)
+    	//   il2cpp_codegen_object_new + TYPE DefaultLocaleSelector_TypeInfo (0x18031016E), stored to presenter+0x10
+    	//   METHODINFO ServiceLocator.Register<IDefaultLocaleSelector>(presenter+0x10) (0x1803101EC)
+    	//                                  -> this is DefaultLocalePresenter's constructor (0x38D0E0) INLINED, not a
+    	//                                     second registration: the state machine has no field for a separate
+    	//                                     selector, and the registered object is the one stored in the presenter.
+    	//                                     (Corrected 2026-09-21: an explicit extra Register() made every
+    	//                                     start log "already registered".)
     	//                                  -> new DefaultLocalePresenter(), stored in <defaultLocalePresenter>5__2
-    	//   il2cpp_codegen_object_new + TYPE DefaultLocaleSelector_TypeInfo
-    	//   METHODINFO ServiceLocator.Register<IDefaultLocaleSelector>() -> registered in the service locator
     	//   Start<DefaultLocalePresenter.<LoadAsync>d__3>()   -> <loadDefaultLocaleTask>5__3
     	//   Start<SplashScreen.<PlaySequenceAsync>d__12>()    -> <splashScreenTask>5__4
     	//   Start<IAddressablesManager.<InitializeAsync>d__4>()  (its UniTask is never stored: the state
@@ -231,7 +236,14 @@ namespace WitchTrials.Views
     	//   ValueTuple<UniTask, UniTask>..ctor + AwaitUnsafeOnCompleted<UniTask.Awaiter,...>
     	//                                  -> await UniTask.WhenAll(loadDefaultLocaleTask, splashScreenTask)
     	//   cmp qword ptr [r8+0x28],0 / IDisposable_TypeInfo / interface call
-    	//                                  -> null-guarded defaultLocalePresenter.Dispose()
+    	//                                  -> null-guarded defaultLocalePresenter.Dispose(), i.e. the finally of a
+    	//                                     `using` over the WHOLE body: on normal completion it runs at
+    	//                                     0x180311158 `if (num < 0 && presenter != null) Dispose()` right before
+    	//                                     state = -2 / SetResult, i.e. after the EntrySequence await; the other
+    	//                                     copies sit on the exception/cancellation exits. (Corrected 2026-09-21:
+    	//                                     disposing right after WhenAll unregistered IDefaultLocaleSelector before
+    	//                                     EntrySequence initialized Naninovel, and LocalizationManagerExtended's
+    	//                                     RetrieveAvailableLocales then found no selector.)
     	//   AddressablesAsyncExtensions.ToUniTask<GameObject>() + UniTask<GameObject>.GetAwaiter/GetResult
     	//                                  -> await <AssetReference>.InstantiateAsync(...).ToUniTask(ct)
     	//   UnityEngine.Object$$SetName      -> the instance is renamed to _gamePrefabInstanceName
@@ -250,22 +262,20 @@ namespace WitchTrials.Views
     	//     所以原调用就是"沿用默认参数"的 InstantiateAsync()（parent = null, instantiateInWorldSpace = false）。
     	private async UniTask InitializeAsyncCore(CancellationToken ct)
     	{
-    		DefaultLocalePresenter defaultLocalePresenter = new DefaultLocalePresenter();
-    		GigaCreation.Tools.Service.ServiceLocator.Register<GigaCreation.Essentials.Localization.IDefaultLocaleSelector>(
-    			new WitchTrials.Models.DefaultLocaleSelector());
+    		using (DefaultLocalePresenter defaultLocalePresenter = new DefaultLocalePresenter())
+    		{
+    			UniTask loadDefaultLocaleTask = defaultLocalePresenter.LoadAsync(ct);
+    			UniTask splashScreenTask = _splashScreen.PlaySequenceAsync(ct);
+    			IAddressablesManager.InitializeAsync(ct).Forget();
 
-    		UniTask loadDefaultLocaleTask = defaultLocalePresenter.LoadAsync(ct);
-    		UniTask splashScreenTask = _splashScreen.PlaySequenceAsync(ct);
-    		IAddressablesManager.InitializeAsync(ct).Forget();
+    			await UniTask.WhenAll(loadDefaultLocaleTask, splashScreenTask);
 
-    		await UniTask.WhenAll(loadDefaultLocaleTask, splashScreenTask);
-    		defaultLocalePresenter.Dispose();
+    			GameObject gameObject = await _gamePrefab.InstantiateAsync().ToUniTask(cancellationToken: ct);
+    			gameObject.name = _gamePrefabInstanceName;
 
-    		GameObject gameObject = await _gamePrefab.InstantiateAsync().ToUniTask(cancellationToken: ct);
-    		gameObject.name = _gamePrefabInstanceName;
-
-    		EntrySequence entrySequence = gameObject.GetComponent<EntrySequence>();
-    		await entrySequence.PlayInitialSequenceAsync(ct);
+    			EntrySequence entrySequence = gameObject.GetComponent<EntrySequence>();
+    			await entrySequence.PlayInitialSequenceAsync(ct);
+    		}
     	}
 
     	[Token(Token = "0x6000063")]

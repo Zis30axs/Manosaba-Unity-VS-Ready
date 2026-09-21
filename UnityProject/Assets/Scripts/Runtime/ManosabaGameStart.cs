@@ -206,7 +206,20 @@ namespace Manosaba.Integration
                         if (root != null) rootsBefore.Add(root.GetInstanceID().ToString());
                     }
                 }
-                if (start != null)
+                // The scene's own GameInitializer, with its scene-provided SteamManager, already had Start() run by
+                // Unity on the previous frame, and Start() fire-and-forgets InitializeAsync.  Invoking Start() again
+                // and then InitializeAsync directly (both written for the host-created component, whose Start() stops
+                // at the missing SteamManager) booted the game THREE times concurrently: three DefaultLocalePresenters
+                // fighting over one IDefaultLocaleSelector registration and three Game prefab instances (G4b round 5,
+                // 2026-09-21).  In that case the probe only observes.
+                bool chainStartedByUnity = !evidence.component_created && component != null &&
+                                           ((Behaviour)component).isActiveAndEnabled && SteamManagerWired(type, component);
+                evidence.chain_started_by_unity = chainStartedByUnity;
+                if (chainStartedByUnity)
+                {
+                    evidence.start_invocation = "SKIPPED (Unity ran the scene component's Start(), which starts InitializeAsync)";
+                }
+                else if (start != null)
                 {
                     // Invoking it ourselves captures the exception object and its stack, which Unity's
                     // lifecycle call would only have logged.
@@ -245,6 +258,11 @@ namespace Manosaba.Integration
                     Cysharp.Threading.Tasks.UniTask returnedTask = default;
                     bool haveTask = false;
                     progressWatch = NaninovelProgressWatch.TryAttach();
+                    if (chainStartedByUnity)
+                    {
+                        evidence.initialize_invocation = "SKIPPED (already started by Start(); observed only)";
+                    }
+                    else
                     try
                     {
                         object[] arguments = initialize.GetParameters().Length == 1
@@ -272,13 +290,15 @@ namespace Manosaba.Integration
                     // hides everything the chain does, because a UniTask carries its exception until someone
                     // observes it.  Polling the awaiter also tells apart "completed" from "waiting forever",
                     // which is the difference that matters for a boot chain.
-                    if (haveTask)
+                    if (haveTask || chainStartedByUnity)
                     {
+                        // Without a task of our own (chain started by Unity) there is nothing to await: the window
+                        // is sampled for its full length and completion is judged from the engine samples.
                         var awaiter = returnedTask.GetAwaiter();
                         float chainDeadline = Time.realtimeSinceStartup + ChainSeconds;
                         float nextSample = 0f;
                         var sampleTrace = new List<string>();
-                        while (!awaiter.IsCompleted && Time.realtimeSinceStartup < chainDeadline)
+                        while ((!haveTask || !awaiter.IsCompleted) && Time.realtimeSinceStartup < chainDeadline)
                         {
                             // Per-second engine samples: a chain stuck at one progress value names the
                             // service it is stuck on; a chain whose value keeps moving is merely slow.
@@ -322,7 +342,11 @@ namespace Manosaba.Integration
                             }
                             yield return null;
                         }
-                        if (awaiter.IsCompleted)
+                        if (!haveTask)
+                        {
+                            evidence.initialize_completion = "NOT AWAITED (started by Unity's Start(); see engine samples)";
+                        }
+                        else if (awaiter.IsCompleted)
                         {
                             try
                             {
@@ -2049,6 +2073,14 @@ namespace Manosaba.Integration
             return string.Join("\n", lines.Take(count)).TrimEnd();
         }
 
+        /// <summary>GameInitializer.Start()'s only precondition: its scene-provided _steamManager reference.</summary>
+        private static bool SteamManagerWired(Type type, Component component)
+        {
+            FieldInfo steam = type.GetField("_steamManager", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            object value = steam != null ? steam.GetValue(component) : null;
+            return value is UnityEngine.Object unityObject ? unityObject != null : value != null;
+        }
+
         private static string Describe(Exception ex)
         {
             if (ex == null) return "(null)";
@@ -2159,6 +2191,7 @@ namespace Manosaba.Integration
             public List<string> declared_methods = new List<string>();
             public bool start_method_found;
             public string start_invocation;
+            public bool chain_started_by_unity;
             public bool initialize_method_found;
             public string initialize_invocation;
             public string initialize_completion;

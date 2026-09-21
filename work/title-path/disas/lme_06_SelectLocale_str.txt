@@ -1,0 +1,140 @@
+====================================================================================================
+FUNCTION RVA 0xD31490  VA 0x180D31490  size 0x181 (385 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended$$SelectLocale
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended__SelectLocale (GigaCreation_NaninovelExtender_Localization_LocalizationManagerExtended_o* __this, System_String_o* locale, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended :: public override UniTask SelectLocale(string locale)
+  fields of GigaCreation.NaninovelExtender.Localization.LocalizationManagerExtended:
+      +0x48   _validLocales                  readonly List<string>
+      +0x50   _localizationManager           ILocalizationManager
+      +0x58   _defaultLocaleSelector         IDefaultLocaleSelector
+  fields of LocalizationManagerExtended.<>O:
+      +0x0    <0>__ContainsTag               static Func<string, bool>
+  fields of LocalizationManagerExtended.<>c:
+      +0x0    <>9                            static readonly LocalizationManagerExtended.<>c
+      +0x8    <>9__14_0                      static Func<Folder, string>
+  fields of LocalizationManagerExtended.<GetAvailableLocaleTagsAsync>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<IEnumerable<string>>
+      +0x20   <>4__this                      LocalizationManagerExtended
+      +0x28   <>u__1                         UniTask.Awaiter<IReadOnlyCollection<Folder>>
+  fields of LocalizationManagerExtended.<RetrieveAvailableLocales>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter<IEnumerable<string>>
+  fields of LocalizationManagerExtended.<SelectLocale>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         LocaleKind
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+  fields of LocalizationManagerExtended.<SelectLocale>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizationManagerExtended
+      +0x20   locale                         string
+      +0x28   <task>5__2                     UniTask
+      +0x30   <>u__1                         UniTask.Awaiter
+      +0x40   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D31490  mov     qword ptr [rsp + 8], rbx                  
+  0x180D31495  push    rdi                                       
+  0x180D31496  sub     rsp, 0x70                                 
+  0x180D3149A  cmp     byte ptr [rip + 0x23abedb], 0                ; data_30DD37C
+  0x180D314A1  mov     rdi, rdx                                  
+  0x180D314A4  mov     rbx, rcx                                  
+  0x180D314A7  jne     0x180d314c1                               
+  0x180D314A9  lea     rcx, [rip + 0x20fee80]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<LocalizationManagerExtended.<SelectLocale>d__11>()
+  0x180D314B0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D314B5  lock or dword ptr [rsp], 0                        
+  0x180D314BA  mov     byte ptr [rip + 0x23abebb], 1                ; data_30DD37C
+
+180D314C1:
+  0x180D314C1  xor     eax, eax                                  
+  0x180D314C3  lea     r9, [rip + 0x23bcdd6]                        ; data_30EE2A0
+  0x180D314CA  xorps   xmm0, xmm0                                
+  0x180D314CD  mov     qword ptr [rsp + 0x20], rax               
+  0x180D314D2  mov     qword ptr [rsp + 0x38], rax               
+  0x180D314D7  xorps   xmm1, xmm1                                
+  0x180D314DA  mov     qword ptr [rsp + 0x60], rax               
+  0x180D314DF  mov     eax, dword ptr [rip + 0x23a7cdf]             ; data_30D91C4
+  0x180D314E5  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D314EB  movdqa  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D314F1  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180D314F6  test    eax, eax                                  
+  0x180D314F8  je      0x180d3153f                               
+  0x180D314FA  lea     r8, [rsp + 0x28]                          
+  0x180D314FF  shr     r8, 0xc                                   
+  0x180D31503  and     r8d, 0x1fffff                             
+  0x180D3150A  mov     eax, r8d                                  
+  0x180D3150D  shr     rax, 6                                    
+  0x180D31511  and     r8d, 0x3f                                 
+  0x180D31515  lea     rdx, [r9 + rax*8]                         
+  0x180D31519  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D31520:
+  0x180D31520  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D31527  mov     rcx, rax                                  
+  0x180D3152A  bts     rcx, r8                                   
+  0x180D3152E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D31537  jne     0x180d31520                               
+  0x180D31539  mov     eax, dword ptr [rip + 0x23a7c85]             ; data_30D91C4
+
+180D3153F:
+  0x180D3153F  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D31544  test    eax, eax                                  
+  0x180D31546  je      0x180d3158f                               
+  0x180D31548  lea     r8, [rsp + 0x38]                          
+  0x180D3154D  shr     r8, 0xc                                   
+  0x180D31551  and     r8d, 0x1fffff                             
+  0x180D31558  mov     eax, r8d                                  
+  0x180D3155B  shr     rax, 6                                    
+  0x180D3155F  and     r8d, 0x3f                                 
+  0x180D31563  lea     rdx, [r9 + rax*8]                         
+  0x180D31567  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D3156E  nop                                               
+
+180D31570:
+  0x180D31570  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D31577  mov     rcx, rax                                  
+  0x180D3157A  bts     rcx, r8                                   
+  0x180D3157E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D31587  jne     0x180d31570                               
+  0x180D31589  mov     eax, dword ptr [rip + 0x23a7c35]             ; data_30D91C4
+
+180D3158F:
+  0x180D3158F  mov     qword ptr [rsp + 0x40], rdi               
+  0x180D31594  test    eax, eax                                  
+  0x180D31596  je      0x180d315d9                               
+  0x180D31598  lea     r8, [rsp + 0x40]                          
+  0x180D3159D  shr     r8, 0xc                                   
+  0x180D315A1  and     r8d, 0x1fffff                             
+  0x180D315A8  mov     eax, r8d                                  
+  0x180D315AB  shr     rax, 6                                    
+  0x180D315AF  and     r8d, 0x3f                                 
+  0x180D315B3  lea     rdx, [r9 + rax*8]                         
+  0x180D315B7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D315BE  nop                                               
+
+180D315C0:
+  0x180D315C0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D315C7  mov     rcx, rax                                  
+  0x180D315CA  bts     rcx, r8                                   
+  0x180D315CE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D315D7  jne     0x180d315c0                               
+
+180D315D9:
+  0x180D315D9  mov     r8, qword ptr [rip + 0x20fed50]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<LocalizationManagerExtended.<SelectLocale>d__11>()
+  0x180D315E0  lea     rdx, [rsp + 0x20]                         
+  0x180D315E5  lea     rcx, [rsp + 0x28]                         
+  0x180D315EA  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D315F2  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D315F7  xor     edx, edx                                  
+  0x180D315F9  lea     rcx, [rsp + 0x28]                         
+  0x180D315FE  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D31603  mov     rbx, qword ptr [rsp + 0x80]               
+  0x180D3160B  add     rsp, 0x70                                 
+  0x180D3160F  pop     rdi                                       
+  0x180D31610  ret                                               
