@@ -3707,3 +3707,40 @@ python tools/unity-rebuild/classify_runtime_resource_log.py tools/unity-rebuild/
 **本轮尚未做到**（写在这里，不算完成）：G3 内容构建未完成、G4b 未从 Boot 复跑，所以「A/B/C 的症状消失」与
 「标题脚本到 `@stop`」都还**没有运行时证据**；`BackgroundManagerExtended.Save/LoadServiceState` 仍转发基类；
 `CharacterManagerExtended` 的接口列表同样缺失（同一类 bug，未改）。
+
+## 43. 2026-09-20 ～ 09-22 记录：Boot → System_Title 干净地停在 `@stop`，TitleUI 显示（G4b 第 3–14 轮）
+
+**结论**：第 14 轮 G4b（commit `74b01a8` 之后）从 `Boot.unity` 起跑：引擎 3.5 s `INITIALIZED`，System_Title 只播放一次，
+auto-advance 快照 `index=14 playing=False`（`@stop`），`ui_visibility` 中 29 个受管 UI 只有 `TitleUI:V(active,a=1.00)`
+（与 Naninovel 自带、无 CanvasGroup 的 ContinueInputUI）可见；日志里 **异常 0 条**，只剩 Editor 启动时资产库的
+"Trying to reload asset from disk that is not stored on disk" 与游戏自己打的 "Main camera not found in the scene" 警告。
+证据：`work/title-path/g4b_round1{0..4}.game_start_evidence_wired.json`（第 10 轮起入库）。
+
+**逐轮停点与修复**（均按四月 CHS `GameAssembly.dll` 反汇编复原或修流水线；未用 `?.`、遇 null 返回、吞 NRE、跳过命令、
+伪造 actor 等手段；原生代码里本来就有的 null 判断写成显式 `if`，注释给出地址）：
+
+| 轮 | 停点 / 症状 | 根因 | 修复（commit） |
+|---|---|---|---|
+| 3–5 | GalleryUI 异常；0.917 卡住；`ValidLocales` 为 null；`IDefaultLocaleSelector` 取不到 | `Assembly-CSharp` 限定名；`LocalizationManagerExtended` 丢接口与方法体 | 程序集名重写 `98ffb11`；接口 `3655ea2`；方法体 `9deca5f` `740b39e` |
+| 6 | `OptionsUi.cs:504` | `CameraManagerExtended` 图形设置、`Platform` 为桩 | `1ef99db`（引擎初始化完成） |
+| 7b–8 | System_Title 每 ~3.2 s 重播 | `EditorResources.asset` 内置 UI 仍指向包默认（`TitleMenu` 在显示时重放标题脚本） | `align_editor_resources.py` 指回游戏自己的 8 个预制件 `99d7f2d` |
+| 9 | `CustomUI.OnEnable:168`、`SaveLoadUi.Initialize:618` NRE | `ClickThroughPanelExtended.Awake`、泛型 `PageableGridPanel.Grid` 等为桩 | `9ef30f4`（含 LoadingUiExtended、Pagination、MovingArrow、CanvasGroupExtensions） |
+| 10 | NRE 0，到达 `@stop` | —— | 存读档网格 / 槽位 `a3a6575` |
+| 11 | TitleUI 显示；但 UI 两套、服务重复注册 | **探针副作用**：直接再调 `InstantiateUIs`；Unity 已起链时仍自建一份 Game 预制件 | `feb2486`（两者改为 opt-in / 跳过） |
+| 12 | 干净；"Failed to select locale: Locale ''" | `LocaleKindExtensions` 整类为桩（`ToTagName` 返回 null） | `c16a178` |
+| 13 | UI 又成 58 个 | **探针副作用**：post-init 捕获包装的表达式树把原委托执行两次 | `74b01a8` |
+| 14 | **异常 0** | —— | —— |
+
+**新增的两类系统性缺陷与工具**：
+- *字段初始化器被骨架丢掉*：Il2CppDumper 骨架保留空构造函数、丢掉 `= new ...` 初始化器，非序列化的 readonly
+  字段（`CompositeDisposable`、`Subject<T>`、`List<T>`、`Tweener<T>`、`StringBuilder` …）在运行时为 null。
+  `work/title-path/ctor_sweep.py` 找出原生构造函数写字段/分配对象、源码却为空的类型（识别相同代码折叠后 113 个），
+  `apply_ctor_initializers.py` 按原生指令补回，已处理 34 个字段（Essentials.UI、Dialogs、WebRequestUtils、Effects、
+  NaninovelExtender.UI、Tools.UniTasks、Localization）。
+- *残余存根的规模*：`work/title-path/stub_census.py` 统计源码仍是桩、原生函数却非平凡的成员（按 `.pdata` 或到下一
+  函数起点计长，构造函数除外）：**895 个、254 KB**，最多的是 GigaCreation.Essentials.UI（185 个、51 KB，按钮 / 开关 /
+  对话框 / 屏幕基类）。标题脚本到 `@stop` 不依赖它们，但标题按钮的交互、开始游戏之后的流程依赖；这是下一阶段的工作清单。
+
+**探针（`Assets/Scripts/Runtime/ManosabaGameStart.cs`）的教训**：诊断代码本身会改变被测对象。第 11、13 轮的"UI 两套"
+都不是游戏代码的问题；现在所有会重复调用引擎方法的诊断都是 opt-in（`MANOSABA_GAMESTART_REINVOKE_POSTINIT=1`），
+捕获包装保证原委托只调用一次，`ui_visibility` 字段直接给出 TitleUI 是否显示。
