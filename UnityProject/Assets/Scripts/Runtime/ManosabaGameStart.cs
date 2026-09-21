@@ -56,6 +56,8 @@ namespace Manosaba.Integration
         /// <summary>Opt-in: after auto-advance, press TitleUI's New Game button and watch where playback goes.</summary>
         private const string PressNewGameEnv = "MANOSABA_GAMESTART_PRESS_NEW_GAME";
         private const string PressNewGameSecondsEnv = "MANOSABA_GAMESTART_PRESS_NEW_GAME_SECONDS";
+        /// <summary>Opt-in: after the New Game press, drive the player (skip everything, release waits) like auto-advance.</summary>
+        private const string NewGameAdvanceEnv = "MANOSABA_GAMESTART_NEW_GAME_ADVANCE";
         private const float WindowSeconds = 4f;
 
         /// <summary>The chain observation window: 2 x the per-phase window, or the value from the environment.</summary>
@@ -2216,6 +2218,12 @@ namespace Manosaba.Integration
             Type playerType = Type.GetType("Naninovel.IScriptPlayer, Elringus.Naninovel.Runtime");
             int playedBefore;
             lock (s_playedPaths) playedBefore = s_playedPaths.Count;
+            // Optional driving, same levers as DriveScriptPlayer: SkipMode.Everything + SetSkipEnabled(true) once, then
+            // per tick re-enable skip and release WaitingForInput (TryAdvanceAndSnapshot), so the story runs on past the
+            // first line and the next stub / exception in the chapter shows up in one measurement.
+            bool advance = Environment.GetEnvironmentVariable(NewGameAdvanceEnv) == "1";
+            MethodInfo setSkipEnabled = null, setWaitingForInputEnabled = null;
+            int waitReleasesBefore = evidence.auto_advance_wait_releases;
             try
             {
                 Type titleUiType = Type.GetType("WitchTrials.Views.TitleUi, WitchTrials.Game");
@@ -2232,8 +2240,16 @@ namespace Manosaba.Integration
                 MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
                 player = getService != null && playerType != null ? getService.MakeGenericMethod(playerType).Invoke(null, null) : null;
+                if (advance && player != null)
+                {
+                    PropertyInfo skipModeProperty = playerType.GetProperty("SkipMode");
+                    if (skipModeProperty != null && skipModeProperty.PropertyType.IsEnum)
+                        skipModeProperty.SetValue(player, Enum.Parse(skipModeProperty.PropertyType, "Everything"));
+                    setSkipEnabled = playerType.GetMethod("SetSkipEnabled", new[] { typeof(bool) });
+                    setWaitingForInputEnabled = playerType.GetMethod("SetWaitingForInputEnabled", new[] { typeof(bool) });
+                }
                 button.onClick.Invoke();
-                evidence.new_game = "PRESSED";
+                evidence.new_game = advance ? "PRESSED+ADVANCE" : "PRESSED";
                 Debug.Log("[ManosabaGameStart] New Game pressed (TitleUi._newGameButton.onClick)");
             }
             catch (Exception ex)
@@ -2248,6 +2264,12 @@ namespace Manosaba.Integration
             while (Time.realtimeSinceStartup < started + seconds)
             {
                 string sample;
+                if (advance && player != null)
+                {
+                    // Side effects only (skip on, waits released); the sample below is the record.
+                    TryAdvanceAndSnapshot(player, playerType, setSkipEnabled, setWaitingForInputEnabled, evidence,
+                        Time.realtimeSinceStartup - started);
+                }
                 try
                 {
                     object played = playerType?.GetProperty("PlayedScript")?.GetValue(player);
@@ -2271,6 +2293,7 @@ namespace Manosaba.Integration
             }
             evidence.new_game_trace = string.Join(" | ", trace);
             evidence.new_game_final = last ?? "";
+            evidence.new_game_wait_releases = evidence.auto_advance_wait_releases - waitReleasesBefore;
             lock (s_playedPaths) evidence.new_game_on_play = string.Join(" ", s_playedPaths.Skip(playedBefore));
             evidence.new_game_ui_visibility = DescribeManagedUiVisibility();
             WritePartial(evidence);
@@ -2383,6 +2406,7 @@ namespace Manosaba.Integration
             public string new_game_final = "";
             public string new_game_on_play = "";
             public string new_game_ui_visibility = "";
+            public int new_game_wait_releases;   // waits released while MANOSABA_GAMESTART_NEW_GAME_ADVANCE=1
             public List<string> played_scripts = new List<string>();   // consumed by gate G6's runtime coverage
             public string component_type;
             public bool addressables_field_found;

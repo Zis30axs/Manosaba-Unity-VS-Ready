@@ -23,22 +23,24 @@ namespace GigaCreation.Essentials.Ui
     	[Token(Token = "0x1700001F")]
     	public LocaleKind Locale
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F590 -- shared trivial getter: mov eax, [rcx+0x18]
     		[Token(Token = "0x60000C2")]
     		[Address(RVA = "0x38F590", Offset = "0x38DF90", VA = "0x18038F590")]
     		get
     		{
-    			return default(LocaleKind);
+    			return _locale;
     		}
     	}
 
     	[Token(Token = "0x17000020")]
     	public AssetReferenceT<Material> FontMaterialReference
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 -- shared trivial getter: mov rax, [rcx+0x10]
     		[Token(Token = "0x60000C3")]
     		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
     		get
     		{
-    			return null;
+    			return _fontMaterialReference;
     		}
     	}
 
