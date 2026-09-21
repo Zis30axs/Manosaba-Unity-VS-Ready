@@ -1,0 +1,31 @@
+====================================================================================================
+FUNCTION RVA 0x89E040  VA 0x18089E040  size 0x4E (78 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.PageableGridPanel<object, object>$$ChangePage
+  csig   : void GigaCreation_NaninovelExtender_Ui_PageableGridPanel_object__object___ChangePage (GigaCreation_NaninovelExtender_Ui_PageableGridPanel_TGrid__TSlot__o* __this, int32_t idx, const MethodInfo_89E040* method);
+====================================================================================================
+  0x18089E040  mov     qword ptr [rsp + 8], rbx                  
+  0x18089E045  push    rdi                                       
+  0x18089E046  sub     rsp, 0x20                                 
+  0x18089E04A  mov     rbx, rcx                                  
+  0x18089E04D  mov     edi, edx                                  
+  0x18089E04F  mov     rcx, qword ptr [rcx + 0x38]               
+  0x18089E053  test    rcx, rcx                                  
+  0x18089E056  je      0x18089e05f                               
+  0x18089E058  xor     edx, edx                                  
+  0x18089E05A  call    0x18208dc00                                  ; -> UnityEngine.Events.UnityEvent$$Invoke
+
+18089E05F:
+  0x18089E05F  mov     rcx, qword ptr [rbx + 0x28]               
+  0x18089E063  test    rcx, rcx                                  
+  0x18089E066  je      0x18089e089                               
+  0x18089E068  mov     r8, qword ptr [rcx]                       
+  0x18089E06B  lea     edx, [rdi + 1]                            
+  0x18089E06E  mov     rax, qword ptr [r8 + 0x598]               
+  0x18089E075  mov     r8, qword ptr [r8 + 0x5a0]                
+  0x18089E07C  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18089E081  add     rsp, 0x20                                 
+  0x18089E085  pop     rdi                                       
+  0x18089E086  jmp     rax                                       
+
+18089E089:
+  0x18089E089  call    0x180246730                                  ; THROW NullReferenceException

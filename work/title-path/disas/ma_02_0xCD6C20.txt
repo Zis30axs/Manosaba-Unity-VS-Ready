@@ -1,0 +1,93 @@
+====================================================================================================
+FUNCTION RVA 0xCD6C20  VA 0x180CD6C20  size 0x124 (292 bytes)
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$Reset
+  csig   : void GigaCreation_Essentials_Ui_MovingArrow__Reset (GigaCreation_Essentials_Ui_MovingArrow_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD6C20  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CD6C25  push    rdi                                       
+  0x180CD6C26  sub     rsp, 0x20                                 
+  0x180CD6C2A  cmp     byte ptr [rip + 0x240651c], 0                ; data_30DD14D
+  0x180CD6C31  mov     rbx, rcx                                  
+  0x180CD6C34  jne     0x180cd6c5f                               
+  0x180CD6C36  lea     rcx, [rip + 0x2181fe3]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Button>()
+  0x180CD6C3D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD6C42  lock or dword ptr [rsp], 0                        
+  0x180CD6C47  lea     rcx, [rip + 0x217d95a]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180CD6C4E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD6C53  lock or dword ptr [rsp], 0                        
+  0x180CD6C58  mov     byte ptr [rip + 0x24064ee], 1                ; data_30DD14D
+
+180CD6C5F:
+  0x180CD6C5F  mov     r8, qword ptr [rip + 0x217d942]              ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180CD6C66  lea     rdx, [rsp + 0x30]                         
+  0x180CD6C6B  mov     rcx, rbx                                  
+  0x180CD6C6E  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CD6C73  cmp     dword ptr [rip + 0x240254a], 0               ; data_30D91C4
+  0x180CD6C7A  lea     rdi, [rip + 0x241761f]                       ; data_30EE2A0
+  0x180CD6C81  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD6C86  mov     qword ptr [rbx + 0x20], rax                  ; rbx->MovingArrow._canvasGroup | <MoveAsync>d__13.ct
+  0x180CD6C8A  je      0x180cd6cca                               
+  0x180CD6C8C  lea     r8, [rbx + 0x20]                             ; rbx->MovingArrow._canvasGroup | <MoveAsync>d__13.ct
+  0x180CD6C90  shr     r8, 0xc                                   
+  0x180CD6C94  and     r8d, 0x1fffff                             
+  0x180CD6C9B  mov     eax, r8d                                  
+  0x180CD6C9E  shr     rax, 6                                    
+  0x180CD6CA2  and     r8d, 0x3f                                 
+  0x180CD6CA6  lea     rdx, [rdi + rax*8]                        
+  0x180CD6CAA  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CD6CB1:
+  0x180CD6CB1  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD6CB8  mov     rcx, rax                                  
+  0x180CD6CBB  bts     rcx, r8                                   
+  0x180CD6CBF  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD6CC8  jne     0x180cd6cb1                               
+
+180CD6CCA:
+  0x180CD6CCA  mov     r8, qword ptr [rip + 0x2181f4f]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Button>()
+  0x180CD6CD1  lea     rdx, [rsp + 0x30]                         
+  0x180CD6CD6  mov     rcx, rbx                                  
+  0x180CD6CD9  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CD6CDE  cmp     dword ptr [rip + 0x24024df], 0               ; data_30D91C4
+  0x180CD6CE5  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD6CEA  mov     qword ptr [rbx + 0x28], rax                  ; rbx->MovingArrow._button | <MoveAsync>d__13.<linkedCts>5__2
+  0x180CD6CEE  je      0x180cd6d39                               
+  0x180CD6CF0  lea     r8, [rbx + 0x28]                             ; rbx->MovingArrow._button | <MoveAsync>d__13.<linkedCts>5__2
+  0x180CD6CF4  shr     r8, 0xc                                   
+  0x180CD6CF8  and     r8d, 0x1fffff                             
+  0x180CD6CFF  mov     eax, r8d                                  
+  0x180CD6D02  shr     rax, 6                                    
+  0x180CD6D06  and     r8d, 0x3f                                 
+  0x180CD6D0A  lea     rdx, [rdi + rax*8]                        
+  0x180CD6D0E  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD6D15  nop     word ptr [rax + rax]                      
+
+180CD6D20:
+  0x180CD6D20  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD6D27  mov     rcx, rax                                  
+  0x180CD6D2A  bts     rcx, r8                                   
+  0x180CD6D2E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD6D37  jne     0x180cd6d20                               
+
+180CD6D39:
+  0x180CD6D39  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CD6D3E  add     rsp, 0x20                                 
+  0x180CD6D42  pop     rdi                                       
+  0x180CD6D43  ret                                               

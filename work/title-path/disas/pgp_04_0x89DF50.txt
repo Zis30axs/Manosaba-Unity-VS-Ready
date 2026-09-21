@@ -1,0 +1,70 @@
+====================================================================================================
+FUNCTION RVA 0x89DF50  VA 0x18089DF50  size 0xE3 (227 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.PageableGridPanel<object, object>$$Dismiss
+  csig   : void GigaCreation_NaninovelExtender_Ui_PageableGridPanel_object__object___Dismiss (GigaCreation_NaninovelExtender_Ui_PageableGridPanel_TGrid__TSlot__o* __this, const MethodInfo_89DF50* method);
+====================================================================================================
+  0x18089DF50  mov     qword ptr [rsp + 8], rbx                  
+  0x18089DF55  push    rdi                                       
+  0x18089DF56  sub     rsp, 0x20                                 
+  0x18089DF5A  cmp     byte ptr [rip + 0x283ea32], 0                ; data_30DC993
+  0x18089DF61  mov     rbx, rcx                                  
+  0x18089DF64  jne     0x18089df7e                               
+  0x18089DF66  lea     rcx, [rip + 0x25b41e3]                       ; TYPE System.IDisposable_TypeInfo
+  0x18089DF6D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18089DF72  lock or dword ptr [rsp], 0                        
+  0x18089DF77  mov     byte ptr [rip + 0x283ea15], 1                ; data_30DC993
+
+18089DF7E:
+  0x18089DF7E  cmp     qword ptr [rbx + 0x40], 0                 
+  0x18089DF83  je      0x18089dfe3                               
+  0x18089DF85  mov     r8, qword ptr [rbx + 0x40]                
+  0x18089DF89  xor     ecx, ecx                                  
+  0x18089DF8B  mov     rdx, qword ptr [rip + 0x25b41be]             ; TYPE System.IDisposable_TypeInfo
+  0x18089DF92  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x18089DF97  cmp     dword ptr [rip + 0x283b226], 0               ; data_30D91C4
+  0x18089DF9E  mov     qword ptr [rbx + 0x40], 0                 
+  0x18089DFA6  je      0x18089dfe3                               
+  0x18089DFA8  lea     r8, [rbx + 0x40]                          
+  0x18089DFAC  shr     r8, 0xc                                   
+  0x18089DFB0  lea     r9, [rip + 0x28965c9]                        ; data_3134580
+  0x18089DFB7  and     r8d, 0x1fffff                             
+  0x18089DFBE  mov     edx, r8d                                  
+  0x18089DFC1  shr     rdx, 6                                    
+  0x18089DFC5  and     r8d, 0x3f                                 
+  0x18089DFC9  prefetchw byte ptr [r9 + rdx*8]                     
+  0x18089DFCE  nop                                               
+
+18089DFD0:
+  0x18089DFD0  mov     rax, qword ptr [r9 + rdx*8]               
+  0x18089DFD4  mov     rcx, rax                                  
+  0x18089DFD7  bts     rcx, r8                                   
+  0x18089DFDB  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x18089DFE1  jne     0x18089dfd0                               
+
+18089DFE3:
+  0x18089DFE3  mov     rdi, qword ptr [rbx + 0x20]               
+  0x18089DFE7  test    rdi, rdi                                  
+  0x18089DFEA  je      0x18089e02e                               
+  0x18089DFEC  xor     r8d, r8d                                  
+  0x18089DFEF  xorps   xmm1, xmm1                                
+  0x18089DFF2  mov     rcx, rdi                                  
+  0x18089DFF5  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x18089DFFA  xor     r8d, r8d                                  
+  0x18089DFFD  xor     edx, edx                                  
+  0x18089DFFF  mov     rcx, rdi                                  
+  0x18089E002  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x18089E007  xor     r8d, r8d                                  
+  0x18089E00A  xor     edx, edx                                  
+  0x18089E00C  mov     rcx, rdi                                  
+  0x18089E00F  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+  0x18089E014  mov     rcx, qword ptr [rbx + 0x30]               
+  0x18089E018  test    rcx, rcx                                  
+  0x18089E01B  je      0x18089e02e                               
+  0x18089E01D  xor     edx, edx                                  
+  0x18089E01F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x18089E024  add     rsp, 0x20                                 
+  0x18089E028  pop     rdi                                       
+  0x18089E029  jmp     0x180ce63d0                                  ; -> GigaCreation.Essentials.Ui.Pagination$$Dismiss
+
+18089E02E:
+  0x18089E02E  call    0x180246730                                  ; THROW NullReferenceException

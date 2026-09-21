@@ -1,0 +1,23 @@
+====================================================================================================
+FUNCTION RVA 0xCE5BC0  VA 0x180CE5BC0  size 0x26 (38 bytes)
+  managed: GigaCreation.Essentials.Ui.DotIndicator$$Activate
+  csig   : void GigaCreation_Essentials_Ui_DotIndicator__Activate (GigaCreation_Essentials_Ui_DotIndicator_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.DotIndicator :: public void Activate()
+  fields of GigaCreation.Essentials.Ui.DotIndicator:
+      +0x20   _image                         Image
+      +0x28   _enable                        Sprite
+      +0x30   _disable                       Sprite
+====================================================================================================
+  0x180CE5BC0  sub     rsp, 0x28                                 
+  0x180CE5BC4  xor     edx, edx                                  
+  0x180CE5BC6  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE5BCB  test    rax, rax                                  
+  0x180CE5BCE  je      0x180ce5be1                               
+  0x180CE5BD0  xor     r8d, r8d                                  
+  0x180CE5BD3  mov     dl, 1                                     
+  0x180CE5BD5  mov     rcx, rax                                  
+  0x180CE5BD8  add     rsp, 0x28                                 
+  0x180CE5BDC  jmp     0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+
+180CE5BE1:
+  0x180CE5BE1  call    0x180246730                                  ; THROW NullReferenceException

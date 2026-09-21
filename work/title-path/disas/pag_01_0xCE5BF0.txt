@@ -1,0 +1,42 @@
+====================================================================================================
+FUNCTION RVA 0xCE5BF0  VA 0x180CE5BF0  size 0x42 (66 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$get_CurrentPageIndex
+  csig   : int32_t GigaCreation_Essentials_Ui_Pagination__get_CurrentPageIndex (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: public int get_CurrentPageIndex()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE5BF0  push    rbx                                       
+  0x180CE5BF2  sub     rsp, 0x20                                 
+  0x180CE5BF6  cmp     byte ptr [rip + 0x23f75b3], 0                ; data_30DD1B0
+  0x180CE5BFD  mov     rbx, rcx                                  
+  0x180CE5C00  jne     0x180ce5c1a                               
+  0x180CE5C02  lea     rcx, [rip + 0x2173cf7]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>.get_Value()
+  0x180CE5C09  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5C0E  lock or dword ptr [rsp], 0                        
+  0x180CE5C13  mov     byte ptr [rip + 0x23f7596], 1                ; data_30DD1B0
+
+180CE5C1A:
+  0x180CE5C1A  mov     rcx, qword ptr [rbx + 0x58]                  ; rbx->Pagination._currentPageIndex
+  0x180CE5C1E  test    rcx, rcx                                  
+  0x180CE5C21  je      0x180ce5c2d                               
+  0x180CE5C23  add     rsp, 0x20                                 
+  0x180CE5C27  pop     rbx                                       
+  0x180CE5C28  jmp     0x1800061f0                               
+
+180CE5C2D:
+  0x180CE5C2D  call    0x180246730                                  ; THROW NullReferenceException

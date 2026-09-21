@@ -1,0 +1,92 @@
+====================================================================================================
+FUNCTION RVA 0xCE6B10  VA 0x180CE6B10  size 0xED (237 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__2
+  csig   : void GigaCreation_Essentials_Ui_Pagination___c__DisplayClass18_0___Present_b__2 (GigaCreation_Essentials_Ui_Pagination___c__DisplayClass18_0_o* __this, UniRx_Unit_o __, const MethodInfo* method);
+  dump.cs: Pagination.<>c__DisplayClass18_0 :: internal void <Present>b__2(Unit _)
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE6B10  push    rbx                                       
+  0x180CE6B12  sub     rsp, 0x20                                 
+  0x180CE6B16  cmp     byte ptr [rip + 0x23f669c], 0                ; data_30DD1B9
+  0x180CE6B1D  mov     rbx, rcx                                  
+  0x180CE6B20  jne     0x180ce6b5c                               
+  0x180CE6B22  lea     rcx, [rip + 0x216e60f]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE6B29  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6B2E  lock or dword ptr [rsp], 0                        
+  0x180CE6B33  lea     rcx, [rip + 0x2172dc6]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>.get_Value()
+  0x180CE6B3A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6B3F  lock or dword ptr [rsp], 0                        
+  0x180CE6B44  lea     rcx, [rip + 0x2172edd]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>.set_Value()
+  0x180CE6B4B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6B50  lock or dword ptr [rsp], 0                        
+  0x180CE6B55  mov     byte ptr [rip + 0x23f665d], 1                ; data_30DD1B9
+
+180CE6B5C:
+  0x180CE6B5C  mov     rcx, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE6B60  mov     qword ptr [rsp + 0x38], rdi               
+  0x180CE6B65  test    rcx, rcx                                  
+  0x180CE6B68  je      0x180ce6bf8                               
+  0x180CE6B6E  xor     edx, edx                                  
+  0x180CE6B70  call    0x180ce5c40                                  ; -> GigaCreation.Essentials.Ui.Pagination$$get_InputManager
+  0x180CE6B75  test    rax, rax                                  
+  0x180CE6B78  je      0x180ce6bf8                               
+  0x180CE6B7A  mov     rdx, qword ptr [rip + 0x216e5b7]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE6B81  xor     ecx, ecx                                  
+  0x180CE6B83  mov     r9d, 2                                    
+  0x180CE6B89  mov     r8, rax                                   
+  0x180CE6B8C  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180CE6B91  mov     rax, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE6B95  test    rax, rax                                  
+  0x180CE6B98  je      0x180ce6bf8                               
+  0x180CE6B9A  cmp     byte ptr [rax + 0x54], 0                     ; rax->Pagination._wrapped
+  0x180CE6B9E  mov     rdi, qword ptr [rax + 0x58]                  ; rax->Pagination._currentPageIndex
+  0x180CE6BA2  mov     rcx, rdi                                  
+  0x180CE6BA5  je      0x180ce6bb9                               
+  0x180CE6BA7  test    rcx, rcx                                  
+  0x180CE6BAA  je      0x180ce6bf8                               
+  0x180CE6BAC  call    0x1800061f0                                  ; -> sub_61F0 (runtime/helper)
+  0x180CE6BB1  inc     eax                                       
+  0x180CE6BB3  cdq                                               
+  0x180CE6BB4  idiv    dword ptr [rbx + 0x18]                       ; rbx-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE6BB7  jmp     0x180ce6bd5                               
+
+180CE6BB9:
+  0x180CE6BB9  test    rcx, rcx                                  
+  0x180CE6BBC  je      0x180ce6bf8                               
+  0x180CE6BBE  call    0x1800061f0                                  ; -> sub_61F0 (runtime/helper)
+  0x180CE6BC3  mov     ecx, dword ptr [rbx + 0x18]                  ; rbx-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE6BC6  dec     ecx                                       
+  0x180CE6BC8  lea     edx, [rax + 1]                            
+  0x180CE6BCB  cmp     edx, ecx                                  
+  0x180CE6BCD  cmovge  edx, ecx                                  
+  0x180CE6BD0  test    rdi, rdi                                  
+  0x180CE6BD3  je      0x180ce6bf8                               
+
+180CE6BD5:
+  0x180CE6BD5  mov     r8, qword ptr [rip + 0x2172e4c]              ; METHODINFO Method$UniRx.ReactiveProperty<int>.set_Value()
+  0x180CE6BDC  mov     rcx, rdi                                  
+  0x180CE6BDF  mov     dword ptr [rsp + 0x30], edx               
+  0x180CE6BE3  lea     rdx, [rsp + 0x30]                         
+  0x180CE6BE8  call    0x1808c46b0                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$set_Value
+  0x180CE6BED  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180CE6BF2  add     rsp, 0x20                                 
+  0x180CE6BF6  pop     rbx                                       
+  0x180CE6BF7  ret                                               
+
+180CE6BF8:
+  0x180CE6BF8  call    0x180246730                                  ; THROW NullReferenceException

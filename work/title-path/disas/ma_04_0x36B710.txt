@@ -1,0 +1,46 @@
+====================================================================================================
+FUNCTION RVA 0x36B710  VA 0x18036B710  size 0x41 (65 bytes)
+  managed: WitchTrials.Views.SkipDebateButton$$Dismiss
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$Dismiss
+  csig   : void WitchTrials_Views_SkipDebateButton__Dismiss (WitchTrials_Views_SkipDebateButton_o* __this, const MethodInfo* method);
+  dump.cs: WitchTrials.Views.SkipDebateButton :: public void Dismiss()
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: public void Dismiss()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x18036B710  push    rbx                                       
+  0x18036B712  sub     rsp, 0x20                                 
+  0x18036B716  mov     rbx, qword ptr [rcx + 0x20]                  ; rcx->MovingArrow._canvasGroup | <MoveAsync>d__13.ct
+  0x18036B71A  test    rbx, rbx                                  
+  0x18036B71D  je      0x18036b74c                               
+  0x18036B71F  xor     r8d, r8d                                  
+  0x18036B722  xorps   xmm1, xmm1                                
+  0x18036B725  mov     rcx, rbx                                  
+  0x18036B728  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x18036B72D  xor     r8d, r8d                                  
+  0x18036B730  xor     edx, edx                                  
+  0x18036B732  mov     rcx, rbx                                  
+  0x18036B735  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x18036B73A  xor     r8d, r8d                                  
+  0x18036B73D  xor     edx, edx                                  
+  0x18036B73F  mov     rcx, rbx                                  
+  0x18036B742  add     rsp, 0x20                                 
+  0x18036B746  pop     rbx                                       
+  0x18036B747  jmp     0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+
+18036B74C:
+  0x18036B74C  call    0x180246730                                  ; THROW NullReferenceException

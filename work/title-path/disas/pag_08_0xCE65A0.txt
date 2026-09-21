@@ -1,0 +1,149 @@
+====================================================================================================
+FUNCTION RVA 0xCE65A0  VA 0x180CE65A0  size 0x20F (527 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_Pagination___ctor (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: public void .ctor()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE65A0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE65A5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CE65AA  push    rdi                                       
+  0x180CE65AB  sub     rsp, 0x20                                 
+  0x180CE65AF  cmp     byte ptr [rip + 0x23f6c00], 0                ; data_30DD1B6
+  0x180CE65B6  mov     rdi, rcx                                  
+  0x180CE65B9  jne     0x180ce6617                               
+  0x180CE65BB  lea     rcx, [rip + 0x216bc86]                       ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CE65C2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE65C7  lock or dword ptr [rsp], 0                        
+  0x180CE65CC  lea     rcx, [rip + 0x2181efd]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>..ctor()
+  0x180CE65D3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE65D8  lock or dword ptr [rsp], 0                        
+  0x180CE65DD  lea     rcx, [rip + 0x2181edc]                       ; TYPE System.Collections.Generic.List<DotIndicator>_TypeInfo
+  0x180CE65E4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE65E9  lock or dword ptr [rsp], 0                        
+  0x180CE65EE  lea     rcx, [rip + 0x2181ebb]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>..ctor()
+  0x180CE65F5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE65FA  lock or dword ptr [rsp], 0                        
+  0x180CE65FF  lea     rcx, [rip + 0x2173462]                       ; TYPE UniRx.ReactiveProperty<int>_TypeInfo
+  0x180CE6606  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE660B  lock or dword ptr [rsp], 0                        
+  0x180CE6610  mov     byte ptr [rip + 0x23f6b9f], 1                ; data_30DD1B6
+
+180CE6617:
+  0x180CE6617  mov     rcx, qword ptr [rip + 0x217344a]             ; TYPE UniRx.ReactiveProperty<int>_TypeInfo
+  0x180CE661E  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE6623  mov     rdx, qword ptr [rip + 0x2181e86]             ; METHODINFO Method$UniRx.ReactiveProperty<int>..ctor()
+  0x180CE662A  mov     rcx, rax                                  
+  0x180CE662D  mov     rbx, rax                                  
+  0x180CE6630  call    0x1808c4900                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CE6635  cmp     dword ptr [rip + 0x23f2b88], 0               ; data_30D91C4
+  0x180CE663C  lea     rsi, [rip + 0x2407c5d]                       ; data_30EE2A0
+  0x180CE6643  mov     qword ptr [rdi + 0x58], rbx                  ; rdi->Pagination._currentPageIndex
+  0x180CE6647  je      0x180ce6689                               
+  0x180CE6649  lea     r8, [rdi + 0x58]                             ; rdi->Pagination._currentPageIndex
+  0x180CE664D  shr     r8, 0xc                                   
+  0x180CE6651  and     r8d, 0x1fffff                             
+  0x180CE6658  mov     eax, r8d                                  
+  0x180CE665B  shr     rax, 6                                    
+  0x180CE665F  and     r8d, 0x3f                                 
+  0x180CE6663  lea     rdx, [rsi + rax*8]                        
+  0x180CE6667  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE666E  nop                                               
+
+180CE6670:
+  0x180CE6670  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE6677  mov     rcx, rax                                  
+  0x180CE667A  bts     rcx, r8                                   
+  0x180CE667E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE6687  jne     0x180ce6670                               
+
+180CE6689:
+  0x180CE6689  mov     rcx, qword ptr [rip + 0x216bbb8]             ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CE6690  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE6695  xor     edx, edx                                  
+  0x180CE6697  mov     rcx, rax                                  
+  0x180CE669A  mov     rbx, rax                                  
+  0x180CE669D  call    0x1817bc3c0                                  ; -> UniRx.CompositeDisposable$$.ctor
+  0x180CE66A2  cmp     dword ptr [rip + 0x23f2b1b], 0               ; data_30D91C4
+  0x180CE66A9  mov     qword ptr [rdi + 0x60], rbx                  ; rdi->Pagination._disposables
+  0x180CE66AD  je      0x180ce66f9                               
+  0x180CE66AF  lea     r8, [rdi + 0x60]                             ; rdi->Pagination._disposables
+  0x180CE66B3  shr     r8, 0xc                                   
+  0x180CE66B7  and     r8d, 0x1fffff                             
+  0x180CE66BE  mov     eax, r8d                                  
+  0x180CE66C1  shr     rax, 6                                    
+  0x180CE66C5  and     r8d, 0x3f                                 
+  0x180CE66C9  lea     rdx, [rsi + rax*8]                        
+  0x180CE66CD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE66D4  nop     dword ptr [rax]                           
+  0x180CE66D8  nop     dword ptr [rax + rax]                     
+
+180CE66E0:
+  0x180CE66E0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE66E7  mov     rcx, rax                                  
+  0x180CE66EA  bts     rcx, r8                                   
+  0x180CE66EE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE66F7  jne     0x180ce66e0                               
+
+180CE66F9:
+  0x180CE66F9  mov     rcx, qword ptr [rip + 0x2181dc0]             ; TYPE System.Collections.Generic.List<DotIndicator>_TypeInfo
+  0x180CE6700  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE6705  mov     rdx, qword ptr [rip + 0x2181dc4]             ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>..ctor()
+  0x180CE670C  mov     rcx, rax                                  
+  0x180CE670F  mov     rbx, rax                                  
+  0x180CE6712  call    0x180857ba0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor (+1 aliases)
+  0x180CE6717  cmp     dword ptr [rip + 0x23f2aa6], 0               ; data_30D91C4
+  0x180CE671E  mov     qword ptr [rdi + 0x68], rbx                  ; rdi->Pagination._dots
+  0x180CE6722  je      0x180ce6769                               
+  0x180CE6724  lea     r8, [rdi + 0x68]                             ; rdi->Pagination._dots
+  0x180CE6728  shr     r8, 0xc                                   
+  0x180CE672C  and     r8d, 0x1fffff                             
+  0x180CE6733  mov     eax, r8d                                  
+  0x180CE6736  shr     rax, 6                                    
+  0x180CE673A  and     r8d, 0x3f                                 
+  0x180CE673E  lea     rdx, [rsi + rax*8]                        
+  0x180CE6742  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE6749  nop     dword ptr [rax]                           
+
+180CE6750:
+  0x180CE6750  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE6757  mov     rcx, rax                                  
+  0x180CE675A  bts     rcx, r8                                   
+  0x180CE675E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE6767  jne     0x180ce6750                               
+
+180CE6769:
+  0x180CE6769  cmp     byte ptr [rip + 0x2401d7d], 0                ; data_30E84ED
+  0x180CE6770  jne     0x180ce678a                               
+  0x180CE6772  lea     rcx, [rip + 0x216bb17]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6779  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE677E  lock or dword ptr [rsp], 0                        
+  0x180CE6783  mov     byte ptr [rip + 0x2401d63], 1                ; data_30E84ED
+
+180CE678A:
+  0x180CE678A  mov     rcx, qword ptr [rip + 0x216baff]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6791  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE6798  jne     0x180ce679f                               
+  0x180CE679A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE679F:
+  0x180CE679F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE67A4  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CE67A9  add     rsp, 0x20                                 
+  0x180CE67AD  pop     rdi                                       
+  0x180CE67AE  ret                                               

@@ -1,0 +1,33 @@
+====================================================================================================
+FUNCTION RVA 0xCD7210  VA 0x180CD7210  size 0x24 (36 bytes)
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$OnClickAsObservable
+  csig   : System_IObservable_Unit__o* GigaCreation_Essentials_Ui_MovingArrow__OnClickAsObservable (GigaCreation_Essentials_Ui_MovingArrow_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: public IObservable<Unit> OnClickAsObservable()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD7210  sub     rsp, 0x28                                 
+  0x180CD7214  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->MovingArrow._button | <MoveAsync>d__13.<linkedCts>5__2
+  0x180CD7218  test    rcx, rcx                                  
+  0x180CD721B  je      0x180cd722f                               
+  0x180CD721D  mov     rcx, qword ptr [rcx + 0x100]              
+  0x180CD7224  xor     edx, edx                                  
+  0x180CD7226  add     rsp, 0x28                                 
+  0x180CD722A  jmp     0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+
+180CD722F:
+  0x180CD722F  call    0x180246730                                  ; THROW NullReferenceException

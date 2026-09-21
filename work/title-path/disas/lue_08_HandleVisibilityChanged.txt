@@ -1,0 +1,283 @@
+====================================================================================================
+FUNCTION RVA 0xD3C210  VA 0x180D3C210  size 0x388 (904 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$HandleVisibilityChanged
+  csig   : void GigaCreation_NaninovelExtender_Ui_LoadingUiExtended__HandleVisibilityChanged (GigaCreation_NaninovelExtender_Ui_LoadingUiExtended_o* __this, bool visible, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended :: protected override void HandleVisibilityChanged(bool visible)
+  fields of LoadingUiExtended.SettingsData:
+      +0x10   _mode                          LoadingMode
+      +0x18   _item                          LoadingUiExtended.SettingsItem
+  fields of LoadingUiExtended.SettingsItem:
+      +0x10   _blockInputWhenVisible         bool
+      +0x11   _showUnderlay                  bool
+      +0x18   _indicator                     LoadingIndicatorBase
+      +0x20   _onScriptLoadProgressChanged   FloatUnityEvent
+  fields of LoadingUiExtended.<>c:
+      +0x0    <>9                            static readonly LoadingUiExtended.<>c
+      +0x8    <>9__14_0                      static Func<LoadingUiExtended.SettingsData, LoadingMode>
+      +0x10   <>9__14_1                      static Func<LoadingUiExtended.SettingsData, LoadingUiExtended.SettingsItem>
+====================================================================================================
+  0x180D3C210  push    rbp                                       
+  0x180D3C212  push    rsi                                       
+  0x180D3C213  push    r12                                       
+  0x180D3C215  push    r13                                       
+  0x180D3C217  push    r14                                       
+  0x180D3C219  sub     rsp, 0x30                                 
+  0x180D3C21D  cmp     byte ptr [rip + 0x23a119c], 0                ; data_30DD3C0
+  0x180D3C224  movzx   r12d, dl                                  
+  0x180D3C228  mov     rsi, rcx                                  
+  0x180D3C22B  jne     0x180d3c267                               
+  0x180D3C22D  lea     rcx, [rip + 0x20f543c]                       ; TYPE System.Collections.Generic.IReadOnlyDictionary<LoadingMode, LoadingUiExtended.SettingsItem>_TypeInfo
+  0x180D3C234  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C239  lock or dword ptr [rsp], 0                        
+  0x180D3C23E  lea     rcx, [rip + 0x211604b]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C245  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C24A  lock or dword ptr [rsp], 0                        
+  0x180D3C24F  lea     rcx, [rip + 0x2107b6a]                       ; METHODINFO Method$UnityEngine.Events.UnityEvent<float>.Invoke()
+  0x180D3C256  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C25B  lock or dword ptr [rsp], 0                        
+  0x180D3C260  mov     byte ptr [rip + 0x23a1159], 1                ; data_30DD3C0
+
+180D3C267:
+  0x180D3C267  mov     r14, qword ptr [rsi + 0xe8]               
+  0x180D3C26E  xor     r13d, r13d                                
+  0x180D3C271  mov     qword ptr [rsp + 0x68], rbx               
+  0x180D3C276  mov     ebp, r13d                                 
+  0x180D3C279  mov     qword ptr [rsp + 0x70], rdi               
+  0x180D3C27E  mov     eax, r13d                                 
+  0x180D3C281  mov     qword ptr [rsp + 0x78], r15               
+  0x180D3C286  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180D3C28B  test    r14, r14                                  
+  0x180D3C28E  je      0x180d3c58d                               
+  0x180D3C294  movss   xmm6, dword ptr [rip + 0x1da6584]            ; data_2AE2820
+  0x180D3C29C  lea     r15, [r14 + 0x20]                            ; r14->SettingsItem._onScriptLoadProgressChanged
+
+180D3C2A0:
+  0x180D3C2A0  cmp     eax, dword ptr [r14 + 0x18]                  ; r14->SettingsData._item | SettingsItem._indicator
+  0x180D3C2A4  jge     0x180d3c3f1                               
+  0x180D3C2AA  cmp     ebp, dword ptr [r14 + 0x18]                  ; r14->SettingsData._item | SettingsItem._indicator
+  0x180D3C2AE  jae     0x180d3c593                               
+  0x180D3C2B4  mov     rbx, qword ptr [r15]                      
+  0x180D3C2B7  test    r12b, r12b                                
+  0x180D3C2BA  je      0x180d3c3be                               
+  0x180D3C2C0  xor     edx, edx                                  
+  0x180D3C2C2  mov     rcx, rsi                                  
+  0x180D3C2C5  call    0x180d3bd50                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_Settings
+  0x180D3C2CA  test    rax, rax                                  
+  0x180D3C2CD  je      0x180d3c58d                               
+  0x180D3C2D3  mov     r9d, dword ptr [rsi + 0x108]              
+  0x180D3C2DA  mov     r8, rax                                   
+  0x180D3C2DD  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3C2E2  test    rax, rax                                  
+  0x180D3C2E5  je      0x180d3c58d                               
+  0x180D3C2EB  mov     rcx, qword ptr [rip + 0x2115f9e]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C2F2  mov     rdi, qword ptr [rax + 0x18]                  ; rax->SettingsData._item | SettingsItem._indicator
+  0x180D3C2F6  cmp     dword ptr [rcx + 0xe4], r13d              
+  0x180D3C2FD  jne     0x180d3c304                               
+  0x180D3C2FF  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3C304:
+  0x180D3C304  cmp     byte ptr [rip + 0x23ac564], r13b             ; data_30E886F
+  0x180D3C30B  jne     0x180d3c325                               
+  0x180D3C30D  lea     rcx, [rip + 0x2115f7c]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C314  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C319  lock or dword ptr [rsp], r13d                     
+  0x180D3C31E  mov     byte ptr [rip + 0x23ac54a], 1                ; data_30E886F
+
+180D3C325:
+  0x180D3C325  mov     rcx, qword ptr [rip + 0x2115f64]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C32C  cmp     dword ptr [rcx + 0xe4], r13d              
+  0x180D3C333  jne     0x180d3c33a                               
+  0x180D3C335  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3C33A:
+  0x180D3C33A  cmp     byte ptr [rip + 0x23ac4ee], r13b             ; data_30E882F
+  0x180D3C341  jne     0x180d3c35b                               
+  0x180D3C343  lea     rcx, [rip + 0x2115f46]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C34A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C34F  lock or dword ptr [rsp], r13d                     
+  0x180D3C354  mov     byte ptr [rip + 0x23ac4d4], 1                ; data_30E882F
+
+180D3C35B:
+  0x180D3C35B  test    rbx, rbx                                  
+  0x180D3C35E  sete    cl                                        
+  0x180D3C361  test    rdi, rdi                                  
+  0x180D3C364  sete    al                                        
+  0x180D3C367  test    al, cl                                    
+  0x180D3C369  jne     0x180d3c3c3                               
+  0x180D3C36B  test    rdi, rdi                                  
+  0x180D3C36E  je      0x180d3c395                               
+  0x180D3C370  test    rbx, rbx                                  
+  0x180D3C373  je      0x180d3c37a                               
+  0x180D3C375  cmp     rbx, rdi                                  
+  0x180D3C378  jmp     0x180d3c3b7                               
+
+180D3C37A:
+  0x180D3C37A  mov     rcx, qword ptr [rip + 0x2115f0f]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C381  cmp     dword ptr [rcx + 0xe4], r13d              
+  0x180D3C388  jne     0x180d3c38f                               
+  0x180D3C38A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3C38F:
+  0x180D3C38F  cmp     qword ptr [rdi + 0x10], r13                  ; rdi->SettingsData._mode | <>c.<>9__14_1
+  0x180D3C393  jmp     0x180d3c3b7                               
+
+180D3C395:
+  0x180D3C395  mov     rcx, qword ptr [rip + 0x2115ef4]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3C39C  cmp     dword ptr [rcx + 0xe4], r13d              
+  0x180D3C3A3  jne     0x180d3c3aa                               
+  0x180D3C3A5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3C3AA:
+  0x180D3C3AA  test    rbx, rbx                                  
+  0x180D3C3AD  je      0x180d3c58d                               
+  0x180D3C3B3  cmp     qword ptr [rbx + 0x10], r13                  ; rbx->SettingsData._mode | <>c.<>9__14_1
+
+180D3C3B7:
+  0x180D3C3B7  sete    al                                        
+  0x180D3C3BA  test    al, al                                    
+  0x180D3C3BC  jne     0x180d3c3c3                               
+
+180D3C3BE:
+  0x180D3C3BE  xorps   xmm1, xmm1                                
+  0x180D3C3C1  jmp     0x180d3c3c6                               
+
+180D3C3C3:
+  0x180D3C3C3  movaps  xmm1, xmm6                                
+
+180D3C3C6:
+  0x180D3C3C6  test    rbx, rbx                                  
+  0x180D3C3C9  je      0x180d3c58d                               
+  0x180D3C3CF  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->SettingsItem._onScriptLoadProgressChanged
+  0x180D3C3D3  test    rcx, rcx                                  
+  0x180D3C3D6  je      0x180d3c58d                               
+  0x180D3C3DC  xor     r8d, r8d                                  
+  0x180D3C3DF  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D3C3E4  inc     ebp                                       
+  0x180D3C3E6  add     r15, 8                                    
+  0x180D3C3EA  mov     eax, ebp                                  
+  0x180D3C3EC  jmp     0x180d3c2a0                               
+
+180D3C3F1:
+  0x180D3C3F1  test    r12b, r12b                                
+  0x180D3C3F4  je      0x180d3c443                               
+  0x180D3C3F6  xor     edx, edx                                  
+  0x180D3C3F8  mov     rcx, rsi                                  
+  0x180D3C3FB  call    0x180d3bd50                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_Settings
+  0x180D3C400  test    rax, rax                                  
+  0x180D3C403  je      0x180d3c58d                               
+  0x180D3C409  mov     r9d, dword ptr [rsi + 0x108]              
+  0x180D3C410  mov     r8, rax                                   
+  0x180D3C413  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3C418  test    rax, rax                                  
+  0x180D3C41B  je      0x180d3c58d                               
+  0x180D3C421  cmp     byte ptr [rax + 0x11], r13b                  ; rax->SettingsItem._showUnderlay
+  0x180D3C425  je      0x180d3c443                               
+  0x180D3C427  mov     rbx, qword ptr [rsi + 0xe0]               
+  0x180D3C42E  test    rbx, rbx                                  
+  0x180D3C431  je      0x180d3c58d                               
+  0x180D3C437  mov     bpl, 1                                    
+  0x180D3C43A  mov     rdi, rbx                                  
+  0x180D3C43D  movzx   r14d, bpl                                 
+  0x180D3C441  jmp     0x180d3c45f                               
+
+180D3C443:
+  0x180D3C443  mov     rbx, qword ptr [rsi + 0xe0]               
+  0x180D3C44A  mov     rdi, rbx                                  
+  0x180D3C44D  test    rbx, rbx                                  
+  0x180D3C450  je      0x180d3c58d                               
+  0x180D3C456  xor     bpl, bpl                                  
+  0x180D3C459  xorps   xmm6, xmm6                                
+  0x180D3C45C  xor     r14b, r14b                                
+
+180D3C45F:
+  0x180D3C45F  mov     rcx, rbx                                  
+  0x180D3C462  mov     r15, r13                                  
+  0x180D3C465  mov     r8, r13                                   
+  0x180D3C468  movaps  xmm1, xmm6                                
+  0x180D3C46B  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D3C470  mov     r8, r13                                   
+  0x180D3C473  movzx   edx, r14b                                 
+  0x180D3C477  mov     rcx, rdi                                  
+  0x180D3C47A  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180D3C47F  xor     r8d, r8d                                  
+  0x180D3C482  movzx   edx, bpl                                  
+  0x180D3C486  mov     rcx, rbx                                  
+  0x180D3C489  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+  0x180D3C48E  xor     r8d, r8d                                  
+  0x180D3C491  movzx   edx, r12b                                 
+  0x180D3C495  mov     rcx, rsi                                  
+  0x180D3C498  call    0x18061a1b0                                  ; -> Naninovel.UI.CustomUI$$HandleVisibilityChanged
+  0x180D3C49D  xor     edx, edx                                  
+  0x180D3C49F  mov     rcx, rsi                                  
+  0x180D3C4A2  call    0x180d3bd50                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_Settings
+  0x180D3C4A7  test    r12b, r12b                                
+  0x180D3C4AA  jne     0x180d3c4ed                               
+  0x180D3C4AC  test    rax, rax                                  
+  0x180D3C4AF  je      0x180d3c58d                               
+  0x180D3C4B5  mov     r9d, dword ptr [rsi + 0x108]              
+  0x180D3C4BC  mov     r8, rax                                   
+  0x180D3C4BF  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3C4C4  test    rax, rax                                  
+  0x180D3C4C7  je      0x180d3c58d                               
+  0x180D3C4CD  mov     rcx, qword ptr [rax + 0x18]                  ; rax->SettingsData._item | SettingsItem._indicator
+  0x180D3C4D1  test    rcx, rcx                                  
+  0x180D3C4D4  je      0x180d3c58d                               
+  0x180D3C4DA  mov     rdx, qword ptr [rcx]                      
+  0x180D3C4DD  mov     rax, qword ptr [rdx + 0x198]              
+  0x180D3C4E4  mov     rdx, qword ptr [rdx + 0x1a0]              
+  0x180D3C4EB  jmp     0x180d3c528                               
+
+180D3C4ED:
+  0x180D3C4ED  test    rax, rax                                  
+  0x180D3C4F0  je      0x180d3c58d                               
+  0x180D3C4F6  mov     r9d, dword ptr [rsi + 0x108]              
+  0x180D3C4FD  mov     r8, rax                                   
+  0x180D3C500  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3C505  test    rax, rax                                  
+  0x180D3C508  je      0x180d3c58d                               
+  0x180D3C50E  mov     rcx, qword ptr [rax + 0x18]                  ; rax->SettingsData._item | SettingsItem._indicator
+  0x180D3C512  test    rcx, rcx                                  
+  0x180D3C515  je      0x180d3c58d                               
+  0x180D3C517  mov     rdx, qword ptr [rcx]                      
+  0x180D3C51A  mov     rax, qword ptr [rdx + 0x188]              
+  0x180D3C521  mov     rdx, qword ptr [rdx + 0x190]              
+
+180D3C528:
+  0x180D3C528  call    rax                                       
+  0x180D3C52A  xor     edx, edx                                  
+  0x180D3C52C  mov     rcx, rsi                                  
+  0x180D3C52F  call    0x180d3bd50                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_Settings
+  0x180D3C534  test    rax, rax                                  
+  0x180D3C537  je      0x180d3c58d                               
+  0x180D3C539  mov     r9d, dword ptr [rsi + 0x108]              
+  0x180D3C540  mov     r8, rax                                   
+  0x180D3C543  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3C548  test    rax, rax                                  
+  0x180D3C54B  je      0x180d3c58d                               
+  0x180D3C54D  mov     rcx, qword ptr [rax + 0x20]                  ; rax->SettingsItem._onScriptLoadProgressChanged
+  0x180D3C551  test    rcx, rcx                                  
+  0x180D3C554  je      0x180d3c56c                               
+  0x180D3C556  mov     r8, qword ptr [rip + 0x2107863]              ; METHODINFO Method$UnityEngine.Events.UnityEvent<float>.Invoke()
+  0x180D3C55D  lea     rdx, [rsp + 0x60]                         
+  0x180D3C562  mov     dword ptr [rsp + 0x60], r13d              
+  0x180D3C567  call    0x1809768d0                                  ; -> UnityEngine.Events.UnityEvent<__Il2CppFullySharedGenericType>$$Invoke
+
+180D3C56C:
+  0x180D3C56C  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180D3C571  mov     r15, qword ptr [rsp + 0x78]               
+  0x180D3C576  mov     rdi, qword ptr [rsp + 0x70]               
+  0x180D3C57B  mov     rbx, qword ptr [rsp + 0x68]               
+  0x180D3C580  add     rsp, 0x30                                 
+  0x180D3C584  pop     r14                                       
+  0x180D3C586  pop     r13                                       
+  0x180D3C588  pop     r12                                       
+  0x180D3C58A  pop     rsi                                       
+  0x180D3C58B  pop     rbp                                       
+  0x180D3C58C  ret                                               
+
+180D3C58D:
+  0x180D3C58D  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D3C592  int3                                              
+
+180D3C593:
+  0x180D3C593  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

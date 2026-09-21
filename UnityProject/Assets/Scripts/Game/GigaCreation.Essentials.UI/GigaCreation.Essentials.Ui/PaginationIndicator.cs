@@ -21,22 +21,24 @@ namespace GigaCreation.Essentials.Ui
     	[Token(Token = "0x1700002D")]
     	public PaginationIndicatorStyle Style
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x331650 -- shared trivial getter: mov eax, [rcx+0x10]
     		[Token(Token = "0x60000EC")]
     		[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
     		get
     		{
-    			return default(PaginationIndicatorStyle);
+    			return _style;
     		}
     	}
 
     	[Token(Token = "0x1700002E")]
     	public CanvasGroup CanvasGroup
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0 -- shared trivial getter: mov rax, [rcx+0x18]
     		[Token(Token = "0x60000ED")]
     		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
     		get
     		{
-    			return null;
+    			return _canvasGroup;
     		}
     	}
 

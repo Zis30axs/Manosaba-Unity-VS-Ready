@@ -1,0 +1,24 @@
+====================================================================================================
+FUNCTION RVA 0xCE5B60  VA 0x180CE5B60  size 0x2D (45 bytes)
+  managed: GigaCreation.Essentials.Ui.DotIndicator$$ChangeSpriteTo
+  csig   : void GigaCreation_Essentials_Ui_DotIndicator__ChangeSpriteTo (GigaCreation_Essentials_Ui_DotIndicator_o* __this, bool isEnabled, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.DotIndicator :: public void ChangeSpriteTo(bool isEnabled)
+  fields of GigaCreation.Essentials.Ui.DotIndicator:
+      +0x20   _image                         Image
+      +0x28   _enable                        Sprite
+      +0x30   _disable                       Sprite
+====================================================================================================
+  0x180CE5B60  sub     rsp, 0x28                                 
+  0x180CE5B64  mov     rax, qword ptr [rcx + 0x20]                  ; rcx->DotIndicator._image
+  0x180CE5B68  test    rax, rax                                  
+  0x180CE5B6B  je      0x180ce5b88                               
+  0x180CE5B6D  movzx   edx, dl                                   
+  0x180CE5B70  xor     r8d, r8d                                  
+  0x180CE5B73  xor     rdx, 1                                    
+  0x180CE5B77  mov     rdx, qword ptr [rcx + rdx*8 + 0x28]       
+  0x180CE5B7C  mov     rcx, rax                                  
+  0x180CE5B7F  add     rsp, 0x28                                 
+  0x180CE5B83  jmp     0x1821f8350                                  ; -> UnityEngine.UI.Image$$set_overrideSprite
+
+180CE5B88:
+  0x180CE5B88  call    0x180246730                                  ; THROW NullReferenceException

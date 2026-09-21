@@ -1,0 +1,87 @@
+====================================================================================================
+FUNCTION RVA 0xCE62F0  VA 0x180CE62F0  size 0xD4 (212 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$ModifySpriteInDotsEnabledTo
+  csig   : void GigaCreation_Essentials_Ui_Pagination__ModifySpriteInDotsEnabledTo (GigaCreation_Essentials_Ui_Pagination_o* __this, int32_t enableIndex, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: private void ModifySpriteInDotsEnabledTo(int enableIndex)
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE62F0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CE62F5  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CE62FA  push    rdi                                       
+  0x180CE62FB  sub     rsp, 0x20                                 
+  0x180CE62FF  cmp     byte ptr [rip + 0x23f6ead], 0                ; data_30DD1B3
+  0x180CE6306  mov     esi, edx                                  
+  0x180CE6308  mov     rdi, rcx                                  
+  0x180CE630B  jne     0x180ce6336                               
+  0x180CE630D  lea     rcx, [rip + 0x2182294]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Count()
+  0x180CE6314  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6319  lock or dword ptr [rsp], 0                        
+  0x180CE631E  lea     rcx, [rip + 0x2182273]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Item()
+  0x180CE6325  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE632A  lock or dword ptr [rsp], 0                        
+  0x180CE632F  mov     byte ptr [rip + 0x23f6e7d], 1                ; data_30DD1B3
+
+180CE6336:
+  0x180CE6336  mov     rax, qword ptr [rdi + 0x68]                  ; rdi->Pagination._dots
+  0x180CE633A  xor     ebx, ebx                                  
+  0x180CE633C  mov     qword ptr [rsp + 0x38], rbp               
+  0x180CE6341  mov     ecx, ebx                                  
+  0x180CE6343  test    rax, rax                                  
+  0x180CE6346  je      0x180ce63bf                               
+  0x180CE6348  mov     ebp, 0x30                                 
+  0x180CE634D  nop     dword ptr [rax]                           
+
+180CE6350:
+  0x180CE6350  cmp     ecx, dword ptr [rax + 0x18]                  ; rax-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE6353  jge     0x180ce63aa                               
+  0x180CE6355  mov     rcx, qword ptr [rdi + 0x68]                  ; rdi->Pagination._dots
+  0x180CE6359  test    rcx, rcx                                  
+  0x180CE635C  je      0x180ce63bf                               
+  0x180CE635E  mov     r9, qword ptr [rip + 0x2182233]              ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Item()
+  0x180CE6365  lea     r8, [rsp + 0x30]                          
+  0x180CE636A  mov     edx, ebx                                  
+  0x180CE636C  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CE6371  mov     rdx, qword ptr [rsp + 0x30]               
+  0x180CE6376  test    rdx, rdx                                  
+  0x180CE6379  je      0x180ce63bf                               
+  0x180CE637B  mov     rcx, qword ptr [rdx + 0x20]                  ; rdx->Pagination._previousPageButton
+  0x180CE637F  cmp     ebx, esi                                  
+  0x180CE6381  mov     eax, 0x28                                 
+  0x180CE6386  cmovne  rax, rbp                                  
+  0x180CE638A  test    rcx, rcx                                  
+  0x180CE638D  je      0x180ce63bf                               
+  0x180CE638F  mov     rdx, qword ptr [rax + rdx]                
+  0x180CE6393  xor     r8d, r8d                                  
+  0x180CE6396  call    0x1821f8350                                  ; -> UnityEngine.UI.Image$$set_overrideSprite
+  0x180CE639B  mov     rax, qword ptr [rdi + 0x68]                  ; rdi->Pagination._dots
+  0x180CE639F  inc     ebx                                       
+  0x180CE63A1  mov     ecx, ebx                                  
+  0x180CE63A3  test    rax, rax                                  
+  0x180CE63A6  je      0x180ce63bf                               
+  0x180CE63A8  jmp     0x180ce6350                               
+
+180CE63AA:
+  0x180CE63AA  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180CE63AF  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CE63B4  mov     rsi, qword ptr [rsp + 0x48]               
+  0x180CE63B9  add     rsp, 0x20                                 
+  0x180CE63BD  pop     rdi                                       
+  0x180CE63BE  ret                                               
+
+180CE63BF:
+  0x180CE63BF  call    0x180246730                                  ; THROW NullReferenceException

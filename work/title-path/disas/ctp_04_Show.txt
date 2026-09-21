@@ -1,0 +1,75 @@
+====================================================================================================
+FUNCTION RVA 0xD367D0  VA 0x180D367D0  size 0xFC (252 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended$$Show
+  csig   : void GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended__Show (GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended_o* __this, bool hideOnClick, System_Action_o* onClick, System_String_array* allowedSamplers, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended :: public void Show(bool hideOnClick, Action onClick, string[] allowedSamplers)
+====================================================================================================
+  0x180D367D0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D367D5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D367DA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D367DF  push    rdi                                       
+  0x180D367E0  sub     rsp, 0x30                                 
+  0x180D367E4  cmp     byte ptr [rip + 0x23a6bb5], 0                ; data_30DD3A0
+  0x180D367EB  mov     rbp, r9                                   
+  0x180D367EE  mov     rdi, r8                                   
+  0x180D367F1  movzx   esi, dl                                   
+  0x180D367F4  mov     rbx, rcx                                  
+  0x180D367F7  jne     0x180d36811                               
+  0x180D367F9  lea     rcx, [rip + 0x21231c8]                       ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180D36800  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36805  lock or dword ptr [rsp], 0                        
+  0x180D3680A  mov     byte ptr [rip + 0x23a6b8f], 1                ; data_30DD3A0
+
+180D36811:
+  0x180D36811  cmp     dword ptr [rip + 0x23a29ac], 0               ; data_30D91C4
+  0x180D36818  mov     byte ptr [rbx + 0xf0], sil                
+  0x180D3681F  mov     qword ptr [rbx + 0xe8], rdi               
+  0x180D36826  je      0x180d36871                               
+  0x180D36828  lea     r8, [rbx + 0xe8]                          
+  0x180D3682F  shr     r8, 0xc                                   
+  0x180D36833  lea     rcx, [rip + 0x23fdd46]                       ; data_3134580
+  0x180D3683A  and     r8d, 0x1fffff                             
+  0x180D36841  mov     eax, r8d                                  
+  0x180D36844  shr     rax, 6                                    
+  0x180D36848  and     r8d, 0x3f                                 
+  0x180D3684C  lea     rdx, [rcx + rax*8]                        
+  0x180D36850  prefetchw byte ptr [rdx]                            
+  0x180D36853  nop     dword ptr [rax]                           
+  0x180D36857  nop     word ptr [rax + rax]                      
+
+180D36860:
+  0x180D36860  mov     rax, qword ptr [rdx]                      
+  0x180D36863  mov     rcx, rax                                  
+  0x180D36866  bts     rcx, r8                                   
+  0x180D3686A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3686F  jne     0x180d36860                               
+
+180D36871:
+  0x180D36871  mov     rdx, qword ptr [rbx]                      
+  0x180D36874  mov     rcx, rbx                                  
+  0x180D36877  mov     rax, qword ptr [rdx + 0x428]              
+  0x180D3687E  mov     rdx, qword ptr [rdx + 0x430]              
+  0x180D36885  call    rax                                       
+  0x180D36887  cmp     byte ptr [rbx + 0xf1], 0                  
+  0x180D3688E  jne     0x180d368ab                               
+  0x180D36890  mov     r8, qword ptr [rbx + 0xe0]                
+  0x180D36897  test    r8, r8                                    
+  0x180D3689A  je      0x180d368c7                               
+  0x180D3689C  mov     r9, rbx                                   
+  0x180D3689F  mov     qword ptr [rsp + 0x20], rbp               
+  0x180D368A4  call    0x18002f140                                  ; -> sub_2F140 (runtime/helper)
+  0x180D368A9  jmp     0x180d368b2                               
+
+180D368AB:
+  0x180D368AB  mov     byte ptr [rbx + 0xf1], 0                  
+
+180D368B2:
+  0x180D368B2  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180D368B7  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180D368BC  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D368C1  add     rsp, 0x30                                 
+  0x180D368C5  pop     rdi                                       
+  0x180D368C6  ret                                               
+
+180D368C7:
+  0x180D368C7  call    0x180246730                                  ; THROW NullReferenceException

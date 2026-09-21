@@ -1,0 +1,188 @@
+====================================================================================================
+FUNCTION RVA 0xCE67B0  VA 0x180CE67B0  size 0x252 (594 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__0
+  csig   : void GigaCreation_Essentials_Ui_Pagination___c__DisplayClass18_0___Present_b__0 (GigaCreation_Essentials_Ui_Pagination___c__DisplayClass18_0_o* __this, int32_t pageIndex, const MethodInfo* method);
+  dump.cs: Pagination.<>c__DisplayClass18_0 :: internal void <Present>b__0(int pageIndex)
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE67B0  push    rbx                                       
+  0x180CE67B2  push    rsi                                       
+  0x180CE67B3  sub     rsp, 0x78                                 
+  0x180CE67B7  cmp     byte ptr [rip + 0x23f69f9], 0                ; data_30DD1B7
+  0x180CE67BE  mov     esi, edx                                  
+  0x180CE67C0  mov     rbx, rcx                                  
+  0x180CE67C3  jne     0x180ce67dd                               
+  0x180CE67C5  lea     rcx, [rip + 0x2151adc]                       ; STR '{0}'
+  0x180CE67CC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE67D1  lock or dword ptr [rsp], 0                        
+  0x180CE67D6  mov     byte ptr [rip + 0x23f69da], 1                ; data_30DD1B7
+
+180CE67DD:
+  0x180CE67DD  mov     rax, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE67E1  mov     qword ptr [rsp + 0x98], rbp               
+  0x180CE67E9  mov     qword ptr [rsp + 0xa0], rdi               
+  0x180CE67F1  mov     qword ptr [rsp + 0x70], r12               
+  0x180CE67F6  mov     qword ptr [rsp + 0x68], r14               
+  0x180CE67FB  mov     qword ptr [rsp + 0x60], r15               
+  0x180CE6800  test    rax, rax                                  
+  0x180CE6803  je      0x180ce69fd                               
+  0x180CE6809  cmp     byte ptr [rax + 0x54], 0                     ; rax->Pagination._wrapped
+  0x180CE680D  jne     0x180ce6925                               
+  0x180CE6813  mov     rdi, qword ptr [rax + 0x20]                  ; rax->Pagination._previousPageButton
+  0x180CE6817  test    esi, esi                                  
+  0x180CE6819  jg      0x180ce683f                               
+  0x180CE681B  test    rdi, rdi                                  
+  0x180CE681E  je      0x180ce69fd                               
+  0x180CE6824  mov     rdi, qword ptr [rdi + 0x20]                  ; rdi->Pagination._previousPageButton
+  0x180CE6828  test    rdi, rdi                                  
+  0x180CE682B  je      0x180ce69fd                               
+  0x180CE6831  xor     r14b, r14b                                
+  0x180CE6834  mov     rbp, rdi                                  
+  0x180CE6837  xor     r15b, r15b                                
+  0x180CE683A  xorps   xmm1, xmm1                                
+  0x180CE683D  jmp     0x180ce6867                               
+
+180CE683F:
+  0x180CE683F  test    rdi, rdi                                  
+  0x180CE6842  je      0x180ce69fd                               
+  0x180CE6848  mov     rdi, qword ptr [rdi + 0x20]                  ; rdi->Pagination._previousPageButton
+  0x180CE684C  mov     rbp, rdi                                  
+  0x180CE684F  test    rdi, rdi                                  
+  0x180CE6852  je      0x180ce69fd                               
+  0x180CE6858  movss   xmm1, dword ptr [rip + 0x1dfbfc0]            ; data_2AE2820
+  0x180CE6860  mov     r14b, 1                                   
+  0x180CE6863  movzx   r15d, r14b                                
+
+180CE6867:
+  0x180CE6867  xor     r8d, r8d                                  
+  0x180CE686A  mov     rcx, rdi                                  
+  0x180CE686D  mov     r12d, r8d                                 
+  0x180CE6870  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180CE6875  mov     r8d, r12d                                 
+  0x180CE6878  movzx   edx, r15b                                 
+  0x180CE687C  mov     rcx, rbp                                  
+  0x180CE687F  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180CE6884  xor     r8d, r8d                                  
+  0x180CE6887  movzx   edx, r14b                                 
+  0x180CE688B  mov     rcx, rdi                                  
+  0x180CE688E  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+  0x180CE6893  mov     eax, dword ptr [rbx + 0x18]                  ; rbx-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE6896  mov     rdi, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE689A  dec     eax                                       
+  0x180CE689C  test    rdi, rdi                                  
+  0x180CE689F  je      0x180ce69fd                               
+  0x180CE68A5  mov     rdi, qword ptr [rdi + 0x28]                  ; rdi->Pagination._nextPageButton
+  0x180CE68A9  cmp     esi, eax                                  
+  0x180CE68AB  jl      0x180ce68e2                               
+  0x180CE68AD  test    rdi, rdi                                  
+  0x180CE68B0  je      0x180ce69fd                               
+  0x180CE68B6  mov     rdi, qword ptr [rdi + 0x20]                  ; rdi->Pagination._previousPageButton
+  0x180CE68BA  test    rdi, rdi                                  
+  0x180CE68BD  je      0x180ce69fd                               
+  0x180CE68C3  xor     r8d, r8d                                  
+  0x180CE68C6  xorps   xmm1, xmm1                                
+  0x180CE68C9  mov     rcx, rdi                                  
+  0x180CE68CC  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180CE68D1  xor     r8d, r8d                                  
+  0x180CE68D4  xor     edx, edx                                  
+  0x180CE68D6  mov     rcx, rdi                                  
+  0x180CE68D9  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180CE68DE  xor     edx, edx                                  
+  0x180CE68E0  jmp     0x180ce691a                               
+
+180CE68E2:
+  0x180CE68E2  test    rdi, rdi                                  
+  0x180CE68E5  je      0x180ce69fd                               
+  0x180CE68EB  mov     rdi, qword ptr [rdi + 0x20]                  ; rdi->Pagination._previousPageButton
+  0x180CE68EF  test    rdi, rdi                                  
+  0x180CE68F2  je      0x180ce69fd                               
+  0x180CE68F8  movss   xmm1, dword ptr [rip + 0x1dfbf20]            ; data_2AE2820
+  0x180CE6900  xor     r8d, r8d                                  
+  0x180CE6903  mov     rcx, rdi                                  
+  0x180CE6906  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180CE690B  xor     r8d, r8d                                  
+  0x180CE690E  mov     dl, 1                                     
+  0x180CE6910  mov     rcx, rdi                                  
+  0x180CE6913  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180CE6918  mov     dl, 1                                     
+
+180CE691A:
+  0x180CE691A  xor     r8d, r8d                                  
+  0x180CE691D  mov     rcx, rdi                                  
+  0x180CE6920  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+
+180CE6925:
+  0x180CE6925  mov     rax, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE6929  test    rax, rax                                  
+  0x180CE692C  je      0x180ce69fd                               
+  0x180CE6932  cmp     dword ptr [rax + 0x50], 1                    ; rax->Pagination._indicatorStyle
+  0x180CE6936  jne     0x180ce6945                               
+  0x180CE6938  xor     r8d, r8d                                  
+  0x180CE693B  mov     edx, esi                                  
+  0x180CE693D  mov     rcx, rax                                  
+  0x180CE6940  call    0x180ce62f0                                  ; -> GigaCreation.Essentials.Ui.Pagination$$ModifySpriteInDotsEnabledTo
+
+180CE6945:
+  0x180CE6945  mov     rax, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass18_0.<>4__this
+  0x180CE6949  test    rax, rax                                  
+  0x180CE694C  je      0x180ce69fd                               
+  0x180CE6952  cmp     dword ptr [rax + 0x50], 2                    ; rax->Pagination._indicatorStyle
+  0x180CE6956  jne     0x180ce69d7                               
+  0x180CE6958  mov     rdi, qword ptr [rax + 0x40]                  ; rax->Pagination._currentPageLabel
+  0x180CE695C  lea     rdx, [rsp + 0x90]                         
+  0x180CE6964  mov     rcx, qword ptr [rip + 0x23f0d2d]             ; data_30D7698
+  0x180CE696B  lea     eax, [rsi + 1]                            
+  0x180CE696E  mov     dword ptr [rsp + 0x90], eax               
+  0x180CE6975  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x180CE697A  mov     rbx, qword ptr [rip + 0x2151927]             ; STR '{0}'
+  0x180CE6981  lea     rcx, [rsp + 0x20]                         
+  0x180CE6986  xorps   xmm0, xmm0                                
+  0x180CE6989  xor     r8d, r8d                                  
+  0x180CE698C  mov     rdx, rax                                  
+  0x180CE698F  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CE6994  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CE6999  call    0x181031d10                                  ; -> System.ParamsArray$$.ctor
+  0x180CE699E  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180CE69A3  xor     r9d, r9d                                  
+  0x180CE69A6  lea     r8, [rsp + 0x40]                          
+  0x180CE69AB  movups  xmm1, xmmword ptr [rsp + 0x30]            
+  0x180CE69B0  mov     rdx, rbx                                  
+  0x180CE69B3  xor     ecx, ecx                                  
+  0x180CE69B5  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CE69BA  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180CE69BF  call    0x180e27120                                  ; -> System.String$$FormatHelper
+  0x180CE69C4  test    rdi, rdi                                  
+  0x180CE69C7  je      0x180ce69fd                               
+  0x180CE69C9  xor     r8d, r8d                                  
+  0x180CE69CC  mov     rdx, rax                                  
+  0x180CE69CF  mov     rcx, rdi                                  
+  0x180CE69D2  call    0x181f05050                                  ; -> TMPro.TMP_Text$$SetText (+1 aliases)
+
+180CE69D7:
+  0x180CE69D7  mov     r15, qword ptr [rsp + 0x60]               
+  0x180CE69DC  mov     r14, qword ptr [rsp + 0x68]               
+  0x180CE69E1  mov     r12, qword ptr [rsp + 0x70]               
+  0x180CE69E6  mov     rdi, qword ptr [rsp + 0xa0]               
+  0x180CE69EE  mov     rbp, qword ptr [rsp + 0x98]               
+  0x180CE69F6  add     rsp, 0x78                                 
+  0x180CE69FA  pop     rsi                                       
+  0x180CE69FB  pop     rbx                                       
+  0x180CE69FC  ret                                               
+
+180CE69FD:
+  0x180CE69FD  call    0x180246730                                  ; THROW NullReferenceException

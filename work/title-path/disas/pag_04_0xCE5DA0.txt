@@ -1,0 +1,353 @@
+====================================================================================================
+FUNCTION RVA 0xCE5DA0  VA 0x180CE5DA0  size 0x54A (1354 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$Present
+  csig   : void GigaCreation_Essentials_Ui_Pagination__Present (GigaCreation_Essentials_Ui_Pagination_o* __this, int32_t numOfTotalPage, bool resetCurrentPage, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: public void Present(int numOfTotalPage, bool resetCurrentPage = True)
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE5DA0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CE5DA5  push    rsi                                       
+  0x180CE5DA6  push    rdi                                       
+  0x180CE5DA7  push    r14                                       
+  0x180CE5DA9  sub     rsp, 0x40                                 
+  0x180CE5DAD  cmp     byte ptr [rip + 0x23f73fe], 0                ; data_30DD1B2
+  0x180CE5DB4  movzx   edi, r8b                                  
+  0x180CE5DB8  mov     ebx, edx                                  
+  0x180CE5DBA  mov     rsi, rcx                                  
+  0x180CE5DBD  jne     0x180ce5eeb                               
+  0x180CE5DC3  lea     rcx, [rip + 0x216f236]                       ; TYPE System.Action<Unit>_TypeInfo
+  0x180CE5DCA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5DCF  lock or dword ptr [rsp], 0                        
+  0x180CE5DD4  lea     rcx, [rip + 0x216d64d]                       ; TYPE System.Action<int>_TypeInfo
+  0x180CE5DDB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5DE0  lock or dword ptr [rsp], 0                        
+  0x180CE5DE5  lea     rcx, [rip + 0x216c47c]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE5DEC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5DF1  lock or dword ptr [rsp], 0                        
+  0x180CE5DF6  lea     rcx, [rip + 0x2182773]                       ; METHODINFO Method$UnityEngine.GameObject.GetComponent<DotIndicator>()
+  0x180CE5DFD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E02  lock or dword ptr [rsp], 0                        
+  0x180CE5E07  lea     rcx, [rip + 0x2182752]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.Add()
+  0x180CE5E0E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E13  lock or dword ptr [rsp], 0                        
+  0x180CE5E18  lea     rcx, [rip + 0x2182789]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Count()
+  0x180CE5E1F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E24  lock or dword ptr [rsp], 0                        
+  0x180CE5E29  lea     rcx, [rip + 0x2182768]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Item()
+  0x180CE5E30  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E35  lock or dword ptr [rsp], 0                        
+  0x180CE5E3A  lea     rcx, [rip + 0x218274f]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<GameObject>()
+  0x180CE5E41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E46  lock or dword ptr [rsp], 0                        
+  0x180CE5E4B  lea     rcx, [rip + 0x216c43e]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE5E52  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E57  lock or dword ptr [rsp], 0                        
+  0x180CE5E5C  lea     rcx, [rip + 0x216d5bd]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<int>()
+  0x180CE5E63  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E68  lock or dword ptr [rsp], 0                        
+  0x180CE5E6D  lea     rcx, [rip + 0x216f0ec]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<Unit>()
+  0x180CE5E74  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E79  lock or dword ptr [rsp], 0                        
+  0x180CE5E7E  lea     rcx, [rip + 0x2173a7b]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>.get_Value()
+  0x180CE5E85  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E8A  lock or dword ptr [rsp], 0                        
+  0x180CE5E8F  lea     rcx, [rip + 0x2173b92]                       ; METHODINFO Method$UniRx.ReactiveProperty<int>.set_Value()
+  0x180CE5E96  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5E9B  lock or dword ptr [rsp], 0                        
+  0x180CE5EA0  lea     rcx, [rip + 0x21826d9]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__0() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__0
+  0x180CE5EA7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5EAC  lock or dword ptr [rsp], 0                        
+  0x180CE5EB1  lea     rcx, [rip + 0x2182678]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__1() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__1
+  0x180CE5EB8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5EBD  lock or dword ptr [rsp], 0                        
+  0x180CE5EC2  lea     rcx, [rip + 0x218265f]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__2() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__2
+  0x180CE5EC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5ECE  lock or dword ptr [rsp], 0                        
+  0x180CE5ED3  lea     rcx, [rip + 0x2182646]                       ; TYPE GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0_TypeInfo
+  0x180CE5EDA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5EDF  lock or dword ptr [rsp], 0                        
+  0x180CE5EE4  mov     byte ptr [rip + 0x23f72c7], 1                ; data_30DD1B2
+
+180CE5EEB:
+  0x180CE5EEB  mov     rcx, qword ptr [rip + 0x218262e]             ; TYPE GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0_TypeInfo
+  0x180CE5EF2  mov     qword ptr [rsp + 0x60], rbp               
+  0x180CE5EF7  mov     qword ptr [rsp + 0x68], r15               
+  0x180CE5EFC  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE5F01  mov     r14, rax                                  
+  0x180CE5F04  test    rax, rax                                  
+  0x180CE5F07  je      0x180ce62e5                               
+  0x180CE5F0D  cmp     dword ptr [rip + 0x23f32b0], 0               ; data_30D91C4
+  0x180CE5F14  mov     qword ptr [rax + 0x10], rsi                  ; rax-><>c__DisplayClass18_0.<>4__this
+  0x180CE5F18  je      0x180ce5f61                               
+  0x180CE5F1A  lea     r8, [rax + 0x10]                             ; rax-><>c__DisplayClass18_0.<>4__this
+  0x180CE5F1E  shr     r8, 0xc                                   
+  0x180CE5F22  lea     rax, [rip + 0x244e657]                       ; data_3134580
+  0x180CE5F29  and     r8d, 0x1fffff                             
+  0x180CE5F30  mov     ecx, r8d                                  
+  0x180CE5F33  shr     rcx, 6                                    
+  0x180CE5F37  and     r8d, 0x3f                                 
+  0x180CE5F3B  lea     rdx, [rax + rcx*8]                        
+  0x180CE5F3F  prefetchw byte ptr [rdx]                            
+  0x180CE5F42  nop     dword ptr [rax]                           
+  0x180CE5F46  nop     word ptr [rax + rax]                      
+
+180CE5F50:
+  0x180CE5F50  mov     rax, qword ptr [rdx]                      
+  0x180CE5F53  mov     rcx, rax                                  
+  0x180CE5F56  bts     rcx, r8                                   
+  0x180CE5F5A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE5F5F  jne     0x180ce5f50                               
+
+180CE5F61:
+  0x180CE5F61  mov     dword ptr [r14 + 0x18], ebx                  ; r14-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE5F65  mov     rcx, qword ptr [rsi + 0x60]                  ; rsi->Pagination._disposables
+  0x180CE5F69  test    rcx, rcx                                  
+  0x180CE5F6C  je      0x180ce62e5                               
+  0x180CE5F72  xor     edx, edx                                  
+  0x180CE5F74  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE5F79  mov     rcx, qword ptr [rsi + 0x20]                  ; rsi->Pagination._previousPageButton
+  0x180CE5F7D  test    rcx, rcx                                  
+  0x180CE5F80  je      0x180ce62e5                               
+  0x180CE5F86  xor     edx, edx                                  
+  0x180CE5F88  call    0x180cd6d50                                  ; -> GigaCreation.Essentials.Ui.MovingArrow$$Activate
+  0x180CE5F8D  mov     rcx, qword ptr [rsi + 0x28]                  ; rsi->Pagination._nextPageButton
+  0x180CE5F91  test    rcx, rcx                                  
+  0x180CE5F94  je      0x180ce62e5                               
+  0x180CE5F9A  xor     edx, edx                                  
+  0x180CE5F9C  call    0x180cd6d50                                  ; -> GigaCreation.Essentials.Ui.MovingArrow$$Activate
+  0x180CE5FA1  xor     ebp, ebp                                  
+  0x180CE5FA3  test    dil, dil                                  
+  0x180CE5FA6  je      0x180ce5fca                               
+  0x180CE5FA8  mov     rcx, qword ptr [rsi + 0x58]                  ; rsi->Pagination._currentPageIndex
+  0x180CE5FAC  test    rcx, rcx                                  
+  0x180CE5FAF  je      0x180ce62e5                               
+  0x180CE5FB5  mov     r8, qword ptr [rip + 0x2173a6c]              ; METHODINFO Method$UniRx.ReactiveProperty<int>.set_Value()
+  0x180CE5FBC  lea     rdx, [rsp + 0x30]                         
+  0x180CE5FC1  mov     dword ptr [rsp + 0x30], ebp               
+  0x180CE5FC5  call    0x1808c46b0                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$set_Value
+
+180CE5FCA:
+  0x180CE5FCA  mov     rcx, qword ptr [rip + 0x216d457]             ; TYPE System.Action<int>_TypeInfo
+  0x180CE5FD1  mov     rdi, qword ptr [rsi + 0x58]                  ; rsi->Pagination._currentPageIndex
+  0x180CE5FD5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE5FDA  mov     r8, qword ptr [rip + 0x218259f]              ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__0() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__0
+  0x180CE5FE1  xor     r9d, r9d                                  
+  0x180CE5FE4  mov     rdx, r14                                  
+  0x180CE5FE7  mov     rcx, rax                                  
+  0x180CE5FEA  mov     rbx, rax                                  
+  0x180CE5FED  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE5FF2  mov     r8, qword ptr [rip + 0x216d427]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<int>()
+  0x180CE5FF9  mov     rdx, rbx                                  
+  0x180CE5FFC  mov     rcx, rdi                                  
+  0x180CE5FFF  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE6004  mov     rcx, qword ptr [rip + 0x216c25d]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE600B  lea     r9, [rsp + 0x38]                          
+  0x180CE6010  mov     rdx, qword ptr [rsi + 0x60]                  ; rsi->Pagination._disposables
+  0x180CE6014  mov     r8, rsi                                   
+  0x180CE6017  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE601C  mov     rcx, rax                                  
+  0x180CE601F  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE6024  mov     rcx, qword ptr [rsi + 0x20]                  ; rsi->Pagination._previousPageButton
+  0x180CE6028  test    rcx, rcx                                  
+  0x180CE602B  je      0x180ce62e5                               
+  0x180CE6031  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->Pagination._nextPageButton
+  0x180CE6035  test    rcx, rcx                                  
+  0x180CE6038  je      0x180ce62e5                               
+  0x180CE603E  mov     rcx, qword ptr [rcx + 0x100]              
+  0x180CE6045  xor     edx, edx                                  
+  0x180CE6047  call    0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+  0x180CE604C  mov     rcx, qword ptr [rip + 0x216efad]             ; TYPE System.Action<Unit>_TypeInfo
+  0x180CE6053  mov     rdi, rax                                  
+  0x180CE6056  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE605B  mov     r8, qword ptr [rip + 0x21824ce]              ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__1() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__1
+  0x180CE6062  xor     r9d, r9d                                  
+  0x180CE6065  mov     rdx, r14                                  
+  0x180CE6068  mov     rcx, rax                                  
+  0x180CE606B  mov     rbx, rax                                  
+  0x180CE606E  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE6073  mov     r8, qword ptr [rip + 0x216eee6]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<Unit>()
+  0x180CE607A  mov     rdx, rbx                                  
+  0x180CE607D  mov     rcx, rdi                                  
+  0x180CE6080  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE6085  mov     rcx, qword ptr [rip + 0x216c1dc]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE608C  lea     r9, [rsp + 0x38]                          
+  0x180CE6091  mov     rdx, qword ptr [rsi + 0x60]                  ; rsi->Pagination._disposables
+  0x180CE6095  mov     r8, rsi                                   
+  0x180CE6098  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE609D  mov     rcx, rax                                  
+  0x180CE60A0  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE60A5  mov     rcx, qword ptr [rsi + 0x28]                  ; rsi->Pagination._nextPageButton
+  0x180CE60A9  test    rcx, rcx                                  
+  0x180CE60AC  je      0x180ce62e5                               
+  0x180CE60B2  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->Pagination._nextPageButton
+  0x180CE60B6  test    rcx, rcx                                  
+  0x180CE60B9  je      0x180ce62e5                               
+  0x180CE60BF  mov     rcx, qword ptr [rcx + 0x100]              
+  0x180CE60C6  xor     edx, edx                                  
+  0x180CE60C8  call    0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+  0x180CE60CD  mov     rcx, qword ptr [rip + 0x216ef2c]             ; TYPE System.Action<Unit>_TypeInfo
+  0x180CE60D4  mov     rdi, rax                                  
+  0x180CE60D7  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE60DC  mov     r8, qword ptr [rip + 0x2182445]              ; METHODINFO Method$GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0.<Present>b__2() => GigaCreation.Essentials.Ui.Pagination.<>c__DisplayClass18_0$$<Present>b__2
+  0x180CE60E3  xor     r9d, r9d                                  
+  0x180CE60E6  mov     rdx, r14                                  
+  0x180CE60E9  mov     rcx, rax                                  
+  0x180CE60EC  mov     rbx, rax                                  
+  0x180CE60EF  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE60F4  mov     r8, qword ptr [rip + 0x216ee65]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<Unit>()
+  0x180CE60FB  mov     rdx, rbx                                  
+  0x180CE60FE  mov     rcx, rdi                                  
+  0x180CE6101  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE6106  mov     rcx, qword ptr [rip + 0x216c15b]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE610D  lea     r9, [rsp + 0x38]                          
+  0x180CE6112  mov     rdx, qword ptr [rsi + 0x60]                  ; rsi->Pagination._disposables
+  0x180CE6116  mov     r8, rsi                                   
+  0x180CE6119  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE611E  mov     rcx, rax                                  
+  0x180CE6121  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE6126  cmp     dword ptr [rsi + 0x50], 1                    ; rsi->Pagination._indicatorStyle
+  0x180CE612A  jne     0x180ce62a5                               
+  0x180CE6130  mov     rcx, qword ptr [rsi + 0x38]                  ; rsi->Pagination._originalDot
+  0x180CE6134  test    rcx, rcx                                  
+  0x180CE6137  je      0x180ce62e5                               
+  0x180CE613D  xor     edx, edx                                  
+  0x180CE613F  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE6144  test    rax, rax                                  
+  0x180CE6147  je      0x180ce62e5                               
+  0x180CE614D  xor     r8d, r8d                                  
+  0x180CE6150  xor     edx, edx                                  
+  0x180CE6152  mov     rcx, rax                                  
+  0x180CE6155  call    0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+  0x180CE615A  mov     rax, qword ptr [rsi + 0x68]                  ; rsi->Pagination._dots
+  0x180CE615E  test    rax, rax                                  
+  0x180CE6161  je      0x180ce62e5                               
+  0x180CE6167  mov     r15d, dword ptr [rax + 0x18]                 ; rax-><>c__DisplayClass18_0.numOfTotalPage
+
+180CE616B:
+  0x180CE616B  mov     eax, ebp                                  
+  0x180CE616D  nop     dword ptr [rax]                           
+  0x180CE6170  cmp     eax, dword ptr [r14 + 0x18]                  ; r14-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE6174  jge     0x180ce628a                               
+  0x180CE617A  cmp     ebp, r15d                                 
+  0x180CE617D  jl      0x180ce6240                               
+  0x180CE6183  mov     rcx, qword ptr [rsi + 0x38]                  ; rsi->Pagination._originalDot
+  0x180CE6187  test    rcx, rcx                                  
+  0x180CE618A  je      0x180ce62e5                               
+  0x180CE6190  xor     edx, edx                                  
+  0x180CE6192  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE6197  mov     rcx, qword ptr [rsi + 0x38]                  ; rsi->Pagination._originalDot
+  0x180CE619B  mov     rdi, rax                                  
+  0x180CE619E  test    rcx, rcx                                  
+  0x180CE61A1  je      0x180ce62e5                               
+  0x180CE61A7  xor     edx, edx                                  
+  0x180CE61A9  call    0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+  0x180CE61AE  test    rax, rax                                  
+  0x180CE61B1  je      0x180ce62e5                               
+  0x180CE61B7  xor     edx, edx                                  
+  0x180CE61B9  mov     rcx, rax                                  
+  0x180CE61BC  call    0x18207f980                                  ; -> UnityEngine.Transform$$get_parent (+2 aliases)
+  0x180CE61C1  mov     rcx, qword ptr [rip + 0x216c0c8]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE61C8  mov     rbx, rax                                  
+  0x180CE61CB  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE61D2  jne     0x180ce61d9                               
+  0x180CE61D4  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE61D9:
+  0x180CE61D9  mov     r8, qword ptr [rip + 0x21823b0]              ; METHODINFO Method$UnityEngine.Object.Instantiate<GameObject>()
+  0x180CE61E0  mov     rdx, rbx                                  
+  0x180CE61E3  mov     rcx, rdi                                  
+  0x180CE61E6  call    0x180721660                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CE61EB  mov     rbx, rax                                  
+  0x180CE61EE  test    rax, rax                                  
+  0x180CE61F1  je      0x180ce62e5                               
+  0x180CE61F7  xor     r8d, r8d                                  
+  0x180CE61FA  mov     dl, 1                                     
+  0x180CE61FC  mov     rcx, rax                                  
+  0x180CE61FF  call    0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+  0x180CE6204  mov     r8, qword ptr [rip + 0x2182365]              ; METHODINFO Method$UnityEngine.GameObject.GetComponent<DotIndicator>()
+  0x180CE620B  lea     rdx, [rsp + 0x30]                         
+  0x180CE6210  mov     rdi, qword ptr [rsi + 0x68]                  ; rsi->Pagination._dots
+  0x180CE6214  mov     rcx, rbx                                  
+  0x180CE6217  call    0x1806b69b0                                  ; -> UnityEngine.GameObject$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CE621C  test    rdi, rdi                                  
+  0x180CE621F  je      0x180ce62e5                               
+  0x180CE6225  mov     r8, qword ptr [rip + 0x2182334]              ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.Add()
+  0x180CE622C  mov     rcx, rdi                                  
+  0x180CE622F  mov     rdx, qword ptr [rsp + 0x30]               
+  0x180CE6234  call    0x180331f40                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Add
+  0x180CE6239  inc     ebp                                       
+  0x180CE623B  jmp     0x180ce616b                               
+
+180CE6240:
+  0x180CE6240  mov     rcx, qword ptr [rsi + 0x68]                  ; rsi->Pagination._dots
+  0x180CE6244  test    rcx, rcx                                  
+  0x180CE6247  je      0x180ce62e5                               
+  0x180CE624D  mov     r9, qword ptr [rip + 0x2182344]              ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.get_Item()
+  0x180CE6254  lea     r8, [rsp + 0x38]                          
+  0x180CE6259  mov     edx, ebp                                  
+  0x180CE625B  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CE6260  mov     rcx, qword ptr [rsp + 0x38]               
+  0x180CE6265  test    rcx, rcx                                  
+  0x180CE6268  je      0x180ce62e5                               
+  0x180CE626A  xor     edx, edx                                  
+  0x180CE626C  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE6271  test    rax, rax                                  
+  0x180CE6274  je      0x180ce62e5                               
+  0x180CE6276  xor     r8d, r8d                                  
+  0x180CE6279  mov     dl, 1                                     
+  0x180CE627B  mov     rcx, rax                                  
+  0x180CE627E  call    0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+  0x180CE6283  inc     ebp                                       
+  0x180CE6285  jmp     0x180ce616b                               
+
+180CE628A:
+  0x180CE628A  mov     rcx, qword ptr [rsi + 0x58]                  ; rsi->Pagination._currentPageIndex
+  0x180CE628E  test    rcx, rcx                                  
+  0x180CE6291  je      0x180ce62e5                               
+  0x180CE6293  call    0x1800061f0                                  ; -> sub_61F0 (runtime/helper)
+  0x180CE6298  xor     r8d, r8d                                  
+  0x180CE629B  mov     edx, eax                                  
+  0x180CE629D  mov     rcx, rsi                                  
+  0x180CE62A0  call    0x180ce62f0                                  ; -> GigaCreation.Essentials.Ui.Pagination$$ModifySpriteInDotsEnabledTo
+
+180CE62A5:
+  0x180CE62A5  cmp     dword ptr [rsi + 0x50], 2                    ; rsi->Pagination._indicatorStyle
+  0x180CE62A9  jne     0x180ce62cd                               
+  0x180CE62AB  mov     rbx, qword ptr [rsi + 0x48]                  ; rsi->Pagination._totalPageLabel
+  0x180CE62AF  lea     rcx, [r14 + 0x18]                            ; r14-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE62B3  xor     edx, edx                                  
+  0x180CE62B5  call    0x18101dcb0                                  ; -> System.Int32$$ToString
+  0x180CE62BA  test    rbx, rbx                                  
+  0x180CE62BD  je      0x180ce62e5                               
+  0x180CE62BF  xor     r8d, r8d                                  
+  0x180CE62C2  mov     rdx, rax                                  
+  0x180CE62C5  mov     rcx, rbx                                  
+  0x180CE62C8  call    0x181f05050                                  ; -> TMPro.TMP_Text$$SetText (+1 aliases)
+
+180CE62CD:
+  0x180CE62CD  mov     r15, qword ptr [rsp + 0x68]               
+  0x180CE62D2  mov     rbp, qword ptr [rsp + 0x60]               
+  0x180CE62D7  mov     rbx, qword ptr [rsp + 0x70]               
+  0x180CE62DC  add     rsp, 0x40                                 
+  0x180CE62E0  pop     r14                                       
+  0x180CE62E2  pop     rdi                                       
+  0x180CE62E3  pop     rsi                                       
+  0x180CE62E4  ret                                               
+
+180CE62E5:
+  0x180CE62E5  call    0x180246730                                  ; THROW NullReferenceException

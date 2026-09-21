@@ -1,0 +1,77 @@
+====================================================================================================
+FUNCTION RVA 0xCE5C40  VA 0x180CE5C40  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* GigaCreation_Essentials_Ui_Pagination__get_InputManager (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: private IInputManager get_InputManager()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE5C40  push    rbx                                       
+  0x180CE5C42  sub     rsp, 0x20                                 
+  0x180CE5C46  cmp     byte ptr [rip + 0x23f7564], 0                ; data_30DD1B1
+  0x180CE5C4D  mov     rbx, rcx                                  
+  0x180CE5C50  jne     0x180ce5c7b                               
+  0x180CE5C52  lea     rcx, [rip + 0x216f5af]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE5C59  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5C5E  lock or dword ptr [rsp], 0                        
+  0x180CE5C63  lea     rcx, [rip + 0x216c4fe]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE5C6A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5C6F  lock or dword ptr [rsp], 0                        
+  0x180CE5C74  mov     byte ptr [rip + 0x23f7536], 1                ; data_30DD1B1
+
+180CE5C7B:
+  0x180CE5C7B  mov     rax, qword ptr [rbx + 0x70]                  ; rbx->Pagination._inputManager
+  0x180CE5C7F  test    rax, rax                                  
+  0x180CE5C82  jne     0x180ce5cf4                               
+  0x180CE5C84  mov     rcx, qword ptr [rip + 0x216c4dd]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE5C8B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CE5C91  jne     0x180ce5c98                               
+  0x180CE5C93  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE5C98:
+  0x180CE5C98  mov     rdx, qword ptr [rip + 0x216f569]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE5C9F  mov     cl, 1                                     
+  0x180CE5CA1  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE5CA6  cmp     dword ptr [rip + 0x23f3517], 0               ; data_30D91C4
+  0x180CE5CAD  mov     r9, rax                                   
+  0x180CE5CB0  mov     qword ptr [rbx + 0x70], rax                  ; rbx->Pagination._inputManager
+  0x180CE5CB4  je      0x180ce5cf1                               
+  0x180CE5CB6  lea     r8, [rbx + 0x70]                             ; rbx->Pagination._inputManager
+  0x180CE5CBA  shr     r8, 0xc                                   
+  0x180CE5CBE  lea     rcx, [rip + 0x244e8bb]                       ; data_3134580
+  0x180CE5CC5  and     r8d, 0x1fffff                             
+  0x180CE5CCC  mov     eax, r8d                                  
+  0x180CE5CCF  shr     rax, 6                                    
+  0x180CE5CD3  and     r8d, 0x3f                                 
+  0x180CE5CD7  lea     rdx, [rcx + rax*8]                        
+  0x180CE5CDB  prefetchw byte ptr [rdx]                            
+  0x180CE5CDE  nop                                               
+
+180CE5CE0:
+  0x180CE5CE0  mov     rax, qword ptr [rdx]                      
+  0x180CE5CE3  mov     rcx, rax                                  
+  0x180CE5CE6  bts     rcx, r8                                   
+  0x180CE5CEA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE5CEF  jne     0x180ce5ce0                               
+
+180CE5CF1:
+  0x180CE5CF1  mov     rax, r9                                   
+
+180CE5CF4:
+  0x180CE5CF4  add     rsp, 0x20                                 
+  0x180CE5CF8  pop     rbx                                       
+  0x180CE5CF9  ret                                               

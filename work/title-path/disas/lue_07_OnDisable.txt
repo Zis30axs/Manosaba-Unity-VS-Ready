@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xD3C140  VA 0x180D3C140  size 0xC0 (192 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$OnDisable
+  csig   : void GigaCreation_NaninovelExtender_Ui_LoadingUiExtended__OnDisable (GigaCreation_NaninovelExtender_Ui_LoadingUiExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended :: protected override void OnDisable()
+  fields of LoadingUiExtended.SettingsData:
+      +0x10   _mode                          LoadingMode
+      +0x18   _item                          LoadingUiExtended.SettingsItem
+  fields of LoadingUiExtended.SettingsItem:
+      +0x10   _blockInputWhenVisible         bool
+      +0x11   _showUnderlay                  bool
+      +0x18   _indicator                     LoadingIndicatorBase
+      +0x20   _onScriptLoadProgressChanged   FloatUnityEvent
+  fields of LoadingUiExtended.<>c:
+      +0x0    <>9                            static readonly LoadingUiExtended.<>c
+      +0x8    <>9__14_0                      static Func<LoadingUiExtended.SettingsData, LoadingMode>
+      +0x10   <>9__14_1                      static Func<LoadingUiExtended.SettingsData, LoadingUiExtended.SettingsItem>
+====================================================================================================
+  0x180D3C140  mov     qword ptr [rsp + 8], rbx                  
+  0x180D3C145  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D3C14A  push    rdi                                       
+  0x180D3C14B  sub     rsp, 0x20                                 
+  0x180D3C14F  cmp     byte ptr [rip + 0x23a1269], 0                ; data_30DD3BF
+  0x180D3C156  mov     rbx, rcx                                  
+  0x180D3C159  jne     0x180d3c195                               
+  0x180D3C15B  lea     rcx, [rip + 0x211505e]                       ; TYPE System.Action<float>_TypeInfo
+  0x180D3C162  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C167  lock or dword ptr [rsp], 0                        
+  0x180D3C16C  lea     rcx, [rip + 0x210c5e5]                       ; TYPE Naninovel.IScriptLoader_TypeInfo
+  0x180D3C173  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C178  lock or dword ptr [rsp], 0                        
+  0x180D3C17D  lea     rcx, [rip + 0x20f54ac]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.LoadingUiExtended.HandleProgressChanged() => GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$HandleProgressChanged
+  0x180D3C184  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C189  lock or dword ptr [rsp], 0                        
+  0x180D3C18E  mov     byte ptr [rip + 0x23a122a], 1                ; data_30DD3BF
+
+180D3C195:
+  0x180D3C195  xor     edx, edx                                  
+  0x180D3C197  mov     rcx, rbx                                  
+  0x180D3C19A  call    0x180619c90                                  ; -> Naninovel.UI.CustomUI$$OnDisable
+  0x180D3C19F  xor     edx, edx                                  
+  0x180D3C1A1  mov     rcx, rbx                                  
+  0x180D3C1A4  call    0x180d3bc80                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_NaniScriptLoader
+  0x180D3C1A9  mov     rcx, qword ptr [rip + 0x2115010]             ; TYPE System.Action<float>_TypeInfo
+  0x180D3C1B0  mov     rdi, rax                                  
+  0x180D3C1B3  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D3C1B8  mov     r8, qword ptr [rip + 0x20f5471]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.LoadingUiExtended.HandleProgressChanged() => GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$HandleProgressChanged
+  0x180D3C1BF  xor     r9d, r9d                                  
+  0x180D3C1C2  mov     rdx, rbx                                  
+  0x180D3C1C5  mov     rcx, rax                                  
+  0x180D3C1C8  mov     rsi, rax                                  
+  0x180D3C1CB  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D3C1D0  test    rdi, rdi                                  
+  0x180D3C1D3  je      0x180d3c1fb                               
+  0x180D3C1D5  mov     rdx, qword ptr [rip + 0x210c57c]             ; TYPE Naninovel.IScriptLoader_TypeInfo
+  0x180D3C1DC  mov     ecx, 1                                    
+  0x180D3C1E1  mov     r9, rsi                                   
+  0x180D3C1E4  mov     r8, rdi                                   
+  0x180D3C1E7  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D3C1EC  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D3C1F1  add     rsp, 0x20                                 
+  0x180D3C1F5  pop     rdi                                       
+  0x180D3C1F6  jmp     0x180003140                               
+
+180D3C1FB:
+  0x180D3C1FB  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xD369C0  VA 0x180D369C0  size 0x61 (97 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended$$OnPointerClick
+  csig   : void GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended__OnPointerClick (GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended_o* __this, UnityEngine_EventSystems_PointerEventData_o* eventData, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended :: public void OnPointerClick(PointerEventData eventData)
+====================================================================================================
+  0x180D369C0  push    rbx                                       
+  0x180D369C2  sub     rsp, 0x20                                 
+  0x180D369C6  mov     rbx, rcx                                  
+  0x180D369C9  test    rdx, rdx                                  
+  0x180D369CC  je      0x180d36a1c                               
+  0x180D369CE  cmp     dword ptr [rdx + 0x148], 1                
+  0x180D369D5  je      0x180d36a16                               
+  0x180D369D7  mov     rcx, qword ptr [rcx + 0xe8]               
+  0x180D369DE  test    rcx, rcx                                  
+  0x180D369E1  je      0x180d369f1                               
+  0x180D369E3  mov     rax, qword ptr [rcx + 0x18]               
+  0x180D369E7  mov     rdx, qword ptr [rcx + 0x28]               
+  0x180D369EB  mov     rcx, qword ptr [rcx + 0x40]               
+  0x180D369EF  call    rax                                       
+
+180D369F1:
+  0x180D369F1  cmp     byte ptr [rbx + 0xf0], 0                  
+  0x180D369F8  je      0x180d36a16                               
+  0x180D369FA  mov     rdx, qword ptr [rbx]                      
+  0x180D369FD  mov     rcx, rbx                                  
+  0x180D36A00  mov     rax, qword ptr [rdx + 0x438]              
+  0x180D36A07  mov     rdx, qword ptr [rdx + 0x440]              
+  0x180D36A0E  add     rsp, 0x20                                 
+  0x180D36A12  pop     rbx                                       
+  0x180D36A13  jmp     rax                                       
+
+180D36A16:
+  0x180D36A16  add     rsp, 0x20                                 
+  0x180D36A1A  pop     rbx                                       
+  0x180D36A1B  ret                                               
+
+180D36A1C:
+  0x180D36A1C  call    0x180246730                                  ; THROW NullReferenceException

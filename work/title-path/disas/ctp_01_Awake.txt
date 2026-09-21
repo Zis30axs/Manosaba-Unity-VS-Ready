@@ -1,0 +1,55 @@
+====================================================================================================
+FUNCTION RVA 0xD366E0  VA 0x180D366E0  size 0xB8 (184 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended$$Awake
+  csig   : void GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended__Awake (GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended :: protected override void Awake()
+====================================================================================================
+  0x180D366E0  push    rbx                                       
+  0x180D366E2  sub     rsp, 0x20                                 
+  0x180D366E6  cmp     byte ptr [rip + 0x23a6cb2], 0                ; data_30DD39F
+  0x180D366ED  mov     rbx, rcx                                  
+  0x180D366F0  jne     0x180d3671b                               
+  0x180D366F2  lea     rcx, [rip + 0x211b04f]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IInputManager>()
+  0x180D366F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D366FE  lock or dword ptr [rsp], 0                        
+  0x180D36703  lea     rcx, [rip + 0x211b826]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3670A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3670F  lock or dword ptr [rsp], 0                        
+  0x180D36714  mov     byte ptr [rip + 0x23a6c84], 1                ; data_30DD39F
+
+180D3671B:
+  0x180D3671B  xor     edx, edx                                  
+  0x180D3671D  mov     rcx, rbx                                  
+  0x180D36720  call    0x180619530                                  ; -> Naninovel.UI.CustomUI$$Awake
+  0x180D36725  mov     rcx, qword ptr [rip + 0x211b804]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3672C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D36733  jne     0x180d3673a                               
+  0x180D36735  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3673A:
+  0x180D3673A  mov     rcx, qword ptr [rip + 0x211b007]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IInputManager>()
+  0x180D36741  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D36746  cmp     dword ptr [rip + 0x23a2a77], 0               ; data_30D91C4
+  0x180D3674D  mov     qword ptr [rbx + 0xe0], rax               
+  0x180D36754  je      0x180d36792                               
+  0x180D36756  lea     r8, [rbx + 0xe0]                          
+  0x180D3675D  shr     r8, 0xc                                   
+  0x180D36761  lea     rcx, [rip + 0x23fde18]                       ; data_3134580
+  0x180D36768  and     r8d, 0x1fffff                             
+  0x180D3676F  mov     eax, r8d                                  
+  0x180D36772  shr     rax, 6                                    
+  0x180D36776  and     r8d, 0x3f                                 
+  0x180D3677A  lea     rdx, [rcx + rax*8]                        
+  0x180D3677E  prefetchw byte ptr [rdx]                            
+
+180D36781:
+  0x180D36781  mov     rax, qword ptr [rdx]                      
+  0x180D36784  mov     rcx, rax                                  
+  0x180D36787  bts     rcx, r8                                   
+  0x180D3678B  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D36790  jne     0x180d36781                               
+
+180D36792:
+  0x180D36792  add     rsp, 0x20                                 
+  0x180D36796  pop     rbx                                       
+  0x180D36797  ret                                               

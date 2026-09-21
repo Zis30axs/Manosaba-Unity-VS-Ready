@@ -1,0 +1,106 @@
+====================================================================================================
+FUNCTION RVA 0xCD70E0  VA 0x180CD70E0  size 0x12A (298 bytes)
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$Deactivate
+  csig   : void GigaCreation_Essentials_Ui_MovingArrow__Deactivate (GigaCreation_Essentials_Ui_MovingArrow_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: public void Deactivate()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD70E0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD70E5  push    rdi                                       
+  0x180CD70E6  sub     rsp, 0x20                                 
+  0x180CD70EA  cmp     qword ptr [rcx + 0x50], 0                    ; rcx->MovingArrow._cts
+  0x180CD70EF  mov     rbx, rcx                                  
+  0x180CD70F2  je      0x180cd7193                               
+  0x180CD70F8  cmp     byte ptr [rip + 0x2407a5b], 0                ; data_30DEB5A
+  0x180CD70FF  mov     rdi, qword ptr [rcx + 0x50]                  ; rcx->MovingArrow._cts
+  0x180CD7103  jne     0x180cd711d                               
+  0x180CD7105  lea     rcx, [rip + 0x217a64c]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CD710C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD7111  lock or dword ptr [rsp], 0                        
+  0x180CD7116  mov     byte ptr [rip + 0x2407a3d], 1                ; data_30DEB5A
+
+180CD711D:
+  0x180CD711D  cmp     byte ptr [rdi + 0x28], 0                     ; rdi->MovingArrow._button | <MoveAsync>d__13.<linkedCts>5__2
+  0x180CD7121  jne     0x180cd71f7                               
+  0x180CD7127  xor     r8d, r8d                                  
+  0x180CD712A  xor     edx, edx                                  
+  0x180CD712C  mov     rcx, rdi                                  
+  0x180CD712F  call    0x1810a2fb0                                  ; -> System.Threading.CancellationTokenSource$$NotifyCancellation
+  0x180CD7134  mov     rcx, qword ptr [rbx + 0x50]                  ; rbx->MovingArrow._cts
+  0x180CD7138  test    rcx, rcx                                  
+  0x180CD713B  je      0x180cd71f1                               
+  0x180CD7141  xor     edx, edx                                  
+  0x180CD7143  call    0x1810a27c0                                  ; -> System.Threading.CancellationTokenSource$$Dispose
+  0x180CD7148  cmp     dword ptr [rip + 0x2402075], 0               ; data_30D91C4
+  0x180CD714F  mov     qword ptr [rbx + 0x50], 0                    ; rbx->MovingArrow._cts
+  0x180CD7157  je      0x180cd7193                               
+  0x180CD7159  lea     r8, [rbx + 0x50]                             ; rbx->MovingArrow._cts
+  0x180CD715D  shr     r8, 0xc                                   
+  0x180CD7161  lea     r9, [rip + 0x245d418]                        ; data_3134580
+  0x180CD7168  and     r8d, 0x1fffff                             
+  0x180CD716F  mov     edx, r8d                                  
+  0x180CD7172  shr     rdx, 6                                    
+  0x180CD7176  and     r8d, 0x3f                                 
+  0x180CD717A  prefetchw byte ptr [r9 + rdx*8]                     
+  0x180CD717F  nop                                               
+
+180CD7180:
+  0x180CD7180  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180CD7184  mov     rcx, rax                                  
+  0x180CD7187  bts     rcx, r8                                   
+  0x180CD718B  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180CD7191  jne     0x180cd7180                               
+
+180CD7193:
+  0x180CD7193  mov     rdi, qword ptr [rbx + 0x20]                  ; rbx->MovingArrow._canvasGroup | <MoveAsync>d__13.ct
+  0x180CD7197  test    rdi, rdi                                  
+  0x180CD719A  je      0x180cd71f1                               
+  0x180CD719C  xor     r8d, r8d                                  
+  0x180CD719F  xorps   xmm1, xmm1                                
+  0x180CD71A2  mov     rcx, rdi                                  
+  0x180CD71A5  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180CD71AA  xor     r8d, r8d                                  
+  0x180CD71AD  xor     edx, edx                                  
+  0x180CD71AF  mov     rcx, rdi                                  
+  0x180CD71B2  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180CD71B7  xor     r8d, r8d                                  
+  0x180CD71BA  xor     edx, edx                                  
+  0x180CD71BC  mov     rcx, rdi                                  
+  0x180CD71BF  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+  0x180CD71C4  mov     rcx, qword ptr [rbx + 0x30]                  ; rbx->MovingArrow._imageRectTransform | <MoveAsync>d__13.<>u__1
+  0x180CD71C8  movss   xmm1, dword ptr [rbx + 0x48]              
+  0x180CD71CD  test    rcx, rcx                                  
+  0x180CD71D0  je      0x180cd71f1                               
+  0x180CD71D2  movss   xmm0, dword ptr [rbx + 0x44]                 ; rbx->MovingArrow._imageInitialPosition
+  0x180CD71D7  xor     r8d, r8d                                  
+  0x180CD71DA  unpcklps xmm0, xmm1                                
+  0x180CD71DD  movq    rdx, xmm0                                 
+  0x180CD71E2  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD71E7  add     rsp, 0x20                                 
+  0x180CD71EB  pop     rdi                                       
+  0x180CD71EC  jmp     0x18207b9a0                                  ; -> UnityEngine.RectTransform$$set_anchoredPosition
+
+180CD71F1:
+  0x180CD71F1  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CD71F6  int3                                              
+
+180CD71F7:
+  0x180CD71F7  mov     rcx, qword ptr [rip + 0x217a55a]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CD71FE  call    0x180004a30                                  ; -> sub_4A30 (runtime/helper)
+  0x180CD7203  xor     ecx, ecx                                  
+  0x180CD7205  call    0x1810a2980                                  ; -> System.Threading.CancellationTokenSource$$ThrowObjectDisposedException

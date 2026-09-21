@@ -1,0 +1,82 @@
+====================================================================================================
+FUNCTION RVA 0xCE5D00  VA 0x180CE5D00  size 0x97 (151 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$Awake
+  managed: GigaCreation.Essentials.Ui.Pagination$$ChangeIndicatorStyle
+  csig   : void GigaCreation_Essentials_Ui_Pagination__Awake (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: private void Awake()
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: private void ChangeIndicatorStyle()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE5D00  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE5D05  mov     qword ptr [rsp + 0x10], rbp               
+  0x180CE5D0A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CE5D0F  push    rdi                                       
+  0x180CE5D10  sub     rsp, 0x30                                 
+  0x180CE5D14  mov     rdi, qword ptr [rcx + 0x30]                  ; rcx->Pagination._indicators
+  0x180CE5D18  xor     ebx, ebx                                  
+  0x180CE5D1A  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CE5D1F  mov     rbp, rcx                                  
+  0x180CE5D22  mov     eax, ebx                                  
+  0x180CE5D24  test    rdi, rdi                                  
+  0x180CE5D27  je      0x180ce5d92                               
+  0x180CE5D29  movss   xmm6, dword ptr [rip + 0x1dfcaef]            ; data_2AE2820
+  0x180CE5D31  lea     rsi, [rdi + 0x20]                            ; rdi->Pagination._previousPageButton
+
+180CE5D35:
+  0x180CE5D35  cmp     eax, dword ptr [rdi + 0x18]                  ; rdi-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE5D38  jge     0x180ce5d72                               
+  0x180CE5D3A  cmp     ebx, dword ptr [rdi + 0x18]                  ; rdi-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE5D3D  jae     0x180ce5d8c                               
+  0x180CE5D3F  mov     rcx, qword ptr [rsi]                      
+  0x180CE5D42  test    rcx, rcx                                  
+  0x180CE5D45  je      0x180ce5d92                               
+  0x180CE5D47  mov     eax, dword ptr [rbp + 0x50]                  ; rbp->Pagination._indicatorStyle
+  0x180CE5D4A  cmp     dword ptr [rcx + 0x10], eax                  ; rcx-><>c__DisplayClass18_0.<>4__this
+  0x180CE5D4D  jne     0x180ce5d54                               
+  0x180CE5D4F  movaps  xmm1, xmm6                                
+  0x180CE5D52  jmp     0x180ce5d57                               
+
+180CE5D54:
+  0x180CE5D54  xorps   xmm1, xmm1                                
+
+180CE5D57:
+  0x180CE5D57  mov     rcx, qword ptr [rcx + 0x18]                  ; rcx-><>c__DisplayClass18_0.numOfTotalPage
+  0x180CE5D5B  test    rcx, rcx                                  
+  0x180CE5D5E  je      0x180ce5d92                               
+  0x180CE5D60  xor     r8d, r8d                                  
+  0x180CE5D63  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180CE5D68  inc     ebx                                       
+  0x180CE5D6A  add     rsi, 8                                    
+  0x180CE5D6E  mov     eax, ebx                                  
+  0x180CE5D70  jmp     0x180ce5d35                               
+
+180CE5D72:
+  0x180CE5D72  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CE5D77  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180CE5D7C  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CE5D81  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CE5D86  add     rsp, 0x30                                 
+  0x180CE5D8A  pop     rdi                                       
+  0x180CE5D8B  ret                                               
+
+180CE5D8C:
+  0x180CE5D8C  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180CE5D91  int3                                              
+
+180CE5D92:
+  0x180CE5D92  call    0x180246730                                  ; THROW NullReferenceException

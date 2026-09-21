@@ -1,0 +1,119 @@
+====================================================================================================
+FUNCTION RVA 0xCE63D0  VA 0x180CE63D0  size 0x159 (345 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$Dismiss
+  csig   : void GigaCreation_Essentials_Ui_Pagination__Dismiss (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: public void Dismiss()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE63D0  push    rbx                                       
+  0x180CE63D2  sub     rsp, 0x60                                 
+  0x180CE63D6  mov     rbx, rcx                                  
+  0x180CE63D9  cmp     byte ptr [rip + 0x23f6dd4], 0                ; data_30DD1B4
+  0x180CE63E0  jne     0x180ce642d                               
+  0x180CE63E2  lea     rcx, [rip + 0x2182167]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<DotIndicator>.Dispose()
+  0x180CE63E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE63EE  lock or dword ptr [rsp], 0                        
+  0x180CE63F3  lea     rcx, [rip + 0x2182106]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<DotIndicator>.MoveNext()
+  0x180CE63FA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE63FF  lock or dword ptr [rsp], 0                        
+  0x180CE6404  lea     rcx, [rip + 0x21820e5]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<DotIndicator>.get_Current()
+  0x180CE640B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6410  lock or dword ptr [rsp], 0                        
+  0x180CE6415  lea     rcx, [rip + 0x21820cc]                       ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.GetEnumerator()
+  0x180CE641C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6421  lock or dword ptr [rsp], 0                        
+  0x180CE6426  mov     byte ptr [rip + 0x23f6d87], 1                ; data_30DD1B4
+
+180CE642D:
+  0x180CE642D  mov     rcx, qword ptr [rbx + 0x60]                  ; rbx->Pagination._disposables
+  0x180CE6431  test    rcx, rcx                                  
+  0x180CE6434  je      0x180ce6524                               
+  0x180CE643A  xor     edx, edx                                  
+  0x180CE643C  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE6441  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->Pagination._previousPageButton
+  0x180CE6445  test    rcx, rcx                                  
+  0x180CE6448  je      0x180ce6524                               
+  0x180CE644E  xor     edx, edx                                  
+  0x180CE6450  call    0x180cd70e0                                  ; -> GigaCreation.Essentials.Ui.MovingArrow$$Deactivate
+  0x180CE6455  mov     rcx, qword ptr [rbx + 0x28]                  ; rbx->Pagination._nextPageButton
+  0x180CE6459  test    rcx, rcx                                  
+  0x180CE645C  je      0x180ce6524                               
+  0x180CE6462  xor     edx, edx                                  
+  0x180CE6464  call    0x180cd70e0                                  ; -> GigaCreation.Essentials.Ui.MovingArrow$$Deactivate
+  0x180CE6469  mov     rcx, qword ptr [rbx + 0x68]                  ; rbx->Pagination._dots
+  0x180CE646D  test    rcx, rcx                                  
+  0x180CE6470  je      0x180ce6524                               
+  0x180CE6476  mov     r8, qword ptr [rip + 0x218206b]              ; METHODINFO Method$System.Collections.Generic.List<DotIndicator>.GetEnumerator()
+  0x180CE647D  lea     rdx, [rsp + 0x28]                         
+  0x180CE6482  call    0x18085a010                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$GetEnumerator
+  0x180CE6487  movups  xmm0, xmmword ptr [rsp + 0x28]            
+  0x180CE648C  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CE6491  movsd   xmm1, qword ptr [rsp + 0x38]              
+  0x180CE6497  movsd   qword ptr [rsp + 0x50], xmm1              
+  0x180CE649D  mov     qword ptr [rsp + 0x28], 0                 
+  0x180CE64A6  lea     rax, [rsp + 0x40]                         
+  0x180CE64AB  mov     qword ptr [rsp + 0x30], rax               
+
+180CE64B0:
+  0x180CE64B0  mov     rdx, qword ptr [rip + 0x2182049]             ; METHODINFO Method$System.Collections.Generic.List.Enumerator<DotIndicator>.MoveNext()
+  0x180CE64B7  lea     rcx, [rsp + 0x40]                         
+  0x180CE64BC  call    0x180c83a60                                  ; -> System.Collections.Generic.List.Enumerator<__Il2CppFullySharedGenericType>$$MoveNext
+  0x180CE64C1  test    al, al                                    
+  0x180CE64C3  je      0x180ce6500                               
+  0x180CE64C5  mov     r8, qword ptr [rip + 0x2182024]              ; METHODINFO Method$System.Collections.Generic.List.Enumerator<DotIndicator>.get_Current()
+  0x180CE64CC  lea     rdx, [rsp + 0x70]                         
+  0x180CE64D1  lea     rcx, [rsp + 0x40]                         
+  0x180CE64D6  call    0x180331e60                                  ; -> System.Collections.Generic.Dictionary.Enumerator<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$get_Current (+4 aliases)
+  0x180CE64DB  mov     rcx, qword ptr [rsp + 0x70]               
+  0x180CE64E0  test    rcx, rcx                                  
+  0x180CE64E3  je      0x180ce6518                               
+  0x180CE64E5  xor     edx, edx                                  
+  0x180CE64E7  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE64EC  test    rax, rax                                  
+  0x180CE64EF  je      0x180ce6512                               
+  0x180CE64F1  xor     r8d, r8d                                  
+  0x180CE64F4  xor     edx, edx                                  
+  0x180CE64F6  mov     rcx, rax                                  
+  0x180CE64F9  call    0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+  0x180CE64FE  jmp     0x180ce64b0                               
+
+180CE6500:
+  0x180CE6500  jmp     0x180ce650c                               
+  0x180CE6502  mov     rcx, qword ptr [rsp + 0x28]               
+  0x180CE6507  test    rcx, rcx                                  
+  0x180CE650A  jne     0x180ce651e                               
+
+180CE650C:
+  0x180CE650C  add     rsp, 0x60                                 
+  0x180CE6510  pop     rbx                                       
+  0x180CE6511  ret                                               
+
+180CE6512:
+  0x180CE6512  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE6517  nop                                               
+
+180CE6518:
+  0x180CE6518  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE651D  nop                                               
+
+180CE651E:
+  0x180CE651E  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x180CE6523  int3                                              
+
+180CE6524:
+  0x180CE6524  call    0x180246730                                  ; THROW NullReferenceException

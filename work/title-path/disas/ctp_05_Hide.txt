@@ -1,0 +1,64 @@
+====================================================================================================
+FUNCTION RVA 0xD368D0  VA 0x180D368D0  size 0xE6 (230 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended$$Hide
+  csig   : void GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended__Hide (GigaCreation_NaninovelExtender_Ui_ClickThroughPanelExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ClickThroughPanelExtended :: public override void Hide()
+====================================================================================================
+  0x180D368D0  push    rbx                                       
+  0x180D368D2  sub     rsp, 0x40                                 
+  0x180D368D6  cmp     byte ptr [rip + 0x23a6ac4], 0                ; data_30DD3A1
+  0x180D368DD  mov     rbx, rcx                                  
+  0x180D368E0  jne     0x180d368fa                               
+  0x180D368E2  lea     rcx, [rip + 0x21230df]                       ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180D368E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D368EE  lock or dword ptr [rsp], 0                        
+  0x180D368F3  mov     byte ptr [rip + 0x23a6aa7], 1                ; data_30DD3A1
+
+180D368FA:
+  0x180D368FA  cmp     dword ptr [rip + 0x23a28c3], 0               ; data_30D91C4
+  0x180D36901  mov     qword ptr [rbx + 0xe8], 0                 
+  0x180D3690C  je      0x180d36953                               
+  0x180D3690E  lea     r8, [rbx + 0xe8]                          
+  0x180D36915  shr     r8, 0xc                                   
+  0x180D36919  lea     r9, [rip + 0x23fdc60]                        ; data_3134580
+  0x180D36920  and     r8d, 0x1fffff                             
+  0x180D36927  mov     ecx, r8d                                  
+  0x180D3692A  shr     rcx, 6                                    
+  0x180D3692E  and     r8d, 0x3f                                 
+  0x180D36932  prefetchw byte ptr [r9 + rcx*8]                     
+  0x180D36937  nop     word ptr [rax + rax]                      
+
+180D36940:
+  0x180D36940  mov     rax, qword ptr [r9 + rcx*8]               
+  0x180D36944  mov     rdx, rax                                  
+  0x180D36947  bts     rdx, r8                                   
+  0x180D3694B  lock cmpxchg qword ptr [r9 + rcx*8], rdx               
+  0x180D36951  jne     0x180d36940                               
+
+180D36953:
+  0x180D36953  mov     r8, qword ptr [rbx + 0xe0]                
+  0x180D3695A  test    r8, r8                                    
+  0x180D3695D  je      0x180d369b1                               
+  0x180D3695F  mov     rdx, qword ptr [rip + 0x2123062]             ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180D36966  mov     ecx, 8                                    
+  0x180D3696B  mov     r9, rbx                                   
+  0x180D3696E  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180D36973  mov     rax, qword ptr [rbx]                      
+  0x180D36976  lea     r9, [rsp + 0x30]                          
+  0x180D3697B  xorps   xmm0, xmm0                                
+  0x180D3697E  xor     r8d, r8d                                  
+  0x180D36981  xor     edx, edx                                  
+  0x180D36983  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D36989  mov     rcx, rbx                                  
+  0x180D3698C  mov     r10, qword ptr [rax + 0x3f8]              
+  0x180D36993  mov     rax, qword ptr [rax + 0x400]              
+  0x180D3699A  mov     qword ptr [rsp + 0x20], rax               
+  0x180D3699F  call    r10                                       
+  0x180D369A2  xor     edx, edx                                  
+  0x180D369A4  mov     rcx, rax                                  
+  0x180D369A7  add     rsp, 0x40                                 
+  0x180D369AB  pop     rbx                                       
+  0x180D369AC  jmp     0x18051af10                                  ; -> Naninovel.UniTaskExtensions$$ForgetCore
+
+180D369B1:
+  0x180D369B1  call    0x180246730                                  ; THROW NullReferenceException

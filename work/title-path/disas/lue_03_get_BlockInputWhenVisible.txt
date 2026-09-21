@@ -1,0 +1,46 @@
+====================================================================================================
+FUNCTION RVA 0xD3BC20  VA 0x180D3BC20  size 0x5C (92 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_BlockInputWhenVisible
+  csig   : bool GigaCreation_NaninovelExtender_Ui_LoadingUiExtended__get_BlockInputWhenVisible (GigaCreation_NaninovelExtender_Ui_LoadingUiExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended :: public override bool get_BlockInputWhenVisible()
+  fields of LoadingUiExtended.SettingsData:
+      +0x10   _mode                          LoadingMode
+      +0x18   _item                          LoadingUiExtended.SettingsItem
+  fields of LoadingUiExtended.SettingsItem:
+      +0x10   _blockInputWhenVisible         bool
+      +0x11   _showUnderlay                  bool
+      +0x18   _indicator                     LoadingIndicatorBase
+      +0x20   _onScriptLoadProgressChanged   FloatUnityEvent
+  fields of LoadingUiExtended.<>c:
+      +0x0    <>9                            static readonly LoadingUiExtended.<>c
+      +0x8    <>9__14_0                      static Func<LoadingUiExtended.SettingsData, LoadingMode>
+      +0x10   <>9__14_1                      static Func<LoadingUiExtended.SettingsData, LoadingUiExtended.SettingsItem>
+====================================================================================================
+  0x180D3BC20  push    rbx                                       
+  0x180D3BC22  sub     rsp, 0x20                                 
+  0x180D3BC26  cmp     byte ptr [rip + 0x23a178e], 0                ; data_30DD3BB
+  0x180D3BC2D  mov     rbx, rcx                                  
+  0x180D3BC30  jne     0x180d3bc4a                               
+  0x180D3BC32  lea     rcx, [rip + 0x20f5a37]                       ; TYPE System.Collections.Generic.IReadOnlyDictionary<LoadingMode, LoadingUiExtended.SettingsItem>_TypeInfo
+  0x180D3BC39  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3BC3E  lock or dword ptr [rsp], 0                        
+  0x180D3BC43  mov     byte ptr [rip + 0x23a1771], 1                ; data_30DD3BB
+
+180D3BC4A:
+  0x180D3BC4A  xor     edx, edx                                  
+  0x180D3BC4C  mov     rcx, rbx                                  
+  0x180D3BC4F  call    0x180d3bd50                                  ; -> GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_Settings
+  0x180D3BC54  test    rax, rax                                  
+  0x180D3BC57  je      0x180d3bc77                               
+  0x180D3BC59  mov     r9d, dword ptr [rbx + 0x108]              
+  0x180D3BC60  mov     r8, rax                                   
+  0x180D3BC63  call    0x180080ad0                                  ; -> sub_80AD0 (runtime/helper)
+  0x180D3BC68  test    rax, rax                                  
+  0x180D3BC6B  je      0x180d3bc77                               
+  0x180D3BC6D  movzx   eax, byte ptr [rax + 0x10]                   ; rax->SettingsData._mode | SettingsItem._blockInputWhenVisible | <>c.<>9__14_1
+  0x180D3BC71  add     rsp, 0x20                                 
+  0x180D3BC75  pop     rbx                                       
+  0x180D3BC76  ret                                               
+
+180D3BC77:
+  0x180D3BC77  call    0x180246730                                  ; THROW NullReferenceException

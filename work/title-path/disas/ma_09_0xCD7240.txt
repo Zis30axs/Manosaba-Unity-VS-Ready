@@ -1,0 +1,43 @@
+====================================================================================================
+FUNCTION RVA 0xCD7240  VA 0x180CD7240  size 0x58 (88 bytes)
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_MovingArrow___ctor (GigaCreation_Essentials_Ui_MovingArrow_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: public void .ctor()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD7240  sub     rsp, 0x28                                 
+  0x180CD7244  cmp     byte ptr [rip + 0x24112a2], 0                ; data_30E84ED
+  0x180CD724B  mov     dword ptr [rcx + 0x38], 0x41c00000           ; rcx->MovingArrow._move
+  0x180CD7252  mov     dword ptr [rcx + 0x3c], 0x3ecccccd           ; rcx->MovingArrow._duration
+  0x180CD7259  mov     dword ptr [rcx + 0x40], 0x3f99999a           ; rcx->MovingArrow._interval
+  0x180CD7260  jne     0x180cd727a                               
+  0x180CD7262  lea     rcx, [rip + 0x217b027]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CD7269  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD726E  lock or dword ptr [rsp], 0                        
+  0x180CD7273  mov     byte ptr [rip + 0x2411273], 1                ; data_30E84ED
+
+180CD727A:
+  0x180CD727A  mov     rcx, qword ptr [rip + 0x217b00f]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CD7281  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD7288  jne     0x180cd7293                               
+  0x180CD728A  add     rsp, 0x28                                 
+  0x180CD728E  jmp     0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CD7293:
+  0x180CD7293  add     rsp, 0x28                                 
+  0x180CD7297  ret                                               

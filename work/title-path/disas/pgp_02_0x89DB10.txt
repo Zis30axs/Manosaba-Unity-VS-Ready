@@ -1,0 +1,111 @@
+====================================================================================================
+FUNCTION RVA 0x89DB10  VA 0x18089DB10  size 0x19F (415 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.PageableGridPanel<object, object>$$Reset
+  csig   : void GigaCreation_NaninovelExtender_Ui_PageableGridPanel_object__object___Reset (GigaCreation_NaninovelExtender_Ui_PageableGridPanel_TGrid__TSlot__o* __this, const MethodInfo_89DB10* method);
+====================================================================================================
+  0x18089DB10  mov     qword ptr [rsp + 0x18], rbx               
+  0x18089DB15  push    rdi                                       
+  0x18089DB16  sub     rsp, 0x20                                 
+  0x18089DB1A  cmp     byte ptr [rip + 0x283ee70], 0                ; data_30DC991
+  0x18089DB21  mov     rdi, rdx                                  
+  0x18089DB24  mov     rbx, rcx                                  
+  0x18089DB27  jne     0x18089db52                               
+  0x18089DB29  lea     rcx, [rip + 0x25bb0d0]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Pagination>()
+  0x18089DB30  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18089DB35  lock or dword ptr [rsp], 0                        
+  0x18089DB3A  lea     rcx, [rip + 0x25b6a67]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x18089DB41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18089DB46  lock or dword ptr [rsp], 0                        
+  0x18089DB4B  mov     byte ptr [rip + 0x283ee3f], 1                ; data_30DC991
+
+18089DB52:
+  0x18089DB52  test    rbx, rbx                                  
+  0x18089DB55  je      0x18089dcaa                               
+  0x18089DB5B  mov     r8, qword ptr [rip + 0x25b6a46]              ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x18089DB62  lea     rdx, [rsp + 0x30]                         
+  0x18089DB67  mov     rcx, rbx                                  
+  0x18089DB6A  mov     qword ptr [rsp + 0x38], rsi               
+  0x18089DB6F  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x18089DB74  cmp     dword ptr [rip + 0x283b649], 0               ; data_30D91C4
+  0x18089DB7B  lea     rsi, [rip + 0x285071e]                       ; data_30EE2A0
+  0x18089DB82  mov     rax, qword ptr [rsp + 0x30]               
+  0x18089DB87  mov     qword ptr [rbx + 0x20], rax               
+  0x18089DB8B  je      0x18089dbcb                               
+  0x18089DB8D  lea     r8, [rbx + 0x20]                          
+  0x18089DB91  shr     r8, 0xc                                   
+  0x18089DB95  and     r8d, 0x1fffff                             
+  0x18089DB9C  mov     eax, r8d                                  
+  0x18089DB9F  shr     rax, 6                                    
+  0x18089DBA3  and     r8d, 0x3f                                 
+  0x18089DBA7  lea     rdx, [rsi + rax*8]                        
+  0x18089DBAB  prefetchw byte ptr [rdx + 0x462e0]                  
+
+18089DBB2:
+  0x18089DBB2  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18089DBB9  mov     rcx, rax                                  
+  0x18089DBBC  bts     rcx, r8                                   
+  0x18089DBC0  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18089DBC9  jne     0x18089dbb2                               
+
+18089DBCB:
+  0x18089DBCB  mov     rax, qword ptr [rdi + 0x20]               
+  0x18089DBCF  lea     rdx, [rsp + 0x30]                         
+  0x18089DBD4  mov     rcx, rbx                                  
+  0x18089DBD7  mov     r8, qword ptr [rax + 0xc0]                
+  0x18089DBDE  mov     r8, qword ptr [r8 + 0x10]                 
+  0x18089DBE2  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x18089DBE7  cmp     dword ptr [rip + 0x283b5d6], 0               ; data_30D91C4
+  0x18089DBEE  mov     rax, qword ptr [rsp + 0x30]               
+  0x18089DBF3  mov     qword ptr [rbx + 0x28], rax               
+  0x18089DBF7  je      0x18089dc39                               
+  0x18089DBF9  lea     r8, [rbx + 0x28]                          
+  0x18089DBFD  shr     r8, 0xc                                   
+  0x18089DC01  and     r8d, 0x1fffff                             
+  0x18089DC08  mov     eax, r8d                                  
+  0x18089DC0B  shr     rax, 6                                    
+  0x18089DC0F  and     r8d, 0x3f                                 
+  0x18089DC13  lea     rdx, [rsi + rax*8]                        
+  0x18089DC17  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18089DC1E  nop                                               
+
+18089DC20:
+  0x18089DC20  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18089DC27  mov     rcx, rax                                  
+  0x18089DC2A  bts     rcx, r8                                   
+  0x18089DC2E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18089DC37  jne     0x18089dc20                               
+
+18089DC39:
+  0x18089DC39  mov     r8, qword ptr [rip + 0x25bafc0]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Pagination>()
+  0x18089DC40  lea     rdx, [rsp + 0x30]                         
+  0x18089DC45  mov     rcx, rbx                                  
+  0x18089DC48  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x18089DC4D  cmp     dword ptr [rip + 0x283b570], 0               ; data_30D91C4
+  0x18089DC54  mov     rax, qword ptr [rsp + 0x30]               
+  0x18089DC59  mov     qword ptr [rbx + 0x30], rax               
+  0x18089DC5D  je      0x18089dc9a                               
+  0x18089DC5F  add     rbx, 0x30                                 
+  0x18089DC63  shr     rbx, 0xc                                  
+  0x18089DC67  and     ebx, 0x1fffff                             
+  0x18089DC6D  mov     eax, ebx                                  
+  0x18089DC6F  shr     rax, 6                                    
+  0x18089DC73  and     ebx, 0x3f                                 
+  0x18089DC76  lea     rdx, [rsi + rax*8]                        
+  0x18089DC7A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+18089DC81:
+  0x18089DC81  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18089DC88  mov     rcx, rax                                  
+  0x18089DC8B  bts     rcx, rbx                                  
+  0x18089DC8F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18089DC98  jne     0x18089dc81                               
+
+18089DC9A:
+  0x18089DC9A  mov     rsi, qword ptr [rsp + 0x38]               
+  0x18089DC9F  mov     rbx, qword ptr [rsp + 0x40]               
+  0x18089DCA4  add     rsp, 0x20                                 
+  0x18089DCA8  pop     rdi                                       
+  0x18089DCA9  ret                                               
+
+18089DCAA:
+  0x18089DCAA  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,48 @@
+====================================================================================================
+FUNCTION RVA 0xCE6530  VA 0x180CE6530  size 0x68 (104 bytes)
+  managed: GigaCreation.Essentials.Ui.Pagination$$OnPageChangedAsObservable
+  csig   : System_IObservable_int__o* GigaCreation_Essentials_Ui_Pagination__OnPageChangedAsObservable (GigaCreation_Essentials_Ui_Pagination_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Pagination :: public IObservable<int> OnPageChangedAsObservable()
+  fields of GigaCreation.Essentials.Ui.Pagination:
+      +0x20   _previousPageButton            MovingArrow
+      +0x28   _nextPageButton                MovingArrow
+      +0x30   _indicators                    PaginationIndicator[]
+      +0x38   _originalDot                   DotIndicator
+      +0x40   _currentPageLabel              TextMeshProUGUI
+      +0x48   _totalPageLabel                TextMeshProUGUI
+      +0x50   _indicatorStyle                PaginationIndicatorStyle
+      +0x54   _wrapped                       bool
+      +0x58   _currentPageIndex              readonly ReactiveProperty<int>
+      +0x60   _disposables                   readonly CompositeDisposable
+      +0x68   _dots                          readonly List<DotIndicator>
+      +0x70   _inputManager                  IInputManager
+  fields of Pagination.<>c__DisplayClass18_0:
+      +0x10   <>4__this                      Pagination
+      +0x18   numOfTotalPage                 int
+====================================================================================================
+  0x180CE6530  push    rbx                                       
+  0x180CE6532  sub     rsp, 0x20                                 
+  0x180CE6536  cmp     byte ptr [rip + 0x23f6c78], 0                ; data_30DD1B5
+  0x180CE653D  mov     rbx, rcx                                  
+  0x180CE6540  jne     0x180ce656b                               
+  0x180CE6542  lea     rcx, [rip + 0x2181fc7]                       ; METHODINFO Method$UniRx.Observable.AsObservable<int>()
+  0x180CE6549  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE654E  lock or dword ptr [rsp], 0                        
+  0x180CE6553  lea     rcx, [rip + 0x217331e]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CE655A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE655F  lock or dword ptr [rsp], 0                        
+  0x180CE6564  mov     byte ptr [rip + 0x23f6c4a], 1                ; data_30DD1B5
+
+180CE656B:
+  0x180CE656B  mov     rcx, qword ptr [rip + 0x2173306]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CE6572  mov     rbx, qword ptr [rbx + 0x58]                  ; rbx->Pagination._currentPageIndex
+  0x180CE6576  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE657D  jne     0x180ce6584                               
+  0x180CE657F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE6584:
+  0x180CE6584  mov     rdx, qword ptr [rip + 0x2181f85]             ; METHODINFO Method$UniRx.Observable.AsObservable<int>()
+  0x180CE658B  mov     rcx, rbx                                  
+  0x180CE658E  add     rsp, 0x20                                 
+  0x180CE6592  pop     rbx                                       
+  0x180CE6593  jmp     0x1807248e0                                  ; -> UniRx.Observable$$AsObservable<__Il2CppFullySharedGenericType>

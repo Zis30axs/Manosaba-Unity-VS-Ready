@@ -1,0 +1,23 @@
+====================================================================================================
+FUNCTION RVA 0x30E870  VA 0x18030E870  size 0x20 (32 bytes)
+  managed: WitchTrials.Views.PointerStayingSpriteSwapper$$OnDestroy
+  managed: GigaCreation.Essentials.Ui.DotIndicator$$OnDestroy
+  csig   : void WitchTrials_Views_PointerStayingSpriteSwapper__OnDestroy (WitchTrials_Views_PointerStayingSpriteSwapper_o* __this, const MethodInfo* method);
+  dump.cs: WitchTrials.Views.PointerStayingSpriteSwapper :: private void OnDestroy()
+  dump.cs: GigaCreation.Essentials.Ui.DotIndicator :: private void OnDestroy()
+  fields of GigaCreation.Essentials.Ui.DotIndicator:
+      +0x20   _image                         Image
+      +0x28   _enable                        Sprite
+      +0x30   _disable                       Sprite
+====================================================================================================
+  0x18030E870  sub     rsp, 0x28                                 
+  0x18030E874  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->DotIndicator._image
+  0x18030E878  test    rcx, rcx                                  
+  0x18030E87B  je      0x18030e88b                               
+  0x18030E87D  xor     r8d, r8d                                  
+  0x18030E880  xor     edx, edx                                  
+  0x18030E882  add     rsp, 0x28                                 
+  0x18030E886  jmp     0x1821f8350                                  ; -> UnityEngine.UI.Image$$set_overrideSprite
+
+18030E88B:
+  0x18030E88B  call    0x180246730                                  ; THROW NullReferenceException

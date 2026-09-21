@@ -1,0 +1,41 @@
+====================================================================================================
+FUNCTION RVA 0xCD6BE0  VA 0x180CD6BE0  size 0x3F (63 bytes)
+  managed: GigaCreation.Essentials.Ui.MovingArrow$$Awake
+  csig   : void GigaCreation_Essentials_Ui_MovingArrow__Awake (GigaCreation_Essentials_Ui_MovingArrow_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.MovingArrow :: private void Awake()
+  fields of GigaCreation.Essentials.Ui.MovingArrow:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _imageRectTransform            RectTransform
+      +0x38   _move                          float
+      +0x3C   _duration                      float
+      +0x40   _interval                      float
+      +0x44   _imageInitialPosition          Vector2
+      +0x50   _cts                           CancellationTokenSource
+  fields of MovingArrow.<MoveAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      MovingArrow
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD6BE0  push    rbx                                       
+  0x180CD6BE2  sub     rsp, 0x20                                 
+  0x180CD6BE6  mov     rbx, rcx                                  
+  0x180CD6BE9  mov     rcx, qword ptr [rcx + 0x30]                  ; rcx->MovingArrow._imageRectTransform | <MoveAsync>d__13.<>u__1
+  0x180CD6BED  test    rcx, rcx                                  
+  0x180CD6BF0  je      0x180cd6c1a                               
+  0x180CD6BF2  xor     edx, edx                                  
+  0x180CD6BF4  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CD6BF9  mov     qword ptr [rsp + 0x30], rax               
+  0x180CD6BFE  movss   xmm0, dword ptr [rsp + 0x30]              
+  0x180CD6C04  movss   xmm1, dword ptr [rsp + 0x34]              
+  0x180CD6C0A  movss   dword ptr [rbx + 0x44], xmm0                 ; rbx->MovingArrow._imageInitialPosition
+  0x180CD6C0F  movss   dword ptr [rbx + 0x48], xmm1              
+  0x180CD6C14  add     rsp, 0x20                                 
+  0x180CD6C18  pop     rbx                                       
+  0x180CD6C19  ret                                               
+
+180CD6C1A:
+  0x180CD6C1A  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,72 @@
+====================================================================================================
+FUNCTION RVA 0xD3BC80  VA 0x180D3BC80  size 0xCA (202 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended$$get_NaniScriptLoader
+  csig   : Naninovel_IScriptLoader_o* GigaCreation_NaninovelExtender_Ui_LoadingUiExtended__get_NaniScriptLoader (GigaCreation_NaninovelExtender_Ui_LoadingUiExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.LoadingUiExtended :: private IScriptLoader get_NaniScriptLoader()
+  fields of LoadingUiExtended.SettingsData:
+      +0x10   _mode                          LoadingMode
+      +0x18   _item                          LoadingUiExtended.SettingsItem
+  fields of LoadingUiExtended.SettingsItem:
+      +0x10   _blockInputWhenVisible         bool
+      +0x11   _showUnderlay                  bool
+      +0x18   _indicator                     LoadingIndicatorBase
+      +0x20   _onScriptLoadProgressChanged   FloatUnityEvent
+  fields of LoadingUiExtended.<>c:
+      +0x0    <>9                            static readonly LoadingUiExtended.<>c
+      +0x8    <>9__14_0                      static Func<LoadingUiExtended.SettingsData, LoadingMode>
+      +0x10   <>9__14_1                      static Func<LoadingUiExtended.SettingsData, LoadingUiExtended.SettingsItem>
+====================================================================================================
+  0x180D3BC80  push    rbx                                       
+  0x180D3BC82  sub     rsp, 0x20                                 
+  0x180D3BC86  cmp     byte ptr [rip + 0x23a172f], 0                ; data_30DD3BC
+  0x180D3BC8D  mov     rbx, rcx                                  
+  0x180D3BC90  jne     0x180d3bcbb                               
+  0x180D3BC92  lea     rcx, [rip + 0x20f599f]                       ; METHODINFO Method$Naninovel.Engine.GetService<IScriptLoader>()
+  0x180D3BC99  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3BC9E  lock or dword ptr [rsp], 0                        
+  0x180D3BCA3  lea     rcx, [rip + 0x2116286]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3BCAA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3BCAF  lock or dword ptr [rsp], 0                        
+  0x180D3BCB4  mov     byte ptr [rip + 0x23a1701], 1                ; data_30DD3BC
+
+180D3BCBB:
+  0x180D3BCBB  mov     rax, qword ptr [rbx + 0xf8]               
+  0x180D3BCC2  test    rax, rax                                  
+  0x180D3BCC5  jne     0x180d3bd44                               
+  0x180D3BCC7  mov     rcx, qword ptr [rip + 0x2116262]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3BCCE  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D3BCD4  jne     0x180d3bcdb                               
+  0x180D3BCD6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3BCDB:
+  0x180D3BCDB  mov     rcx, qword ptr [rip + 0x20f5956]             ; METHODINFO Method$Naninovel.Engine.GetService<IScriptLoader>()
+  0x180D3BCE2  call    0x1806825e0                                  ; -> Naninovel.Engine$$GetService<object>
+  0x180D3BCE7  cmp     dword ptr [rip + 0x239d4d6], 0               ; data_30D91C4
+  0x180D3BCEE  mov     r9, rax                                   
+  0x180D3BCF1  mov     qword ptr [rbx + 0xf8], rax               
+  0x180D3BCF8  je      0x180d3bd41                               
+  0x180D3BCFA  lea     r8, [rbx + 0xf8]                          
+  0x180D3BD01  shr     r8, 0xc                                   
+  0x180D3BD05  lea     rcx, [rip + 0x23f8874]                       ; data_3134580
+  0x180D3BD0C  and     r8d, 0x1fffff                             
+  0x180D3BD13  mov     eax, r8d                                  
+  0x180D3BD16  shr     rax, 6                                    
+  0x180D3BD1A  and     r8d, 0x3f                                 
+  0x180D3BD1E  lea     rdx, [rcx + rax*8]                        
+  0x180D3BD22  prefetchw byte ptr [rdx]                            
+  0x180D3BD25  nop     word ptr [rax + rax]                      
+
+180D3BD30:
+  0x180D3BD30  mov     rax, qword ptr [rdx]                      
+  0x180D3BD33  mov     rcx, rax                                  
+  0x180D3BD36  bts     rcx, r8                                   
+  0x180D3BD3A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3BD3F  jne     0x180d3bd30                               
+
+180D3BD41:
+  0x180D3BD41  mov     rax, r9                                   
+
+180D3BD44:
+  0x180D3BD44  add     rsp, 0x20                                 
+  0x180D3BD48  pop     rbx                                       
+  0x180D3BD49  ret                                               
