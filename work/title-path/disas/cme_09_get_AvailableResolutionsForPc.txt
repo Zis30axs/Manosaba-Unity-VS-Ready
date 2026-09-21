@@ -1,0 +1,209 @@
+====================================================================================================
+FUNCTION RVA 0xCF53E0  VA 0x180CF53E0  size 0x293 (659 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_AvailableResolutionsForPc
+  csig   : UnityEngine_Vector2Int_array* GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__get_AvailableResolutionsForPc (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public Vector2Int[] get_AvailableResolutionsForPc()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF53E0  push    rsi                                       
+  0x180CF53E2  sub     rsp, 0x40                                 
+  0x180CF53E6  cmp     byte ptr [rip + 0x23e7e38], 0                ; data_30DD225
+  0x180CF53ED  mov     rsi, rcx                                  
+  0x180CF53F0  jne     0x180cf544e                               
+  0x180CF53F2  lea     rcx, [rip + 0x2175077]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended.IsWithinResolutionRange() => GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$IsWithinResolutionRange
+  0x180CF53F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF53FE  lock or dword ptr [rsp], 0                        
+  0x180CF5403  lea     rcx, [rip + 0x217505e]                       ; METHODINFO Method$System.Linq.Enumerable.ToArray<Vector2Int>()
+  0x180CF540A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF540F  lock or dword ptr [rsp], 0                        
+  0x180CF5414  lea     rcx, [rip + 0x2175005]                       ; METHODINFO Method$System.Linq.Enumerable.Where<Vector2Int>()
+  0x180CF541B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5420  lock or dword ptr [rsp], 0                        
+  0x180CF5425  lea     rcx, [rip + 0x2174fec]                       ; TYPE System.Func<Vector2Int, bool>_TypeInfo
+  0x180CF542C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5431  lock or dword ptr [rsp], 0                        
+  0x180CF5436  lea     rcx, [rip + 0x2174fcb]                       ; TYPE UnityEngine.Vector2Int[]_TypeInfo
+  0x180CF543D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5442  lock or dword ptr [rsp], 0                        
+  0x180CF5447  mov     byte ptr [rip + 0x23e7dd7], 1                ; data_30DD225
+
+180CF544E:
+  0x180CF544E  cmp     qword ptr [rsi + 0xf0], 0                    ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF5456  jne     0x180cf5639                               
+  0x180CF545C  mov     qword ptr [rsp + 0x50], rbx               
+  0x180CF5461  mov     qword ptr [rsp + 0x58], rdi               
+  0x180CF5466  xor     edx, edx                                  
+  0x180CF5468  mov     rcx, rsi                                  
+  0x180CF546B  call    0x180cf5680                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_ScreenResolutions
+  0x180CF5470  test    rax, rax                                  
+  0x180CF5473  je      0x180cf55c2                               
+  0x180CF5479  xor     edx, edx                                  
+  0x180CF547B  mov     rcx, rsi                                  
+  0x180CF547E  call    0x180cf5680                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_ScreenResolutions
+  0x180CF5483  test    rax, rax                                  
+  0x180CF5486  je      0x180cf566e                               
+  0x180CF548C  cmp     qword ptr [rax + 0x18], 0                    ; rax-><ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5491  je      0x180cf55c2                               
+  0x180CF5497  mov     rdi, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF549E  test    rdi, rdi                                  
+  0x180CF54A1  je      0x180cf566e                               
+  0x180CF54A7  mov     rcx, qword ptr [rip + 0x2174f6a]             ; TYPE System.Func<Vector2Int, bool>_TypeInfo
+  0x180CF54AE  mov     rdi, qword ptr [rdi + 0x18]                  ; rdi->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF54B2  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF54B7  mov     r8, qword ptr [rip + 0x2174fb2]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended.IsWithinResolutionRange() => GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$IsWithinResolutionRange
+  0x180CF54BE  xor     r9d, r9d                                  
+  0x180CF54C1  mov     rdx, rsi                                  
+  0x180CF54C4  mov     rcx, rax                                  
+  0x180CF54C7  mov     rbx, rax                                  
+  0x180CF54CA  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CF54CF  mov     r8, qword ptr [rip + 0x2174f4a]              ; METHODINFO Method$System.Linq.Enumerable.Where<Vector2Int>()
+  0x180CF54D6  mov     rdx, rbx                                  
+  0x180CF54D9  mov     rcx, rdi                                  
+  0x180CF54DC  call    0x18068c2c0                                  ; -> System.Linq.Enumerable$$Where<__Il2CppFullySharedGenericType>
+  0x180CF54E1  mov     rbx, qword ptr [rip + 0x2174f80]             ; METHODINFO Method$System.Linq.Enumerable.ToArray<Vector2Int>()
+  0x180CF54E8  mov     rdi, rax                                  
+  0x180CF54EB  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><ChangeOffset>d__36.asyncToken
+  0x180CF54F0  jne     0x180cf54fa                               
+  0x180CF54F2  mov     rcx, rbx                                  
+  0x180CF54F5  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CF54FA:
+  0x180CF54FA  test    rdi, rdi                                  
+  0x180CF54FD  je      0x180cf564c                               
+  0x180CF5503  mov     r8, qword ptr [rbx + 0x38]                   ; rbx-><ChangeOffset>d__36.asyncToken | <InitializeMainCamera>d__38.uiLayer
+  0x180CF5507  lea     rcx, [rsp + 0x20]                         
+  0x180CF550C  xorps   xmm0, xmm0                                
+  0x180CF550F  mov     rdx, rdi                                  
+  0x180CF5512  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CF5517  mov     r8, qword ptr [r8 + 0x10]                    ; r8->SettingsExtended.FullScreen
+  0x180CF551B  call    0x180c15d80                                  ; -> System.Linq.Buffer<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CF5520  mov     rdx, qword ptr [rbx + 0x38]                  ; rbx-><ChangeOffset>d__36.asyncToken | <InitializeMainCamera>d__38.uiLayer
+  0x180CF5524  lea     rcx, [rsp + 0x30]                         
+  0x180CF5529  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180CF552E  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CF5534  mov     rdx, qword ptr [rdx + 0x18]                  ; rdx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5538  call    0x180033520                                  ; -> sub_33520 (runtime/helper)
+  0x180CF553D  mov     rcx, rax                                  
+  0x180CF5540  test    rax, rax                                  
+  0x180CF5543  je      0x180cf566e                               
+  0x180CF5549  cmp     qword ptr [rax + 0x18], 0                    ; rax-><ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF554E  jne     0x180cf55ad                               
+  0x180CF5550  mov     rcx, qword ptr [rip + 0x2174eb1]             ; TYPE UnityEngine.Vector2Int[]_TypeInfo
+  0x180CF5557  mov     edx, 1                                    
+  0x180CF555C  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CF5561  mov     rdx, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF5568  mov     rcx, rax                                  
+  0x180CF556B  test    rdx, rdx                                  
+  0x180CF556E  je      0x180cf566e                               
+  0x180CF5574  mov     rdx, qword ptr [rdx + 0x18]                  ; rdx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5578  test    rdx, rdx                                  
+  0x180CF557B  je      0x180cf566e                               
+  0x180CF5581  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5585  dec     rax                                       
+  0x180CF5588  cmp     eax, dword ptr [rdx + 0x18]                  ; rdx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF558B  jae     0x180cf5646                               
+  0x180CF5591  test    rcx, rcx                                  
+  0x180CF5594  je      0x180cf566e                               
+  0x180CF559A  cmp     dword ptr [rcx + 0x18], 0                    ; rcx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF559E  mov     rax, qword ptr [rdx + rax*8 + 0x20]       
+  0x180CF55A3  jbe     0x180cf5646                               
+  0x180CF55A9  mov     qword ptr [rcx + 0x20], rax                  ; rcx-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+
+180CF55AD:
+  0x180CF55AD  mov     qword ptr [rsi + 0xf0], rcx                  ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF55B4  lea     rcx, [rsi + 0xf0]                            ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF55BB  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180CF55C0  jmp     0x180cf5622                               
+
+180CF55C2:
+  0x180CF55C2  mov     rax, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF55C9  test    rax, rax                                  
+  0x180CF55CC  je      0x180cf566e                               
+  0x180CF55D2  cmp     dword ptr [rip + 0x23e3beb], 0               ; data_30D91C4
+  0x180CF55D9  mov     rax, qword ptr [rax + 0x18]                  ; rax->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF55DD  mov     qword ptr [rsi + 0xf0], rax                  ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF55E4  je      0x180cf5622                               
+  0x180CF55E6  lea     r8, [rsi + 0xf0]                             ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF55ED  shr     r8, 0xc                                   
+  0x180CF55F1  lea     rcx, [rip + 0x243ef88]                       ; data_3134580
+  0x180CF55F8  and     r8d, 0x1fffff                             
+  0x180CF55FF  mov     eax, r8d                                  
+  0x180CF5602  shr     rax, 6                                    
+  0x180CF5606  and     r8d, 0x3f                                 
+  0x180CF560A  lea     rdx, [rcx + rax*8]                        
+  0x180CF560E  prefetchw byte ptr [rdx]                            
+
+180CF5611:
+  0x180CF5611  mov     rax, qword ptr [rdx]                      
+  0x180CF5614  mov     rcx, rax                                  
+  0x180CF5617  bts     rcx, r8                                   
+  0x180CF561B  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CF5620  jne     0x180cf5611                               
+
+180CF5622:
+  0x180CF5622  mov     rax, qword ptr [rsi + 0xf0]                  ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF5629  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF562E  mov     rdi, qword ptr [rsp + 0x58]               
+  0x180CF5633  add     rsp, 0x40                                 
+  0x180CF5637  pop     rsi                                       
+  0x180CF5638  ret                                               
+
+180CF5639:
+  0x180CF5639  mov     rax, qword ptr [rsi + 0xf0]                  ; rsi->CameraManagerExtended._availableResolutionsForPc
+  0x180CF5640  add     rsp, 0x40                                 
+  0x180CF5644  pop     rsi                                       
+  0x180CF5645  ret                                               
+
+180CF5646:
+  0x180CF5646  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180CF564B  int3                                              
+
+180CF564C:
+  0x180CF564C  lea     rcx, [rip + 0x21216e5]                       ; STR 'source'
+  0x180CF5653  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CF5658  mov     rcx, rax                                  
+  0x180CF565B  xor     edx, edx                                  
+  0x180CF565D  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180CF5662  mov     rdx, rbx                                  
+  0x180CF5665  mov     rcx, rax                                  
+  0x180CF5668  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180CF566D  int3                                              
+
+180CF566E:
+  0x180CF566E  call    0x180246730                                  ; THROW NullReferenceException

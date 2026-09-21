@@ -1,0 +1,21 @@
+====================================================================================================
+FUNCTION RVA 0xCD5C70  VA 0x180CD5C70  size 0x26 (38 bytes)
+  managed: GigaCreation.Essentials.Platforms.Platform$$get_IsPc
+  csig   : bool GigaCreation_Essentials_Platforms_Platform__get_IsPc (const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Platforms.Platform :: public static bool get_IsPc()
+====================================================================================================
+  0x180CD5C70  sub     rsp, 0x28                                 
+  0x180CD5C74  xor     ecx, ecx                                  
+  0x180CD5C76  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CD5C7B  mov     ecx, eax                                  
+  0x180CD5C7D  test    eax, eax                                  
+  0x180CD5C7F  jne     0x180cd5c8b                               
+  0x180CD5C81  mov     eax, 1                                    
+  0x180CD5C86  add     rsp, 0x28                                 
+  0x180CD5C8A  ret                                               
+
+180CD5C8B:
+  0x180CD5C8B  cmp     ecx, 1                                    
+  0x180CD5C8E  sete    al                                        
+  0x180CD5C91  add     rsp, 0x28                                 
+  0x180CD5C95  ret                                               

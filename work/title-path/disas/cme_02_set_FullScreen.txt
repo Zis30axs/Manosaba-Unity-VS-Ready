@@ -1,0 +1,49 @@
+====================================================================================================
+FUNCTION RVA 0xCF52B0  VA 0x180CF52B0  size 0x14 (20 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$set_FullScreen
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SetFullScreenEnabled
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__set_FullScreen (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, bool value, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public void set_FullScreen(bool value)
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: private void SetFullScreenEnabled(bool enable)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF52B0  mov     byte ptr [rcx + 0xc4], dl                    ; rcx->CameraManagerExtended._isFullScreen
+  0x180CF52B6  xor     r8d, r8d                                  
+  0x180CF52B9  mov     edx, dword ptr [rcx + 0xc8]                  ; rcx->CameraManagerExtended._resolutionLevel
+  0x180CF52BF  jmp     0x180cf6710                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SetResolutionLevel

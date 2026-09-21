@@ -1,0 +1,144 @@
+====================================================================================================
+FUNCTION RVA 0xCF6710  VA 0x180CF6710  size 0x160 (352 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SetResolutionLevel
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__SetResolutionLevel (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, int32_t level, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: private void SetResolutionLevel(int level)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF6710  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CF6715  push    rsi                                       
+  0x180CF6716  sub     rsp, 0x30                                 
+  0x180CF671A  movsxd  rbx, edx                                  
+  0x180CF671D  mov     rsi, rcx                                  
+  0x180CF6720  mov     dword ptr [rcx + 0xc8], ebx                  ; rcx->CameraManagerExtended._resolutionLevel
+  0x180CF6726  xor     ecx, ecx                                  
+  0x180CF6728  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CF672D  cmp     eax, 2                                    
+  0x180CF6730  je      0x180cf673b                               
+  0x180CF6732  cmp     eax, 3                                    
+  0x180CF6735  jne     0x180cf67c2                               
+
+180CF673B:
+  0x180CF673B  mov     rcx, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF6742  test    rcx, rcx                                  
+  0x180CF6745  je      0x180cf6865                               
+  0x180CF674B  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF674F  test    rcx, rcx                                  
+  0x180CF6752  je      0x180cf6865                               
+  0x180CF6758  cmp     ebx, dword ptr [rcx + 0x18]                  ; rcx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF675B  jae     0x180cf686b                               
+  0x180CF6761  movd    xmm0, dword ptr [rsi + 0xd4]                 ; rsi->CameraManagerExtended._nativeResolution
+  0x180CF6769  cvtdq2ps xmm0, xmm0                                
+  0x180CF676C  mulss   xmm0, dword ptr [rcx + rbx*4 + 0x20]      
+  0x180CF6772  call    0x180355c90                                  ; -> sub_355C90 (runtime/helper)
+  0x180CF6777  mov     rcx, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF677E  test    rcx, rcx                                  
+  0x180CF6781  je      0x180cf6865                               
+  0x180CF6787  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF678B  test    rcx, rcx                                  
+  0x180CF678E  je      0x180cf6865                               
+  0x180CF6794  cmp     ebx, dword ptr [rcx + 0x18]                  ; rcx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF6797  jae     0x180cf686b                               
+  0x180CF679D  movd    xmm0, dword ptr [rsi + 0xd8]              
+  0x180CF67A5  cvtdq2ps xmm0, xmm0                                
+  0x180CF67A8  mov     dword ptr [rsp + 0x40], eax               
+  0x180CF67AC  mulss   xmm0, dword ptr [rcx + rbx*4 + 0x20]      
+  0x180CF67B2  call    0x180355c90                                  ; -> sub_355C90 (runtime/helper)
+  0x180CF67B7  mov     dword ptr [rsp + 0x44], eax               
+  0x180CF67BB  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CF67C0  jmp     0x180cf67ed                               
+
+180CF67C2:
+  0x180CF67C2  mov     rax, qword ptr [rsi + 0xf8]                  ; rsi->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF67C9  test    rax, rax                                  
+  0x180CF67CC  je      0x180cf6865                               
+  0x180CF67D2  mov     rax, qword ptr [rax + 0x18]                  ; rax->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF67D6  test    rax, rax                                  
+  0x180CF67D9  je      0x180cf6865                               
+  0x180CF67DF  cmp     ebx, dword ptr [rax + 0x18]                  ; rax->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF67E2  jae     0x180cf686b                               
+  0x180CF67E8  mov     rbx, qword ptr [rax + rbx*8 + 0x20]       
+
+180CF67ED:
+  0x180CF67ED  mov     qword ptr [rsp + 0x58], rbx               
+  0x180CF67F2  xor     ecx, ecx                                  
+  0x180CF67F4  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CF67F9  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CF67FE  mov     edi, 1                                    
+  0x180CF6803  cmp     eax, 2                                    
+  0x180CF6806  je      0x180cf6827                               
+  0x180CF6808  cmp     eax, 3                                    
+  0x180CF680B  je      0x180cf6827                               
+  0x180CF680D  xor     ecx, ecx                                  
+  0x180CF680F  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CF6814  cmp     eax, 4                                    
+  0x180CF6817  je      0x180cf6827                               
+  0x180CF6819  cmp     eax, 5                                    
+  0x180CF681C  je      0x180cf6827                               
+  0x180CF681E  movzx   eax, byte ptr [rsi + 0xc4]                   ; rsi->CameraManagerExtended._isFullScreen
+  0x180CF6825  jmp     0x180cf6829                               
+
+180CF6827:
+  0x180CF6827  mov     eax, edi                                  
+
+180CF6829:
+  0x180CF6829  xor     edx, edx                                  
+  0x180CF682B  mov     dword ptr [rsp + 0x44], edi               
+  0x180CF682F  mov     ecx, 3                                    
+  0x180CF6834  mov     dword ptr [rsp + 0x40], edx               
+  0x180CF6838  mov     r9, qword ptr [rsp + 0x40]                
+  0x180CF683D  test    eax, eax                                  
+  0x180CF683F  mov     qword ptr [rsp + 0x20], rdx               
+  0x180CF6844  mov     edx, dword ptr [rsp + 0x5c]               
+  0x180CF6848  cmove   edi, ecx                                  
+  0x180CF684B  mov     r8d, edi                                  
+  0x180CF684E  mov     ecx, ebx                                  
+  0x180CF6850  call    0x181ff9240                                  ; -> UnityEngine.Screen$$SetResolution
+  0x180CF6855  mov     rdi, qword ptr [rsp + 0x48]               
+  0x180CF685A  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF685F  add     rsp, 0x30                                 
+  0x180CF6863  pop     rsi                                       
+  0x180CF6864  ret                                               
+
+180CF6865:
+  0x180CF6865  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF686A  int3                                              
+
+180CF686B:
+  0x180CF686B  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

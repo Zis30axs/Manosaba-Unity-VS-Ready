@@ -1,0 +1,332 @@
+====================================================================================================
+FUNCTION RVA 0xCF6910  VA 0x180CF6910  size 0x4CB (1227 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended.<ChangeOffset>d__36$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__ChangeOffset_d__36__MoveNext (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__ChangeOffset_d__36_o __this, const MethodInfo* method);
+  dump.cs: CameraManagerExtended.<ChangeOffset>d__36 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF6910  mov     rax, rsp                                  
+  0x180CF6913  mov     qword ptr [rax + 0x10], rbx               
+  0x180CF6917  mov     qword ptr [rax + 8], rcx                  
+  0x180CF691B  push    rsi                                       
+  0x180CF691C  push    rdi                                       
+  0x180CF691D  push    r12                                       
+  0x180CF691F  push    r14                                       
+  0x180CF6921  push    r15                                       
+  0x180CF6923  sub     rsp, 0x110                                
+  0x180CF692A  movaps  xmmword ptr [rax - 0x38], xmm6            
+  0x180CF692E  movaps  xmmword ptr [rax - 0x48], xmm7            
+  0x180CF6932  movaps  xmmword ptr [rax - 0x58], xmm8            
+  0x180CF6937  movaps  xmmword ptr [rax - 0x68], xmm9            
+  0x180CF693C  mov     rsi, rcx                                  
+  0x180CF693F  cmp     byte ptr [rip + 0x23e68e9], 0                ; data_30DD22F
+  0x180CF6946  jne     0x180cf69a4                               
+  0x180CF6948  lea     rcx, [rip + 0x215a851]                       ; TYPE System.Action<Vector3>_TypeInfo
+  0x180CF694F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6954  lock or dword ptr [rsp], 0                        
+  0x180CF6959  lea     rcx, [rip + 0x2173a40]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, CameraManagerExtended.<ChangeOffset>d__36>()
+  0x180CF6960  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6965  lock or dword ptr [rsp], 0                        
+  0x180CF696A  lea     rcx, [rip + 0x215a7ef]                       ; TYPE UnityEngine.Mathf_TypeInfo
+  0x180CF6971  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6976  lock or dword ptr [rsp], 0                        
+  0x180CF697B  lea     rcx, [rip + 0x215a806]                       ; METHODINFO Method$Naninovel.Tweener<VectorTween>.RunAwaitable()
+  0x180CF6982  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6987  lock or dword ptr [rsp], 0                        
+  0x180CF698C  lea     rcx, [rip + 0x215b56d]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6993  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6998  lock or dword ptr [rsp], 0                        
+  0x180CF699D  mov     byte ptr [rip + 0x23e688b], 1                ; data_30DD22F
+
+180CF69A4:
+  0x180CF69A4  xorps   xmm0, xmm0                                
+  0x180CF69A7  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CF69AC  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CF69B1  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x180CF69B6  mov     qword ptr [rsp + 0x150], 0                
+  0x180CF69C2  mov     eax, dword ptr [rsi]                      
+  0x180CF69C4  mov     rbx, qword ptr [rsi + 0x18]                  ; rsi->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF69C8  test    eax, eax                                  
+  0x180CF69CA  jne     0x180cf69e9                               
+  0x180CF69CC  mov     rax, qword ptr [rsi + 0x48]                  ; rsi-><ChangeOffset>d__36.<>u__1
+  0x180CF69D0  mov     qword ptr [rsp + 0x150], rax              
+  0x180CF69D8  xor     eax, eax                                  
+  0x180CF69DA  mov     qword ptr [rsi + 0x48], rax                  ; rsi-><ChangeOffset>d__36.<>u__1
+  0x180CF69DE  mov     dword ptr [rsi], 0xffffffff               
+  0x180CF69E4  jmp     0x180cf6cd0                               
+
+180CF69E9:
+  0x180CF69E9  test    rbx, rbx                                  
+  0x180CF69EC  je      0x180cf6dd6                               
+  0x180CF69F2  xor     edx, edx                                  
+  0x180CF69F4  mov     rcx, rbx                                  
+  0x180CF69F7  call    0x180cf6660                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$CompleteOffsetTween
+  0x180CF69FC  movsd   xmm0, qword ptr [rsi + 0x20]                 ; rsi-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF6A01  movsd   qword ptr [rsp + 0x30], xmm0              
+  0x180CF6A07  mov     eax, dword ptr [rsi + 0x28]                  ; rsi-><InitializeMainCamera>d__38.config
+  0x180CF6A0A  mov     dword ptr [rsp + 0x38], eax               
+  0x180CF6A0E  xor     r9d, r9d                                  
+  0x180CF6A11  lea     r8, [rsp + 0x30]                          
+  0x180CF6A16  mov     rdx, rbx                                  
+  0x180CF6A19  lea     rcx, [rsp + 0x80]                         
+  0x180CF6A21  call    0x180cf6180                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$ModifyOffset
+  0x180CF6A26  movsd   xmm6, qword ptr [rax]                     
+  0x180CF6A2A  mov     r14d, dword ptr [rax + 8]                 
+  0x180CF6A2E  mov     rax, qword ptr [rip + 0x215a72b]             ; TYPE UnityEngine.Mathf_TypeInfo
+  0x180CF6A35  mov     rcx, qword ptr [rax + 0xb8]                  ; rax->CameraManagerExtended._offset
+  0x180CF6A3C  movss   xmm0, dword ptr [rcx]                     
+  0x180CF6A40  comiss  xmm0, dword ptr [rsi + 0x2c]                 ; rsi-><ChangeOffset>d__36.tween
+  0x180CF6A44  ja      0x180cf6d48                               
+  0x180CF6A4A  movsd   xmm7, qword ptr [rbx + 0xb8]                 ; rbx->CameraManagerExtended._offset
+  0x180CF6A52  mov     r15d, dword ptr [rbx + 0xc0]              
+  0x180CF6A59  movsd   qword ptr [rbx + 0xb8], xmm6                 ; rbx->CameraManagerExtended._offset
+  0x180CF6A61  mov     dword ptr [rbx + 0xc0], r14d              
+  0x180CF6A68  movsd   xmm8, qword ptr [rsi + 0x2c]                 ; rsi-><ChangeOffset>d__36.tween
+  0x180CF6A6E  mov     r12d, dword ptr [rsi + 0x34]              
+  0x180CF6A72  mov     rcx, qword ptr [rip + 0x215a727]             ; TYPE System.Action<Vector3>_TypeInfo
+  0x180CF6A79  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF6A7E  mov     rdi, rax                                  
+  0x180CF6A81  mov     r8, qword ptr [rbx]                       
+  0x180CF6A84  xor     r9d, r9d                                  
+  0x180CF6A87  mov     r8, qword ptr [r8 + 0x5c0]                
+  0x180CF6A8E  mov     rdx, rbx                                  
+  0x180CF6A91  mov     rcx, rax                                  
+  0x180CF6A94  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF6A99  movsd   qword ptr [rsp + 0x4c], xmm7              
+  0x180CF6A9F  mov     dword ptr [rsp + 0x54], r15d              
+  0x180CF6AA4  movsd   qword ptr [rsp + 0x58], xmm6              
+  0x180CF6AAA  mov     dword ptr [rsp + 0x60], r14d              
+  0x180CF6AAF  movsd   qword ptr [rsp + 0x40], xmm8              
+  0x180CF6AB6  mov     dword ptr [rsp + 0x48], r12d              
+  0x180CF6ABB  mov     qword ptr [rsp + 0x68], rdi               
+  0x180CF6AC0  lea     rdi, [rip + 0x23f77d9]                       ; data_30EE2A0
+  0x180CF6AC7  cmp     dword ptr [rip + 0x23e26f6], 0               ; data_30D91C4
+  0x180CF6ACE  je      0x180cf6b1b                               
+  0x180CF6AD0  lea     r8, [rsp + 0x68]                          
+  0x180CF6AD5  shr     r8, 0xc                                   
+  0x180CF6AD9  and     r8d, 0x1fffff                             
+  0x180CF6AE0  mov     edx, r8d                                  
+  0x180CF6AE3  shr     rdx, 6                                    
+  0x180CF6AE7  and     r8d, 0x3f                                 
+  0x180CF6AEB  prefetchw byte ptr [rdi + rdx*8 + 0x462e0]          
+  0x180CF6AF3  nop     dword ptr [rax]                           
+  0x180CF6AF7  nop     word ptr [rax + rax]                      
+
+180CF6B00:
+  0x180CF6B00  mov     rax, qword ptr [rdi + rdx*8 + 0x462e0]    
+  0x180CF6B08  mov     rcx, rax                                  
+  0x180CF6B0B  bts     rcx, r8                                   
+  0x180CF6B0F  lock cmpxchg qword ptr [rdi + rdx*8 + 0x462e0], rcx    
+  0x180CF6B19  jne     0x180cf6b00                               
+
+180CF6B1B:
+  0x180CF6B1B  mov     r14, qword ptr [rbx + 0xb0]                  ; rbx->CameraManagerExtended._offsetTweener
+  0x180CF6B22  movups  xmm6, xmmword ptr [rsp + 0x40]            
+  0x180CF6B27  movups  xmm7, xmmword ptr [rsp + 0x50]            
+  0x180CF6B2C  movups  xmm8, xmmword ptr [rsp + 0x60]            
+  0x180CF6B32  movups  xmm9, xmmword ptr [rsi + 0x38]               ; rsi-><ChangeOffset>d__36.asyncToken | <InitializeMainCamera>d__38.uiLayer
+  0x180CF6B37  mov     rdx, qword ptr [rbx]                      
+  0x180CF6B3A  mov     rax, qword ptr [rdx + 0x338]              
+  0x180CF6B41  mov     rdx, qword ptr [rdx + 0x340]              
+  0x180CF6B48  mov     rcx, rbx                                  
+  0x180CF6B4B  call    rax                                       
+  0x180CF6B4D  mov     r9, rax                                   
+  0x180CF6B50  test    r14, r14                                  
+  0x180CF6B53  je      0x180cf6dd0                               
+  0x180CF6B59  movaps  xmmword ptr [rsp + 0xa0], xmm6            
+  0x180CF6B61  movaps  xmmword ptr [rsp + 0xb0], xmm7            
+  0x180CF6B69  movaps  xmmword ptr [rsp + 0xc0], xmm8            
+  0x180CF6B72  movdqa  xmmword ptr [rsp + 0x80], xmm9            
+  0x180CF6B7C  mov     rax, qword ptr [rip + 0x215a605]             ; METHODINFO Method$Naninovel.Tweener<VectorTween>.RunAwaitable()
+  0x180CF6B83  mov     qword ptr [rsp + 0x20], rax               
+  0x180CF6B88  lea     r8, [rsp + 0x80]                          
+  0x180CF6B90  lea     rdx, [rsp + 0xa0]                         
+  0x180CF6B98  mov     rcx, r14                                  
+  0x180CF6B9B  call    0x1809653c0                                  ; -> Naninovel.Tweener<__Il2CppFullySharedGenericStructType>$$RunAwaitable
+  0x180CF6BA0  mov     rbx, rax                                  
+  0x180CF6BA3  mov     rcx, qword ptr [rip + 0x215b356]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6BAA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF6BB1  jne     0x180cf6bb8                               
+  0x180CF6BB3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF6BB8:
+  0x180CF6BB8  mov     qword ptr [rsp + 0x158], rbx              
+  0x180CF6BC0  cmp     dword ptr [rip + 0x23e25fd], 0               ; data_30D91C4
+  0x180CF6BC7  je      0x180cf6c13                               
+  0x180CF6BC9  lea     r8, [rsp + 0x158]                         
+  0x180CF6BD1  shr     r8, 0xc                                   
+  0x180CF6BD5  and     r8d, 0x1fffff                             
+  0x180CF6BDC  mov     edx, r8d                                  
+  0x180CF6BDF  shr     rdx, 6                                    
+  0x180CF6BE3  and     r8d, 0x3f                                 
+  0x180CF6BE7  prefetchw byte ptr [rdi + rdx*8 + 0x462e0]          
+  0x180CF6BEF  nop                                               
+
+180CF6BF0:
+  0x180CF6BF0  mov     rax, qword ptr [rdi + rdx*8 + 0x462e0]    
+  0x180CF6BF8  mov     rcx, rax                                  
+  0x180CF6BFB  bts     rcx, r8                                   
+  0x180CF6BFF  lock cmpxchg qword ptr [rdi + rdx*8 + 0x462e0], rcx    
+  0x180CF6C09  jne     0x180cf6bf0                               
+  0x180CF6C0B  mov     rbx, qword ptr [rsp + 0x158]              
+
+180CF6C13:
+  0x180CF6C13  mov     qword ptr [rsp + 0x150], rbx              
+  0x180CF6C1B  cmp     byte ptr [rip + 0x23e50a6], 0                ; data_30DBCC8
+  0x180CF6C22  jne     0x180cf6c3c                               
+  0x180CF6C24  lea     rcx, [rip + 0x215b2d5]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6C2B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6C30  lock or dword ptr [rsp], 0                        
+  0x180CF6C35  mov     byte ptr [rip + 0x23e508c], 1                ; data_30DBCC8
+
+180CF6C3C:
+  0x180CF6C3C  mov     rcx, qword ptr [rip + 0x215b2bd]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6C43  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF6C4A  jne     0x180cf6c51                               
+  0x180CF6C4C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF6C51:
+  0x180CF6C51  cmp     byte ptr [rip + 0x23e504e], 0                ; data_30DBCA6
+  0x180CF6C58  jne     0x180cf6c72                               
+  0x180CF6C5A  lea     rcx, [rip + 0x2146d4f]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180CF6C61  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6C66  lock or dword ptr [rsp], 0                        
+  0x180CF6C6B  mov     byte ptr [rip + 0x23e5034], 1                ; data_30DBCA6
+
+180CF6C72:
+  0x180CF6C72  mov     r8, qword ptr [rsp + 0x150]               
+  0x180CF6C7A  test    r8, r8                                    
+  0x180CF6C7D  je      0x180cf6cd0                               
+  0x180CF6C7F  mov     ecx, 1                                    
+  0x180CF6C84  mov     rdx, qword ptr [rip + 0x2146d25]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180CF6C8B  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CF6C90  test    al, al                                    
+  0x180CF6C92  jne     0x180cf6cd0                               
+  0x180CF6C94  mov     dword ptr [rsi], 0                        
+  0x180CF6C9A  mov     rax, qword ptr [rsp + 0x150]              
+  0x180CF6CA2  mov     qword ptr [rsi + 0x48], rax                  ; rsi-><ChangeOffset>d__36.<>u__1
+  0x180CF6CA6  lea     rcx, [rsi + 0x48]                            ; rsi-><ChangeOffset>d__36.<>u__1
+  0x180CF6CAA  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180CF6CAF  lea     rcx, [rsi + 8]                            
+  0x180CF6CB3  mov     r9, qword ptr [rip + 0x21736e6]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, CameraManagerExtended.<ChangeOffset>d__36>()
+  0x180CF6CBA  mov     r8, rsi                                   
+  0x180CF6CBD  lea     rdx, [rsp + 0x150]                        
+  0x180CF6CC5  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CF6CCA  nop                                               
+  0x180CF6CCB  jmp     0x180cf6d80                               
+
+180CF6CD0:
+  0x180CF6CD0  cmp     byte ptr [rip + 0x23e4ff3], 0                ; data_30DBCCA
+  0x180CF6CD7  jne     0x180cf6cf1                               
+  0x180CF6CD9  lea     rcx, [rip + 0x215b220]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6CE0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6CE5  lock or dword ptr [rsp], 0                        
+  0x180CF6CEA  mov     byte ptr [rip + 0x23e4fd9], 1                ; data_30DBCCA
+
+180CF6CF1:
+  0x180CF6CF1  mov     rcx, qword ptr [rip + 0x215b208]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180CF6CF8  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF6CFF  jne     0x180cf6d06                               
+  0x180CF6D01  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF6D06:
+  0x180CF6D06  cmp     byte ptr [rip + 0x23e4f9a], 0                ; data_30DBCA7
+  0x180CF6D0D  jne     0x180cf6d27                               
+  0x180CF6D0F  lea     rcx, [rip + 0x2146c9a]                       ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180CF6D16  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF6D1B  lock or dword ptr [rsp], 0                        
+  0x180CF6D20  mov     byte ptr [rip + 0x23e4f80], 1                ; data_30DBCA7
+
+180CF6D27:
+  0x180CF6D27  mov     r8, qword ptr [rsp + 0x150]               
+  0x180CF6D2F  test    r8, r8                                    
+  0x180CF6D32  je      0x180cf6d46                               
+  0x180CF6D34  mov     ecx, 2                                    
+  0x180CF6D39  mov     rdx, qword ptr [rip + 0x2146c70]             ; TYPE Naninovel.Async.IAwaiter_TypeInfo
+  0x180CF6D40  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CF6D45  nop                                               
+
+180CF6D46:
+  0x180CF6D46  jmp     0x180cf6d6f                               
+
+180CF6D48:
+  0x180CF6D48  mov     r8, qword ptr [rbx]                       
+  0x180CF6D4B  movsd   qword ptr [rsp + 0x30], xmm6              
+  0x180CF6D51  mov     dword ptr [rsp + 0x38], r14d              
+  0x180CF6D56  mov     rax, qword ptr [r8 + 0x3a8]               
+  0x180CF6D5D  mov     r8, qword ptr [r8 + 0x3b0]                
+  0x180CF6D64  lea     rdx, [rsp + 0x30]                         
+  0x180CF6D69  mov     rcx, rbx                                  
+  0x180CF6D6C  call    rax                                       
+  0x180CF6D6E  nop                                               
+
+180CF6D6F:
+  0x180CF6D6F  mov     dword ptr [rsi], 0xfffffffe               
+  0x180CF6D75  lea     rcx, [rsi + 8]                            
+  0x180CF6D79  xor     edx, edx                                  
+  0x180CF6D7B  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180CF6D80:
+  0x180CF6D80  lea     r11, [rsp + 0x110]                        
+  0x180CF6D88  mov     rbx, qword ptr [r11 + 0x38]                  ; r11-><ChangeOffset>d__36.asyncToken | <InitializeMainCamera>d__38.uiLayer
+  0x180CF6D8C  movaps  xmm6, xmmword ptr [r11 - 0x10]            
+  0x180CF6D91  movaps  xmm7, xmmword ptr [r11 - 0x20]            
+  0x180CF6D96  movaps  xmm8, xmmword ptr [r11 - 0x30]            
+  0x180CF6D9B  movaps  xmm9, xmmword ptr [r11 - 0x40]            
+  0x180CF6DA0  mov     rsp, r11                                  
+  0x180CF6DA3  pop     r15                                       
+  0x180CF6DA5  pop     r14                                       
+  0x180CF6DA7  pop     r12                                       
+  0x180CF6DA9  pop     rdi                                       
+  0x180CF6DAA  pop     rsi                                       
+  0x180CF6DAB  ret                                               
+  0x180CF6DAC  mov     rcx, qword ptr [rsp + 0x140]              
+  0x180CF6DB4  mov     dword ptr [rcx], 0xfffffffe               
+  0x180CF6DBA  add     rcx, 8                                    
+  0x180CF6DBE  xor     r8d, r8d                                  
+  0x180CF6DC1  mov     rdx, qword ptr [rsp + 0x158]              
+  0x180CF6DC9  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180CF6DCE  jmp     0x180cf6d80                               
+
+180CF6DD0:
+  0x180CF6DD0  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF6DD5  nop                                               
+
+180CF6DD6:
+  0x180CF6DD6  call    0x180246730                                  ; THROW NullReferenceException

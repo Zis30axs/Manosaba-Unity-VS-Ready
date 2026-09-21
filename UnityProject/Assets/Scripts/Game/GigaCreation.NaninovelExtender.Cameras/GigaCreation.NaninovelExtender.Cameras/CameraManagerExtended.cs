@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using GigaCreation.Essentials.Platforms;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
@@ -234,86 +236,125 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[Token(Token = "0x17000002")]
     	public bool FullScreen
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF52A0 -- movzx eax, byte [rcx+0xC4] (_isFullScreen)
     		[Token(Token = "0x6000006")]
     		[Address(RVA = "0xCF52A0", Offset = "0xCF3CA0", VA = "0x180CF52A0", Slot = "79")]
     		get
     		{
-    			return default(bool);
+    			return _isFullScreen;
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF52B0 -- the same code as SetFullScreenEnabled (identical-code-folded)
     		[Token(Token = "0x6000007")]
     		[Address(RVA = "0xCF52B0", Offset = "0xCF3CB0", VA = "0x180CF52B0", Slot = "80")]
     		set
     		{
+    			SetFullScreenEnabled(value);
     		}
     	}
 
     	[Token(Token = "0x17000003")]
     	public int ResolutionLevel
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF52D0 -- mov eax, [rcx+0xC8] (_resolutionLevel)
     		[Token(Token = "0x6000008")]
     		[Address(RVA = "0xCF52D0", Offset = "0xCF3CD0", VA = "0x180CF52D0", Slot = "81")]
     		get
     		{
-    			return default(int);
+    			return _resolutionLevel;
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF52E0 -- tail jump SetResolutionLevel(value)
     		[Token(Token = "0x6000009")]
     		[Address(RVA = "0xCF52E0", Offset = "0xCF3CE0", VA = "0x180CF52E0", Slot = "82")]
     		set
     		{
+    			SetResolutionLevel(value);
     		}
     	}
 
     	[Token(Token = "0x17000004")]
     	public int TargetFpsLevel
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF52F0 -- mov eax, [rcx+0xCC] (_targetFpsLevel)
     		[Token(Token = "0x600000A")]
     		[Address(RVA = "0xCF52F0", Offset = "0xCF3CF0", VA = "0x180CF52F0", Slot = "83")]
     		get
     		{
-    			return default(int);
+    			return _targetFpsLevel;
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF5300 -- the same code as SetTargetFpsLevel (identical-code-folded)
     		[Token(Token = "0x600000B")]
     		[Address(RVA = "0xCF5300", Offset = "0xCF3D00", VA = "0x180CF5300", Slot = "84")]
     		set
     		{
+    			SetTargetFpsLevel(value);
     		}
     	}
 
     	[Token(Token = "0x17000005")]
     	public bool IsPostProcessingEnabled
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF53C0 -- movzx eax, byte [rcx+0xD0] (_isPostProcessingEnabled)
     		[Token(Token = "0x600000C")]
     		[Address(RVA = "0xCF53C0", Offset = "0xCF3DC0", VA = "0x180CF53C0", Slot = "85")]
     		get
     		{
-    			return default(bool);
+    			return _isPostProcessingEnabled;
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF53D0 -- the same code as SetPostProcessingEnabled (identical-code-folded)
     		[Token(Token = "0x600000D")]
     		[Address(RVA = "0xCF53D0", Offset = "0xCF3DD0", VA = "0x180CF53D0", Slot = "86")]
     		set
     		{
+    			SetPostProcessingEnabled(value);
     		}
     	}
 
     	[Token(Token = "0x17000006")]
     	public Vector2Int[] AvailableResolutionsForPc
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF53E0, 659 B -- computed once, cached in _availableResolutionsForPc (+0xF0)
+    		//   ScreenResolutions non-null with Length > 0 (0x180CF548C):
+    		//     Configuration.ResolutionsForPc (+0x18).Where(IsWithinResolutionRange).ToArray(); an empty result becomes
+    		//     new[] { ResolutionsForPc[Length - 1] } (0x180CF555C: new Vector2Int[1] holding the last configured size)
+    		//   otherwise (0x180CF55C2): Configuration.ResolutionsForPc itself
+    		// Annotated disassembly: work/title-path/disas/cme_09_get_AvailableResolutionsForPc.txt
     		[Token(Token = "0x600000E")]
     		[Address(RVA = "0xCF53E0", Offset = "0xCF3DE0", VA = "0x180CF53E0", Slot = "87")]
     		get
     		{
-    			return null;
+    			if (_availableResolutionsForPc == null)
+    			{
+    				if (ScreenResolutions != null && ScreenResolutions.Length > 0)
+    				{
+    					Vector2Int[] candidates = Configuration.ResolutionsForPc.Where(IsWithinResolutionRange).ToArray();
+    					if (candidates.Length == 0)
+    					{
+    						candidates = new Vector2Int[] { Configuration.ResolutionsForPc[Configuration.ResolutionsForPc.Length - 1] };
+    					}
+    					_availableResolutionsForPc = candidates;
+    				}
+    				else
+    				{
+    					_availableResolutionsForPc = Configuration.ResolutionsForPc;
+    				}
+    			}
+    			return _availableResolutionsForPc;
     		}
     	}
 
     	[Token(Token = "0x17000007")]
     	private Resolution[] ScreenResolutions
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF5680 -- _screenResolutions (+0xE8) ??= Screen.resolutions (0x180CF5697)
     		[Token(Token = "0x600000F")]
     		[Address(RVA = "0xCF5680", Offset = "0xCF4080", VA = "0x180CF5680")]
     		get
     		{
-    			return null;
+    			if (_screenResolutions == null)
+    			{
+    				_screenResolutions = Screen.resolutions;
+    			}
+    			return _screenResolutions;
     		}
     	}
 
@@ -347,23 +388,76 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[AsyncStateMachine(typeof(_003CInitializeService_003Ed__32))]
     	public override UniTask InitializeService()
     	{
-    		// Preserve Naninovel's stock camera bootstrap until the extended IL2CPP body
-    		// is fully reconstructed. Returning default here leaves Camera unset.
-    		return base.InitializeService();
+    		return InitializeServiceCore();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF58C0 (kickoff) / 0xCF7350 (<InitializeService>d__32.MoveNext, 1088 B)
+    	//   0x180CF73FE  _nativeResolution (+0xD4) = Screen.currentResolution
+    	//                (icall 'UnityEngine.Screen::get_currentResolution_Injected(UnityEngine.Resolution&)')
+    	//   0x180CF7512  await base.InitializeService()   (CameraManager.<InitializeService> state machine started inline)
+    	// Annotated disassembly: work/title-path/disas/cme_13_InitializeService_MoveNext.txt
+    	private async UniTask InitializeServiceCore()
+    	{
+    		_nativeResolution = Screen.currentResolution;
+    		await base.InitializeService();
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF59E0, 488 B
+    	//   0x180CF5A59..0x180CF5B18  CameraManager.SaveServiceState inlined: new Settings { QualityLevel } -> SetState
+    	//   0x180CF5B1F  on PC (CurrentPlatform MacOs/Windows) the saved ResolutionLevel is
+    	//                max(_resolutionLevel, ResolutionsForPc.Length - AvailableResolutionsForPc.Length) (cmovle); else _resolutionLevel
+    	//   0x180CF5B70  stateMap.SetState(new SettingsExtended { FullScreen, ResolutionLevel, TargetFpsLevel, PostProcessingActivity })
+    	// Annotated disassembly: work/title-path/disas/cme_14_SaveServiceState.txt
     	[Token(Token = "0x6000014")]
     	[Address(RVA = "0xCF59E0", Offset = "0xCF43E0", VA = "0x180CF59E0", Slot = "52")]
     	public override void SaveServiceState(SettingsStateMap stateMap)
     	{
     		base.SaveServiceState(stateMap);
+    		int resolutionLevel = _resolutionLevel;
+    		if (Platform.IsPc)
+    		{
+    			resolutionLevel = Math.Max(_resolutionLevel, Configuration.ResolutionsForPc.Length - AvailableResolutionsForPc.Length);
+    		}
+    		stateMap.SetState(new SettingsExtended
+    		{
+    			FullScreen = _isFullScreen,
+    			ResolutionLevel = resolutionLevel,
+    			TargetFpsLevel = _targetFpsLevel,
+    			PostProcessingActivity = _isPostProcessingEnabled
+    		});
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF5BD0, 673 B (not async: returns UniTask.CompletedTask)
+    	//   0x180CF5C68..0x180CF5CDA  CameraManager.LoadServiceState inlined (QualityLevel restore)
+    	//   unavailable = ResolutionsForPc.Length - AvailableResolutionsForPc.Length (0x180CF5D30)
+    	//   saved SettingsExtended (0x180CF5D33): _isFullScreen = saved.FullScreen; SetResolutionLevel(PC ? max(saved level,
+    	//     unavailable) : _resolutionLevel); TargetFpsLevel = saved; _isPostProcessingEnabled = saved.PostProcessingActivity
+    	//   none saved (0x180CF5DBC): the same from Configuration.DefaultGraphicsOptions (+0x30), except the resolution level,
+    	//     which is `unavailable` on PC (the largest size that fits the screen) and 0 elsewhere
+    	// Annotated disassembly: work/title-path/disas/cme_15_LoadServiceState.txt
     	[Token(Token = "0x6000015")]
     	[Address(RVA = "0xCF5BD0", Offset = "0xCF45D0", VA = "0x180CF5BD0", Slot = "53")]
     	public override UniTask LoadServiceState(SettingsStateMap stateMap)
     	{
-    		return base.LoadServiceState(stateMap);
+    		base.LoadServiceState(stateMap);
+    		int unavailable = Configuration.ResolutionsForPc.Length - AvailableResolutionsForPc.Length;
+    		SettingsExtended settings = stateMap.GetState<SettingsExtended>();
+    		if (settings != null)
+    		{
+    			int resolutionLevel = Platform.IsPc ? Math.Max(settings.ResolutionLevel, unavailable) : _resolutionLevel;
+    			_isFullScreen = settings.FullScreen;
+    			SetResolutionLevel(resolutionLevel);
+    			TargetFpsLevel = settings.TargetFpsLevel;
+    			_isPostProcessingEnabled = settings.PostProcessingActivity;
+    		}
+    		else
+    		{
+    			_isFullScreen = Configuration.DefaultGraphicsOptions.FullScreen;
+    			SetResolutionLevel(Platform.IsPc ? unavailable : 0);
+    			TargetFpsLevel = Configuration.DefaultGraphicsOptions.TargetFpsLevel;
+    			_isPostProcessingEnabled = Configuration.DefaultGraphicsOptions.PostProcessingActivity;
+    		}
+    		return UniTask.CompletedTask;
     	}
 
     	[Token(Token = "0x6000016")]
@@ -393,7 +487,25 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	[AsyncStateMachine(typeof(_003CInitializeMainCamera_003Ed__38))]
     	protected override UniTask<Camera> InitializeMainCamera(CameraConfiguration config, Transform parent, int uiLayer)
     	{
-    		return base.InitializeMainCamera(config, parent, uiLayer);
+    		return InitializeMainCameraCore(config, parent, uiLayer);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF63A0 (kickoff) / 0xCF6DE0 (<InitializeMainCamera>d__38.MoveNext, 1331 B)
+    	//   0x180CF6ECA  main = Camera.main; `if (main)` (UnityEngine.Object implicit bool: managed ref and native ptr +0x10)
+    	//   0x180CF6F92  main.transform.SetParent(parent, true) and the result is `main` (0x180CF726E SetResult(rdi))
+    	//   otherwise 0x180CF6FBB Debug.LogWarning("Main camera not found in the scene; creating a new one.") and
+    	//   0x180CF718A await base.InitializeMainCamera(config, parent, uiLayer) (CameraManager's state machine started inline)
+    	// Annotated disassembly: work/title-path/disas/cme_19_InitializeMainCamera_MoveNext.txt
+    	private async UniTask<Camera> InitializeMainCameraCore(CameraConfiguration config, Transform parent, int uiLayer)
+    	{
+    		Camera main = Camera.main;
+    		if (main)
+    		{
+    			main.transform.SetParent(parent, true);
+    			return main;
+    		}
+    		UnityEngine.Debug.LogWarning("Main camera not found in the scene; creating a new one.");
+    		return await base.InitializeMainCamera(config, parent, uiLayer);
     	}
 
     	[Token(Token = "0x600001A")]
@@ -409,35 +521,78 @@ namespace GigaCreation.NaninovelExtender.Cameras
     	{
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF52B0, 20 B -- store +0xC4, tail jump SetResolutionLevel(_resolutionLevel)
     	[Token(Token = "0x600001C")]
     	[Address(RVA = "0xCF52B0", Offset = "0xCF3CB0", VA = "0x180CF52B0")]
     	private void SetFullScreenEnabled(bool enable)
     	{
+    		_isFullScreen = enable;
+    		SetResolutionLevel(_resolutionLevel);
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF6710, 352 B
+    	//   _resolutionLevel (+0xC8) = level
+    	//   Ios/Android (CurrentPlatform 2/3): size = (int)(_nativeResolution.width/height (+0xD4/+0xD8)
+    	//     * ResolutionCoefficientsForMobile[level] (+0x20)); elsewhere size = ResolutionsForPc[level] (+0x18)
+    	//   full screen is forced on Ios/Android/NintendoSwitch/PlayStation4 (2..5), else _isFullScreen
+    	//   0x180CF6850  Screen.SetResolution(size.x, size.y, fullScreen ? FullScreenWindow (1) : Windowed (3),
+    	//                new RefreshRate { numerator = 0, denominator = 1 })
+    	// Annotated disassembly: work/title-path/disas/cme_12_SetResolutionLevel.txt
     	[Token(Token = "0x600001D")]
     	[Address(RVA = "0xCF6710", Offset = "0xCF5110", VA = "0x180CF6710")]
     	private void SetResolutionLevel(int level)
     	{
+    		_resolutionLevel = level;
+    		PlatformKind platform = Platform.CurrentPlatform;
+    		Vector2Int size;
+    		if (platform == PlatformKind.Ios || platform == PlatformKind.Android)
+    		{
+    			float coefficient = Configuration.ResolutionCoefficientsForMobile[level];
+    			size = new Vector2Int((int)(_nativeResolution.width * coefficient), (int)(_nativeResolution.height * coefficient));
+    		}
+    		else
+    		{
+    			size = Configuration.ResolutionsForPc[level];
+    		}
+    		platform = Platform.CurrentPlatform;
+    		bool fullScreen = platform == PlatformKind.Ios || platform == PlatformKind.Android
+    		                  || platform == PlatformKind.NintendoSwitch || platform == PlatformKind.PlayStation4
+    		                  || _isFullScreen;
+    		Screen.SetResolution(size.x, size.y, fullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed,
+    			new RefreshRate { numerator = 0, denominator = 1 });
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF5300, 190 B -- _targetFpsLevel (+0xCC) = level; tail jump to the icall
+    	//   'UnityEngine.Application::set_targetFrameRate(System.Int32)' with Configuration.TargetFpsValues (+0x28)[level]
+    	// Annotated disassembly: work/title-path/disas/cme_06_set_TargetFpsLevel.txt
     	[Token(Token = "0x600001E")]
     	[Address(RVA = "0xCF5300", Offset = "0xCF3D00", VA = "0x180CF5300")]
     	private void SetTargetFpsLevel(int level)
     	{
+    		_targetFpsLevel = level;
+    		Application.targetFrameRate = Configuration.TargetFpsValues[level];
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF53D0, 7 B -- mov byte [rcx+0xD0], dl ; ret
     	[Token(Token = "0x600001F")]
     	[Address(RVA = "0xCF53D0", Offset = "0xCF3DD0", VA = "0x180CF53D0")]
     	private void SetPostProcessingEnabled(bool enable)
     	{
+    		_isPostProcessingEnabled = enable;
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF6880, 133 B -- against the LAST (largest) screen resolution
+    	//   (Resolution is 16 B; element width +0x20, height +0x24): size.x > width -> false, else size.y <= height
+    	// Annotated disassembly: work/title-path/disas/cme_11_IsWithinResolutionRange.txt
     	[Token(Token = "0x6000020")]
     	[Address(RVA = "0xCF6880", Offset = "0xCF5280", VA = "0x180CF6880")]
     	private bool IsWithinResolutionRange(Vector2Int size)
     	{
-    		return default(bool);
+    		if (size.x > ScreenResolutions[ScreenResolutions.Length - 1].width)
+    		{
+    			return false;
+    		}
+    		return size.y <= ScreenResolutions[ScreenResolutions.Length - 1].height;
     	}
     }
 }

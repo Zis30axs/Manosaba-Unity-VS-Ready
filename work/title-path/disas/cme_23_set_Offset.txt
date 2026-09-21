@@ -1,0 +1,57 @@
+====================================================================================================
+FUNCTION RVA 0x486B20  VA 0x180486B20  size 0x32 (50 bytes)
+  managed: Naninovel.CameraManager$$set_Offset
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$set_Offset
+  csig   : void Naninovel_CameraManager__set_Offset (Naninovel_CameraManager_o* __this, UnityEngine_Vector3_o value, const MethodInfo* method);
+  dump.cs: Naninovel.CameraManager :: public virtual void set_Offset(Vector3 value)
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public override void set_Offset(Vector3 value)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180486B20  sub     rsp, 0x38                                 
+  0x180486B24  mov     eax, dword ptr [rdx + 8]                  
+  0x180486B27  mov     r8, qword ptr [rcx]                       
+  0x180486B2A  movsd   xmm0, qword ptr [rdx]                     
+  0x180486B2E  lea     rdx, [rsp + 0x20]                         
+  0x180486B33  mov     dword ptr [rsp + 0x28], eax               
+  0x180486B37  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180486B3D  mov     rax, qword ptr [r8 + 0x578]               
+  0x180486B44  mov     r8, qword ptr [r8 + 0x580]                
+  0x180486B4B  call    rax                                       
+  0x180486B4D  add     rsp, 0x38                                 
+  0x180486B51  ret                                               

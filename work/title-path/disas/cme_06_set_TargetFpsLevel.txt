@@ -1,0 +1,101 @@
+====================================================================================================
+FUNCTION RVA 0xCF5300  VA 0x180CF5300  size 0xBE (190 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$set_TargetFpsLevel
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SetTargetFpsLevel
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__set_TargetFpsLevel (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, int32_t value, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public void set_TargetFpsLevel(int value)
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: private void SetTargetFpsLevel(int level)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF5300  sub     rsp, 0x28                                 
+  0x180CF5304  mov     dword ptr [rcx + 0xcc], edx                  ; rcx->CameraManagerExtended._targetFpsLevel
+  0x180CF530A  mov     rcx, qword ptr [rcx + 0xf8]                  ; rcx->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF5311  test    rcx, rcx                                  
+  0x180CF5314  je      0x180cf539c                               
+  0x180CF531A  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx-><InitializeMainCamera>d__38.config
+  0x180CF531E  test    rcx, rcx                                  
+  0x180CF5321  je      0x180cf539c                               
+  0x180CF5323  cmp     edx, dword ptr [rcx + 0x18]                  ; rcx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5326  jae     0x180cf53a2                               
+  0x180CF5328  cmp     byte ptr [rip + 0x23f4074], 0                ; data_30E93A3
+  0x180CF532F  movsxd  rax, edx                                  
+  0x180CF5332  mov     qword ptr [rsp + 0x20], rbx               
+  0x180CF5337  mov     ebx, dword ptr [rcx + rax*4 + 0x20]       
+  0x180CF533B  jne     0x180cf5355                               
+  0x180CF533D  lea     rcx, [rip + 0x215f874]                       ; TYPE UnityEngine.Application_TypeInfo
+  0x180CF5344  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5349  lock or dword ptr [rsp], 0                        
+  0x180CF534E  mov     byte ptr [rip + 0x23f404e], 1                ; data_30E93A3
+
+180CF5355:
+  0x180CF5355  mov     rcx, qword ptr [rip + 0x215f85c]             ; TYPE UnityEngine.Application_TypeInfo
+  0x180CF535C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF5363  jne     0x180cf536a                               
+  0x180CF5365  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF536A:
+  0x180CF536A  mov     rax, qword ptr [rip + 0x23f0bff]             ; data_30E5F70
+  0x180CF5371  test    rax, rax                                  
+  0x180CF5374  jne     0x180cf538e                               
+  0x180CF5376  lea     rcx, [rip + 0x18f905b]                       ; data_25EE3D8
+  0x180CF537D  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CF5382  test    rax, rax                                  
+  0x180CF5385  je      0x180cf53a8                               
+  0x180CF5387  mov     qword ptr [rip + 0x23f0be2], rax             ; data_30E5F70
+
+180CF538E:
+  0x180CF538E  mov     ecx, ebx                                  
+  0x180CF5390  mov     rbx, qword ptr [rsp + 0x20]               
+  0x180CF5395  add     rsp, 0x28                                 
+  0x180CF5399  jmp     rax                                       
+
+180CF539C:
+  0x180CF539C  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF53A1  int3                                              
+
+180CF53A2:
+  0x180CF53A2  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180CF53A7  int3                                              
+
+180CF53A8:
+  0x180CF53A8  lea     rcx, [rip + 0x18f9029]                       ; data_25EE3D8
+  0x180CF53AF  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CF53B4  mov     rcx, rax                                  
+  0x180CF53B7  xor     edx, edx                                  
+  0x180CF53B9  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)

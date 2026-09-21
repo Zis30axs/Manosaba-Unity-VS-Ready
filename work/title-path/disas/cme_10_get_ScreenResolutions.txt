@@ -1,0 +1,80 @@
+====================================================================================================
+FUNCTION RVA 0xCF5680  VA 0x180CF5680  size 0x7A (122 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_ScreenResolutions
+  csig   : UnityEngine_Resolution_array* GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__get_ScreenResolutions (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: private Resolution[] get_ScreenResolutions()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF5680  push    rbx                                       
+  0x180CF5682  sub     rsp, 0x20                                 
+  0x180CF5686  mov     rax, qword ptr [rcx + 0xe8]                  ; rcx->CameraManagerExtended._screenResolutions
+  0x180CF568D  mov     rbx, rcx                                  
+  0x180CF5690  test    rax, rax                                  
+  0x180CF5693  jne     0x180cf56f4                               
+  0x180CF5695  xor     ecx, ecx                                  
+  0x180CF5697  call    0x181ff9360                                  ; -> UnityEngine.Screen$$get_resolutions
+  0x180CF569C  cmp     dword ptr [rip + 0x23e3b21], 0               ; data_30D91C4
+  0x180CF56A3  mov     r9, rax                                   
+  0x180CF56A6  mov     qword ptr [rbx + 0xe8], rax                  ; rbx->CameraManagerExtended._screenResolutions
+  0x180CF56AD  je      0x180cf56f1                               
+  0x180CF56AF  lea     r8, [rbx + 0xe8]                             ; rbx->CameraManagerExtended._screenResolutions
+  0x180CF56B6  shr     r8, 0xc                                   
+  0x180CF56BA  lea     rcx, [rip + 0x243eebf]                       ; data_3134580
+  0x180CF56C1  and     r8d, 0x1fffff                             
+  0x180CF56C8  mov     eax, r8d                                  
+  0x180CF56CB  shr     rax, 6                                    
+  0x180CF56CF  and     r8d, 0x3f                                 
+  0x180CF56D3  lea     rdx, [rcx + rax*8]                        
+  0x180CF56D7  prefetchw byte ptr [rdx]                            
+  0x180CF56DA  nop     word ptr [rax + rax]                      
+
+180CF56E0:
+  0x180CF56E0  mov     rax, qword ptr [rdx]                      
+  0x180CF56E3  mov     rcx, rax                                  
+  0x180CF56E6  bts     rcx, r8                                   
+  0x180CF56EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CF56EF  jne     0x180cf56e0                               
+
+180CF56F1:
+  0x180CF56F1  mov     rax, r9                                   
+
+180CF56F4:
+  0x180CF56F4  add     rsp, 0x20                                 
+  0x180CF56F8  pop     rbx                                       
+  0x180CF56F9  ret                                               

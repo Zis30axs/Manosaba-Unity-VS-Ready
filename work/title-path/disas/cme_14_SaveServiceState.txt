@@ -1,0 +1,165 @@
+====================================================================================================
+FUNCTION RVA 0xCF59E0  VA 0x180CF59E0  size 0x1E8 (488 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SaveServiceState
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__SaveServiceState (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, Naninovel_SettingsStateMap_o* stateMap, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public override void SaveServiceState(SettingsStateMap stateMap)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF59E0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CF59E5  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CF59EA  push    rdi                                       
+  0x180CF59EB  sub     rsp, 0x20                                 
+  0x180CF59EF  cmp     byte ptr [rip + 0x23e7832], 0                ; data_30DD228
+  0x180CF59F6  mov     rbp, rdx                                  
+  0x180CF59F9  mov     rbx, rcx                                  
+  0x180CF59FC  jne     0x180cf5a27                               
+  0x180CF59FE  lea     rcx, [rip + 0x21749e3]                       ; TYPE GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended.SettingsExtended_TypeInfo
+  0x180CF5A05  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5A0A  lock or dword ptr [rsp], 0                        
+  0x180CF5A0F  lea     rcx, [rip + 0x21749ea]                       ; METHODINFO Method$Naninovel.StateMap.SetState<CameraManagerExtended.SettingsExtended>()
+  0x180CF5A16  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5A1B  lock or dword ptr [rsp], 0                        
+  0x180CF5A20  mov     byte ptr [rip + 0x23e7801], 1                ; data_30DD228
+
+180CF5A27:
+  0x180CF5A27  cmp     byte ptr [rip + 0x23e5f21], 0                ; data_30DB94F
+  0x180CF5A2E  jne     0x180cf5a59                               
+  0x180CF5A30  lea     rcx, [rip + 0x213d7d9]                       ; TYPE Naninovel.CameraManager.Settings_TypeInfo
+  0x180CF5A37  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5A3C  lock or dword ptr [rsp], 0                        
+  0x180CF5A41  lea     rcx, [rip + 0x213d7c0]                       ; METHODINFO Method$Naninovel.StateMap.SetState<CameraManager.Settings>()
+  0x180CF5A48  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5A4D  lock or dword ptr [rsp], 0                        
+  0x180CF5A52  mov     byte ptr [rip + 0x23e5ef6], 1                ; data_30DB94F
+
+180CF5A59:
+  0x180CF5A59  mov     rcx, qword ptr [rip + 0x213d7b0]             ; TYPE Naninovel.CameraManager.Settings_TypeInfo
+  0x180CF5A60  mov     qword ptr [rsp + 0x30], rsi               
+  0x180CF5A65  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF5A6A  mov     rcx, rbx                                  
+  0x180CF5A6D  mov     rdi, rax                                  
+  0x180CF5A70  mov     dword ptr [rax + 0x10], 0xffffffff        
+  0x180CF5A77  mov     rdx, qword ptr [rbx]                      
+  0x180CF5A7A  mov     r8, qword ptr [rdx + 0x418]               
+  0x180CF5A81  mov     rdx, qword ptr [rdx + 0x420]              
+  0x180CF5A88  call    r8                                        
+  0x180CF5A8B  test    rdi, rdi                                  
+  0x180CF5A8E  je      0x180cf5bc3                               
+  0x180CF5A94  mov     dword ptr [rdi + 0x10], eax               
+  0x180CF5A97  test    rbp, rbp                                  
+  0x180CF5A9A  je      0x180cf5bc3                               
+  0x180CF5AA0  cmp     byte ptr [rip + 0x23e6be0], 0                ; data_30DC687
+  0x180CF5AA7  jne     0x180cf5ad2                               
+  0x180CF5AA9  lea     rcx, [rip + 0x21550c8]                       ; METHODINFO Method$System.Collections.Generic.Dictionary<string, object>.set_Item()
+  0x180CF5AB0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5AB5  lock or dword ptr [rsp], 0                        
+  0x180CF5ABA  lea     rcx, [rip + 0x212ae47]                       ; STR ', InstanceID='
+  0x180CF5AC1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5AC6  lock or dword ptr [rsp], 0                        
+  0x180CF5ACB  mov     byte ptr [rip + 0x23e6bb5], 1                ; data_30DC687
+
+180CF5AD2:
+  0x180CF5AD2  mov     rcx, qword ptr [rdi]                      
+  0x180CF5AD5  add     rcx, 0x20                                 
+  0x180CF5AD9  call    0x180299d20                                  ; -> sub_299D20 (runtime/helper)
+  0x180CF5ADE  test    rax, rax                                  
+  0x180CF5AE1  je      0x180cf5bc3                               
+  0x180CF5AE7  mov     rdx, qword ptr [rax]                      
+  0x180CF5AEA  mov     rcx, rax                                  
+  0x180CF5AED  mov     r8, qword ptr [rdx + 0x2e8]               
+  0x180CF5AF4  mov     rdx, qword ptr [rdx + 0x2f0]              
+  0x180CF5AFB  call    r8                                        
+  0x180CF5AFE  mov     rcx, qword ptr [rbp + 0x10]                  ; rbp->SettingsExtended.FullScreen
+  0x180CF5B02  test    rcx, rcx                                  
+  0x180CF5B05  je      0x180cf5bc3                               
+  0x180CF5B0B  mov     r9, qword ptr [rip + 0x2155066]              ; METHODINFO Method$System.Collections.Generic.Dictionary<string, object>.set_Item()
+  0x180CF5B12  mov     r8, rdi                                   
+  0x180CF5B15  mov     rdx, rax                                  
+  0x180CF5B18  call    0x180c62ff0                                  ; -> System.Collections.Generic.Dictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$set_Item
+  0x180CF5B1D  xor     ecx, ecx                                  
+  0x180CF5B1F  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CF5B24  mov     edi, dword ptr [rbx + 0xc8]                  ; rbx->CameraManagerExtended._resolutionLevel
+  0x180CF5B2A  test    eax, eax                                  
+  0x180CF5B2C  je      0x180cf5b33                               
+  0x180CF5B2E  cmp     eax, 1                                    
+  0x180CF5B31  jne     0x180cf5b69                               
+
+180CF5B33:
+  0x180CF5B33  mov     rax, qword ptr [rbx + 0xf8]                  ; rbx->CameraManagerExtended.<Configuration>k__BackingField
+  0x180CF5B3A  test    rax, rax                                  
+  0x180CF5B3D  je      0x180cf5bc3                               
+  0x180CF5B43  mov     rsi, qword ptr [rax + 0x18]                  ; rax->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5B47  test    rsi, rsi                                  
+  0x180CF5B4A  je      0x180cf5bc3                               
+  0x180CF5B4C  xor     edx, edx                                  
+  0x180CF5B4E  mov     rcx, rbx                                  
+  0x180CF5B51  call    0x180cf53e0                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_AvailableResolutionsForPc
+  0x180CF5B56  mov     rcx, rax                                  
+  0x180CF5B59  test    rax, rax                                  
+  0x180CF5B5C  je      0x180cf5bc3                               
+  0x180CF5B5E  mov     eax, dword ptr [rsi + 0x18]                  ; rsi->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5B61  sub     eax, dword ptr [rcx + 0x18]                  ; rcx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5B64  cmp     edi, eax                                  
+  0x180CF5B66  cmovle  edi, eax                                  
+
+180CF5B69:
+  0x180CF5B69  mov     rcx, qword ptr [rip + 0x2174878]             ; TYPE GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended.SettingsExtended_TypeInfo
+  0x180CF5B70  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF5B75  test    rax, rax                                  
+  0x180CF5B78  je      0x180cf5bc3                               
+  0x180CF5B7A  movzx   ecx, byte ptr [rbx + 0xc4]                   ; rbx->CameraManagerExtended._isFullScreen
+  0x180CF5B81  xor     r8d, r8d                                  
+  0x180CF5B84  mov     byte ptr [rax + 0x10], cl                    ; rax->SettingsExtended.FullScreen
+  0x180CF5B87  mov     rdx, rax                                  
+  0x180CF5B8A  mov     dword ptr [rax + 0x14], edi                  ; rax->SettingsExtended.ResolutionLevel
+  0x180CF5B8D  mov     ecx, dword ptr [rbx + 0xcc]                  ; rbx->CameraManagerExtended._targetFpsLevel
+  0x180CF5B93  mov     dword ptr [rax + 0x18], ecx                  ; rax->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5B96  movzx   ecx, byte ptr [rbx + 0xd0]                   ; rbx->CameraManagerExtended._isPostProcessingEnabled
+  0x180CF5B9D  mov     byte ptr [rax + 0x1c], cl                    ; rax->SettingsExtended.PostProcessingActivity
+  0x180CF5BA0  mov     rcx, rbp                                  
+  0x180CF5BA3  mov     r9, qword ptr [rip + 0x2174856]              ; METHODINFO Method$Naninovel.StateMap.SetState<CameraManagerExtended.SettingsExtended>()
+  0x180CF5BAA  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180CF5BAF  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CF5BB4  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180CF5BB9  add     rsp, 0x20                                 
+  0x180CF5BBD  pop     rdi                                       
+  0x180CF5BBE  jmp     0x1807587f0                                  ; -> Naninovel.StateMap$$SetState<object>
+
+180CF5BC3:
+  0x180CF5BC3  call    0x180246730                                  ; THROW NullReferenceException

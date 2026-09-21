@@ -1,0 +1,82 @@
+====================================================================================================
+FUNCTION RVA 0xCD5B70  VA 0x180CD5B70  size 0xF8 (248 bytes)
+  managed: GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  csig   : int32_t GigaCreation_Essentials_Platforms_Platform__get_CurrentPlatform (const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Platforms.Platform :: public static PlatformKind get_CurrentPlatform()
+====================================================================================================
+  0x180CD5B70  sub     rsp, 0x28                                 
+  0x180CD5B74  cmp     byte ptr [rip + 0x24075ca], 0                ; data_30DD145
+  0x180CD5B7B  jne     0x180cd5ba6                               
+  0x180CD5B7D  lea     rcx, [rip + 0x217c75c]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CD5B84  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD5B89  lock or dword ptr [rsp], 0                        
+  0x180CD5B8E  lea     rcx, [rip + 0x2191b6b]                       ; STR 'Unsupported platform.'
+  0x180CD5B95  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD5B9A  lock or dword ptr [rsp], 0                        
+  0x180CD5B9F  mov     byte ptr [rip + 0x240759f], 1                ; data_30DD145
+
+180CD5BA6:
+  0x180CD5BA6  xor     ecx, ecx                                  
+  0x180CD5BA8  call    0x182097f10                                  ; -> UnityEngine.Device.Application$$get_platform
+  0x180CD5BAD  movsxd  rdx, eax                                  
+  0x180CD5BB0  cmp     edx, 0xb                                  
+  0x180CD5BB3  jle     0x180cd5bd3                               
+  0x180CD5BB5  cmp     edx, 0x19                                 
+  0x180CD5BB8  jne     0x180cd5bc4                               
+  0x180CD5BBA  mov     eax, 5                                    
+  0x180CD5BBF  add     rsp, 0x28                                 
+  0x180CD5BC3  ret                                               
+
+180CD5BC4:
+  0x180CD5BC4  cmp     edx, 0x20                                 
+  0x180CD5BC7  jne     0x180cd5c16                               
+  0x180CD5BC9  mov     eax, 4                                    
+  0x180CD5BCE  add     rsp, 0x28                                 
+  0x180CD5BD2  ret                                               
+
+180CD5BD3:
+  0x180CD5BD3  cmp     edx, 8                                    
+  0x180CD5BD6  ja      0x180cd5c07                               
+  0x180CD5BD8  lea     r8, [rip - 0xcd5bdf]                         ; data_0
+  0x180CD5BDF  mov     ecx, dword ptr [r8 + rdx*4 + 0xcd5c44]    
+  0x180CD5BE7  add     rcx, r8                                   
+  0x180CD5BEA  jmp     rcx                                       
+  0x180CD5BEC  xor     eax, eax                                  
+  0x180CD5BEE  add     rsp, 0x28                                 
+  0x180CD5BF2  ret                                               
+  0x180CD5BF3  mov     eax, 1                                    
+  0x180CD5BF8  add     rsp, 0x28                                 
+  0x180CD5BFC  ret                                               
+  0x180CD5BFD  mov     eax, 2                                    
+  0x180CD5C02  add     rsp, 0x28                                 
+  0x180CD5C06  ret                                               
+
+180CD5C07:
+  0x180CD5C07  cmp     edx, 0xb                                  
+  0x180CD5C0A  jne     0x180cd5c16                               
+  0x180CD5C0C  mov     eax, 3                                    
+  0x180CD5C11  add     rsp, 0x28                                 
+  0x180CD5C15  ret                                               
+
+180CD5C16:
+  0x180CD5C16  mov     rcx, qword ptr [rip + 0x217c6c3]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CD5C1D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD5C24  jne     0x180cd5c2b                               
+  0x180CD5C26  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CD5C2B:
+  0x180CD5C2B  mov     rcx, qword ptr [rip + 0x2191ace]             ; STR 'Unsupported platform.'
+  0x180CD5C32  xor     edx, edx                                  
+  0x180CD5C34  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+  0x180CD5C39  mov     eax, 6                                    
+  0x180CD5C3E  add     rsp, 0x28                                 
+  0x180CD5C42  ret                                               
+  0x180CD5C43  nop                                               
+  0x180CD5C44  in      al, dx                                    
+  0x180CD5C45  pop     rbx                                       
+  0x180CD5C46  int     0                                         
+  0x180CD5C48  in      al, dx                                    
+  0x180CD5C49  pop     rbx                                       
+  0x180CD5C4A  int     0                                         
+  0x180CD5C4C  pop     rbx                                       
+  0x180CD5C4E  int     0                                         

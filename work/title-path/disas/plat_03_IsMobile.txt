@@ -1,0 +1,21 @@
+====================================================================================================
+FUNCTION RVA 0xCD5CA0  VA 0x180CD5CA0  size 0x27 (39 bytes)
+  managed: GigaCreation.Essentials.Platforms.Platform$$get_IsMobile
+  csig   : bool GigaCreation_Essentials_Platforms_Platform__get_IsMobile (const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Platforms.Platform :: public static bool get_IsMobile()
+====================================================================================================
+  0x180CD5CA0  sub     rsp, 0x28                                 
+  0x180CD5CA4  xor     ecx, ecx                                  
+  0x180CD5CA6  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CD5CAB  mov     ecx, eax                                  
+  0x180CD5CAD  cmp     eax, 2                                    
+  0x180CD5CB0  jne     0x180cd5cbc                               
+  0x180CD5CB2  mov     eax, 1                                    
+  0x180CD5CB7  add     rsp, 0x28                                 
+  0x180CD5CBB  ret                                               
+
+180CD5CBC:
+  0x180CD5CBC  cmp     ecx, 3                                    
+  0x180CD5CBF  sete    al                                        
+  0x180CD5CC2  add     rsp, 0x28                                 
+  0x180CD5CC6  ret                                               

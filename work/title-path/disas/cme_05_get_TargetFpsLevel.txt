@@ -1,0 +1,49 @@
+====================================================================================================
+FUNCTION RVA 0xCF52F0  VA 0x180CF52F0  size 0x7 (7 bytes)
+  managed: UnityEngine.InputSystem.UI.InputSystemUIInputModule$$get_pointerBehavior
+  managed: UnityEngine.Timeline.AnimationTrack$$get_infiniteClipLoop
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$get_TargetFpsLevel
+  csig   : int32_t UnityEngine_InputSystem_UI_InputSystemUIInputModule__get_pointerBehavior (UnityEngine_InputSystem_UI_InputSystemUIInputModule_o* __this, const MethodInfo* method);
+  dump.cs: UnityEngine.InputSystem.UI.InputSystemUIInputModule :: public UIPointerBehavior get_pointerBehavior()
+  dump.cs: UnityEngine.Timeline.AnimationTrack :: internal AnimationPlayableAsset.LoopMode get_infiniteClipLoop()
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public int get_TargetFpsLevel()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF52F0  mov     eax, dword ptr [rcx + 0xcc]                  ; rcx->CameraManagerExtended._targetFpsLevel
+  0x180CF52F6  ret                                               

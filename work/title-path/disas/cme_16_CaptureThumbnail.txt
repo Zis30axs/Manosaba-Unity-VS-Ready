@@ -1,0 +1,140 @@
+====================================================================================================
+FUNCTION RVA 0xCF5E80  VA 0x180CF5E80  size 0x125 (293 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$CaptureThumbnail
+  csig   : UnityEngine_Texture2D_o* GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__CaptureThumbnail (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: public override Texture2D CaptureThumbnail()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF5E80  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CF5E85  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CF5E8A  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CF5E8F  push    rdi                                       
+  0x180CF5E90  sub     rsp, 0x20                                 
+  0x180CF5E94  cmp     byte ptr [rip + 0x23e738f], 0                ; data_30DD22A
+  0x180CF5E9B  mov     rbp, rcx                                  
+  0x180CF5E9E  jne     0x180cf5ec9                               
+  0x180CF5EA0  lea     rcx, [rip + 0x2174521]                       ; METHODINFO Method$UnityEngine.Object.FindObjectsByType<HideInNaninovelSaveSlotThumbnail>()
+  0x180CF5EA7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5EAC  lock or dword ptr [rsp], 0                        
+  0x180CF5EB1  lea     rcx, [rip + 0x215c3d8]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CF5EB8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF5EBD  lock or dword ptr [rsp], 0                        
+  0x180CF5EC2  mov     byte ptr [rip + 0x23e7361], 1                ; data_30DD22A
+
+180CF5EC9:
+  0x180CF5EC9  mov     rcx, qword ptr [rip + 0x215c3c0]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CF5ED0  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF5ED7  jne     0x180cf5ede                               
+  0x180CF5ED9  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF5EDE:
+  0x180CF5EDE  mov     rdx, qword ptr [rip + 0x21744e3]             ; METHODINFO Method$UnityEngine.Object.FindObjectsByType<HideInNaninovelSaveSlotThumbnail>()
+  0x180CF5EE5  xor     ecx, ecx                                  
+  0x180CF5EE7  mov     qword ptr [rsp + 0x30], r14               
+  0x180CF5EEC  call    0x180720db0                                  ; -> UnityEngine.Object$$FindObjectsByType<object>
+  0x180CF5EF1  xor     edi, edi                                  
+  0x180CF5EF3  mov     rbx, rax                                  
+  0x180CF5EF6  mov     esi, edi                                  
+  0x180CF5EF8  mov     eax, edi                                  
+  0x180CF5EFA  test    rbx, rbx                                  
+  0x180CF5EFD  je      0x180cf5f9a                               
+  0x180CF5F03  lea     r14, [rbx + 0x20]                            ; rbx-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+
+180CF5F07:
+  0x180CF5F07  cmp     eax, dword ptr [rbx + 0x18]                  ; rbx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5F0A  jge     0x180cf5f3a                               
+  0x180CF5F0C  cmp     esi, dword ptr [rbx + 0x18]                  ; rbx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5F0F  jae     0x180cf5fa0                               
+  0x180CF5F15  mov     rax, qword ptr [r14]                      
+  0x180CF5F18  test    rax, rax                                  
+  0x180CF5F1B  je      0x180cf5f9a                               
+  0x180CF5F1D  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF5F21  test    rcx, rcx                                  
+  0x180CF5F24  je      0x180cf5f9a                               
+  0x180CF5F26  xor     r8d, r8d                                  
+  0x180CF5F29  xor     edx, edx                                  
+  0x180CF5F2B  call    0x182060c20                                  ; -> UnityEngine.Behaviour$$set_enabled
+  0x180CF5F30  inc     esi                                       
+  0x180CF5F32  add     r14, 8                                    
+  0x180CF5F36  mov     eax, esi                                  
+  0x180CF5F38  jmp     0x180cf5f07                               
+
+180CF5F3A:
+  0x180CF5F3A  xor     edx, edx                                  
+  0x180CF5F3C  mov     rcx, rbp                                  
+  0x180CF5F3F  call    0x180487e40                                  ; -> Naninovel.CameraManager$$CaptureThumbnail
+  0x180CF5F44  mov     rbp, rax                                  
+  0x180CF5F47  lea     rsi, [rbx + 0x20]                            ; rbx-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+
+180CF5F4B:
+  0x180CF5F4B  mov     ecx, edi                                  
+  0x180CF5F4D  nop     dword ptr [rax]                           
+  0x180CF5F50  cmp     ecx, dword ptr [rbx + 0x18]                  ; rbx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5F53  jge     0x180cf5f7d                               
+  0x180CF5F55  cmp     edi, dword ptr [rbx + 0x18]                  ; rbx->SettingsExtended.TargetFpsLevel | <ChangeOffset>d__36.<>4__this | <InitializeService>d__32.<>4__this
+  0x180CF5F58  jae     0x180cf5fa0                               
+  0x180CF5F5A  mov     rax, qword ptr [rsi]                      
+  0x180CF5F5D  test    rax, rax                                  
+  0x180CF5F60  je      0x180cf5f9a                               
+  0x180CF5F62  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF5F66  test    rcx, rcx                                  
+  0x180CF5F69  je      0x180cf5f9a                               
+  0x180CF5F6B  xor     r8d, r8d                                  
+  0x180CF5F6E  mov     dl, 1                                     
+  0x180CF5F70  call    0x182060c20                                  ; -> UnityEngine.Behaviour$$set_enabled
+  0x180CF5F75  inc     edi                                       
+  0x180CF5F77  add     rsi, 8                                    
+  0x180CF5F7B  jmp     0x180cf5f4b                               
+
+180CF5F7D:
+  0x180CF5F7D  mov     r14, qword ptr [rsp + 0x30]               
+  0x180CF5F82  mov     rax, rbp                                  
+  0x180CF5F85  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180CF5F8A  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CF5F8F  mov     rsi, qword ptr [rsp + 0x48]               
+  0x180CF5F94  add     rsp, 0x20                                 
+  0x180CF5F98  pop     rdi                                       
+  0x180CF5F99  ret                                               
+
+180CF5F9A:
+  0x180CF5F9A  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF5F9F  int3                                              
+
+180CF5FA0:
+  0x180CF5FA0  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

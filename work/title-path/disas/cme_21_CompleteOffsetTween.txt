@@ -1,0 +1,86 @@
+====================================================================================================
+FUNCTION RVA 0xCF6660  VA 0x180CF6660  size 0xA2 (162 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$CompleteOffsetTween
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__CompleteOffsetTween (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: private void CompleteOffsetTween()
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF6660  push    rbx                                       
+  0x180CF6662  sub     rsp, 0x20                                 
+  0x180CF6666  cmp     byte ptr [rip + 0x23e6bc1], 0                ; data_30DD22E
+  0x180CF666D  mov     rbx, rcx                                  
+  0x180CF6670  jne     0x180cf669b                               
+  0x180CF6672  lea     rcx, [rip + 0x215abd7]                       ; METHODINFO Method$Naninovel.Tweener<VectorTween>.CompleteInstantly()
+  0x180CF6679  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF667E  lock or dword ptr [rsp], 0                        
+  0x180CF6683  lea     rcx, [rip + 0x215abb6]                       ; METHODINFO Method$Naninovel.Tweener<VectorTween>.get_Running()
+  0x180CF668A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF668F  lock or dword ptr [rsp], 0                        
+  0x180CF6694  mov     byte ptr [rip + 0x23e6b93], 1                ; data_30DD22E
+
+180CF669B:
+  0x180CF669B  mov     r8, qword ptr [rbx + 0xb0]                   ; rbx->CameraManagerExtended._offsetTweener
+  0x180CF66A2  test    r8, r8                                    
+  0x180CF66A5  je      0x180cf66fd                               
+  0x180CF66A7  mov     rax, qword ptr [rip + 0x215ab92]             ; METHODINFO Method$Naninovel.Tweener<VectorTween>.get_Running()
+  0x180CF66AE  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ChangeOffset>d__36.offset | <InitializeMainCamera>d__38.<>4__this | <InitializeService>d__32.<>u__1
+  0x180CF66B2  mov     rax, qword ptr [rcx + 0xc0]               
+  0x180CF66B9  mov     rcx, qword ptr [rax]                      
+  0x180CF66BC  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180CF66C3  movsxd  rax, dword ptr [rdx + 0x38]                  ; rdx-><ChangeOffset>d__36.asyncToken | <InitializeMainCamera>d__38.uiLayer
+  0x180CF66C7  add     r8, rax                                   
+  0x180CF66CA  mov     rax, qword ptr [rdx + 0x30]                  ; rdx-><InitializeMainCamera>d__38.parent
+  0x180CF66CE  cmp     dword ptr [rax + 0x28], 0                    ; rax-><InitializeMainCamera>d__38.config
+  0x180CF66D2  lea     rcx, [r8 - 0x10]                          
+  0x180CF66D6  cmovge  rcx, r8                                   
+  0x180CF66DA  cmp     byte ptr [rcx], 0                         
+  0x180CF66DD  je      0x180cf66f7                               
+  0x180CF66DF  mov     rdx, qword ptr [rip + 0x215ab6a]             ; METHODINFO Method$Naninovel.Tweener<VectorTween>.CompleteInstantly()
+  0x180CF66E6  mov     rcx, qword ptr [rbx + 0xb0]                  ; rbx->CameraManagerExtended._offsetTweener
+  0x180CF66ED  add     rsp, 0x20                                 
+  0x180CF66F1  pop     rbx                                       
+  0x180CF66F2  jmp     0x180965910                                  ; -> Naninovel.Tweener<__Il2CppFullySharedGenericStructType>$$CompleteInstantly
+
+180CF66F7:
+  0x180CF66F7  add     rsp, 0x20                                 
+  0x180CF66FB  pop     rbx                                       
+  0x180CF66FC  ret                                               
+
+180CF66FD:
+  0x180CF66FD  call    0x180246730                                  ; THROW NullReferenceException

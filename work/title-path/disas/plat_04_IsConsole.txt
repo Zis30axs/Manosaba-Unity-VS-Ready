@@ -1,0 +1,21 @@
+====================================================================================================
+FUNCTION RVA 0xCD5CD0  VA 0x180CD5CD0  size 0x27 (39 bytes)
+  managed: GigaCreation.Essentials.Platforms.Platform$$get_IsConsole
+  csig   : bool GigaCreation_Essentials_Platforms_Platform__get_IsConsole (const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Platforms.Platform :: public static bool get_IsConsole()
+====================================================================================================
+  0x180CD5CD0  sub     rsp, 0x28                                 
+  0x180CD5CD4  xor     ecx, ecx                                  
+  0x180CD5CD6  call    0x180cd5b70                                  ; -> GigaCreation.Essentials.Platforms.Platform$$get_CurrentPlatform
+  0x180CD5CDB  mov     ecx, eax                                  
+  0x180CD5CDD  cmp     eax, 4                                    
+  0x180CD5CE0  jne     0x180cd5cec                               
+  0x180CD5CE2  mov     eax, 1                                    
+  0x180CD5CE7  add     rsp, 0x28                                 
+  0x180CD5CEB  ret                                               
+
+180CD5CEC:
+  0x180CD5CEC  cmp     ecx, 5                                    
+  0x180CD5CEF  sete    al                                        
+  0x180CD5CF2  add     rsp, 0x28                                 
+  0x180CD5CF6  ret                                               

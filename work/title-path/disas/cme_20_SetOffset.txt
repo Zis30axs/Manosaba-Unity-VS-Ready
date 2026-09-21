@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xCF6600  VA 0x180CF6600  size 0x5C (92 bytes)
+  managed: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$SetOffset
+  csig   : void GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended__SetOffset (GigaCreation_NaninovelExtender_Cameras_CameraManagerExtended_o* __this, UnityEngine_Vector3_o value, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended :: protected override void SetOffset(Vector3 value)
+  fields of GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended:
+      +0xB0   _offsetTweener                 readonly Tweener<VectorTween>
+      +0xB8   _offset                        Vector3
+      +0xC4   _isFullScreen                  bool
+      +0xC8   _resolutionLevel               int
+      +0xCC   _targetFpsLevel                int
+      +0xD0   _isPostProcessingEnabled       bool
+      +0xD4   _nativeResolution              Resolution
+      +0xE8   _screenResolutions             Resolution[]
+      +0xF0   _availableResolutionsForPc     Vector2Int[]
+      +0xF8   <Configuration>k__BackingField readonly CameraConfigurationExtended
+  fields of CameraManagerExtended.SettingsExtended:
+      +0x10   FullScreen                     bool
+      +0x14   ResolutionLevel                int
+      +0x18   TargetFpsLevel                 int
+      +0x1C   PostProcessingActivity         bool
+  fields of CameraManagerExtended.<ChangeOffset>d__36:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   offset                         Vector3
+      +0x2C   tween                          Tween
+      +0x38   asyncToken                     AsyncToken
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CameraManagerExtended.<InitializeMainCamera>d__38:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<Camera>
+      +0x20   <>4__this                      CameraManagerExtended
+      +0x28   config                         CameraConfiguration
+      +0x30   parent                         Transform
+      +0x38   uiLayer                        int
+      +0x40   <>u__1                         UniTask.Awaiter<Camera>
+  fields of CameraManagerExtended.<InitializeService>d__32:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      CameraManagerExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF6600  mov     qword ptr [rsp + 8], rbx                  
+  0x180CF6605  push    rdi                                       
+  0x180CF6606  sub     rsp, 0x30                                 
+  0x180CF660A  mov     rbx, rdx                                  
+  0x180CF660D  mov     rdi, rcx                                  
+  0x180CF6610  xor     edx, edx                                  
+  0x180CF6612  call    0x180cf6660                                  ; -> GigaCreation.NaninovelExtender.Cameras.CameraManagerExtended$$CompleteOffsetTween
+  0x180CF6617  mov     r8, qword ptr [rdi]                       
+  0x180CF661A  lea     rdx, [rsp + 0x20]                         
+  0x180CF661F  movsd   xmm0, qword ptr [rbx]                     
+  0x180CF6623  mov     rcx, rdi                                  
+  0x180CF6626  mov     eax, dword ptr [rbx + 8]                  
+  0x180CF6629  movsd   qword ptr [rdi + 0xb8], xmm0                 ; rdi->CameraManagerExtended._offset
+  0x180CF6631  mov     dword ptr [rdi + 0xc0], eax               
+  0x180CF6637  mov     dword ptr [rsp + 0x28], eax               
+  0x180CF663B  mov     rax, qword ptr [r8 + 0x5b8]               
+  0x180CF6642  mov     r8, qword ptr [r8 + 0x5c0]                
+  0x180CF6649  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180CF664F  call    rax                                       
+  0x180CF6651  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CF6656  add     rsp, 0x30                                 
+  0x180CF665A  pop     rdi                                       
+  0x180CF665B  ret                                               
