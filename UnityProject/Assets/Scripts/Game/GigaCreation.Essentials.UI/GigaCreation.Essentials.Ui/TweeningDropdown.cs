@@ -44,13 +44,15 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private FadeUtility _fadeUtil;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE2CE0 (shared with TweeningDropdownLocalized): new CompositeDisposable() -> +0x1B0
     	[Token(Token = "0x4000089")]
     	[FieldOffset(Offset = "0x1B0")]
-    	private readonly CompositeDisposable _selectableDisposables;
+    	private readonly CompositeDisposable _selectableDisposables = new CompositeDisposable();
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE2CE0: new CompositeDisposable() -> +0x1B8
     	[Token(Token = "0x400008A")]
     	[FieldOffset(Offset = "0x1B8")]
-    	private readonly CompositeDisposable _playSfxDisposables;
+    	private readonly CompositeDisposable _playSfxDisposables = new CompositeDisposable();
 
     	[Token(Token = "0x400008B")]
     	[FieldOffset(Offset = "0x1C0")]

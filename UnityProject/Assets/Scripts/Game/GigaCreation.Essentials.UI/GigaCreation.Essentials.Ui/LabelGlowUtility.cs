@@ -16,10 +16,11 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private Color _glowColorOnDisabled;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDC750: mov [rcx+0x20], 0x3F000000
     	[Token(Token = "0x4000046")]
     	[FieldOffset(Offset = "0x20")]
     	[SerializeField]
-    	private float _glowDuration;
+    	private float _glowDuration = 0.5f;
 
     	[Token(Token = "0x4000047")]
     	[FieldOffset(Offset = "0x24")]

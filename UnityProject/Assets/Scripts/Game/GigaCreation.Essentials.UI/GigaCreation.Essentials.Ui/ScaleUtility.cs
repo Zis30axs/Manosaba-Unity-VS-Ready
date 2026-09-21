@@ -9,15 +9,17 @@ namespace GigaCreation.Essentials.Ui
     [Token(Token = "0x200001A")]
     public class ScaleUtility
     {
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDD130: mov [rcx+0x10], 0x3F8CCCCD
     	[Token(Token = "0x4000050")]
     	[FieldOffset(Offset = "0x10")]
     	[SerializeField]
-    	private float _scaleOnHighlighted;
+    	private float _scaleOnHighlighted = 1.1f;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDD130: mov [rcx+0x14], 0x3DCCCCCD
     	[Token(Token = "0x4000051")]
     	[FieldOffset(Offset = "0x14")]
     	[SerializeField]
-    	private float _tweenDuration;
+    	private float _tweenDuration = 0.1f;
 
     	[Token(Token = "0x4000052")]
     	[FieldOffset(Offset = "0x18")]

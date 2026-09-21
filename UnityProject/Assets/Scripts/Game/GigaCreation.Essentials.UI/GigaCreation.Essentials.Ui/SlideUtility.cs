@@ -14,10 +14,11 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private float _moveXOnHighlighted;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDD4A0: mov [rcx+0x14], 0x3DCCCCCD
     	[Token(Token = "0x4000054")]
     	[FieldOffset(Offset = "0x14")]
     	[SerializeField]
-    	private float _tweenDuration;
+    	private float _tweenDuration = 0.1f;
 
     	[Token(Token = "0x4000055")]
     	[FieldOffset(Offset = "0x18")]

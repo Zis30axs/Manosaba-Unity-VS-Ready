@@ -22,10 +22,11 @@ namespace GigaCreation.Essentials.Localization
     	[SerializeField]
     	private LocalizedText[] _localizedTexts;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCD1C10: mov byte [rcx+0x20], 1
     	[Token(Token = "0x4000012")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
     	[SerializeField]
-    	private bool _changeFont;
+    	private bool _changeFont = true;
 
     	[Token(Token = "0x4000013")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]

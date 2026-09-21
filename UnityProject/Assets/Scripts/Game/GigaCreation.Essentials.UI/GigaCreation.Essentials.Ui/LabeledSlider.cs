@@ -22,9 +22,10 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private TextMeshProUGUI _label;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCEB270: new CompositeDisposable() -> +0x30
     	[Token(Token = "0x4000114")]
     	[FieldOffset(Offset = "0x30")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x4000115")]
     	[FieldOffset(Offset = "0x38")]

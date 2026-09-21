@@ -16,25 +16,28 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private LocalizableText _localizableText;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE41F0: ToggleableStruct<float>.op_Implicit(1.0) -> +0x18
     	[Token(Token = "0x40000A3")]
     	[FieldOffset(Offset = "0x18")]
     	[SerializeField]
-    	private ToggleableStruct<float> _scale;
+    	private ToggleableStruct<float> _scale = 1f;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE41F0: ToggleableStruct<Color>.op_Implicit(data 0x2AE3470 = (0, 0, 0, 1)) -> +0x20
     	[Token(Token = "0x40000A4")]
     	[FieldOffset(Offset = "0x20")]
     	[SerializeField]
-    	private ToggleableStruct<Color> _color;
+    	private ToggleableStruct<Color> _color = UnityEngine.Color.black;
 
     	[Token(Token = "0x40000A5")]
     	[FieldOffset(Offset = "0x34")]
     	[SerializeField]
     	private ToggleableStruct<float> _characterSpacing;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE41F0: ToggleableStruct<HorizontalAlignmentOptions>.op_Implicit(1 = Left) -> +0x3C
     	[Token(Token = "0x40000A6")]
     	[FieldOffset(Offset = "0x3C")]
     	[SerializeField]
-    	private ToggleableStruct<HorizontalAlignmentOptions> _alignment;
+    	private ToggleableStruct<HorizontalAlignmentOptions> _alignment = HorizontalAlignmentOptions.Left;
 
     	[Token(Token = "0x40000A7")]
     	[FieldOffset(Offset = "0x48")]

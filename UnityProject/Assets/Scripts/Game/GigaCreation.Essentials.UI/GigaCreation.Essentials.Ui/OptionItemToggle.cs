@@ -13,13 +13,15 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private GeneralToggle[] _toggles;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCEC1C0: new Subject<int>() -> +0x28
     	[Token(Token = "0x4000121")]
     	[FieldOffset(Offset = "0x28")]
-    	private readonly ISubject<int> _onValueChangedSubject;
+    	private readonly ISubject<int> _onValueChangedSubject = new Subject<int>();
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCEC1C0: new CompositeDisposable() -> +0x30
     	[Token(Token = "0x4000122")]
     	[FieldOffset(Offset = "0x30")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x600014D")]
     	[Address(RVA = "0xCEBE00", Offset = "0xCEA800", VA = "0x180CEBE00")]

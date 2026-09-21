@@ -22,9 +22,10 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private AutoLayoutSupporter _autoLayoutSupporter;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCE0D20 (shared with LocalizationDropdown, which adds none): new CompositeDisposable() -> +0x30
     	[Token(Token = "0x400007F")]
     	[FieldOffset(Offset = "0x30")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x4000080")]
     	[FieldOffset(Offset = "0x38")]

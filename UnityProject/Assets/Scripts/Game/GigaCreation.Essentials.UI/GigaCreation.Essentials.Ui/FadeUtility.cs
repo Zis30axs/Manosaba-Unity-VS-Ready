@@ -9,15 +9,17 @@ namespace GigaCreation.Essentials.Ui
     [Token(Token = "0x2000016")]
     public class FadeUtility
     {
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDBF50: mov [rcx+0x10], 0x3F000000
     	[Token(Token = "0x4000042")]
     	[FieldOffset(Offset = "0x10")]
     	[SerializeField]
-    	private float _alphaOnDisabled;
+    	private float _alphaOnDisabled = 0.5f;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCDBF50: mov [rcx+0x14], 0x3DCCCCCD
     	[Token(Token = "0x4000043")]
     	[FieldOffset(Offset = "0x14")]
     	[SerializeField]
-    	private float _tweenDuration;
+    	private float _tweenDuration = 0.1f;
 
     	[Token(Token = "0x4000044")]
     	[FieldOffset(Offset = "0x18")]

@@ -38,10 +38,11 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private float _defaultCharacterSpacing;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0x311810 (shared with WitchTrialsButtonLabel): mov [rcx+0x48], 1
     	[Token(Token = "0x40000AD")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
     	[SerializeField]
-    	private HorizontalAlignmentOptions _defaultHorizontalAlignment;
+    	private HorizontalAlignmentOptions _defaultHorizontalAlignment = HorizontalAlignmentOptions.Left;
 
     	[Token(Token = "0x40000AE")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x50")]

@@ -15,15 +15,17 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private RectTransform _rectTransform;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCF0AA0: new SlideUtility() (its ctor inlined: _tweenDuration 0.1) -> +0x130
     	[Token(Token = "0x4000145")]
     	[FieldOffset(Offset = "0x130")]
     	[Header("Parameters")]
     	[SerializeField]
-    	private SlideUtility _slideUtil;
+    	private SlideUtility _slideUtil = new SlideUtility();
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCF0AA0: new CompositeDisposable() -> +0x138
     	[Token(Token = "0x4000146")]
     	[FieldOffset(Offset = "0x138")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x4000147")]
     	[FieldOffset(Offset = "0x140")]

@@ -7,9 +7,10 @@ namespace GigaCreation.Essentials.Ui
     [Token(Token = "0x2000006")]
     public abstract class ButtonExtendedBase : Button
     {
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCD6AA0: new CompositeDisposable() -> +0x108
     	[Token(Token = "0x400000A")]
     	[FieldOffset(Offset = "0x108")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x400000B")]
     	[FieldOffset(Offset = "0x110")]

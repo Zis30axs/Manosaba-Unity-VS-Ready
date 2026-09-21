@@ -385,7 +385,14 @@ namespace Manosaba.Integration
                         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     object reference = prefabField != null ? prefabField.GetValue(component) : null;
                     evidence.gameprefab_reference_type = reference != null ? reference.GetType().Name : null;
-                    if (reference != null)
+                    // Not when Unity's Start() runs the chain: the scene's GameInitializer instantiates the prefab
+                    // itself, and a second instance runs every Awake twice (round 11, 2026-09-22:
+                    // "A service of the same type is already registered: IWitchTrialsNaninovelManager").
+                    if (reference != null && chainStartedByUnity)
+                    {
+                        evidence.gameprefab_instance = "(skipped: the scene's GameInitializer instantiates the prefab)";
+                    }
+                    else if (reference != null)
                     {
                         // Optional parameters are not part of the metadata signature: `InstantiateAsync`
                         // declares (Transform parent = null, bool instantiateInWorldSpace = false,
@@ -1400,9 +1407,17 @@ namespace Manosaba.Integration
         /// completes.  The wrapper's own invocation completed while the engine still reports `Initializing = true`,
         /// so the question is whether the original can complete at all -- if it cannot, the difference between the
         /// two calls is state that the first call itself established, and that state is the thing to find.
+        /// Opt-in like the re-invocation above (MANOSABA_GAMESTART_REINVOKE_POSTINIT=1): calling `InstantiateUIs` again
+        /// builds a second copy of every managed UI (round 11, 2026-09-22: 29 UIs listed twice, the second TitleUI
+        /// hidden), which corrupts the UI state the gate now checks.
         /// </summary>
         private static IEnumerator ProbeOriginalPostInitTask (GameStartEvidence evidence)
         {
+            if (Environment.GetEnvironmentVariable("MANOSABA_GAMESTART_REINVOKE_POSTINIT") != "1")
+            {
+                evidence.post_init_original = "(skipped; set MANOSABA_GAMESTART_REINVOKE_POSTINIT=1)";
+                yield break;
+            }
             Delegate original = capturedOriginalPostInitTask;
             if (original == null)
             {

@@ -51,9 +51,10 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private bool _disableRaycastBlockingWhenOff;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCF1290: new CompositeDisposable() -> +0x160
     	[Token(Token = "0x4000153")]
     	[FieldOffset(Offset = "0x160")]
-    	private readonly CompositeDisposable _disposables;
+    	private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     	[Token(Token = "0x4000154")]
     	[FieldOffset(Offset = "0x168")]

@@ -6,14 +6,14 @@ A C# field initializer (`private readonly List<X> _xs = new List<X>();`, `privat
 every instance constructor.  The Il2CppDumper skeleton keeps the constructor with an empty body and drops the
 initializers, so such fields are null / 0 at runtime (Pagination._disposables -> NRE in Clear()).  A constructor whose
 native body is a shared thunk (identical-code folded with other methods, e.g. 0x30C000 `ret`, 0x30D8F0 MonoBehaviour
-..ctor) stores nothing; one with its own body that writes fields or allocates objects has initializers to restore.
+..ctor) stores nothing; one that writes fields or allocates objects has initializers to restore -- including a
+body shared by several classes whose initializers compile to identical code.
 
 For every empty-bodied constructor in Assets/Scripts/Game with an [Address(RVA)], disassemble it and report the field
 stores (`mov [this+off], ...`) and allocations it performs, next to whether the source fields already carry an
 initializer.  Output: work/title-path/ctor_sweep.txt
 """
 import os
-import pickle
 import re
 import subprocess
 import sys
@@ -30,8 +30,6 @@ NS = re.compile(r"^namespace ([\w.]+)", re.M)
 
 def main():
     filters = sys.argv[1:]
-    db = pickle.load(open(os.path.join(REPO, "work", "reversing", "symdb.pkl"), "rb"))
-    by_rva = db["methods_by_rva"]
     rows = []
     for dirpath, _, files in os.walk(ROOT):
         if filters and not any(f in dirpath for f in filters):
@@ -46,10 +44,8 @@ def main():
                 rva, cls = int(m.group(1), 16), m.group(3)
                 if not re.search(r"\bclass %s\b" % re.escape(cls), text):
                     continue
-                names = by_rva.get(rva, [])
-                names = names if isinstance(names, list) else [names]
-                if len(names) != 1:
-                    continue  # identical-code folded: a shared thunk, no per-class initializers
+                # Shared RVAs are NOT skipped: identical-code folding also merges constructors whose initializers are
+                # the same (OptionItemDropdown's is LabeledSlider's).  Trivial thunks drop out below (no stores).
                 full = "%s.%s" % (ns.group(1) if ns else "", cls)
                 out = subprocess.run([PY, DISAS, hex(rva), "--type", full], capture_output=True, text=True,
                                      encoding="utf-8", errors="replace").stdout
