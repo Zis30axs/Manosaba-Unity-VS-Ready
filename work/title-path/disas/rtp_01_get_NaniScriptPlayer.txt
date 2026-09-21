@@ -1,0 +1,68 @@
+====================================================================================================
+FUNCTION RVA 0xD40520  VA 0x180D40520  size 0xCA (202 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$get_NaniScriptPlayer
+  csig   : Naninovel_IScriptPlayer_o* GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified__get_NaniScriptPlayer (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: private IScriptPlayer get_NaniScriptPlayer()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D40520  push    rbx                                       
+  0x180D40522  sub     rsp, 0x20                                 
+  0x180D40526  cmp     byte ptr [rip + 0x239ceac], 0                ; data_30DD3D9
+  0x180D4052D  mov     rbx, rcx                                  
+  0x180D40530  jne     0x180d4055b                               
+  0x180D40532  lea     rcx, [rip + 0x21115f7]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180D40539  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4053E  lock or dword ptr [rsp], 0                        
+  0x180D40543  lea     rcx, [rip + 0x21119e6]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D4054A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4054F  lock or dword ptr [rsp], 0                        
+  0x180D40554  mov     byte ptr [rip + 0x239ce7e], 1                ; data_30DD3D9
+
+180D4055B:
+  0x180D4055B  mov     rax, qword ptr [rbx + 0x200]                 ; rbx->RevealableTextPrinterPanelModified._naniScriptPlayer
+  0x180D40562  test    rax, rax                                  
+  0x180D40565  jne     0x180d405e4                               
+  0x180D40567  mov     rcx, qword ptr [rip + 0x21119c2]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D4056E  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D40574  jne     0x180d4057b                               
+  0x180D40576  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D4057B:
+  0x180D4057B  mov     rcx, qword ptr [rip + 0x21115ae]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180D40582  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D40587  cmp     dword ptr [rip + 0x2398c36], 0               ; data_30D91C4
+  0x180D4058E  mov     r9, rax                                   
+  0x180D40591  mov     qword ptr [rbx + 0x200], rax                 ; rbx->RevealableTextPrinterPanelModified._naniScriptPlayer
+  0x180D40598  je      0x180d405e1                               
+  0x180D4059A  lea     r8, [rbx + 0x200]                            ; rbx->RevealableTextPrinterPanelModified._naniScriptPlayer
+  0x180D405A1  shr     r8, 0xc                                   
+  0x180D405A5  lea     rcx, [rip + 0x23f3fd4]                       ; data_3134580
+  0x180D405AC  and     r8d, 0x1fffff                             
+  0x180D405B3  mov     eax, r8d                                  
+  0x180D405B6  shr     rax, 6                                    
+  0x180D405BA  and     r8d, 0x3f                                 
+  0x180D405BE  lea     rdx, [rcx + rax*8]                        
+  0x180D405C2  prefetchw byte ptr [rdx]                            
+  0x180D405C5  nop     word ptr [rax + rax]                      
+
+180D405D0:
+  0x180D405D0  mov     rax, qword ptr [rdx]                      
+  0x180D405D3  mov     rcx, rax                                  
+  0x180D405D6  bts     rcx, r8                                   
+  0x180D405DA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D405DF  jne     0x180d405d0                               
+
+180D405E1:
+  0x180D405E1  mov     rax, r9                                   
+
+180D405E4:
+  0x180D405E4  add     rsp, 0x20                                 
+  0x180D405E8  pop     rbx                                       
+  0x180D405E9  ret                                               

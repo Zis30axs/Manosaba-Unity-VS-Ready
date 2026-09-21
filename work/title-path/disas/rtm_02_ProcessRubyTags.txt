@@ -1,0 +1,696 @@
+====================================================================================================
+FUNCTION RVA 0xD3F5E0  VA 0x180D3F5E0  size 0xA29 (2601 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$ProcessRubyTags
+  csig   : System_String_o* GigaCreation_NaninovelExtender_Ui_RevealableTextModified__ProcessRubyTags (GigaCreation_NaninovelExtender_Ui_RevealableTextModified_o* __this, System_String_o* content, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: protected override string ProcessRubyTags(string content)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D3F5E0  mov     rax, rsp                                  
+  0x180D3F5E3  mov     qword ptr [rax + 0x10], rdx               
+  0x180D3F5E7  mov     qword ptr [rax + 8], rcx                  
+  0x180D3F5EB  push    rbx                                       
+  0x180D3F5EC  push    rsi                                       
+  0x180D3F5ED  push    rdi                                       
+  0x180D3F5EE  push    r12                                       
+  0x180D3F5F0  push    r13                                       
+  0x180D3F5F2  push    r14                                       
+  0x180D3F5F4  push    r15                                       
+  0x180D3F5F6  sub     rsp, 0xc0                                 
+  0x180D3F5FD  movaps  xmmword ptr [rax - 0x48], xmm6            
+  0x180D3F601  movaps  xmmword ptr [rax - 0x58], xmm7            
+  0x180D3F605  movaps  xmmword ptr [rax - 0x68], xmm8            
+  0x180D3F60A  movaps  xmmword ptr [rax - 0x78], xmm9            
+  0x180D3F60F  movaps  xmmword ptr [rsp + 0x70], xmm10           
+  0x180D3F615  mov     r13, rdx                                  
+  0x180D3F618  mov     rbx, rcx                                  
+  0x180D3F61B  cmp     byte ptr [rip + 0x239ddb2], 0                ; data_30DD3D4
+  0x180D3F622  jne     0x180d3f71d                               
+  0x180D3F628  lea     rcx, [rip + 0x2112b21]                       ; TYPE System.IDisposable_TypeInfo
+  0x180D3F62F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F634  lock or dword ptr [rsp], 0                        
+  0x180D3F639  lea     rcx, [rip + 0x21125e0]                       ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180D3F640  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F645  lock or dword ptr [rsp], 0                        
+  0x180D3F64A  lea     rcx, [rip + 0x20f7377]                       ; TYPE System.Text.RegularExpressions.Match_TypeInfo
+  0x180D3F651  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F656  lock or dword ptr [rsp], 0                        
+  0x180D3F65B  lea     rcx, [rip + 0x20f1f56]                       ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D3F662  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F667  lock or dword ptr [rsp], 0                        
+  0x180D3F66C  lea     rcx, [rip + 0x20f1f35]                       ; STR '><size='
+  0x180D3F673  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F678  lock or dword ptr [rsp], 0                        
+  0x180D3F67D  lea     rcx, [rip + 0x20f1f2c]                       ; STR '<size={0}%>{1}</size>'
+  0x180D3F684  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F689  lock or dword ptr [rsp], 0                        
+  0x180D3F68E  lea     rcx, [rip + 0x2119eb3]                       ; STR '">'
+  0x180D3F695  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F69A  lock or dword ptr [rsp], 0                        
+  0x180D3F69F  lea     rcx, [rip + 0x20f1ef2]                       ; STR '><voffset='
+  0x180D3F6A6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F6AB  lock or dword ptr [rsp], 0                        
+  0x180D3F6B0  lea     rcx, [rip + 0x20f72f1]                       ; STR '<line-height=100%>'
+  0x180D3F6B7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F6BC  lock or dword ptr [rsp], 0                        
+  0x180D3F6C1  lea     rcx, [rip + 0x20f72d0]                       ; STR 'NANINOVEL.RUBY'
+  0x180D3F6C8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F6CD  lock or dword ptr [rsp], 0                        
+  0x180D3F6D2  lea     rcx, [rip + 0x20f1ec7]                       ; STR '<space=-'
+  0x180D3F6D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F6DE  lock or dword ptr [rsp], 0                        
+  0x180D3F6E3  lea     rcx, [rip + 0x20f1e9e]                       ; STR '%><link="'
+  0x180D3F6EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F6EF  lock or dword ptr [rsp], 0                        
+  0x180D3F6F4  lea     rcx, [rip + 0x211cf45]                       ; STR '>'
+  0x180D3F6FB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F700  lock or dword ptr [rsp], 0                        
+  0x180D3F705  lea     rcx, [rip + 0x20f1e84]                       ; STR '</link></size></voffset><space='
+  0x180D3F70C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F711  lock or dword ptr [rsp], 0                        
+  0x180D3F716  mov     byte ptr [rip + 0x239dcb7], 1                ; data_30DD3D4
+
+180D3F71D:
+  0x180D3F71D  xor     r14d, r14d                                
+  0x180D3F720  mov     qword ptr [rsp + 0x40], r14               
+  0x180D3F725  mov     rax, qword ptr [rip + 0x20f1e8c]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D3F72C  cmp     dword ptr [rax + 0xe4], r14d              
+  0x180D3F733  jne     0x180d3f744                               
+  0x180D3F735  mov     rcx, rax                                  
+  0x180D3F738  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D3F73D  mov     rax, qword ptr [rip + 0x20f1e74]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+
+180D3F744:
+  0x180D3F744  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D3F74B  mov     rcx, qword ptr [rax]                      
+  0x180D3F74E  test    rcx, rcx                                  
+  0x180D3F751  je      0x180d3ff68                               
+  0x180D3F757  xor     r8d, r8d                                  
+  0x180D3F75A  mov     rdx, r13                                  
+  0x180D3F75D  call    0x1816e5ec0                                  ; -> System.Text.RegularExpressions.Regex$$Matches
+  0x180D3F762  mov     rdi, rax                                  
+  0x180D3F765  test    rax, rax                                  
+  0x180D3F768  je      0x180d3ff68                               
+  0x180D3F76E  cmp     byte ptr [rip + 0x23a1da6], r14b             ; data_30E151B
+  0x180D3F775  jne     0x180d3f78f                               
+  0x180D3F777  lea     rcx, [rip + 0x20b7a4a]                       ; METHODINFO Method$System.Collections.Generic.List<Match>.get_Count()
+  0x180D3F77E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F783  lock or dword ptr [rsp], r14d                     
+  0x180D3F788  mov     byte ptr [rip + 0x23a1d8c], 1                ; data_30E151B
+
+180D3F78F:
+  0x180D3F78F  cmp     byte ptr [rdi + 0x20], r14b               
+  0x180D3F793  jne     0x180d3f7a5                               
+  0x180D3F795  xor     r8d, r8d                                  
+  0x180D3F798  mov     edx, 0x7fffffff                           
+  0x180D3F79D  mov     rcx, rdi                                  
+  0x180D3F7A0  call    0x1816e3710                                  ; -> System.Text.RegularExpressions.MatchCollection$$GetMatch
+
+180D3F7A5:
+  0x180D3F7A5  mov     rax, qword ptr [rdi + 0x18]               
+  0x180D3F7A9  test    rax, rax                                  
+  0x180D3F7AC  je      0x180d3ff68                               
+  0x180D3F7B2  cmp     dword ptr [rax + 0x18], r14d              
+  0x180D3F7B6  jg      0x180d3f7bd                               
+  0x180D3F7B8  mov     ecx, r14d                                 
+  0x180D3F7BB  jmp     0x180d3f805                               
+
+180D3F7BD:
+  0x180D3F7BD  mov     r8, qword ptr [rdi]                       
+  0x180D3F7C0  mov     rax, qword ptr [r8 + 0x368]               
+  0x180D3F7C7  mov     r8, qword ptr [r8 + 0x370]                
+  0x180D3F7CE  xor     edx, edx                                  
+  0x180D3F7D0  mov     rcx, rdi                                  
+  0x180D3F7D3  call    rax                                       
+  0x180D3F7D5  test    rax, rax                                  
+  0x180D3F7D8  je      0x180d3ff68                               
+  0x180D3F7DE  mov     esi, dword ptr [rax + 0x10]               
+  0x180D3F7E1  mov     rcx, qword ptr [rip + 0x20f1dd0]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D3F7E8  cmp     dword ptr [rcx + 0xe4], r14d              
+  0x180D3F7EF  jne     0x180d3f7f6                               
+  0x180D3F7F1  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3F7F6:
+  0x180D3F7F6  xor     edx, edx                                  
+  0x180D3F7F8  mov     rcx, r13                                  
+  0x180D3F7FB  call    0x180d40100                                  ; -> GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$GetIndexOfEndOfFirstLine
+  0x180D3F800  cmp     esi, eax                                  
+  0x180D3F802  setl    cl                                        
+
+180D3F805:
+  0x180D3F805  test    rbx, rbx                                  
+  0x180D3F808  je      0x180d3ff68                               
+  0x180D3F80E  test    cl, cl                                    
+  0x180D3F810  je      0x180d3f81d                               
+  0x180D3F812  movss   xmm8, dword ptr [rbx + 0x840]                ; rbx->RevealableTextModified._marginTopWhenFirstLineHasRuby
+  0x180D3F81B  jmp     0x180d3f821                               
+
+180D3F81D:
+  0x180D3F81D  xorps   xmm8, xmm8                                
+
+180D3F821:
+  0x180D3F821  mov     r8, qword ptr [rbx]                       
+  0x180D3F824  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D3F82B  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D3F832  mov     rdx, rbx                                  
+  0x180D3F835  lea     rcx, [rsp + 0x20]                         
+  0x180D3F83A  call    rax                                       
+  0x180D3F83C  movups  xmm7, xmmword ptr [rax]                   
+  0x180D3F83F  mov     r8, qword ptr [rbx]                       
+  0x180D3F842  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D3F849  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D3F850  mov     rdx, rbx                                  
+  0x180D3F853  lea     rcx, [rsp + 0x20]                         
+  0x180D3F858  call    rax                                       
+  0x180D3F85A  movups  xmm6, xmmword ptr [rax]                   
+  0x180D3F85D  mov     r8, qword ptr [rbx]                       
+  0x180D3F860  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D3F867  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D3F86E  mov     rdx, rbx                                  
+  0x180D3F871  lea     rcx, [rsp + 0x20]                         
+  0x180D3F876  call    rax                                       
+  0x180D3F878  shufps  xmm6, xmm6, 0xaa                          
+  0x180D3F87C  movss   xmm0, dword ptr [rax + 0xc]               
+  0x180D3F881  mov     r8, qword ptr [rbx]                       
+  0x180D3F884  shufps  xmm7, xmm7, 0xe1                          
+  0x180D3F888  movss   xmm7, xmm8                                
+  0x180D3F88D  shufps  xmm7, xmm7, 0xc6                          
+  0x180D3F891  movss   xmm7, xmm6                                
+  0x180D3F895  shufps  xmm7, xmm7, 0x27                          
+  0x180D3F899  movss   xmm7, xmm0                                
+  0x180D3F89D  shufps  xmm7, xmm7, 0x39                          
+  0x180D3F8A1  movaps  xmmword ptr [rsp + 0x20], xmm7            
+  0x180D3F8A6  movdqa  xmmword ptr [rsp + 0x20], xmm7            
+  0x180D3F8AC  mov     rax, qword ptr [r8 + 0x5d8]               
+  0x180D3F8B3  mov     r8, qword ptr [r8 + 0x5e0]                
+  0x180D3F8BA  lea     rdx, [rsp + 0x20]                         
+  0x180D3F8BF  mov     rcx, rbx                                  
+  0x180D3F8C2  call    rax                                       
+  0x180D3F8C4  mov     esi, r14d                                 
+  0x180D3F8C7  mov     dword ptr [rsp + 0x118], r14d             
+  0x180D3F8CF  mov     rcx, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3F8D6  test    rcx, rcx                                  
+  0x180D3F8D9  je      0x180d3ff68                               
+  0x180D3F8DF  xor     r8d, r8d                                  
+  0x180D3F8E2  xor     edx, edx                                  
+  0x180D3F8E4  call    0x180e346f0                                  ; -> System.Text.StringBuilder$$set_Length
+  0x180D3F8E9  xor     edx, edx                                  
+  0x180D3F8EB  mov     rcx, rdi                                  
+  0x180D3F8EE  call    0x1816e35d0                                  ; -> System.Text.RegularExpressions.MatchCollection$$GetEnumerator
+  0x180D3F8F3  mov     qword ptr [rsp + 0x30], rax               
+  0x180D3F8F8  mov     qword ptr [rsp + 0x48], r14               
+  0x180D3F8FD  lea     r12, [rsp + 0x30]                         
+  0x180D3F902  mov     qword ptr [rsp + 0x50], r12               
+  0x180D3F907  lea     r15, [rsp + 0x40]                         
+  0x180D3F90C  mov     qword ptr [rsp + 0x58], r15               
+  0x180D3F911  movss   xmm9, dword ptr [rip + 0x1da32aa]            ; data_2AE2BC4
+  0x180D3F91A  movss   xmm10, dword ptr [rip + 0x1da2e05]           ; data_2AE2728
+  0x180D3F923  nop     dword ptr [rax]                           
+  0x180D3F927  nop     word ptr [rax + rax]                      
+
+180D3F930:
+  0x180D3F930  mov     r8, qword ptr [rsp + 0x30]                
+  0x180D3F935  test    r8, r8                                    
+  0x180D3F938  je      0x180d3fffe                               
+  0x180D3F93E  xor     ecx, ecx                                  
+  0x180D3F940  mov     rdx, qword ptr [rip + 0x21122d9]             ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180D3F947  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3F94C  test    al, al                                    
+  0x180D3F94E  je      0x180d3fdee                               
+  0x180D3F954  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180D3F959  test    rdi, rdi                                  
+  0x180D3F95C  je      0x180d3fff9                               
+  0x180D3F962  mov     r9, qword ptr [rip + 0x21122b7]              ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180D3F969  mov     r10, qword ptr [rdi]                      
+  0x180D3F96C  movzx   ecx, r14w                                 
+  0x180D3F970  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180D3F978  cmp     r14w, dx                                  
+  0x180D3F97C  jae     0x180d3f9a4                               
+  0x180D3F97E  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180D3F985  nop     word ptr [rax + rax]                      
+
+180D3F990:
+  0x180D3F990  movzx   eax, cx                                   
+  0x180D3F993  add     rax, rax                                  
+  0x180D3F996  cmp     qword ptr [r8 + rax*8], r9                
+  0x180D3F99A  je      0x180d3f9d9                               
+  0x180D3F99C  inc     cx                                        
+  0x180D3F99F  cmp     cx, dx                                    
+  0x180D3F9A2  jb      0x180d3f990                               
+
+180D3F9A4:
+  0x180D3F9A4  mov     r8d, 1                                    
+  0x180D3F9AA  mov     rdx, r9                                   
+  0x180D3F9AD  mov     rcx, rdi                                  
+  0x180D3F9B0  call    0x180243a20                                  ; resolve interface method slot
+  0x180D3F9B5  mov     rdx, rax                                  
+
+180D3F9B8:
+  0x180D3F9B8  mov     rax, qword ptr [rdx]                      
+  0x180D3F9BB  mov     rdx, qword ptr [rdx + 8]                  
+  0x180D3F9BF  mov     rcx, rdi                                  
+  0x180D3F9C2  call    rax                                       
+  0x180D3F9C4  mov     rdi, rax                                  
+  0x180D3F9C7  mov     rdx, qword ptr [rip + 0x20f6ffa]             ; TYPE System.Text.RegularExpressions.Match_TypeInfo
+  0x180D3F9CE  test    rax, rax                                  
+  0x180D3F9D1  je      0x180d3ff6e                               
+  0x180D3F9D7  jmp     0x180d3f9f9                               
+
+180D3F9D9:
+  0x180D3F9D9  movzx   ecx, cx                                   
+  0x180D3F9DC  add     rcx, rcx                                  
+  0x180D3F9DF  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x180D3F9E4  inc     ecx                                       
+  0x180D3F9E6  movsxd  rdx, ecx                                  
+  0x180D3F9E9  shl     rdx, 4                                    
+  0x180D3F9ED  add     rdx, 0x138                                
+  0x180D3F9F4  add     rdx, r10                                  
+  0x180D3F9F7  jmp     0x180d3f9b8                               
+
+180D3F9F9:
+  0x180D3F9F9  mov     r8, qword ptr [rax]                       
+  0x180D3F9FC  movzx   eax, byte ptr [rdx + 0x130]               
+  0x180D3FA03  cmp     byte ptr [r8 + 0x130], al                 
+  0x180D3FA0A  jb      0x180d3fff1                               
+  0x180D3FA10  movzx   ecx, al                                   
+  0x180D3FA13  mov     rax, qword ptr [r8 + 0xc8]                
+  0x180D3FA1A  cmp     qword ptr [rax + rcx*8 - 8], rdx          
+  0x180D3FA1F  jne     0x180d3fff1                               
+  0x180D3FA25  mov     rax, qword ptr [r8 + 0x188]               
+  0x180D3FA2C  mov     rdx, qword ptr [r8 + 0x190]               
+  0x180D3FA33  mov     rcx, rdi                                  
+  0x180D3FA36  call    rax                                       
+  0x180D3FA38  test    rax, rax                                  
+  0x180D3FA3B  je      0x180d3ffec                               
+  0x180D3FA41  mov     rax, qword ptr [rax + 0x10]               
+  0x180D3FA45  test    rax, rax                                  
+  0x180D3FA48  je      0x180d3ffe7                               
+  0x180D3FA4E  mov     rax, qword ptr [rax + 0x68]               
+  0x180D3FA52  test    rax, rax                                  
+  0x180D3FA55  je      0x180d3ffe2                               
+  0x180D3FA5B  cmp     dword ptr [rax + 0x18], 3                 
+  0x180D3FA5F  jne     0x180d3f930                               
+  0x180D3FA65  mov     rdx, qword ptr [rdi]                      
+  0x180D3FA68  mov     rax, qword ptr [rdx + 0x188]              
+  0x180D3FA6F  mov     rdx, qword ptr [rdx + 0x190]              
+  0x180D3FA76  mov     rcx, rdi                                  
+  0x180D3FA79  call    rax                                       
+  0x180D3FA7B  test    rax, rax                                  
+  0x180D3FA7E  je      0x180d3ffdd                               
+  0x180D3FA84  xor     r8d, r8d                                  
+  0x180D3FA87  mov     edx, 1                                    
+  0x180D3FA8C  mov     rcx, rax                                  
+  0x180D3FA8F  call    0x1816e0d90                                  ; -> System.Text.RegularExpressions.GroupCollection$$GetGroup
+  0x180D3FA94  test    rax, rax                                  
+  0x180D3FA97  je      0x180d3ffd8                               
+  0x180D3FA9D  mov     rdx, qword ptr [rax]                      
+  0x180D3FAA0  mov     r8, qword ptr [rdx + 0x168]               
+  0x180D3FAA7  mov     rdx, qword ptr [rdx + 0x170]              
+  0x180D3FAAE  mov     rcx, rax                                  
+  0x180D3FAB1  call    r8                                        
+  0x180D3FAB4  mov     r12, rax                                  
+  0x180D3FAB7  mov     rdx, qword ptr [rdi]                      
+  0x180D3FABA  mov     r8, qword ptr [rdx + 0x188]               
+  0x180D3FAC1  mov     rdx, qword ptr [rdx + 0x190]              
+  0x180D3FAC8  mov     rcx, rdi                                  
+  0x180D3FACB  call    r8                                        
+  0x180D3FACE  test    rax, rax                                  
+  0x180D3FAD1  je      0x180d3ffd3                               
+  0x180D3FAD7  xor     r8d, r8d                                  
+  0x180D3FADA  mov     edx, 2                                    
+  0x180D3FADF  mov     rcx, rax                                  
+  0x180D3FAE2  call    0x1816e0d90                                  ; -> System.Text.RegularExpressions.GroupCollection$$GetGroup
+  0x180D3FAE7  test    rax, rax                                  
+  0x180D3FAEA  je      0x180d3ffce                               
+  0x180D3FAF0  mov     rdx, qword ptr [rax]                      
+  0x180D3FAF3  mov     r8, qword ptr [rdx + 0x168]               
+  0x180D3FAFA  mov     rdx, qword ptr [rdx + 0x170]              
+  0x180D3FB01  mov     rcx, rax                                  
+  0x180D3FB04  call    r8                                        
+  0x180D3FB07  mov     r15, rax                                  
+  0x180D3FB0A  xor     r8d, r8d                                  
+  0x180D3FB0D  mov     rdx, rax                                  
+  0x180D3FB10  mov     rcx, rbx                                  
+  0x180D3FB13  call    0x181f074d0                                  ; -> TMPro.TMP_Text$$GetPreferredValues
+  0x180D3FB18  mov     qword ptr [rsp + 0x20], rax               
+  0x180D3FB1D  mov     rdx, qword ptr [rbx]                      
+  0x180D3FB20  mov     r8, qword ptr [rdx + 0xa58]               
+  0x180D3FB27  mov     rdx, qword ptr [rdx + 0xa60]              
+  0x180D3FB2E  mov     rcx, rbx                                  
+  0x180D3FB31  call    r8                                        
+  0x180D3FB34  mulss   xmm0, xmm9                                
+  0x180D3FB39  movss   dword ptr [rsp + 0x38], xmm0              
+  0x180D3FB3F  lea     rdx, [rsp + 0x38]                         
+  0x180D3FB44  mov     rcx, qword ptr [rip + 0x2397b7d]             ; data_30D76C8
+  0x180D3FB4B  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x180D3FB50  xor     r9d, r9d                                  
+  0x180D3FB53  mov     r8, r12                                   
+  0x180D3FB56  mov     rdx, rax                                  
+  0x180D3FB59  mov     rcx, qword ptr [rip + 0x20f1a50]             ; STR '<size={0}%>{1}</size>'
+  0x180D3FB60  call    0x180e26f10                                  ; -> System.String$$Format
+  0x180D3FB65  xor     r8d, r8d                                  
+  0x180D3FB68  mov     rdx, rax                                  
+  0x180D3FB6B  mov     rcx, rbx                                  
+  0x180D3FB6E  call    0x181f074d0                                  ; -> TMPro.TMP_Text$$GetPreferredValues
+  0x180D3FB73  mov     qword ptr [rsp + 0x38], rax               
+  0x180D3FB78  mov     rax, qword ptr [rbx + 0x100]              
+  0x180D3FB7F  test    rax, rax                                  
+  0x180D3FB82  je      0x180d3ffc9                               
+  0x180D3FB88  movss   xmm7, dword ptr [rbx + 0x214]             
+  0x180D3FB90  divss   xmm7, xmm9                                
+  0x180D3FB95  mulss   xmm7, dword ptr [rax + 0x1a4]             
+  0x180D3FB9D  movss   xmm0, dword ptr [rsp + 0x38]              
+  0x180D3FBA3  movaps  xmm6, xmm0                                
+  0x180D3FBA6  movss   xmm8, dword ptr [rsp + 0x20]              
+  0x180D3FBAD  addss   xmm6, xmm8                                
+  0x180D3FBB2  mulss   xmm6, xmm10                               
+  0x180D3FBB7  subss   xmm8, xmm0                                
+  0x180D3FBBC  mulss   xmm8, xmm10                               
+  0x180D3FBC1  mov     r14, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3FBC8  mov     r8d, dword ptr [rdi + 0x10]               
+  0x180D3FBCC  test    r13, r13                                  
+  0x180D3FBCF  je      0x180d3ffc4                               
+  0x180D3FBD5  sub     r8d, esi                                  
+  0x180D3FBD8  xor     r9d, r9d                                  
+  0x180D3FBDB  mov     edx, esi                                  
+  0x180D3FBDD  mov     rcx, r13                                  
+  0x180D3FBE0  call    0x180e2ac10                                  ; -> System.String$$Substring
+  0x180D3FBE5  test    r14, r14                                  
+  0x180D3FBE8  je      0x180d3ffbf                               
+  0x180D3FBEE  xor     r8d, r8d                                  
+  0x180D3FBF1  mov     rdx, rax                                  
+  0x180D3FBF4  mov     rcx, r14                                  
+  0x180D3FBF7  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FBFC  mov     rdx, qword ptr [rbx]                      
+  0x180D3FBFF  mov     rax, qword ptr [rdx + 0xa68]              
+  0x180D3FC06  mov     rdx, qword ptr [rdx + 0xa70]              
+  0x180D3FC0D  mov     rcx, rbx                                  
+  0x180D3FC10  call    rax                                       
+  0x180D3FC12  test    al, al                                    
+  0x180D3FC14  jne     0x180d3fc35                               
+  0x180D3FC16  mov     rcx, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3FC1D  test    rcx, rcx                                  
+  0x180D3FC20  je      0x180d3ff74                               
+  0x180D3FC26  xor     r8d, r8d                                  
+  0x180D3FC29  mov     rdx, qword ptr [rip + 0x20f6d78]             ; STR '<line-height=100%>'
+  0x180D3FC30  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+
+180D3FC35:
+  0x180D3FC35  mov     rcx, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3FC3C  test    rcx, rcx                                  
+  0x180D3FC3F  je      0x180d3ffba                               
+  0x180D3FC45  xor     r8d, r8d                                  
+  0x180D3FC48  mov     rdx, r15                                  
+  0x180D3FC4B  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FC50  test    rax, rax                                  
+  0x180D3FC53  je      0x180d3ffb5                               
+  0x180D3FC59  xor     r8d, r8d                                  
+  0x180D3FC5C  mov     rdx, qword ptr [rip + 0x20f193d]             ; STR '<space=-'
+  0x180D3FC63  mov     rcx, rax                                  
+  0x180D3FC66  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FC6B  test    rax, rax                                  
+  0x180D3FC6E  je      0x180d3ffb0                               
+  0x180D3FC74  addss   xmm6, xmm7                                
+  0x180D3FC78  xor     r8d, r8d                                  
+  0x180D3FC7B  movaps  xmm1, xmm6                                
+  0x180D3FC7E  mov     rcx, rax                                  
+  0x180D3FC81  call    0x180e35cc0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FC86  test    rax, rax                                  
+  0x180D3FC89  je      0x180d3ffab                               
+  0x180D3FC8F  xor     r8d, r8d                                  
+  0x180D3FC92  mov     rdx, qword ptr [rip + 0x20f18ff]             ; STR '><voffset='
+  0x180D3FC99  mov     rcx, rax                                  
+  0x180D3FC9C  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FCA1  mov     rsi, rax                                  
+  0x180D3FCA4  mov     rdx, qword ptr [rbx]                      
+  0x180D3FCA7  mov     r8, qword ptr [rdx + 0xa48]               
+  0x180D3FCAE  mov     rdx, qword ptr [rdx + 0xa50]              
+  0x180D3FCB5  mov     rcx, rbx                                  
+  0x180D3FCB8  call    r8                                        
+  0x180D3FCBB  test    rsi, rsi                                  
+  0x180D3FCBE  je      0x180d3ffa6                               
+  0x180D3FCC4  xor     r8d, r8d                                  
+  0x180D3FCC7  mov     rdx, rax                                  
+  0x180D3FCCA  mov     rcx, rsi                                  
+  0x180D3FCCD  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FCD2  test    rax, rax                                  
+  0x180D3FCD5  je      0x180d3ffa1                               
+  0x180D3FCDB  xor     r8d, r8d                                  
+  0x180D3FCDE  mov     rdx, qword ptr [rip + 0x20f18c3]             ; STR '><size='
+  0x180D3FCE5  mov     rcx, rax                                  
+  0x180D3FCE8  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FCED  mov     rsi, rax                                  
+  0x180D3FCF0  mov     rdx, qword ptr [rbx]                      
+  0x180D3FCF3  mov     r8, qword ptr [rdx + 0xa58]               
+  0x180D3FCFA  mov     rdx, qword ptr [rdx + 0xa60]              
+  0x180D3FD01  mov     rcx, rbx                                  
+  0x180D3FD04  call    r8                                        
+  0x180D3FD07  test    rsi, rsi                                  
+  0x180D3FD0A  je      0x180d3ff9c                               
+  0x180D3FD10  mulss   xmm0, xmm9                                
+  0x180D3FD15  xor     r8d, r8d                                  
+  0x180D3FD18  movaps  xmm1, xmm0                                
+  0x180D3FD1B  mov     rcx, rsi                                  
+  0x180D3FD1E  call    0x180e35cc0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FD23  test    rax, rax                                  
+  0x180D3FD26  je      0x180d3ff97                               
+  0x180D3FD2C  xor     r8d, r8d                                  
+  0x180D3FD2F  mov     rdx, qword ptr [rip + 0x20f1852]             ; STR '%><link="'
+  0x180D3FD36  mov     rcx, rax                                  
+  0x180D3FD39  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FD3E  test    rax, rax                                  
+  0x180D3FD41  je      0x180d3ff92                               
+  0x180D3FD47  xor     r8d, r8d                                  
+  0x180D3FD4A  mov     rdx, qword ptr [rip + 0x20f6c47]             ; STR 'NANINOVEL.RUBY'
+  0x180D3FD51  mov     rcx, rax                                  
+  0x180D3FD54  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FD59  test    rax, rax                                  
+  0x180D3FD5C  je      0x180d3ff8d                               
+  0x180D3FD62  xor     r8d, r8d                                  
+  0x180D3FD65  mov     rdx, qword ptr [rip + 0x21197dc]             ; STR '">'
+  0x180D3FD6C  mov     rcx, rax                                  
+  0x180D3FD6F  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FD74  test    rax, rax                                  
+  0x180D3FD77  je      0x180d3ff88                               
+  0x180D3FD7D  xor     r8d, r8d                                  
+  0x180D3FD80  mov     rdx, r12                                  
+  0x180D3FD83  mov     rcx, rax                                  
+  0x180D3FD86  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FD8B  test    rax, rax                                  
+  0x180D3FD8E  je      0x180d3ff83                               
+  0x180D3FD94  xor     r8d, r8d                                  
+  0x180D3FD97  mov     rdx, qword ptr [rip + 0x20f17f2]             ; STR '</link></size></voffset><space='
+  0x180D3FD9E  mov     rcx, rax                                  
+  0x180D3FDA1  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FDA6  test    rax, rax                                  
+  0x180D3FDA9  je      0x180d3ff7e                               
+  0x180D3FDAF  xor     r8d, r8d                                  
+  0x180D3FDB2  movaps  xmm1, xmm8                                
+  0x180D3FDB6  mov     rcx, rax                                  
+  0x180D3FDB9  call    0x180e35cc0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FDBE  test    rax, rax                                  
+  0x180D3FDC1  je      0x180d3ff79                               
+  0x180D3FDC7  xor     r8d, r8d                                  
+  0x180D3FDCA  mov     rdx, qword ptr [rip + 0x211c86f]             ; STR '>'
+  0x180D3FDD1  mov     rcx, rax                                  
+  0x180D3FDD4  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FDD9  mov     esi, dword ptr [rdi + 0x14]               
+  0x180D3FDDC  add     esi, dword ptr [rdi + 0x10]               
+  0x180D3FDDF  mov     dword ptr [rsp + 0x118], esi              
+  0x180D3FDE6  xor     r14d, r14d                                
+  0x180D3FDE9  jmp     0x180d3f930                               
+
+180D3FDEE:
+  0x180D3FDEE  mov     rdx, qword ptr [rip + 0x211235b]             ; TYPE System.IDisposable_TypeInfo
+  0x180D3FDF5  lea     rcx, [rsp + 0x30]                         
+  0x180D3FDFA  mov     rcx, qword ptr [rcx]                      
+  0x180D3FDFD  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D3FE02  lea     rcx, [rsp + 0x40]                         
+  0x180D3FE07  mov     qword ptr [rcx], rax                      
+  0x180D3FE0A  test    rax, rax                                  
+  0x180D3FE0D  je      0x180d3fe20                               
+  0x180D3FE0F  xor     ecx, ecx                                  
+  0x180D3FE11  mov     r8, rax                                   
+  0x180D3FE14  mov     rdx, qword ptr [rip + 0x2112335]             ; TYPE System.IDisposable_TypeInfo
+  0x180D3FE1B  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D3FE20:
+  0x180D3FE20  jmp     0x180d3fe51                               
+  0x180D3FE22  lea     rcx, [rsp + 0x50]                         
+  0x180D3FE27  call    0x180490050                                  ; -> sub_490050 (runtime/helper)
+  0x180D3FE2C  mov     rcx, qword ptr [rsp + 0x48]               
+  0x180D3FE31  test    rcx, rcx                                  
+  0x180D3FE34  jne     0x180d40004                               
+  0x180D3FE3A  mov     r13, qword ptr [rsp + 0x108]              
+  0x180D3FE42  mov     rbx, qword ptr [rsp + 0x100]              
+  0x180D3FE4A  mov     esi, dword ptr [rsp + 0x118]              
+
+180D3FE51:
+  0x180D3FE51  mov     rdi, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3FE58  test    r13, r13                                  
+  0x180D3FE5B  je      0x180d3ff68                               
+  0x180D3FE61  mov     r8d, dword ptr [r13 + 0x10]               
+  0x180D3FE65  sub     r8d, esi                                  
+  0x180D3FE68  xor     r9d, r9d                                  
+  0x180D3FE6B  mov     edx, esi                                  
+  0x180D3FE6D  mov     rcx, r13                                  
+  0x180D3FE70  call    0x180e2ac10                                  ; -> System.String$$Substring
+  0x180D3FE75  test    rdi, rdi                                  
+  0x180D3FE78  je      0x180d3ff68                               
+  0x180D3FE7E  xor     r8d, r8d                                  
+  0x180D3FE81  mov     rdx, rax                                  
+  0x180D3FE84  mov     rcx, rdi                                  
+  0x180D3FE87  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180D3FE8C  mov     rcx, qword ptr [rbx + 0x848]                 ; rbx->RevealableTextModified._stringBuilder
+  0x180D3FE93  test    rcx, rcx                                  
+  0x180D3FE96  je      0x180d3ff68                               
+  0x180D3FE9C  mov     rdx, qword ptr [rcx]                      
+  0x180D3FE9F  mov     rax, qword ptr [rdx + 0x168]              
+  0x180D3FEA6  mov     rdx, qword ptr [rdx + 0x170]              
+  0x180D3FEAD  call    rax                                       
+  0x180D3FEAF  mov     rbx, rax                                  
+  0x180D3FEB2  mov     rcx, qword ptr [rip + 0x20f16ff]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D3FEB9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D3FEC0  jne     0x180d3fec7                               
+  0x180D3FEC2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3FEC7:
+  0x180D3FEC7  cmp     byte ptr [rip + 0x239d508], 0                ; data_30DD3D6
+  0x180D3FECE  jne     0x180d3ff0a                               
+  0x180D3FED0  lea     rcx, [rip + 0x2111801]                       ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D3FED7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3FEDC  lock or dword ptr [rsp], 0                        
+  0x180D3FEE1  lea     rcx, [rip + 0x20f1690]                       ; STR '$1<line-height=100%>'
+  0x180D3FEE8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3FEED  lock or dword ptr [rsp], 0                        
+  0x180D3FEF2  lea     rcx, [rip + 0x20f1687]                       ; STR '(^|<br>)(?!<line-height=100%>)'
+  0x180D3FEF9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3FEFE  lock or dword ptr [rsp], 0                        
+  0x180D3FF03  mov     byte ptr [rip + 0x239d4cc], 1                ; data_30DD3D6
+
+180D3FF0A:
+  0x180D3FF0A  mov     rcx, qword ptr [rip + 0x21117c7]             ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D3FF11  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D3FF18  jne     0x180d3ff1f                               
+  0x180D3FF1A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3FF1F:
+  0x180D3FF1F  xor     r9d, r9d                                  
+  0x180D3FF22  mov     r8, qword ptr [rip + 0x20f164f]              ; STR '$1<line-height=100%>'
+  0x180D3FF29  mov     rdx, qword ptr [rip + 0x20f1650]             ; STR '(^|<br>)(?!<line-height=100%>)'
+  0x180D3FF30  mov     rcx, rbx                                  
+  0x180D3FF33  call    0x1816e60b0                                  ; -> System.Text.RegularExpressions.Regex$$Replace
+  0x180D3FF38  lea     r11, [rsp + 0xc0]                         
+  0x180D3FF40  movaps  xmm6, xmmword ptr [r11 - 0x10]            
+  0x180D3FF45  movaps  xmm7, xmmword ptr [r11 - 0x20]            
+  0x180D3FF4A  movaps  xmm8, xmmword ptr [r11 - 0x30]            
+  0x180D3FF4F  movaps  xmm9, xmmword ptr [r11 - 0x40]            
+  0x180D3FF54  movaps  xmm10, xmmword ptr [r11 - 0x50]           
+  0x180D3FF59  mov     rsp, r11                                  
+  0x180D3FF5C  pop     r15                                       
+  0x180D3FF5E  pop     r14                                       
+  0x180D3FF60  pop     r13                                       
+  0x180D3FF62  pop     r12                                       
+  0x180D3FF64  pop     rdi                                       
+  0x180D3FF65  pop     rsi                                       
+  0x180D3FF66  pop     rbx                                       
+  0x180D3FF67  ret                                               
+
+180D3FF68:
+  0x180D3FF68  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D3FF6D  nop                                               
+
+180D3FF6E:
+  0x180D3FF6E  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D3FF73  nop                                               
+
+180D3FF74:
+  0x180D3FF74  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF79:
+  0x180D3FF79  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF7E:
+  0x180D3FF7E  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF83:
+  0x180D3FF83  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF88:
+  0x180D3FF88  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF8D:
+  0x180D3FF8D  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF92:
+  0x180D3FF92  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF97:
+  0x180D3FF97  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FF9C:
+  0x180D3FF9C  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFA1:
+  0x180D3FFA1  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFA6:
+  0x180D3FFA6  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFAB:
+  0x180D3FFAB  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFB0:
+  0x180D3FFB0  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFB5:
+  0x180D3FFB5  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFBA:
+  0x180D3FFBA  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFBF:
+  0x180D3FFBF  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFC4:
+  0x180D3FFC4  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFC9:
+  0x180D3FFC9  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFCE:
+  0x180D3FFCE  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFD3:
+  0x180D3FFD3  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFD8:
+  0x180D3FFD8  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFDD:
+  0x180D3FFDD  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFE2:
+  0x180D3FFE2  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFE7:
+  0x180D3FFE7  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFEC:
+  0x180D3FFEC  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFF1:
+  0x180D3FFF1  mov     rcx, rdi                                  
+  0x180D3FFF4  call    0x180246ec0                                  ; -> sub_246EC0 (runtime/helper)
+
+180D3FFF9:
+  0x180D3FFF9  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3FFFE:
+  0x180D3FFFE  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D40003  nop                                               
+
+180D40004:
+  0x180D40004  call    0x180246720                                  ; -> sub_246720 (runtime/helper)

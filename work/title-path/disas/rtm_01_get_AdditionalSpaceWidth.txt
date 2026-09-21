@@ -1,0 +1,22 @@
+====================================================================================================
+FUNCTION RVA 0xD3F5A0  VA 0x180D3F5A0  size 0x32 (50 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$get_AdditionalSpaceWidth
+  csig   : float GigaCreation_NaninovelExtender_Ui_RevealableTextModified__get_AdditionalSpaceWidth (GigaCreation_NaninovelExtender_Ui_RevealableTextModified_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: private float get_AdditionalSpaceWidth()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D3F5A0  sub     rsp, 0x28                                 
+  0x180D3F5A4  mov     rax, qword ptr [rcx + 0x100]              
+  0x180D3F5AB  test    rax, rax                                  
+  0x180D3F5AE  je      0x180d3f5cd                               
+  0x180D3F5B0  movss   xmm0, dword ptr [rcx + 0x214]             
+  0x180D3F5B8  divss   xmm0, dword ptr [rip + 0x1da3604]            ; data_2AE2BC4
+  0x180D3F5C0  mulss   xmm0, dword ptr [rax + 0x1a4]             
+  0x180D3F5C8  add     rsp, 0x28                                 
+  0x180D3F5CC  ret                                               
+
+180D3F5CD:
+  0x180D3F5CD  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,116 @@
+====================================================================================================
+FUNCTION RVA 0xD40690  VA 0x180D40690  size 0x1A6 (422 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$OnEnable
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified__OnEnable (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: protected override void OnEnable()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D40690  mov     qword ptr [rsp + 8], rbx                  
+  0x180D40695  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D4069A  push    rdi                                       
+  0x180D4069B  sub     rsp, 0x20                                 
+  0x180D4069F  cmp     byte ptr [rip + 0x239cd35], 0                ; data_30DD3DB
+  0x180D406A6  mov     rbx, rcx                                  
+  0x180D406A9  jne     0x180d406f6                               
+  0x180D406AB  lea     rcx, [rip + 0x2111bbe]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180D406B2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D406B7  lock or dword ptr [rsp], 0                        
+  0x180D406BC  lea     rcx, [rip + 0x2110f5d]                       ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D406C3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D406C8  lock or dword ptr [rsp], 0                        
+  0x180D406CD  lea     rcx, [rip + 0x20f0e94]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.HandleAutoModeChanged() => GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$HandleAutoModeChanged
+  0x180D406D4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D406D9  lock or dword ptr [rsp], 0                        
+  0x180D406DE  lea     rcx, [rip + 0x20f0e8b]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.HandleSkipModeChanged() => GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$HandleSkipModeChanged
+  0x180D406E5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D406EA  lock or dword ptr [rsp], 0                        
+  0x180D406EF  mov     byte ptr [rip + 0x239cce5], 1                ; data_30DD3DB
+
+180D406F6:
+  0x180D406F6  cmp     byte ptr [rip + 0x239b2b0], 0                ; data_30DB9AD
+  0x180D406FD  jne     0x180d40728                               
+  0x180D406FF  lea     rcx, [rip + 0x20f0b02]                       ; TYPE System.Action<CharacterAvatarChangedArgs>_TypeInfo
+  0x180D40706  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4070B  lock or dword ptr [rsp], 0                        
+  0x180D40710  lea     rcx, [rip + 0x2113fd9]                       ; TYPE Naninovel.ICharacterManager_TypeInfo
+  0x180D40717  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4071C  lock or dword ptr [rsp], 0                        
+  0x180D40721  mov     byte ptr [rip + 0x239b285], 1                ; data_30DB9AD
+
+180D40728:
+  0x180D40728  xor     edx, edx                                  
+  0x180D4072A  mov     rcx, rbx                                  
+  0x180D4072D  call    0x180619770                                  ; -> Naninovel.UI.CustomUI$$OnEnable
+  0x180D40732  mov     rdx, qword ptr [rbx]                      
+  0x180D40735  mov     rcx, rbx                                  
+  0x180D40738  mov     rax, qword ptr [rdx + 0x7b8]              
+  0x180D4073F  mov     rdx, qword ptr [rdx + 0x7c0]              
+  0x180D40746  call    rax                                       
+  0x180D40748  mov     rcx, qword ptr [rip + 0x20f0ab9]             ; TYPE System.Action<CharacterAvatarChangedArgs>_TypeInfo
+  0x180D4074F  mov     rdi, rax                                  
+  0x180D40752  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D40757  mov     r8, qword ptr [rbx]                       
+  0x180D4075A  xor     r9d, r9d                                  
+  0x180D4075D  mov     rdx, rbx                                  
+  0x180D40760  mov     rcx, rax                                  
+  0x180D40763  mov     rsi, rax                                  
+  0x180D40766  mov     r8, qword ptr [r8 + 0x9a0]                
+  0x180D4076D  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D40772  test    rdi, rdi                                  
+  0x180D40775  je      0x180d40831                               
+  0x180D4077B  xor     ecx, ecx                                  
+  0x180D4077D  mov     r9, rsi                                   
+  0x180D40780  mov     r8, rdi                                   
+  0x180D40783  call    0x180021cd0                                  ; -> sub_21CD0 (runtime/helper)
+  0x180D40788  xor     edx, edx                                  
+  0x180D4078A  mov     rcx, rbx                                  
+  0x180D4078D  call    0x180d40520                                  ; -> GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$get_NaniScriptPlayer
+  0x180D40792  mov     rcx, qword ptr [rip + 0x2111ad7]             ; TYPE System.Action<bool>_TypeInfo
+  0x180D40799  mov     rdi, rax                                  
+  0x180D4079C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D407A1  mov     r8, qword ptr [rip + 0x20f0dc0]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.HandleAutoModeChanged() => GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$HandleAutoModeChanged
+  0x180D407A8  xor     r9d, r9d                                  
+  0x180D407AB  mov     rdx, rbx                                  
+  0x180D407AE  mov     rcx, rax                                  
+  0x180D407B1  mov     rsi, rax                                  
+  0x180D407B4  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D407B9  test    rdi, rdi                                  
+  0x180D407BC  je      0x180d40831                               
+  0x180D407BE  mov     rdx, qword ptr [rip + 0x2110e5b]             ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D407C5  mov     ecx, 0xa                                  
+  0x180D407CA  mov     r9, rsi                                   
+  0x180D407CD  mov     r8, rdi                                   
+  0x180D407D0  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180D407D5  xor     edx, edx                                  
+  0x180D407D7  mov     rcx, rbx                                  
+  0x180D407DA  call    0x180d40520                                  ; -> GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$get_NaniScriptPlayer
+  0x180D407DF  mov     rcx, qword ptr [rip + 0x2111a8a]             ; TYPE System.Action<bool>_TypeInfo
+  0x180D407E6  mov     rdi, rax                                  
+  0x180D407E9  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D407EE  mov     r8, qword ptr [rip + 0x20f0d7b]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.HandleSkipModeChanged() => GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$HandleSkipModeChanged
+  0x180D407F5  xor     r9d, r9d                                  
+  0x180D407F8  mov     rdx, rbx                                  
+  0x180D407FB  mov     rcx, rax                                  
+  0x180D407FE  mov     rsi, rax                                  
+  0x180D40801  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D40806  test    rdi, rdi                                  
+  0x180D40809  je      0x180d40831                               
+  0x180D4080B  mov     rdx, qword ptr [rip + 0x2110e0e]             ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D40812  mov     ecx, 8                                    
+  0x180D40817  mov     r9, rsi                                   
+  0x180D4081A  mov     r8, rdi                                   
+  0x180D4081D  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D40822  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D40827  add     rsp, 0x20                                 
+  0x180D4082B  pop     rdi                                       
+  0x180D4082C  jmp     0x180003140                               
+
+180D40831:
+  0x180D40831  call    0x180246730                                  ; THROW NullReferenceException

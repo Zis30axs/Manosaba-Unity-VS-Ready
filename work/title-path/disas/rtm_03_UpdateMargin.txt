@@ -1,0 +1,68 @@
+====================================================================================================
+FUNCTION RVA 0xD40010  VA 0x180D40010  size 0xE5 (229 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$UpdateMargin
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextModified__UpdateMargin (GigaCreation_NaninovelExtender_Ui_RevealableTextModified_o* __this, bool hasRubyInFirstLine, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: private void UpdateMargin(bool hasRubyInFirstLine)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D40010  push    rbx                                       
+  0x180D40012  sub     rsp, 0x60                                 
+  0x180D40016  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D4001B  mov     rbx, rcx                                  
+  0x180D4001E  movaps  xmmword ptr [rsp + 0x40], xmm7            
+  0x180D40023  movaps  xmmword ptr [rsp + 0x30], xmm8            
+  0x180D40029  test    dl, dl                                    
+  0x180D4002B  je      0x180d40038                               
+  0x180D4002D  movss   xmm8, dword ptr [rcx + 0x840]                ; rcx->RevealableTextModified._marginTopWhenFirstLineHasRuby
+  0x180D40036  jmp     0x180d4003c                               
+
+180D40038:
+  0x180D40038  xorps   xmm8, xmm8                                
+
+180D4003C:
+  0x180D4003C  mov     r8, qword ptr [rcx]                       
+  0x180D4003F  mov     rdx, rbx                                  
+  0x180D40042  lea     rcx, [rsp + 0x20]                         
+  0x180D40047  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D4004E  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D40055  call    rax                                       
+  0x180D40057  mov     r8, qword ptr [rbx]                       
+  0x180D4005A  lea     rcx, [rsp + 0x20]                         
+  0x180D4005F  mov     rdx, rbx                                  
+  0x180D40062  movups  xmm7, xmmword ptr [rax]                   
+  0x180D40065  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D4006C  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D40073  call    rax                                       
+  0x180D40075  mov     r8, qword ptr [rbx]                       
+  0x180D40078  lea     rcx, [rsp + 0x20]                         
+  0x180D4007D  mov     rdx, rbx                                  
+  0x180D40080  movups  xmm6, xmmword ptr [rax]                   
+  0x180D40083  mov     rax, qword ptr [r8 + 0x5c8]               
+  0x180D4008A  mov     r8, qword ptr [r8 + 0x5d0]                
+  0x180D40091  call    rax                                       
+  0x180D40093  mov     r8, qword ptr [rbx]                       
+  0x180D40096  lea     rdx, [rsp + 0x20]                         
+  0x180D4009B  shufps  xmm7, xmm7, 0xe1                          
+  0x180D4009F  mov     rcx, rbx                                  
+  0x180D400A2  movss   xmm7, xmm8                                
+  0x180D400A7  shufps  xmm6, xmm6, 0xaa                          
+  0x180D400AB  movss   xmm0, dword ptr [rax + 0xc]               
+  0x180D400B0  mov     rax, qword ptr [r8 + 0x5d8]               
+  0x180D400B7  mov     r8, qword ptr [r8 + 0x5e0]                
+  0x180D400BE  shufps  xmm7, xmm7, 0xc6                          
+  0x180D400C2  movss   xmm7, xmm6                                
+  0x180D400C6  shufps  xmm7, xmm7, 0x27                          
+  0x180D400CA  movss   xmm7, xmm0                                
+  0x180D400CE  shufps  xmm7, xmm7, 0x39                          
+  0x180D400D2  movaps  xmmword ptr [rsp + 0x20], xmm7            
+  0x180D400D7  movdqa  xmmword ptr [rsp + 0x20], xmm7            
+  0x180D400DD  call    rax                                       
+  0x180D400DF  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+  0x180D400E4  movaps  xmm7, xmmword ptr [rsp + 0x40]            
+  0x180D400E9  movaps  xmm8, xmmword ptr [rsp + 0x30]            
+  0x180D400EF  add     rsp, 0x60                                 
+  0x180D400F3  pop     rbx                                       
+  0x180D400F4  ret                                               

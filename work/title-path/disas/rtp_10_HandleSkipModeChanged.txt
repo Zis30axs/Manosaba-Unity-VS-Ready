@@ -1,0 +1,33 @@
+====================================================================================================
+FUNCTION RVA 0xD413E0  VA 0x180D413E0  size 0x32 (50 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$HandleSkipModeChanged
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified__HandleSkipModeChanged (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, bool enable, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: private void HandleSkipModeChanged(bool enable)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D413E0  sub     rsp, 0x28                                 
+  0x180D413E4  test    dl, dl                                    
+  0x180D413E6  je      0x180d413f2                               
+  0x180D413E8  movss   xmm1, dword ptr [rip + 0x1da1430]            ; data_2AE2820
+  0x180D413F0  jmp     0x180d413f5                               
+
+180D413F2:
+  0x180D413F2  xorps   xmm1, xmm1                                
+
+180D413F5:
+  0x180D413F5  mov     rcx, qword ptr [rcx + 0x1f0]                 ; rcx->RevealableTextPrinterPanelModified._skipModeIndicatorCanvasGroup
+  0x180D413FC  test    rcx, rcx                                  
+  0x180D413FF  je      0x180d4140d                               
+  0x180D41401  xor     r8d, r8d                                  
+  0x180D41404  add     rsp, 0x28                                 
+  0x180D41408  jmp     0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180D4140D:
+  0x180D4140D  call    0x180246730                                  ; THROW NullReferenceException

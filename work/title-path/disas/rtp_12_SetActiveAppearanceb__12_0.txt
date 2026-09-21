@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xD41420  VA 0x180D41420  size 0x3F (63 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$<SetActiveAppearance>b__12_0
+  csig   : bool GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified___SetActiveAppearance_b__12_0 (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, System_String_o* part, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: private bool <SetActiveAppearance>b__12_0(string part)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D41420  mov     r9, rdx                                   
+  0x180D41423  mov     rdx, qword ptr [rcx + 0x208]                 ; rcx->RevealableTextPrinterPanelModified._activeAppearance
+  0x180D4142A  cmp     r9, rdx                                   
+  0x180D4142D  je      0x180d4145c                               
+  0x180D4142F  test    r9, r9                                    
+  0x180D41432  je      0x180d41459                               
+  0x180D41434  test    rdx, rdx                                  
+  0x180D41437  je      0x180d41459                               
+  0x180D41439  mov     eax, dword ptr [rdx + 0x10]               
+  0x180D4143C  cmp     dword ptr [r9 + 0x10], eax                
+  0x180D41440  jne     0x180d41459                               
+  0x180D41442  movsxd  r8, dword ptr [r9 + 0x10]                 
+  0x180D41446  lea     rcx, [r9 + 0x14]                          
+  0x180D4144A  add     r8, r8                                    
+  0x180D4144D  add     rdx, 0x14                                 
+  0x180D41451  xor     r9d, r9d                                  
+  0x180D41454  jmp     0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+
+180D41459:
+  0x180D41459  xor     al, al                                    
+  0x180D4145B  ret                                               
+
+180D4145C:
+  0x180D4145C  mov     al, 1                                     
+  0x180D4145E  ret                                               

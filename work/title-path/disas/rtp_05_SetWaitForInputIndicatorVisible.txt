@@ -1,0 +1,90 @@
+====================================================================================================
+FUNCTION RVA 0xD40A10  VA 0x180D40A10  size 0x11F (287 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$SetWaitForInputIndicatorVisible
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified__SetWaitForInputIndicatorVisible (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, bool visible, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: public override void SetWaitForInputIndicatorVisible(bool visible)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D40A10  mov     qword ptr [rsp + 8], rbx                  
+  0x180D40A15  push    rdi                                       
+  0x180D40A16  sub     rsp, 0x20                                 
+  0x180D40A1A  cmp     byte ptr [rip + 0x239c9bc], 0                ; data_30DD3DD
+  0x180D40A21  movzx   edi, dl                                   
+  0x180D40A24  mov     rbx, rcx                                  
+  0x180D40A27  jne     0x180d40a52                               
+  0x180D40A29  lea     rcx, [rip + 0x20f5d90]                       ; TYPE Naninovel.UI.IInputIndicator_TypeInfo
+  0x180D40A30  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D40A35  lock or dword ptr [rsp], 0                        
+  0x180D40A3A  lea     rcx, [rip + 0x2110bdf]                       ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D40A41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D40A46  lock or dword ptr [rsp], 0                        
+  0x180D40A4B  mov     byte ptr [rip + 0x239c98b], 1                ; data_30DD3DD
+
+180D40A52:
+  0x180D40A52  mov     rcx, rbx                                  
+  0x180D40A55  test    dil, dil                                  
+  0x180D40A58  je      0x180d40af4                               
+  0x180D40A5E  xor     edx, edx                                  
+  0x180D40A60  call    0x180d40520                                  ; -> GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$get_NaniScriptPlayer
+  0x180D40A65  test    rax, rax                                  
+  0x180D40A68  je      0x180d40b2a                               
+  0x180D40A6E  mov     rdx, qword ptr [rip + 0x2110bab]             ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D40A75  mov     ecx, 0x11                                 
+  0x180D40A7A  mov     r8, rax                                   
+  0x180D40A7D  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D40A82  test    al, al                                    
+  0x180D40A84  jne     0x180d40ae9                               
+  0x180D40A86  mov     rdx, qword ptr [rbx]                      
+  0x180D40A89  mov     rcx, rbx                                  
+  0x180D40A8C  mov     rax, qword ptr [rdx + 0x8a8]              
+  0x180D40A93  mov     rdx, qword ptr [rdx + 0x8b0]              
+  0x180D40A9A  call    rax                                       
+  0x180D40A9C  test    rax, rax                                  
+  0x180D40A9F  je      0x180d40b2a                               
+  0x180D40AA5  mov     rdx, qword ptr [rip + 0x20f5d14]             ; TYPE Naninovel.UI.IInputIndicator_TypeInfo
+  0x180D40AAC  mov     ecx, 2                                    
+  0x180D40AB1  mov     r8, rax                                   
+  0x180D40AB4  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D40AB9  mov     rdx, qword ptr [rbx]                      
+  0x180D40ABC  mov     rcx, rbx                                  
+  0x180D40ABF  mov     rax, qword ptr [rdx + 0x8d8]              
+  0x180D40AC6  mov     rdx, qword ptr [rdx + 0x8e0]              
+  0x180D40ACD  call    rax                                       
+  0x180D40ACF  test    al, al                                    
+  0x180D40AD1  je      0x180d40ae9                               
+  0x180D40AD3  mov     rdx, qword ptr [rbx]                      
+  0x180D40AD6  mov     rcx, rbx                                  
+  0x180D40AD9  mov     rax, qword ptr [rdx + 0x948]              
+  0x180D40AE0  mov     rdx, qword ptr [rdx + 0x950]              
+  0x180D40AE7  call    rax                                       
+
+180D40AE9:
+  0x180D40AE9  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D40AEE  add     rsp, 0x20                                 
+  0x180D40AF2  pop     rdi                                       
+  0x180D40AF3  ret                                               
+
+180D40AF4:
+  0x180D40AF4  mov     rdx, qword ptr [rbx]                      
+  0x180D40AF7  mov     rax, qword ptr [rdx + 0x8a8]              
+  0x180D40AFE  mov     rdx, qword ptr [rdx + 0x8b0]              
+  0x180D40B05  call    rax                                       
+  0x180D40B07  test    rax, rax                                  
+  0x180D40B0A  je      0x180d40b2a                               
+  0x180D40B0C  mov     rdx, qword ptr [rip + 0x20f5cad]             ; TYPE Naninovel.UI.IInputIndicator_TypeInfo
+  0x180D40B13  mov     ecx, 3                                    
+  0x180D40B18  mov     r8, rax                                   
+  0x180D40B1B  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D40B20  add     rsp, 0x20                                 
+  0x180D40B24  pop     rdi                                       
+  0x180D40B25  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D40B2A:
+  0x180D40B2A  call    0x180246730                                  ; THROW NullReferenceException

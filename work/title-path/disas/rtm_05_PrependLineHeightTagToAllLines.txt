@@ -1,0 +1,40 @@
+====================================================================================================
+FUNCTION RVA 0xD40300  VA 0x180D40300  size 0x7F (127 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$PrependLineHeightTagToAllLines
+  csig   : System_String_o* GigaCreation_NaninovelExtender_Ui_RevealableTextModified__PrependLineHeightTagToAllLines (System_String_o* content, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: private static string PrependLineHeightTagToAllLines(string content)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D40300  push    rbx                                       
+  0x180D40302  sub     rsp, 0x20                                 
+  0x180D40306  cmp     byte ptr [rip + 0x239d0c9], 0                ; data_30DD3D6
+  0x180D4030D  mov     rbx, rcx                                  
+  0x180D40310  jne     0x180d4034c                               
+  0x180D40312  lea     rcx, [rip + 0x21113bf]                       ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D40319  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4031E  lock or dword ptr [rsp], 0                        
+  0x180D40323  lea     rcx, [rip + 0x20f124e]                       ; STR '$1<line-height=100%>'
+  0x180D4032A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4032F  lock or dword ptr [rsp], 0                        
+  0x180D40334  lea     rcx, [rip + 0x20f1245]                       ; STR '(^|<br>)(?!<line-height=100%>)'
+  0x180D4033B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D40340  lock or dword ptr [rsp], 0                        
+  0x180D40345  mov     byte ptr [rip + 0x239d08a], 1                ; data_30DD3D6
+
+180D4034C:
+  0x180D4034C  mov     rcx, qword ptr [rip + 0x2111385]             ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D40353  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D4035A  jne     0x180d40361                               
+  0x180D4035C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D40361:
+  0x180D40361  mov     r8, qword ptr [rip + 0x20f1210]              ; STR '$1<line-height=100%>'
+  0x180D40368  xor     r9d, r9d                                  
+  0x180D4036B  mov     rdx, qword ptr [rip + 0x20f120e]             ; STR '(^|<br>)(?!<line-height=100%>)'
+  0x180D40372  mov     rcx, rbx                                  
+  0x180D40375  add     rsp, 0x20                                 
+  0x180D40379  pop     rbx                                       
+  0x180D4037A  jmp     0x1816e60b0                                  ; -> System.Text.RegularExpressions.Regex$$Replace

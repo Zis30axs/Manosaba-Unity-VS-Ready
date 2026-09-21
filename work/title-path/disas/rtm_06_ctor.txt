@@ -1,0 +1,57 @@
+====================================================================================================
+FUNCTION RVA 0xD40380  VA 0x180D40380  size 0xB5 (181 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextModified___ctor (GigaCreation_NaninovelExtender_Ui_RevealableTextModified_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: public void .ctor()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D40380  mov     qword ptr [rsp + 8], rbx                  
+  0x180D40385  push    rdi                                       
+  0x180D40386  sub     rsp, 0x20                                 
+  0x180D4038A  cmp     byte ptr [rip + 0x239d046], 0                ; data_30DD3D7
+  0x180D40391  mov     rdi, rcx                                  
+  0x180D40394  jne     0x180d403ae                               
+  0x180D40396  lea     rcx, [rip + 0x2111563]                       ; TYPE System.Text.StringBuilder_TypeInfo
+  0x180D4039D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D403A2  lock or dword ptr [rsp], 0                        
+  0x180D403A7  mov     byte ptr [rip + 0x239d029], 1                ; data_30DD3D7
+
+180D403AE:
+  0x180D403AE  mov     rcx, qword ptr [rip + 0x211154b]             ; TYPE System.Text.StringBuilder_TypeInfo
+  0x180D403B5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D403BA  xor     edx, edx                                  
+  0x180D403BC  mov     rcx, rax                                  
+  0x180D403BF  mov     rbx, rax                                  
+  0x180D403C2  call    0x180e33510                                  ; -> System.Text.StringBuilder$$.ctor
+  0x180D403C7  cmp     dword ptr [rip + 0x2398df6], 0               ; data_30D91C4
+  0x180D403CE  mov     qword ptr [rdi + 0x848], rbx                 ; rdi->RevealableTextModified._stringBuilder
+  0x180D403D5  je      0x180d40421                               
+  0x180D403D7  lea     r8, [rdi + 0x848]                            ; rdi->RevealableTextModified._stringBuilder
+  0x180D403DE  shr     r8, 0xc                                   
+  0x180D403E2  lea     rcx, [rip + 0x23f4197]                       ; data_3134580
+  0x180D403E9  and     r8d, 0x1fffff                             
+  0x180D403F0  mov     eax, r8d                                  
+  0x180D403F3  shr     rax, 6                                    
+  0x180D403F7  and     r8d, 0x3f                                 
+  0x180D403FB  lea     rdx, [rcx + rax*8]                        
+  0x180D403FF  prefetchw byte ptr [rdx]                            
+  0x180D40402  nop     dword ptr [rax]                           
+  0x180D40406  nop     word ptr [rax + rax]                      
+
+180D40410:
+  0x180D40410  mov     rax, qword ptr [rdx]                      
+  0x180D40413  mov     rcx, rax                                  
+  0x180D40416  bts     rcx, r8                                   
+  0x180D4041A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D4041F  jne     0x180d40410                               
+
+180D40421:
+  0x180D40421  xor     edx, edx                                  
+  0x180D40423  mov     rcx, rdi                                  
+  0x180D40426  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D4042B  add     rsp, 0x20                                 
+  0x180D4042F  pop     rdi                                       
+  0x180D40430  jmp     0x1804a21f0                                  ; -> Naninovel.UI.RevealableText$$.ctor

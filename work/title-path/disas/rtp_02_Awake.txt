@@ -1,0 +1,59 @@
+====================================================================================================
+FUNCTION RVA 0xD405F0  VA 0x180D405F0  size 0x92 (146 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$Awake
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified__Awake (GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified :: protected override void Awake()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D405F0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D405F5  push    rdi                                       
+  0x180D405F6  sub     rsp, 0x20                                 
+  0x180D405FA  cmp     byte ptr [rip + 0x239cdd9], 0                ; data_30DD3DA
+  0x180D40601  mov     rbx, rcx                                  
+  0x180D40604  jne     0x180d4061e                               
+  0x180D40606  lea     rcx, [rip + 0x2111013]                       ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D4060D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D40612  lock or dword ptr [rsp], 0                        
+  0x180D40617  mov     byte ptr [rip + 0x239cdbc], 1                ; data_30DD3DA
+
+180D4061E:
+  0x180D4061E  xor     edx, edx                                  
+  0x180D40620  mov     rcx, rbx                                  
+  0x180D40623  call    0x1804980c0                                  ; -> Naninovel.UI.RevealableTextPrinterPanel$$Awake
+  0x180D40628  mov     rdi, qword ptr [rbx + 0x1f0]                 ; rbx->RevealableTextPrinterPanelModified._skipModeIndicatorCanvasGroup
+  0x180D4062F  xor     edx, edx                                  
+  0x180D40631  mov     rcx, rbx                                  
+  0x180D40634  call    0x180d40520                                  ; -> GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified$$get_NaniScriptPlayer
+  0x180D40639  test    rax, rax                                  
+  0x180D4063C  je      0x180d4067d                               
+  0x180D4063E  mov     rdx, qword ptr [rip + 0x2110fdb]             ; TYPE Naninovel.IScriptPlayer_TypeInfo
+  0x180D40645  mov     ecx, 0x10                                 
+  0x180D4064A  mov     r8, rax                                   
+  0x180D4064D  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D40652  test    al, al                                    
+  0x180D40654  je      0x180d40660                               
+  0x180D40656  movss   xmm1, dword ptr [rip + 0x1da21c2]            ; data_2AE2820
+  0x180D4065E  jmp     0x180d40663                               
+
+180D40660:
+  0x180D40660  xorps   xmm1, xmm1                                
+
+180D40663:
+  0x180D40663  test    rdi, rdi                                  
+  0x180D40666  je      0x180d4067d                               
+  0x180D40668  xor     r8d, r8d                                  
+  0x180D4066B  mov     rcx, rdi                                  
+  0x180D4066E  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D40673  add     rsp, 0x20                                 
+  0x180D40677  pop     rdi                                       
+  0x180D40678  jmp     0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180D4067D:
+  0x180D4067D  call    0x180246730                                  ; THROW NullReferenceException

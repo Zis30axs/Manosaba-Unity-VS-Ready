@@ -1,0 +1,143 @@
+====================================================================================================
+FUNCTION RVA 0xD40100  VA 0x180D40100  size 0x1FF (511 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$GetIndexOfEndOfFirstLine
+  csig   : int32_t GigaCreation_NaninovelExtender_Ui_RevealableTextModified__GetIndexOfEndOfFirstLine (System_String_o* content, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: private static int GetIndexOfEndOfFirstLine(string content)
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D40100  push    rbx                                       
+  0x180D40102  sub     rsp, 0x40                                 
+  0x180D40106  cmp     byte ptr [rip + 0x239d2c8], 0                ; data_30DD3D5
+  0x180D4010D  mov     rbx, rcx                                  
+  0x180D40110  jne     0x180d4012a                               
+  0x180D40112  lea     rcx, [rip + 0x211951f]                       ; STR '<br>'
+  0x180D40119  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4011E  lock or dword ptr [rsp], 0                        
+  0x180D40123  mov     byte ptr [rip + 0x239d2ab], 1                ; data_30DD3D5
+
+180D4012A:
+  0x180D4012A  mov     qword ptr [rsp + 0x50], rsi               
+  0x180D4012F  mov     qword ptr [rsp + 0x58], rdi               
+  0x180D40134  test    rbx, rbx                                  
+  0x180D40137  je      0x180d401fb                               
+  0x180D4013D  cmp     byte ptr [rip + 0x239d9a7], 0                ; data_30DDAEB
+  0x180D40144  mov     rsi, qword ptr [rip + 0x21194ed]             ; STR '<br>'
+  0x180D4014B  mov     edi, dword ptr [rbx + 0x10]               
+  0x180D4014E  jne     0x180d40179                               
+  0x180D40150  lea     rcx, [rip + 0x20c1631]                       ; TYPE System.Globalization.CompareInfo_TypeInfo
+  0x180D40157  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4015C  lock or dword ptr [rsp], 0                        
+  0x180D40161  lea     rcx, [rip + 0x212b110]                       ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180D40168  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4016D  lock or dword ptr [rsp], 0                        
+  0x180D40172  mov     byte ptr [rip + 0x239d972], 1                ; data_30DDAEB
+
+180D40179:
+  0x180D40179  test    rsi, rsi                                  
+  0x180D4017C  je      0x180d402b7                               
+  0x180D40182  cmp     dword ptr [rbx + 0x10], 0                 
+  0x180D40186  jl      0x180d4025c                               
+  0x180D4018C  test    edi, edi                                  
+  0x180D4018E  js      0x180d40201                               
+  0x180D40190  cmp     dword ptr [rbx + 0x10], edi               
+  0x180D40193  js      0x180d40201                               
+  0x180D40195  mov     rax, qword ptr [rip + 0x20c15ec]             ; TYPE System.Globalization.CompareInfo_TypeInfo
+  0x180D4019C  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180D401A3  jne     0x180d401b4                               
+  0x180D401A5  mov     rcx, rax                                  
+  0x180D401A8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D401AD  mov     rax, qword ptr [rip + 0x20c15d4]             ; TYPE System.Globalization.CompareInfo_TypeInfo
+
+180D401B4:
+  0x180D401B4  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D401BB  mov     rcx, qword ptr [rax]                      
+  0x180D401BE  test    rcx, rcx                                  
+  0x180D401C1  je      0x180d401fb                               
+  0x180D401C3  mov     qword ptr [rsp + 0x30], 0                 
+  0x180D401CC  xor     r9d, r9d                                  
+  0x180D401CF  mov     byte ptr [rsp + 0x28], 0                  
+  0x180D401D4  mov     r8, rsi                                   
+  0x180D401D7  mov     rdx, rbx                                  
+  0x180D401DA  mov     dword ptr [rsp + 0x20], edi               
+  0x180D401DE  call    0x180f35c10                                  ; -> System.Globalization.CompareInfo$$IndexOfOrdinal
+  0x180D401E3  cmp     eax, -1                                   
+  0x180D401E6  jne     0x180d401eb                               
+  0x180D401E8  mov     eax, dword ptr [rbx + 0x10]               
+
+180D401EB:
+  0x180D401EB  mov     rdi, qword ptr [rsp + 0x58]               
+  0x180D401F0  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D401F5  add     rsp, 0x40                                 
+  0x180D401F9  pop     rbx                                       
+  0x180D401FA  ret                                               
+
+180D401FB:
+  0x180D401FB  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D40200  int3                                              
+
+180D40201:
+  0x180D40201  lea     rcx, [rip + 0x20fd700]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180D40208  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D4020D  mov     rcx, rax                                  
+  0x180D40210  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180D40215  lea     rcx, [rip + 0x20d687c]                       ; STR 'Count must be positive and count must refer to a location within the string/array/collection.'
+  0x180D4021C  mov     rdi, rax                                  
+  0x180D4021F  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D40224  lea     rcx, [rip + 0x20d6b25]                       ; STR 'count'
+  0x180D4022B  mov     rbx, rax                                  
+  0x180D4022E  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D40233  xor     r9d, r9d                                  
+  0x180D40236  mov     r8, rbx                                   
+  0x180D40239  mov     rdx, rax                                  
+  0x180D4023C  mov     rcx, rdi                                  
+  0x180D4023F  call    0x180f74970                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180D40244  lea     rcx, [rip + 0x20c0fc5]                       ; METHODINFO Method$System.String.IndexOf() => System.String$$IndexOf
+  0x180D4024B  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D40250  mov     rdx, rax                                  
+  0x180D40253  mov     rcx, rdi                                  
+  0x180D40256  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D4025B  int3                                              
+
+180D4025C:
+  0x180D4025C  lea     rcx, [rip + 0x20fd6a5]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180D40263  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D40268  mov     rcx, rax                                  
+  0x180D4026B  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180D40270  lea     rcx, [rip + 0x20d6841]                       ; STR 'Index was out of range. Must be non-negative and less than the size of the collection.'
+  0x180D40277  mov     rdi, rax                                  
+  0x180D4027A  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D4027F  lea     rcx, [rip + 0x20d6ad2]                       ; STR 'startIndex'
+  0x180D40286  mov     rbx, rax                                  
+  0x180D40289  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D4028E  xor     r9d, r9d                                  
+  0x180D40291  mov     r8, rbx                                   
+  0x180D40294  mov     rdx, rax                                  
+  0x180D40297  mov     rcx, rdi                                  
+  0x180D4029A  call    0x180f74970                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180D4029F  lea     rcx, [rip + 0x20c0f6a]                       ; METHODINFO Method$System.String.IndexOf() => System.String$$IndexOf
+  0x180D402A6  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D402AB  mov     rdx, rax                                  
+  0x180D402AE  mov     rcx, rdi                                  
+  0x180D402B1  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D402B6  int3                                              
+
+180D402B7:
+  0x180D402B7  lea     rcx, [rip + 0x2126bba]                       ; TYPE System.ArgumentNullException_TypeInfo
+  0x180D402BE  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D402C3  mov     rcx, rax                                  
+  0x180D402C6  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180D402CB  lea     rcx, [rip + 0x20d8246]                       ; STR 'value'
+  0x180D402D2  mov     rbx, rax                                  
+  0x180D402D5  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D402DA  mov     rdx, rax                                  
+  0x180D402DD  xor     r8d, r8d                                  
+  0x180D402E0  mov     rcx, rbx                                  
+  0x180D402E3  call    0x180f74830                                  ; -> System.ArgumentNullException$$.ctor
+  0x180D402E8  lea     rcx, [rip + 0x20c0f21]                       ; METHODINFO Method$System.String.IndexOf() => System.String$$IndexOf
+  0x180D402EF  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D402F4  mov     rdx, rax                                  
+  0x180D402F7  mov     rcx, rbx                                  
+  0x180D402FA  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

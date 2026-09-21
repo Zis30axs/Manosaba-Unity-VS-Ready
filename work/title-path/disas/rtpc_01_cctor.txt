@@ -1,0 +1,52 @@
+====================================================================================================
+FUNCTION RVA 0xD41460  VA 0x180D41460  size 0x96 (150 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.<>c$$.cctor
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextPrinterPanelModified___c___cctor (const MethodInfo* method);
+  dump.cs: RevealableTextPrinterPanelModified.<>c :: private static void .cctor()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified:
+      +0x1F0  _skipModeIndicatorCanvasGroup  CanvasGroup
+      +0x1F8  _fontMaterialChanger           FontMaterialChanger
+      +0x200  _naniScriptPlayer              IScriptPlayer
+      +0x208  _activeAppearance              string
+  fields of RevealableTextPrinterPanelModified.<>c:
+      +0x0    <>9                            static readonly RevealableTextPrinterPanelModified.<>c
+      +0x8    <>9__10_0                      static Func<CustomUI.FontChangeConfiguration, IEnumerable<TMP_Text>>
+====================================================================================================
+  0x180D41460  sub     rsp, 0x28                                 
+  0x180D41464  cmp     byte ptr [rip + 0x239bf77], 0                ; data_30DD3E2
+  0x180D4146B  jne     0x180d41485                               
+  0x180D4146D  lea     rcx, [rip + 0x20f00ec]                       ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.<>c_TypeInfo
+  0x180D41474  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D41479  lock or dword ptr [rsp], 0                        
+  0x180D4147E  mov     byte ptr [rip + 0x239bf5d], 1                ; data_30DD3E2
+
+180D41485:
+  0x180D41485  mov     rcx, qword ptr [rip + 0x20f00d4]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.<>c_TypeInfo
+  0x180D4148C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D41491  mov     rcx, qword ptr [rip + 0x20f00c8]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.<>c_TypeInfo
+  0x180D41498  mov     rdx, qword ptr [rcx + 0xb8]               
+  0x180D4149F  mov     qword ptr [rdx], rax                      
+  0x180D414A2  cmp     dword ptr [rip + 0x2397d1b], 0               ; data_30D91C4
+  0x180D414A9  je      0x180d414f1                               
+  0x180D414AB  mov     rax, qword ptr [rip + 0x20f00ae]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextPrinterPanelModified.<>c_TypeInfo
+  0x180D414B2  lea     rcx, [rip + 0x23f30c7]                       ; data_3134580
+  0x180D414B9  mov     r8, qword ptr [rax + 0xb8]                
+  0x180D414C0  shr     r8, 0xc                                   
+  0x180D414C4  and     r8d, 0x1fffff                             
+  0x180D414CB  mov     eax, r8d                                  
+  0x180D414CE  shr     rax, 6                                    
+  0x180D414D2  and     r8d, 0x3f                                 
+  0x180D414D6  lea     rdx, [rcx + rax*8]                        
+  0x180D414DA  prefetchw byte ptr [rdx]                            
+  0x180D414DD  nop     dword ptr [rax]                           
+
+180D414E0:
+  0x180D414E0  mov     rax, qword ptr [rdx]                      
+  0x180D414E3  mov     rcx, rax                                  
+  0x180D414E6  bts     rcx, r8                                   
+  0x180D414EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D414EF  jne     0x180d414e0                               
+
+180D414F1:
+  0x180D414F1  add     rsp, 0x28                                 
+  0x180D414F5  ret                                               

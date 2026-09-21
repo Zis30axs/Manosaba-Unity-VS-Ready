@@ -1,0 +1,62 @@
+====================================================================================================
+FUNCTION RVA 0xD40440  VA 0x180D40440  size 0xD7 (215 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.RevealableTextModified$$.cctor
+  csig   : void GigaCreation_NaninovelExtender_Ui_RevealableTextModified___cctor (const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.RevealableTextModified :: private static void .cctor()
+  fields of GigaCreation.NaninovelExtender.Ui.RevealableTextModified:
+      +0x0    s_captureRubyRegex             static readonly Regex
+      +0x840  _marginTopWhenFirstLineHasRuby float
+      +0x848  _stringBuilder                 readonly StringBuilder
+====================================================================================================
+  0x180D40440  push    rbx                                       
+  0x180D40442  sub     rsp, 0x20                                 
+  0x180D40446  cmp     byte ptr [rip + 0x239cf8b], 0                ; data_30DD3D8
+  0x180D4044D  jne     0x180d40489                               
+  0x180D4044F  lea     rcx, [rip + 0x2111282]                       ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D40456  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4045B  lock or dword ptr [rsp], 0                        
+  0x180D40460  lea     rcx, [rip + 0x20f1151]                       ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D40467  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4046C  lock or dword ptr [rsp], 0                        
+  0x180D40471  lea     rcx, [rip + 0x20f6490]                       ; STR '<ruby="([\\s\\S]*?)">([\\s\\S]*?)</ruby>'
+  0x180D40478  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4047D  lock or dword ptr [rsp], 0                        
+  0x180D40482  mov     byte ptr [rip + 0x239cf4f], 1                ; data_30DD3D8
+
+180D40489:
+  0x180D40489  mov     rcx, qword ptr [rip + 0x2111248]             ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180D40490  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D40495  mov     rdx, qword ptr [rip + 0x20f646c]             ; STR '<ruby="([\\s\\S]*?)">([\\s\\S]*?)</ruby>'
+  0x180D4049C  xor     r9d, r9d                                  
+  0x180D4049F  mov     r8d, 8                                    
+  0x180D404A5  mov     rcx, rax                                  
+  0x180D404A8  mov     rbx, rax                                  
+  0x180D404AB  call    0x1816e6c90                                  ; -> System.Text.RegularExpressions.Regex$$.ctor
+  0x180D404B0  cmp     dword ptr [rip + 0x2398d0d], 0               ; data_30D91C4
+  0x180D404B7  mov     rcx, qword ptr [rip + 0x20f10fa]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D404BE  mov     rdx, qword ptr [rcx + 0xb8]               
+  0x180D404C5  mov     qword ptr [rdx], rbx                      
+  0x180D404C8  je      0x180d40511                               
+  0x180D404CA  mov     rax, qword ptr [rip + 0x20f10e7]             ; TYPE GigaCreation.NaninovelExtender.Ui.RevealableTextModified_TypeInfo
+  0x180D404D1  lea     rcx, [rip + 0x23f40a8]                       ; data_3134580
+  0x180D404D8  mov     r8, qword ptr [rax + 0xb8]                
+  0x180D404DF  shr     r8, 0xc                                   
+  0x180D404E3  and     r8d, 0x1fffff                             
+  0x180D404EA  mov     eax, r8d                                  
+  0x180D404ED  shr     rax, 6                                    
+  0x180D404F1  and     r8d, 0x3f                                 
+  0x180D404F5  lea     rdx, [rcx + rax*8]                        
+  0x180D404F9  prefetchw byte ptr [rdx]                            
+  0x180D404FC  nop     dword ptr [rax]                           
+
+180D40500:
+  0x180D40500  mov     rax, qword ptr [rdx]                      
+  0x180D40503  mov     rcx, rax                                  
+  0x180D40506  bts     rcx, r8                                   
+  0x180D4050A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D4050F  jne     0x180d40500                               
+
+180D40511:
+  0x180D40511  add     rsp, 0x20                                 
+  0x180D40515  pop     rbx                                       
+  0x180D40516  ret                                               
