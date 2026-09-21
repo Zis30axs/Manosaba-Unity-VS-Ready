@@ -1,0 +1,199 @@
+====================================================================================================
+FUNCTION RVA 0xD30DD0  VA 0x180D30DD0  size 0x309 (777 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.BeginIfCurrentLanguage$$Execute
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Localization_BeginIfCurrentLanguage__Execute (GigaCreation_NaninovelExtender_Localization_BeginIfCurrentLanguage_o* __this, Naninovel_AsyncToken_o token, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Localization.BeginIfCurrentLanguage :: public override UniTask Execute(AsyncToken token)
+====================================================================================================
+  0x180D30DD0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180D30DD5  push    rdi                                       
+  0x180D30DD6  sub     rsp, 0x60                                 
+  0x180D30DDA  cmp     byte ptr [rip + 0x23ac596], 0                ; data_30DD377
+  0x180D30DE1  mov     rdi, rcx                                  
+  0x180D30DE4  jne     0x180d30e79                               
+  0x180D30DEA  lea     rcx, [rip + 0x20ff5a7]                       ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<LocaleKind>()
+  0x180D30DF1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30DF6  lock or dword ptr [rsp], 0                        
+  0x180D30DFB  lea     rcx, [rip + 0x212128e]                       ; TYPE GigaCreation.Essentials.Localization.ILocalizationProvider_TypeInfo
+  0x180D30E02  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E07  lock or dword ptr [rsp], 0                        
+  0x180D30E0C  lea     rcx, [rip + 0x2120e8d]                       ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D30E13  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E18  lock or dword ptr [rsp], 0                        
+  0x180D30E1D  lea     rcx, [rip + 0x21210dc]                       ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D30E24  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E29  lock or dword ptr [rsp], 0                        
+  0x180D30E2E  lea     rcx, [rip + 0x2108bcb]                       ; STR "Parameter 'if' in '@if' command is ignored; use nameless parameter for the condition instead."
+  0x180D30E35  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E3A  lock or dword ptr [rsp], 0                        
+  0x180D30E3F  lea     rcx, [rip + 0x2120a9a]                       ; STR '-'
+  0x180D30E46  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E4B  lock or dword ptr [rsp], 0                        
+  0x180D30E50  lea     rcx, [rip + 0x20ff559]                       ; STR 'Invalid language name: {0}.'
+  0x180D30E57  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E5C  lock or dword ptr [rsp], 0                        
+  0x180D30E61  lea     rcx, [rip + 0x2120878]                       ; STR ''
+  0x180D30E68  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E6D  lock or dword ptr [rsp], 0                        
+  0x180D30E72  mov     byte ptr [rip + 0x23ac4fe], 1                ; data_30DD377
+
+180D30E79:
+  0x180D30E79  cmp     byte ptr [rip + 0x23ab2e4], 0                ; data_30DC164
+  0x180D30E80  mov     rbx, qword ptr [rdi + 0x10]               
+  0x180D30E84  mov     dword ptr [rsp + 0x88], 0                 
+  0x180D30E8F  jne     0x180d30ea9                               
+  0x180D30E91  lea     rcx, [rip + 0x2115778]                       ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D30E98  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30E9D  lock or dword ptr [rsp], 0                        
+  0x180D30EA2  mov     byte ptr [rip + 0x23ab2bb], 1                ; data_30DC164
+
+180D30EA9:
+  0x180D30EA9  test    rbx, rbx                                  
+  0x180D30EAC  je      0x180d30ee0                               
+  0x180D30EAE  mov     rdx, qword ptr [rip + 0x211575b]             ; TYPE Naninovel.ICommandParameter_TypeInfo
+  0x180D30EB5  xor     ecx, ecx                                  
+  0x180D30EB7  mov     r8, rbx                                   
+  0x180D30EBA  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D30EBF  test    al, al                                    
+  0x180D30EC1  je      0x180d30ee0                               
+  0x180D30EC3  mov     r8, qword ptr [rdi]                       
+  0x180D30EC6  mov     rcx, rdi                                  
+  0x180D30EC9  mov     rdx, qword ptr [rip + 0x2108b30]             ; STR "Parameter 'if' in '@if' command is ignored; use nameless parameter for the condition instead."
+  0x180D30ED0  mov     rax, qword ptr [r8 + 0x1a8]               
+  0x180D30ED7  mov     r8, qword ptr [r8 + 0x1b0]                
+  0x180D30EDE  call    rax                                       
+
+180D30EE0:
+  0x180D30EE0  cmp     byte ptr [rip + 0x23ab325], 0                ; data_30DC20C
+  0x180D30EE7  mov     rbx, qword ptr [rdi + 0x38]               
+  0x180D30EEB  jne     0x180d30f16                               
+  0x180D30EED  lea     rcx, [rip + 0x2108eb4]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_HasValue()
+  0x180D30EF4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30EF9  lock or dword ptr [rsp], 0                        
+  0x180D30EFE  lea     rcx, [rip + 0x2107103]                       ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D30F05  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30F0A  lock or dword ptr [rsp], 0                        
+  0x180D30F0F  mov     byte ptr [rip + 0x23ab2f6], 1                ; data_30DC20C
+
+180D30F16:
+  0x180D30F16  test    rbx, rbx                                  
+  0x180D30F19  je      0x180d310ce                               
+  0x180D30F1F  mov     rdx, qword ptr [rbx]                      
+  0x180D30F22  mov     rcx, rbx                                  
+  0x180D30F25  mov     rax, qword ptr [rdx + 0x1c8]              
+  0x180D30F2C  mov     rdx, qword ptr [rdx + 0x1d0]              
+  0x180D30F33  call    rax                                       
+  0x180D30F35  test    al, al                                    
+  0x180D30F37  je      0x180d310ce                               
+  0x180D30F3D  mov     r8, qword ptr [rip + 0x21070c4]              ; METHODINFO Method$Naninovel.Nullable<string>.get_Value()
+  0x180D30F44  lea     rdx, [rsp + 0x70]                         
+  0x180D30F49  mov     rcx, rbx                                  
+  0x180D30F4C  call    0x18088e550                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$get_Value
+  0x180D30F51  mov     rcx, qword ptr [rsp + 0x70]               
+  0x180D30F56  test    rcx, rcx                                  
+  0x180D30F59  je      0x180d310ce                               
+  0x180D30F5F  mov     r8, qword ptr [rip + 0x212077a]              ; STR ''
+  0x180D30F66  xor     r9d, r9d                                  
+  0x180D30F69  mov     rdx, qword ptr [rip + 0x2120970]             ; STR '-'
+  0x180D30F70  mov     qword ptr [rsp + 0x78], rsi               
+  0x180D30F75  call    0x180e28520                                  ; -> System.String$$Replace
+  0x180D30F7A  mov     rbx, qword ptr [rip + 0x20ff417]             ; METHODINFO Method$FastEnumUtility.FastEnum.TryParse<LocaleKind>()
+  0x180D30F81  mov     rsi, rax                                  
+  0x180D30F84  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180D30F89  jne     0x180d30f93                               
+  0x180D30F8B  mov     rcx, rbx                                  
+  0x180D30F8E  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D30F93:
+  0x180D30F93  mov     r9, qword ptr [rbx + 0x38]                
+  0x180D30F97  lea     r8, [rsp + 0x88]                          
+  0x180D30F9F  mov     dl, 1                                     
+  0x180D30FA1  mov     rcx, rsi                                  
+  0x180D30FA4  mov     r9, qword ptr [r9 + 8]                    
+  0x180D30FA8  call    0x180696ba0                                  ; -> FastEnumUtility.FastEnum$$TryParseInternal<__Il2CppFullySharedGenericStructType>
+  0x180D30FAD  mov     rsi, qword ptr [rsp + 0x78]               
+  0x180D30FB2  test    al, al                                    
+  0x180D30FB4  je      0x180d31064                               
+  0x180D30FBA  mov     r8, qword ptr [rip + 0x2120cdf]              ; METHODINFO Method$Naninovel.Nullable<bool>.op_Implicit()
+  0x180D30FC1  lea     rdx, [rsp + 0x70]                         
+  0x180D30FC6  mov     rcx, qword ptr [rdi + 0x40]               
+  0x180D30FCA  call    0x18088eaa0                                  ; -> Naninovel.Nullable<__Il2CppFullySharedGenericType>$$op_Implicit
+  0x180D30FCF  mov     ebx, dword ptr [rsp + 0x88]               
+  0x180D30FD6  xor     edx, edx                                  
+  0x180D30FD8  mov     rcx, rdi                                  
+  0x180D30FDB  call    0x180d30d10                                  ; -> GigaCreation.NaninovelExtender.Localization.BeginIfCurrentLanguage$$get_LocalizationProvider
+  0x180D30FE0  cmp     byte ptr [rsp + 0x70], 0                  
+  0x180D30FE5  je      0x180d3100d                               
+  0x180D30FE7  test    rax, rax                                  
+  0x180D30FEA  je      0x180d310d4                               
+  0x180D30FF0  mov     rdx, qword ptr [rip + 0x2121099]             ; TYPE GigaCreation.Essentials.Localization.ILocalizationProvider_TypeInfo
+  0x180D30FF7  mov     ecx, 1                                    
+  0x180D30FFC  mov     r8, rax                                   
+  0x180D30FFF  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D31004  xor     ecx, ecx                                  
+  0x180D31006  cmp     ebx, eax                                  
+  0x180D31008  setne   cl                                        
+  0x180D3100B  jmp     0x180d31031                               
+
+180D3100D:
+  0x180D3100D  test    rax, rax                                  
+  0x180D31010  je      0x180d310d4                               
+  0x180D31016  mov     rdx, qword ptr [rip + 0x2121073]             ; TYPE GigaCreation.Essentials.Localization.ILocalizationProvider_TypeInfo
+  0x180D3101D  mov     ecx, 1                                    
+  0x180D31022  mov     r8, rax                                   
+  0x180D31025  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3102A  xor     ecx, ecx                                  
+  0x180D3102C  cmp     ebx, eax                                  
+  0x180D3102E  sete    cl                                        
+
+180D31031:
+  0x180D31031  test    ecx, ecx                                  
+  0x180D31033  jne     0x180d3103f                               
+  0x180D31035  xor     edx, edx                                  
+  0x180D31037  mov     rcx, rdi                                  
+  0x180D3103A  call    0x1804edf20                                  ; -> Naninovel.Commands.BeginIf$$HandleConditionalBlock
+
+180D3103F:
+  0x180D3103F  mov     rcx, qword ptr [rip + 0x2120eba]             ; TYPE Naninovel.UniTask_TypeInfo
+  0x180D31046  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D3104D  jne     0x180d31054                               
+  0x180D3104F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D31054:
+  0x180D31054  mov     rbx, qword ptr [rsp + 0x80]               
+  0x180D3105C  xor     eax, eax                                  
+  0x180D3105E  add     rsp, 0x60                                 
+  0x180D31062  pop     rdi                                       
+  0x180D31063  ret                                               
+
+180D31064:
+  0x180D31064  mov     rdx, qword ptr [rdi + 0x38]               
+  0x180D31068  lea     rcx, [rsp + 0x20]                         
+  0x180D3106D  mov     rbx, qword ptr [rip + 0x20ff33c]             ; STR 'Invalid language name: {0}.'
+  0x180D31074  xorps   xmm0, xmm0                                
+  0x180D31077  xor     r8d, r8d                                  
+  0x180D3107A  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D3107F  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D31084  call    0x181031d10                                  ; -> System.ParamsArray$$.ctor
+  0x180D31089  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D3108E  xor     r9d, r9d                                  
+  0x180D31091  lea     r8, [rsp + 0x40]                          
+  0x180D31096  movups  xmm1, xmmword ptr [rsp + 0x30]            
+  0x180D3109B  mov     rdx, rbx                                  
+  0x180D3109E  xor     ecx, ecx                                  
+  0x180D310A0  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D310A5  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D310AA  call    0x180e27120                                  ; -> System.String$$FormatHelper
+  0x180D310AF  mov     r8, qword ptr [rdi]                       
+  0x180D310B2  mov     rdx, rax                                  
+  0x180D310B5  mov     rcx, rdi                                  
+  0x180D310B8  mov     r9, qword ptr [r8 + 0x1a8]                
+  0x180D310BF  mov     r8, qword ptr [r8 + 0x1b0]                
+  0x180D310C6  call    r9                                        
+  0x180D310C9  jmp     0x180d3103f                               
+
+180D310CE:
+  0x180D310CE  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D310D3  int3                                              
+
+180D310D4:
+  0x180D310D4  call    0x180246730                                  ; THROW NullReferenceException

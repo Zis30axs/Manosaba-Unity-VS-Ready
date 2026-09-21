@@ -235,7 +235,8 @@ if ($ok -and (-not $baseline -or $buildJson.location_count -ge $baseline.locatio
     }
     Write-Json $baselinePath $baselineDoc
 }$result.status = if ($ok) { 'PASS' } else { 'FAIL' }
-if (-not $ok) { $result.blocked_reason = "content built but $buildRoot is empty or has no catalog, so the next Player build would ship no content" }
+# The shrink guard sets its own reason above; only fall back to the "no catalog" text when nothing more specific was recorded
+if (-not $ok -and -not $result.blocked_reason) { $result.blocked_reason = "content built but $buildRoot is empty or has no catalog, so the next Player build would ship no content" }
 
 $gatePath = Join-Path $script:UnityDataRoot 'g3_content_build.json'
 Write-Json $gatePath $result

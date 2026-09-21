@@ -1,0 +1,73 @@
+====================================================================================================
+FUNCTION RVA 0xCF9020  VA 0x180CF9020  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.SetCustomVariableAsFlag$$get_NaniVarManager
+  csig   : Naninovel_ICustomVariableManager_o* GigaCreation_NaninovelExtender_Common_SetCustomVariableAsFlag__get_NaniVarManager (GigaCreation_NaninovelExtender_Common_SetCustomVariableAsFlag_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.SetCustomVariableAsFlag :: protected ICustomVariableManager get_NaniVarManager()
+  fields of SetCustomVariableAsFlag.<Execute>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SetCustomVariableAsFlag
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of SetCustomVariableAsFlag.<SetAndSaveFlagAsync>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SetCustomVariableAsFlag
+      +0x20   variableName                   string
+      +0x28   bit                            int
+      +0x2C   op                             BitwiseOperator
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF9020  push    rbx                                       
+  0x180CF9022  sub     rsp, 0x20                                 
+  0x180CF9026  cmp     byte ptr [rip + 0x23e420e], 0                ; data_30DD23B
+  0x180CF902D  mov     rbx, rcx                                  
+  0x180CF9030  jne     0x180cf905b                               
+  0x180CF9032  lea     rcx, [rip + 0x2158c2f]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<ICustomVariableManager>()
+  0x180CF9039  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF903E  lock or dword ptr [rsp], 0                        
+  0x180CF9043  lea     rcx, [rip + 0x2158ee6]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF904A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF904F  lock or dword ptr [rsp], 0                        
+  0x180CF9054  mov     byte ptr [rip + 0x23e41e0], 1                ; data_30DD23B
+
+180CF905B:
+  0x180CF905B  mov     rax, qword ptr [rbx + 0x50]               
+  0x180CF905F  test    rax, rax                                  
+  0x180CF9062  jne     0x180cf90d4                               
+  0x180CF9064  mov     rcx, qword ptr [rip + 0x2158ec5]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF906B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CF9071  jne     0x180cf9078                               
+  0x180CF9073  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF9078:
+  0x180CF9078  mov     rcx, qword ptr [rip + 0x2158be9]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<ICustomVariableManager>()
+  0x180CF907F  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180CF9084  cmp     dword ptr [rip + 0x23e0139], 0               ; data_30D91C4
+  0x180CF908B  mov     r9, rax                                   
+  0x180CF908E  mov     qword ptr [rbx + 0x50], rax               
+  0x180CF9092  je      0x180cf90d1                               
+  0x180CF9094  lea     r8, [rbx + 0x50]                          
+  0x180CF9098  shr     r8, 0xc                                   
+  0x180CF909C  lea     rcx, [rip + 0x243b4dd]                       ; data_3134580
+  0x180CF90A3  and     r8d, 0x1fffff                             
+  0x180CF90AA  mov     eax, r8d                                  
+  0x180CF90AD  shr     rax, 6                                    
+  0x180CF90B1  and     r8d, 0x3f                                 
+  0x180CF90B5  lea     rdx, [rcx + rax*8]                        
+  0x180CF90B9  prefetchw byte ptr [rdx]                            
+  0x180CF90BC  nop     dword ptr [rax]                           
+
+180CF90C0:
+  0x180CF90C0  mov     rax, qword ptr [rdx]                      
+  0x180CF90C3  mov     rcx, rax                                  
+  0x180CF90C6  bts     rcx, r8                                   
+  0x180CF90CA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CF90CF  jne     0x180cf90c0                               
+
+180CF90D1:
+  0x180CF90D1  mov     rax, r9                                   
+
+180CF90D4:
+  0x180CF90D4  add     rsp, 0x20                                 
+  0x180CF90D8  pop     rbx                                       
+  0x180CF90D9  ret                                               

@@ -1,0 +1,61 @@
+====================================================================================================
+FUNCTION RVA 0xD30D10  VA 0x180D30D10  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.Localization.BeginIfCurrentLanguage$$get_LocalizationProvider
+  csig   : GigaCreation_Essentials_Localization_ILocalizationProvider_o* GigaCreation_NaninovelExtender_Localization_BeginIfCurrentLanguage__get_LocalizationProvider (GigaCreation_NaninovelExtender_Localization_BeginIfCurrentLanguage_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Localization.BeginIfCurrentLanguage :: private ILocalizationProvider get_LocalizationProvider()
+====================================================================================================
+  0x180D30D10  push    rbx                                       
+  0x180D30D12  sub     rsp, 0x20                                 
+  0x180D30D16  cmp     byte ptr [rip + 0x23ac659], 0                ; data_30DD376
+  0x180D30D1D  mov     rbx, rcx                                  
+  0x180D30D20  jne     0x180d30d4b                               
+  0x180D30D22  lea     rcx, [rip + 0x2121397]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180D30D29  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30D2E  lock or dword ptr [rsp], 0                        
+  0x180D30D33  lea     rcx, [rip + 0x212142e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D30D3A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D30D3F  lock or dword ptr [rsp], 0                        
+  0x180D30D44  mov     byte ptr [rip + 0x23ac62b], 1                ; data_30DD376
+
+180D30D4B:
+  0x180D30D4B  mov     rax, qword ptr [rbx + 0x48]               
+  0x180D30D4F  test    rax, rax                                  
+  0x180D30D52  jne     0x180d30dc4                               
+  0x180D30D54  mov     rcx, qword ptr [rip + 0x212140d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D30D5B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D30D61  jne     0x180d30d68                               
+  0x180D30D63  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D30D68:
+  0x180D30D68  mov     rdx, qword ptr [rip + 0x2121351]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180D30D6F  mov     cl, 1                                     
+  0x180D30D71  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180D30D76  cmp     dword ptr [rip + 0x23a8447], 0               ; data_30D91C4
+  0x180D30D7D  mov     r9, rax                                   
+  0x180D30D80  mov     qword ptr [rbx + 0x48], rax               
+  0x180D30D84  je      0x180d30dc1                               
+  0x180D30D86  lea     r8, [rbx + 0x48]                          
+  0x180D30D8A  shr     r8, 0xc                                   
+  0x180D30D8E  lea     rcx, [rip + 0x24037eb]                       ; data_3134580
+  0x180D30D95  and     r8d, 0x1fffff                             
+  0x180D30D9C  mov     eax, r8d                                  
+  0x180D30D9F  shr     rax, 6                                    
+  0x180D30DA3  and     r8d, 0x3f                                 
+  0x180D30DA7  lea     rdx, [rcx + rax*8]                        
+  0x180D30DAB  prefetchw byte ptr [rdx]                            
+  0x180D30DAE  nop                                               
+
+180D30DB0:
+  0x180D30DB0  mov     rax, qword ptr [rdx]                      
+  0x180D30DB3  mov     rcx, rax                                  
+  0x180D30DB6  bts     rcx, r8                                   
+  0x180D30DBA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D30DBF  jne     0x180d30db0                               
+
+180D30DC1:
+  0x180D30DC1  mov     rax, r9                                   
+
+180D30DC4:
+  0x180D30DC4  add     rsp, 0x20                                 
+  0x180D30DC8  pop     rbx                                       
+  0x180D30DC9  ret                                               

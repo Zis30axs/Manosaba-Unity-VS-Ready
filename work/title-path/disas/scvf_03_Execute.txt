@@ -1,0 +1,90 @@
+====================================================================================================
+FUNCTION RVA 0xCF90E0  VA 0x180CF90E0  size 0x119 (281 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.SetCustomVariableAsFlag$$Execute
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Common_SetCustomVariableAsFlag__Execute (GigaCreation_NaninovelExtender_Common_SetCustomVariableAsFlag_o* __this, Naninovel_AsyncToken_o token, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.SetCustomVariableAsFlag :: public override UniTask Execute(AsyncToken token)
+  fields of SetCustomVariableAsFlag.<Execute>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SetCustomVariableAsFlag
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of SetCustomVariableAsFlag.<SetAndSaveFlagAsync>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      SetCustomVariableAsFlag
+      +0x20   variableName                   string
+      +0x28   bit                            int
+      +0x2C   op                             BitwiseOperator
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF90E0  push    rbx                                       
+  0x180CF90E2  sub     rsp, 0x50                                 
+  0x180CF90E6  cmp     byte ptr [rip + 0x23e414f], 0                ; data_30DD23C
+  0x180CF90ED  mov     rbx, rcx                                  
+  0x180CF90F0  jne     0x180cf910a                               
+  0x180CF90F2  lea     rcx, [rip + 0x2172697]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<SetCustomVariableAsFlag.<Execute>d__9>()
+  0x180CF90F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF90FE  lock or dword ptr [rsp], 0                        
+  0x180CF9103  mov     byte ptr [rip + 0x23e4132], 1                ; data_30DD23C
+
+180CF910A:
+  0x180CF910A  mov     eax, dword ptr [rip + 0x23e00b4]             ; data_30D91C4
+  0x180CF9110  lea     r9, [rip + 0x23f5189]                        ; data_30EE2A0
+  0x180CF9117  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CF9120  xorps   xmm0, xmm0                                
+  0x180CF9123  xorps   xmm1, xmm1                                
+  0x180CF9126  movdqu  xmmword ptr [rsp + 0x38], xmm0            
+  0x180CF912C  movups  xmmword ptr [rsp + 0x28], xmm1            
+  0x180CF9131  test    eax, eax                                  
+  0x180CF9133  je      0x180cf917f                               
+  0x180CF9135  lea     r8, [rsp + 0x28]                          
+  0x180CF913A  shr     r8, 0xc                                   
+  0x180CF913E  and     r8d, 0x1fffff                             
+  0x180CF9145  mov     eax, r8d                                  
+  0x180CF9148  shr     rax, 6                                    
+  0x180CF914C  and     r8d, 0x3f                                 
+  0x180CF9150  lea     rdx, [r9 + rax*8]                         
+  0x180CF9154  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CF915B  nop     dword ptr [rax + rax]                     
+
+180CF9160:
+  0x180CF9160  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CF9167  mov     rcx, rax                                  
+  0x180CF916A  bts     rcx, r8                                   
+  0x180CF916E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CF9177  jne     0x180cf9160                               
+  0x180CF9179  mov     eax, dword ptr [rip + 0x23e0045]             ; data_30D91C4
+
+180CF917F:
+  0x180CF917F  mov     qword ptr [rsp + 0x38], rbx               
+  0x180CF9184  test    eax, eax                                  
+  0x180CF9186  je      0x180cf91c9                               
+  0x180CF9188  lea     r8, [rsp + 0x38]                          
+  0x180CF918D  shr     r8, 0xc                                   
+  0x180CF9191  and     r8d, 0x1fffff                             
+  0x180CF9198  mov     eax, r8d                                  
+  0x180CF919B  shr     rax, 6                                    
+  0x180CF919F  and     r8d, 0x3f                                 
+  0x180CF91A3  lea     rdx, [r9 + rax*8]                         
+  0x180CF91A7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CF91AE  nop                                               
+
+180CF91B0:
+  0x180CF91B0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CF91B7  mov     rcx, rax                                  
+  0x180CF91BA  bts     rcx, r8                                   
+  0x180CF91BE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CF91C7  jne     0x180cf91b0                               
+
+180CF91C9:
+  0x180CF91C9  mov     r8, qword ptr [rip + 0x21725c0]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<SetCustomVariableAsFlag.<Execute>d__9>()
+  0x180CF91D0  lea     rdx, [rsp + 0x20]                         
+  0x180CF91D5  lea     rcx, [rsp + 0x28]                         
+  0x180CF91DA  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180CF91E2  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CF91E7  xor     edx, edx                                  
+  0x180CF91E9  lea     rcx, [rsp + 0x28]                         
+  0x180CF91EE  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180CF91F3  add     rsp, 0x50                                 
+  0x180CF91F7  pop     rbx                                       
+  0x180CF91F8  ret                                               

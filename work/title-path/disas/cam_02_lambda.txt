@@ -1,0 +1,35 @@
+====================================================================================================
+FUNCTION RVA 0xD1FF00  VA 0x180D1FF00  size 0x5C (92 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ChangeActorMaskability.<>c$$<Execute>b__2_0
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_ChangeActorMaskability___c___Execute_b__2_0 (GigaCreation_NaninovelExtender_ExtendedActors_ChangeActorMaskability___c_o* __this, Naninovel_IActorManager_o* manager, System_String_o* actorId, const MethodInfo* method);
+  dump.cs: ChangeActorMaskability.<>c :: internal bool <Execute>b__2_0(IActorManager manager, string actorId)
+  fields of ChangeActorMaskability.<>c:
+      +0x0    <>9                            static readonly ChangeActorMaskability.<>c
+      +0x8    <>9__2_0                       static Func<IActorManager, string, bool>
+====================================================================================================
+  0x180D1FF00  mov     qword ptr [rsp + 8], rbx                  
+  0x180D1FF05  push    rdi                                       
+  0x180D1FF06  sub     rsp, 0x20                                 
+  0x180D1FF0A  cmp     byte ptr [rip + 0x23bd40c], 0                ; data_30DD31D
+  0x180D1FF11  mov     rdi, r8                                   
+  0x180D1FF14  mov     rbx, rdx                                  
+  0x180D1FF17  jne     0x180d1ff31                               
+  0x180D1FF19  lea     rcx, [rip + 0x213c148]                       ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180D1FF20  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1FF25  lock or dword ptr [rsp], 0                        
+  0x180D1FF2A  mov     byte ptr [rip + 0x23bd3ec], 1                ; data_30DD31D
+
+180D1FF31:
+  0x180D1FF31  test    rbx, rbx                                  
+  0x180D1FF34  je      0x180d1ff57                               
+  0x180D1FF36  mov     rdx, qword ptr [rip + 0x213c12b]             ; TYPE Naninovel.IActorManager_TypeInfo
+  0x180D1FF3D  mov     ecx, 6                                    
+  0x180D1FF42  mov     r9, rdi                                   
+  0x180D1FF45  mov     r8, rbx                                   
+  0x180D1FF48  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D1FF4D  add     rsp, 0x20                                 
+  0x180D1FF51  pop     rdi                                       
+  0x180D1FF52  jmp     0x180003140                               
+
+180D1FF57:
+  0x180D1FF57  call    0x180246730                                  ; THROW NullReferenceException

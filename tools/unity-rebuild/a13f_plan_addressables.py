@@ -39,6 +39,8 @@ OUT_DIR = os.path.join(REPO, "tools", "unity-rebuild", "out", "unity")
 LEDGER = os.path.join(OUT_DIR, "a13_import_ledger.csv")
 SO_PLAN_GLOB = "so_convert_plan_"
 PREFAB_PLAN = os.path.join(OUT_DIR, "prefab_plan_all.json")
+#: SpriteDicing atlases created by Editor/DicedSpriteAtlasBuilder: {"jobs": [{"asset_path": container, "target": project .asset}]}
+DICED_PLAN = os.path.join(OUT_DIR, "diced_atlas_plan.json")
 
 #: group per family: which ledger categories / asset path prefixes land in which group
 FAMILY_RULES = [
@@ -295,10 +297,22 @@ def main():
             stats["excluded"] += 1
         entries.append(entry)
 
+    # A diced-sprite atlas is ONE addressable asset (the DicedSpriteAtlas ScriptableObject under the shipped address); the
+    # sprites / packed texture the extraction exported from its container are its dependencies, not entries of their own
+    # (as leaf entries they would put 13-66 Sprites under the atlas's address, and LoadAssetAsync<DicedSpriteAtlas> would
+    # have no atlas among them).
+    atlas_containers = set()
+    if os.path.exists(DICED_PLAN):
+        with open(DICED_PLAN, encoding="utf-8") as fh:
+            atlas_containers = {job["asset_path"] for job in json.load(fh).get("jobs", [])}
+
     # leaf assets + sprites
     with open(LEDGER, encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
             if row["status"] != "IMPORTED":
+                continue
+            if (row["asset_path"] or "").strip() in atlas_containers and row["type"] in ("Sprite", "Texture2D"):
+                stats["atlas_member_skipped"] += 1
                 continue
             add((row["asset_path"] or "").strip(), unity_path((row["target_path"] or "").strip()), "a13")
 
@@ -309,6 +323,13 @@ def main():
                 plan = json.load(fh)
             for job in plan.get("jobs", []):
                 add(job["asset_path"], unity_path(job["target"]), name)
+
+    # diced sprite atlases
+    if os.path.exists(DICED_PLAN):
+        with open(DICED_PLAN, encoding="utf-8") as fh:
+            plan = json.load(fh)
+        for job in plan.get("jobs", []):
+            add(job["asset_path"], unity_path(job["target"]), "diced_atlas_plan")
 
     # prefabs
     if os.path.exists(PREFAB_PLAN):

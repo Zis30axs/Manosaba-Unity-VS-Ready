@@ -1,0 +1,37 @@
+====================================================================================================
+FUNCTION RVA 0xCF8EF0  VA 0x180CF8EF0  size 0x70 (112 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.Quit$$Execute
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Common_Quit__Execute (GigaCreation_NaninovelExtender_Common_Quit_o* __this, Naninovel_AsyncToken_o token, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.Quit :: public override UniTask Execute(AsyncToken token)
+====================================================================================================
+  0x180CF8EF0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CF8EF5  push    rdi                                       
+  0x180CF8EF6  sub     rsp, 0x30                                 
+  0x180CF8EFA  cmp     byte ptr [rip + 0x23f04a5], 0                ; data_30E93A6
+  0x180CF8F01  mov     rbx, rdx                                  
+  0x180CF8F04  mov     rdi, rcx                                  
+  0x180CF8F07  jne     0x180cf8f21                               
+  0x180CF8F09  lea     rcx, [rip + 0x215bca8]                       ; TYPE UnityEngine.Application_TypeInfo
+  0x180CF8F10  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF8F15  lock or dword ptr [rsp], 0                        
+  0x180CF8F1A  mov     byte ptr [rip + 0x23f0485], 1                ; data_30E93A6
+
+180CF8F21:
+  0x180CF8F21  mov     rcx, qword ptr [rip + 0x215bc90]             ; TYPE UnityEngine.Application_TypeInfo
+  0x180CF8F28  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF8F2F  jne     0x180cf8f36                               
+  0x180CF8F31  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF8F36:
+  0x180CF8F36  xor     ecx, ecx                                  
+  0x180CF8F38  call    0x181fda9d0                                  ; -> UnityEngine.Application$$Quit
+  0x180CF8F3D  movups  xmm0, xmmword ptr [rbx]                   
+  0x180CF8F40  xor     r8d, r8d                                  
+  0x180CF8F43  lea     rdx, [rsp + 0x20]                         
+  0x180CF8F48  mov     rcx, rdi                                  
+  0x180CF8F4B  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CF8F50  call    0x1804f4c50                                  ; -> Naninovel.Commands.Stop$$Execute
+  0x180CF8F55  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CF8F5A  add     rsp, 0x30                                 
+  0x180CF8F5E  pop     rdi                                       
+  0x180CF8F5F  ret                                               
