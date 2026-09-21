@@ -10,7 +10,7 @@
 param(
     [string]$Tag = 'round3',
     [double]$Hours = 12,
-    [double]$MinCommitGB = 10,
+    [double]$MinCommitGB = 9,
     [double]$MinCFreeGB = 15
 )
 Set-Location E:\Manosaba-VSCodeReady
@@ -34,8 +34,14 @@ while ($true) {
 
 Note "resources available -> G3 content build"
 Get-Process Unity, bee_backend, 'Unity.ILPP.Runner' -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+# Memory guard alongside the build: Unity is stopped if free commit drops below 600 MB, so an unattended build can never
+# starve the rest of the machine (see memguard.ps1).
+$guard = Start-Process powershell -PassThru -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass',
+    '-File', (Resolve-Path 'work\title-path\memguard.ps1').Path, '-Out', "work\title-path\g3_${Tag}_memguard.csv",
+    '-FloorMB', '600', '-Minutes', '60')
 & .\tools\unity-rebuild\g3_content_build.ps1 -Group all *>&1 | Tee-Object -FilePath "work\title-path\g3_$Tag.console.txt" | Out-Null
-$g3 = Get-Content tools\unity-rebuild\out\unity\g3_content_build.json -Raw -Encoding UTF8 | ConvertFrom-Json
+if ($guard -and -not $guard.HasExited) { Stop-Process -Id $guard.Id -Force -ErrorAction SilentlyContinue }
+$g3 =Get-Content tools\unity-rebuild\out\unity\g3_content_build.json -Raw -Encoding UTF8 | ConvertFrom-Json
 Copy-Item tools\unity-rebuild\out\unity\g3_content_build.json "work\title-path\g3_$Tag.json" -Force
 Note ("G3 status={0} {1}" -f $g3.status, $g3.blocked_reason)
 if ($g3.status -ne 'PASS') { exit 4 }

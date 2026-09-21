@@ -112,6 +112,19 @@ Naninovel 命令参数全空（`@processInput` 无参数、`AnimateActor.ActorId
 * 剩余 377 个「without owner GameObject」全是**独立对象**（TimelineAsset 77、各类 Track/PlayableAsset 299、`BuildTimestamp` 1），
   不是组件；`Game.prefab` 的两个 `_buildTimestamp`（`DebugReporter` 与调试文字显示用，不在启动路径上）因此仍为 null。
 
+## G. Addressables 内容构建（G3）的内存（2026-09-21，进行中）
+
+* 本机提交上限 25.8–28.7 GB，其他程序占约 20 GB，C: 盘几乎满（页面文件无法增长）；可给 Unity 的提交内存约 5–6 GB。
+  `work/title-path/memguard.ps1` 在空闲提交低于 600 MB 时停掉 Unity，避免再把整机拖到 OOM（此前一次连采样脚本都 OOM）。
+* 每个 group 打成一个 bundle（PackTogether），写一个 bundle 要载入其中全部对象：台账绑定的 sprite 让 Prefabs bundle 带上
+  2.9 GB 贴图数据，Textures 家族有 5.8 GB 源图。`a13f_plan_addressables.py` 现在把 Textures / Prefabs / Audio 三个大家族按
+  **出货 bundle** 拆组（`res/_index.csv` 的 `source_bundle`，出货时就是 269 / 19 / 36 个 bundle；地址、标签不变，逐条核对 0 差异），
+  共 330 组；`AddressablesSetup` 删除被清空、计划不再点名的 `Manosaba.*` 旧组。
+* 结果：写 bundle 阶段不再超限（328 个 bundle 写完并压缩，Unity 峰值约 3.5 GB，拆组前在 6.6 GB 仍未写完）。
+  但最后的 `GenerateLocationListsTask` 对每个条目调 `ContentBuildInterface.GetTypeForObjects`，把资产逐个载入且不卸载，
+  17 秒内从 3.5 GB 涨到 6.2 GB，被 memguard 停下。这一步没有可配置的开关；需要约 9 GB 空闲提交内存。
+  `wait_then_verify.ps1` 等到空闲提交 ≥ 9 GB（或 C: ≥ 15 GB 空闲）后自动跑 G3（带 memguard）再跑 G4b。
+
 ## 全量 156 个 prefab 之后**仍然**未绑定的（已分类，非静默）
 
 | 类别 | 数量 | 说明 |

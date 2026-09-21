@@ -186,6 +186,22 @@ namespace Manosaba.EditorTools
                     }
                 }
 
+                // ---- remove emptied groups ---------------------------------------------------
+                // When a family is split into one group per shipped bundle (a13f SPLIT_FAMILIES), its entries move
+                // to the new groups and the old family group is left empty.  A reconstruction group ("Manosaba.")
+                // that the plan no longer names and that has no entries left is removed, so the settings describe
+                // exactly the plan; a group that still holds entries is never touched.
+                if (Environment.GetEnvironmentVariable("MANOSABA_ADDRESSABLES_PRUNE") != "0")
+                {
+                    foreach (AddressableAssetGroup emptied in settings.groups.Where(g => g != null
+                                 && g.Name.StartsWith("Manosaba.", StringComparison.Ordinal)
+                                 && !groups.ContainsKey(g.Name) && g.entries.Count == 0).ToList())
+                    {
+                        result.groups_removed.Add(emptied.Name);
+                        settings.RemoveGroup(emptied);
+                    }
+                }
+
                 settings.SetDirty(AddressableAssetSettings.ModificationEvent.BatchModification, null, true, true);
                 AssetDatabase.SaveAssets();
                 result.entry_count_total = settings.groups.Where(g => g != null).Sum(g => g.entries.Count);
@@ -266,6 +282,7 @@ namespace Manosaba.EditorTools
             public int labels_unregistered;
             public int entry_count_total;
             public int groups_created;
+            public List<string> groups_removed = new List<string>();
             public List<string> group_summary = new List<string>();
             public List<string> settings_labels = new List<string>();
             public List<string> missing_samples = new List<string>();

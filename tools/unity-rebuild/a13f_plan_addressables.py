@@ -31,6 +31,7 @@ import collections
 import datetime
 import json
 import os
+import re
 import sys
 
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -64,6 +65,38 @@ def group_for(address: str) -> str:
         if any(address.startswith(p) for p in prefixes):
             return group
     return "Manosaba.Other"
+
+
+INDEX = os.path.join(REPO, "res", "_index.csv")
+
+#: Families whose single pack-together bundle is too large to write: one group per SHIPPED bundle instead.
+#: Writing a bundle loads every object in it; with the ledger-bound sprites the Prefabs bundle alone carried
+#: 2.9 GB of texture data, and Textures (5.8 GB of source images) never finished -- on 2026-09-21 Unity passed
+#: 6.6 GB during Write Serialized Files and had to be stopped before the machine ran out of commit.  The shipped
+#: build kept these families in 269 / 19 / 36 bundles (general-voice-act02_chapter05_trial 368 MB was its largest),
+#: and that boundary is recovered data (res/_index.csv source_bundle), not an invented layout: objects the game
+#: shipped together stay together, addresses and labels are unchanged.
+SPLIT_FAMILIES = {"Manosaba.Textures", "Manosaba.Prefabs", "Manosaba.Audio"}
+
+
+def load_container_bundles():
+    """container (asset_path) -> the shipped bundle most of its objects came from."""
+    counts = collections.defaultdict(collections.Counter)
+    with open(INDEX, encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh):
+            container = (row.get("asset_path") or "").strip()
+            bundle = os.path.basename((row.get("source_bundle") or "").replace("\\", "/"))
+            if container and bundle:
+                counts[container][bundle] += 1
+    return {c: b.most_common(1)[0][0] for c, b in counts.items()}
+
+
+def bundle_stem(bundle: str) -> str:
+    """general-voice-act01_chapter01_trial_assets_all.bundle -> general-voice-act01_chapter01_trial; ema.bundle -> ema."""
+    stem = re.sub(r"_(assets|scenes)_.*$", "", bundle)
+    if stem.endswith(".bundle"):
+        stem = stem[:-len(".bundle")]
+    return re.sub(r"[^A-Za-z0-9_-]", "_", stem) or "unknown"
 
 
 SHIPPED_DUMP = os.path.join(OUT_DIR, "catalog_dump_shipped.json")
@@ -220,6 +253,7 @@ def main():
 
     scheme, membership = load_shipped_scheme()
     exclusions = load_exclusions()
+    container_bundles = load_container_bundles()
     entries = []
     seen = set()
     stats = collections.Counter()
@@ -240,10 +274,19 @@ def main():
             stats["address_fallback"] += 1
         if labels:
             stats["with_labels"] += 1
-        # the group is chosen from the container path (a stable family signal), never from the address
+        # the group is chosen from the container path (a stable family signal), never from the address; the
+        # large families are further split along the shipped bundle boundary (SPLIT_FAMILIES)
+        family = group_for(container_path)
+        group = family
+        if family in SPLIT_FAMILIES:
+            shipped_bundle = container_bundles.get(container_path)
+            if shipped_bundle:
+                group = family + "." + bundle_stem(shipped_bundle)
+            else:
+                stats["split_family_without_shipped_bundle"] += 1
         entry = {"address": address, "asset_path": asset_path,
                  "labels": labels, "container_path": container_path,
-                 "group": group_for(container_path), "source": source, "status": "planned"}
+                 "group": group, "family": family, "source": source, "status": "planned"}
         excluded = exclusions.get(asset_path)
         if excluded:
             entry["status"] = "excluded"
@@ -275,12 +318,13 @@ def main():
             add(job["asset_path"], unity_path(job["target"]), "prefab_plan_all")
 
     if args.group == "core":
-        selected = [e for e in entries if e["group"] in CORE_GROUPS]
+        selected = [e for e in entries if e["family"] in CORE_GROUPS]
     elif args.group == "prefabs":
-        selected = [e for e in entries if e["group"] in PREFAB_GROUPS]
+        selected = [e for e in entries if e["family"] in PREFAB_GROUPS]
     else:
         selected = entries
     by_group = collections.Counter(e["group"] for e in selected)
+    by_family = collections.Counter(e["family"] for e in selected)
     by_source = collections.Counter(e["source"] for e in selected)
     labels_used = collections.Counter(l for e in selected for l in e["labels"])
     entries_with_labels = sum(1 for e in selected if e["labels"])
@@ -288,7 +332,7 @@ def main():
     labels_by_group = collections.defaultdict(collections.Counter)
     for e in selected:
         for l in e["labels"]:
-            labels_by_group[l][e["group"]] += 1
+            labels_by_group[l][e["family"]] += 1
     excluded_entries = [e for e in selected if e["status"] == "excluded"]
     buildable = [e for e in selected if e["status"] != "excluded"]
 
@@ -329,6 +373,8 @@ def main():
         "membership_complete": membership["membership_complete"],
         "membership_warnings": membership["warnings"],
         "groups": dict(sorted(by_group.items())),
+        "families": dict(sorted(by_family.items())),
+        "split_families": sorted(SPLIT_FAMILIES),
         "by_source": dict(sorted(by_source.items())),
         "note": ("Addresses and labels come from the shipped catalog: the location's primary_key is the address "
                  "and its other non-GUID keys are the labels. Do not describe the address as a 'container path': "
@@ -340,8 +386,9 @@ def main():
                  "(MasterData._assetKeyNames, 28,150 locations in the shipped catalog) reaches every entry it "
                  "covers instead of only the first 64. 'labels_used' is the complete label -> entry count map and "
                  "'label_entry_counts_by_group' breaks each label down by family. Group "
-                 "layout is a documented reconstruction decision (one group per family); the shipped build "
-                 "carried no Editor group layout. No label is fabricated. Entries with "
+                 "layout is a documented reconstruction decision (one group per family, and for the large families "
+                 "in 'split_families' one group per shipped bundle, so no single bundle write exceeds what the "
+                 "shipped build wrote); the shipped build carried no Editor group layout. No label is fabricated. Entries with "
                  "status 'excluded' come from tools/unity-rebuild/content_build_exclusions.json and are "
                  "left in the plan with their reason, but the Editor-side setup tool does not add them. "
                  "'membership_complete' false means the plan must not be used: 'membership_warnings' names "
@@ -359,7 +406,8 @@ def main():
     print(f"group      : {args.group}")
     print(f"entries    : {len(buildable)} buildable of {len(entries)} known "
           f"({len(excluded_entries)} excluded, {len(selected) - len(buildable)} marked)")
-    print(f"by group   : {dict(sorted(by_group.items()))}")
+    print(f"by family  : {dict(sorted(by_family.items()))}")
+    print(f"groups     : {len(by_group)} ({len(by_group) - len(by_family)} more than families, from split_families)")
     print(f"by source  : {dict(sorted(by_source.items()))}")
     print(f"labels     : {entries_with_labels} entries carry a label; "
           f"{len(labels_used)} distinct labels")
