@@ -1,0 +1,55 @@
+====================================================================================================
+FUNCTION RVA 0xD37360  VA 0x180D37360  size 0xA3 (163 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$CancelAllMotions
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__CancelAllMotions (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: private void CancelAllMotions()
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D37360  push    rbx                                       
+  0x180D37362  sub     rsp, 0x30                                 
+  0x180D37366  movsd   xmm0, qword ptr [rcx + 0x148]                ; rcx->GameStateSlotExtended._fadeMotion
+  0x180D3736E  mov     rbx, rcx                                  
+  0x180D37371  mov     eax, dword ptr [rcx + 0x150]              
+  0x180D37377  lea     rcx, [rsp + 0x20]                         
+  0x180D3737C  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D37382  mov     dword ptr [rsp + 0x28], eax               
+  0x180D37386  call    0x180cd57c0                                  ; -> sub_CD57C0 (runtime/helper)
+  0x180D3738B  test    al, al                                    
+  0x180D3738D  je      0x180d373b3                               
+  0x180D3738F  movsd   xmm0, qword ptr [rbx + 0x148]                ; rbx->GameStateSlotExtended._fadeMotion
+  0x180D37397  lea     rcx, [rsp + 0x20]                         
+  0x180D3739C  mov     eax, dword ptr [rbx + 0x150]              
+  0x180D373A2  mov     dl, 1                                     
+  0x180D373A4  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D373AA  mov     dword ptr [rsp + 0x28], eax               
+  0x180D373AE  call    0x180cd58f0                                  ; -> sub_CD58F0 (runtime/helper)
+
+180D373B3:
+  0x180D373B3  movsd   xmm0, qword ptr [rbx + 0x154]                ; rbx->GameStateSlotExtended._rollMotion
+  0x180D373BB  lea     rcx, [rsp + 0x20]                         
+  0x180D373C0  mov     eax, dword ptr [rbx + 0x15c]              
+  0x180D373C6  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D373CC  mov     dword ptr [rsp + 0x28], eax               
+  0x180D373D0  call    0x180cd57c0                                  ; -> sub_CD57C0 (runtime/helper)
+  0x180D373D5  test    al, al                                    
+  0x180D373D7  je      0x180d373fd                               
+  0x180D373D9  movsd   xmm0, qword ptr [rbx + 0x154]                ; rbx->GameStateSlotExtended._rollMotion
+  0x180D373E1  lea     rcx, [rsp + 0x20]                         
+  0x180D373E6  mov     eax, dword ptr [rbx + 0x15c]              
+  0x180D373EC  mov     dl, 1                                     
+  0x180D373EE  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D373F4  mov     dword ptr [rsp + 0x28], eax               
+  0x180D373F8  call    0x180cd58f0                                  ; -> sub_CD58F0 (runtime/helper)
+
+180D373FD:
+  0x180D373FD  add     rsp, 0x30                                 
+  0x180D37401  pop     rbx                                       
+  0x180D37402  ret                                               

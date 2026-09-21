@@ -1,0 +1,139 @@
+====================================================================================================
+FUNCTION RVA 0xD377B0  VA 0x180D377B0  size 0x1B9 (441 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended$$BindSlot
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended__BindSlot (GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended_o* __this, int32_t slotNumber, Naninovel_GameStateMap_o* state, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended :: public void BindSlot(int slotNumber, GameStateMap state)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended:
+      +0xC8   _onSlotClicked                 Action<int>
+      +0xD0   _onDeleteClicked               Action<int>
+      +0xD8   _loadStateAt                   Func<int, UniTask<GameStateMap>>
+  fields of GameStateSlotsGridExtended.<>c__DisplayClass5_0:
+      +0x10   slotNumber                     int
+  fields of GameStateSlotsGridExtended.<BindSlotAsync>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   slot                           GameStateSlotExtended
+      +0x20   itemIndex                      int
+      +0x28   <>4__this                      GameStateSlotsGridExtended
+      +0x30   <slotNumber>5__2               int
+      +0x38   <>u__1                         UniTask.Awaiter<GameStateMap>
+  fields of GameStateSlotsGridExtended.<InitializeAsync>d__3:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GameStateSlotsGridExtended
+      +0x20   onSlotClicked                  Action<int>
+      +0x28   onDeleteClicked                Action<int>
+      +0x30   loadStateAt                    Func<int, UniTask<GameStateMap>>
+      +0x38   itemsCount                     int
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D377B0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D377B5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D377BA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D377BF  push    rdi                                       
+  0x180D377C0  sub     rsp, 0x30                                 
+  0x180D377C4  cmp     byte ptr [rip + 0x23a5bdb], 0                ; data_30DD3A6
+  0x180D377CB  mov     rbp, r8                                   
+  0x180D377CE  mov     edi, edx                                  
+  0x180D377D0  mov     rbx, rcx                                  
+  0x180D377D3  jne     0x180d37831                               
+  0x180D377D5  lea     rcx, [rip + 0x20f9f6c]                       ; METHODINFO Method$System.Linq.Enumerable.FirstOrDefault<GameStateSlotExtended>()
+  0x180D377DC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D377E1  lock or dword ptr [rsp], 0                        
+  0x180D377E6  lea     rcx, [rip + 0x20f9f63]                       ; TYPE System.Func<GameStateSlotExtended, bool>_TypeInfo
+  0x180D377ED  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D377F2  lock or dword ptr [rsp], 0                        
+  0x180D377F7  lea     rcx, [rip + 0x211aa92]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D377FE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37803  lock or dword ptr [rsp], 0                        
+  0x180D37808  lea     rcx, [rip + 0x20f9f49]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<>c__DisplayClass5_0.<BindSlot>b__0() => Naninovel.UI.GameStateSlotsGrid.<>c__DisplayClass4_0$$<BindSlot>b__0 (+1 aliases)
+  0x180D3780F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37814  lock or dword ptr [rsp], 0                        
+  0x180D37819  lea     rcx, [rip + 0x20f9f40]                       ; TYPE GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<>c__DisplayClass5_0_TypeInfo
+  0x180D37820  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37825  lock or dword ptr [rsp], 0                        
+  0x180D3782A  mov     byte ptr [rip + 0x23a5b75], 1                ; data_30DD3A6
+
+180D37831:
+  0x180D37831  mov     rcx, qword ptr [rip + 0x20f9f28]             ; TYPE GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<>c__DisplayClass5_0_TypeInfo
+  0x180D37838  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D3783D  mov     rsi, rax                                  
+  0x180D37840  test    rax, rax                                  
+  0x180D37843  je      0x180d37964                               
+  0x180D37849  mov     dword ptr [rax + 0x10], edi                  ; rax-><>c__DisplayClass5_0.slotNumber
+  0x180D3784C  mov     rcx, rbx                                  
+  0x180D3784F  mov     rdx, qword ptr [rbx]                      
+  0x180D37852  mov     r8, qword ptr [rdx + 0x538]               
+  0x180D37859  mov     rdx, qword ptr [rdx + 0x540]              
+  0x180D37860  call    r8                                        
+  0x180D37863  mov     rcx, qword ptr [rip + 0x20f9ee6]             ; TYPE System.Func<GameStateSlotExtended, bool>_TypeInfo
+  0x180D3786A  mov     rdi, rax                                  
+  0x180D3786D  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D37872  mov     r8, qword ptr [rip + 0x20f9edf]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<>c__DisplayClass5_0.<BindSlot>b__0() => Naninovel.UI.GameStateSlotsGrid.<>c__DisplayClass4_0$$<BindSlot>b__0 (+1 aliases)
+  0x180D37879  xor     r9d, r9d                                  
+  0x180D3787C  mov     rdx, rsi                                  
+  0x180D3787F  mov     rcx, rax                                  
+  0x180D37882  mov     rbx, rax                                  
+  0x180D37885  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D3788A  mov     r9, qword ptr [rip + 0x20f9eb7]              ; METHODINFO Method$System.Linq.Enumerable.FirstOrDefault<GameStateSlotExtended>()
+  0x180D37891  lea     r8, [rsp + 0x20]                          
+  0x180D37896  mov     rdx, rbx                                  
+  0x180D37899  mov     rcx, rdi                                  
+  0x180D3789C  call    0x180686ee0                                  ; -> System.Linq.Enumerable$$FirstOrDefault<__Il2CppFullySharedGenericType>
+  0x180D378A1  mov     rcx, qword ptr [rip + 0x211a9e8]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D378A8  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D378AF  jne     0x180d378b6                               
+  0x180D378B1  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D378B6:
+  0x180D378B6  cmp     byte ptr [rip + 0x23b0fb2], 0                ; data_30E886F
+  0x180D378BD  jne     0x180d378d7                               
+  0x180D378BF  lea     rcx, [rip + 0x211a9ca]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D378C6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D378CB  lock or dword ptr [rsp], 0                        
+  0x180D378D0  mov     byte ptr [rip + 0x23b0f98], 1                ; data_30E886F
+
+180D378D7:
+  0x180D378D7  mov     rcx, qword ptr [rip + 0x211a9b2]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D378DE  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D378E5  jne     0x180d378ec                               
+  0x180D378E7  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D378EC:
+  0x180D378EC  cmp     byte ptr [rip + 0x23b0f3c], 0                ; data_30E882F
+  0x180D378F3  jne     0x180d3790d                               
+  0x180D378F5  lea     rcx, [rip + 0x211a994]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D378FC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37901  lock or dword ptr [rsp], 0                        
+  0x180D37906  mov     byte ptr [rip + 0x23b0f22], 1                ; data_30E882F
+
+180D3790D:
+  0x180D3790D  mov     rbx, qword ptr [rsp + 0x20]               
+  0x180D37912  test    rbx, rbx                                  
+  0x180D37915  je      0x180d3794f                               
+  0x180D37917  mov     rcx, qword ptr [rip + 0x211a972]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D3791E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D37925  jne     0x180d3792c                               
+  0x180D37927  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3792C:
+  0x180D3792C  cmp     qword ptr [rbx + 0x10], 0                 
+  0x180D37931  je      0x180d3794f                               
+  0x180D37933  mov     r9, qword ptr [rbx]                       
+  0x180D37936  mov     r8, rbp                                   
+  0x180D37939  mov     edx, dword ptr [rsi + 0x10]                  ; rsi-><>c__DisplayClass5_0.slotNumber
+  0x180D3793C  mov     rcx, rbx                                  
+  0x180D3793F  mov     rax, qword ptr [r9 + 0x688]               
+  0x180D37946  mov     r9, qword ptr [r9 + 0x690]                
+  0x180D3794D  call    rax                                       
+
+180D3794F:
+  0x180D3794F  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180D37954  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180D37959  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D3795E  add     rsp, 0x30                                 
+  0x180D37962  pop     rdi                                       
+  0x180D37963  ret                                               
+
+180D37964:
+  0x180D37964  call    0x180246730                                  ; THROW NullReferenceException

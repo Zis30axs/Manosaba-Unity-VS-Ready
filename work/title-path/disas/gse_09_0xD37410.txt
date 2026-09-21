@@ -1,0 +1,95 @@
+====================================================================================================
+FUNCTION RVA 0xD37410  VA 0x180D37410  size 0x148 (328 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended___ctor (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: public void .ctor()
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D37410  push    rbx                                       
+  0x180D37412  sub     rsp, 0x20                                 
+  0x180D37416  cmp     byte ptr [rip + 0x23a5f87], 0                ; data_30DD3A4
+  0x180D3741D  mov     rbx, rcx                                  
+  0x180D37420  jne     0x180d3743a                               
+  0x180D37422  lea     rcx, [rip + 0x20dd0d7]                       ; TYPE Naninovel.UI.GameStateSlot_TypeInfo
+  0x180D37429  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3742E  lock or dword ptr [rsp], 0                        
+  0x180D37433  mov     byte ptr [rip + 0x23a5f6a], 1                ; data_30DD3A4
+
+180D3743A:
+  0x180D3743A  mov     rcx, qword ptr [rip + 0x20dd0bf]             ; TYPE Naninovel.UI.GameStateSlot_TypeInfo
+  0x180D37441  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D37448  jne     0x180d3744f                               
+  0x180D3744A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3744F:
+  0x180D3744F  cmp     byte ptr [rip + 0x23a51cb], 0                ; data_30DC621
+  0x180D37456  jne     0x180d37481                               
+  0x180D37458  lea     rcx, [rip + 0x20dd099]                       ; STR '{N}. {D}'
+  0x180D3745F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37464  lock or dword ptr [rsp], 0                        
+  0x180D37469  lea     rcx, [rip + 0x2113b18]                       ; STR 'yyyy-MM-dd HH:mm:ss'
+  0x180D37470  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37475  lock or dword ptr [rsp], 0                        
+  0x180D3747A  mov     byte ptr [rip + 0x23a51a0], 1                ; data_30DC621
+
+180D37481:
+  0x180D37481  mov     rax, qword ptr [rip + 0x2113b00]             ; STR 'yyyy-MM-dd HH:mm:ss'
+  0x180D37488  lea     r9, [rip + 0x23b6e11]                        ; data_30EE2A0
+  0x180D3748F  mov     ecx, dword ptr [rip + 0x23a1d2f]             ; data_30D91C4
+  0x180D37495  mov     qword ptr [rbx + 0xc8], rax               
+  0x180D3749C  test    ecx, ecx                                  
+  0x180D3749E  je      0x180d374ef                               
+  0x180D374A0  lea     r8, [rbx + 0xc8]                          
+  0x180D374A7  shr     r8, 0xc                                   
+  0x180D374AB  and     r8d, 0x1fffff                             
+  0x180D374B2  mov     eax, r8d                                  
+  0x180D374B5  shr     rax, 6                                    
+  0x180D374B9  and     r8d, 0x3f                                 
+  0x180D374BD  lea     rdx, [r9 + rax*8]                         
+  0x180D374C1  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D374C8  nop     dword ptr [rax + rax]                     
+
+180D374D0:
+  0x180D374D0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D374D7  mov     rcx, rax                                  
+  0x180D374DA  bts     rcx, r8                                   
+  0x180D374DE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D374E7  jne     0x180d374d0                               
+  0x180D374E9  mov     ecx, dword ptr [rip + 0x23a1cd5]             ; data_30D91C4
+
+180D374EF:
+  0x180D374EF  mov     rax, qword ptr [rip + 0x20dd002]             ; STR '{N}. {D}'
+  0x180D374F6  mov     qword ptr [rbx + 0xd0], rax               
+  0x180D374FD  test    ecx, ecx                                  
+  0x180D374FF  je      0x180d37549                               
+  0x180D37501  lea     r8, [rbx + 0xd0]                          
+  0x180D37508  shr     r8, 0xc                                   
+  0x180D3750C  and     r8d, 0x1fffff                             
+  0x180D37513  mov     eax, r8d                                  
+  0x180D37516  shr     rax, 6                                    
+  0x180D3751A  and     r8d, 0x3f                                 
+  0x180D3751E  lea     rdx, [r9 + rax*8]                         
+  0x180D37522  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D37529  nop     dword ptr [rax]                           
+
+180D37530:
+  0x180D37530  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D37537  mov     rcx, rax                                  
+  0x180D3753A  bts     rcx, r8                                   
+  0x180D3753E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D37547  jne     0x180d37530                               
+
+180D37549:
+  0x180D37549  xor     edx, edx                                  
+  0x180D3754B  mov     rcx, rbx                                  
+  0x180D3754E  add     rsp, 0x20                                 
+  0x180D37552  pop     rbx                                       
+  0x180D37553  jmp     0x18053f050                                  ; -> Naninovel.ScriptableGridSlot$$.ctor

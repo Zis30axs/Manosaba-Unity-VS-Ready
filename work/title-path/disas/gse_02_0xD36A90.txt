@@ -1,0 +1,98 @@
+====================================================================================================
+FUNCTION RVA 0xD36A90  VA 0x180D36A90  size 0x154 (340 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$OnDestroy
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__OnDestroy (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: protected override void OnDestroy()
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D36A90  push    rsi                                       
+  0x180D36A92  sub     rsp, 0x20                                 
+  0x180D36A96  xor     edx, edx                                  
+  0x180D36A98  mov     rsi, rcx                                  
+  0x180D36A9B  call    0x180d37360                                  ; -> GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$CancelAllMotions
+  0x180D36AA0  cmp     byte ptr [rip + 0x23a5b74], 0                ; data_30DC61B
+  0x180D36AA7  jne     0x180d36ae3                               
+  0x180D36AA9  lea     rcx, [rip + 0x20fcec0]                       ; TYPE System.Action<LocaleChangedArgs>_TypeInfo
+  0x180D36AB0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36AB5  lock or dword ptr [rsp], 0                        
+  0x180D36ABA  lea     rcx, [rip + 0x211c88f]                       ; TYPE Naninovel.ILocalizationManager_TypeInfo
+  0x180D36AC1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36AC6  lock or dword ptr [rsp], 0                        
+  0x180D36ACB  lea     rcx, [rip + 0x211ded6]                       ; TYPE UnityEngine.Events.UnityAction_TypeInfo
+  0x180D36AD2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36AD7  lock or dword ptr [rsp], 0                        
+  0x180D36ADC  mov     byte ptr [rip + 0x23a5b38], 1                ; data_30DC61B
+
+180D36AE3:
+  0x180D36AE3  mov     rdx, qword ptr [rsi]                      
+  0x180D36AE6  mov     rcx, rsi                                  
+  0x180D36AE9  mov     qword ptr [rsp + 0x30], rbx               
+  0x180D36AEE  mov     qword ptr [rsp + 0x38], rbp               
+  0x180D36AF3  mov     qword ptr [rsp + 0x40], rdi               
+  0x180D36AF8  mov     rax, qword ptr [rdx + 0x628]              
+  0x180D36AFF  mov     rdx, qword ptr [rdx + 0x630]              
+  0x180D36B06  call    rax                                       
+  0x180D36B08  test    rax, rax                                  
+  0x180D36B0B  je      0x180d36bdf                               
+  0x180D36B11  mov     rcx, qword ptr [rip + 0x211de90]             ; TYPE UnityEngine.Events.UnityAction_TypeInfo
+  0x180D36B18  mov     rdi, qword ptr [rax + 0x100]              
+  0x180D36B1F  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D36B24  mov     r8, qword ptr [rsi]                       
+  0x180D36B27  xor     r9d, r9d                                  
+  0x180D36B2A  mov     rdx, rsi                                  
+  0x180D36B2D  mov     rcx, rax                                  
+  0x180D36B30  mov     rbx, rax                                  
+  0x180D36B33  mov     r8, qword ptr [r8 + 0x6d0]                
+  0x180D36B3A  call    0x180430c20                                  ; -> System.Action$$.ctor (+21 aliases)
+  0x180D36B3F  test    rdi, rdi                                  
+  0x180D36B42  je      0x180d36bdf                               
+  0x180D36B48  test    rbx, rbx                                  
+  0x180D36B4B  je      0x180d36bdf                               
+  0x180D36B51  mov     rdx, qword ptr [rbx]                      
+  0x180D36B54  mov     rcx, rbx                                  
+  0x180D36B57  mov     rbp, qword ptr [rbx + 0x20]               
+  0x180D36B5B  mov     rax, qword ptr [rdx + 0x1b8]              
+  0x180D36B62  mov     rdx, qword ptr [rdx + 0x1c0]              
+  0x180D36B69  call    rax                                       
+  0x180D36B6B  mov     rcx, qword ptr [rdi + 0x10]               
+  0x180D36B6F  test    rcx, rcx                                  
+  0x180D36B72  je      0x180d36bdf                               
+  0x180D36B74  xor     r9d, r9d                                  
+  0x180D36B77  mov     r8, rax                                   
+  0x180D36B7A  mov     rdx, rbp                                  
+  0x180D36B7D  call    0x18208c350                                  ; -> UnityEngine.Events.InvokableCallList$$RemoveListener
+  0x180D36B82  cmp     qword ptr [rsi + 0x118], 0                
+  0x180D36B8A  je      0x180d36bca                               
+  0x180D36B8C  mov     rcx, qword ptr [rip + 0x20fcddd]             ; TYPE System.Action<LocaleChangedArgs>_TypeInfo
+  0x180D36B93  mov     rdi, qword ptr [rsi + 0x118]              
+  0x180D36B9A  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D36B9F  mov     r8, qword ptr [rsi]                       
+  0x180D36BA2  xor     r9d, r9d                                  
+  0x180D36BA5  mov     rdx, rsi                                  
+  0x180D36BA8  mov     rcx, rax                                  
+  0x180D36BAB  mov     rbx, rax                                  
+  0x180D36BAE  mov     r8, qword ptr [r8 + 0x6f0]                
+  0x180D36BB5  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D36BBA  mov     ecx, 1                                    
+  0x180D36BBF  mov     r9, rbx                                   
+  0x180D36BC2  mov     r8, rdi                                   
+  0x180D36BC5  call    0x180020bc0                                  ; -> sub_20BC0 (runtime/helper)
+
+180D36BCA:
+  0x180D36BCA  mov     rdi, qword ptr [rsp + 0x40]               
+  0x180D36BCF  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180D36BD4  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D36BD9  add     rsp, 0x20                                 
+  0x180D36BDD  pop     rsi                                       
+  0x180D36BDE  ret                                               
+
+180D36BDF:
+  0x180D36BDF  call    0x180246730                                  ; THROW NullReferenceException

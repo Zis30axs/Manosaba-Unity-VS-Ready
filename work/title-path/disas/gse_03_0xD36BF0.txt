@@ -1,0 +1,124 @@
+====================================================================================================
+FUNCTION RVA 0xD36BF0  VA 0x180D36BF0  size 0x1BE (446 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$SetEmptyState
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__SetEmptyState (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, int32_t slotNumber, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: protected override void SetEmptyState(int slotNumber)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D36BF0  push    rbx                                       
+  0x180D36BF2  sub     rsp, 0x20                                 
+  0x180D36BF6  cmp     byte ptr [rip + 0x23a5a1f], 0                ; data_30DC61C
+  0x180D36BFD  mov     rbx, rcx                                  
+  0x180D36C00  mov     dword ptr [rsp + 0x38], edx               
+  0x180D36C04  jne     0x180d36c40                               
+  0x180D36C06  lea     rcx, [rip + 0x20dd8f3]                       ; TYPE Naninovel.UI.GameStateSlot_TypeInfo
+  0x180D36C0D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36C12  lock or dword ptr [rsp], 0                        
+  0x180D36C17  lea     rcx, [rip + 0x20dd8ea]                       ; STR '{D}'
+  0x180D36C1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36C23  lock or dword ptr [rsp], 0                        
+  0x180D36C28  lea     rcx, [rip + 0x2116891]                       ; STR '{N}'
+  0x180D36C2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D36C34  lock or dword ptr [rsp], 0                        
+  0x180D36C39  mov     byte ptr [rip + 0x23a59dc], 1                ; data_30DC61C
+
+180D36C40:
+  0x180D36C40  mov     rdx, qword ptr [rbx]                      
+  0x180D36C43  mov     rcx, rbx                                  
+  0x180D36C46  mov     qword ptr [rsp + 0x30], rdi               
+  0x180D36C4B  mov     rax, qword ptr [rdx + 0x628]              
+  0x180D36C52  mov     rdx, qword ptr [rdx + 0x630]              
+  0x180D36C59  call    rax                                       
+  0x180D36C5B  test    rax, rax                                  
+  0x180D36C5E  je      0x180d36da9                               
+  0x180D36C64  xor     edx, edx                                  
+  0x180D36C66  mov     rcx, rax                                  
+  0x180D36C69  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D36C6E  test    rax, rax                                  
+  0x180D36C71  je      0x180d36da9                               
+  0x180D36C77  xor     r8d, r8d                                  
+  0x180D36C7A  xor     edx, edx                                  
+  0x180D36C7C  mov     rcx, rax                                  
+  0x180D36C7F  call    0x182067310                                  ; -> UnityEngine.GameObject$$SetActive
+  0x180D36C84  mov     rdx, qword ptr [rbx]                      
+  0x180D36C87  mov     rcx, rbx                                  
+  0x180D36C8A  mov     rax, qword ptr [rdx + 0x668]              
+  0x180D36C91  mov     rdx, qword ptr [rdx + 0x670]              
+  0x180D36C98  call    rax                                       
+  0x180D36C9A  xor     edx, edx                                  
+  0x180D36C9C  lea     rcx, [rsp + 0x38]                         
+  0x180D36CA1  mov     rdi, rax                                  
+  0x180D36CA4  call    0x18101dcb0                                  ; -> System.Int32$$ToString
+  0x180D36CA9  test    rdi, rdi                                  
+  0x180D36CAC  je      0x180d36da9                               
+  0x180D36CB2  mov     rdx, qword ptr [rip + 0x2116807]             ; STR '{N}'
+  0x180D36CB9  xor     r9d, r9d                                  
+  0x180D36CBC  mov     r8, rax                                   
+  0x180D36CBF  mov     rcx, rdi                                  
+  0x180D36CC2  call    0x180e28520                                  ; -> System.String$$Replace
+  0x180D36CC7  mov     r8, qword ptr [rip + 0x20dd832]              ; TYPE Naninovel.UI.GameStateSlot_TypeInfo
+  0x180D36CCE  mov     rdi, rax                                  
+  0x180D36CD1  cmp     dword ptr [r8 + 0xe4], 0                  
+  0x180D36CD9  jne     0x180d36cea                               
+  0x180D36CDB  mov     rcx, r8                                   
+  0x180D36CDE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D36CE3  mov     r8, qword ptr [rip + 0x20dd816]              ; TYPE Naninovel.UI.GameStateSlot_TypeInfo
+
+180D36CEA:
+  0x180D36CEA  test    rdi, rdi                                  
+  0x180D36CED  je      0x180d36da9                               
+  0x180D36CF3  mov     r8, qword ptr [r8 + 0xb8]                 
+  0x180D36CFA  xor     r9d, r9d                                  
+  0x180D36CFD  mov     rdx, qword ptr [rip + 0x20dd804]             ; STR '{D}'
+  0x180D36D04  mov     rcx, rdi                                  
+  0x180D36D07  mov     r8, qword ptr [r8]                        
+  0x180D36D0A  call    0x180e28520                                  ; -> System.String$$Replace
+  0x180D36D0F  mov     r8, qword ptr [rbx]                       
+  0x180D36D12  mov     rdx, rax                                  
+  0x180D36D15  mov     rcx, rbx                                  
+  0x180D36D18  mov     r9, qword ptr [r8 + 0x6b8]                
+  0x180D36D1F  mov     r8, qword ptr [r8 + 0x6c0]                
+  0x180D36D26  call    r9                                        
+  0x180D36D29  mov     rdx, qword ptr [rbx]                      
+  0x180D36D2C  mov     rcx, rbx                                  
+  0x180D36D2F  mov     rax, qword ptr [rdx + 0x638]              
+  0x180D36D36  mov     rdx, qword ptr [rdx + 0x640]              
+  0x180D36D3D  call    rax                                       
+  0x180D36D3F  mov     rdx, qword ptr [rbx]                      
+  0x180D36D42  mov     rcx, rbx                                  
+  0x180D36D45  mov     rdi, rax                                  
+  0x180D36D48  mov     r8, qword ptr [rdx + 0x648]               
+  0x180D36D4F  mov     rdx, qword ptr [rdx + 0x650]              
+  0x180D36D56  call    r8                                        
+  0x180D36D59  test    rdi, rdi                                  
+  0x180D36D5C  je      0x180d36da9                               
+  0x180D36D5E  xor     r8d, r8d                                  
+  0x180D36D61  mov     rdx, rax                                  
+  0x180D36D64  mov     rcx, rdi                                  
+  0x180D36D67  call    0x18248c4d0                                  ; -> UnityEngine.UI.RawImage$$set_texture
+  0x180D36D6C  mov     rcx, qword ptr [rbx + 0x120]                 ; rbx->GameStateSlotExtended._thumbnailCanvasGroup
+  0x180D36D73  test    rcx, rcx                                  
+  0x180D36D76  je      0x180d36da9                               
+  0x180D36D78  xor     r8d, r8d                                  
+  0x180D36D7B  xorps   xmm1, xmm1                                
+  0x180D36D7E  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D36D83  mov     rcx, qword ptr [rbx + 0x138]                 ; rbx->GameStateSlotExtended._noDataLabel
+  0x180D36D8A  test    rcx, rcx                                  
+  0x180D36D8D  je      0x180d36da9                               
+  0x180D36D8F  movss   xmm1, dword ptr [rip + 0x1daba89]            ; data_2AE2820
+  0x180D36D97  xor     r8d, r8d                                  
+  0x180D36D9A  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180D36D9F  add     rsp, 0x20                                 
+  0x180D36DA3  pop     rbx                                       
+  0x180D36DA4  jmp     0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180D36DA9:
+  0x180D36DA9  call    0x180246730                                  ; THROW NullReferenceException

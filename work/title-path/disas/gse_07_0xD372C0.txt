@@ -1,0 +1,58 @@
+====================================================================================================
+FUNCTION RVA 0xD372C0  VA 0x180D372C0  size 0x96 (150 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$SetRoll
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__SetRoll (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, float value, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: private void SetRoll(float value)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D372C0  push    rbx                                       
+  0x180D372C2  sub     rsp, 0x40                                 
+  0x180D372C6  movss   xmm0, dword ptr [rip + 0x1dab93a]            ; data_2AE2C08
+  0x180D372CE  movaps  xmmword ptr [rsp + 0x30], xmm6            
+  0x180D372D3  movaps  xmm6, xmm1                                
+  0x180D372D6  comiss  xmm0, xmm6                                
+  0x180D372D9  jbe     0x180d372e4                               
+  0x180D372DB  xorps   xmm6, xmmword ptr [rip + 0x1dac75e]          ; data_2AE3A40
+  0x180D372E2  jmp     0x180d372f3                               
+
+180D372E4:
+  0x180D372E4  movss   xmm0, dword ptr [rip + 0x1dab954]            ; data_2AE2C40
+  0x180D372EC  subss   xmm0, xmm6                                
+  0x180D372F0  movaps  xmm6, xmm0                                
+
+180D372F3:
+  0x180D372F3  mov     rbx, qword ptr [rcx + 0x130]                 ; rcx->GameStateSlotExtended._loadingIconTransform
+  0x180D372FA  test    rbx, rbx                                  
+  0x180D372FD  je      0x180d37351                               
+  0x180D372FF  xor     r8d, r8d                                  
+  0x180D37302  lea     rcx, [rsp + 0x20]                         
+  0x180D37307  mov     rdx, rbx                                  
+  0x180D3730A  call    0x18207e520                                  ; -> UnityEngine.Transform$$get_localEulerAngles
+  0x180D3730F  xor     r8d, r8d                                  
+  0x180D37312  lea     rdx, [rsp + 0x20]                         
+  0x180D37317  mov     rcx, rbx                                  
+  0x180D3731A  movsd   xmm0, qword ptr [rax]                     
+  0x180D3731E  mov     eax, dword ptr [rax + 8]                  
+  0x180D37321  movaps  xmm1, xmm0                                
+  0x180D37324  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D3732A  shufps  xmm1, xmm1, 0x55                          
+  0x180D3732E  unpcklps xmm0, xmm1                                
+  0x180D37331  mov     dword ptr [rsp + 0x28], eax               
+  0x180D37335  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D3733B  movss   dword ptr [rsp + 0x28], xmm6              
+  0x180D37341  call    0x18207e610                                  ; -> UnityEngine.Transform$$set_localEulerAngles
+  0x180D37346  movaps  xmm6, xmmword ptr [rsp + 0x30]            
+  0x180D3734B  add     rsp, 0x40                                 
+  0x180D3734F  pop     rbx                                       
+  0x180D37350  ret                                               
+
+180D37351:
+  0x180D37351  call    0x180246730                                  ; THROW NullReferenceException

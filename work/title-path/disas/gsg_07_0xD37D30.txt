@@ -1,0 +1,320 @@
+====================================================================================================
+FUNCTION RVA 0xD37D30  VA 0x180D37D30  size 0x46A (1130 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<BindSlotAsync>d__7$$MoveNext
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended__BindSlotAsync_d__7__MoveNext (GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended__BindSlotAsync_d__7_o __this, const MethodInfo* method);
+  dump.cs: GameStateSlotsGridExtended.<BindSlotAsync>d__7 :: private void MoveNext()
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended:
+      +0xC8   _onSlotClicked                 Action<int>
+      +0xD0   _onDeleteClicked               Action<int>
+      +0xD8   _loadStateAt                   Func<int, UniTask<GameStateMap>>
+  fields of GameStateSlotsGridExtended.<>c__DisplayClass5_0:
+      +0x10   slotNumber                     int
+  fields of GameStateSlotsGridExtended.<BindSlotAsync>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   slot                           GameStateSlotExtended
+      +0x20   itemIndex                      int
+      +0x28   <>4__this                      GameStateSlotsGridExtended
+      +0x30   <slotNumber>5__2               int
+      +0x38   <>u__1                         UniTask.Awaiter<GameStateMap>
+  fields of GameStateSlotsGridExtended.<InitializeAsync>d__3:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GameStateSlotsGridExtended
+      +0x20   onSlotClicked                  Action<int>
+      +0x28   onDeleteClicked                Action<int>
+      +0x30   loadStateAt                    Func<int, UniTask<GameStateMap>>
+      +0x38   itemsCount                     int
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D37D30  mov     qword ptr [rsp + 8], rcx                  
+  0x180D37D35  push    rbx                                       
+  0x180D37D36  push    rsi                                       
+  0x180D37D37  push    rdi                                       
+  0x180D37D38  sub     rsp, 0x80                                 
+  0x180D37D3F  movaps  xmmword ptr [rsp + 0x70], xmm6            
+  0x180D37D44  mov     rbx, rcx                                  
+  0x180D37D47  cmp     byte ptr [rip + 0x23a565b], 0                ; data_30DD3A9
+  0x180D37D4E  jne     0x180d37dac                               
+  0x180D37D50  lea     rcx, [rip + 0x20f99e9]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<GameStateMap>, GameStateSlotsGridExtended.<BindSlotAsync>d__7>()
+  0x180D37D57  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37D5C  lock or dword ptr [rsp], 0                        
+  0x180D37D61  lea     rcx, [rip + 0x2119d60]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<GameStateMap>.GetResult()
+  0x180D37D68  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37D6D  lock or dword ptr [rsp], 0                        
+  0x180D37D72  lea     rcx, [rip + 0x2119d3f]                       ; METHODINFO Method$Naninovel.UniTask.Awaiter<GameStateMap>.get_IsCompleted()
+  0x180D37D79  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37D7E  lock or dword ptr [rsp], 0                        
+  0x180D37D83  lea     rcx, [rip + 0x211a506]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37D8A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37D8F  lock or dword ptr [rsp], 0                        
+  0x180D37D94  lea     rcx, [rip + 0x2119d05]                       ; METHODINFO Method$Naninovel.UniTask<GameStateMap>.GetAwaiter()
+  0x180D37D9B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37DA0  lock or dword ptr [rsp], 0                        
+  0x180D37DA5  mov     byte ptr [rip + 0x23a55fd], 1                ; data_30DD3A9
+
+180D37DAC:
+  0x180D37DAC  xorps   xmm0, xmm0                                
+  0x180D37DAF  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x180D37DB4  mov     eax, dword ptr [rbx]                      
+  0x180D37DB6  mov     rdi, qword ptr [rbx + 0x28]                  ; rbx-><BindSlotAsync>d__7.<>4__this | <InitializeAsync>d__3.onDeleteClicked
+  0x180D37DBA  test    eax, eax                                  
+  0x180D37DBC  jne     0x180d37dd9                               
+  0x180D37DBE  movups  xmm0, xmmword ptr [rbx + 0x38]               ; rbx-><BindSlotAsync>d__7.<>u__1 | <InitializeAsync>d__3.itemsCount
+  0x180D37DC2  movaps  xmmword ptr [rsp + 0x60], xmm0            
+  0x180D37DC7  xorps   xmm1, xmm1                                
+  0x180D37DCA  movups  xmmword ptr [rbx + 0x38], xmm1               ; rbx-><BindSlotAsync>d__7.<>u__1
+  0x180D37DCE  mov     dword ptr [rbx], 0xffffffff               
+  0x180D37DD4  jmp     0x180d37ed6                               
+
+180D37DD9:
+  0x180D37DD9  mov     rcx, qword ptr [rbx + 0x18]                  ; rbx-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37DDD  test    rcx, rcx                                  
+  0x180D37DE0  je      0x180d38195                               
+  0x180D37DE6  xor     edx, edx                                  
+  0x180D37DE8  call    0x180d36e00                                  ; -> GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$OnBeginToLoad
+  0x180D37DED  mov     eax, dword ptr [rbx + 0x20]                  ; rbx-><BindSlotAsync>d__7.itemIndex | <InitializeAsync>d__3.onSlotClicked
+  0x180D37DF0  inc     eax                                       
+  0x180D37DF2  mov     dword ptr [rbx + 0x30], eax                  ; rbx-><BindSlotAsync>d__7.<slotNumber>5__2 | <InitializeAsync>d__3.loadStateAt
+  0x180D37DF5  test    rdi, rdi                                  
+  0x180D37DF8  je      0x180d38190                               
+  0x180D37DFE  mov     rcx, qword ptr [rdi + 0xd8]                  ; rdi->GameStateSlotsGridExtended._loadStateAt
+  0x180D37E05  test    rcx, rcx                                  
+  0x180D37E08  je      0x180d3818b                               
+  0x180D37E0E  mov     dword ptr [rsp + 0xb0], eax               
+  0x180D37E15  mov     rax, qword ptr [rcx + 0x18]                  ; rcx-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37E19  mov     r9, qword ptr [rcx + 0x28]                   ; rcx-><BindSlotAsync>d__7.<>4__this | <InitializeAsync>d__3.onDeleteClicked
+  0x180D37E1D  lea     r8, [rsp + 0x50]                          
+  0x180D37E22  lea     rdx, [rsp + 0xb0]                         
+  0x180D37E2A  mov     rcx, qword ptr [rcx + 0x40]                  ; rcx-><InitializeAsync>d__3.<>u__1
+  0x180D37E2E  call    rax                                       
+  0x180D37E30  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180D37E35  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D37E3B  mov     r8, qword ptr [rip + 0x2119c5e]              ; METHODINFO Method$Naninovel.UniTask<GameStateMap>.GetAwaiter()
+  0x180D37E42  lea     rdx, [rsp + 0x40]                         
+  0x180D37E47  lea     rcx, [rsp + 0x50]                         
+  0x180D37E4C  call    0x180972e90                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$GetAwaiter
+  0x180D37E51  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D37E56  movdqa  xmmword ptr [rsp + 0x60], xmm0            
+  0x180D37E5C  mov     rdi, qword ptr [rip + 0x2119c55]             ; METHODINFO Method$Naninovel.UniTask.Awaiter<GameStateMap>.get_IsCompleted()
+  0x180D37E63  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><BindSlotAsync>d__7.itemIndex | <InitializeAsync>d__3.onSlotClicked
+  0x180D37E67  test    byte ptr [rax + 0x135], 1                 
+  0x180D37E6E  jne     0x180d37e78                               
+  0x180D37E70  mov     rcx, rax                                  
+  0x180D37E73  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D37E78:
+  0x180D37E78  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D37E7F  mov     rsi, qword ptr [rax + 0x10]                  ; rax-><>c__DisplayClass5_0.slotNumber
+  0x180D37E83  mov     rax, qword ptr [rdi + 0x20]                  ; rdi-><BindSlotAsync>d__7.itemIndex | <InitializeAsync>d__3.onSlotClicked
+  0x180D37E87  test    byte ptr [rax + 0x135], 1                 
+  0x180D37E8E  jne     0x180d37e98                               
+  0x180D37E90  mov     rcx, rax                                  
+  0x180D37E93  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180D37E98:
+  0x180D37E98  mov     rax, qword ptr [rax + 0xc0]               
+  0x180D37E9F  mov     rcx, qword ptr [rax + 8]                  
+  0x180D37EA3  mov     r8, qword ptr [rcx + 0x80]                
+  0x180D37EAA  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37EAE  lea     r9, [rsp + 0x60]                          
+  0x180D37EB3  add     r9, rax                                   
+  0x180D37EB6  mov     rax, qword ptr [r8 + 0x10]                   ; r8-><>c__DisplayClass5_0.slotNumber
+  0x180D37EBA  lea     rcx, [r9 - 0x10]                          
+  0x180D37EBE  cmp     dword ptr [rax + 0x28], 0                    ; rax-><BindSlotAsync>d__7.<>4__this | <InitializeAsync>d__3.onDeleteClicked
+  0x180D37EC2  cmovge  rcx, r9                                   
+  0x180D37EC6  mov     rdx, rsi                                  
+  0x180D37EC9  call    0x180972be0                                  ; -> Naninovel.UniTask<__Il2CppFullySharedGenericType>$$get_IsCompleted
+  0x180D37ECE  test    al, al                                    
+  0x180D37ED0  je      0x180d380e5                               
+
+180D37ED6:
+  0x180D37ED6  mov     r8, qword ptr [rip + 0x2119beb]              ; METHODINFO Method$Naninovel.UniTask.Awaiter<GameStateMap>.GetResult()
+  0x180D37EDD  lea     rdx, [rsp + 0xb0]                         
+  0x180D37EE5  lea     rcx, [rsp + 0x60]                         
+  0x180D37EEA  call    0x180bec390                                  ; -> Naninovel.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180D37EEF  mov     rdi, qword ptr [rbx + 0x18]                  ; rbx-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37EF3  mov     rcx, qword ptr [rip + 0x211a396]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37EFA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D37F01  jne     0x180d37f08                               
+  0x180D37F03  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D37F08:
+  0x180D37F08  cmp     byte ptr [rip + 0x23b091f], 0                ; data_30E882E
+  0x180D37F0F  jne     0x180d37f29                               
+  0x180D37F11  lea     rcx, [rip + 0x211a378]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37F18  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37F1D  lock or dword ptr [rsp], 0                        
+  0x180D37F22  mov     byte ptr [rip + 0x23b0905], 1                ; data_30E882E
+
+180D37F29:
+  0x180D37F29  mov     rcx, qword ptr [rip + 0x211a360]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37F30  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D37F37  jne     0x180d37f3e                               
+  0x180D37F39  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D37F3E:
+  0x180D37F3E  cmp     byte ptr [rip + 0x23b08ea], 0                ; data_30E882F
+  0x180D37F45  jne     0x180d37f5f                               
+  0x180D37F47  lea     rcx, [rip + 0x211a342]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37F4E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37F53  lock or dword ptr [rsp], 0                        
+  0x180D37F58  mov     byte ptr [rip + 0x23b08d0], 1                ; data_30E882F
+
+180D37F5F:
+  0x180D37F5F  test    rdi, rdi                                  
+  0x180D37F62  je      0x180d37f84                               
+  0x180D37F64  mov     rcx, qword ptr [rip + 0x211a325]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D37F6B  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D37F72  jne     0x180d37f79                               
+  0x180D37F74  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D37F79:
+  0x180D37F79  xor     eax, eax                                  
+  0x180D37F7B  cmp     qword ptr [rdi + 0x10], rax               
+  0x180D37F7F  setne   al                                        
+  0x180D37F82  jmp     0x180d37f86                               
+
+180D37F84:
+  0x180D37F84  xor     eax, eax                                  
+
+180D37F86:
+  0x180D37F86  test    al, al                                    
+  0x180D37F88  je      0x180d380c4                               
+  0x180D37F8E  mov     rcx, qword ptr [rbx + 0x18]                  ; rbx-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37F92  test    rcx, rcx                                  
+  0x180D37F95  je      0x180d38186                               
+  0x180D37F9B  mov     r9, qword ptr [rcx]                       
+  0x180D37F9E  mov     rax, qword ptr [r9 + 0x688]               
+  0x180D37FA5  mov     r9, qword ptr [r9 + 0x690]                
+  0x180D37FAC  mov     r8, qword ptr [rsp + 0xb0]                
+  0x180D37FB4  mov     edx, dword ptr [rbx + 0x30]                  ; rbx-><BindSlotAsync>d__7.<slotNumber>5__2 | <InitializeAsync>d__3.loadStateAt
+  0x180D37FB7  call    rax                                       
+  0x180D37FB9  mov     rdi, qword ptr [rbx + 0x18]                  ; rbx-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D37FBD  test    rdi, rdi                                  
+  0x180D37FC0  je      0x180d38180                               
+  0x180D37FC6  cmp     byte ptr [rip + 0x23a53d6], 0                ; data_30DD3A3
+  0x180D37FCD  jne     0x180d37fe7                               
+  0x180D37FCF  lea     rcx, [rip + 0x211d582]                       ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180D37FD6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37FDB  lock or dword ptr [rsp], 0                        
+  0x180D37FE0  mov     byte ptr [rip + 0x23a53bc], 1                ; data_30DD3A3
+
+180D37FE7:
+  0x180D37FE7  xor     edx, edx                                  
+  0x180D37FE9  mov     rcx, rdi                                  
+  0x180D37FEC  call    0x180d37360                                  ; -> GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$CancelAllMotions
+  0x180D37FF1  movss   xmm6, dword ptr [rdi + 0x140]             
+  0x180D37FF9  mov     dword ptr [rsp + 0xb0], 0                 
+  0x180D38004  mov     dword ptr [rsp + 0xb8], 0x3f800000        
+  0x180D3800F  cmp     byte ptr [rip + 0x23a5612], 0                ; data_30DD628
+  0x180D38016  jne     0x180d38030                               
+  0x180D38018  lea     rcx, [rip + 0x20c3c81]                       ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180D3801F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D38024  lock or dword ptr [rsp], 0                        
+  0x180D38029  mov     byte ptr [rip + 0x23a55f8], 1                ; data_30DD628
+
+180D38030:
+  0x180D38030  mov     rax, qword ptr [rip + 0x20c3c69]             ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180D38037  mov     qword ptr [rsp + 0x20], rax               
+  0x180D3803C  movaps  xmm3, xmm6                                
+  0x180D3803F  lea     r8, [rsp + 0xb0]                          
+  0x180D38047  lea     rdx, [rsp + 0xb8]                         
+  0x180D3804F  lea     rcx, [rsp + 0x50]                         
+  0x180D38054  call    0x1806ea5e0                                  ; -> LitMotion.LMotion$$Create<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180D38059  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180D3805E  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D38064  mov     r9, qword ptr [rip + 0x211d4ed]              ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180D3806B  mov     r8, qword ptr [rdi + 0x128]               
+  0x180D38072  lea     rdx, [rsp + 0x50]                         
+  0x180D38077  lea     rcx, [rsp + 0x40]                         
+  0x180D3807C  call    0x180708100                                  ; -> LitMotion.Extensions.LitMotionUGUIExtensions$$BindToAlpha<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180D38081  movsd   xmm0, qword ptr [rsp + 0x40]              
+  0x180D38087  movsd   qword ptr [rsp + 0x50], xmm0              
+  0x180D3808D  mov     eax, dword ptr [rsp + 0x48]               
+  0x180D38091  mov     dword ptr [rsp + 0x58], eax               
+  0x180D38095  xor     r9d, r9d                                  
+  0x180D38098  mov     r8, rdi                                   
+  0x180D3809B  lea     rdx, [rsp + 0x50]                         
+  0x180D380A0  lea     rcx, [rsp + 0x40]                         
+  0x180D380A5  call    0x180da53d0                                  ; -> LitMotion.MotionHandleExtensions$$AddTo
+  0x180D380AA  mov     rcx, rax                                  
+  0x180D380AD  mov     eax, dword ptr [rax + 8]                  
+  0x180D380B0  movsd   xmm0, qword ptr [rcx]                     
+  0x180D380B4  movsd   qword ptr [rdi + 0x148], xmm0             
+  0x180D380BC  mov     dword ptr [rdi + 0x150], eax              
+  0x180D380C2  jmp     0x180d380c4                               
+
+180D380C4:
+  0x180D380C4  mov     dword ptr [rbx], 0xfffffffe               
+  0x180D380CA  lea     rcx, [rbx + 8]                            
+  0x180D380CE  xor     edx, edx                                  
+  0x180D380D0  call    0x1804d17d0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetResult
+
+180D380D5:
+  0x180D380D5  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180D380DA  add     rsp, 0x80                                 
+  0x180D380E1  pop     rdi                                       
+  0x180D380E2  pop     rsi                                       
+  0x180D380E3  pop     rbx                                       
+  0x180D380E4  ret                                               
+
+180D380E5:
+  0x180D380E5  xor     eax, eax                                  
+  0x180D380E7  mov     dword ptr [rbx], eax                      
+  0x180D380E9  movaps  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180D380EE  movups  xmmword ptr [rbx + 0x38], xmm0               ; rbx-><BindSlotAsync>d__7.<>u__1
+  0x180D380F2  cmp     dword ptr [rip + 0x23a10cc], eax             ; data_30D91C4
+  0x180D380F8  je      0x180d38133                               
+  0x180D380FA  lea     r8, [rbx + 0x38]                             ; rbx-><BindSlotAsync>d__7.<>u__1 | <InitializeAsync>d__3.itemsCount
+  0x180D380FE  shr     r8, 0xc                                   
+  0x180D38102  and     r8d, 0x1fffff                             
+  0x180D38109  mov     edx, r8d                                  
+  0x180D3810C  shr     rdx, 6                                    
+  0x180D38110  lea     r9, [rip + 0x23fc469]                        ; data_3134580
+  0x180D38117  and     r8d, 0x3f                                 
+  0x180D3811B  prefetchw byte ptr [r9 + rdx*8]                     
+
+180D38120:
+  0x180D38120  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180D38124  mov     rcx, rax                                  
+  0x180D38127  bts     rcx, r8                                   
+  0x180D3812B  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180D38131  jne     0x180d38120                               
+
+180D38133:
+  0x180D38133  lea     rcx, [rbx + 8]                            
+  0x180D38137  mov     r9, qword ptr [rip + 0x20f9602]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<GameStateMap>, GameStateSlotsGridExtended.<BindSlotAsync>d__7>()
+  0x180D3813E  mov     r8, rbx                                   
+  0x180D38141  lea     rdx, [rsp + 0x60]                         
+  0x180D38146  call    0x180666260                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D3814B  nop                                               
+  0x180D3814C  jmp     0x180d380d5                               
+  0x180D3814E  mov     rcx, qword ptr [rsp + 0xa0]               
+  0x180D38156  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D3815C  add     rcx, 8                                    
+  0x180D38160  xor     r8d, r8d                                  
+  0x180D38163  mov     rdx, qword ptr [rsp + 0xb0]               
+  0x180D3816B  call    0x1804d16a0                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$SetException
+  0x180D38170  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180D38175  add     rsp, 0x80                                 
+  0x180D3817C  pop     rdi                                       
+  0x180D3817D  pop     rsi                                       
+  0x180D3817E  pop     rbx                                       
+  0x180D3817F  ret                                               
+
+180D38180:
+  0x180D38180  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D38185  nop                                               
+
+180D38186:
+  0x180D38186  call    0x180246730                                  ; THROW NullReferenceException
+
+180D3818B:
+  0x180D3818B  call    0x180246730                                  ; THROW NullReferenceException
+
+180D38190:
+  0x180D38190  call    0x180246730                                  ; THROW NullReferenceException
+
+180D38195:
+  0x180D38195  call    0x180246730                                  ; THROW NullReferenceException

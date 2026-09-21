@@ -1,0 +1,72 @@
+====================================================================================================
+FUNCTION RVA 0xD371B0  VA 0x180D371B0  size 0x10C (268 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$OnEndToLoad
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__OnEndToLoad (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: public void OnEndToLoad()
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D371B0  push    rbx                                       
+  0x180D371B2  sub     rsp, 0x60                                 
+  0x180D371B6  cmp     byte ptr [rip + 0x23a61e6], 0                ; data_30DD3A3
+  0x180D371BD  mov     rbx, rcx                                  
+  0x180D371C0  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D371C5  jne     0x180d371df                               
+  0x180D371C7  lea     rcx, [rip + 0x211e38a]                       ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180D371CE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D371D3  lock or dword ptr [rsp], 0                        
+  0x180D371D8  mov     byte ptr [rip + 0x23a61c4], 1                ; data_30DD3A3
+
+180D371DF:
+  0x180D371DF  xor     edx, edx                                  
+  0x180D371E1  mov     rcx, rbx                                  
+  0x180D371E4  call    0x180d37360                                  ; -> GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$CancelAllMotions
+  0x180D371E9  cmp     byte ptr [rip + 0x23a6438], 0                ; data_30DD628
+  0x180D371F0  movss   xmm6, dword ptr [rbx + 0x140]                ; rbx->GameStateSlotExtended._fadeDuration
+  0x180D371F8  mov     dword ptr [rsp + 0x70], 0                 
+  0x180D37200  mov     dword ptr [rsp + 0x80], 0x3f800000        
+  0x180D3720B  jne     0x180d37225                               
+  0x180D3720D  lea     rcx, [rip + 0x20c4a8c]                       ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180D37214  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37219  lock or dword ptr [rsp], 0                        
+  0x180D3721E  mov     byte ptr [rip + 0x23a6403], 1                ; data_30DD628
+
+180D37225:
+  0x180D37225  mov     rax, qword ptr [rip + 0x20c4a74]             ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180D3722C  lea     r8, [rsp + 0x70]                          
+  0x180D37231  movaps  xmm3, xmm6                                
+  0x180D37234  mov     qword ptr [rsp + 0x20], rax               
+  0x180D37239  lea     rdx, [rsp + 0x80]                         
+  0x180D37241  lea     rcx, [rsp + 0x40]                         
+  0x180D37246  call    0x1806ea5e0                                  ; -> LitMotion.LMotion$$Create<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180D3724B  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D37250  lea     rdx, [rsp + 0x40]                         
+  0x180D37255  mov     r9, qword ptr [rip + 0x211e2fc]              ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180D3725C  lea     rcx, [rsp + 0x30]                         
+  0x180D37261  mov     r8, qword ptr [rbx + 0x128]                  ; rbx->GameStateSlotExtended._loadingIconCanvasGroup
+  0x180D37268  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D3726E  call    0x180708100                                  ; -> LitMotion.Extensions.LitMotionUGUIExtensions$$BindToAlpha<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180D37273  movsd   xmm0, qword ptr [rsp + 0x30]              
+  0x180D37279  lea     rdx, [rsp + 0x40]                         
+  0x180D3727E  mov     eax, dword ptr [rsp + 0x38]               
+  0x180D37282  lea     rcx, [rsp + 0x30]                         
+  0x180D37287  xor     r9d, r9d                                  
+  0x180D3728A  movsd   qword ptr [rsp + 0x40], xmm0              
+  0x180D37290  mov     r8, rbx                                   
+  0x180D37293  mov     dword ptr [rsp + 0x48], eax               
+  0x180D37297  call    0x180da53d0                                  ; -> LitMotion.MotionHandleExtensions$$AddTo
+  0x180D3729C  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+  0x180D372A1  movsd   xmm0, qword ptr [rax]                     
+  0x180D372A5  mov     ecx, dword ptr [rax + 8]                  
+  0x180D372A8  movsd   qword ptr [rbx + 0x148], xmm0                ; rbx->GameStateSlotExtended._fadeMotion
+  0x180D372B0  mov     dword ptr [rbx + 0x150], ecx              
+  0x180D372B6  add     rsp, 0x60                                 
+  0x180D372BA  pop     rbx                                       
+  0x180D372BB  ret                                               

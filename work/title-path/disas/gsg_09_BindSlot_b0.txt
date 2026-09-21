@@ -1,0 +1,50 @@
+====================================================================================================
+FUNCTION RVA 0x6316D0  VA 0x1806316D0  size 0x38 (56 bytes)
+  managed: Naninovel.UI.GameStateSlotsGrid.<>c__DisplayClass4_0$$<BindSlot>b__0
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended.<>c__DisplayClass5_0$$<BindSlot>b__0
+  csig   : bool Naninovel_UI_GameStateSlotsGrid___c__DisplayClass4_0___BindSlot_b__0 (Naninovel_UI_GameStateSlotsGrid___c__DisplayClass4_0_o* __this, Naninovel_UI_GameStateSlot_o* s, const MethodInfo* method);
+  dump.cs: GameStateSlotsGrid.<>c__DisplayClass4_0 :: internal bool <BindSlot>b__0(GameStateSlot s)
+  dump.cs: GameStateSlotsGridExtended.<>c__DisplayClass5_0 :: internal bool <BindSlot>b__0(GameStateSlotExtended slot)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended:
+      +0xC8   _onSlotClicked                 Action<int>
+      +0xD0   _onDeleteClicked               Action<int>
+      +0xD8   _loadStateAt                   Func<int, UniTask<GameStateMap>>
+  fields of GameStateSlotsGridExtended.<>c__DisplayClass5_0:
+      +0x10   slotNumber                     int
+  fields of GameStateSlotsGridExtended.<BindSlotAsync>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   slot                           GameStateSlotExtended
+      +0x20   itemIndex                      int
+      +0x28   <>4__this                      GameStateSlotsGridExtended
+      +0x30   <slotNumber>5__2               int
+      +0x38   <>u__1                         UniTask.Awaiter<GameStateMap>
+  fields of GameStateSlotsGridExtended.<InitializeAsync>d__3:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GameStateSlotsGridExtended
+      +0x20   onSlotClicked                  Action<int>
+      +0x28   onDeleteClicked                Action<int>
+      +0x30   loadStateAt                    Func<int, UniTask<GameStateMap>>
+      +0x38   itemsCount                     int
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x1806316D0  push    rbx                                       
+  0x1806316D2  sub     rsp, 0x20                                 
+  0x1806316D6  mov     r8, rdx                                   
+  0x1806316D9  mov     rbx, rcx                                  
+  0x1806316DC  test    rdx, rdx                                  
+  0x1806316DF  je      0x180631703                               
+  0x1806316E1  mov     rdx, qword ptr [rdx]                      
+  0x1806316E4  mov     rcx, r8                                   
+  0x1806316E7  mov     rax, qword ptr [rdx + 0x5e8]              
+  0x1806316EE  mov     rdx, qword ptr [rdx + 0x5f0]              
+  0x1806316F5  call    rax                                       
+  0x1806316F7  cmp     eax, dword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass5_0.slotNumber
+  0x1806316FA  sete    al                                        
+  0x1806316FD  add     rsp, 0x20                                 
+  0x180631701  pop     rbx                                       
+  0x180631702  ret                                               
+
+180631703:
+  0x180631703  call    0x180246730                                  ; THROW NullReferenceException

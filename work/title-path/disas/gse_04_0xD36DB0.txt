@@ -1,0 +1,37 @@
+====================================================================================================
+FUNCTION RVA 0xD36DB0  VA 0x180D36DB0  size 0x4E (78 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended$$SetNonEmptyState
+  csig   : void GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended__SetNonEmptyState (GigaCreation_NaninovelExtender_Ui_GameStateSlotExtended_o* __this, int32_t slotNumber, Naninovel_GameStateMap_o* state, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended :: protected override void SetNonEmptyState(int slotNumber, GameStateMap state)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotExtended:
+      +0x120  _thumbnailCanvasGroup          CanvasGroup
+      +0x128  _loadingIconCanvasGroup        CanvasGroup
+      +0x130  _loadingIconTransform          Transform
+      +0x138  _noDataLabel                   CanvasGroup
+      +0x140  _fadeDuration                  float
+      +0x144  _rollDuration                  float
+      +0x148  _fadeMotion                    MotionHandle
+      +0x154  _rollMotion                    MotionHandle
+====================================================================================================
+  0x180D36DB0  push    rbx                                       
+  0x180D36DB2  sub     rsp, 0x20                                 
+  0x180D36DB6  xor     r9d, r9d                                  
+  0x180D36DB9  mov     rbx, rcx                                  
+  0x180D36DBC  call    0x180630990                                  ; -> Naninovel.UI.GameStateSlot$$SetNonEmptyState
+  0x180D36DC1  mov     rcx, qword ptr [rbx + 0x120]                 ; rbx->GameStateSlotExtended._thumbnailCanvasGroup
+  0x180D36DC8  test    rcx, rcx                                  
+  0x180D36DCB  je      0x180d36df9                               
+  0x180D36DCD  movss   xmm1, dword ptr [rip + 0x1daba4b]            ; data_2AE2820
+  0x180D36DD5  xor     r8d, r8d                                  
+  0x180D36DD8  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D36DDD  mov     rcx, qword ptr [rbx + 0x138]                 ; rbx->GameStateSlotExtended._noDataLabel
+  0x180D36DE4  test    rcx, rcx                                  
+  0x180D36DE7  je      0x180d36df9                               
+  0x180D36DE9  xor     r8d, r8d                                  
+  0x180D36DEC  xorps   xmm1, xmm1                                
+  0x180D36DEF  add     rsp, 0x20                                 
+  0x180D36DF3  pop     rbx                                       
+  0x180D36DF4  jmp     0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180D36DF9:
+  0x180D36DF9  call    0x180246730                                  ; THROW NullReferenceException

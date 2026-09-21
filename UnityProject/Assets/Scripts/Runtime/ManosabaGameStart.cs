@@ -1641,6 +1641,51 @@ namespace Manosaba.Integration
             evidence.auto_advance = "COMPLETED";
             evidence.auto_advance_seconds = Time.realtimeSinceStartup - started;
             evidence.auto_advance_final = lastSnapshot ?? "(no readable player snapshot)";
+            evidence.ui_visibility = DescribeManagedUiVisibility();
+        }
+
+        /// <summary>
+        /// One entry per UI the Naninovel UI manager registered: `name:V|h(active|inactive,a=alpha)` where V/h is
+        /// `IManagedUI.Visible`, active is the GameObject's activeInHierarchy and alpha the root CanvasGroup's.  Read
+        /// after auto-advance so the gate can tell whether the title script left TitleUI on screen.
+        /// </summary>
+        private static string DescribeManagedUiVisibility ()
+        {
+            try
+            {
+                Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
+                Type uiManagerType = Type.GetType("Naninovel.IUIManager, Elringus.Naninovel.Runtime");
+                if (engineType == null || uiManagerType == null) return "Naninovel.Engine / IUIManager not found";
+                MethodInfo getService = engineType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition &&
+                                         m.GetParameters().Length == 0);
+                object manager = getService?.MakeGenericMethod(uiManagerType).Invoke(null, null);
+                if (manager == null) return "IUIManager is null";
+                if (GetMemberValue(manager.GetType(), manager, "managedUIs") is not IEnumerable list)
+                    return "UIManager.managedUIs not readable";
+                var entries = new List<string>();
+                foreach (object managed in list.Cast<object>().ToArray())
+                {
+                    if (managed == null) continue;
+                    object ui = GetMemberValue(managed.GetType(), managed, "UIComponent");
+                    if (ui is not Component component || !component)
+                    {
+                        entries.Add("(destroyed or missing UI component)");
+                        continue;
+                    }
+                    object visible = GetMemberValue(ui.GetType(), ui, "Visible");
+                    CanvasGroup group = component.GetComponent<CanvasGroup>();
+                    entries.Add(string.Format(CultureInfo.InvariantCulture, "{0}:{1}({2},a={3})", component.name,
+                        visible is bool b ? (b ? "V" : "h") : "?",
+                        component.gameObject.activeInHierarchy ? "active" : "inactive",
+                        group ? group.alpha.ToString("0.00", CultureInfo.InvariantCulture) : "-"));
+                }
+                return string.Join(" ", entries);
+            }
+            catch (Exception ex)
+            {
+                return Describe(ex);
+            }
         }
 
         private static string TryAdvanceAndSnapshot(object player, Type playerType, MethodInfo setSkipEnabled,
@@ -2223,6 +2268,7 @@ namespace Manosaba.Integration
             public string auto_advance_trace = "";
             public string auto_advance_final = "";
             public string auto_advance_restore = "";
+            public string ui_visibility = "";   // managed UIs after auto-advance (DescribeManagedUiVisibility)
             public List<string> played_scripts = new List<string>();   // consumed by gate G6's runtime coverage
             public string component_type;
             public bool addressables_field_found;

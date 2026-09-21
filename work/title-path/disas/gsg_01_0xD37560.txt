@@ -1,0 +1,180 @@
+====================================================================================================
+FUNCTION RVA 0xD37560  VA 0x180D37560  size 0x249 (585 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended$$InitializeAsync
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended__InitializeAsync (GigaCreation_NaninovelExtender_Ui_GameStateSlotsGridExtended_o* __this, int32_t itemsCount, System_Action_int__o* onSlotClicked, System_Action_int__o* onDeleteClicked, System_Func_int__UniTask_GameStateMap___o* loadStateAt, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended :: public UniTask InitializeAsync(int itemsCount, Action<int> onSlotClicked, Action<int> onDeleteClicked, Func<int, UniTask<GameStateMap>> loadStateAt)
+  fields of GigaCreation.NaninovelExtender.Ui.GameStateSlotsGridExtended:
+      +0xC8   _onSlotClicked                 Action<int>
+      +0xD0   _onDeleteClicked               Action<int>
+      +0xD8   _loadStateAt                   Func<int, UniTask<GameStateMap>>
+  fields of GameStateSlotsGridExtended.<>c__DisplayClass5_0:
+      +0x10   slotNumber                     int
+  fields of GameStateSlotsGridExtended.<BindSlotAsync>d__7:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   slot                           GameStateSlotExtended
+      +0x20   itemIndex                      int
+      +0x28   <>4__this                      GameStateSlotsGridExtended
+      +0x30   <slotNumber>5__2               int
+      +0x38   <>u__1                         UniTask.Awaiter<GameStateMap>
+  fields of GameStateSlotsGridExtended.<InitializeAsync>d__3:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GameStateSlotsGridExtended
+      +0x20   onSlotClicked                  Action<int>
+      +0x28   onDeleteClicked                Action<int>
+      +0x30   loadStateAt                    Func<int, UniTask<GameStateMap>>
+      +0x38   itemsCount                     int
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D37560  mov     qword ptr [rsp + 8], rbx                  
+  0x180D37565  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D3756A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D3756F  push    rdi                                       
+  0x180D37570  sub     rsp, 0x70                                 
+  0x180D37574  cmp     byte ptr [rip + 0x23a5e2a], 0                ; data_30DD3A5
+  0x180D3757B  mov     rbp, r9                                   
+  0x180D3757E  mov     rdi, r8                                   
+  0x180D37581  mov     esi, edx                                  
+  0x180D37583  mov     rbx, rcx                                  
+  0x180D37586  jne     0x180d375a0                               
+  0x180D37588  lea     rcx, [rip + 0x20fa1e1]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<GameStateSlotsGridExtended.<InitializeAsync>d__3>()
+  0x180D3758F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D37594  lock or dword ptr [rsp], 0                        
+  0x180D37599  mov     byte ptr [rip + 0x23a5e05], 1                ; data_30DD3A5
+
+180D375A0:
+  0x180D375A0  mov     ecx, dword ptr [rip + 0x23a1c1e]             ; data_30D91C4
+  0x180D375A6  lea     r9, [rip + 0x23b6cf3]                        ; data_30EE2A0
+  0x180D375AD  xor     eax, eax                                  
+  0x180D375AF  xorps   xmm0, xmm0                                
+  0x180D375B2  mov     qword ptr [rsp + 0x20], rax               
+  0x180D375B7  xorps   xmm1, xmm1                                
+  0x180D375BA  mov     qword ptr [rsp + 0x38], rax               
+  0x180D375BF  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D375C5  movdqa  xmmword ptr [rsp + 0x50], xmm1            
+  0x180D375CB  mov     qword ptr [rsp + 0x60], rax               
+  0x180D375D0  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180D375D5  test    ecx, ecx                                  
+  0x180D375D7  je      0x180d3761f                               
+  0x180D375D9  lea     r8, [rsp + 0x28]                          
+  0x180D375DE  shr     r8, 0xc                                   
+  0x180D375E2  and     r8d, 0x1fffff                             
+  0x180D375E9  mov     eax, r8d                                  
+  0x180D375EC  shr     rax, 6                                    
+  0x180D375F0  and     r8d, 0x3f                                 
+  0x180D375F4  lea     rdx, [r9 + rax*8]                         
+  0x180D375F8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D375FF  nop                                               
+
+180D37600:
+  0x180D37600  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D37607  mov     rcx, rax                                  
+  0x180D3760A  bts     rcx, r8                                   
+  0x180D3760E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D37617  jne     0x180d37600                               
+  0x180D37619  mov     ecx, dword ptr [rip + 0x23a1ba5]             ; data_30D91C4
+
+180D3761F:
+  0x180D3761F  mov     qword ptr [rsp + 0x38], rbx               
+  0x180D37624  test    ecx, ecx                                  
+  0x180D37626  je      0x180d3766f                               
+  0x180D37628  lea     r8, [rsp + 0x38]                          
+  0x180D3762D  shr     r8, 0xc                                   
+  0x180D37631  and     r8d, 0x1fffff                             
+  0x180D37638  mov     eax, r8d                                  
+  0x180D3763B  shr     rax, 6                                    
+  0x180D3763F  and     r8d, 0x3f                                 
+  0x180D37643  lea     rdx, [r9 + rax*8]                         
+  0x180D37647  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D3764E  nop                                               
+
+180D37650:
+  0x180D37650  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D37657  mov     rcx, rax                                  
+  0x180D3765A  bts     rcx, r8                                   
+  0x180D3765E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D37667  jne     0x180d37650                               
+  0x180D37669  mov     ecx, dword ptr [rip + 0x23a1b55]             ; data_30D91C4
+
+180D3766F:
+  0x180D3766F  mov     dword ptr [rsp + 0x58], esi               
+  0x180D37673  mov     qword ptr [rsp + 0x40], rdi               
+  0x180D37678  test    ecx, ecx                                  
+  0x180D3767A  je      0x180d376c1                               
+  0x180D3767C  lea     r8, [rsp + 0x40]                          
+  0x180D37681  shr     r8, 0xc                                   
+  0x180D37685  and     r8d, 0x1fffff                             
+  0x180D3768C  mov     eax, r8d                                  
+  0x180D3768F  shr     rax, 6                                    
+  0x180D37693  and     r8d, 0x3f                                 
+  0x180D37697  lea     rdx, [r9 + rax*8]                         
+  0x180D3769B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D376A2:
+  0x180D376A2  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D376A9  mov     rcx, rax                                  
+  0x180D376AC  bts     rcx, r8                                   
+  0x180D376B0  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D376B9  jne     0x180d376a2                               
+  0x180D376BB  mov     ecx, dword ptr [rip + 0x23a1b03]             ; data_30D91C4
+
+180D376C1:
+  0x180D376C1  mov     qword ptr [rsp + 0x48], rbp               
+  0x180D376C6  test    ecx, ecx                                  
+  0x180D376C8  je      0x180d3770f                               
+  0x180D376CA  lea     r8, [rsp + 0x48]                          
+  0x180D376CF  shr     r8, 0xc                                   
+  0x180D376D3  and     r8d, 0x1fffff                             
+  0x180D376DA  mov     eax, r8d                                  
+  0x180D376DD  shr     rax, 6                                    
+  0x180D376E1  and     r8d, 0x3f                                 
+  0x180D376E5  lea     rdx, [r9 + rax*8]                         
+  0x180D376E9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D376F0:
+  0x180D376F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D376F7  mov     rcx, rax                                  
+  0x180D376FA  bts     rcx, r8                                   
+  0x180D376FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D37707  jne     0x180d376f0                               
+  0x180D37709  mov     ecx, dword ptr [rip + 0x23a1ab5]             ; data_30D91C4
+
+180D3770F:
+  0x180D3770F  mov     rax, qword ptr [rsp + 0xa0]               
+  0x180D37717  mov     qword ptr [rsp + 0x50], rax               
+  0x180D3771C  test    ecx, ecx                                  
+  0x180D3771E  je      0x180d37769                               
+  0x180D37720  lea     r8, [rsp + 0x50]                          
+  0x180D37725  shr     r8, 0xc                                   
+  0x180D37729  and     r8d, 0x1fffff                             
+  0x180D37730  mov     eax, r8d                                  
+  0x180D37733  shr     rax, 6                                    
+  0x180D37737  and     r8d, 0x3f                                 
+  0x180D3773B  lea     rdx, [r9 + rax*8]                         
+  0x180D3773F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D37746  nop     word ptr [rax + rax]                      
+
+180D37750:
+  0x180D37750  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D37757  mov     rcx, rax                                  
+  0x180D3775A  bts     rcx, r8                                   
+  0x180D3775E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D37767  jne     0x180d37750                               
+
+180D37769:
+  0x180D37769  mov     r8, qword ptr [rip + 0x20fa000]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<GameStateSlotsGridExtended.<InitializeAsync>d__3>()
+  0x180D37770  lea     rdx, [rsp + 0x20]                         
+  0x180D37775  lea     rcx, [rsp + 0x28]                         
+  0x180D3777A  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180D37782  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D37787  xor     edx, edx                                  
+  0x180D37789  lea     rcx, [rsp + 0x28]                         
+  0x180D3778E  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180D37793  lea     r11, [rsp + 0x70]                         
+  0x180D37798  mov     rbx, qword ptr [r11 + 0x10]                  ; r11-><>c__DisplayClass5_0.slotNumber
+  0x180D3779C  mov     rbp, qword ptr [r11 + 0x18]                  ; r11-><BindSlotAsync>d__7.slot | <InitializeAsync>d__3.<>4__this
+  0x180D377A0  mov     rsi, qword ptr [r11 + 0x20]                  ; r11-><BindSlotAsync>d__7.itemIndex | <InitializeAsync>d__3.onSlotClicked
+  0x180D377A4  mov     rsp, r11                                  
+  0x180D377A7  pop     rdi                                       
+  0x180D377A8  ret                                               
