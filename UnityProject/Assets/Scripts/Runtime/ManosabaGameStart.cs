@@ -317,6 +317,7 @@ namespace Manosaba.Integration
                                         evidence.post_init_capture = "(capture not installed: " + lateCaptureError + ")";
                                 }
                                 SampleEngine(out bool isInitializing, out bool isInitialized);
+                                if (isInitialized) TryHookPlaybackTrace();
                                 string sample = elapsed.ToString("F1", CultureInfo.InvariantCulture) + ":" +
                                                 (isInitialized ? "INITIALIZED" : isInitializing ? "initializing" : "idle") +
                                                 ":" + (progressWatch != null
@@ -2079,6 +2080,47 @@ namespace Manosaba.Integration
             FieldInfo steam = type.GetField("_steamManager", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             object value = steam != null ? steam.GetValue(component) : null;
             return value is UnityEngine.Object unityObject ? unityObject != null : value != null;
+        }
+
+        private static bool s_playTraceHooked;
+        private static int s_playTraceCount;
+
+        /// <summary>
+        /// Logs every IScriptPlayer.OnPlay (first 8) once the engine is initialized.  Unity's Editor log records the managed
+        /// caller stack of each Debug.Log, so each line names who (re)started playback.  Added for G4b round 7, where
+        /// System_Title restarted from its first @back every ~0.2 s in skip mode and never reached @showUI / @stop.
+        /// </summary>
+        private static void TryHookPlaybackTrace()
+        {
+            if (s_playTraceHooked) return;
+            try
+            {
+                Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
+                Type playerType = Type.GetType("Naninovel.IScriptPlayer, Elringus.Naninovel.Runtime");
+                MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
+                object player = getService != null && playerType != null
+                    ? getService.MakeGenericMethod(playerType).Invoke(null, null) : null;
+                EventInfo onPlay = playerType != null ? playerType.GetEvent("OnPlay") : null;
+                if (player == null || onPlay == null) return;
+                MethodInfo handler = typeof(ManosabaGameStart).GetMethod(nameof(OnScriptPlay), BindingFlags.NonPublic | BindingFlags.Static);
+                onPlay.AddEventHandler(player, Delegate.CreateDelegate(onPlay.EventHandlerType, handler));
+                s_playTraceHooked = true;
+                Debug.Log("[ManosabaGameStart] playback trace hooked on IScriptPlayer.OnPlay");
+            }
+            catch (Exception ex)
+            {
+                s_playTraceHooked = true;
+                Debug.Log("[ManosabaGameStart] playback trace NOT hooked: " + Describe(ex));
+            }
+        }
+
+        private static void OnScriptPlay(object script)
+        {
+            if (++s_playTraceCount > 8) return;
+            string path = script?.GetType().GetProperty("Path")?.GetValue(script) as string;
+            Debug.Log("[ManosabaGameStart] OnPlay #" + s_playTraceCount + " " + path + " t=" +
+                      Time.realtimeSinceStartup.ToString("F2", CultureInfo.InvariantCulture) + " frame=" + Time.frameCount);
         }
 
         private static string Describe(Exception ex)
