@@ -120,9 +120,10 @@ namespace GigaCreation.NaninovelExtender.Ui
     	[SerializeField]
     	private Transform _headerParent;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD38A70: new SimpleWaitable() (its ctor inlined) -> +0x118, then CustomUI..ctor
     	[Token(Token = "0x400003D")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x118")]
-    	private readonly SimpleWaitable _initialized;
+    	private readonly SimpleWaitable _initialized = new SimpleWaitable();
 
     	[Token(Token = "0x6000043")]
     	[Address(RVA = "0xD385E0", Offset = "0xD36FE0", VA = "0x180D385E0", Slot = "83")]

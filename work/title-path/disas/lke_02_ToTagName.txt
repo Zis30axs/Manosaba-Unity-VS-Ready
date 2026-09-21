@@ -1,0 +1,67 @@
+====================================================================================================
+FUNCTION RVA 0xCD13B0  VA 0x180CD13B0  size 0xC6 (198 bytes)
+  managed: GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToTagName
+  csig   : System_String_o* GigaCreation_Essentials_Localization_LocaleKindExtensions__ToTagName (int32_t locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocaleKindExtensions :: public static string ToTagName(LocaleKind locale)
+====================================================================================================
+  0x180CD13B0  push    rbx                                       
+  0x180CD13B2  sub     rsp, 0x20                                 
+  0x180CD13B6  cmp     byte ptr [rip + 0x240bd5f], 0                ; data_30DD11C
+  0x180CD13BD  mov     ebx, ecx                                  
+  0x180CD13BF  jne     0x180cd141d                               
+  0x180CD13C1  lea     rcx, [rip + 0x2171558]                       ; STR 'ja'
+  0x180CD13C8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD13CD  lock or dword ptr [rsp], 0                        
+  0x180CD13D2  lea     rcx, [rip + 0x217122f]                       ; STR 'en-US'
+  0x180CD13D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD13DE  lock or dword ptr [rsp], 0                        
+  0x180CD13E3  lea     rcx, [rip + 0x2171126]                       ; STR 'ko'
+  0x180CD13EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD13EF  lock or dword ptr [rsp], 0                        
+  0x180CD13F4  lea     rcx, [rip + 0x2196225]                       ; STR 'zh-Hant'
+  0x180CD13FB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1400  lock or dword ptr [rsp], 0                        
+  0x180CD1405  lea     rcx, [rip + 0x219620c]                       ; STR 'zh-Hans'
+  0x180CD140C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1411  lock or dword ptr [rsp], 0                        
+  0x180CD1416  mov     byte ptr [rip + 0x240bcff], 1                ; data_30DD11C
+
+180CD141D:
+  0x180CD141D  test    ebx, ebx                                  
+  0x180CD141F  je      0x180cd1469                               
+  0x180CD1421  sub     ebx, 1                                    
+  0x180CD1424  je      0x180cd145c                               
+  0x180CD1426  sub     ebx, 1                                    
+  0x180CD1429  je      0x180cd144f                               
+  0x180CD142B  sub     ebx, 1                                    
+  0x180CD142E  je      0x180cd1442                               
+  0x180CD1430  cmp     ebx, 1                                    
+  0x180CD1433  jne     0x180cd1469                               
+  0x180CD1435  mov     rax, qword ptr [rip + 0x21710d4]             ; STR 'ko'
+  0x180CD143C  add     rsp, 0x20                                 
+  0x180CD1440  pop     rbx                                       
+  0x180CD1441  ret                                               
+
+180CD1442:
+  0x180CD1442  mov     rax, qword ptr [rip + 0x21961d7]             ; STR 'zh-Hant'
+  0x180CD1449  add     rsp, 0x20                                 
+  0x180CD144D  pop     rbx                                       
+  0x180CD144E  ret                                               
+
+180CD144F:
+  0x180CD144F  mov     rax, qword ptr [rip + 0x21961c2]             ; STR 'zh-Hans'
+  0x180CD1456  add     rsp, 0x20                                 
+  0x180CD145A  pop     rbx                                       
+  0x180CD145B  ret                                               
+
+180CD145C:
+  0x180CD145C  mov     rax, qword ptr [rip + 0x21711a5]             ; STR 'en-US'
+  0x180CD1463  add     rsp, 0x20                                 
+  0x180CD1467  pop     rbx                                       
+  0x180CD1468  ret                                               
+
+180CD1469:
+  0x180CD1469  mov     rax, qword ptr [rip + 0x21714b0]             ; STR 'ja'
+  0x180CD1470  add     rsp, 0x20                                 
+  0x180CD1474  pop     rbx                                       
+  0x180CD1475  ret                                               

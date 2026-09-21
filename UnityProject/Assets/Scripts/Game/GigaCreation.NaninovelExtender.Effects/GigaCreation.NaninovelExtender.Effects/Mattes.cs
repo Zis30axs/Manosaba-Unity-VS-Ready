@@ -155,17 +155,20 @@ namespace GigaCreation.NaninovelExtender.Effects
     	[SerializeField]
     	private EasingType _defaultEasingType;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD0C2A0: List ctor inlined with new T[4] -> +0x58
     	[Token(Token = "0x400006B")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
-    	private readonly IList<Tweener<FloatTween>> _changeWidthTweeners;
+    	private readonly IList<Tweener<FloatTween>> _changeWidthTweeners = new List<Tweener<FloatTween>>(4);
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD0C2A0: List ctor inlined with new T[4] -> +0x60
     	[Token(Token = "0x400006C")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
-    	private readonly IList<Tweener<ColorTween>> _changeColorTweeners;
+    	private readonly IList<Tweener<ColorTween>> _changeColorTweeners = new List<Tweener<ColorTween>>(4);
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD0C2A0: List ctor inlined with new T[8] -> +0x68
     	[Token(Token = "0x400006D")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x68")]
-    	private readonly IList<UniTask> _tweenTasks;
+    	private readonly IList<UniTask> _tweenTasks = new List<UniTask>(8);
 
     	[Token(Token = "0x400006E")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x70")]

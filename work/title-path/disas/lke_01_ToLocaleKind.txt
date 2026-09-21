@@ -1,0 +1,252 @@
+====================================================================================================
+FUNCTION RVA 0xCD1050  VA 0x180CD1050  size 0x355 (853 bytes)
+  managed: GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToLocaleKind
+  csig   : int32_t GigaCreation_Essentials_Localization_LocaleKindExtensions__ToLocaleKind (System_String_o* tag, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocaleKindExtensions :: public static LocaleKind ToLocaleKind(string tag)
+====================================================================================================
+  0x180CD1050  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD1055  push    rdi                                       
+  0x180CD1056  sub     rsp, 0x20                                 
+  0x180CD105A  cmp     byte ptr [rip + 0x240c0ba], 0                ; data_30DD11B
+  0x180CD1061  mov     rbx, rcx                                  
+  0x180CD1064  jne     0x180cd111b                               
+  0x180CD106A  lea     rcx, [rip + 0x21718af]                       ; STR 'ja'
+  0x180CD1071  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1076  lock or dword ptr [rsp], 0                        
+  0x180CD107B  lea     rcx, [rip + 0x2171586]                       ; STR 'en-US'
+  0x180CD1082  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1087  lock or dword ptr [rsp], 0                        
+  0x180CD108C  lea     rcx, [rip + 0x217147d]                       ; STR 'ko'
+  0x180CD1093  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1098  lock or dword ptr [rsp], 0                        
+  0x180CD109D  lea     rcx, [rip + 0x219657c]                       ; STR 'zh-Hant'
+  0x180CD10A4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10A9  lock or dword ptr [rsp], 0                        
+  0x180CD10AE  lea     rcx, [rip + 0x2170f9b]                       ; STR 'ja-JP'
+  0x180CD10B5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10BA  lock or dword ptr [rsp], 0                        
+  0x180CD10BF  lea     rcx, [rip + 0x2170f42]                       ; STR 'zh-CN'
+  0x180CD10C6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10CB  lock or dword ptr [rsp], 0                        
+  0x180CD10D0  lea     rcx, [rip + 0x2196541]                       ; STR 'zh-Hans'
+  0x180CD10D7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10DC  lock or dword ptr [rsp], 0                        
+  0x180CD10E1  lea     rcx, [rip + 0x2170da0]                       ; STR 'zh-TW'
+  0x180CD10E8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10ED  lock or dword ptr [rsp], 0                        
+  0x180CD10F2  lea     rcx, [rip + 0x2170d2f]                       ; STR 'en'
+  0x180CD10F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD10FE  lock or dword ptr [rsp], 0                        
+  0x180CD1103  lea     rcx, [rip + 0x2170b1e]                       ; STR 'zh'
+  0x180CD110A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD110F  lock or dword ptr [rsp], 0                        
+  0x180CD1114  mov     byte ptr [rip + 0x240c000], 1                ; data_30DD11B
+
+180CD111B:
+  0x180CD111B  xor     edi, edi                                  
+  0x180CD111D  test    rbx, rbx                                  
+  0x180CD1120  je      0x180cd1391                               
+  0x180CD1126  movsxd  r10, dword ptr [rbx + 0x10]               
+  0x180CD112A  lea     r9, [rbx + 0x14]                          
+  0x180CD112E  mov     edx, 0x811c9dc5                           
+  0x180CD1133  mov     r8d, edi                                  
+  0x180CD1136  mov     eax, edi                                  
+
+180CD1138:
+  0x180CD1138  cmp     eax, r10d                                 
+  0x180CD113B  jge     0x180cd1161                               
+  0x180CD113D  mov     eax, r8d                                  
+  0x180CD1140  cmp     rax, r10                                  
+  0x180CD1143  jge     0x180cd139e                               
+  0x180CD1149  movzx   eax, word ptr [r9]                        
+  0x180CD114D  inc     r8d                                       
+  0x180CD1150  xor     eax, edx                                  
+  0x180CD1152  imul    edx, eax, 0x1000193                       
+  0x180CD1158  mov     eax, r8d                                  
+  0x180CD115B  add     r9, 2                                     
+  0x180CD115F  jmp     0x180cd1138                               
+
+180CD1161:
+  0x180CD1161  cmp     edx, 0x423cf95f                           
+  0x180CD1167  jbe     0x180cd1268                               
+  0x180CD116D  cmp     edx, 0x6c3f7a14                           
+  0x180CD1173  jbe     0x180cd11ff                               
+  0x180CD1179  cmp     edx, 0x8aca3049                           
+  0x180CD117F  jne     0x180cd118d                               
+  0x180CD1181  mov     rdx, qword ptr [rip + 0x2170ec8]             ; STR 'ja-JP'
+  0x180CD1188  jmp     0x180cd1226                               
+
+180CD118D:
+  0x180CD118D  cmp     edx, 0xa2568579                           
+  0x180CD1193  jne     0x180cd11a1                               
+  0x180CD1195  mov     rdx, qword ptr [rip + 0x217146c]             ; STR 'en-US'
+  0x180CD119C  jmp     0x180cd1297                               
+
+180CD11A1:
+  0x180CD11A1  cmp     edx, 0xecd71043                           
+  0x180CD11A7  jne     0x180cd1391                               
+  0x180CD11AD  mov     rdx, qword ptr [rip + 0x2170cd4]             ; STR 'zh-TW'
+
+180CD11B4:
+  0x180CD11B4  cmp     rbx, rdx                                  
+  0x180CD11B7  je      0x180cd11ed                               
+  0x180CD11B9  test    rdx, rdx                                  
+  0x180CD11BC  je      0x180cd1391                               
+  0x180CD11C2  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CD11C5  cmp     dword ptr [rbx + 0x10], eax               
+  0x180CD11C8  jne     0x180cd1391                               
+  0x180CD11CE  movsxd  r8, dword ptr [rbx + 0x10]                
+  0x180CD11D2  lea     rcx, [rbx + 0x14]                         
+  0x180CD11D6  add     r8, r8                                    
+  0x180CD11D9  add     rdx, 0x14                                 
+  0x180CD11DD  xor     r9d, r9d                                  
+  0x180CD11E0  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180CD11E5  test    al, al                                    
+  0x180CD11E7  je      0x180cd1391                               
+
+180CD11ED:
+  0x180CD11ED  mov     edi, 3                                    
+  0x180CD11F2  mov     eax, edi                                  
+  0x180CD11F4  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD11F9  add     rsp, 0x20                                 
+  0x180CD11FD  pop     rdi                                       
+  0x180CD11FE  ret                                               
+
+180CD11FF:
+  0x180CD11FF  cmp     edx, 0x4567df1f                           
+  0x180CD1205  jne     0x180cd1213                               
+  0x180CD1207  mov     rdx, qword ptr [rip + 0x2170a1a]             ; STR 'zh'
+  0x180CD120E  jmp     0x180cd135f                               
+
+180CD1213:
+  0x180CD1213  cmp     edx, 0x6c3f7a14                           
+  0x180CD1219  jne     0x180cd1391                               
+  0x180CD121F  mov     rdx, qword ptr [rip + 0x21716fa]             ; STR 'ja'
+
+180CD1226:
+  0x180CD1226  cmp     rbx, rdx                                  
+  0x180CD1229  je      0x180cd1391                               
+  0x180CD122F  test    rdx, rdx                                  
+  0x180CD1232  je      0x180cd1391                               
+  0x180CD1238  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CD123B  cmp     dword ptr [rbx + 0x10], eax               
+  0x180CD123E  jne     0x180cd1391                               
+  0x180CD1244  movsxd  r8, dword ptr [rbx + 0x10]                
+  0x180CD1248  lea     rcx, [rbx + 0x14]                         
+  0x180CD124C  add     r8, r8                                    
+  0x180CD124F  add     rdx, 0x14                                 
+  0x180CD1253  xor     r9d, r9d                                  
+  0x180CD1256  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180CD125B  mov     eax, edi                                  
+  0x180CD125D  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD1262  add     rsp, 0x20                                 
+  0x180CD1266  pop     rdi                                       
+  0x180CD1267  ret                                               
+
+180CD1268:
+  0x180CD1268  cmp     edx, 0x55b31aa                            
+  0x180CD126E  jbe     0x180cd133c                               
+  0x180CD1274  cmp     edx, 0x2606c833                           
+  0x180CD127A  jne     0x180cd1288                               
+  0x180CD127C  mov     rdx, qword ptr [rip + 0x2170d85]             ; STR 'zh-CN'
+  0x180CD1283  jmp     0x180cd135f                               
+
+180CD1288:
+  0x180CD1288  cmp     edx, 0x411a658a                           
+  0x180CD128E  jne     0x180cd12e2                               
+  0x180CD1290  mov     rdx, qword ptr [rip + 0x2170b91]             ; STR 'en'
+
+180CD1297:
+  0x180CD1297  cmp     rbx, rdx                                  
+  0x180CD129A  je      0x180cd12d0                               
+  0x180CD129C  test    rdx, rdx                                  
+  0x180CD129F  je      0x180cd1391                               
+  0x180CD12A5  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CD12A8  cmp     dword ptr [rbx + 0x10], eax               
+  0x180CD12AB  jne     0x180cd1391                               
+  0x180CD12B1  movsxd  r8, dword ptr [rbx + 0x10]                
+  0x180CD12B5  lea     rcx, [rbx + 0x14]                         
+  0x180CD12B9  add     r8, r8                                    
+  0x180CD12BC  add     rdx, 0x14                                 
+  0x180CD12C0  xor     r9d, r9d                                  
+  0x180CD12C3  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180CD12C8  test    al, al                                    
+  0x180CD12CA  je      0x180cd1391                               
+
+180CD12D0:
+  0x180CD12D0  mov     edi, 1                                    
+  0x180CD12D5  mov     eax, edi                                  
+  0x180CD12D7  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD12DC  add     rsp, 0x20                                 
+  0x180CD12E0  pop     rdi                                       
+  0x180CD12E1  ret                                               
+
+180CD12E2:
+  0x180CD12E2  cmp     edx, 0x423cf95f                           
+  0x180CD12E8  jne     0x180cd1391                               
+  0x180CD12EE  mov     rdx, qword ptr [rip + 0x217121b]             ; STR 'ko'
+  0x180CD12F5  cmp     rbx, rdx                                  
+  0x180CD12F8  je      0x180cd132a                               
+  0x180CD12FA  test    rdx, rdx                                  
+  0x180CD12FD  je      0x180cd1391                               
+  0x180CD1303  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CD1306  cmp     dword ptr [rbx + 0x10], eax               
+  0x180CD1309  jne     0x180cd1391                               
+  0x180CD130F  movsxd  r8, dword ptr [rbx + 0x10]                
+  0x180CD1313  lea     rcx, [rbx + 0x14]                         
+  0x180CD1317  add     r8, r8                                    
+  0x180CD131A  add     rdx, 0x14                                 
+  0x180CD131E  xor     r9d, r9d                                  
+  0x180CD1321  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180CD1326  test    al, al                                    
+  0x180CD1328  je      0x180cd1391                               
+
+180CD132A:
+  0x180CD132A  mov     edi, 4                                    
+  0x180CD132F  mov     eax, edi                                  
+  0x180CD1331  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD1336  add     rsp, 0x20                                 
+  0x180CD133A  pop     rdi                                       
+  0x180CD133B  ret                                               
+
+180CD133C:
+  0x180CD133C  cmp     edx, 0x5b29cb                             
+  0x180CD1342  jne     0x180cd1350                               
+  0x180CD1344  mov     rdx, qword ptr [rip + 0x21962d5]             ; STR 'zh-Hant'
+  0x180CD134B  jmp     0x180cd11b4                               
+
+180CD1350:
+  0x180CD1350  cmp     edx, 0x55b31aa                            
+  0x180CD1356  jne     0x180cd1391                               
+  0x180CD1358  mov     rdx, qword ptr [rip + 0x21962b9]             ; STR 'zh-Hans'
+
+180CD135F:
+  0x180CD135F  cmp     rbx, rdx                                  
+  0x180CD1362  je      0x180cd138c                               
+  0x180CD1364  test    rdx, rdx                                  
+  0x180CD1367  je      0x180cd1391                               
+  0x180CD1369  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CD136C  cmp     dword ptr [rbx + 0x10], eax               
+  0x180CD136F  jne     0x180cd1391                               
+  0x180CD1371  movsxd  r8, dword ptr [rbx + 0x10]                
+  0x180CD1375  lea     rcx, [rbx + 0x14]                         
+  0x180CD1379  add     r8, r8                                    
+  0x180CD137C  xor     r9d, r9d                                  
+  0x180CD137F  add     rdx, 0x14                                 
+  0x180CD1383  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180CD1388  test    al, al                                    
+  0x180CD138A  je      0x180cd1391                               
+
+180CD138C:
+  0x180CD138C  mov     edi, 2                                    
+
+180CD1391:
+  0x180CD1391  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD1396  mov     eax, edi                                  
+  0x180CD1398  add     rsp, 0x20                                 
+  0x180CD139C  pop     rdi                                       
+  0x180CD139D  ret                                               
+
+180CD139E:
+  0x180CD139E  xor     ecx, ecx                                  
+  0x180CD13A0  call    0x181046970                                  ; -> System.ThrowHelper$$ThrowIndexOutOfRangeException

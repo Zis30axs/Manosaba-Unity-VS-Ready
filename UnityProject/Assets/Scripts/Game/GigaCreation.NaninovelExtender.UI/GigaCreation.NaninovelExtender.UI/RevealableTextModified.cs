@@ -25,9 +25,10 @@ namespace GigaCreation.NaninovelExtender.Ui
     	[SerializeField]
     	private float _marginTopWhenFirstLineHasRuby;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD40380: new StringBuilder() -> +0x848, then RevealableText..ctor
     	[Token(Token = "0x40000A0")]
     	[FieldOffset(Offset = "0x848")]
-    	private readonly StringBuilder _stringBuilder;
+    	private readonly StringBuilder _stringBuilder = new StringBuilder();
 
     	[Token(Token = "0x17000017")]
     	private float AdditionalSpaceWidth

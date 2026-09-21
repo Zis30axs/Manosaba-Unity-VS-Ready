@@ -6,6 +6,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
 using Il2CppDummyDll;
+using LitMotion;
 
 namespace GigaCreation.Essentials.Dialogs.Models
 {
@@ -51,18 +52,22 @@ namespace GigaCreation.Essentials.Dialogs.Models
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCCF120: new CancellationTokenSource() (ctor inlined) -> +0x10
     	[Token(Token = "0x400005E")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
-    	private readonly CancellationTokenSource _cts;
+    	private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
     	[Token(Token = "0x400005F")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
     	private bool _started;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCCF120 -- after the _cts initializer: ManualMotionDispatcher static +0x0
+    	//   (Default), tail jump ManualMotionDispatcher.Reset
     	[Token(Token = "0x6000052")]
     	[Address(RVA = "0xCCF120", Offset = "0xCCDB20", VA = "0x180CCF120")]
     	public ManualMotionSkipper()
     	{
+    		ManualMotionDispatcher.Default.Reset();
     	}
 
     	[Token(Token = "0x6000053")]

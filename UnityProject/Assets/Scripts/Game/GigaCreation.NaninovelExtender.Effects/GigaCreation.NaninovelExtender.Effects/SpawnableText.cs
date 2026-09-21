@@ -205,9 +205,10 @@ namespace GigaCreation.NaninovelExtender.Effects
     	[SerializeField]
     	private EasingType _easingType;
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD0FA20: new Tweener<FloatTween>() -> +0x60
     	[Token(Token = "0x4000097")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
-    	private readonly Tweener<FloatTween> _tweener;
+    	private readonly Tweener<FloatTween> _tweener = new Tweener<FloatTween>();
 
     	[Token(Token = "0x4000098")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x68")]

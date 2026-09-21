@@ -269,7 +269,14 @@ namespace Manosaba.Integration
             }
 
             // --- shipped Addressables catalog (reference) ---------------------------------
-            report.catalog = ProbeCatalog(Path.Combine(Application.streamingAssetsPath, "shipped-aa", "catalog.bin"));
+            // Only for the Player smoke gate.  The shipped catalog still names the original `Assembly-CSharp`, and
+            // Addressables' BinaryStorageBuffer logs a FileNotFoundException (8 of them) for every such type while it
+            // parses -- noise in every Editor Play session and G4b run, where this reference file is never used (the
+            // game loads the project's own catalog).
+            string shippedCatalog = Path.Combine(Application.streamingAssetsPath, "shipped-aa", "catalog.bin");
+            report.catalog = HasFlag(SmokeFlag)
+                ? ProbeCatalog(shippedCatalog)
+                : new CatalogProbe { status = "SKIPPED", path = shippedCatalog };
 
             // --- the project's own Addressables content -----------------------------------
             report.content = ProbeContent();
@@ -277,7 +284,8 @@ namespace Manosaba.Integration
             bool assembliesOk = report.assemblies_missing.Count == 0;
             bool typesOk = report.types_probed_ok == ProbeTypes.Length;
             // A shipped catalog must parse; not shipping one yet is reported but not a failure.
-            bool catalogOk = report.catalog.status == "PARSED" || report.catalog.status == "ABSENT";
+            bool catalogOk = report.catalog.status == "PARSED" || report.catalog.status == "ABSENT" ||
+                             report.catalog.status == "SKIPPED";
             // Content loading is only a pass criterion when the run asks for it (-manosabaContent).
             bool requireContent = HasFlag(ContentFlag);
             bool contentOk = !requireContent || report.content.status == "LOADED";

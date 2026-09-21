@@ -141,13 +141,15 @@ namespace GigaCreation.Essentials.WebRequestUtils
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCF1F70: new Subject<WebRequestErrorData>() -> +0x10
     	[Token(Token = "0x4000010")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
-    	private readonly ISubject<WebRequestErrorData> _showErrorDialogSubject;
+    	private readonly ISubject<WebRequestErrorData> _showErrorDialogSubject = new Subject<WebRequestErrorData>();
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xCF1F70: new WebRequestErrorData() -> +0x18
     	[Token(Token = "0x4000011")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
-    	private readonly WebRequestErrorData _errorData;
+    	private readonly WebRequestErrorData _errorData = new WebRequestErrorData();
 
     	[Token(Token = "0x6000008")]
     	[Address(RVA = "0xCF1A90", Offset = "0xCF0490", VA = "0x180CF1A90", Slot = "4")]

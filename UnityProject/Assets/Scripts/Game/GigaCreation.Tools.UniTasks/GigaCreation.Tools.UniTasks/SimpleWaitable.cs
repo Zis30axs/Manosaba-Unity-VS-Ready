@@ -56,9 +56,10 @@ namespace GigaCreation.Tools.UniTasks
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | field initializer from the constructor at 0xD5D6C0: new UniTaskCompletionSource() -> +0x10
     	[Token(Token = "0x4000006")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
-    	private readonly UniTaskCompletionSource _ucs;
+    	private readonly UniTaskCompletionSource _ucs = new UniTaskCompletionSource();
 
     	[Token(Token = "0x17000002")]
     	public bool IsPending
