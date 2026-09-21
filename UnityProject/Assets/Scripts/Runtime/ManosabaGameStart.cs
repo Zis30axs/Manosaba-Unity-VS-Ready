@@ -1719,10 +1719,39 @@ namespace Manosaba.Integration
             }
         }
 
+        /// <summary>
+        /// Opt-in (MANOSABA_GAMESTART_SKIP_MOVIES=1): stops a movie that is playing, which is what the user's skip input does
+        /// (MoviePlayer subscribes Stop to the SkipMovie input).  This run has no graphics device (-nographics), so a `@playMovie ... wait!`
+        /// would otherwise hold the story at the opening movie for its whole length; each stop is counted in the evidence.
+        /// </summary>
+        private static void SkipPlayingMovie(GameStartEvidence evidence)
+        {
+            if (Environment.GetEnvironmentVariable("MANOSABA_GAMESTART_SKIP_MOVIES") != "1") return;
+            try
+            {
+                Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
+                Type moviePlayerType = Type.GetType("Naninovel.IMoviePlayer, Elringus.Naninovel.Runtime");
+                MethodInfo getService = engineType?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .FirstOrDefault(m => m.Name == "GetService" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0);
+                object moviePlayer = moviePlayerType == null ? null : getService?.MakeGenericMethod(moviePlayerType).Invoke(null, null);
+                if (moviePlayer == null) return;
+                if (moviePlayerType.GetProperty("Playing")?.GetValue(moviePlayer) is bool playing && playing)
+                {
+                    moviePlayerType.GetMethod("Stop")?.Invoke(moviePlayer, null);
+                    evidence.movie_skips++;
+                }
+            }
+            catch (Exception ex)
+            {
+                evidence.movie_skip_error = Describe(ex);
+            }
+        }
+
         private static string TryAdvanceAndSnapshot(object player, Type playerType, MethodInfo setSkipEnabled,
                                                      MethodInfo setWaitingForInputEnabled,
                                                      GameStartEvidence evidence, float elapsed)
         {
+            SkipPlayingMovie(evidence);
             try
             {
                 bool waiting = playerType.GetProperty("WaitingForInput")?.GetValue(player) is bool w && w;
@@ -2396,6 +2425,8 @@ namespace Manosaba.Integration
             public float auto_advance_seconds;
             public int auto_advance_transitions;
             public int auto_advance_wait_releases;
+            public int movie_skips;             // MANOSABA_GAMESTART_SKIP_MOVIES=1: movies stopped like a user's skip input
+            public string movie_skip_error = "";
             public string auto_advance_trace = "";
             public string auto_advance_final = "";
             public string auto_advance_restore = "";

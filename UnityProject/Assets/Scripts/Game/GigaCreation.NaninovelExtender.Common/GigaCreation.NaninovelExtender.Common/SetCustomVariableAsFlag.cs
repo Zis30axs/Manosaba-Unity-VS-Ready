@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using FastEnumUtility;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Il2CppDummyDll;
@@ -125,39 +126,101 @@ namespace GigaCreation.NaninovelExtender.Common
     	[Token(Token = "0x17000001")]
     	protected IStateManager NaniStateManager
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF8F60, 186 B -- lazy: [this+0x48], else Engine.GetServiceOrErr<IStateManager>() (0x180682840)
+    		// Annotated disassembly: work/title-path/disas/scvf_01_get_NaniStateManager.txt
     		[Token(Token = "0x6000012")]
     		[Address(RVA = "0xCF8F60", Offset = "0xCF7960", VA = "0x180CF8F60")]
     		get
     		{
-    			return null;
+    			return _naniStateManager ??= Engine.GetServiceOrErr<IStateManager>();
     		}
     	}
 
     	[Token(Token = "0x17000002")]
     	protected ICustomVariableManager NaniVarManager
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCF9020, 186 B -- lazy: [this+0x50], else Engine.GetServiceOrErr<ICustomVariableManager>()
+    		// Annotated disassembly: work/title-path/disas/scvf_02_get_NaniVarManager.txt
     		[Token(Token = "0x6000013")]
     		[Address(RVA = "0xCF9020", Offset = "0xCF7A20", VA = "0x180CF9020")]
     		get
     		{
-    			return null;
+    			return _naniVarManager ??= Engine.GetServiceOrErr<ICustomVariableManager>();
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF90E0 (kickoff) / 0xCF93B0 (<Execute>d__9.MoveNext, 1000 B) (`@setFlag Number var: op:`)
+    	// The body lives in ExecuteCore (XxxCore convention; the <Execute>d__9 metadata stays).
+    	//   0x180CF9469  VariableName [+0x38] not assigned / blank (String.IsNullOrWhiteSpace 0x180E25060) -> Warn("Variable name is not assigned.")
+    	//                (Command vtable +0x1A8, 0x180CF974E) and done
+    	//   0x180CF9534  BitwiseOp [+0x40] assigned -> FastEnum.TryParse<BitwiseOperator>(value, ignoreCase = true, out op) (0x180696BA0); an
+    	//                unassigned or unparsable operator is Or (`mov [rsp+0x90], 1`, 0x180CF95B4)
+    	//   0x180CF9600  await SetAndSaveFlagAsync(VariableName, Number [+0x30] (Nullable<int>.op_Implicit), op)
+    	// Annotated disassembly: work/title-path/disas/scvf_03_Execute, scvf_05_Execute_MoveNext.txt
     	[Token(Token = "0x6000014")]
     	[Address(RVA = "0xCF90E0", Offset = "0xCF7AE0", VA = "0x180CF90E0", Slot = "5")]
     	[AsyncStateMachine(typeof(_003CExecute_003Ed__9))]
     	public override UniTask Execute([Optional] AsyncToken token)
     	{
-    		return default(UniTask);
+    		return ExecuteCore(token);
     	}
 
+    	private async UniTask ExecuteCore(AsyncToken token)
+    	{
+    		if (!Assigned(VariableName) || string.IsNullOrWhiteSpace(VariableName))
+    		{
+    			Warn("Variable name is not assigned.");
+    			return;
+    		}
+    		BitwiseOperator op = BitwiseOperator.Or;
+    		if (Assigned(BitwiseOp) && !FastEnum.TryParse<BitwiseOperator>(BitwiseOp, true, out op))
+    		{
+    			op = BitwiseOperator.Or;
+    		}
+    		await SetAndSaveFlagAsync(VariableName, ((int?)Number).GetValueOrDefault(), op);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCF9200 (kickoff) / 0xCF97B0 (<SetAndSaveFlagAsync>d__10.MoveNext, 1004 B)
+    	//   0x180CF9885  the current value: CustomVariableManagerExtensions.TryGetVariableValue<int> (0x18067A540), 0 when the variable is unset
+    	//   0x180CF989A  mask = 1 << bit; And -> value &= mask, Or -> |=, Xor -> ^=, Not -> &= ~mask (op switch 0 / 1 / 2 / 3)
+    	//   0x180CF98E7  TrySetVariableValue<int> (0x18067A9E0); a `g_`-prefixed (global) variable (CustomVariablesConfiguration.HasGlobalPrefix
+    	//                0x180562810) also awaits IStateManager.SaveGlobal (interface slot 32, 0x180CF99DE)
+    	// Annotated disassembly: work/title-path/disas/scvf_04_SetAndSaveFlagAsync, scvf_06_SetAndSaveFlagAsync_MoveNext.txt
     	[Token(Token = "0x6000015")]
     	[Address(RVA = "0xCF9200", Offset = "0xCF7C00", VA = "0x180CF9200")]
     	[AsyncStateMachine(typeof(_003CSetAndSaveFlagAsync_003Ed__10))]
     	protected UniTask SetAndSaveFlagAsync(string variableName, int bit, BitwiseOperator op)
     	{
-    		return default(UniTask);
+    		return SetAndSaveFlagAsyncCore(variableName, bit, op);
+    	}
+
+    	private async UniTask SetAndSaveFlagAsyncCore(string variableName, int bit, BitwiseOperator op)
+    	{
+    		if (!NaniVarManager.TryGetVariableValue(variableName, out int value))
+    		{
+    			value = 0;
+    		}
+    		int mask = 1 << bit;
+    		switch (op)
+    		{
+    			case BitwiseOperator.And:
+    				value &= mask;
+    				break;
+    			case BitwiseOperator.Or:
+    				value |= mask;
+    				break;
+    			case BitwiseOperator.Xor:
+    				value ^= mask;
+    				break;
+    			case BitwiseOperator.Not:
+    				value &= ~mask;
+    				break;
+    		}
+    		NaniVarManager.TrySetVariableValue(variableName, value);
+    		if (CustomVariablesConfiguration.HasGlobalPrefix(variableName))
+    		{
+    			await NaniStateManager.SaveGlobal();
+    		}
     	}
 
     	[Token(Token = "0x6000016")]
