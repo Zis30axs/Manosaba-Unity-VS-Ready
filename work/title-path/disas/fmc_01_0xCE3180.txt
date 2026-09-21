@@ -1,0 +1,78 @@
+====================================================================================================
+FUNCTION RVA 0xCE3180  VA 0x180CE3180  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.FontMaterialChanger$$get_AddressableAssetLoader
+  csig   : GigaCreation_Essentials_AddressablesUtils_IAddressableAssetLoader_o* GigaCreation_Essentials_Ui_FontMaterialChanger__get_AddressableAssetLoader (GigaCreation_Essentials_Ui_FontMaterialChanger_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.FontMaterialChanger :: private IAddressableAssetLoader get_AddressableAssetLoader()
+  fields of GigaCreation.Essentials.Ui.FontMaterialChanger:
+      +0x20   _fontMaterialData              FontMaterialData[]
+      +0x28   _addressableAssetLoader        IAddressableAssetLoader
+      +0x30   _localizationProvider          ILocalizationProvider
+      +0x38   _materialReferences            Dictionary<LocaleKind, AssetReferenceT<Material>>
+  fields of FontMaterialChanger.<>c:
+      +0x0    <>9                            static readonly FontMaterialChanger.<>c
+      +0x8    <>9__9_0                       static Func<FontMaterialData, LocaleKind>
+      +0x10   <>9__9_1                       static Func<FontMaterialData, AssetReferenceT<Material>>
+  fields of FontMaterialChanger.<ChangeFontMaterialAsync>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      FontMaterialChanger
+      +0x20   label                          TMP_Text
+      +0x28   ct                             CancellationToken
+      +0x30   <>7__wrap1                     TMP_Text
+      +0x38   <>u__1                         UniTask.Awaiter<Material>
+====================================================================================================
+  0x180CE3180  push    rbx                                       
+  0x180CE3182  sub     rsp, 0x20                                 
+  0x180CE3186  cmp     byte ptr [rip + 0x23fa011], 0                ; data_30DD19E
+  0x180CE318D  mov     rbx, rcx                                  
+  0x180CE3190  jne     0x180ce31bb                               
+  0x180CE3192  lea     rcx, [rip + 0x216e0e7]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x180CE3199  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE319E  lock or dword ptr [rsp], 0                        
+  0x180CE31A3  lea     rcx, [rip + 0x216efbe]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE31AA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE31AF  lock or dword ptr [rsp], 0                        
+  0x180CE31B4  mov     byte ptr [rip + 0x23f9fe3], 1                ; data_30DD19E
+
+180CE31BB:
+  0x180CE31BB  mov     rax, qword ptr [rbx + 0x28]                  ; rbx->FontMaterialChanger._addressableAssetLoader | <ChangeFontMaterialAsync>d__10.ct
+  0x180CE31BF  test    rax, rax                                  
+  0x180CE31C2  jne     0x180ce3234                               
+  0x180CE31C4  mov     rcx, qword ptr [rip + 0x216ef9d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE31CB  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CE31D1  jne     0x180ce31d8                               
+  0x180CE31D3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE31D8:
+  0x180CE31D8  mov     rdx, qword ptr [rip + 0x216e0a1]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x180CE31DF  mov     cl, 1                                     
+  0x180CE31E1  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE31E6  cmp     dword ptr [rip + 0x23f5fd7], 0               ; data_30D91C4
+  0x180CE31ED  mov     r9, rax                                   
+  0x180CE31F0  mov     qword ptr [rbx + 0x28], rax                  ; rbx->FontMaterialChanger._addressableAssetLoader | <ChangeFontMaterialAsync>d__10.ct
+  0x180CE31F4  je      0x180ce3231                               
+  0x180CE31F6  lea     r8, [rbx + 0x28]                             ; rbx->FontMaterialChanger._addressableAssetLoader | <ChangeFontMaterialAsync>d__10.ct
+  0x180CE31FA  shr     r8, 0xc                                   
+  0x180CE31FE  lea     rcx, [rip + 0x245137b]                       ; data_3134580
+  0x180CE3205  and     r8d, 0x1fffff                             
+  0x180CE320C  mov     eax, r8d                                  
+  0x180CE320F  shr     rax, 6                                    
+  0x180CE3213  and     r8d, 0x3f                                 
+  0x180CE3217  lea     rdx, [rcx + rax*8]                        
+  0x180CE321B  prefetchw byte ptr [rdx]                            
+  0x180CE321E  nop                                               
+
+180CE3220:
+  0x180CE3220  mov     rax, qword ptr [rdx]                      
+  0x180CE3223  mov     rcx, rax                                  
+  0x180CE3226  bts     rcx, r8                                   
+  0x180CE322A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE322F  jne     0x180ce3220                               
+
+180CE3231:
+  0x180CE3231  mov     rax, r9                                   
+
+180CE3234:
+  0x180CE3234  add     rsp, 0x20                                 
+  0x180CE3238  pop     rbx                                       
+  0x180CE3239  ret                                               
