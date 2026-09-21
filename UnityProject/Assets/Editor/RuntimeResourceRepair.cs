@@ -30,6 +30,9 @@ namespace Manosaba.EditorTools
         private static string Repo => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         private static string FontPath(string name) => GeneratedRoot + "/" + name + "/" + name + ".asset";
         private static string Key(string name) => "Naninovel/Fonts/" + name + "/Assets/" + name;
+        // The shipped address of a TMP material variant (catalog_dump_shipped.json): FontMaterialChanger loads them through
+        // AssetReferenceT<Material>, i.e. by the shipped GUID that align_asset_guids.py writes into the variant's .meta.
+        private static string VariantKey(string name, string variant) => "Naninovel/Fonts/" + name + "/Materials/" + variant;
 
         [MenuItem("Manosaba/Repair TrueShadow and TMP Resources")]
         public static void Run()
@@ -118,6 +121,10 @@ namespace Manosaba.EditorTools
                         if (!mat) { mat = new Material(asset.material) { name = variant }; AssetDatabase.CreateAsset(mat, materialPath); }
                         ApplyMaterial(mat, JObject.Parse(File.ReadAllText(variantPath)), asset.atlasTexture);
                         EditorUtility.SetDirty(mat); variants++;
+                        // Without an entry the shipped GUID key of the variant is not in the catalog (InvalidKeyException in
+                        // FontMaterialChanger.ChangeFontMaterialAsync, G4b round 21).
+                        var variantEntry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(materialPath), group);
+                        variantEntry.address = VariantKey(name, variant);
                     }
                     EditorUtility.SetDirty(asset);
                     rows.Add(new JObject { ["name"] = name, ["key"] = Key(name), ["path"] = path, ["source"] = fontPath,
@@ -216,6 +223,25 @@ namespace Manosaba.EditorTools
                     }
                     finally { if (handle.IsValid()) Addressables.Release(handle); }
                 });
+            }
+            foreach (string name in Names)
+            {
+                foreach (string variantPath in Directory.GetFiles(Path.Combine(Repo, "res/Assets/#WitchTrials/Fonts", name), name + "@*.json"))
+                {
+                    string variant = Path.GetFileNameWithoutExtension(variantPath);
+                    Check(VariantKey(name, variant), () =>
+                    {
+                        AsyncOperationHandle<Material> handle = default;
+                        try
+                        {
+                            var material = built
+                                ? (handle = Addressables.LoadAssetAsync<Material>(VariantKey(name, variant))).WaitForCompletion()
+                                : AssetDatabase.LoadAssetAtPath<Material>(GeneratedRoot + "/" + name + "/" + variant + ".mat");
+                            if (!material) throw new Exception("TMP material variant missing");
+                        }
+                        finally { if (handle.IsValid()) Addressables.Release(handle); }
+                    });
+                }
             }
             if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
                 Check("CJK UI preview", RenderPreview);
