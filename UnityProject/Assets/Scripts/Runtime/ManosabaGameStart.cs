@@ -1468,9 +1468,15 @@ namespace Manosaba.Integration
 
                 MethodInfo capture = typeof(ManosabaGameStart)
                     .GetMethod(nameof(CapturePostInitTask), BindingFlags.Public | BindingFlags.Static);
+                // The original must be invoked exactly once: an InvocationExpression used twice in the tree is
+                // evaluated twice, and until 2026-09-22 this wrapper ran `UIManager.InstantiateUIs` twice whenever it
+                // won the install race (rounds 11 and 13: 58 managed UIs instead of 29).
                 InvocationExpression call = Expression.Invoke(Expression.Constant(original));
-                Expression body = Expression.Block(
-                    Expression.Call(capture, Expression.Convert(call, typeof(object))), call);
+                ParameterExpression result = Expression.Variable(call.Type, "task");
+                Expression body = Expression.Block(new[] { result },
+                    Expression.Assign(result, call),
+                    Expression.Call(capture, Expression.Convert(result, typeof(object))),
+                    result);
                 list[index] = Expression.Lambda(original.GetType(), body).Compile();
                 return true;
             }

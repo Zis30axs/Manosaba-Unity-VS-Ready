@@ -273,8 +273,11 @@ namespace Manosaba.Integration
             // Addressables' BinaryStorageBuffer logs a FileNotFoundException (8 of them) for every such type while it
             // parses -- noise in every Editor Play session and G4b run, where this reference file is never used (the
             // game loads the project's own catalog).
+            // The game-start gate (G4b, MANOSABA_GAMESTART=1) also passes the smoke flag; it measures the boot chain,
+            // not this reference file, so the parse is left to the plain smoke gate.
             string shippedCatalog = Path.Combine(Application.streamingAssetsPath, "shipped-aa", "catalog.bin");
-            report.catalog = HasFlag(SmokeFlag)
+            bool gameStartRun = Environment.GetEnvironmentVariable("MANOSABA_GAMESTART") == "1";
+            report.catalog = HasFlag(SmokeFlag) && !gameStartRun
                 ? ProbeCatalog(shippedCatalog)
                 : new CatalogProbe { status = "SKIPPED", path = shippedCatalog };
 
