@@ -26,6 +26,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import heapq
 import csv
 import datetime
 import json
@@ -190,6 +191,30 @@ class ExternalsCache:
         return table
 
 
+def dump_json(row):
+    """The row's structural dump, or None when it is missing or unreadable."""
+    rel = (row.get("output_file") or "").strip().replace("\\", "/")
+    path = os.path.join(RES, rel.replace("/", os.sep))
+    if not rel or not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except ValueError:
+        return None
+
+
+def row_bundle(row):
+    return os.path.basename((row.get("source_bundle") or "").replace("\\", "/")).lower()
+
+
+def pptr_pid(node):
+    """m_PathID of an intra-file pointer ({m_FileID: 0, m_PathID: x}) as a string, else ""."""
+    if isinstance(node, dict) and not node.get("m_FileID") and node.get("m_PathID"):
+        return str(node["m_PathID"])
+    return ""
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--group", default="pilot", help="name used in the output file name")
@@ -220,6 +245,68 @@ def main():
     jobs = []
     stats = Counter()
     unresolved_samples = []
+
+    # ---- component ownership -------------------------------------------------------------
+    # The index attributes an object to the first container that reached it.  A component on the root of ANOTHER
+    # prefab of the same bundle is therefore listed under the prefab that references it: DebugLabel.prefab's
+    # TextMeshProUGUI and ProvidableDialog.prefab's ProvidableDialog under Game.prefab, RebuildableToggleLabel.prefab's
+    # RebuildableLabel under RebuildableToggle.prefab.  The owner was then built without its component and the
+    # referrer could not create it ("component without owner GameObject", 3 in the 2026-09-21 build).  A component
+    # belongs to the prefab that holds its m_GameObject.
+    candidate_set = set(candidates)
+    go_owner = {}
+    for asset_path in candidates:
+        for row in by_asset[asset_path]:
+            if (row.get("type") or "") == "GameObject":
+                go_owner.setdefault((row_bundle(row), (row.get("path_id") or "").strip()), asset_path)
+    moves = []
+    rehomed = {}            # (bundle, pid) -> owner asset path
+    for asset_path in candidates:
+        for row in by_asset[asset_path]:
+            obj_type = (row.get("type") or "").strip()
+            if obj_type not in GRAPH_TYPES or obj_type == "GameObject":
+                continue
+            data = dump_json(row)
+            go_pid = pptr_pid(data.get("m_GameObject")) if isinstance(data, dict) else ""
+            owner = go_owner.get((row_bundle(row), go_pid)) if go_pid else None
+            if owner and owner != asset_path:
+                moves.append((asset_path, owner, row))
+    for source, owner, row in moves:
+        by_asset[source].remove(row)
+        by_asset[owner].append(row)
+        rehomed[(row_bundle(row), (row.get("path_id") or "").strip())] = owner
+        stats["component_rehomed"] += 1
+    rehomed_samples = [{"from": s, "to": o, "pid": (r.get("path_id") or "").strip(), "type": r.get("type")}
+                       for s, o, r in moves[:12]]
+
+    root_cache = {}
+    row_at = {}             # (bundle, pid) -> row, for every candidate row (after re-homing)
+    for asset_path in candidates:
+        for row in by_asset[asset_path]:
+            row_at[(row_bundle(row), (row.get("path_id") or "").strip())] = row
+    component_cache = {}
+
+    def is_component(where):
+        """A GameObject-bound object (has m_GameObject), as opposed to a Material, a TimelineAsset or a track that
+        the index merely attributed to some other prefab because that prefab reached it first."""
+        if where not in component_cache:
+            row = row_at.get(where)
+            data = dump_json(row) if row and (row.get("type") or "") != "GameObject" else None
+            component_cache[where] = bool(isinstance(data, dict) and pptr_pid(data.get("m_GameObject")))
+        return component_cache[where]
+
+    def single_root(asset_path):
+        """The one root GameObject pid of a candidate prefab (Transform with m_Father 0), or "" if not exactly one."""
+        if asset_path not in root_cache:
+            roots = []
+            for row in by_asset[asset_path]:
+                if (row.get("type") or "") in ("Transform", "RectTransform"):
+                    data = dump_json(row)
+                    if isinstance(data, dict) and not pptr_pid(data.get("m_Father")):
+                        roots.append(pptr_pid(data.get("m_GameObject")))
+            root_cache[asset_path] = roots[0] if len(roots) == 1 else ""
+        return root_cache[asset_path]
+
     for asset_path in candidates:
         rows = by_asset[asset_path]
         objects = []
@@ -287,9 +374,28 @@ def main():
                     if str(path_id) not in pid_to_dump:
                         sidecar = ledger.get((bundle.lower(), str(path_id))) if bundles else None
                         key = f"{record['pid']}:0:{path_id}"
+                        # Another prefab of the same bundle (a template field: DialogPresenter._providableDialogPrefab,
+                        # RebuildableToggle._labelPrefab): the reference names that prefab, and the applier takes the
+                        # component of the field's type on its root (or the only one in it).  A GameObject target is
+                        # only accepted when it is that prefab's single root, the object loading the prefab returns.
+                        other = None
+                        if not sidecar and bundles:
+                            where = (bundle.lower(), str(path_id))
+                            other = rehomed.get(where) or pid_to_asset.get(where)
+                            if other == asset_path or other not in candidate_set:
+                                other = None
+                            elif PID_TYPE.get(where) == "GameObject":
+                                if single_root(other) != str(path_id):
+                                    stats["ptr_intra_cross_prefab_non_root_gameobject"] += 1
+                                    other = None
+                            elif not is_component(where):
+                                other = None      # a shared asset listed under another prefab: stays "not in plan"
                         if sidecar:
                             resolved_refs[key] = sidecar
                             stats["ptr_intra_sidecar_resolved"] += 1
+                        elif other:
+                            resolved_refs[key] = other
+                            stats["ptr_intra_cross_prefab"] += 1
                         else:
                             stats["ptr_intra_not_in_plan"] += 1
                             target_type = PID_TYPE.get((bundle.lower(), str(path_id)), "?") if bundles else "?"
@@ -326,6 +432,38 @@ def main():
         })
         stats["assets"] += 1
 
+    # ---- build order ------------------------------------------------------------------------
+    # PrefabBuilder deletes and re-saves each prefab, which gives its objects new local file IDs.  A prefab that
+    # points into another prefab of this plan must therefore be built AFTER it, or it keeps the target's old ID:
+    # smallest-first built AdvChoicePanel (job 32) before ChoiceButton_Adv@Bad (job 38) and left a dangling
+    # {fileID: 9072052669164707076} on 2026-09-21.  Topological order, smallest-first among the ready jobs.
+    position = {j["asset_path"]: i for i, j in enumerate(jobs)}
+    depends = {j["asset_path"]: {v for v in j["references"].values() if v in position and v != j["asset_path"]}
+               for j in jobs}
+    users = defaultdict(list)
+    for a, deps in depends.items():
+        for b in deps:
+            users[b].append(a)
+    pending = {a: len(deps) for a, deps in depends.items()}
+    ready = [(position[a], a) for a, n in pending.items() if n == 0]
+    heapq.heapify(ready)
+    ordered = []
+    while ready:
+        _, a = heapq.heappop(ready)
+        ordered.append(a)
+        for u in users[a]:
+            pending[u] -= 1
+            if pending[u] == 0:
+                heapq.heappush(ready, (position[u], u))
+    cyclic = [j["asset_path"] for j in jobs if pending[j["asset_path"]] > 0]
+    stats["order_cycle_jobs"] = len(cyclic)
+    stats["order_prefab_dependencies"] = sum(len(d) for d in depends.values())
+    by_path = {j["asset_path"]: j for j in jobs}
+    jobs = [by_path[a] for a in ordered + cyclic]
+    for j in jobs:
+        j["depends_on"] = sorted(depends[j["asset_path"]])
+    stats["order_changed_jobs"] = sum(1 for i, j in enumerate(jobs) if position[j["asset_path"]] != i)
+
     plan = {
         "generated": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "group": args.group,
@@ -334,6 +472,7 @@ def main():
         "job_count": len(jobs),
         "stats": dict(stats),
         "unresolved_samples": unresolved_samples,
+        "rehomed_samples": rehomed_samples,
         "jobs": jobs,
     }
     os.makedirs(OUT_DIR, exist_ok=True)

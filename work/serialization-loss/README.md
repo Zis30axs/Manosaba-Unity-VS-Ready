@@ -91,6 +91,27 @@ Naninovel 命令参数全空（`@processInput` 无参数、`AnimateActor.ActorId
   `assembly_names_remapped = 21`、GUID 变化 0，全工程 prefab 里 `Assembly-CSharp` 出现 0 次。
 * 出货 `ProjectResources`（`unitycommon/projectresources`）里还有 3 个 `Type` 字符串，但它不是配置资产、不被导入（Naninovel 构建时自己生成）。
 
+## F. 组件归属错位与 prefab 构建顺序（2026-09-21）
+
+* `res/_index.csv` 把对象归到**最先到达它的容器**。同 bundle 里另一个 prefab 根上的组件因此被列在**引用它的** prefab 下：
+  `DebugLabel.prefab` 的 TextMeshProUGUI 与 `ProvidableDialog.prefab` 的 ProvidableDialog 在 `Game.prefab` 下，
+  `RebuildableToggleLabel.prefab` 的 RebuildableLabel 在 `RebuildableToggle.prefab` 下。后果两头都坏：拥有者 prefab 缺根组件
+  （`ProvidableDialog.prefab` 没有 ProvidableDialog 脚本），引用方建不出它（"component without owner GameObject"），
+  `DialogPresenter._providableDialogPrefab`、`DebugLabelManager._labelPrefab`、`RebuildableToggle._labelPrefab` 为 null。
+* `PrefabBuilder` 对每个 prefab 删除后重存，对象的本地 fileID 会变；规划器按「小的先建」排序，所以先建的 prefab 指向后建 prefab
+  的引用会悬空：`AdvChoicePanel`（第 32 个）→ `ChoiceButton_Adv@Bad`（第 38 个）的 `{fileID: 9072052669164707076}`。
+* 修复（`a13e_plan_prefabs.py`）：
+  * 组件归到其 `m_GameObject` 所在的 prefab（3 个被重新归属，`rehomed_samples` 记录）；
+  * 指向另一个计划内 prefab 的 `fileId 0` 指针写成 `pid:0:pathId → 那个 prefab`，只接受**组件**（有 `m_GameObject`）或该 prefab
+    **唯一的根** GameObject；被索引顺手归到别的 prefab 的共享 Material / TimelineAsset / 轨道不算（否则会多出 1,455 个错误引用），
+    applier 的 `AdaptToFieldType` 取根上（或全 prefab 唯一的）字段类型组件；
+  * 作业按 prefab 间依赖拓扑排序（35 条依赖，7 个作业换位，0 环），同层仍小的先建；每个作业记 `depends_on`。
+* 实测（全量 156，读回 YAML）：6 个跨 prefab 指针全部绑定（`Game.prefab._providableDialogPrefab` → `ProvidableDialog.prefab`
+  根上的 ProvidableDialog，脚本 GUID 一致）；3 个拥有者 prefab 补回根组件（objects created +3，not built 340 → 337）；
+  `verify_prefab_links.py`：指向 prefab 的引用 62 个全部可解析、0 悬空（修复前 55 + 1 悬空）；GUID 变化 0，`align_asset_guids` 需重映射 0。
+* 剩余 377 个「without owner GameObject」全是**独立对象**（TimelineAsset 77、各类 Track/PlayableAsset 299、`BuildTimestamp` 1），
+  不是组件；`Game.prefab` 的两个 `_buildTimestamp`（`DebugReporter` 与调试文字显示用，不在启动路径上）因此仍为 null。
+
 ## 全量 156 个 prefab 之后**仍然**未绑定的（已分类，非静默）
 
 | 类别 | 数量 | 说明 |
@@ -114,5 +135,6 @@ python work/serialization-loss/snapshot_guids.py                 # 重生成前�
 powershell work/serialization-loss/regen_all.ps1                 # 440 剧本原地更新 → 156 prefab
 python work/serialization-loss/verify_scenarios.py               # 独立对账：期望 hasValue 数 / YAML 实际数 / GUID
 python work/serialization-loss/verify_prefabs.py [--plan prefab_plan_probe.json]
+python work/serialization-loss/verify_prefab_links.py            # 指向 prefab 的引用是否全部可解析（构建顺序）
 python work/serialization-loss/typecheck_editor.py [override_dir]  # 不启动 Unity 的 Editor 程序集离线类型检查
 ```

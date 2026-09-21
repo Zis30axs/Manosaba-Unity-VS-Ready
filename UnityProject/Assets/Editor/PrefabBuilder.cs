@@ -1008,11 +1008,14 @@ namespace Manosaba.EditorTools
                 Node target = nodes.FirstOrDefault(n => n.pid == pathId.ToString());
                 if (target == null)
                 {
-                    // An object of the SAME bundle that the plan does not rebuild (a Sprite or Texture2D the importer
-                    // wrote out as its own file): the planner records it as a `pid:0:pathId` reference from the import
-                    // ledger, and it is loaded like any external asset.  GalleryUI's SlotLocked/SlotLoading textures
-                    // (whose absence threw in CGGalleryGridSlot.Awake) and the LayeredCharacters sprites (2,000+)
-                    // were "not in plan" before this.
+                    // An object of the SAME bundle that this job does not rebuild, recorded by the planner as a
+                    // `pid:0:pathId` reference and loaded like any external asset:
+                    //   * a Sprite/Texture2D the importer wrote out as its own file (import ledger): GalleryUI's
+                    //     SlotLocked/SlotLoading textures, whose absence threw in CGGalleryGridSlot.Awake, and the
+                    //     LayeredCharacters/Reenact sprites (2,191 pointers);
+                    //   * a component or root of ANOTHER prefab of the plan (Game.prefab's DialogPresenter.
+                    //     _providableDialogPrefab -> ProvidableDialog.prefab): the planner orders that prefab first, and
+                    //     the applier takes the component of the field's type on its root.
                     string sidecarKey = node.pid + ":0:" + pathId;
                     if (references.TryGetValue(sidecarKey, out string sidecarPath))
                     {
@@ -1185,7 +1188,7 @@ namespace Manosaba.EditorTools
             public int pointers_unbound;
             /// <summary>Pointers bound after converting the resolved asset to the field's type (Texture2D -> Sprite, prefab GameObject -> its component).</summary>
             public int pointers_adapted;
-            /// <summary>Intra-bundle pointers (fileId 0) bound through the import ledger's standalone asset.</summary>
+            /// <summary>Intra-bundle pointers (fileId 0) bound to an asset outside this job (ledger file or another prefab).</summary>
             public int pointers_sidecar;
             /// <summary>String fields naming a type in the renamed Assembly-CSharp (UnityEvent m_TargetAssemblyTypeName).</summary>
             public int assembly_names_remapped;
