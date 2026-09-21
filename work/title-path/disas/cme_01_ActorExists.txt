@@ -1,0 +1,89 @@
+====================================================================================================
+FUNCTION RVA 0xD10F00  VA 0x180D10F00  size 0x85 (133 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundManagerExtended$$ActorExists
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.CharacterManagerExtended$$ActorExists
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_BackgroundManagerExtended__ActorExists (GigaCreation_NaninovelExtender_ExtendedActors_BackgroundManagerExtended_o* __this, System_String_o* actorId, System_String_o* subId, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.BackgroundManagerExtended :: public bool ActorExists(string actorId, string subId)
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.CharacterManagerExtended :: public bool ActorExists(string actorId, string subId)
+  fields of CharacterManagerExtended.<>c:
+      +0x0    <>9                            static readonly CharacterManagerExtended.<>c
+      +0x8    <>9__7_0                       static Func<CharactersConfigurationExtended.Option, string>
+      +0x10   <>9__7_1                       static Func<CharactersConfigurationExtended.Option, float>
+  fields of CharacterManagerExtended.<>c__DisplayClass12_0:
+      +0x10   state                          GameStateExtended<CharacterStateExtended>
+  fields of CharacterManagerExtended.<AddActor>d__10:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ICharacterActor>
+      +0x20   <>4__this                      CharacterManagerExtended
+      +0x28   actorId                        string
+      +0x30   subId                          string
+      +0x38   <>u__1                         UniTask.Awaiter<ICharacterActor>
+  fields of CharacterManagerExtended.<ConstructActor>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ICharacterActor>
+      +0x20   <>4__this                      CharacterManagerExtended
+      +0x28   actorId                        string
+      +0x30   subId                          string
+      +0x38   <meta>5__2                     CharacterMetadata
+      +0x40   <actor>5__3                    ICharacterActor
+      +0x48   <>u__1                         UniTask.Awaiter
+  fields of CharacterManagerExtended.<GetOrAddActor>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ICharacterActor>
+      +0x20   actorId                        string
+      +0x28   <>4__this                      CharacterManagerExtended
+      +0x30   <>u__1                         UniTask.Awaiter<ICharacterActor>
+  fields of CharacterManagerExtended.<GetOrAddActor>d__14:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ICharacterActor>
+      +0x20   <>4__this                      CharacterManagerExtended
+      +0x28   actorId                        string
+      +0x30   subId                          string
+      +0x38   <>u__1                         UniTask.Awaiter<ICharacterActor>
+  fields of CharacterManagerExtended.<LoadServiceState>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   stateMap                       GameStateMap
+      +0x20   <>4__this                      CharacterManagerExtended
+      +0x28   <>7__wrap1                     IEnumerator<KeyValuePair<string, CharacterStateExtended>>
+      +0x30   <extendedState>5__3            CharacterStateExtended
+      +0x38   <>u__1                         UniTask.Awaiter<ICharacterActor>
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D10F00  mov     qword ptr [rsp + 8], rbx                  
+  0x180D10F05  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D10F0A  push    rdi                                       
+  0x180D10F0B  sub     rsp, 0x20                                 
+  0x180D10F0F  cmp     byte ptr [rip + 0x23cc3d9], 0                ; data_30DD2EF
+  0x180D10F16  mov     rbx, r8                                   
+  0x180D10F19  mov     rdi, rdx                                  
+  0x180D10F1C  mov     rsi, rcx                                  
+  0x180D10F1F  jne     0x180d10f39                               
+  0x180D10F21  lea     rcx, [rip + 0x21409b8]                       ; STR '-'
+  0x180D10F28  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D10F2D  lock or dword ptr [rsp], 0                        
+  0x180D10F32  mov     byte ptr [rip + 0x23cc3b6], 1                ; data_30DD2EF
+
+180D10F39:
+  0x180D10F39  test    rbx, rbx                                  
+  0x180D10F3C  je      0x180d10f5c                               
+  0x180D10F3E  cmp     dword ptr [rbx + 0x10], 0                    ; rbx-><>c.<>9__7_1 | <>c__DisplayClass12_0.state
+  0x180D10F42  jbe     0x180d10f5c                               
+  0x180D10F44  mov     rdx, qword ptr [rip + 0x2140995]             ; STR '-'
+  0x180D10F4B  xor     r9d, r9d                                  
+  0x180D10F4E  mov     r8, rbx                                   
+  0x180D10F51  mov     rcx, rdi                                  
+  0x180D10F54  call    0x180e267a0                                  ; -> System.String$$Concat
+  0x180D10F59  mov     rdi, rax                                  
+
+180D10F5C:
+  0x180D10F5C  mov     r8, qword ptr [rsi]                       
+  0x180D10F5F  mov     rdx, rdi                                  
+  0x180D10F62  mov     rcx, rsi                                  
+  0x180D10F65  mov     rax, qword ptr [r8 + 0x348]               
+  0x180D10F6C  mov     r8, qword ptr [r8 + 0x350]                
+  0x180D10F73  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D10F78  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D10F7D  add     rsp, 0x20                                 
+  0x180D10F81  pop     rdi                                       
+  0x180D10F82  jmp     rax                                       

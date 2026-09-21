@@ -1,0 +1,33 @@
+====================================================================================================
+FUNCTION RVA 0xD1CED0  VA 0x180D1CED0  size 0x50 (80 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.LayeredCharacterExtended$$set_Pivot
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended$$set_Pivot
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_LayeredCharacterExtended__set_Pivot (GigaCreation_NaninovelExtender_ExtendedActors_LayeredCharacterExtended_o* __this, UnityEngine_Vector2_o value, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.LayeredCharacterExtended :: public void set_Pivot(Vector2 value)
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.SpriteBackgroundExtended :: public void set_Pivot(Vector2 value)
+  fields of LayeredCharacterExtended.<Initialize>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LayeredCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D1CED0  sub     rsp, 0x38                                 
+  0x180D1CED4  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180D1CED9  movq    xmm6, rdx                                 
+  0x180D1CEDE  mov     rdx, qword ptr [rcx]                      
+  0x180D1CEE1  mov     rax, qword ptr [rdx + 0x538]              
+  0x180D1CEE8  mov     rdx, qword ptr [rdx + 0x540]              
+  0x180D1CEEF  call    rax                                       
+  0x180D1CEF1  test    rax, rax                                  
+  0x180D1CEF4  je      0x180d1cf1b                               
+  0x180D1CEF6  mov     r8, qword ptr [rax]                       
+  0x180D1CEF9  movq    rdx, xmm6                                 
+  0x180D1CEFE  mov     rcx, rax                                  
+  0x180D1CF01  mov     r9, qword ptr [r8 + 0x2b8]                
+  0x180D1CF08  mov     r8, qword ptr [r8 + 0x2c0]                
+  0x180D1CF0F  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180D1CF14  add     rsp, 0x38                                 
+  0x180D1CF18  jmp     r9                                        
+
+180D1CF1B:
+  0x180D1CF1B  call    0x180246730                                  ; THROW NullReferenceException

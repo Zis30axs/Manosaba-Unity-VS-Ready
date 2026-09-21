@@ -1,0 +1,55 @@
+====================================================================================================
+FUNCTION RVA 0xD24250  VA 0x180D24250  size 0x4D (77 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.ModifyCharacterExtended.<>c$$<Modify>b__15_0
+  csig   : bool GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended___c___Modify_b__15_0 (GigaCreation_NaninovelExtender_ExtendedActors_ModifyCharacterExtended___c_o* __this, Naninovel_ICharacterActor_o* actor, const MethodInfo* method);
+  dump.cs: ModifyCharacterExtended.<>c :: internal bool <Modify>b__15_0(ICharacterActor actor)
+  fields of ModifyCharacterExtended.<>c:
+      +0x0    <>9                            static readonly ModifyCharacterExtended.<>c
+      +0x8    <>9__15_0                      static Func<ICharacterActor, bool>
+  fields of ModifyCharacterExtended.<ApplyAppearanceModification>d__16:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   actor                          ICharacterActor
+      +0x38   tween                          Tween
+      +0x48   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x58   <>u__2                         UniTask.Awaiter
+  fields of ModifyCharacterExtended.<Modify>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   token                          AsyncToken
+      +0x30   <easingType>5__2               EasingType
+      +0x38   <_>5__3                        PooledObject<List<UniTask>>
+      +0x48   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ICharacterActor>
+  fields of ModifyCharacterExtended.<PreloadResources>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ModifyCharacterExtended
+      +0x20   <>u__1                         UniTask.Awaiter<Texture2D>
+      +0x30   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D24250  push    rbx                                       
+  0x180D24252  sub     rsp, 0x20                                 
+  0x180D24256  cmp     byte ptr [rip + 0x23b90db], 0                ; data_30DD338
+  0x180D2425D  mov     rbx, rdx                                  
+  0x180D24260  jne     0x180d2427a                               
+  0x180D24262  lea     rcx, [rip + 0x212d91f]                       ; TYPE Naninovel.IActor_TypeInfo
+  0x180D24269  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D2426E  lock or dword ptr [rsp], 0                        
+  0x180D24273  mov     byte ptr [rip + 0x23b90be], 1                ; data_30DD338
+
+180D2427A:
+  0x180D2427A  test    rbx, rbx                                  
+  0x180D2427D  je      0x180d24298                               
+  0x180D2427F  mov     rdx, qword ptr [rip + 0x212d902]             ; TYPE Naninovel.IActor_TypeInfo
+  0x180D24286  mov     ecx, 3                                    
+  0x180D2428B  mov     r8, rbx                                   
+  0x180D2428E  add     rsp, 0x20                                 
+  0x180D24292  pop     rbx                                       
+  0x180D24293  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D24298:
+  0x180D24298  call    0x180246730                                  ; THROW NullReferenceException

@@ -66,16 +66,23 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	[Token(Token = "0x1700000E")]
     	public Vector2 Pivot
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD1CE90, 60 B (folded with SpriteBackgroundExtended.Pivot's getter)
+    		// TransitionalRenderer (vtable +0x538 = slot 64, LayeredActor.get_TransitionalRenderer), then a tail jump to its slot 23 = get_Pivot.
+    		// Annotated disassembly: work/title-path/disas/lce_03_get_Pivot.txt
     		[Token(Token = "0x600008A")]
     		[Address(RVA = "0xD1CE90", Offset = "0xD1B890", VA = "0x180D1CE90", Slot = "75")]
     		get
     		{
-    			return default(Vector2);
+    			return TransitionalRenderer.Pivot;
     		}
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD1CED0, 80 B (folded with SpriteBackgroundExtended.Pivot's setter)
+    		// TransitionalRenderer (slot 64), then a tail jump to its slot 24 = set_Pivot with the Vector2 in xmm6 -> rdx.
+    		// Annotated disassembly: work/title-path/disas/lce_04_set_Pivot.txt
     		[Token(Token = "0x600008B")]
     		[Address(RVA = "0xD1CED0", Offset = "0xD1B8D0", VA = "0x180D1CED0", Slot = "76")]
     		set
     		{
+    			TransitionalRenderer.Pivot = value;
     		}
     	}
 
@@ -148,12 +155,28 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
     	{
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD1D570 (kickoff) / 0xD1D690 (<Initialize>d__13.MoveNext, 1116 B)
+    	// The body lives in InitializeCore (XxxCore convention; the <Initialize>d__13 metadata stays).  The stub returned
+    	// default(UniTask): LayeredCharacter.Initialize (behaviour prefab instantiation, lip syncer) never ran, so every layered
+    	// character (Ema, Hiro, ... 13 of them) was an empty shell after CharacterManagerExtended.ConstructActor.
+    	//   state 0   await base.Initialize() -- the MoveNext starts LayeredCharacter.<Initialize>d__5 inline (0x180D1D812) and awaits
+    	//             its task (0x180D1D81E)
+    	//   0x180D1DA3C  Behaviour (vtable +0x528 = slot 63, LayeredActor.get_Behaviour) .transform (Component.get_transform) is re-parented
+    	//             with Transform.SetParent(GetOrCreateParent() (vtable +0x508 = slot 61, MonoBehaviourActor), worldPositionStays: true)
+    	//             (0x180D1DA7C)
+    	// Annotated disassembly: work/title-path/disas/lce_01_Initialize, lce_02_Initialize_MoveNext.txt
     	[Token(Token = "0x6000092")]
     	[Address(RVA = "0xD1D570", Offset = "0xD1BF70", VA = "0x180D1D570", Slot = "41")]
     	[AsyncStateMachine(typeof(_003CInitialize_003Ed__13))]
     	public override UniTask Initialize()
     	{
-    		return default(UniTask);
+    		return InitializeCore();
+    	}
+
+    	private async UniTask InitializeCore()
+    	{
+    		await base.Initialize();
+    		Behaviour.transform.SetParent(GetOrCreateParent(), true);
     	}
 
     	[Token(Token = "0x6000093")]
