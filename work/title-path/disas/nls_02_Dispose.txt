@@ -1,0 +1,394 @@
+====================================================================================================
+FUNCTION RVA 0xCFC960  VA 0x180CFC960  size 0x56D (1389 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen$$Dispose
+  csig   : void GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen__Dispose (GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen :: public void Dispose()
+  fields of GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen:
+      +0x10   <NaniInputManager>k__BackingField readonly IInputManager
+      +0x18   <LoadingUiExtended>k__BackingField readonly ILoadingUiExtended
+      +0x20   <IsInputProcessingHalted>k__BackingField bool
+      +0x28   <Blockables>k__BackingField    ICancelEventBlockable[]
+      +0x30   <Cts>k__BackingField           CancellationTokenSource
+  fields of NaninovelLoadingScreen.<>c:
+      +0x0    <>9                            static readonly NaninovelLoadingScreen.<>c
+      +0x8    <>9__19_0                      static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CFC960  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CFC965  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CFC96A  push    rdi                                       
+  0x180CFC96B  push    r14                                       
+  0x180CFC96D  push    r15                                       
+  0x180CFC96F  sub     rsp, 0x50                                 
+  0x180CFC973  mov     rdi, rcx                                  
+  0x180CFC976  cmp     byte ptr [rip + 0x23e08d7], 0                ; data_30DD254
+  0x180CFC97D  jne     0x180cfca45                               
+  0x180CFC983  lea     rcx, [rip + 0x216c5b6]                       ; METHODINFO Method$System.Linq.Enumerable.Where<ICancelEventBlockable>()
+  0x180CFC98A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC98F  lock or dword ptr [rsp], 0                        
+  0x180CFC994  lea     rcx, [rip + 0x216c60d]                       ; TYPE System.Func<ICancelEventBlockable, bool>_TypeInfo
+  0x180CFC99B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9A0  lock or dword ptr [rsp], 0                        
+  0x180CFC9A5  lea     rcx, [rip + 0x216c5ac]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CFC9AC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9B1  lock or dword ptr [rsp], 0                        
+  0x180CFC9B6  lea     rcx, [rip + 0x2155793]                       ; TYPE System.IDisposable_TypeInfo
+  0x180CFC9BD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9C2  lock or dword ptr [rsp], 0                        
+  0x180CFC9C7  lea     rcx, [rip + 0x216c5d2]                       ; TYPE System.Collections.Generic.IEnumerable<ICancelEventBlockable>_TypeInfo
+  0x180CFC9CE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9D3  lock or dword ptr [rsp], 0                        
+  0x180CFC9D8  lea     rcx, [rip + 0x216c5a9]                       ; TYPE System.Collections.Generic.IEnumerator<ICancelEventBlockable>_TypeInfo
+  0x180CFC9DF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9E4  lock or dword ptr [rsp], 0                        
+  0x180CFC9E9  lea     rcx, [rip + 0x2155230]                       ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CFC9F0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC9F5  lock or dword ptr [rsp], 0                        
+  0x180CFC9FA  lea     rcx, [rip + 0x215cfc7]                       ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180CFCA01  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCA06  lock or dword ptr [rsp], 0                        
+  0x180CFCA0B  lea     rcx, [rip + 0x215587e]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CFCA12  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCA17  lock or dword ptr [rsp], 0                        
+  0x180CFCA1C  lea     rcx, [rip + 0x216ec45]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c.<Dispose>b__19_0() => GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c$$<Dispose>b__19_0
+  0x180CFCA23  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCA28  lock or dword ptr [rsp], 0                        
+  0x180CFCA2D  lea     rcx, [rip + 0x216ec0c]                       ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+  0x180CFCA34  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCA39  lock or dword ptr [rsp], 0                        
+  0x180CFCA3E  mov     byte ptr [rip + 0x23e080f], 1                ; data_30DD254
+
+180CFCA45:
+  0x180CFCA45  mov     rcx, qword ptr [rdi + 0x30]                  ; rdi->NaninovelLoadingScreen.<Cts>k__BackingField
+  0x180CFCA49  test    rcx, rcx                                  
+  0x180CFCA4C  je      0x180cfca55                               
+  0x180CFCA4E  xor     edx, edx                                  
+  0x180CFCA50  call    0x1810a27c0                                  ; -> System.Threading.CancellationTokenSource$$Dispose
+
+180CFCA55:
+  0x180CFCA55  xor     ebx, ebx                                  
+  0x180CFCA57  mov     qword ptr [rdi + 0x30], rbx                  ; rdi->NaninovelLoadingScreen.<Cts>k__BackingField
+  0x180CFCA5B  lea     r15, [rip + 0x23f183e]                       ; data_30EE2A0
+  0x180CFCA62  cmp     dword ptr [rip + 0x23dc75c], ebx             ; data_30D91C4
+  0x180CFCA68  je      0x180cfcaa9                               
+  0x180CFCA6A  lea     r8, [rdi + 0x30]                             ; rdi->NaninovelLoadingScreen.<Cts>k__BackingField
+  0x180CFCA6E  shr     r8, 0xc                                   
+  0x180CFCA72  and     r8d, 0x1fffff                             
+  0x180CFCA79  mov     eax, r8d                                  
+  0x180CFCA7C  shr     rax, 6                                    
+  0x180CFCA80  lea     rdx, [r15 + rax*8]                        
+  0x180CFCA84  and     r8d, 0x3f                                 
+  0x180CFCA88  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CFCA8F  nop                                               
+
+180CFCA90:
+  0x180CFCA90  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CFCA97  mov     rcx, rax                                  
+  0x180CFCA9A  bts     rcx, r8                                   
+  0x180CFCA9E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CFCAA7  jne     0x180cfca90                               
+
+180CFCAA9:
+  0x180CFCAA9  mov     rsi, qword ptr [rdi + 0x18]                  ; rdi->NaninovelLoadingScreen.<LoadingUiExtended>k__BackingField
+  0x180CFCAAD  test    rsi, rsi                                  
+  0x180CFCAB0  je      0x180cfcbd2                               
+  0x180CFCAB6  mov     r8, qword ptr [rsi]                       
+  0x180CFCAB9  mov     rdx, qword ptr [rip + 0x21557d0]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CFCAC0  movzx   eax, byte ptr [rdx + 0x130]               
+  0x180CFCAC7  cmp     byte ptr [r8 + 0x130], al                 
+  0x180CFCACE  jb      0x180cfcbd2                               
+  0x180CFCAD4  movzx   ecx, al                                   
+  0x180CFCAD7  mov     rax, qword ptr [r8 + 0xc8]                
+  0x180CFCADE  cmp     qword ptr [rax + rcx*8 - 8], rdx          
+  0x180CFCAE3  jne     0x180cfcbd2                               
+  0x180CFCAE9  cmp     dword ptr [rdx + 0xe4], ebx               
+  0x180CFCAEF  jne     0x180cfcb00                               
+  0x180CFCAF1  mov     rcx, rdx                                  
+  0x180CFCAF4  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CFCAF9  mov     rdx, qword ptr [rip + 0x2155790]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CFCB00:
+  0x180CFCB00  cmp     byte ptr [rip + 0x23ebd6a], bl               ; data_30E8870
+  0x180CFCB06  jne     0x180cfcb26                               
+  0x180CFCB08  lea     rcx, [rip + 0x2155781]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CFCB0F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCB14  lock or dword ptr [rsp], ebx                      
+  0x180CFCB18  mov     byte ptr [rip + 0x23ebd51], 1                ; data_30E8870
+  0x180CFCB1F  mov     rdx, qword ptr [rip + 0x215576a]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CFCB26:
+  0x180CFCB26  cmp     dword ptr [rdx + 0xe4], ebx               
+  0x180CFCB2C  jne     0x180cfcb3d                               
+  0x180CFCB2E  mov     rcx, rdx                                  
+  0x180CFCB31  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CFCB36  mov     rdx, qword ptr [rip + 0x2155753]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CFCB3D:
+  0x180CFCB3D  cmp     byte ptr [rip + 0x23ebcec], bl               ; data_30E882F
+  0x180CFCB43  jne     0x180cfcb63                               
+  0x180CFCB45  lea     rcx, [rip + 0x2155744]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CFCB4C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCB51  lock or dword ptr [rsp], ebx                      
+  0x180CFCB55  mov     byte ptr [rip + 0x23ebcd3], 1                ; data_30E882F
+  0x180CFCB5C  mov     rdx, qword ptr [rip + 0x215572d]             ; TYPE UnityEngine.Object_TypeInfo
+
+180CFCB63:
+  0x180CFCB63  cmp     dword ptr [rdx + 0xe4], ebx               
+  0x180CFCB69  jne     0x180cfcb73                               
+  0x180CFCB6B  mov     rcx, rdx                                  
+  0x180CFCB6E  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFCB73:
+  0x180CFCB73  cmp     qword ptr [rsi + 0x10], rbx                  ; rsi->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFCB77  je      0x180cfcbd2                               
+  0x180CFCB79  mov     rsi, qword ptr [rdi + 0x18]                  ; rdi->NaninovelLoadingScreen.<LoadingUiExtended>k__BackingField
+  0x180CFCB7D  cmp     byte ptr [rip + 0x23df8ed], bl               ; data_30DC470
+  0x180CFCB83  jne     0x180cfcb9c                               
+  0x180CFCB85  lea     rcx, [rip + 0x215ce34]                       ; TYPE Naninovel.UI.IManagedUI_TypeInfo
+  0x180CFCB8C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFCB91  lock or dword ptr [rsp], ebx                      
+  0x180CFCB95  mov     byte ptr [rip + 0x23df8d4], 1                ; data_30DC470
+
+180CFCB9C:
+  0x180CFCB9C  xorps   xmm0, xmm0                                
+  0x180CFCB9F  test    rsi, rsi                                  
+  0x180CFCBA2  je      0x180cfcec8                               
+  0x180CFCBA8  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CFCBAE  lea     rax, [rsp + 0x40]                         
+  0x180CFCBB3  mov     qword ptr [rsp + 0x28], rax               
+  0x180CFCBB8  mov     qword ptr [rsp + 0x20], rbx               
+  0x180CFCBBD  xor     r9d, r9d                                  
+  0x180CFCBC0  mov     r8, rsi                                   
+  0x180CFCBC3  call    0x180022c50                                  ; -> sub_22C50 (runtime/helper)
+  0x180CFCBC8  xor     edx, edx                                  
+  0x180CFCBCA  mov     rcx, rax                                  
+  0x180CFCBCD  call    0x18051af10                                  ; -> Naninovel.UniTaskExtensions$$ForgetCore
+
+180CFCBD2:
+  0x180CFCBD2  cmp     qword ptr [rdi + 0x10], rbx                  ; rdi->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFCBD6  je      0x180cfcbf5                               
+  0x180CFCBD8  cmp     byte ptr [rdi + 0x20], bl                    ; rdi->NaninovelLoadingScreen.<IsInputProcessingHalted>k__BackingField
+  0x180CFCBDB  je      0x180cfcbf5                               
+  0x180CFCBDD  mov     ecx, 3                                    
+  0x180CFCBE2  mov     r9b, 1                                    
+  0x180CFCBE5  mov     r8, qword ptr [rdi + 0x10]                   ; rdi->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFCBE9  mov     rdx, qword ptr [rip + 0x215cdd8]             ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180CFCBF0  call    0x180004040                                  ; -> sub_4040 (runtime/helper)
+
+180CFCBF5:
+  0x180CFCBF5  cmp     qword ptr [rdi + 0x28], rbx                  ; rdi->NaninovelLoadingScreen.<Blockables>k__BackingField
+  0x180CFCBF9  je      0x180cfce9a                               
+  0x180CFCBFF  mov     r14, qword ptr [rdi + 0x28]                  ; rdi->NaninovelLoadingScreen.<Blockables>k__BackingField
+  0x180CFCC03  mov     rcx, qword ptr [rip + 0x216ea36]             ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+  0x180CFCC0A  cmp     dword ptr [rcx + 0xe4], ebx               
+  0x180CFCC10  jne     0x180cfcc1e                               
+  0x180CFCC12  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CFCC17  mov     rcx, qword ptr [rip + 0x216ea22]             ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+
+180CFCC1E:
+  0x180CFCC1E  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CFCC25  mov     rsi, qword ptr [rax + 8]                  
+  0x180CFCC29  test    rsi, rsi                                  
+  0x180CFCC2C  jne     0x180cfccdb                               
+  0x180CFCC32  cmp     dword ptr [rcx + 0xe4], ebx               
+  0x180CFCC38  jne     0x180cfcc46                               
+  0x180CFCC3A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CFCC3F  mov     rcx, qword ptr [rip + 0x216e9fa]             ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+
+180CFCC46:
+  0x180CFCC46  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CFCC4D  mov     rdi, qword ptr [rax]                      
+  0x180CFCC50  mov     rcx, qword ptr [rip + 0x216c351]             ; TYPE System.Func<ICancelEventBlockable, bool>_TypeInfo
+  0x180CFCC57  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CFCC5C  mov     rsi, rax                                  
+  0x180CFCC5F  xor     r9d, r9d                                  
+  0x180CFCC62  mov     r8, qword ptr [rip + 0x216e9ff]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c.<Dispose>b__19_0() => GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c$$<Dispose>b__19_0
+  0x180CFCC69  mov     rdx, rdi                                  
+  0x180CFCC6C  mov     rcx, rax                                  
+  0x180CFCC6F  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CFCC74  mov     rax, qword ptr [rip + 0x216e9c5]             ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+  0x180CFCC7B  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CFCC82  mov     qword ptr [rcx + 8], rsi                  
+  0x180CFCC86  mov     rax, qword ptr [rip + 0x216e9b3]             ; TYPE GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c_TypeInfo
+  0x180CFCC8D  mov     r10, qword ptr [rax + 0xb8]               
+  0x180CFCC94  add     r10, 8                                    
+  0x180CFCC98  cmp     dword ptr [rip + 0x23dc526], ebx             ; data_30D91C4
+  0x180CFCC9E  je      0x180cfccdb                               
+  0x180CFCCA0  shr     r10, 0xc                                  
+  0x180CFCCA4  and     r10d, 0x1fffff                            
+  0x180CFCCAB  mov     eax, r10d                                 
+  0x180CFCCAE  shr     rax, 6                                    
+  0x180CFCCB2  lea     r9, [r15 + rax*8]                         
+  0x180CFCCB6  and     r10d, 0x3f                                
+  0x180CFCCBA  prefetchw byte ptr [r9 + 0x462e0]                   
+
+180CFCCC2:
+  0x180CFCCC2  mov     rax, qword ptr [r9 + 0x462e0]             
+  0x180CFCCC9  mov     r8, rax                                   
+  0x180CFCCCC  bts     r8, r10                                   
+  0x180CFCCD0  lock cmpxchg qword ptr [r9 + 0x462e0], r8              
+  0x180CFCCD9  jne     0x180cfccc2                               
+
+180CFCCDB:
+  0x180CFCCDB  mov     r8, qword ptr [rip + 0x216c25e]              ; METHODINFO Method$System.Linq.Enumerable.Where<ICancelEventBlockable>()
+  0x180CFCCE2  mov     rdx, rsi                                  
+  0x180CFCCE5  mov     rcx, r14                                  
+  0x180CFCCE8  call    0x18068c2c0                                  ; -> System.Linq.Enumerable$$Where<__Il2CppFullySharedGenericType>
+  0x180CFCCED  test    rax, rax                                  
+  0x180CFCCF0  je      0x180cfcec8                               
+  0x180CFCCF6  xor     ecx, ecx                                  
+  0x180CFCCF8  mov     r8, rax                                   
+  0x180CFCCFB  mov     rdx, qword ptr [rip + 0x216c29e]             ; TYPE System.Collections.Generic.IEnumerable<ICancelEventBlockable>_TypeInfo
+  0x180CFCD02  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CFCD07  mov     qword ptr [rsp + 0x70], rax               
+  0x180CFCD0C  mov     qword ptr [rsp + 0x40], rbx               
+  0x180CFCD11  lea     rdi, [rsp + 0x70]                         
+  0x180CFCD16  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CFCD1B  nop     dword ptr [rax + rax]                     
+
+180CFCD20:
+  0x180CFCD20  mov     r8, qword ptr [rsp + 0x70]                
+  0x180CFCD25  test    r8, r8                                    
+  0x180CFCD28  je      0x180cfcebc                               
+  0x180CFCD2E  xor     ecx, ecx                                  
+  0x180CFCD30  mov     rdx, qword ptr [rip + 0x2154ee9]             ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CFCD37  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CFCD3C  test    al, al                                    
+  0x180CFCD3E  je      0x180cfce5b                               
+  0x180CFCD44  mov     rsi, qword ptr [rsp + 0x70]               
+  0x180CFCD49  test    rsi, rsi                                  
+  0x180CFCD4C  je      0x180cfceb7                               
+  0x180CFCD52  mov     r9, qword ptr [rip + 0x216c22f]              ; TYPE System.Collections.Generic.IEnumerator<ICancelEventBlockable>_TypeInfo
+  0x180CFCD59  mov     r10, qword ptr [rsi]                      
+  0x180CFCD5C  movzx   ecx, bx                                   
+  0x180CFCD5F  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CFCD67  cmp     bx, dx                                    
+  0x180CFCD6A  jae     0x180cfcd98                               
+  0x180CFCD6C  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CFCD73  nop     dword ptr [rax]                           
+  0x180CFCD77  nop     word ptr [rax + rax]                      
+
+180CFCD80:
+  0x180CFCD80  movzx   eax, cx                                   
+  0x180CFCD83  add     rax, rax                                  
+  0x180CFCD86  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CFCD8A  je      0x180cfce1d                               
+  0x180CFCD90  inc     cx                                        
+  0x180CFCD93  cmp     cx, dx                                    
+  0x180CFCD96  jb      0x180cfcd80                               
+
+180CFCD98:
+  0x180CFCD98  xor     r8d, r8d                                  
+  0x180CFCD9B  mov     rdx, r9                                   
+  0x180CFCD9E  mov     rcx, rsi                                  
+  0x180CFCDA1  call    0x180243a20                                  ; resolve interface method slot
+  0x180CFCDA6  mov     rdx, rax                                  
+
+180CFCDA9:
+  0x180CFCDA9  mov     rax, qword ptr [rdx]                      
+  0x180CFCDAC  mov     rdx, qword ptr [rdx + 8]                  
+  0x180CFCDB0  mov     rcx, rsi                                  
+  0x180CFCDB3  call    rax                                       
+  0x180CFCDB5  mov     rsi, rax                                  
+  0x180CFCDB8  test    rax, rax                                  
+  0x180CFCDBB  je      0x180cfceb1                               
+  0x180CFCDC1  mov     r9, qword ptr [rip + 0x216c190]              ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CFCDC8  mov     r10, qword ptr [rax]                      
+  0x180CFCDCB  movzx   ecx, bx                                   
+  0x180CFCDCE  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CFCDD6  cmp     bx, dx                                    
+  0x180CFCDD9  jae     0x180cfcdf6                               
+  0x180CFCDDB  mov     r8, qword ptr [r10 + 0xb0]                
+
+180CFCDE2:
+  0x180CFCDE2  movzx   eax, cx                                   
+  0x180CFCDE5  add     rax, rax                                  
+  0x180CFCDE8  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CFCDEC  je      0x180cfce3b                               
+  0x180CFCDEE  inc     cx                                        
+  0x180CFCDF1  cmp     cx, dx                                    
+  0x180CFCDF4  jb      0x180cfcde2                               
+
+180CFCDF6:
+  0x180CFCDF6  mov     r8d, 1                                    
+  0x180CFCDFC  mov     rdx, r9                                   
+  0x180CFCDFF  mov     rcx, rsi                                  
+  0x180CFCE02  call    0x180243a20                                  ; resolve interface method slot
+  0x180CFCE07  mov     r8, rax                                   
+
+180CFCE0A:
+  0x180CFCE0A  mov     rax, qword ptr [r8]                       
+  0x180CFCE0D  mov     r8, qword ptr [r8 + 8]                    
+  0x180CFCE11  xor     edx, edx                                  
+  0x180CFCE13  mov     rcx, rsi                                  
+  0x180CFCE16  call    rax                                       
+  0x180CFCE18  jmp     0x180cfcd20                               
+
+180CFCE1D:
+  0x180CFCE1D  movzx   ecx, cx                                   
+  0x180CFCE20  add     rcx, rcx                                  
+  0x180CFCE23  movsxd  rdx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CFCE28  shl     rdx, 4                                    
+  0x180CFCE2C  add     rdx, 0x138                                
+  0x180CFCE33  add     rdx, r10                                  
+  0x180CFCE36  jmp     0x180cfcda9                               
+
+180CFCE3B:
+  0x180CFCE3B  movzx   ecx, cx                                   
+  0x180CFCE3E  add     rcx, rcx                                  
+  0x180CFCE41  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CFCE46  inc     ecx                                       
+  0x180CFCE48  movsxd  r8, ecx                                   
+  0x180CFCE4B  shl     r8, 4                                     
+  0x180CFCE4F  add     r8, 0x138                                 
+  0x180CFCE56  add     r8, r10                                   
+  0x180CFCE59  jmp     0x180cfce0a                               
+
+180CFCE5B:
+  0x180CFCE5B  cmp     qword ptr [rdi], 0                        
+  0x180CFCE5F  je      0x180cfce72                               
+  0x180CFCE61  xor     ecx, ecx                                  
+  0x180CFCE63  mov     r8, qword ptr [rdi]                       
+  0x180CFCE66  mov     rdx, qword ptr [rip + 0x21552e3]             ; TYPE System.IDisposable_TypeInfo
+  0x180CFCE6D  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CFCE72:
+  0x180CFCE72  jmp     0x180cfce9a                               
+  0x180CFCE74  mov     r8, qword ptr [rsp + 0x48]                
+  0x180CFCE79  cmp     qword ptr [r8], 0                         
+  0x180CFCE7D  je      0x180cfce90                               
+  0x180CFCE7F  xor     ecx, ecx                                  
+  0x180CFCE81  mov     r8, qword ptr [r8]                        
+  0x180CFCE84  mov     rdx, qword ptr [rip + 0x21552c5]             ; TYPE System.IDisposable_TypeInfo
+  0x180CFCE8B  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CFCE90:
+  0x180CFCE90  mov     rcx, qword ptr [rsp + 0x40]               
+  0x180CFCE95  test    rcx, rcx                                  
+  0x180CFCE98  jne     0x180cfcec2                               
+
+180CFCE9A:
+  0x180CFCE9A  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180CFCE9F  mov     rsi, qword ptr [rsp + 0x80]               
+  0x180CFCEA7  add     rsp, 0x50                                 
+  0x180CFCEAB  pop     r15                                       
+  0x180CFCEAD  pop     r14                                       
+  0x180CFCEAF  pop     rdi                                       
+  0x180CFCEB0  ret                                               
+
+180CFCEB1:
+  0x180CFCEB1  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CFCEB6  nop                                               
+
+180CFCEB7:
+  0x180CFCEB7  call    0x180246730                                  ; THROW NullReferenceException
+
+180CFCEBC:
+  0x180CFCEBC  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CFCEC1  nop                                               
+
+180CFCEC2:
+  0x180CFCEC2  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x180CFCEC7  int3                                              
+
+180CFCEC8:
+  0x180CFCEC8  call    0x180246730                                  ; THROW NullReferenceException

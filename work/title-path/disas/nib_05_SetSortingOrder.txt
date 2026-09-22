@@ -1,0 +1,70 @@
+====================================================================================================
+FUNCTION RVA 0xCFC310  VA 0x180CFC310  size 0xEA (234 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker$$SetSortingOrder
+  csig   : void GigaCreation_NaninovelExtender_Common_NaninovelInteractionBlocker__SetSortingOrder (GigaCreation_NaninovelExtender_Common_NaninovelInteractionBlocker_o* __this, int32_t order, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker :: public void SetSortingOrder(int order)
+  fields of GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker:
+      +0x18   _clickThroughPanel             readonly IClickThroughPanelExtended
+      +0x20   _originalSortingOrder          Nullable<int>
+====================================================================================================
+  0x180CFC310  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CFC315  push    rdi                                       
+  0x180CFC316  sub     rsp, 0x20                                 
+  0x180CFC31A  cmp     byte ptr [rip + 0x23e0f30], 0                ; data_30DD251
+  0x180CFC321  mov     edi, edx                                  
+  0x180CFC323  mov     rbx, rcx                                  
+  0x180CFC326  jne     0x180cfc362                               
+  0x180CFC328  lea     rcx, [rip + 0x2155749]                       ; TYPE GigaCreation.NaninovelExtender.Common.IClickThroughPanelExtended_TypeInfo
+  0x180CFC32F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC334  lock or dword ptr [rsp], 0                        
+  0x180CFC339  lea     rcx, [rip + 0x215d680]                       ; TYPE Naninovel.UI.IManagedUI_TypeInfo
+  0x180CFC340  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC345  lock or dword ptr [rsp], 0                        
+  0x180CFC34A  lea     rcx, [rip + 0x2133d97]                       ; METHODINFO Method$System.Nullable<int>..ctor()
+  0x180CFC351  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC356  lock or dword ptr [rsp], 0                        
+  0x180CFC35B  mov     byte ptr [rip + 0x23e0eef], 1                ; data_30DD251
+
+180CFC362:
+  0x180CFC362  mov     r8, qword ptr [rbx + 0x18]                   ; rbx->NaninovelInteractionBlocker._clickThroughPanel
+  0x180CFC366  test    r8, r8                                    
+  0x180CFC369  je      0x180cfc3ef                               
+  0x180CFC36F  mov     rdx, qword ptr [rip + 0x2155702]             ; TYPE GigaCreation.NaninovelExtender.Common.IClickThroughPanelExtended_TypeInfo
+  0x180CFC376  xor     ecx, ecx                                  
+  0x180CFC378  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CFC37D  test    al, al                                    
+  0x180CFC37F  je      0x180cfc3e4                               
+  0x180CFC381  mov     r8, qword ptr [rbx + 0x18]                   ; rbx->NaninovelInteractionBlocker._clickThroughPanel
+  0x180CFC385  test    r8, r8                                    
+  0x180CFC388  je      0x180cfc3f5                               
+  0x180CFC38A  mov     rdx, qword ptr [rip + 0x215d62f]             ; TYPE Naninovel.UI.IManagedUI_TypeInfo
+  0x180CFC391  mov     ecx, 7                                    
+  0x180CFC396  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CFC39B  mov     r8, qword ptr [rip + 0x2133d46]              ; METHODINFO Method$System.Nullable<int>..ctor()
+  0x180CFC3A2  lea     rdx, [rsp + 0x30]                         
+  0x180CFC3A7  lea     rcx, [rsp + 0x48]                         
+  0x180CFC3AC  mov     qword ptr [rsp + 0x48], 0                 
+  0x180CFC3B5  mov     dword ptr [rsp + 0x30], eax               
+  0x180CFC3B9  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180CFC3BE  mov     r8, qword ptr [rbx + 0x18]                   ; rbx->NaninovelInteractionBlocker._clickThroughPanel
+  0x180CFC3C2  mov     rax, qword ptr [rsp + 0x48]               
+  0x180CFC3C7  mov     qword ptr [rbx + 0x20], rax                  ; rbx->NaninovelInteractionBlocker._originalSortingOrder
+  0x180CFC3CB  test    r8, r8                                    
+  0x180CFC3CE  je      0x180cfc3f5                               
+  0x180CFC3D0  mov     rdx, qword ptr [rip + 0x21556a1]             ; TYPE GigaCreation.NaninovelExtender.Common.IClickThroughPanelExtended_TypeInfo
+  0x180CFC3D7  mov     ecx, 2                                    
+  0x180CFC3DC  mov     r9d, edi                                  
+  0x180CFC3DF  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+
+180CFC3E4:
+  0x180CFC3E4  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CFC3E9  add     rsp, 0x20                                 
+  0x180CFC3ED  pop     rdi                                       
+  0x180CFC3EE  ret                                               
+
+180CFC3EF:
+  0x180CFC3EF  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CFC3F4  int3                                              
+
+180CFC3F5:
+  0x180CFC3F5  call    0x180246730                                  ; THROW NullReferenceException

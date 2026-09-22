@@ -1,0 +1,94 @@
+====================================================================================================
+FUNCTION RVA 0xD3DA80  VA 0x180D3DA80  size 0xF1 (241 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$PlayCancelSfx
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__PlayCancelSfx (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: protected virtual void PlayCancelSfx()
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3DA80  push    rbx                                       
+  0x180D3DA82  sub     rsp, 0x20                                 
+  0x180D3DA86  cmp     byte ptr [rip + 0x239f941], 0                ; data_30DD3CE
+  0x180D3DA8D  mov     rbx, rcx                                  
+  0x180D3DA90  jne     0x180d3daaa                               
+  0x180D3DA92  lea     rcx, [rip + 0x211769f]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180D3DA99  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3DA9E  lock or dword ptr [rsp], 0                        
+  0x180D3DAA3  mov     byte ptr [rip + 0x239f924], 1                ; data_30DD3CE
+
+180D3DAAA:
+  0x180D3DAAA  cmp     byte ptr [rip + 0x239f912], 0                ; data_30DD3C3
+  0x180D3DAB1  jne     0x180d3dadc                               
+  0x180D3DAB3  lea     rcx, [rip + 0x211774e]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180D3DABA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3DABF  lock or dword ptr [rsp], 0                        
+  0x180D3DAC4  lea     rcx, [rip + 0x211469d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D3DACB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3DAD0  lock or dword ptr [rsp], 0                        
+  0x180D3DAD5  mov     byte ptr [rip + 0x239f8e7], 1                ; data_30DD3C3
+
+180D3DADC:
+  0x180D3DADC  mov     r8, qword ptr [rbx + 0x58]                
+  0x180D3DAE0  test    r8, r8                                    
+  0x180D3DAE3  jne     0x180d3db56                               
+  0x180D3DAE5  mov     rcx, qword ptr [rip + 0x211467c]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D3DAEC  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180D3DAF3  jne     0x180d3dafa                               
+  0x180D3DAF5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3DAFA:
+  0x180D3DAFA  mov     rdx, qword ptr [rip + 0x2117707]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180D3DB01  mov     cl, 1                                     
+  0x180D3DB03  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180D3DB08  cmp     dword ptr [rip + 0x239b6b5], 0               ; data_30D91C4
+  0x180D3DB0F  mov     r8, rax                                   
+  0x180D3DB12  mov     qword ptr [rbx + 0x58], rax               
+  0x180D3DB16  je      0x180d3db51                               
+  0x180D3DB18  lea     r9, [rbx + 0x58]                          
+  0x180D3DB1C  shr     r9, 0xc                                   
+  0x180D3DB20  lea     rcx, [rip + 0x23f6a59]                       ; data_3134580
+  0x180D3DB27  and     r9d, 0x1fffff                             
+  0x180D3DB2E  mov     eax, r9d                                  
+  0x180D3DB31  shr     rax, 6                                    
+  0x180D3DB35  and     r9d, 0x3f                                 
+  0x180D3DB39  lea     rdx, [rcx + rax*8]                        
+  0x180D3DB3D  prefetchw byte ptr [rdx]                            
+
+180D3DB40:
+  0x180D3DB40  mov     rax, qword ptr [rdx]                      
+  0x180D3DB43  mov     rcx, rax                                  
+  0x180D3DB46  bts     rcx, r9                                   
+  0x180D3DB4A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3DB4F  jne     0x180d3db40                               
+
+180D3DB51:
+  0x180D3DB51  test    r8, r8                                    
+  0x180D3DB54  je      0x180d3db6c                               
+
+180D3DB56:
+  0x180D3DB56  mov     rdx, qword ptr [rip + 0x21175db]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180D3DB5D  xor     ecx, ecx                                  
+  0x180D3DB5F  xor     r9d, r9d                                  
+  0x180D3DB62  add     rsp, 0x20                                 
+  0x180D3DB66  pop     rbx                                       
+  0x180D3DB67  jmp     0x1800036f0                               
+
+180D3DB6C:
+  0x180D3DB6C  call    0x180246730                                  ; THROW NullReferenceException

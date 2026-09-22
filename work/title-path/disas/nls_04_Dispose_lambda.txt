@@ -1,0 +1,37 @@
+====================================================================================================
+FUNCTION RVA 0xCFD260  VA 0x180CFD260  size 0x4A (74 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.<>c$$<Dispose>b__19_0
+  csig   : bool GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen___c___Dispose_b__19_0 (GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen___c_o* __this, GigaCreation_Essentials_Ui_ICancelEventBlockable_o* blockable, const MethodInfo* method);
+  dump.cs: NaninovelLoadingScreen.<>c :: internal bool <Dispose>b__19_0(ICancelEventBlockable blockable)
+  fields of GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen:
+      +0x10   <NaniInputManager>k__BackingField readonly IInputManager
+      +0x18   <LoadingUiExtended>k__BackingField readonly ILoadingUiExtended
+      +0x20   <IsInputProcessingHalted>k__BackingField bool
+      +0x28   <Blockables>k__BackingField    ICancelEventBlockable[]
+      +0x30   <Cts>k__BackingField           CancellationTokenSource
+  fields of NaninovelLoadingScreen.<>c:
+      +0x0    <>9                            static readonly NaninovelLoadingScreen.<>c
+      +0x8    <>9__19_0                      static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CFD260  push    rbx                                       
+  0x180CFD262  sub     rsp, 0x20                                 
+  0x180CFD266  cmp     byte ptr [rip + 0x23dffea], 0                ; data_30DD257
+  0x180CFD26D  mov     rbx, rdx                                  
+  0x180CFD270  jne     0x180cfd28a                               
+  0x180CFD272  lea     rcx, [rip + 0x216bcdf]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CFD279  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFD27E  lock or dword ptr [rsp], 0                        
+  0x180CFD283  mov     byte ptr [rip + 0x23dffcd], 1                ; data_30DD257
+
+180CFD28A:
+  0x180CFD28A  test    rbx, rbx                                  
+  0x180CFD28D  je      0x180cfd2a5                               
+  0x180CFD28F  mov     rdx, qword ptr [rip + 0x216bcc2]             ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable_TypeInfo
+  0x180CFD296  xor     ecx, ecx                                  
+  0x180CFD298  mov     r8, rbx                                   
+  0x180CFD29B  add     rsp, 0x20                                 
+  0x180CFD29F  pop     rbx                                       
+  0x180CFD2A0  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CFD2A5:
+  0x180CFD2A5  call    0x180246730                                  ; THROW NullReferenceException

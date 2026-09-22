@@ -1,0 +1,119 @@
+====================================================================================================
+FUNCTION RVA 0xD3D490  VA 0x180D3D490  size 0x122 (290 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$SetGraphicRaycastersEnabled
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__SetGraphicRaycastersEnabled (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, bool enable, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: private void SetGraphicRaycastersEnabled(bool enable)
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3D490  mov     qword ptr [rsp + 0x18], rbx               
+  0x180D3D495  push    rbp                                       
+  0x180D3D496  push    rdi                                       
+  0x180D3D497  push    r15                                       
+  0x180D3D499  sub     rsp, 0x20                                 
+  0x180D3D49D  cmp     byte ptr [rip + 0x239ff27], 0                ; data_30DD3CB
+  0x180D3D4A4  movzx   r15d, dl                                  
+  0x180D3D4A8  mov     rbx, rcx                                  
+  0x180D3D4AB  jne     0x180d3d4c5                               
+  0x180D3D4AD  lea     rcx, [rip + 0x212af1c]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<GraphicRaycaster>()
+  0x180D3D4B4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D4B9  lock or dword ptr [rsp], 0                        
+  0x180D3D4BE  mov     byte ptr [rip + 0x239ff06], 1                ; data_30DD3CB
+
+180D3D4C5:
+  0x180D3D4C5  mov     rdx, qword ptr [rip + 0x212af04]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<GraphicRaycaster>()
+  0x180D3D4CC  mov     rcx, rbx                                  
+  0x180D3D4CF  mov     qword ptr [rsp + 0x40], rsi               
+  0x180D3D4D4  mov     qword ptr [rsp + 0x48], r14               
+  0x180D3D4D9  call    0x1806737d0                                  ; -> UnityEngine.Component$$GetComponentsInChildren<__Il2CppFullySharedGenericType>
+  0x180D3D4DE  xor     edi, edi                                  
+  0x180D3D4E0  mov     rbp, rax                                  
+  0x180D3D4E3  mov     ecx, edi                                  
+  0x180D3D4E5  test    rax, rax                                  
+  0x180D3D4E8  je      0x180d3d5ad                               
+  0x180D3D4EE  lea     r14, [rax + 0x20]                            ; rax-><DismissAsync>d__30.ct | <PresentAsync>d__27.ct
+
+180D3D4F2:
+  0x180D3D4F2  cmp     ecx, dword ptr [rbp + 0x18]                  ; rbp-><DismissAsync>d__30.<>4__this | <PresentAsync>d__27.<>4__this
+  0x180D3D4F5  jge     0x180d3d56d                               
+  0x180D3D4F7  cmp     edi, dword ptr [rbp + 0x18]                  ; rbp-><DismissAsync>d__30.<>4__this | <PresentAsync>d__27.<>4__this
+  0x180D3D4FA  jae     0x180d3d5a7                               
+  0x180D3D500  mov     rbx, qword ptr [r14]                      
+  0x180D3D503  test    rbx, rbx                                  
+  0x180D3D506  je      0x180d3d5ad                               
+  0x180D3D50C  cmp     byte ptr [rip + 0x23aafb3], 0                ; data_30E84C6
+  0x180D3D513  jne     0x180d3d52d                               
+  0x180D3D515  lea     rcx, [rip + 0x212829c]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Behaviour>()
+  0x180D3D51C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D521  lock or dword ptr [rsp], 0                        
+  0x180D3D526  mov     byte ptr [rip + 0x23aaf99], 1                ; data_30E84C6
+
+180D3D52D:
+  0x180D3D52D  mov     rsi, qword ptr [rbx + 0x10]               
+  0x180D3D531  test    rsi, rsi                                  
+  0x180D3D534  je      0x180d3d59c                               
+  0x180D3D536  mov     rax, qword ptr [rip + 0x23aaf93]             ; data_30E84D0
+  0x180D3D53D  test    rax, rax                                  
+  0x180D3D540  jne     0x180d3d55a                               
+  0x180D3D542  lea     rcx, [rip + 0x18c7707]                       ; data_2604C50
+  0x180D3D549  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D3D54E  test    rax, rax                                  
+  0x180D3D551  je      0x180d3d585                               
+  0x180D3D553  mov     qword ptr [rip + 0x23aaf76], rax             ; data_30E84D0
+
+180D3D55A:
+  0x180D3D55A  movzx   edx, r15b                                 
+  0x180D3D55E  mov     rcx, rsi                                  
+  0x180D3D561  call    rax                                       
+  0x180D3D563  inc     edi                                       
+  0x180D3D565  add     r14, 8                                    
+  0x180D3D569  mov     ecx, edi                                  
+  0x180D3D56B  jmp     0x180d3d4f2                               
+
+180D3D56D:
+  0x180D3D56D  mov     r14, qword ptr [rsp + 0x48]               
+  0x180D3D572  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D3D577  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180D3D57C  add     rsp, 0x20                                 
+  0x180D3D580  pop     r15                                       
+  0x180D3D582  pop     rdi                                       
+  0x180D3D583  pop     rbp                                       
+  0x180D3D584  ret                                               
+
+180D3D585:
+  0x180D3D585  lea     rcx, [rip + 0x18c76c4]                       ; data_2604C50
+  0x180D3D58C  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D3D591  mov     rcx, rax                                  
+  0x180D3D594  xor     edx, edx                                  
+  0x180D3D596  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D3D59B  int3                                              
+
+180D3D59C:
+  0x180D3D59C  xor     edx, edx                                  
+  0x180D3D59E  mov     rcx, rbx                                  
+  0x180D3D5A1  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D3D5A6  int3                                              
+
+180D3D5A7:
+  0x180D3D5A7  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D3D5AC  int3                                              
+
+180D3D5AD:
+  0x180D3D5AD  call    0x180246730                                  ; THROW NullReferenceException

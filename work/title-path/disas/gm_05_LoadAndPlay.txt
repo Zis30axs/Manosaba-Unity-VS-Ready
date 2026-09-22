@@ -1,0 +1,90 @@
+====================================================================================================
+FUNCTION RVA 0xCF7DD0  VA 0x180CF7DD0  size 0xF8 (248 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.GotoModified$$LoadAndPlay
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Common_GotoModified__LoadAndPlay (GigaCreation_NaninovelExtender_Common_GotoModified_o* __this, System_String_o* scriptPath, System_String_o* label, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.GotoModified :: private UniTask LoadAndPlay(string scriptPath, string label)
+  fields of GigaCreation.NaninovelExtender.Common.GotoModified:
+      +0x50   SoftReset                      BooleanParameter
+  fields of GotoModified.<>c__DisplayClass2_0:
+      +0x10   <>4__this                      GotoModified
+      +0x18   scriptPath                     string
+      +0x20   label                          string
+  fields of GotoModified.<Execute>d__1:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GotoModified
+      +0x20   <_>5__2                        IDisposable
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of GotoModified.<NavigateOtherScript>d__2:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GotoModified
+      +0x20   scriptPath                     string
+      +0x28   label                          string
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF7DD0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CF7DD5  push    rdi                                       
+  0x180CF7DD6  sub     rsp, 0x20                                 
+  0x180CF7DDA  mov     rbx, r8                                   
+  0x180CF7DDD  mov     rdi, rdx                                  
+  0x180CF7DE0  test    r8, r8                                    
+  0x180CF7DE3  je      0x180cf7e5a                               
+  0x180CF7DE5  cmp     dword ptr [r8 + 0x10], 0                     ; r8-><>c__DisplayClass2_0.<>4__this
+  0x180CF7DEA  jbe     0x180cf7e5a                               
+  0x180CF7DEC  cmp     byte ptr [rip + 0x23e3dc1], 0                ; data_30DBBB4
+  0x180CF7DF3  jne     0x180cf7e1e                               
+  0x180CF7DF5  lea     rcx, [rip + 0x2159d34]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180CF7DFC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF7E01  lock or dword ptr [rsp], 0                        
+  0x180CF7E06  lea     rcx, [rip + 0x215a123]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF7E0D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF7E12  lock or dword ptr [rsp], 0                        
+  0x180CF7E17  mov     byte ptr [rip + 0x23e3d96], 1                ; data_30DBBB4
+
+180CF7E1E:
+  0x180CF7E1E  mov     rcx, qword ptr [rip + 0x215a10b]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF7E25  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF7E2C  jne     0x180cf7e33                               
+  0x180CF7E2E  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF7E33:
+  0x180CF7E33  mov     rcx, qword ptr [rip + 0x2159cf6]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180CF7E3A  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180CF7E3F  xor     r9d, r9d                                  
+  0x180CF7E42  mov     r8, rbx                                   
+  0x180CF7E45  mov     rdx, rdi                                  
+  0x180CF7E48  mov     rcx, rax                                  
+  0x180CF7E4B  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CF7E50  add     rsp, 0x20                                 
+  0x180CF7E54  pop     rdi                                       
+  0x180CF7E55  jmp     0x1805ce600                                  ; -> Naninovel.ScriptPlayerExtensions$$LoadAndPlayAtLabel
+
+180CF7E5A:
+  0x180CF7E5A  cmp     byte ptr [rip + 0x23e3d53], 0                ; data_30DBBB4
+  0x180CF7E61  jne     0x180cf7e8c                               
+  0x180CF7E63  lea     rcx, [rip + 0x2159cc6]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180CF7E6A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF7E6F  lock or dword ptr [rsp], 0                        
+  0x180CF7E74  lea     rcx, [rip + 0x215a0b5]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF7E7B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF7E80  lock or dword ptr [rsp], 0                        
+  0x180CF7E85  mov     byte ptr [rip + 0x23e3d28], 1                ; data_30DBBB4
+
+180CF7E8C:
+  0x180CF7E8C  mov     rcx, qword ptr [rip + 0x215a09d]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CF7E93  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CF7E9A  jne     0x180cf7ea1                               
+  0x180CF7E9C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CF7EA1:
+  0x180CF7EA1  mov     rcx, qword ptr [rip + 0x2159c88]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IScriptPlayer>()
+  0x180CF7EA8  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180CF7EAD  xor     r9d, r9d                                  
+  0x180CF7EB0  xor     r8d, r8d                                  
+  0x180CF7EB3  mov     rdx, rdi                                  
+  0x180CF7EB6  mov     rcx, rax                                  
+  0x180CF7EB9  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CF7EBE  add     rsp, 0x20                                 
+  0x180CF7EC2  pop     rdi                                       
+  0x180CF7EC3  jmp     0x1805ce2c0                                  ; -> Naninovel.ScriptPlayerExtensions$$LoadAndPlay

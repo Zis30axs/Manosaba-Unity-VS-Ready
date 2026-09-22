@@ -1,0 +1,135 @@
+====================================================================================================
+FUNCTION RVA 0xD3D180  VA 0x180D3D180  size 0x1AC (428 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$BeginToDismiss
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__BeginToDismiss (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: protected virtual void BeginToDismiss()
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3D180  push    rbx                                       
+  0x180D3D182  sub     rsp, 0x20                                 
+  0x180D3D186  xor     r8d, r8d                                  
+  0x180D3D189  xor     edx, edx                                  
+  0x180D3D18B  mov     rbx, rcx                                  
+  0x180D3D18E  call    0x180d3d490                                  ; -> GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$SetGraphicRaycastersEnabled
+  0x180D3D193  cmp     byte ptr [rip + 0x23a0233], 0                ; data_30DD3CD
+  0x180D3D19A  jne     0x180d3d1e7                               
+  0x180D3D19C  lea     rcx, [rip + 0x2117d8d]                       ; TYPE System.Action_TypeInfo
+  0x180D3D1A3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D1A8  lock or dword ptr [rsp], 0                        
+  0x180D3D1AD  lea     rcx, [rip + 0x2114f9c]                       ; TYPE System.IDisposable_TypeInfo
+  0x180D3D1B4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D1B9  lock or dword ptr [rsp], 0                        
+  0x180D3D1BE  lea     rcx, [rip + 0x211457b]                       ; TYPE Naninovel.IInputSampler_TypeInfo
+  0x180D3D1C5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D1CA  lock or dword ptr [rsp], 0                        
+  0x180D3D1CF  lea     rcx, [rip + 0x20f4422]                       ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.NaninovelScreen.Cancel() => GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$Cancel (+1 aliases)
+  0x180D3D1D6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D1DB  lock or dword ptr [rsp], 0                        
+  0x180D3D1E0  mov     byte ptr [rip + 0x23a01e6], 1                ; data_30DD3CD
+
+180D3D1E7:
+  0x180D3D1E7  cmp     qword ptr [rbx + 0x68], 0                 
+  0x180D3D1EC  je      0x180d3d251                               
+  0x180D3D1EE  mov     r8, qword ptr [rbx + 0x68]                
+  0x180D3D1F2  xor     ecx, ecx                                  
+  0x180D3D1F4  mov     rdx, qword ptr [rip + 0x2114f55]             ; TYPE System.IDisposable_TypeInfo
+  0x180D3D1FB  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3D200  cmp     dword ptr [rip + 0x239bfbd], 0               ; data_30D91C4
+  0x180D3D207  mov     qword ptr [rbx + 0x68], 0                 
+  0x180D3D20F  je      0x180d3d251                               
+  0x180D3D211  lea     r8, [rbx + 0x68]                          
+  0x180D3D215  shr     r8, 0xc                                   
+  0x180D3D219  lea     rcx, [rip + 0x23f7360]                       ; data_3134580
+  0x180D3D220  and     r8d, 0x1fffff                             
+  0x180D3D227  mov     eax, r8d                                  
+  0x180D3D22A  shr     rax, 6                                    
+  0x180D3D22E  and     r8d, 0x3f                                 
+  0x180D3D232  lea     rdx, [rcx + rax*8]                        
+  0x180D3D236  prefetchw byte ptr [rdx]                            
+  0x180D3D239  nop     dword ptr [rax]                           
+
+180D3D240:
+  0x180D3D240  mov     rax, qword ptr [rdx]                      
+  0x180D3D243  mov     rcx, rax                                  
+  0x180D3D246  bts     rcx, r8                                   
+  0x180D3D24A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3D24F  jne     0x180d3d240                               
+
+180D3D251:
+  0x180D3D251  cmp     byte ptr [rbx + 0x30], 0                     ; rbx-><DismissAsync>d__30.<>7__wrap1 | <PresentAsync>d__27.<linkedCts>5__2
+  0x180D3D255  mov     qword ptr [rsp + 0x30], rsi               
+  0x180D3D25A  mov     qword ptr [rsp + 0x38], rdi               
+  0x180D3D25F  je      0x180d3d307                               
+  0x180D3D265  xor     edx, edx                                  
+  0x180D3D267  mov     rcx, rbx                                  
+  0x180D3D26A  call    0x180d3c7a0                                  ; -> GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$get_NaniInputManager
+  0x180D3D26F  cmp     byte ptr [rip + 0x239edc8], 0                ; data_30DC03E
+  0x180D3D276  mov     rdi, rax                                  
+  0x180D3D279  jne     0x180d3d2a4                               
+  0x180D3D27B  lea     rcx, [rip + 0x211c746]                       ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180D3D282  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D287  lock or dword ptr [rsp], 0                        
+  0x180D3D28C  lea     rcx, [rip + 0x2114935]                       ; STR 'Cancel'
+  0x180D3D293  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3D298  lock or dword ptr [rsp], 0                        
+  0x180D3D29D  mov     byte ptr [rip + 0x239ed9a], 1                ; data_30DC03E
+
+180D3D2A4:
+  0x180D3D2A4  test    rdi, rdi                                  
+  0x180D3D2A7  je      0x180d3d327                               
+  0x180D3D2A9  mov     r9, qword ptr [rip + 0x2114918]              ; STR 'Cancel'
+  0x180D3D2B0  mov     ecx, 6                                    
+  0x180D3D2B5  mov     rdx, qword ptr [rip + 0x211c70c]             ; TYPE Naninovel.IInputManager_TypeInfo
+  0x180D3D2BC  mov     r8, rdi                                   
+  0x180D3D2BF  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180D3D2C4  mov     rcx, qword ptr [rip + 0x2117c65]             ; TYPE System.Action_TypeInfo
+  0x180D3D2CB  mov     rdi, rax                                  
+  0x180D3D2CE  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D3D2D3  mov     r8, qword ptr [rip + 0x20f431e]              ; METHODINFO Method$GigaCreation.NaninovelExtender.Ui.NaninovelScreen.Cancel() => GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$Cancel (+1 aliases)
+  0x180D3D2DA  xor     r9d, r9d                                  
+  0x180D3D2DD  mov     rdx, rbx                                  
+  0x180D3D2E0  mov     rcx, rax                                  
+  0x180D3D2E3  mov     rsi, rax                                  
+  0x180D3D2E6  call    0x180430c20                                  ; -> System.Action$$.ctor (+21 aliases)
+  0x180D3D2EB  test    rdi, rdi                                  
+  0x180D3D2EE  je      0x180d3d327                               
+  0x180D3D2F0  mov     rdx, qword ptr [rip + 0x2114449]             ; TYPE Naninovel.IInputSampler_TypeInfo
+  0x180D3D2F7  mov     ecx, 1                                    
+  0x180D3D2FC  mov     r9, rsi                                   
+  0x180D3D2FF  mov     r8, rdi                                   
+  0x180D3D302  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+
+180D3D307:
+  0x180D3D307  mov     rcx, qword ptr [rbx + 0x48]                  ; rbx-><DismissAsync>d__30.<>u__2 | <PresentAsync>d__27.<>u__2
+  0x180D3D30B  test    rcx, rcx                                  
+  0x180D3D30E  je      0x180d3d317                               
+  0x180D3D310  xor     edx, edx                                  
+  0x180D3D312  call    0x18208dc00                                  ; -> UnityEngine.Events.UnityEvent$$Invoke
+
+180D3D317:
+  0x180D3D317  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180D3D31C  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180D3D321  add     rsp, 0x20                                 
+  0x180D3D325  pop     rbx                                       
+  0x180D3D326  ret                                               
+
+180D3D327:
+  0x180D3D327  call    0x180246730                                  ; THROW NullReferenceException

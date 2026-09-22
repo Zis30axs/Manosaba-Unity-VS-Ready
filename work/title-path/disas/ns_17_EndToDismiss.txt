@@ -1,0 +1,43 @@
+====================================================================================================
+FUNCTION RVA 0xD3D330  VA 0x180D3D330  size 0x2E (46 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$EndToDismiss
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__EndToDismiss (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: protected virtual void EndToDismiss()
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3D330  push    rbx                                       
+  0x180D3D332  sub     rsp, 0x20                                 
+  0x180D3D336  xor     r8d, r8d                                  
+  0x180D3D339  xor     edx, edx                                  
+  0x180D3D33B  mov     rbx, rcx                                  
+  0x180D3D33E  call    0x180d3d360                                  ; -> GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$SetCanvasesEnabled
+  0x180D3D343  mov     rcx, qword ptr [rbx + 0x50]               
+  0x180D3D347  test    rcx, rcx                                  
+  0x180D3D34A  je      0x180d3d358                               
+  0x180D3D34C  xor     edx, edx                                  
+  0x180D3D34E  add     rsp, 0x20                                 
+  0x180D3D352  pop     rbx                                       
+  0x180D3D353  jmp     0x18208dc00                                  ; -> UnityEngine.Events.UnityEvent$$Invoke
+
+180D3D358:
+  0x180D3D358  add     rsp, 0x20                                 
+  0x180D3D35C  pop     rbx                                       
+  0x180D3D35D  ret                                               

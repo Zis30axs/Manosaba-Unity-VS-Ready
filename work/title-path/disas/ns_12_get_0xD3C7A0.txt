@@ -1,0 +1,79 @@
+====================================================================================================
+FUNCTION RVA 0xD3C7A0  VA 0x180D3C7A0  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$get_NaniInputManager
+  csig   : Naninovel_IInputManager_o* GigaCreation_NaninovelExtender_Ui_NaninovelScreen__get_NaniInputManager (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: private IInputManager get_NaniInputManager()
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3C7A0  push    rbx                                       
+  0x180D3C7A2  sub     rsp, 0x20                                 
+  0x180D3C7A6  cmp     byte ptr [rip + 0x23a0c17], 0                ; data_30DD3C4
+  0x180D3C7AD  mov     rbx, rcx                                  
+  0x180D3C7B0  jne     0x180d3c7db                               
+  0x180D3C7B2  lea     rcx, [rip + 0x2114f8f]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IInputManager>()
+  0x180D3C7B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C7BE  lock or dword ptr [rsp], 0                        
+  0x180D3C7C3  lea     rcx, [rip + 0x2115766]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3C7CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3C7CF  lock or dword ptr [rsp], 0                        
+  0x180D3C7D4  mov     byte ptr [rip + 0x23a0be9], 1                ; data_30DD3C4
+
+180D3C7DB:
+  0x180D3C7DB  mov     rax, qword ptr [rbx + 0x60]               
+  0x180D3C7DF  test    rax, rax                                  
+  0x180D3C7E2  jne     0x180d3c854                               
+  0x180D3C7E4  mov     rcx, qword ptr [rip + 0x2115745]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3C7EB  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D3C7F1  jne     0x180d3c7f8                               
+  0x180D3C7F3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3C7F8:
+  0x180D3C7F8  mov     rcx, qword ptr [rip + 0x2114f49]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IInputManager>()
+  0x180D3C7FF  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D3C804  cmp     dword ptr [rip + 0x239c9b9], 0               ; data_30D91C4
+  0x180D3C80B  mov     r9, rax                                   
+  0x180D3C80E  mov     qword ptr [rbx + 0x60], rax               
+  0x180D3C812  je      0x180d3c851                               
+  0x180D3C814  lea     r8, [rbx + 0x60]                          
+  0x180D3C818  shr     r8, 0xc                                   
+  0x180D3C81C  lea     rcx, [rip + 0x23f7d5d]                       ; data_3134580
+  0x180D3C823  and     r8d, 0x1fffff                             
+  0x180D3C82A  mov     eax, r8d                                  
+  0x180D3C82D  shr     rax, 6                                    
+  0x180D3C831  and     r8d, 0x3f                                 
+  0x180D3C835  lea     rdx, [rcx + rax*8]                        
+  0x180D3C839  prefetchw byte ptr [rdx]                            
+  0x180D3C83C  nop     dword ptr [rax]                           
+
+180D3C840:
+  0x180D3C840  mov     rax, qword ptr [rdx]                      
+  0x180D3C843  mov     rcx, rax                                  
+  0x180D3C846  bts     rcx, r8                                   
+  0x180D3C84A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3C84F  jne     0x180d3c840                               
+
+180D3C851:
+  0x180D3C851  mov     rax, r9                                   
+
+180D3C854:
+  0x180D3C854  add     rsp, 0x20                                 
+  0x180D3C858  pop     rbx                                       
+  0x180D3C859  ret                                               

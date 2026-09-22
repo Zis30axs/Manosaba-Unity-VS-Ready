@@ -1,0 +1,98 @@
+====================================================================================================
+FUNCTION RVA 0xCF7AD0  VA 0x180CF7AD0  size 0x119 (281 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.GotoModified$$Execute
+  csig   : Naninovel_UniTask_o GigaCreation_NaninovelExtender_Common_GotoModified__Execute (GigaCreation_NaninovelExtender_Common_GotoModified_o* __this, Naninovel_AsyncToken_o token, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.GotoModified :: public override UniTask Execute(AsyncToken token)
+  fields of GigaCreation.NaninovelExtender.Common.GotoModified:
+      +0x50   SoftReset                      BooleanParameter
+  fields of GotoModified.<>c__DisplayClass2_0:
+      +0x10   <>4__this                      GotoModified
+      +0x18   scriptPath                     string
+      +0x20   label                          string
+  fields of GotoModified.<Execute>d__1:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GotoModified
+      +0x20   <_>5__2                        IDisposable
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of GotoModified.<NavigateOtherScript>d__2:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GotoModified
+      +0x20   scriptPath                     string
+      +0x28   label                          string
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CF7AD0  push    rbx                                       
+  0x180CF7AD2  sub     rsp, 0x50                                 
+  0x180CF7AD6  cmp     byte ptr [rip + 0x23e5759], 0                ; data_30DD236
+  0x180CF7ADD  mov     rbx, rcx                                  
+  0x180CF7AE0  jne     0x180cf7afa                               
+  0x180CF7AE2  lea     rcx, [rip + 0x2173ccf]                       ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<GotoModified.<Execute>d__1>()
+  0x180CF7AE9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF7AEE  lock or dword ptr [rsp], 0                        
+  0x180CF7AF3  mov     byte ptr [rip + 0x23e573c], 1                ; data_30DD236
+
+180CF7AFA:
+  0x180CF7AFA  xor     eax, eax                                  
+  0x180CF7AFC  lea     r9, [rip + 0x23f679d]                        ; data_30EE2A0
+  0x180CF7B03  mov     qword ptr [rsp + 0x20], rax               
+  0x180CF7B08  xorps   xmm0, xmm0                                
+  0x180CF7B0B  mov     qword ptr [rsp + 0x48], rax               
+  0x180CF7B10  xorps   xmm1, xmm1                                
+  0x180CF7B13  mov     eax, dword ptr [rip + 0x23e16ab]             ; data_30D91C4
+  0x180CF7B19  movdqu  xmmword ptr [rsp + 0x38], xmm0            
+  0x180CF7B1F  movups  xmmword ptr [rsp + 0x28], xmm1            
+  0x180CF7B24  test    eax, eax                                  
+  0x180CF7B26  je      0x180cf7b6f                               
+  0x180CF7B28  lea     r8, [rsp + 0x28]                          
+  0x180CF7B2D  shr     r8, 0xc                                   
+  0x180CF7B31  and     r8d, 0x1fffff                             
+  0x180CF7B38  mov     eax, r8d                                  
+  0x180CF7B3B  shr     rax, 6                                    
+  0x180CF7B3F  and     r8d, 0x3f                                 
+  0x180CF7B43  lea     rdx, [r9 + rax*8]                         
+  0x180CF7B47  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CF7B4E  nop                                               
+
+180CF7B50:
+  0x180CF7B50  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CF7B57  mov     rcx, rax                                  
+  0x180CF7B5A  bts     rcx, r8                                   
+  0x180CF7B5E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CF7B67  jne     0x180cf7b50                               
+  0x180CF7B69  mov     eax, dword ptr [rip + 0x23e1655]             ; data_30D91C4
+
+180CF7B6F:
+  0x180CF7B6F  mov     qword ptr [rsp + 0x38], rbx               
+  0x180CF7B74  test    eax, eax                                  
+  0x180CF7B76  je      0x180cf7bb9                               
+  0x180CF7B78  lea     r8, [rsp + 0x38]                          
+  0x180CF7B7D  shr     r8, 0xc                                   
+  0x180CF7B81  and     r8d, 0x1fffff                             
+  0x180CF7B88  mov     eax, r8d                                  
+  0x180CF7B8B  shr     rax, 6                                    
+  0x180CF7B8F  and     r8d, 0x3f                                 
+  0x180CF7B93  lea     rdx, [r9 + rax*8]                         
+  0x180CF7B97  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CF7B9E  nop                                               
+
+180CF7BA0:
+  0x180CF7BA0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CF7BA7  mov     rcx, rax                                  
+  0x180CF7BAA  bts     rcx, r8                                   
+  0x180CF7BAE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CF7BB7  jne     0x180cf7ba0                               
+
+180CF7BB9:
+  0x180CF7BB9  mov     r8, qword ptr [rip + 0x2173bf8]              ; METHODINFO Method$Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder.Start<GotoModified.<Execute>d__1>()
+  0x180CF7BC0  lea     rdx, [rsp + 0x20]                         
+  0x180CF7BC5  lea     rcx, [rsp + 0x28]                         
+  0x180CF7BCA  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180CF7BD2  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CF7BD7  xor     edx, edx                                  
+  0x180CF7BD9  lea     rcx, [rsp + 0x28]                         
+  0x180CF7BDE  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180CF7BE3  add     rsp, 0x50                                 
+  0x180CF7BE7  pop     rbx                                       
+  0x180CF7BE8  ret                                               

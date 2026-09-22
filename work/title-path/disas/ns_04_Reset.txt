@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xD3CBB0  VA 0x180D3CBB0  size 0x97 (151 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$Reset
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__Reset (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: protected virtual void Reset()
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3CBB0  push    rbx                                       
+  0x180D3CBB2  sub     rsp, 0x20                                 
+  0x180D3CBB6  cmp     byte ptr [rip + 0x23a080a], 0                ; data_30DD3C7
+  0x180D3CBBD  mov     rbx, rcx                                  
+  0x180D3CBC0  jne     0x180d3cbda                               
+  0x180D3CBC2  lea     rcx, [rip + 0x20f4a3f]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<CustomUI>()
+  0x180D3CBC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3CBCE  lock or dword ptr [rsp], 0                        
+  0x180D3CBD3  mov     byte ptr [rip + 0x23a07ed], 1                ; data_30DD3C7
+
+180D3CBDA:
+  0x180D3CBDA  mov     r8, qword ptr [rip + 0x20f4a27]              ; METHODINFO Method$UnityEngine.Component.GetComponent<CustomUI>()
+  0x180D3CBE1  lea     rdx, [rsp + 0x30]                         
+  0x180D3CBE6  mov     rcx, rbx                                  
+  0x180D3CBE9  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180D3CBEE  cmp     dword ptr [rip + 0x239c5cf], 0               ; data_30D91C4
+  0x180D3CBF5  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D3CBFA  mov     qword ptr [rbx + 0x20], rax                  ; rbx-><DismissAsync>d__30.ct | <PresentAsync>d__27.ct
+  0x180D3CBFE  je      0x180d3cc41                               
+  0x180D3CC00  lea     r8, [rbx + 0x20]                             ; rbx-><DismissAsync>d__30.ct | <PresentAsync>d__27.ct
+  0x180D3CC04  shr     r8, 0xc                                   
+  0x180D3CC08  lea     rcx, [rip + 0x23f7971]                       ; data_3134580
+  0x180D3CC0F  and     r8d, 0x1fffff                             
+  0x180D3CC16  mov     eax, r8d                                  
+  0x180D3CC19  shr     rax, 6                                    
+  0x180D3CC1D  and     r8d, 0x3f                                 
+  0x180D3CC21  lea     rdx, [rcx + rax*8]                        
+  0x180D3CC25  prefetchw byte ptr [rdx]                            
+  0x180D3CC28  nop     dword ptr [rax + rax]                     
+
+180D3CC30:
+  0x180D3CC30  mov     rax, qword ptr [rdx]                      
+  0x180D3CC33  mov     rcx, rax                                  
+  0x180D3CC36  bts     rcx, r8                                   
+  0x180D3CC3A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3CC3F  jne     0x180d3cc30                               
+
+180D3CC41:
+  0x180D3CC41  add     rsp, 0x20                                 
+  0x180D3CC45  pop     rbx                                       
+  0x180D3CC46  ret                                               

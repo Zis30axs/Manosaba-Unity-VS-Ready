@@ -1,0 +1,59 @@
+====================================================================================================
+FUNCTION RVA 0xD3CC50  VA 0x180D3CC50  size 0x6F (111 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$OnVisibilityChangedByCustomUi
+  csig   : void GigaCreation_NaninovelExtender_Ui_NaninovelScreen__OnVisibilityChangedByCustomUi (GigaCreation_NaninovelExtender_Ui_NaninovelScreen_o* __this, bool visible, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.NaninovelScreen :: private void OnVisibilityChangedByCustomUi(bool visible)
+  fields of NaninovelScreen.<DismissAsync>d__30:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <>7__wrap1                     NaninovelInteractionBlocker
+      +0x38   <linkedCts>5__3                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+  fields of NaninovelScreen.<PresentAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      NaninovelScreen
+      +0x20   ct                             CancellationToken
+      +0x28   duration                       Nullable<float>
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+      +0x48   <>u__2                         UniTask.Awaiter
+====================================================================================================
+  0x180D3CC50  push    rbx                                       
+  0x180D3CC52  sub     rsp, 0x40                                 
+  0x180D3CC56  mov     rbx, rcx                                  
+  0x180D3CC59  test    dl, dl                                    
+  0x180D3CC5B  jne     0x180d3cc82                               
+  0x180D3CC5D  xor     edx, edx                                  
+  0x180D3CC5F  call    0x18206a7a0                                  ; -> UnityEngine.MonoBehaviour$$get_destroyCancellationToken
+  0x180D3CC64  mov     r9, rax                                   
+  0x180D3CC67  mov     qword ptr [rsp + 0x20], 0                 
+  0x180D3CC70  xor     r8d, r8d                                  
+  0x180D3CC73  lea     rcx, [rsp + 0x30]                         
+  0x180D3CC78  mov     rdx, rbx                                  
+  0x180D3CC7B  call    0x180d3cfb0                                  ; -> GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$DismissAsync
+  0x180D3CC80  jmp     0x180d3cca5                               
+
+180D3CC82:
+  0x180D3CC82  xor     edx, edx                                  
+  0x180D3CC84  call    0x18206a7a0                                  ; -> UnityEngine.MonoBehaviour$$get_destroyCancellationToken
+  0x180D3CC89  mov     r9, rax                                   
+  0x180D3CC8C  mov     qword ptr [rsp + 0x20], 0                 
+  0x180D3CC95  xor     r8d, r8d                                  
+  0x180D3CC98  lea     rcx, [rsp + 0x30]                         
+  0x180D3CC9D  mov     rdx, rbx                                  
+  0x180D3CCA0  call    0x180d3cd60                                  ; -> GigaCreation.NaninovelExtender.Ui.NaninovelScreen$$PresentAsync
+
+180D3CCA5:
+  0x180D3CCA5  movups  xmm0, xmmword ptr [rax]                   
+  0x180D3CCA8  xor     edx, edx                                  
+  0x180D3CCAA  lea     rcx, [rsp + 0x30]                         
+  0x180D3CCAF  movaps  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D3CCB4  call    0x18181f300                                  ; -> Cysharp.Threading.Tasks.UniTaskExtensions$$Forget
+  0x180D3CCB9  add     rsp, 0x40                                 
+  0x180D3CCBD  pop     rbx                                       
+  0x180D3CCBE  ret                                               

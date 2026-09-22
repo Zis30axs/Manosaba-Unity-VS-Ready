@@ -1,0 +1,291 @@
+====================================================================================================
+FUNCTION RVA 0xCFC550  VA 0x180CFC550  size 0x408 (1032 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen___ctor (GigaCreation_NaninovelExtender_Common_NaninovelLoadingScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen :: private void .ctor()
+  fields of GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen:
+      +0x10   <NaniInputManager>k__BackingField readonly IInputManager
+      +0x18   <LoadingUiExtended>k__BackingField readonly ILoadingUiExtended
+      +0x20   <IsInputProcessingHalted>k__BackingField bool
+      +0x28   <Blockables>k__BackingField    ICancelEventBlockable[]
+      +0x30   <Cts>k__BackingField           CancellationTokenSource
+  fields of NaninovelLoadingScreen.<>c:
+      +0x0    <>9                            static readonly NaninovelLoadingScreen.<>c
+      +0x8    <>9__19_0                      static Func<ICancelEventBlockable, bool>
+====================================================================================================
+  0x180CFC550  push    rbx                                       
+  0x180CFC552  push    rbp                                       
+  0x180CFC553  push    rsi                                       
+  0x180CFC554  sub     rsp, 0x30                                 
+  0x180CFC558  cmp     byte ptr [rip + 0x23e0cf4], 0                ; data_30DD253
+  0x180CFC55F  mov     rsi, rcx                                  
+  0x180CFC562  jne     0x180cfc608                               
+  0x180CFC568  lea     rcx, [rip + 0x21551e9]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CFC56F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC574  lock or dword ptr [rsp], 0                        
+  0x180CFC579  lea     rcx, [rip + 0x2155d60]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CFC580  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC585  lock or dword ptr [rsp], 0                        
+  0x180CFC58A  lea     rcx, [rip + 0x216f197]                       ; METHODINFO Method$Naninovel.Engine.TryGetService<IInputManager>()
+  0x180CFC591  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC596  lock or dword ptr [rsp], 0                        
+  0x180CFC59B  lea     rcx, [rip + 0x216f0fe]                       ; METHODINFO Method$Naninovel.Engine.TryGetService<IUIManager>()
+  0x180CFC5A2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5A7  lock or dword ptr [rsp], 0                        
+  0x180CFC5AC  lea     rcx, [rip + 0x215597d]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC5B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5B8  lock or dword ptr [rsp], 0                        
+  0x180CFC5BD  lea     rcx, [rip + 0x216f09c]                       ; METHODINFO Method$Naninovel.UIManagerExtensions.TryGetUI<ILoadingUiExtended>()
+  0x180CFC5C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5C9  lock or dword ptr [rsp], 0                        
+  0x180CFC5CE  lea     rcx, [rip + 0x216f083]                       ; STR 'Naninovel LoadingUI not found.'
+  0x180CFC5D5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5DA  lock or dword ptr [rsp], 0                        
+  0x180CFC5DF  lea     rcx, [rip + 0x216f08a]                       ; STR 'Naninovel InputManager not found.'
+  0x180CFC5E6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5EB  lock or dword ptr [rsp], 0                        
+  0x180CFC5F0  lea     rcx, [rip + 0x216f091]                       ; STR 'Naninovel UIManager not found.'
+  0x180CFC5F7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC5FC  lock or dword ptr [rsp], 0                        
+  0x180CFC601  mov     byte ptr [rip + 0x23e0c4b], 1                ; data_30DD253
+
+180CFC608:
+  0x180CFC608  mov     rcx, qword ptr [rip + 0x2155921]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC60F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC616  jne     0x180cfc61d                               
+  0x180CFC618  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC61D:
+  0x180CFC61D  mov     rbx, qword ptr [rip + 0x216f104]             ; METHODINFO Method$Naninovel.Engine.TryGetService<IInputManager>()
+  0x180CFC624  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180CFC629  jne     0x180cfc64b                               
+  0x180CFC62B  lea     rcx, [rip + 0x21558fe]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC632  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC637  lock or dword ptr [rsp], 0                        
+  0x180CFC63C  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180CFC641  jne     0x180cfc64b                               
+  0x180CFC643  mov     rcx, rbx                                  
+  0x180CFC646  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CFC64B:
+  0x180CFC64B  mov     rcx, qword ptr [rip + 0x21558de]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC652  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC659  jne     0x180cfc660                               
+  0x180CFC65B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC660:
+  0x180CFC660  mov     rcx, qword ptr [rbx + 0x38]               
+  0x180CFC664  mov     rcx, qword ptr [rcx + 8]                  
+  0x180CFC668  call    0x1806825e0                                  ; -> Naninovel.Engine$$GetService<object>
+  0x180CFC66D  mov     ecx, dword ptr [rip + 0x23dcb51]             ; data_30D91C4
+  0x180CFC673  lea     rbp, [rip + 0x23f1c26]                       ; data_30EE2A0
+  0x180CFC67A  mov     qword ptr [rsp + 0x60], rax               
+  0x180CFC67F  test    ecx, ecx                                  
+  0x180CFC681  je      0x180cfc6d4                               
+  0x180CFC683  lea     r8, [rsp + 0x60]                          
+  0x180CFC688  shr     r8, 0xc                                   
+  0x180CFC68C  and     r8d, 0x1fffff                             
+  0x180CFC693  mov     eax, r8d                                  
+  0x180CFC696  shr     rax, 6                                    
+  0x180CFC69A  lea     rdx, [rax*8]                              
+  0x180CFC6A2  add     rdx, rbp                                  
+  0x180CFC6A5  and     r8d, 0x3f                                 
+  0x180CFC6A9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CFC6B0:
+  0x180CFC6B0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CFC6B7  mov     rcx, rax                                  
+  0x180CFC6BA  bts     rcx, r8                                   
+  0x180CFC6BE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CFC6C7  jne     0x180cfc6b0                               
+  0x180CFC6C9  mov     rax, qword ptr [rsp + 0x60]               
+  0x180CFC6CE  mov     ecx, dword ptr [rip + 0x23dcaf0]             ; data_30D91C4
+
+180CFC6D4:
+  0x180CFC6D4  test    rax, rax                                  
+  0x180CFC6D7  je      0x180cfc92d                               
+  0x180CFC6DD  mov     qword ptr [rsi + 0x10], rax                  ; rsi->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFC6E1  test    ecx, ecx                                  
+  0x180CFC6E3  je      0x180cfc72a                               
+  0x180CFC6E5  lea     r8, [rsi + 0x10]                             ; rsi->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFC6E9  shr     r8, 0xc                                   
+  0x180CFC6ED  and     r8d, 0x1fffff                             
+  0x180CFC6F4  mov     eax, r8d                                  
+  0x180CFC6F7  shr     rax, 6                                    
+  0x180CFC6FB  lea     rdx, [rax*8]                              
+  0x180CFC703  add     rdx, rbp                                  
+  0x180CFC706  and     r8d, 0x3f                                 
+  0x180CFC70A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CFC711:
+  0x180CFC711  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CFC718  mov     rcx, rax                                  
+  0x180CFC71B  bts     rcx, r8                                   
+  0x180CFC71F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CFC728  jne     0x180cfc711                               
+
+180CFC72A:
+  0x180CFC72A  mov     rcx, qword ptr [rip + 0x21557ff]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC731  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC738  jne     0x180cfc73f                               
+  0x180CFC73A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC73F:
+  0x180CFC73F  mov     rbx, qword ptr [rip + 0x216ef5a]             ; METHODINFO Method$Naninovel.Engine.TryGetService<IUIManager>()
+  0x180CFC746  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180CFC74B  jne     0x180cfc76d                               
+  0x180CFC74D  lea     rcx, [rip + 0x21557dc]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC754  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFC759  lock or dword ptr [rsp], 0                        
+  0x180CFC75E  cmp     qword ptr [rbx + 0x38], 0                 
+  0x180CFC763  jne     0x180cfc76d                               
+  0x180CFC765  mov     rcx, rbx                                  
+  0x180CFC768  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CFC76D:
+  0x180CFC76D  mov     rcx, qword ptr [rip + 0x21557bc]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180CFC774  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC77B  jne     0x180cfc782                               
+  0x180CFC77D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC782:
+  0x180CFC782  mov     rcx, qword ptr [rbx + 0x38]               
+  0x180CFC786  mov     rcx, qword ptr [rcx + 8]                  
+  0x180CFC78A  call    0x1806825e0                                  ; -> Naninovel.Engine$$GetService<object>
+  0x180CFC78F  cmp     dword ptr [rip + 0x23dca2e], 0               ; data_30D91C4
+  0x180CFC796  mov     rbx, rax                                  
+  0x180CFC799  mov     qword ptr [rsp + 0x68], rax               
+  0x180CFC79E  je      0x180cfc7ee                               
+  0x180CFC7A0  lea     r8, [rsp + 0x68]                          
+  0x180CFC7A5  shr     r8, 0xc                                   
+  0x180CFC7A9  and     r8d, 0x1fffff                             
+  0x180CFC7B0  mov     eax, r8d                                  
+  0x180CFC7B3  shr     rax, 6                                    
+  0x180CFC7B7  lea     rdx, [rax*8]                              
+  0x180CFC7BF  add     rdx, rbp                                  
+  0x180CFC7C2  and     r8d, 0x3f                                 
+  0x180CFC7C6  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CFC7CD  nop     dword ptr [rax]                           
+
+180CFC7D0:
+  0x180CFC7D0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CFC7D7  mov     rcx, rax                                  
+  0x180CFC7DA  bts     rcx, r8                                   
+  0x180CFC7DE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CFC7E7  jne     0x180cfc7d0                               
+  0x180CFC7E9  mov     rbx, qword ptr [rsp + 0x68]               
+
+180CFC7EE:
+  0x180CFC7EE  test    rbx, rbx                                  
+  0x180CFC7F1  je      0x180cfc902                               
+  0x180CFC7F7  mov     qword ptr [rsp + 0x50], rdi               
+  0x180CFC7FC  mov     rdi, qword ptr [rip + 0x216ee5d]             ; METHODINFO Method$Naninovel.UIManagerExtensions.TryGetUI<ILoadingUiExtended>()
+  0x180CFC803  cmp     qword ptr [rdi + 0x38], 0                 
+  0x180CFC808  jne     0x180cfc812                               
+  0x180CFC80A  mov     rcx, rdi                                  
+  0x180CFC80D  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CFC812:
+  0x180CFC812  test    rbx, rbx                                  
+  0x180CFC815  je      0x180cfc829                               
+  0x180CFC817  mov     rcx, qword ptr [rdi + 0x38]               
+  0x180CFC81B  mov     rdx, rbx                                  
+  0x180CFC81E  mov     rcx, qword ptr [rcx + 0x10]                  ; rcx->NaninovelLoadingScreen.<NaniInputManager>k__BackingField
+  0x180CFC822  call    0x1800043f0                                  ; -> sub_43F0 (runtime/helper)
+  0x180CFC827  jmp     0x180cfc82b                               
+
+180CFC829:
+  0x180CFC829  xor     eax, eax                                  
+
+180CFC82B:
+  0x180CFC82B  cmp     dword ptr [rip + 0x23dc992], 0               ; data_30D91C4
+  0x180CFC832  mov     rdi, qword ptr [rsp + 0x50]               
+  0x180CFC837  mov     qword ptr [rsp + 0x20], rax               
+  0x180CFC83C  je      0x180cfc88e                               
+  0x180CFC83E  lea     r8, [rsp + 0x20]                          
+  0x180CFC843  shr     r8, 0xc                                   
+  0x180CFC847  and     r8d, 0x1fffff                             
+  0x180CFC84E  mov     eax, r8d                                  
+  0x180CFC851  shr     rax, 6                                    
+  0x180CFC855  lea     rdx, [rax*8]                              
+  0x180CFC85D  add     rdx, rbp                                  
+  0x180CFC860  and     r8d, 0x3f                                 
+  0x180CFC864  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CFC86B  nop     dword ptr [rax + rax]                     
+
+180CFC870:
+  0x180CFC870  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CFC877  mov     rcx, rax                                  
+  0x180CFC87A  bts     rcx, r8                                   
+  0x180CFC87E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CFC887  jne     0x180cfc870                               
+  0x180CFC889  mov     rax, qword ptr [rsp + 0x20]               
+
+180CFC88E:
+  0x180CFC88E  test    rax, rax                                  
+  0x180CFC891  je      0x180cfc8d7                               
+  0x180CFC893  lea     rcx, [rsi + 0x18]                            ; rsi->NaninovelLoadingScreen.<LoadingUiExtended>k__BackingField
+  0x180CFC897  mov     qword ptr [rsi + 0x18], rax                  ; rsi->NaninovelLoadingScreen.<LoadingUiExtended>k__BackingField
+  0x180CFC89B  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180CFC8A0  mov     rcx, qword ptr [rip + 0x2154eb1]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CFC8A7  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CFC8AC  lock or dword ptr [rsp], 0                        
+  0x180CFC8B1  mov     dword ptr [rax + 0x24], 0xffffffff        
+  0x180CFC8B8  lock or dword ptr [rsp], 0                        
+  0x180CFC8BD  mov     rdx, rax                                  
+  0x180CFC8C0  mov     dword ptr [rax + 0x20], 1                 
+  0x180CFC8C7  mov     rcx, rsi                                  
+  0x180CFC8CA  call    0x18058df10                                  ; -> System.Runtime.Remoting.Messaging.MonoMethodMessage$$set_LogicalCallContext (+62 aliases)
+  0x180CFC8CF  add     rsp, 0x30                                 
+  0x180CFC8D3  pop     rsi                                       
+  0x180CFC8D4  pop     rbp                                       
+  0x180CFC8D5  pop     rbx                                       
+  0x180CFC8D6  ret                                               
+
+180CFC8D7:
+  0x180CFC8D7  mov     rcx, qword ptr [rip + 0x2155a02]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CFC8DE  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC8E5  jne     0x180cfc8ec                               
+  0x180CFC8E7  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC8EC:
+  0x180CFC8EC  mov     rcx, qword ptr [rip + 0x216ed65]             ; STR 'Naninovel LoadingUI not found.'
+  0x180CFC8F3  xor     edx, edx                                  
+  0x180CFC8F5  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CFC8FA  add     rsp, 0x30                                 
+  0x180CFC8FE  pop     rsi                                       
+  0x180CFC8FF  pop     rbp                                       
+  0x180CFC900  pop     rbx                                       
+  0x180CFC901  ret                                               
+
+180CFC902:
+  0x180CFC902  mov     rcx, qword ptr [rip + 0x21559d7]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CFC909  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC910  jne     0x180cfc917                               
+  0x180CFC912  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC917:
+  0x180CFC917  mov     rcx, qword ptr [rip + 0x216ed6a]             ; STR 'Naninovel UIManager not found.'
+  0x180CFC91E  xor     edx, edx                                  
+  0x180CFC920  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CFC925  add     rsp, 0x30                                 
+  0x180CFC929  pop     rsi                                       
+  0x180CFC92A  pop     rbp                                       
+  0x180CFC92B  pop     rbx                                       
+  0x180CFC92C  ret                                               
+
+180CFC92D:
+  0x180CFC92D  mov     rcx, qword ptr [rip + 0x21559ac]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CFC934  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CFC93B  jne     0x180cfc942                               
+  0x180CFC93D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CFC942:
+  0x180CFC942  mov     rcx, qword ptr [rip + 0x216ed27]             ; STR 'Naninovel InputManager not found.'
+  0x180CFC949  xor     edx, edx                                  
+  0x180CFC94B  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CFC950  add     rsp, 0x30                                 
+  0x180CFC954  pop     rsi                                       
+  0x180CFC955  pop     rbp                                       
+  0x180CFC956  pop     rbx                                       
+  0x180CFC957  ret                                               

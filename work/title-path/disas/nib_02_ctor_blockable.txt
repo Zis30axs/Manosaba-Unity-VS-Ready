@@ -1,0 +1,90 @@
+====================================================================================================
+FUNCTION RVA 0xCFBEB0  VA 0x180CFBEB0  size 0x118 (280 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker$$.ctor
+  csig   : void GigaCreation_NaninovelExtender_Common_NaninovelInteractionBlocker___ctor (GigaCreation_NaninovelExtender_Common_NaninovelInteractionBlocker_o* __this, GigaCreation_Essentials_Ui_ICancelEventBlockable_o* blockable, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker :: public void .ctor(ICancelEventBlockable blockable)
+  fields of GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker:
+      +0x18   _clickThroughPanel             readonly IClickThroughPanelExtended
+      +0x20   _originalSortingOrder          Nullable<int>
+====================================================================================================
+  0x180CFBEB0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CFBEB5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CFBEBA  push    rdi                                       
+  0x180CFBEBB  sub     rsp, 0x20                                 
+  0x180CFBEBF  cmp     byte ptr [rip + 0x23e1388], 0                ; data_30DD24E
+  0x180CFBEC6  mov     rdi, rdx                                  
+  0x180CFBEC9  mov     rsi, rcx                                  
+  0x180CFBECC  jne     0x180cfbef7                               
+  0x180CFBECE  lea     rcx, [rip + 0x215d773]                       ; METHODINFO Method$System.Array.Empty<string>()
+  0x180CFBED5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFBEDA  lock or dword ptr [rsp], 0                        
+  0x180CFBEDF  lea     rcx, [rip + 0x215db1a]                       ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable[]_TypeInfo
+  0x180CFBEE6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CFBEEB  lock or dword ptr [rsp], 0                        
+  0x180CFBEF0  mov     byte ptr [rip + 0x23e1357], 1                ; data_30DD24E
+
+180CFBEF7:
+  0x180CFBEF7  mov     rcx, qword ptr [rip + 0x215db02]             ; TYPE GigaCreation.Essentials.Ui.ICancelEventBlockable[]_TypeInfo
+  0x180CFBEFE  mov     edx, 1                                    
+  0x180CFBF03  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CFBF08  mov     rbx, rax                                  
+  0x180CFBF0B  test    rax, rax                                  
+  0x180CFBF0E  je      0x180cfbfad                               
+  0x180CFBF14  test    rdi, rdi                                  
+  0x180CFBF17  je      0x180cfbf31                               
+  0x180CFBF19  mov     rdx, qword ptr [rax]                      
+  0x180CFBF1C  mov     rcx, rdi                                  
+  0x180CFBF1F  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CFBF23  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CFBF28  test    rax, rax                                  
+  0x180CFBF2B  je      0x180cfbfb3                               
+
+180CFBF31:
+  0x180CFBF31  cmp     dword ptr [rbx + 0x18], 0                    ; rbx->NaninovelInteractionBlocker._clickThroughPanel
+  0x180CFBF35  jbe     0x180cfbfc3                               
+  0x180CFBF3B  cmp     dword ptr [rip + 0x23dd282], 0               ; data_30D91C4
+  0x180CFBF42  mov     qword ptr [rbx + 0x20], rdi                  ; rbx->NaninovelInteractionBlocker._originalSortingOrder
+  0x180CFBF46  je      0x180cfbf81                               
+  0x180CFBF48  lea     r8, [rbx + 0x20]                             ; rbx->NaninovelInteractionBlocker._originalSortingOrder
+  0x180CFBF4C  shr     r8, 0xc                                   
+  0x180CFBF50  lea     rcx, [rip + 0x2438629]                       ; data_3134580
+  0x180CFBF57  and     r8d, 0x1fffff                             
+  0x180CFBF5E  mov     eax, r8d                                  
+  0x180CFBF61  shr     rax, 6                                    
+  0x180CFBF65  and     r8d, 0x3f                                 
+  0x180CFBF69  lea     rdx, [rcx + rax*8]                        
+  0x180CFBF6D  prefetchw byte ptr [rdx]                            
+
+180CFBF70:
+  0x180CFBF70  mov     rax, qword ptr [rdx]                      
+  0x180CFBF73  mov     rcx, rax                                  
+  0x180CFBF76  bts     rcx, r8                                   
+  0x180CFBF7A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CFBF7F  jne     0x180cfbf70                               
+
+180CFBF81:
+  0x180CFBF81  mov     rcx, qword ptr [rip + 0x215d6c0]             ; METHODINFO Method$System.Array.Empty<string>()
+  0x180CFBF88  call    0x1803317f0                                  ; -> System.Array$$Empty<__Il2CppFullySharedGenericType> (+7 aliases)
+  0x180CFBF8D  xor     r9d, r9d                                  
+  0x180CFBF90  mov     r8, rax                                   
+  0x180CFBF93  mov     rdx, rbx                                  
+  0x180CFBF96  mov     rcx, rsi                                  
+  0x180CFBF99  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CFBF9E  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CFBFA3  add     rsp, 0x20                                 
+  0x180CFBFA7  pop     rdi                                       
+  0x180CFBFA8  jmp     0x180cfc030                                  ; -> GigaCreation.NaninovelExtender.Common.NaninovelInteractionBlocker$$.ctor
+
+180CFBFAD:
+  0x180CFBFAD  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CFBFB2  int3                                              
+
+180CFBFB3:
+  0x180CFBFB3  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CFBFB8  mov     rcx, rax                                  
+  0x180CFBFBB  xor     edx, edx                                  
+  0x180CFBFBD  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180CFBFC2  int3                                              
+
+180CFBFC3:
+  0x180CFBFC3  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
