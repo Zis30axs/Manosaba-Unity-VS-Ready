@@ -133,6 +133,14 @@ namespace Manosaba.Integration
                 host.AddComponent<ManosabaGameStart>();
             }
 
+            // A normal launch is the game alone: the integration probe (asset loads, test-prefab instantiation, evidence file)
+            // runs only when a gate asks for it (-manosabaSmoke / -manosabaContent or MANOSABA_SMOKE / MANOSABA_CONTENT).
+            if (!HasFlag(SmokeFlag) && !HasFlag(ContentFlag))
+            {
+                _status = "idle (no -manosabaSmoke)";
+                return;
+            }
+
             _report = Collect();
             _status = _report.status + "  assemblies=" + _report.assemblies_found + "/" +
                       ExpectedAssemblies.Length + "  probes=" + _report.types_probed_ok + "/" +
@@ -196,12 +204,13 @@ namespace Manosaba.Integration
 
         private void OnGUI()
         {
-            // Deliberately IMGUI: the reconstruction has no UI assets yet, and this must not depend
-            // on anything that is still a stub.
+            // Only in a measured run (-manosabaSmoke / MANOSABA_SMOKE=1).  A normal launch shows the game itself: this label
+            // used to be drawn over the title screen in every build, which read as an "engineering screen" instead of the game.
+            if (!HasFlag(SmokeFlag)) return;
+            // Deliberately IMGUI: it must not depend on any reconstructed UI.
             GUI.Label(new Rect(20, 20, 1200, 200),
                 "Manosaba reconstruction - integration boot\n" + _status + "\n" +
-                "Unity " + Application.unityVersion + "  " + Application.platform + "\n" +
-                "game code: WitchTrials.Views.GameInitializer is still an IL2CPP stub");
+                "Unity " + Application.unityVersion + "  " + Application.platform);
         }
 
         // -- evidence ---------------------------------------------------------------------
