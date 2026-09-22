@@ -1752,9 +1752,13 @@ namespace Manosaba.Integration
         /// (IChoiceHandlerActor.HandleChoice(id), the call the panel's button click ends in), so the story does not stop at every
         /// `@choice`.  Every pick is recorded as `script#line: id` in the evidence.
         /// </summary>
-        private static void PickFirstChoice(GameStartEvidence evidence)
+        private static void PickFirstChoice(GameStartEvidence evidence, bool playing)
         {
-            if (Environment.GetEnvironmentVariable("MANOSABA_GAMESTART_PICK_CHOICES") != "1") return;
+            string mode = Environment.GetEnvironmentVariable("MANOSABA_GAMESTART_PICK_CHOICES");
+            if (mode != "1" && mode != "last") return;
+            // The buttons are clickable as soon as they exist, but a script adds all its @choice commands and then stops: a pick while it
+            // is still playing would resolve a choice whose siblings have not been added yet ("Choice callback has nowhere to return", round 28).
+            if (playing) return;
             try
             {
                 Type engineType = Type.GetType("Naninovel.Engine, Elringus.Naninovel.Runtime");
@@ -1779,7 +1783,7 @@ namespace Manosaba.Integration
                         evidence.choice_pick_error = "actors=" + actorCount + " choices=" + (rawChoices == null ? "null" : rawChoices.GetType().Name);
                         continue;
                     }
-                    object choice = choices[0];
+                    object choice = choices[mode == "last" ? choices.Count - 1 : 0];
                     string id = choice.GetType().GetProperty("Id")?.GetValue(choice) as string
                                 ?? choice.GetType().GetField("Id")?.GetValue(choice) as string;
                     if (string.IsNullOrEmpty(id)) continue;
@@ -1800,12 +1804,12 @@ namespace Manosaba.Integration
                                                      GameStartEvidence evidence, float elapsed)
         {
             SkipPlayingMovie(evidence);
-            PickFirstChoice(evidence);
             try
             {
                 bool waiting = playerType.GetProperty("WaitingForInput")?.GetValue(player) is bool w && w;
                 bool skip = playerType.GetProperty("SkipActive")?.GetValue(player) is bool s && s;
                 bool playing = playerType.GetProperty("Playing")?.GetValue(player) is bool p && p;
+                PickFirstChoice(evidence, playing);
                 if (!skip) setSkipEnabled?.Invoke(player, new object[] { true });
                 if (waiting)
                 {
