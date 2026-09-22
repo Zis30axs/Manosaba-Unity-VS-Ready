@@ -1,0 +1,35 @@
+====================================================================================================
+FUNCTION RVA 0xD42480  VA 0x180D42480  size 0x68 (104 bytes)
+  managed: GigaCreation.Tools.Debugging.Core.DebugPresenter$$OnApplicationQuit
+  csig   : void GigaCreation_Tools_Debugging_Core_DebugPresenter__OnApplicationQuit (GigaCreation_Tools_Debugging_Core_DebugPresenter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Core.DebugPresenter :: private void OnApplicationQuit()
+  fields of DebugPresenter.<>c__DisplayClass5_0:
+      +0x10   <>4__this                      DebugPresenter
+      +0x18   debugManager                   IDebugManager
+====================================================================================================
+  0x180D42480  push    rbx                                       
+  0x180D42482  sub     rsp, 0x20                                 
+  0x180D42486  cmp     byte ptr [rip + 0x239af61], 0                ; data_30DD3EE
+  0x180D4248D  mov     rbx, rcx                                  
+  0x180D42490  jne     0x180d424bb                               
+  0x180D42492  lea     rcx, [rip + 0x20ef3c7]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<IDebugManager>()
+  0x180D42499  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4249E  lock or dword ptr [rsp], 0                        
+  0x180D424A3  lea     rcx, [rip + 0x210fcbe]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D424AA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D424AF  lock or dword ptr [rsp], 0                        
+  0x180D424B4  mov     byte ptr [rip + 0x239af33], 1                ; data_30DD3EE
+
+180D424BB:
+  0x180D424BB  mov     rcx, qword ptr [rip + 0x210fca6]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D424C2  mov     rbx, qword ptr [rbx + 0x30]               
+  0x180D424C6  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D424CD  jne     0x180d424d4                               
+  0x180D424CF  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D424D4:
+  0x180D424D4  mov     rdx, qword ptr [rip + 0x20ef385]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<IDebugManager>()
+  0x180D424DB  mov     rcx, rbx                                  
+  0x180D424DE  add     rsp, 0x20                                 
+  0x180D424E2  pop     rbx                                       
+  0x180D424E3  jmp     0x180752790                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Unregister<object>

@@ -1,0 +1,71 @@
+====================================================================================================
+FUNCTION RVA 0xD42010  VA 0x180D42010  size 0xD1 (209 bytes)
+  managed: GigaCreation.Tools.Debugging.Core.DebugManager$$.ctor
+  csig   : void GigaCreation_Tools_Debugging_Core_DebugManager___ctor (GigaCreation_Tools_Debugging_Core_DebugManager_o* __this, bool initialMode, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Core.DebugManager :: public void .ctor(bool initialMode)
+  fields of DebugManager.UIMode:
+      +0x0    value__                        int
+  fields of DebugManager.UIState:
+      +0x10   mode                           DebugManager.UIMode
+      +0x14   m_Open                         bool
+  fields of DebugManager.<>c:
+      +0x0    <>9                            static readonly DebugManager.<>c
+      +0x8    <>9__49_0                      static Action<bool>
+      +0x10   <>9__49_1                      static Action
+      +0x18   <>9__60_0                      static Func<DebugUI.Widget, int>
+  fields of DebugManager.<>c__DisplayClass67_0:
+      +0x10   displayName                    string
+====================================================================================================
+  0x180D42010  mov     qword ptr [rsp + 8], rbx                  
+  0x180D42015  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D4201A  push    rdi                                       
+  0x180D4201B  sub     rsp, 0x20                                 
+  0x180D4201F  cmp     byte ptr [rip + 0x239b3c5], 0                ; data_30DD3EB
+  0x180D42026  movzx   esi, dl                                   
+  0x180D42029  mov     rdi, rcx                                  
+  0x180D4202C  jne     0x180d42057                               
+  0x180D4202E  lea     rcx, [rip + 0x2118e43]                       ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
+  0x180D42035  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4203A  lock or dword ptr [rsp], 0                        
+  0x180D4203F  lea     rcx, [rip + 0x2118e2a]                       ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
+  0x180D42046  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4204B  lock or dword ptr [rsp], 0                        
+  0x180D42050  mov     byte ptr [rip + 0x239b394], 1                ; data_30DD3EB
+
+180D42057:
+  0x180D42057  mov     rcx, qword ptr [rip + 0x2118e12]             ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
+  0x180D4205E  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D42063  mov     r8, qword ptr [rip + 0x2118e0e]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
+  0x180D4206A  lea     rdx, [rsp + 0x38]                         
+  0x180D4206F  mov     rcx, rax                                  
+  0x180D42072  mov     byte ptr [rsp + 0x38], sil                
+  0x180D42077  mov     rbx, rax                                  
+  0x180D4207A  call    0x1808c4a20                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D4207F  cmp     dword ptr [rip + 0x239713e], 0               ; data_30D91C4
+  0x180D42086  mov     qword ptr [rdi + 0x10], rbx                  ; rdi->UIState.mode | <>c.<>9__49_1 | <>c__DisplayClass67_0.displayName
+  0x180D4208A  je      0x180d420d1                               
+  0x180D4208C  lea     r8, [rdi + 0x10]                             ; rdi->UIState.mode | <>c.<>9__49_1 | <>c__DisplayClass67_0.displayName
+  0x180D42090  shr     r8, 0xc                                   
+  0x180D42094  lea     rcx, [rip + 0x23f24e5]                       ; data_3134580
+  0x180D4209B  and     r8d, 0x1fffff                             
+  0x180D420A2  mov     eax, r8d                                  
+  0x180D420A5  shr     rax, 6                                    
+  0x180D420A9  and     r8d, 0x3f                                 
+  0x180D420AD  lea     rdx, [rcx + rax*8]                        
+  0x180D420B1  prefetchw byte ptr [rdx]                            
+  0x180D420B4  nop     dword ptr [rax]                           
+  0x180D420B8  nop     dword ptr [rax + rax]                     
+
+180D420C0:
+  0x180D420C0  mov     rax, qword ptr [rdx]                      
+  0x180D420C3  mov     rcx, rax                                  
+  0x180D420C6  bts     rcx, r8                                   
+  0x180D420CA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D420CF  jne     0x180d420c0                               
+
+180D420D1:
+  0x180D420D1  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D420D6  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180D420DB  add     rsp, 0x20                                 
+  0x180D420DF  pop     rdi                                       
+  0x180D420E0  ret                                               

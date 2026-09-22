@@ -1,0 +1,69 @@
+====================================================================================================
+FUNCTION RVA 0xD429F0  VA 0x180D429F0  size 0xDC (220 bytes)
+  managed: GigaCreation.Tools.Debugging.General.DebugOptionsBase$$get_IsDebugMode
+  csig   : bool GigaCreation_Tools_Debugging_General_DebugOptionsBase__get_IsDebugMode (const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.General.DebugOptionsBase :: public static bool get_IsDebugMode()
+  fields of DebugOptionsBase.<InitializeAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DebugOptionsBase
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D429F0  sub     rsp, 0x28                                 
+  0x180D429F4  cmp     byte ptr [rip + 0x239a9f8], 0                ; data_30DD3F3
+  0x180D429FB  jne     0x180d42a59                               
+  0x180D429FD  lea     rcx, [rip + 0x20eeee4]                       ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D42A04  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42A09  lock or dword ptr [rsp], 0                        
+  0x180D42A0E  lea     rcx, [rip + 0x210f8cb]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D42A15  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42A1A  lock or dword ptr [rsp], 0                        
+  0x180D42A1F  lea     rcx, [rip + 0x2119692]                       ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D42A26  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42A2B  lock or dword ptr [rsp], 0                        
+  0x180D42A30  lea     rcx, [rip + 0x2119679]                       ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D42A37  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42A3C  lock or dword ptr [rsp], 0                        
+  0x180D42A41  lea     rcx, [rip + 0x20eeeb8]                       ; STR 'DebugOptions not initialized.'
+  0x180D42A48  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42A4D  lock or dword ptr [rsp], 0                        
+  0x180D42A52  mov     byte ptr [rip + 0x239a99a], 1                ; data_30DD3F3
+
+180D42A59:
+  0x180D42A59  mov     rcx, qword ptr [rip + 0x20eee88]             ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D42A60  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180D42A67  cmp     byte ptr [rax], 0                         
+  0x180D42A6A  je      0x180d42a9d                               
+  0x180D42A6C  mov     r8, qword ptr [rax + 8]                   
+  0x180D42A70  test    r8, r8                                    
+  0x180D42A73  je      0x180d42ac0                               
+  0x180D42A75  mov     rdx, qword ptr [rip + 0x211963c]             ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D42A7C  xor     ecx, ecx                                  
+  0x180D42A7E  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D42A83  test    rax, rax                                  
+  0x180D42A86  je      0x180d42ac7                               
+  0x180D42A88  mov     rdx, qword ptr [rip + 0x2119621]             ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D42A8F  xor     ecx, ecx                                  
+  0x180D42A91  mov     r8, rax                                   
+  0x180D42A94  add     rsp, 0x28                                 
+  0x180D42A98  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D42A9D:
+  0x180D42A9D  mov     rcx, qword ptr [rip + 0x210f83c]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180D42AA4  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D42AAB  jne     0x180d42ab2                               
+  0x180D42AAD  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D42AB2:
+  0x180D42AB2  mov     rcx, qword ptr [rip + 0x20eee47]             ; STR 'DebugOptions not initialized.'
+  0x180D42AB9  xor     edx, edx                                  
+  0x180D42ABB  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+
+180D42AC0:
+  0x180D42AC0  xor     al, al                                    
+  0x180D42AC2  add     rsp, 0x28                                 
+  0x180D42AC6  ret                                               
+
+180D42AC7:
+  0x180D42AC7  call    0x180246730                                  ; THROW NullReferenceException

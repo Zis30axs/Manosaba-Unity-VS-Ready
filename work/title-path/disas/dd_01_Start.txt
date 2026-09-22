@@ -1,0 +1,84 @@
+====================================================================================================
+FUNCTION RVA 0xD46FD0  VA 0x180D46FD0  size 0x14C (332 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DebugDisplay$$Start
+  csig   : void GigaCreation_Tools_Debugging_Ui_DebugDisplay__Start (GigaCreation_Tools_Debugging_Ui_DebugDisplay_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DebugDisplay :: private void Start()
+====================================================================================================
+  0x180D46FD0  push    rsi                                       
+  0x180D46FD2  sub     rsp, 0x20                                 
+  0x180D46FD6  cmp     byte ptr [rip + 0x239643d], 0                ; data_30DD41A
+  0x180D46FDD  mov     rsi, rcx                                  
+  0x180D46FE0  jne     0x180d47060                               
+  0x180D46FE2  lea     rcx, [rip + 0x210b287]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180D46FE9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D46FEE  lock or dword ptr [rsp], 0                        
+  0x180D46FF3  lea     rcx, [rip + 0x20eb586]                       ; METHODINFO Method$GigaCreation.Tools.Debugging.Ui.DebugDisplay.ChangeVisibility() => GigaCreation.Tools.Debugging.Ui.DebugDisplay$$ChangeVisibility
+  0x180D46FFA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D46FFF  lock or dword ptr [rsp], 0                        
+  0x180D47004  lea     rcx, [rip + 0x210b095]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180D4700B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47010  lock or dword ptr [rsp], 0                        
+  0x180D47015  lea     rcx, [rip + 0x211509c]                       ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D4701C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47021  lock or dword ptr [rsp], 0                        
+  0x180D47026  lea     rcx, [rip + 0x210b233]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180D4702D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47032  lock or dword ptr [rsp], 0                        
+  0x180D47037  lea     rcx, [rip + 0x211506a]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.TryGet<IDebugManager>()
+  0x180D4703E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47043  lock or dword ptr [rsp], 0                        
+  0x180D47048  lea     rcx, [rip + 0x210b119]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D4704F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47054  lock or dword ptr [rsp], 0                        
+  0x180D47059  mov     byte ptr [rip + 0x23963ba], 1                ; data_30DD41A
+
+180D47060:
+  0x180D47060  mov     rcx, qword ptr [rip + 0x210b101]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D47067  mov     qword ptr [rsp + 0x40], 0                 
+  0x180D47070  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D47077  jne     0x180d4707e                               
+  0x180D47079  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D4707E:
+  0x180D4707E  mov     r8, qword ptr [rip + 0x2115023]              ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.TryGet<IDebugManager>()
+  0x180D47085  lea     rcx, [rsp + 0x40]                         
+  0x180D4708A  xor     edx, edx                                  
+  0x180D4708C  call    0x1807522e0                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$TryGet<object>
+  0x180D47091  test    al, al                                    
+  0x180D47093  je      0x180d47111                               
+  0x180D47095  mov     r8, qword ptr [rsp + 0x40]                
+  0x180D4709A  test    r8, r8                                    
+  0x180D4709D  je      0x180d47117                               
+  0x180D4709F  mov     rdx, qword ptr [rip + 0x2115012]             ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D470A6  xor     ecx, ecx                                  
+  0x180D470A8  mov     qword ptr [rsp + 0x30], rbx               
+  0x180D470AD  mov     qword ptr [rsp + 0x38], rdi               
+  0x180D470B2  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D470B7  mov     rcx, qword ptr [rip + 0x210b1b2]             ; TYPE System.Action<bool>_TypeInfo
+  0x180D470BE  mov     rdi, rax                                  
+  0x180D470C1  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D470C6  mov     r8, qword ptr [rip + 0x20eb4b3]              ; METHODINFO Method$GigaCreation.Tools.Debugging.Ui.DebugDisplay.ChangeVisibility() => GigaCreation.Tools.Debugging.Ui.DebugDisplay$$ChangeVisibility
+  0x180D470CD  xor     r9d, r9d                                  
+  0x180D470D0  mov     rdx, rsi                                  
+  0x180D470D3  mov     rcx, rax                                  
+  0x180D470D6  mov     rbx, rax                                  
+  0x180D470D9  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180D470DE  mov     r8, qword ptr [rip + 0x210b17b]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180D470E5  mov     rdx, rbx                                  
+  0x180D470E8  mov     rcx, rdi                                  
+  0x180D470EB  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180D470F0  mov     r9, qword ptr [rip + 0x210afa9]              ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180D470F7  lea     r8, [rsp + 0x48]                          
+  0x180D470FC  mov     rdx, rsi                                  
+  0x180D470FF  mov     rcx, rax                                  
+  0x180D47102  call    0x18067f4a0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180D47107  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180D4710C  mov     rbx, qword ptr [rsp + 0x30]               
+
+180D47111:
+  0x180D47111  add     rsp, 0x20                                 
+  0x180D47115  pop     rsi                                       
+  0x180D47116  ret                                               
+
+180D47117:
+  0x180D47117  call    0x180246730                                  ; THROW NullReferenceException

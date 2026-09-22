@@ -1,0 +1,69 @@
+====================================================================================================
+FUNCTION RVA 0xD43200  VA 0x180D43200  size 0xE4 (228 bytes)
+  managed: GigaCreation.Tools.Debugging.General.DestroySelfIfReleaseBuild$$Start
+  csig   : void GigaCreation_Tools_Debugging_General_DestroySelfIfReleaseBuild__Start (GigaCreation_Tools_Debugging_General_DestroySelfIfReleaseBuild_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.General.DestroySelfIfReleaseBuild :: private void Start()
+====================================================================================================
+  0x180D43200  push    rbx                                       
+  0x180D43202  sub     rsp, 0x20                                 
+  0x180D43206  cmp     byte ptr [rip + 0x239a1ea], 0                ; data_30DD3F7
+  0x180D4320D  mov     rbx, rcx                                  
+  0x180D43210  jne     0x180d4324c                               
+  0x180D43212  lea     rcx, [rip + 0x210f077]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D43219  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4321E  lock or dword ptr [rsp], 0                        
+  0x180D43223  lea     rcx, [rip + 0x20ee6a6]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.IsRegistered<IDebugManager>()
+  0x180D4322A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4322F  lock or dword ptr [rsp], 0                        
+  0x180D43234  lea     rcx, [rip + 0x210ef2d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D4323B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D43240  lock or dword ptr [rsp], 0                        
+  0x180D43245  mov     byte ptr [rip + 0x239a1ab], 1                ; data_30DD3F7
+
+180D4324C:
+  0x180D4324C  mov     rcx, qword ptr [rip + 0x210ef15]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D43253  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D4325A  jne     0x180d43261                               
+  0x180D4325C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D43261:
+  0x180D43261  mov     rdx, qword ptr [rip + 0x20ee668]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.IsRegistered<IDebugManager>()
+  0x180D43268  xor     ecx, ecx                                  
+  0x180D4326A  call    0x180751d40                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$IsRegistered<object>
+  0x180D4326F  test    al, al                                    
+  0x180D43271  jne     0x180d432de                               
+  0x180D43273  xor     edx, edx                                  
+  0x180D43275  mov     rcx, rbx                                  
+  0x180D43278  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D4327D  mov     rcx, qword ptr [rip + 0x210f00c]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D43284  mov     rbx, rax                                  
+  0x180D43287  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D4328E  jne     0x180d43295                               
+  0x180D43290  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D43295:
+  0x180D43295  cmp     byte ptr [rip + 0x23a559c], 0                ; data_30E8838
+  0x180D4329C  jne     0x180d432b6                               
+  0x180D4329E  lea     rcx, [rip + 0x210efeb]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D432A5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D432AA  lock or dword ptr [rsp], 0                        
+  0x180D432AF  mov     byte ptr [rip + 0x23a5582], 1                ; data_30E8838
+
+180D432B6:
+  0x180D432B6  mov     rcx, qword ptr [rip + 0x210efd3]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D432BD  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D432C4  jne     0x180d432cb                               
+  0x180D432C6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D432CB:
+  0x180D432CB  xor     r8d, r8d                                  
+  0x180D432CE  xorps   xmm1, xmm1                                
+  0x180D432D1  mov     rcx, rbx                                  
+  0x180D432D4  add     rsp, 0x20                                 
+  0x180D432D8  pop     rbx                                       
+  0x180D432D9  jmp     0x182071c60                                  ; -> UnityEngine.Object$$Destroy
+
+180D432DE:
+  0x180D432DE  add     rsp, 0x20                                 
+  0x180D432E2  pop     rbx                                       
+  0x180D432E3  ret                                               

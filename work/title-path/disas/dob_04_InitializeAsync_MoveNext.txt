@@ -1,0 +1,233 @@
+====================================================================================================
+FUNCTION RVA 0xD42E90  VA 0x180D42E90  size 0x36D (877 bytes)
+  managed: GigaCreation.Tools.Debugging.General.DebugOptionsBase.<InitializeAsync>d__6$$MoveNext
+  csig   : void GigaCreation_Tools_Debugging_General_DebugOptionsBase__InitializeAsync_d__6__MoveNext (GigaCreation_Tools_Debugging_General_DebugOptionsBase__InitializeAsync_d__6_o __this, const MethodInfo* method);
+  dump.cs: DebugOptionsBase.<InitializeAsync>d__6 :: private void MoveNext()
+  fields of DebugOptionsBase.<InitializeAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DebugOptionsBase
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D42E90  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D42E95  mov     qword ptr [rsp + 0x20], rsi               
+  0x180D42E9A  mov     qword ptr [rsp + 8], rcx                  
+  0x180D42E9F  push    rdi                                       
+  0x180D42EA0  sub     rsp, 0x60                                 
+  0x180D42EA4  mov     rdi, rcx                                  
+  0x180D42EA7  cmp     byte ptr [rip + 0x239a548], 0                ; data_30DD3F6
+  0x180D42EAE  jne     0x180d42f0c                               
+  0x180D42EB0  lea     rcx, [rip + 0x20eea29]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, DebugOptionsBase.<InitializeAsync>d__6>()
+  0x180D42EB7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42EBC  lock or dword ptr [rsp], 0                        
+  0x180D42EC1  lea     rcx, [rip + 0x20eea20]                       ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D42EC8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42ECD  lock or dword ptr [rsp], 0                        
+  0x180D42ED2  lea     rcx, [rip + 0x21191cf]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.TryGet<IDebugManager>()
+  0x180D42ED9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42EDE  lock or dword ptr [rsp], 0                        
+  0x180D42EE3  lea     rcx, [rip + 0x210f27e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D42EEA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42EEF  lock or dword ptr [rsp], 0                        
+  0x180D42EF4  lea     rcx, [rip + 0x210f20d]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D42EFB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42F00  lock or dword ptr [rsp], 0                        
+  0x180D42F05  mov     byte ptr [rip + 0x239a4ea], 1                ; data_30DD3F6
+
+180D42F0C:
+  0x180D42F0C  xorps   xmm0, xmm0                                
+  0x180D42F0F  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D42F14  mov     eax, dword ptr [rdi]                      
+  0x180D42F16  mov     rsi, qword ptr [rdi + 0x20]                  ; rdi-><InitializeAsync>d__6.<>4__this
+  0x180D42F1A  test    eax, eax                                  
+  0x180D42F1C  jne     0x180d42f3b                               
+  0x180D42F1E  movups  xmm1, xmmword ptr [rdi + 0x28]               ; rdi-><InitializeAsync>d__6.<>u__1
+  0x180D42F22  movaps  xmmword ptr [rsp + 0x40], xmm1            
+  0x180D42F27  movups  xmmword ptr [rdi + 0x28], xmm0               ; rdi-><InitializeAsync>d__6.<>u__1
+  0x180D42F2B  mov     dword ptr [rdi], 0xffffffff               
+  0x180D42F31  movq    r8, xmm1                                  
+  0x180D42F36  jmp     0x180d430cc                               
+
+180D42F3B:
+  0x180D42F3B  mov     rbx, qword ptr [rdi + 0x18]                  ; rdi-><InitializeAsync>d__6.ct
+  0x180D42F3F  mov     rcx, qword ptr [rip + 0x210f1c2]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D42F46  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D42F4D  jne     0x180d42f54                               
+  0x180D42F4F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D42F54:
+  0x180D42F54  mov     qword ptr [rsp + 0x20], 0                 
+  0x180D42F5D  xor     r9d, r9d                                  
+  0x180D42F60  mov     r8, rbx                                   
+  0x180D42F63  mov     edx, 2                                    
+  0x180D42F68  lea     rcx, [rsp + 0x50]                         
+  0x180D42F6D  call    0x18180c850                                  ; -> Cysharp.Threading.Tasks.UniTask$$Yield
+  0x180D42F72  movups  xmm0, xmmword ptr [rax]                   
+  0x180D42F75  movaps  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D42F7A  lea     rbx, [rip + 0x23ab31f]                       ; data_30EE2A0
+  0x180D42F81  cmp     dword ptr [rip + 0x239623c], 0               ; data_30D91C4
+  0x180D42F88  je      0x180d42fce                               
+  0x180D42F8A  lea     r8, [rsp + 0x50]                          
+  0x180D42F8F  shr     r8, 0xc                                   
+  0x180D42F93  and     r8d, 0x1fffff                             
+  0x180D42F9A  mov     eax, r8d                                  
+  0x180D42F9D  shr     rax, 6                                    
+  0x180D42FA1  lea     rdx, [rbx + rax*8]                        
+  0x180D42FA5  and     r8d, 0x3f                                 
+  0x180D42FA9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D42FB0:
+  0x180D42FB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D42FB7  mov     rcx, rax                                  
+  0x180D42FBA  bts     rcx, r8                                   
+  0x180D42FBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D42FC7  jne     0x180d42fb0                               
+  0x180D42FC9  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+
+180D42FCE:
+  0x180D42FCE  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180D42FD4  cmp     byte ptr [rip + 0x2394542], 0                ; data_30D751D
+  0x180D42FDB  jne     0x180d42ff5                               
+  0x180D42FDD  lea     rcx, [rip + 0x210f124]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D42FE4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42FE9  lock or dword ptr [rsp], 0                        
+  0x180D42FEE  mov     byte ptr [rip + 0x2394528], 1                ; data_30D751D
+
+180D42FF5:
+  0x180D42FF5  mov     rcx, qword ptr [rip + 0x210f10c]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D42FFC  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D43003  jne     0x180d4300a                               
+  0x180D43005  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D4300A:
+  0x180D4300A  cmp     byte ptr [rip + 0x2394505], 0                ; data_30D7516
+  0x180D43011  jne     0x180d4302b                               
+  0x180D43013  lea     rcx, [rip + 0x210e14e]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D4301A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4301F  lock or dword ptr [rsp], 0                        
+  0x180D43024  mov     byte ptr [rip + 0x23944eb], 1                ; data_30D7516
+
+180D4302B:
+  0x180D4302B  mov     r8, qword ptr [rsp + 0x40]                
+  0x180D43030  test    r8, r8                                    
+  0x180D43033  je      0x180d430cc                               
+  0x180D43039  xor     ecx, ecx                                  
+  0x180D4303B  movzx   r9d, word ptr [rsp + 0x48]                
+  0x180D43041  mov     rdx, qword ptr [rip + 0x210e120]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D43048  call    0x180003000                                  ; -> sub_3000 (runtime/helper)
+  0x180D4304D  test    eax, eax                                  
+  0x180D4304F  jne     0x180d430c7                               
+  0x180D43051  mov     dword ptr [rdi], eax                      
+  0x180D43053  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180D43058  movups  xmmword ptr [rdi + 0x28], xmm0               ; rdi-><InitializeAsync>d__6.<>u__1
+  0x180D4305C  cmp     dword ptr [rip + 0x2396162], eax             ; data_30D91C4
+  0x180D43062  je      0x180d430a9                               
+  0x180D43064  lea     r8, [rdi + 0x28]                             ; rdi-><InitializeAsync>d__6.<>u__1
+  0x180D43068  shr     r8, 0xc                                   
+  0x180D4306C  and     r8d, 0x1fffff                             
+  0x180D43073  mov     eax, r8d                                  
+  0x180D43076  shr     rax, 6                                    
+  0x180D4307A  lea     rdx, [rbx + rax*8]                        
+  0x180D4307E  and     r8d, 0x3f                                 
+  0x180D43082  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D43089  nop     dword ptr [rax]                           
+
+180D43090:
+  0x180D43090  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D43097  mov     rcx, rax                                  
+  0x180D4309A  bts     rcx, r8                                   
+  0x180D4309E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D430A7  jne     0x180d43090                               
+
+180D430A9:
+  0x180D430A9  lea     rcx, [rdi + 8]                            
+  0x180D430AD  mov     r9, qword ptr [rip + 0x20ee82c]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, DebugOptionsBase.<InitializeAsync>d__6>()
+  0x180D430B4  mov     r8, rdi                                   
+  0x180D430B7  lea     rdx, [rsp + 0x40]                         
+  0x180D430BC  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D430C1  nop                                               
+  0x180D430C2  jmp     0x180d431b5                               
+
+180D430C7:
+  0x180D430C7  mov     r8, qword ptr [rsp + 0x40]                
+
+180D430CC:
+  0x180D430CC  cmp     byte ptr [rip + 0x2394449], 0                ; data_30D751C
+  0x180D430D3  jne     0x180d430f2                               
+  0x180D430D5  lea     rcx, [rip + 0x210e08c]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D430DC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D430E1  lock or dword ptr [rsp], 0                        
+  0x180D430E6  mov     byte ptr [rip + 0x239442f], 1                ; data_30D751C
+  0x180D430ED  mov     r8, qword ptr [rsp + 0x40]                
+
+180D430F2:
+  0x180D430F2  test    r8, r8                                    
+  0x180D430F5  je      0x180d43109                               
+  0x180D430F7  movzx   r9d, word ptr [rsp + 0x48]                
+  0x180D430FD  mov     rdx, qword ptr [rip + 0x210e064]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D43104  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+
+180D43109:
+  0x180D43109  mov     rcx, qword ptr [rip + 0x210f058]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D43110  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D43117  jne     0x180d4311e                               
+  0x180D43119  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D4311E:
+  0x180D4311E  mov     rax, qword ptr [rip + 0x20ee7c3]             ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D43125  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D4312C  add     rcx, 8                                    
+  0x180D43130  mov     r8, qword ptr [rip + 0x2118f71]              ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.TryGet<IDebugManager>()
+  0x180D43137  xor     edx, edx                                  
+  0x180D43139  call    0x1807522e0                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$TryGet<object>
+  0x180D4313E  test    al, al                                    
+  0x180D43140  je      0x180d43161                               
+  0x180D43142  test    rsi, rsi                                  
+  0x180D43145  je      0x180d431f7                               
+  0x180D4314B  mov     rdx, qword ptr [rsi]                      
+  0x180D4314E  mov     rax, qword ptr [rdx + 0x178]              
+  0x180D43155  mov     rdx, qword ptr [rdx + 0x180]              
+  0x180D4315C  mov     rcx, rsi                                  
+  0x180D4315F  call    rax                                       
+
+180D43161:
+  0x180D43161  mov     rax, qword ptr [rip + 0x20ee780]             ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D43168  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D4316F  mov     byte ptr [rcx], 1                         
+  0x180D43172  mov     dword ptr [rdi], 0xfffffffe               
+  0x180D43178  cmp     byte ptr [rip + 0x239439b], 0                ; data_30D751A
+  0x180D4317F  jne     0x180d43199                               
+  0x180D43181  lea     rcx, [rip + 0x210dfe8]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180D43188  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4318D  lock or dword ptr [rsp], 0                        
+  0x180D43192  mov     byte ptr [rip + 0x2394381], 1                ; data_30D751A
+
+180D43199:
+  0x180D43199  cmp     qword ptr [rdi + 8], 0                    
+  0x180D4319E  je      0x180d431b5                               
+  0x180D431A0  mov     ecx, 2                                    
+  0x180D431A5  mov     r8, qword ptr [rdi + 8]                   
+  0x180D431A9  mov     rdx, qword ptr [rip + 0x210dfc0]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180D431B0  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D431B5:
+  0x180D431B5  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180D431BA  mov     rsi, qword ptr [rsp + 0x88]               
+  0x180D431C2  add     rsp, 0x60                                 
+  0x180D431C6  pop     rdi                                       
+  0x180D431C7  ret                                               
+  0x180D431C8  mov     rcx, qword ptr [rsp + 0x70]               
+  0x180D431CD  mov     dword ptr [rcx], 0xfffffffe               
+  0x180D431D3  add     rcx, 8                                    
+  0x180D431D7  mov     rdx, qword ptr [rsp + 0x80]               
+  0x180D431DF  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180D431E4  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180D431E9  mov     rsi, qword ptr [rsp + 0x88]               
+  0x180D431F1  add     rsp, 0x60                                 
+  0x180D431F5  pop     rdi                                       
+  0x180D431F6  ret                                               
+
+180D431F7:
+  0x180D431F7  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D431FC  nop                                               

@@ -1,0 +1,28 @@
+﻿[common] repo        = E:\Manosaba-VSCodeReady
+[common] unity       = E:\Unity\6000.0.48f1\Editor\Unity.exe
+[common] unity ver   = 6000.0.48f1_170d2541580d
+[common] game root   = E:/迅雷云盘/manosaba.game-STEAM.CHS/manosaba_game
+[common] out root    = E:\Manosaba-VSCodeReady\tools\unity-rebuild\out
+=== bootstrap (Boot scene + build settings) ===
+  bootstrap exit=0
+=== build Windows x64 Player ===
+  build SUCCEEDED: E:\Manosaba-VSCodeReady\dist\player\manosaba-rebuild.exe (3846.3 MB, 21.23s)
+=== run the Player (smoke) ===
+G5 PASS: player exit=0 assemblies=43 types=5 catalog=PARSED keys=57212 (32.84s)
+  game start: STARTED  spawned=Game<Runtime> (256 components), Naninovel<Runtime> (7811 components)  completion=NOT AWAITED (started by Unity's Start(); see engine samples)
+  naninovel: initialized=True initializing=False playing=False played='System/System_Title' spot='System/System_Title #18.0'
+  auto-advance: COMPLETED transitions=721 releases=0 final='12.00s System/System_Title System/System_Title #18.0 index=14 playing=False waiting=False skip=True'
+  engine: services=23 progress_last=0.9166666865348816 post_tasks=3 [StateManagerExtended.PerformPostEngineInitializationTasks,CustomVariableManager.InitializeLocalVariables,Closure.lambda_method]
+  post-init chain: engine states settings='SettingsStateMap' global='GlobalStateMap'
+    probe: settings slot='LoadOrDefault('Settings') COMPLETED (engine state before: SettingsStateMap)'
+    probe: global   slot='LoadOrDefault('GlobalSave') COMPLETED (engine state before: GlobalStateMap)'
+  LoadServiceState(SettingsStateMap): LocalizationManagerExtended=COMPLETED, VersioningManager=COMPLETED, WitchTrialsScriptPlayer=COMPLETED, TextPrinterManager=COMPLETED, AudioManagerExtended=COMPLETED, CameraManagerExtended=COMPLETED, UiManagerExtended=COMPLETED, WitchTrialsChoiceHandlerManager=COMPLETED
+  UI Initialize(): (skipped; set MANOSABA_GAMESTART_PROBE_UI_INIT=1)
+  providers: AddressableResourceProviderExtended{cache=31594, locatedFolders=1, locateRunners=[], loadRunners=[], loaded=31}; ProjectResourceProvider{cache=45, locatedFolders=1, locateRunners=[], loadRunners=[], loaded=0}; LocalResourceProvider{cache=0, locatedFolders=0, locateRunners=[], loadRunners=[], loaded=0}
+  post-init re-invoke: (skipped; set MANOSABA_GAMESTART_REINVOKE_POSTINIT=1)
+  post-init capture:   1 invocation(s) [COMPLETED]: all completed
+  post-init original:  (skipped; set MANOSABA_GAMESTART_REINVOKE_POSTINIT=1)
+  engine initializeTCS: state=1 (0=Pending 1=Succeeded 2=Faulted 3=Canceled), awaiter=none
+  capture caller:      at Manosaba.Integration.ManosabaGameStart.CapturePostInitTask (System.Object task) [0x00031] in E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Runtime\ManosabaGameStart.cs:1400 <- at Naninovel.Engine.Initialize (Naninovel.EngineParams params) [0x0037d] in .\Packages\com.elringus.naninovel\Runtime\Engine\Engine.cs:157 <- at Naninovel.Async.CompilerServices.MoveNextRunner`1[TStateMachine].Run () [0x00001] in .\Packages\com.elringus.naninovel\Runtime\Common\Async\UniTask\CompilerServices\MoveNextRunner.cs:14 <- at Naninovel.StateManager.PerformPostEngineInitializationTasks () [0x00159] in .\Packages\com.elringus.naninovel\Runtime\State\StateManager.cs:329
+  file IO: exists=False read='COMPLETED at t=19.25' write='COMPLETED at t=19.27'
+  log: errors=18 exceptions=0 first=''

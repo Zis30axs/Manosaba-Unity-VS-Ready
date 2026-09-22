@@ -1,0 +1,48 @@
+====================================================================================================
+FUNCTION RVA 0x59D3D0  VA 0x18059D3D0  size 0x52 (82 bytes)
+  managed: Naninovel.Command$$set_PlaybackSpot
+  managed: GigaCreation.Essentials.Overlays.Models.OverlayFader$$set_FadeTask
+  csig   : void Naninovel_Command__set_PlaybackSpot (Naninovel_Command_o* __this, Naninovel_PlaybackSpot_o value, const MethodInfo* method);
+  dump.cs: Naninovel.Command :: public void set_PlaybackSpot(PlaybackSpot value)
+  dump.cs: GigaCreation.Essentials.Overlays.Models.OverlayFader :: public void set_FadeTask(UniTask value)
+  fields of OverlayFader.<FadeInAsync>d__8:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of OverlayFader.<FadeOutAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x18059D3D0  cmp     dword ptr [rip + 0x2b3bded], 0               ; data_30D91C4
+  0x18059D3D7  movups  xmm0, xmmword ptr [rdx]                   
+  0x18059D3DA  movups  xmmword ptr [rcx + 0x18], xmm0               ; rcx-><FadeInAsync>d__8.<>4__this | <FadeOutAsync>d__6.<>4__this
+  0x18059D3DE  je      0x18059d421                               
+  0x18059D3E0  lea     r8, [rcx + 0x18]                             ; rcx-><FadeInAsync>d__8.<>4__this | <FadeOutAsync>d__6.<>4__this
+  0x18059D3E4  shr     r8, 0xc                                   
+  0x18059D3E8  lea     rcx, [rip + 0x2b97191]                       ; data_3134580
+  0x18059D3EF  and     r8d, 0x1fffff                             
+  0x18059D3F6  mov     eax, r8d                                  
+  0x18059D3F9  shr     rax, 6                                    
+  0x18059D3FD  and     r8d, 0x3f                                 
+  0x18059D401  lea     rdx, [rcx + rax*8]                        
+  0x18059D405  prefetchw byte ptr [rdx]                            
+  0x18059D408  nop     dword ptr [rax + rax]                     
+
+18059D410:
+  0x18059D410  mov     rax, qword ptr [rdx]                      
+  0x18059D413  mov     rcx, rax                                  
+  0x18059D416  bts     rcx, r8                                   
+  0x18059D41A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18059D41F  jne     0x18059d410                               
+
+18059D421:
+  0x18059D421  ret                                               

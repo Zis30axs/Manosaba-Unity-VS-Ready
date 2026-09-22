@@ -1,0 +1,26 @@
+====================================================================================================
+FUNCTION RVA 0xD42E50  VA 0x180D42E50  size 0x3B (59 bytes)
+  managed: GigaCreation.Tools.Debugging.General.DebugOptionsBase$$ResetInitializationFlag
+  csig   : void GigaCreation_Tools_Debugging_General_DebugOptionsBase__ResetInitializationFlag (const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.General.DebugOptionsBase :: private static void ResetInitializationFlag()
+  fields of DebugOptionsBase.<InitializeAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DebugOptionsBase
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D42E50  sub     rsp, 0x28                                 
+  0x180D42E54  cmp     byte ptr [rip + 0x239a59a], 0                ; data_30DD3F5
+  0x180D42E5B  jne     0x180d42e75                               
+  0x180D42E5D  lea     rcx, [rip + 0x20eea84]                       ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D42E64  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42E69  lock or dword ptr [rsp], 0                        
+  0x180D42E6E  mov     byte ptr [rip + 0x239a580], 1                ; data_30DD3F5
+
+180D42E75:
+  0x180D42E75  mov     rax, qword ptr [rip + 0x20eea6c]             ; TYPE GigaCreation.Tools.Debugging.General.DebugOptionsBase_TypeInfo
+  0x180D42E7C  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D42E83  mov     byte ptr [rcx], 0                         
+  0x180D42E86  add     rsp, 0x28                                 
+  0x180D42E8A  ret                                               

@@ -15,24 +15,31 @@ namespace GigaCreation.Tools.Debugging.Core
     	[Token(Token = "0x17000001")]
     	public IReactiveProperty<bool> IsDebugMode
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 -- shared trivial getter: mov rax, [rcx+0x10] (`_isDebugMode`)
     		[Token(Token = "0x6000003")]
     		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0", Slot = "4")]
     		get
     		{
-    			return null;
+    			return _isDebugMode;
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD42010, 209 B -- new ReactiveProperty<bool>(initialMode) (0x1808C4A20) stored to +0x10
+    	// Annotated disassembly: work/title-path/disas/dm_01_ctor.txt
     	[Token(Token = "0x6000004")]
     	[Address(RVA = "0xD42010", Offset = "0xD40A10", VA = "0x180D42010")]
     	public DebugManager(bool initialMode)
     	{
+    		_isDebugMode = new ReactiveProperty<bool>(initialMode);
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD420F0, 69 B -- tail call ReactiveProperty<bool>.Dispose on +0x10
+    	// Annotated disassembly: work/title-path/disas/dm_02_Dispose.txt
     	[Token(Token = "0x6000005")]
     	[Address(RVA = "0xD420F0", Offset = "0xD40AF0", VA = "0x180D420F0", Slot = "5")]
     	public void Dispose()
     	{
+    		_isDebugMode.Dispose();
     	}
     }
 }

@@ -117,47 +117,105 @@ namespace GigaCreation.Essentials.Overlays.Models
     	[Token(Token = "0x17000002")]
     	public UniTask FadeTask
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x331710 (get, folded) / 0x59D3D0 (set)
+    		// Auto-property: the getter copies the 16-byte UniTask at +0x18 (`movups xmm0,[rdx+0x18]`), the setter stores it there
+    		// (with the GC write barrier) -- `<FadeTask>k__BackingField`.  OverlayPresenter's request handler assigns it for a
+    		// WaitForCompletion request and FadeInAsync / FadeOutAsync await it.
+    		// Annotated disassembly: work/title-path/disas/ovf_01_get_FadeTask, ovf_02_set_FadeTask.txt
     		[Token(Token = "0x6000012")]
     		[Address(RVA = "0x331710", Offset = "0x330110", VA = "0x180331710")]
     		[CompilerGenerated]
-    		private get
-    		{
-    			return default(UniTask);
-    		}
+    		private get;
     		[Token(Token = "0x6000013")]
     		[Address(RVA = "0x59D3D0", Offset = "0x59BDD0", VA = "0x18059D3D0", Slot = "4")]
     		[CompilerGenerated]
-    		set
-    		{
-    		}
+    		set;
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD4AE0, 157 B -- a FadeOverlayRequest {IsFadeOut = 1 (+0x10), Duration (+0x14),
+    	//   Color (+0x18..+0x2B), WaitForCompletion = 0 (+0x2C)} is pushed to `_requestSubject` (+0x10) through IObserver<T>.OnNext
+    	//   (tail jump to the interface thunk 0x18007F740); OverlayPresenter turns it into Overlay.FadeAsync
+    	// Annotated disassembly: work/title-path/disas/ovf_03_FadeOut.txt
     	[Token(Token = "0x6000014")]
     	[Address(RVA = "0xCD4AE0", Offset = "0xCD34E0", VA = "0x180CD4AE0", Slot = "5")]
     	public void FadeOut(float duration, [Optional] Color? color)
     	{
+    		_requestSubject.OnNext(new FadeOverlayRequest
+    		{
+    			IsFadeOut = true,
+    			Duration = duration,
+    			Color = color,
+    			WaitForCompletion = false
+    		});
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD4B80 (kickoff) / 0xCD5430 (<FadeOutAsync>d__6.MoveNext)
+    	// The body lives in FadeOutAsyncCore (XxxCore convention; the <FadeOutAsync>d__6 metadata stays).
+    	//   A request {IsFadeOut = 1, Duration, Color, WaitForCompletion = 1, Token = ct (+0x30)} goes to OnNext (0x180CD5577); the
+    	//   presenter stores Overlay.FadeAsync(request) into FadeTask synchronously, and the method then awaits FadeTask (+0x18,
+    	//   0x180CD557C) -- the only await state.
+    	// Annotated disassembly: work/title-path/disas/ovf_04_FadeOutAsync, ovf_05_FadeOutAsync_MoveNext.txt
     	[Token(Token = "0x6000015")]
     	[Address(RVA = "0xCD4B80", Offset = "0xCD3580", VA = "0x180CD4B80", Slot = "6")]
     	[AsyncStateMachine(typeof(_003CFadeOutAsync_003Ed__6))]
     	public UniTask FadeOutAsync(float duration, [Optional] Color? color, [Optional] CancellationToken ct)
     	{
-    		return default(UniTask);
+    		return FadeOutAsyncCore(duration, color, ct);
     	}
 
+    	private async UniTask FadeOutAsyncCore(float duration, Color? color, CancellationToken ct)
+    	{
+    		_requestSubject.OnNext(new FadeOverlayRequest
+    		{
+    			IsFadeOut = true,
+    			Duration = duration,
+    			Color = color,
+    			WaitForCompletion = true,
+    			Token = ct
+    		});
+    		await FadeTask;
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD4D60, 157 B -- FadeOut's twin with IsFadeOut = 0 (+0x10).  The stub dropped
+    	//   every request, so the Boot scene's ForefrontOverlay (an opaque white full-screen Image that EntrySequence fades in
+    	//   through FadeIn(0) / FadeInAsync) was never removed: the standalone Player showed a white screen over the title.
+    	// Annotated disassembly: work/title-path/disas/ovf_06_FadeIn.txt
     	[Token(Token = "0x6000016")]
     	[Address(RVA = "0xCD4D60", Offset = "0xCD3760", VA = "0x180CD4D60", Slot = "7")]
     	public void FadeIn(float duration, [Optional] Color? color)
     	{
+    		_requestSubject.OnNext(new FadeOverlayRequest
+    		{
+    			IsFadeOut = false,
+    			Duration = duration,
+    			Color = color,
+    			WaitForCompletion = false
+    		});
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD4E00 (kickoff) / 0xCD50A0 (<FadeInAsync>d__8.MoveNext, 902 B)
+    	// The body lives in FadeInAsyncCore.  Request {IsFadeOut = 0, Duration (+0x14), Color, WaitForCompletion = 1, Token = ct}
+    	//   to OnNext (0x180CD51E7), then `await FadeTask` (+0x18, 0x180CD51EC).
+    	// Annotated disassembly: work/title-path/disas/ovf_07_FadeInAsync, ovf_08_FadeInAsync_MoveNext.txt
     	[Token(Token = "0x6000017")]
     	[Address(RVA = "0xCD4E00", Offset = "0xCD3800", VA = "0x180CD4E00", Slot = "8")]
     	[AsyncStateMachine(typeof(_003CFadeInAsync_003Ed__8))]
     	public UniTask FadeInAsync(float duration, [Optional] Color? color, [Optional] CancellationToken ct)
     	{
-    		return default(UniTask);
+    		return FadeInAsyncCore(duration, color, ct);
+    	}
+
+    	private async UniTask FadeInAsyncCore(float duration, Color? color, CancellationToken ct)
+    	{
+    		_requestSubject.OnNext(new FadeOverlayRequest
+    		{
+    			IsFadeOut = false,
+    			Duration = duration,
+    			Color = color,
+    			WaitForCompletion = true,
+    			Token = ct
+    		});
+    		await FadeTask;
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0, 5 B

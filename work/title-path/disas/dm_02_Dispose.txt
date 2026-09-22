@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xD420F0  VA 0x180D420F0  size 0x49 (73 bytes)
+  managed: GigaCreation.Tools.Debugging.Core.DebugManager$$Dispose
+  csig   : void GigaCreation_Tools_Debugging_Core_DebugManager__Dispose (GigaCreation_Tools_Debugging_Core_DebugManager_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Core.DebugManager :: public void Dispose()
+  fields of DebugManager.UIMode:
+      +0x0    value__                        int
+  fields of DebugManager.UIState:
+      +0x10   mode                           DebugManager.UIMode
+      +0x14   m_Open                         bool
+  fields of DebugManager.<>c:
+      +0x0    <>9                            static readonly DebugManager.<>c
+      +0x8    <>9__49_0                      static Action<bool>
+      +0x10   <>9__49_1                      static Action
+      +0x18   <>9__60_0                      static Func<DebugUI.Widget, int>
+  fields of DebugManager.<>c__DisplayClass67_0:
+      +0x10   displayName                    string
+====================================================================================================
+  0x180D420F0  push    rbx                                       
+  0x180D420F2  sub     rsp, 0x20                                 
+  0x180D420F6  cmp     byte ptr [rip + 0x239b2ef], 0                ; data_30DD3EC
+  0x180D420FD  mov     rbx, rcx                                  
+  0x180D42100  jne     0x180d4211a                               
+  0x180D42102  lea     rcx, [rip + 0x2118df7]                       ; METHODINFO Method$UniRx.ReactiveProperty<bool>.Dispose()
+  0x180D42109  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4210E  lock or dword ptr [rsp], 0                        
+  0x180D42113  mov     byte ptr [rip + 0x239b2d2], 1                ; data_30DD3EC
+
+180D4211A:
+  0x180D4211A  mov     rcx, qword ptr [rbx + 0x10]                  ; rbx->UIState.mode | <>c.<>9__49_1 | <>c__DisplayClass67_0.displayName
+  0x180D4211E  test    rcx, rcx                                  
+  0x180D42121  je      0x180d42134                               
+  0x180D42123  mov     rdx, qword ptr [rip + 0x2118dd6]             ; METHODINFO Method$UniRx.ReactiveProperty<bool>.Dispose()
+  0x180D4212A  add     rsp, 0x20                                 
+  0x180D4212E  pop     rbx                                       
+  0x180D4212F  jmp     0x1808c52b0                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$Dispose
+
+180D42134:
+  0x180D42134  call    0x180246730                                  ; THROW NullReferenceException

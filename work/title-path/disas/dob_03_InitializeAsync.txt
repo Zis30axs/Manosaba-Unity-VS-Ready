@@ -1,0 +1,116 @@
+====================================================================================================
+FUNCTION RVA 0xD42CB0  VA 0x180D42CB0  size 0x191 (401 bytes)
+  managed: GigaCreation.Tools.Debugging.General.DebugOptionsBase$$InitializeAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o GigaCreation_Tools_Debugging_General_DebugOptionsBase__InitializeAsync (GigaCreation_Tools_Debugging_General_DebugOptionsBase_o* __this, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.General.DebugOptionsBase :: private UniTask InitializeAsync(CancellationToken ct)
+  fields of DebugOptionsBase.<InitializeAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DebugOptionsBase
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D42CB0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D42CB5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D42CBA  push    rdi                                       
+  0x180D42CBB  sub     rsp, 0x70                                 
+  0x180D42CBF  cmp     byte ptr [rip + 0x239a72e], 0                ; data_30DD3F4
+  0x180D42CC6  mov     rbx, r8                                   
+  0x180D42CC9  mov     rdi, rdx                                  
+  0x180D42CCC  mov     rsi, rcx                                  
+  0x180D42CCF  jne     0x180d42ce9                               
+  0x180D42CD1  lea     rcx, [rip + 0x20eec20]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<DebugOptionsBase.<InitializeAsync>d__6>()
+  0x180D42CD8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D42CDD  lock or dword ptr [rsp], 0                        
+  0x180D42CE2  mov     byte ptr [rip + 0x239a70b], 1                ; data_30DD3F4
+
+180D42CE9:
+  0x180D42CE9  xor     eax, eax                                  
+  0x180D42CEB  lea     r9, [rip + 0x23ab5ae]                        ; data_30EE2A0
+  0x180D42CF2  mov     qword ptr [rsp + 0x30], rax               
+  0x180D42CF7  xorps   xmm0, xmm0                                
+  0x180D42CFA  mov     qword ptr [rsp + 0x48], rax               
+  0x180D42CFF  xorps   xmm1, xmm1                                
+  0x180D42D02  mov     qword ptr [rsp + 0x60], rax               
+  0x180D42D07  mov     eax, dword ptr [rip + 0x23964b7]             ; data_30D91C4
+  0x180D42D0D  movdqu  xmmword ptr [rsp + 0x50], xmm0            
+  0x180D42D13  movups  xmmword ptr [rsp + 0x38], xmm1            
+  0x180D42D18  test    eax, eax                                  
+  0x180D42D1A  je      0x180d42d61                               
+  0x180D42D1C  lea     r8, [rsp + 0x38]                          
+  0x180D42D21  shr     r8, 0xc                                   
+  0x180D42D25  and     r8d, 0x1fffff                             
+  0x180D42D2C  mov     eax, r8d                                  
+  0x180D42D2F  shr     rax, 6                                    
+  0x180D42D33  and     r8d, 0x3f                                 
+  0x180D42D37  lea     rdx, [r9 + rax*8]                         
+  0x180D42D3B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D42D42:
+  0x180D42D42  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D42D49  mov     rcx, rax                                  
+  0x180D42D4C  bts     rcx, r8                                   
+  0x180D42D50  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D42D59  jne     0x180d42d42                               
+  0x180D42D5B  mov     eax, dword ptr [rip + 0x2396463]             ; data_30D91C4
+
+180D42D61:
+  0x180D42D61  mov     qword ptr [rsp + 0x50], rdi               
+  0x180D42D66  test    eax, eax                                  
+  0x180D42D68  je      0x180d42daf                               
+  0x180D42D6A  lea     r8, [rsp + 0x50]                          
+  0x180D42D6F  shr     r8, 0xc                                   
+  0x180D42D73  and     r8d, 0x1fffff                             
+  0x180D42D7A  mov     eax, r8d                                  
+  0x180D42D7D  shr     rax, 6                                    
+  0x180D42D81  and     r8d, 0x3f                                 
+  0x180D42D85  lea     rdx, [r9 + rax*8]                         
+  0x180D42D89  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D42D90:
+  0x180D42D90  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D42D97  mov     rcx, rax                                  
+  0x180D42D9A  bts     rcx, r8                                   
+  0x180D42D9E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D42DA7  jne     0x180d42d90                               
+  0x180D42DA9  mov     eax, dword ptr [rip + 0x2396415]             ; data_30D91C4
+
+180D42DAF:
+  0x180D42DAF  mov     qword ptr [rsp + 0x48], rbx               
+  0x180D42DB4  test    eax, eax                                  
+  0x180D42DB6  je      0x180d42df9                               
+  0x180D42DB8  lea     r8, [rsp + 0x48]                          
+  0x180D42DBD  shr     r8, 0xc                                   
+  0x180D42DC1  and     r8d, 0x1fffff                             
+  0x180D42DC8  mov     eax, r8d                                  
+  0x180D42DCB  shr     rax, 6                                    
+  0x180D42DCF  and     r8d, 0x3f                                 
+  0x180D42DD3  lea     rdx, [r9 + rax*8]                         
+  0x180D42DD7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D42DDE  nop                                               
+
+180D42DE0:
+  0x180D42DE0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D42DE7  mov     rcx, rax                                  
+  0x180D42DEA  bts     rcx, r8                                   
+  0x180D42DEE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D42DF7  jne     0x180d42de0                               
+
+180D42DF9:
+  0x180D42DF9  mov     r8, qword ptr [rip + 0x20eeaf8]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<DebugOptionsBase.<InitializeAsync>d__6>()
+  0x180D42E00  lea     rdx, [rsp + 0x30]                         
+  0x180D42E05  lea     rcx, [rsp + 0x38]                         
+  0x180D42E0A  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180D42E12  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D42E17  lea     rdx, [rsp + 0x38]                         
+  0x180D42E1C  lea     rcx, [rsp + 0x20]                         
+  0x180D42E21  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180D42E26  lea     r11, [rsp + 0x70]                         
+  0x180D42E2B  mov     rbx, qword ptr [r11 + 0x10]               
+  0x180D42E2F  movups  xmm0, xmmword ptr [rax]                   
+  0x180D42E32  mov     rax, rsi                                  
+  0x180D42E35  movups  xmmword ptr [rsi], xmm0                   
+  0x180D42E38  mov     rsi, qword ptr [r11 + 0x18]                  ; r11-><InitializeAsync>d__6.ct
+  0x180D42E3C  mov     rsp, r11                                  
+  0x180D42E3F  pop     rdi                                       
+  0x180D42E40  ret                                               

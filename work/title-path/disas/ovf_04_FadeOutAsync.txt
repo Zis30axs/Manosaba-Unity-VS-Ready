@@ -1,0 +1,136 @@
+====================================================================================================
+FUNCTION RVA 0xCD4B80  VA 0x180CD4B80  size 0x1DB (475 bytes)
+  managed: GigaCreation.Essentials.Overlays.Models.OverlayFader$$FadeOutAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o GigaCreation_Essentials_Overlays_Models_OverlayFader__FadeOutAsync (GigaCreation_Essentials_Overlays_Models_OverlayFader_o* __this, float duration, System_Nullable_Color__o color, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Overlays.Models.OverlayFader :: public UniTask FadeOutAsync(float duration, Nullable<Color> color, CancellationToken ct)
+  fields of OverlayFader.<FadeInAsync>d__8:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of OverlayFader.<FadeOutAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD4B80  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD4B85  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CD4B8A  push    rdi                                       
+  0x180CD4B8B  sub     rsp, 0x90                                 
+  0x180CD4B92  cmp     byte ptr [rip + 0x24085a5], 0                ; data_30DD13E
+  0x180CD4B99  mov     rdi, r9                                   
+  0x180CD4B9C  movaps  xmmword ptr [rsp + 0x80], xmm6            
+  0x180CD4BA4  mov     rbx, rdx                                  
+  0x180CD4BA7  movaps  xmm6, xmm2                                
+  0x180CD4BAA  mov     rsi, rcx                                  
+  0x180CD4BAD  jne     0x180cd4bc7                               
+  0x180CD4BAF  lea     rcx, [rip + 0x2192ad2]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<OverlayFader.<FadeOutAsync>d__6>()
+  0x180CD4BB6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD4BBB  lock or dword ptr [rsp], 0                        
+  0x180CD4BC0  mov     byte ptr [rip + 0x2408577], 1                ; data_30DD13E
+
+180CD4BC7:
+  0x180CD4BC7  mov     ecx, dword ptr [rip + 0x24045f7]             ; data_30D91C4
+  0x180CD4BCD  lea     r9, [rip + 0x24196cc]                        ; data_30EE2A0
+  0x180CD4BD4  xor     eax, eax                                  
+  0x180CD4BD6  xorps   xmm0, xmm0                                
+  0x180CD4BD9  mov     qword ptr [rsp + 0x30], rax               
+  0x180CD4BDE  xorps   xmm1, xmm1                                
+  0x180CD4BE1  mov     qword ptr [rsp + 0x48], rax               
+  0x180CD4BE6  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CD4BEC  mov     qword ptr [rsp + 0x60], rax               
+  0x180CD4BF1  mov     qword ptr [rsp + 0x68], rax               
+  0x180CD4BF6  movdqa  xmmword ptr [rsp + 0x70], xmm0            
+  0x180CD4BFC  movups  xmmword ptr [rsp + 0x38], xmm1            
+  0x180CD4C01  test    ecx, ecx                                  
+  0x180CD4C03  je      0x180cd4c51                               
+  0x180CD4C05  lea     r8, [rsp + 0x38]                          
+  0x180CD4C0A  shr     r8, 0xc                                   
+  0x180CD4C0E  and     r8d, 0x1fffff                             
+  0x180CD4C15  mov     edx, r8d                                  
+  0x180CD4C18  shr     rdx, 6                                    
+  0x180CD4C1C  and     r8d, 0x3f                                 
+  0x180CD4C20  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CD4C29  nop     dword ptr [rax]                           
+
+180CD4C30:
+  0x180CD4C30  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CD4C38  mov     rcx, rax                                  
+  0x180CD4C3B  bts     rcx, r8                                   
+  0x180CD4C3F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CD4C49  jne     0x180cd4c30                               
+  0x180CD4C4B  mov     ecx, dword ptr [rip + 0x2404573]             ; data_30D91C4
+
+180CD4C51:
+  0x180CD4C51  mov     qword ptr [rsp + 0x48], rbx               
+  0x180CD4C56  test    ecx, ecx                                  
+  0x180CD4C58  je      0x180cd4ca1                               
+  0x180CD4C5A  lea     r8, [rsp + 0x48]                          
+  0x180CD4C5F  shr     r8, 0xc                                   
+  0x180CD4C63  and     r8d, 0x1fffff                             
+  0x180CD4C6A  mov     edx, r8d                                  
+  0x180CD4C6D  shr     rdx, 6                                    
+  0x180CD4C71  and     r8d, 0x3f                                 
+  0x180CD4C75  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CD4C7E  nop                                               
+
+180CD4C80:
+  0x180CD4C80  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CD4C88  mov     rcx, rax                                  
+  0x180CD4C8B  bts     rcx, r8                                   
+  0x180CD4C8F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CD4C99  jne     0x180cd4c80                               
+  0x180CD4C9B  mov     ecx, dword ptr [rip + 0x2404523]             ; data_30D91C4
+
+180CD4CA1:
+  0x180CD4CA1  mov     eax, dword ptr [rdi + 0x10]               
+  0x180CD4CA4  mov     dword ptr [rsp + 0x64], eax               
+  0x180CD4CA8  mov     rax, qword ptr [rsp + 0xc0]               
+  0x180CD4CB0  mov     qword ptr [rsp + 0x68], rax               
+  0x180CD4CB5  movss   dword ptr [rsp + 0x50], xmm6              
+  0x180CD4CBB  movups  xmm0, xmmword ptr [rdi]                   
+  0x180CD4CBE  movups  xmmword ptr [rsp + 0x54], xmm0            
+  0x180CD4CC3  test    ecx, ecx                                  
+  0x180CD4CC5  je      0x180cd4d0b                               
+  0x180CD4CC7  lea     r8, [rsp + 0x68]                          
+  0x180CD4CCC  shr     r8, 0xc                                   
+  0x180CD4CD0  and     r8d, 0x1fffff                             
+  0x180CD4CD7  mov     edx, r8d                                  
+  0x180CD4CDA  shr     rdx, 6                                    
+  0x180CD4CDE  and     r8d, 0x3f                                 
+  0x180CD4CE2  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CD4CEB  nop     dword ptr [rax + rax]                     
+
+180CD4CF0:
+  0x180CD4CF0  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CD4CF8  mov     rcx, rax                                  
+  0x180CD4CFB  bts     rcx, r8                                   
+  0x180CD4CFF  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CD4D09  jne     0x180cd4cf0                               
+
+180CD4D0B:
+  0x180CD4D0B  mov     r8, qword ptr [rip + 0x2192976]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<OverlayFader.<FadeOutAsync>d__6>()
+  0x180CD4D12  lea     rdx, [rsp + 0x30]                         
+  0x180CD4D17  lea     rcx, [rsp + 0x38]                         
+  0x180CD4D1C  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180CD4D24  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CD4D29  lea     rdx, [rsp + 0x38]                         
+  0x180CD4D2E  lea     rcx, [rsp + 0x20]                         
+  0x180CD4D33  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180CD4D38  lea     r11, [rsp + 0x90]                         
+  0x180CD4D40  mov     rbx, qword ptr [r11 + 0x10]               
+  0x180CD4D44  movaps  xmm6, xmmword ptr [r11 - 0x10]            
+  0x180CD4D49  movups  xmm0, xmmword ptr [rax]                   
+  0x180CD4D4C  mov     rax, rsi                                  
+  0x180CD4D4F  movups  xmmword ptr [rsi], xmm0                   
+  0x180CD4D52  mov     rsi, qword ptr [r11 + 0x18]                  ; r11-><FadeInAsync>d__8.<>4__this | <FadeOutAsync>d__6.<>4__this
+  0x180CD4D56  mov     rsp, r11                                  
+  0x180CD4D59  pop     rdi                                       
+  0x180CD4D5A  ret                                               

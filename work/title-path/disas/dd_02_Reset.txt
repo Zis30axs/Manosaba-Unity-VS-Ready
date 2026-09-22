@@ -1,0 +1,72 @@
+====================================================================================================
+FUNCTION RVA 0xD47120  VA 0x180D47120  size 0x104 (260 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DebugDisplay$$Reset
+  csig   : void GigaCreation_Tools_Debugging_Ui_DebugDisplay__Reset (GigaCreation_Tools_Debugging_Ui_DebugDisplay_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DebugDisplay :: private void Reset()
+====================================================================================================
+  0x180D47120  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D47125  push    rdi                                       
+  0x180D47126  sub     rsp, 0x20                                 
+  0x180D4712A  cmp     byte ptr [rip + 0x23962ea], 0                ; data_30DD41B
+  0x180D47131  mov     rbx, rcx                                  
+  0x180D47134  jne     0x180d4714e                               
+  0x180D47136  lea     rcx, [rip + 0x210b143]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Canvas>()
+  0x180D4713D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47142  lock or dword ptr [rsp], 0                        
+  0x180D47147  mov     byte ptr [rip + 0x23962cd], 1                ; data_30DD41B
+
+180D4714E:
+  0x180D4714E  xor     edx, edx                                  
+  0x180D47150  mov     rcx, rbx                                  
+  0x180D47153  call    0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+  0x180D47158  cmp     dword ptr [rip + 0x2392065], 0               ; data_30D91C4
+  0x180D4715F  lea     rdi, [rip + 0x23a713a]                       ; data_30EE2A0
+  0x180D47166  mov     qword ptr [rbx + 0x20], rax               
+  0x180D4716A  je      0x180d471aa                               
+  0x180D4716C  lea     r8, [rbx + 0x20]                          
+  0x180D47170  shr     r8, 0xc                                   
+  0x180D47174  and     r8d, 0x1fffff                             
+  0x180D4717B  mov     eax, r8d                                  
+  0x180D4717E  shr     rax, 6                                    
+  0x180D47182  and     r8d, 0x3f                                 
+  0x180D47186  lea     rdx, [rdi + rax*8]                        
+  0x180D4718A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D47191:
+  0x180D47191  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D47198  mov     rcx, rax                                  
+  0x180D4719B  bts     rcx, r8                                   
+  0x180D4719F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D471A8  jne     0x180d47191                               
+
+180D471AA:
+  0x180D471AA  mov     r8, qword ptr [rip + 0x210b0cf]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Canvas>()
+  0x180D471B1  lea     rdx, [rsp + 0x30]                         
+  0x180D471B6  mov     rcx, rbx                                  
+  0x180D471B9  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180D471BE  cmp     dword ptr [rip + 0x2391fff], 0               ; data_30D91C4
+  0x180D471C5  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D471CA  mov     qword ptr [rbx + 0x28], rax               
+  0x180D471CE  je      0x180d47219                               
+  0x180D471D0  lea     r8, [rbx + 0x28]                          
+  0x180D471D4  shr     r8, 0xc                                   
+  0x180D471D8  and     r8d, 0x1fffff                             
+  0x180D471DF  mov     eax, r8d                                  
+  0x180D471E2  shr     rax, 6                                    
+  0x180D471E6  and     r8d, 0x3f                                 
+  0x180D471EA  lea     rdx, [rdi + rax*8]                        
+  0x180D471EE  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D471F5  nop     word ptr [rax + rax]                      
+
+180D47200:
+  0x180D47200  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D47207  mov     rcx, rax                                  
+  0x180D4720A  bts     rcx, r8                                   
+  0x180D4720E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D47217  jne     0x180d47200                               
+
+180D47219:
+  0x180D47219  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D4721E  add     rsp, 0x20                                 
+  0x180D47222  pop     rdi                                       
+  0x180D47223  ret                                               

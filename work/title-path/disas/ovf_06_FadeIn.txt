@@ -1,0 +1,64 @@
+====================================================================================================
+FUNCTION RVA 0xCD4D60  VA 0x180CD4D60  size 0x9D (157 bytes)
+  managed: GigaCreation.Essentials.Overlays.Models.OverlayFader$$FadeIn
+  csig   : void GigaCreation_Essentials_Overlays_Models_OverlayFader__FadeIn (GigaCreation_Essentials_Overlays_Models_OverlayFader_o* __this, float duration, System_Nullable_Color__o color, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Overlays.Models.OverlayFader :: public void FadeIn(float duration, Nullable<Color> color)
+  fields of OverlayFader.<FadeInAsync>d__8:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+  fields of OverlayFader.<FadeOutAsync>d__6:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      OverlayFader
+      +0x20   duration                       float
+      +0x24   color                          Nullable<Color>
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD4D60  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD4D65  push    rdi                                       
+  0x180CD4D66  sub     rsp, 0x30                                 
+  0x180CD4D6A  cmp     byte ptr [rip + 0x24083ce], 0                ; data_30DD13F
+  0x180CD4D71  mov     rdi, r8                                   
+  0x180CD4D74  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CD4D79  mov     rbx, rcx                                  
+  0x180CD4D7C  movaps  xmm6, xmm1                                
+  0x180CD4D7F  jne     0x180cd4daa                               
+  0x180CD4D81  lea     rcx, [rip + 0x21928f8]                       ; TYPE GigaCreation.Essentials.Overlays.Models.FadeOverlayRequest_TypeInfo
+  0x180CD4D88  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD4D8D  lock or dword ptr [rsp], 0                        
+  0x180CD4D92  lea     rcx, [rip + 0x21928f7]                       ; TYPE System.IObserver<FadeOverlayRequest>_TypeInfo
+  0x180CD4D99  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD4D9E  lock or dword ptr [rsp], 0                        
+  0x180CD4DA3  mov     byte ptr [rip + 0x2408395], 1                ; data_30DD13F
+
+180CD4DAA:
+  0x180CD4DAA  mov     rcx, qword ptr [rip + 0x21928cf]             ; TYPE GigaCreation.Essentials.Overlays.Models.FadeOverlayRequest_TypeInfo
+  0x180CD4DB1  mov     rbx, qword ptr [rbx + 0x10]               
+  0x180CD4DB5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD4DBA  test    rax, rax                                  
+  0x180CD4DBD  je      0x180cd4df8                               
+  0x180CD4DBF  mov     ecx, dword ptr [rdi + 0x10]               
+  0x180CD4DC2  movss   dword ptr [rax + 0x14], xmm6              
+  0x180CD4DC7  mov     byte ptr [rax + 0x10], 0                  
+  0x180CD4DCB  mov     byte ptr [rax + 0x2c], 0                  
+  0x180CD4DCF  movups  xmm0, xmmword ptr [rdi]                   
+  0x180CD4DD2  movups  xmmword ptr [rax + 0x18], xmm0               ; rax-><FadeInAsync>d__8.<>4__this | <FadeOutAsync>d__6.<>4__this
+  0x180CD4DD6  mov     dword ptr [rax + 0x28], ecx               
+  0x180CD4DD9  test    rbx, rbx                                  
+  0x180CD4DDC  je      0x180cd4df8                               
+  0x180CD4DDE  mov     r9, rax                                   
+  0x180CD4DE1  mov     r8, rbx                                   
+  0x180CD4DE4  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CD4DE9  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CD4DEE  add     rsp, 0x30                                 
+  0x180CD4DF2  pop     rdi                                       
+  0x180CD4DF3  jmp     0x18007f740                               
+
+180CD4DF8:
+  0x180CD4DF8  call    0x180246730                                  ; THROW NullReferenceException
