@@ -3789,3 +3789,36 @@ opt-in 的"跳过动画"（`MANOSABA_GAMESTART_SKIP_MOVIES=1`，等同玩家的�
 
 **还没做 / 已知偏差**：图集里的 Sprite 是整张 quad，不是 SpriteDicing 的骰子网格（`DicedSpriteActor` 只读 `Sprite.vertices/uv/triangles/texture`，
 画面相同）；`RenderToTexture` 的常数（正交 0..100）未逐字节对照；`ChangePivot` 的回退取的是 `Position` 而不是 `Pivot`（出货代码如此，已在注释里标明）。
+
+### 44.1 复核：G3 收缩守卫的 −860、Adv11 停点的真实身份、Diced 图集命名
+
+**G3 的 −860 location 已用真实目录数据核实，不是估计**：`CatalogDump.Run` 对刚构建的 `Library/com.unity.addressables/aa/Windows/catalog.bin`
+重新导出（`catalog_dump_ours_fresh.json`，2026-09-22），`compare_catalog_keys.py` 的结论：
+
+```
+plan entries with an address      : 30382
+  matched against shipped KEYS      : 30382 / 30382
+  matched against shipped ADDRESSES : 30382 / 30382
+  matched against OUR rebuilt KEYS  : 30382 / 30382
+  not a shipped address             : 0
+```
+
+即本项目计划里的全部 30,382 个地址，在出货目录和重建目录里都能找到，**没有任何一个被静默丢弃**。之前
+`g3_content_build.ps1` 的收缩守卫报的 `shrank: true`（−860 location，容差 167）比较的是旧基线（18 个图集资产替换前的 455 个
+Sprite/Texture 叶子条目），不是内容丢失；已用这次的真实数字核实并重设基线（`g3_baseline_after_atlas.json`）。
+`g3_content_build.json` 上一次记录的 `status: FAIL` 是那次收缩守卫误判的产物，读者不应把它当作当前内容目录的状态；
+真实状态以本节的 key-by-key 比对为准（下次跑 G3 会用重设后的基线得到 PASS）。
+
+**Diced 图集命名也已核实，不是假设**：把 `diced_atlas_result.json` 里每个图集的 sprite 名单，同 440 个剧本里
+`ModifyCharacterExtended`/`ModifyCharacter` 对这 18 个角色 id 实际用过的 appearance 值逐一核对——**0 个缺失**
+（例如 CreatureAlisa 用过 20 个 appearance，图集有 44 张，全部覆盖；Yuki 用过 20 个，图集正好 20 张，全部覆盖）。
+
+**Adv11 #55.0 的停点是脚本自己的 `Stop` 命令，不是卡死**：`Act01_Chapter01_Adv11.asset.json` 的最后一条命令（第 24 条，
+`lineIndex 54`）就是 `Stop`（等价于标题脚本的 `@stop`），`playing=False waiting=False` 与此完全吻合——探针没有让脚本继续
+播放的手段（跳过动画/点选项都不适用于 `Stop`），第 29 轮在这里停下是脚本自身的终点，不是新的阻塞点。第 28 轮日志里出现的
+"Choice callback has nowhere to return" 是探针时序问题（选项点击发生在脚本仍在播放、下一个 `@choice` 兄弟命令还没加入时），
+已在探针里修（`PickFirstChoice` 现在只在 `playing=false` 时点击），不是游戏代码缺陷。
+
+**已知的验证边界**：`MANOSABA_GAMESTART_SKIP_MOVIES=1` 只验证到 `MoviePlayer.Play` 开始解码（"Color primaries ... is unknown
+or unsupported by WindowsMediaFoundation" 证明真的启动了解码），没有经过 `PreparePlayer`/播放完成/`loopPointReached`；
+`@choice` 路径则是真实执行的（`LoadCustomButtonPrefab` → `Instantiate` 真实跑过），只有"点击"这个动作是探针合成的。
