@@ -1,0 +1,695 @@
+====================================================================================================
+FUNCTION RVA 0x3982A0  VA 0x1803982A0  size 0xA4C (2636 bytes)
+  managed: WitchTrials.Models.DefaultLocaleSelector.<LoadAsync>d__9$$MoveNext
+  csig   : void WitchTrials_Models_DefaultLocaleSelector__LoadAsync_d__9__MoveNext (WitchTrials_Models_DefaultLocaleSelector__LoadAsync_d__9_o __this, const MethodInfo* method);
+  dump.cs: DefaultLocaleSelector.<LoadAsync>d__9 :: private void MoveNext()
+  fields of WitchTrials.Models.DefaultLocaleSelector:
+      +0x10   <DefaultLocale>k__BackingField LocaleKind
+      +0x18   <AvailableTextLanguages>k__BackingField IList<string>
+  fields of DefaultLocaleSelector.ConfigJson:
+      +0x10   AvailableTextLang              IList<string>
+      +0x18   UnavailableLangFallback        IDictionary<string, string>
+  fields of DefaultLocaleSelector.<>c:
+      +0x0    <>9                            static readonly DefaultLocaleSelector.<>c
+      +0x8    <>9__9_0                       static Func<LocaleKind, SystemLanguage>
+      +0x10   <>9__9_1                       static Func<LocaleKind, string>
+  fields of DefaultLocaleSelector.<LoadAsync>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DefaultLocaleSelector
+      +0x28   <key>5__2                      string
+      +0x30   <jsonPath>5__3                 string
+      +0x38   <>u__1                         TaskAwaiter<string>
+====================================================================================================
+  0x1803982A0  mov     qword ptr [rsp + 8], rcx                  
+  0x1803982A5  push    rbx                                       
+  0x1803982A6  push    rsi                                       
+  0x1803982A7  push    rdi                                       
+  0x1803982A8  push    r12                                       
+  0x1803982AA  push    r13                                       
+  0x1803982AC  push    r14                                       
+  0x1803982AE  push    r15                                       
+  0x1803982B0  sub     rsp, 0x60                                 
+  0x1803982B4  mov     rdi, rcx                                  
+  0x1803982B7  cmp     byte ptr [rip + 0x2d4124b], 0                ; data_30D9509
+  0x1803982BE  jne     0x180398463                               
+  0x1803982C4  lea     rcx, [rip + 0x2abc8ed]                       ; TYPE UnityEngine.Application_TypeInfo
+  0x1803982CB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803982D0  lock or dword ptr [rsp], 0                        
+  0x1803982D5  lea     rcx, [rip + 0x2ac2ce4]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<TaskAwaiter<string>, DefaultLocaleSelector.<LoadAsync>d__9>()
+  0x1803982DC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803982E1  lock or dword ptr [rsp], 0                        
+  0x1803982E6  lea     rcx, [rip + 0x2ac2ccb]                       ; METHODINFO Method$System.Collections.Generic.CollectionExtensions.GetValueOrDefault<SystemLanguage, string>()
+  0x1803982ED  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803982F2  lock or dword ptr [rsp], 0                        
+  0x1803982F7  lea     rcx, [rip + 0x2ab9fe2]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x1803982FE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398303  lock or dword ptr [rsp], 0                        
+  0x180398308  lea     rcx, [rip + 0x2ac2ca1]                       ; METHODINFO Method$System.Linq.Enumerable.ToDictionary<LocaleKind, SystemLanguage, string>()
+  0x18039830F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398314  lock or dword ptr [rsp], 0                        
+  0x180398319  lea     rcx, [rip + 0x2ac2c88]                       ; METHODINFO Method$FastEnumUtility.FastEnum.GetValues<LocaleKind>()
+  0x180398320  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398325  lock or dword ptr [rsp], 0                        
+  0x18039832A  lea     rcx, [rip + 0x2ac2c6f]                       ; TYPE System.Func<LocaleKind, SystemLanguage>_TypeInfo
+  0x180398331  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398336  lock or dword ptr [rsp], 0                        
+  0x18039833B  lea     rcx, [rip + 0x2ac2c56]                       ; TYPE System.Func<LocaleKind, string>_TypeInfo
+  0x180398342  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398347  lock or dword ptr [rsp], 0                        
+  0x18039834C  lea     rcx, [rip + 0x2ac2c3d]                       ; TYPE System.Collections.Generic.ICollection<string>_TypeInfo
+  0x180398353  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398358  lock or dword ptr [rsp], 0                        
+  0x18039835D  lea     rcx, [rip + 0x2ac2c24]                       ; TYPE System.Collections.Generic.IDictionary<string, string>_TypeInfo
+  0x180398364  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398369  lock or dword ptr [rsp], 0                        
+  0x18039836E  lea     rcx, [rip + 0x2ac2c0b]                       ; METHODINFO Method$Newtonsoft.Json.JsonConvert.DeserializeObject<DefaultLocaleSelector.ConfigJson>()
+  0x180398375  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18039837A  lock or dword ptr [rsp], 0                        
+  0x18039837F  lea     rcx, [rip + 0x2ac2bf2]                       ; TYPE Newtonsoft.Json.JsonConvert_TypeInfo
+  0x180398386  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18039838B  lock or dword ptr [rsp], 0                        
+  0x180398390  lea     rcx, [rip + 0x2ab8fa9]                       ; TYPE System.IO.Path_TypeInfo
+  0x180398397  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18039839C  lock or dword ptr [rsp], 0                        
+  0x1803983A1  lea     rcx, [rip + 0x2ac2bc8]                       ; METHODINFO Method$System.Runtime.CompilerServices.TaskAwaiter<string>.GetResult()
+  0x1803983A8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803983AD  lock or dword ptr [rsp], 0                        
+  0x1803983B2  lea     rcx, [rip + 0x2ac2baf]                       ; METHODINFO Method$System.Runtime.CompilerServices.TaskAwaiter<string>.get_IsCompleted()
+  0x1803983B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803983BE  lock or dword ptr [rsp], 0                        
+  0x1803983C3  lea     rcx, [rip + 0x2ac2b96]                       ; METHODINFO Method$System.Threading.Tasks.Task<string>.GetAwaiter()
+  0x1803983CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803983CF  lock or dword ptr [rsp], 0                        
+  0x1803983D4  lea     rcx, [rip + 0x2ac2b7d]                       ; METHODINFO Method$WitchTrials.Models.DefaultLocaleSelector.<>c.<LoadAsync>b__9_0() => WitchTrials.Models.DefaultLocaleSelector.<>c$$<LoadAsync>b__9_0
+  0x1803983DB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803983E0  lock or dword ptr [rsp], 0                        
+  0x1803983E5  lea     rcx, [rip + 0x2ac2b64]                       ; METHODINFO Method$WitchTrials.Models.DefaultLocaleSelector.<>c.<LoadAsync>b__9_1() => WitchTrials.Models.DefaultLocaleSelector.<>c$$<LoadAsync>b__9_1
+  0x1803983EC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1803983F1  lock or dword ptr [rsp], 0                        
+  0x1803983F6  lea     rcx, [rip + 0x2ac2bcb]                       ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x1803983FD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398402  lock or dword ptr [rsp], 0                        
+  0x180398407  lea     rcx, [rip + 0x2ac2b3a]                       ; STR 'The config.json structure is invalid.'
+  0x18039840E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398413  lock or dword ptr [rsp], 0                        
+  0x180398418  lea     rcx, [rip + 0x2ac2b21]                       ; STR 'Failed to load config.json: '
+  0x18039841F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398424  lock or dword ptr [rsp], 0                        
+  0x180398429  lea     rcx, [rip + 0x2ac2b08]                       ; STR 'default'
+  0x180398430  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398435  lock or dword ptr [rsp], 0                        
+  0x18039843A  lea     rcx, [rip + 0x2ac2aef]                       ; STR 'config.json'
+  0x180398441  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398446  lock or dword ptr [rsp], 0                        
+  0x18039844B  lea     rcx, [rip + 0x2ab928e]                       ; STR ''
+  0x180398452  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398457  lock or dword ptr [rsp], 0                        
+  0x18039845C  mov     byte ptr [rip + 0x2d410a6], 1                ; data_30D9509
+
+180398463:
+  0x180398463  xor     esi, esi                                  
+  0x180398465  mov     qword ptr [rsp + 0xb8], rsi               
+  0x18039846D  mov     qword ptr [rsp + 0x38], rsi               
+  0x180398472  mov     qword ptr [rsp + 0x30], rsi               
+  0x180398477  mov     eax, dword ptr [rdi]                      
+  0x180398479  mov     r15, qword ptr [rdi + 0x20]                  ; rdi-><LoadAsync>d__9.<>4__this
+  0x18039847D  mov     qword ptr [rsp + 0x48], r15               
+  0x180398482  test    eax, eax                                  
+  0x180398484  jne     0x1803984aa                               
+  0x180398486  mov     rax, qword ptr [rdi + 0x38]                  ; rdi-><LoadAsync>d__9.<>u__1
+  0x18039848A  mov     qword ptr [rsp + 0xb8], rax               
+  0x180398492  xor     eax, eax                                  
+  0x180398494  mov     qword ptr [rdi + 0x38], rax                  ; rdi-><LoadAsync>d__9.<>u__1
+  0x180398498  mov     dword ptr [rdi], 0xffffffff               
+  0x18039849E  lea     r12, [rip + 0x2d55dfb]                       ; data_30EE2A0
+  0x1803984A5  jmp     0x18039889e                               
+
+1803984AA:
+  0x1803984AA  mov     rcx, qword ptr [rip + 0x2ac2af7]             ; METHODINFO Method$FastEnumUtility.FastEnum.GetValues<LocaleKind>()
+  0x1803984B1  call    0x1803317f0                                  ; -> System.Array$$Empty<__Il2CppFullySharedGenericType> (+7 aliases)
+  0x1803984B6  mov     r13, rax                                  
+  0x1803984B9  mov     rcx, qword ptr [rip + 0x2ac2b08]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x1803984C0  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1803984C7  jne     0x1803984d5                               
+  0x1803984C9  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x1803984CE  mov     rcx, qword ptr [rip + 0x2ac2af3]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+
+1803984D5:
+  0x1803984D5  mov     rax, qword ptr [rcx + 0xb8]               
+  0x1803984DC  mov     r15, qword ptr [rax + 8]                  
+  0x1803984E0  test    r15, r15                                  
+  0x1803984E3  jne     0x1803985a2                               
+  0x1803984E9  cmp     dword ptr [rcx + 0xe4], r15d              
+  0x1803984F0  jne     0x1803984fe                               
+  0x1803984F2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x1803984F7  mov     rcx, qword ptr [rip + 0x2ac2aca]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+
+1803984FE:
+  0x1803984FE  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180398505  mov     rbx, qword ptr [rax]                      
+  0x180398508  mov     rcx, qword ptr [rip + 0x2ac2a91]             ; TYPE System.Func<LocaleKind, SystemLanguage>_TypeInfo
+  0x18039850F  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180398514  mov     r15, rax                                  
+  0x180398517  xor     r9d, r9d                                  
+  0x18039851A  mov     r8, qword ptr [rip + 0x2ac2a37]              ; METHODINFO Method$WitchTrials.Models.DefaultLocaleSelector.<>c.<LoadAsync>b__9_0() => WitchTrials.Models.DefaultLocaleSelector.<>c$$<LoadAsync>b__9_0
+  0x180398521  mov     rdx, rbx                                  
+  0x180398524  mov     rcx, rax                                  
+  0x180398527  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x18039852C  mov     rax, qword ptr [rip + 0x2ac2a95]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x180398533  mov     rcx, qword ptr [rax + 0xb8]               
+  0x18039853A  mov     qword ptr [rcx + 8], r15                  
+  0x18039853E  mov     rcx, qword ptr [rip + 0x2ac2a83]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x180398545  mov     rdx, qword ptr [rcx + 0xb8]               
+  0x18039854C  add     rdx, 8                                    
+  0x180398550  cmp     dword ptr [rip + 0x2d40c6d], 0               ; data_30D91C4
+  0x180398557  je      0x1803985a2                               
+  0x180398559  shr     rdx, 0xc                                  
+  0x18039855D  and     edx, 0x1fffff                             
+  0x180398563  mov     eax, edx                                  
+  0x180398565  shr     rax, 6                                    
+  0x180398569  lea     r12, [rip + 0x2d55d30]                       ; data_30EE2A0
+  0x180398570  lea     r8, [r12 + rax*8]                         
+  0x180398574  and     edx, 0x3f                                 
+  0x180398577  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x18039857F  nop                                               
+
+180398580:
+  0x180398580  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180398587  mov     rcx, rax                                  
+  0x18039858A  bts     rcx, rdx                                  
+  0x18039858E  lock cmpxchg qword ptr [r8 + 0x462e0], rcx             
+  0x180398597  jne     0x180398580                               
+  0x180398599  mov     rcx, qword ptr [rip + 0x2ac2a28]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x1803985A0  jmp     0x1803985a9                               
+
+1803985A2:
+  0x1803985A2  lea     r12, [rip + 0x2d55cf7]                       ; data_30EE2A0
+
+1803985A9:
+  0x1803985A9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1803985B0  jne     0x1803985be                               
+  0x1803985B2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x1803985B7  mov     rcx, qword ptr [rip + 0x2ac2a0a]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+
+1803985BE:
+  0x1803985BE  mov     rax, qword ptr [rcx + 0xb8]               
+  0x1803985C5  mov     rbx, qword ptr [rax + 0x10]                  ; rax->DefaultLocaleSelector.<DefaultLocale>k__BackingField | ConfigJson.AvailableTextLang | <>c.<>9__9_1
+  0x1803985C9  test    rbx, rbx                                  
+  0x1803985CC  jne     0x18039867b                               
+  0x1803985D2  cmp     dword ptr [rcx + 0xe4], ebx               
+  0x1803985D8  jne     0x1803985e6                               
+  0x1803985DA  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x1803985DF  mov     rcx, qword ptr [rip + 0x2ac29e2]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+
+1803985E6:
+  0x1803985E6  mov     rax, qword ptr [rcx + 0xb8]               
+  0x1803985ED  mov     r14, qword ptr [rax]                      
+  0x1803985F0  mov     rcx, qword ptr [rip + 0x2ac29a1]             ; TYPE System.Func<LocaleKind, string>_TypeInfo
+  0x1803985F7  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x1803985FC  mov     rbx, rax                                  
+  0x1803985FF  xor     r9d, r9d                                  
+  0x180398602  mov     r8, qword ptr [rip + 0x2ac2947]              ; METHODINFO Method$WitchTrials.Models.DefaultLocaleSelector.<>c.<LoadAsync>b__9_1() => WitchTrials.Models.DefaultLocaleSelector.<>c$$<LoadAsync>b__9_1
+  0x180398609  mov     rdx, r14                                  
+  0x18039860C  mov     rcx, rax                                  
+  0x18039860F  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180398614  mov     rax, qword ptr [rip + 0x2ac29ad]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x18039861B  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180398622  mov     qword ptr [rcx + 0x10], rbx                  ; rcx->DefaultLocaleSelector.<DefaultLocale>k__BackingField | ConfigJson.AvailableTextLang | <>c.<>9__9_1
+  0x180398626  mov     rax, qword ptr [rip + 0x2ac299b]             ; TYPE WitchTrials.Models.DefaultLocaleSelector.<>c_TypeInfo
+  0x18039862D  mov     r8, qword ptr [rax + 0xb8]                
+  0x180398634  add     r8, 0x10                                  
+  0x180398638  cmp     dword ptr [rip + 0x2d40b85], 0               ; data_30D91C4
+  0x18039863F  je      0x18039867b                               
+  0x180398641  shr     r8, 0xc                                   
+  0x180398645  and     r8d, 0x1fffff                             
+  0x18039864C  mov     eax, r8d                                  
+  0x18039864F  shr     rax, 6                                    
+  0x180398653  lea     rdx, [r12 + rax*8]                        
+  0x180398657  and     r8d, 0x3f                                 
+  0x18039865B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180398662:
+  0x180398662  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398669  mov     rcx, rax                                  
+  0x18039866C  bts     rcx, r8                                   
+  0x180398670  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398679  jne     0x180398662                               
+
+18039867B:
+  0x18039867B  mov     r14, qword ptr [rip + 0x2ac292e]             ; METHODINFO Method$System.Linq.Enumerable.ToDictionary<LocaleKind, SystemLanguage, string>()
+  0x180398682  cmp     qword ptr [r14 + 0x38], 0                    ; r14-><LoadAsync>d__9.<>u__1
+  0x180398687  jne     0x180398691                               
+  0x180398689  mov     rcx, r14                                  
+  0x18039868C  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180398691:
+  0x180398691  mov     rax, qword ptr [r14 + 0x38]                  ; r14-><LoadAsync>d__9.<>u__1
+  0x180398695  mov     r9, qword ptr [rax + 0x18]                   ; rax->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x180398699  mov     qword ptr [rsp + 0x20], r9                
+  0x18039869E  xor     r9d, r9d                                  
+  0x1803986A1  mov     r8, rbx                                   
+  0x1803986A4  mov     rdx, r15                                  
+  0x1803986A7  mov     rcx, r13                                  
+  0x1803986AA  call    0x18068bab0                                  ; -> System.Linq.Enumerable$$ToDictionary<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x1803986AF  mov     rbx, rax                                  
+  0x1803986B2  mov     rcx, qword ptr [rip + 0x2abc4ff]             ; TYPE UnityEngine.Application_TypeInfo
+  0x1803986B9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1803986C0  jne     0x1803986c7                               
+  0x1803986C2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1803986C7:
+  0x1803986C7  mov     rax, qword ptr [rip + 0x2d4d8ba]             ; data_30E5F88
+  0x1803986CE  test    rax, rax                                  
+  0x1803986D1  jne     0x1803986ef                               
+  0x1803986D3  lea     rcx, [rip + 0x2255d66]                       ; data_25EE440
+  0x1803986DA  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x1803986DF  test    rax, rax                                  
+  0x1803986E2  je      0x180398cb8                               
+  0x1803986E8  mov     qword ptr [rip + 0x2d4d899], rax             ; data_30E5F88
+
+1803986EF:
+  0x1803986EF  call    rax                                       
+  0x1803986F1  mov     dword ptr [rsp + 0xb0], eax               
+  0x1803986F8  mov     r9, qword ptr [rip + 0x2ac28b9]              ; METHODINFO Method$System.Collections.Generic.CollectionExtensions.GetValueOrDefault<SystemLanguage, string>()
+  0x1803986FF  lea     r8, [rsp + 0x40]                          
+  0x180398704  lea     rdx, [rsp + 0xb0]                         
+  0x18039870C  mov     rcx, rbx                                  
+  0x18039870F  call    0x18066c0a0                                  ; -> System.Collections.Generic.CollectionExtensions$$GetValueOrDefault<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180398714  mov     rcx, qword ptr [rip + 0x2ab8fc5]             ; STR ''
+  0x18039871B  mov     rax, qword ptr [rsp + 0x40]               
+  0x180398720  test    rax, rax                                  
+  0x180398723  cmovne  rcx, rax                                  
+  0x180398727  mov     qword ptr [rdi + 0x28], rcx                  ; rdi-><LoadAsync>d__9.<key>5__2
+  0x18039872B  cmp     dword ptr [rip + 0x2d40a92], 0               ; data_30D91C4
+  0x180398732  je      0x180398779                               
+  0x180398734  lea     r8, [rdi + 0x28]                             ; rdi-><LoadAsync>d__9.<key>5__2
+  0x180398738  shr     r8, 0xc                                   
+  0x18039873C  and     r8d, 0x1fffff                             
+  0x180398743  mov     eax, r8d                                  
+  0x180398746  shr     rax, 6                                    
+  0x18039874A  lea     rdx, [r12 + rax*8]                        
+  0x18039874E  and     r8d, 0x3f                                 
+  0x180398752  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180398759  nop     dword ptr [rax]                           
+
+180398760:
+  0x180398760  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398767  mov     rcx, rax                                  
+  0x18039876A  bts     rcx, r8                                   
+  0x18039876E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398777  jne     0x180398760                               
+
+180398779:
+  0x180398779  mov     rcx, qword ptr [rip + 0x2abc438]             ; TYPE UnityEngine.Application_TypeInfo
+  0x180398780  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180398787  jne     0x18039878e                               
+  0x180398789  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+18039878E:
+  0x18039878E  xor     ecx, ecx                                  
+  0x180398790  call    0x181fdad80                                  ; -> UnityEngine.Application$$get_streamingAssetsPath
+  0x180398795  mov     rbx, rax                                  
+  0x180398798  mov     rcx, qword ptr [rip + 0x2ab8ba1]             ; TYPE System.IO.Path_TypeInfo
+  0x18039879F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1803987A6  jne     0x1803987ad                               
+  0x1803987A8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1803987AD:
+  0x1803987AD  xor     r8d, r8d                                  
+  0x1803987B0  mov     rdx, qword ptr [rip + 0x2ac2779]             ; STR 'config.json'
+  0x1803987B7  mov     rcx, rbx                                  
+  0x1803987BA  call    0x180fed010                                  ; -> System.IO.Path$$Combine
+  0x1803987BF  mov     qword ptr [rdi + 0x30], rax                  ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x1803987C3  cmp     dword ptr [rip + 0x2d409fa], 0               ; data_30D91C4
+  0x1803987CA  je      0x18039880a                               
+  0x1803987CC  lea     r8, [rdi + 0x30]                             ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x1803987D0  shr     r8, 0xc                                   
+  0x1803987D4  and     r8d, 0x1fffff                             
+  0x1803987DB  mov     eax, r8d                                  
+  0x1803987DE  shr     rax, 6                                    
+  0x1803987E2  lea     rdx, [r12 + rax*8]                        
+  0x1803987E6  and     r8d, 0x3f                                 
+  0x1803987EA  prefetchw byte ptr [rdx + 0x462e0]                  
+
+1803987F1:
+  0x1803987F1  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1803987F8  mov     rcx, rax                                  
+  0x1803987FB  bts     rcx, r8                                   
+  0x1803987FF  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398808  jne     0x1803987f1                               
+
+18039880A:
+  0x18039880A  mov     r14, qword ptr [rdi + 0x30]                  ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x18039880E  mov     rbx, qword ptr [rdi + 0x18]                  ; rdi->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x180398812  xor     ecx, ecx                                  
+  0x180398814  call    0x180e4be10                                  ; -> System.Text.Encoding$$get_UTF8
+  0x180398819  xor     r9d, r9d                                  
+  0x18039881C  mov     r8, rbx                                   
+  0x18039881F  mov     rdx, rax                                  
+  0x180398822  mov     rcx, r14                                  
+  0x180398825  call    0x180fd7cb0                                  ; -> System.IO.File$$ReadAllTextAsync
+  0x18039882A  test    rax, rax                                  
+  0x18039882D  je      0x180398ce7                               
+  0x180398833  mov     rcx, rax                                  
+  0x180398836  call    0x180007280                                  ; -> sub_7280 (runtime/helper)
+  0x18039883B  mov     rbx, rax                                  
+  0x18039883E  mov     qword ptr [rsp + 0xb8], rax               
+  0x180398846  test    rax, rax                                  
+  0x180398849  je      0x180398ce2                               
+  0x18039884F  cmp     byte ptr [rip + 0x2d463d8], 0                ; data_30DEC2E
+  0x180398856  jne     0x180398870                               
+  0x180398858  lea     rcx, [rip + 0x2ab88f1]                       ; TYPE System.Threading.Tasks.Task_TypeInfo
+  0x18039885F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398864  lock or dword ptr [rsp], 0                        
+  0x180398869  mov     byte ptr [rip + 0x2d463be], 1                ; data_30DEC2E
+
+180398870:
+  0x180398870  mov     ebx, dword ptr [rbx + 0x38]                  ; rbx-><LoadAsync>d__9.<>u__1
+  0x180398873  lock or dword ptr [rsp], 0                        
+  0x180398878  mov     rcx, qword ptr [rip + 0x2ab88d1]             ; TYPE System.Threading.Tasks.Task_TypeInfo
+  0x18039887F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180398886  jne     0x18039888d                               
+  0x180398888  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+18039888D:
+  0x18039888D  test    ebx, 0x1600000                            
+  0x180398893  jbe     0x180398bf6                               
+  0x180398899  mov     r15, qword ptr [rsp + 0x48]               
+
+18039889E:
+  0x18039889E  mov     r8, qword ptr [rip + 0x2ac26cb]              ; METHODINFO Method$System.Runtime.CompilerServices.TaskAwaiter<string>.GetResult()
+  0x1803988A5  lea     rdx, [rsp + 0xb0]                         
+  0x1803988AD  lea     rcx, [rsp + 0xb8]                         
+  0x1803988B5  call    0x180937f10                                  ; -> System.Runtime.CompilerServices.TaskAwaiter<__Il2CppFullySharedGenericType>$$GetResult (+1 aliases)
+  0x1803988BA  mov     rbx, qword ptr [rsp + 0xb0]               
+  0x1803988C2  test    rbx, rbx                                  
+  0x1803988C5  je      0x180398ac4                               
+  0x1803988CB  mov     rcx, qword ptr [rip + 0x2ac26a6]             ; TYPE Newtonsoft.Json.JsonConvert_TypeInfo
+  0x1803988D2  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1803988D9  jne     0x1803988e0                               
+  0x1803988DB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1803988E0:
+  0x1803988E0  mov     r8, qword ptr [rip + 0x2ac2699]              ; METHODINFO Method$Newtonsoft.Json.JsonConvert.DeserializeObject<DefaultLocaleSelector.ConfigJson>()
+  0x1803988E7  lea     rdx, [rsp + 0xb0]                         
+  0x1803988EF  mov     rcx, rbx                                  
+  0x1803988F2  call    0x1806e8970                                  ; -> Newtonsoft.Json.JsonConvert$$DeserializeObject<__Il2CppFullySharedGenericType>
+  0x1803988F7  mov     rbx, qword ptr [rsp + 0xb0]               
+  0x1803988FF  test    rbx, rbx                                  
+  0x180398902  je      0x180398cdd                               
+  0x180398908  mov     rax, qword ptr [rbx + 0x10]                  ; rbx->DefaultLocaleSelector.<DefaultLocale>k__BackingField | ConfigJson.AvailableTextLang | <>c.<>9__9_1
+  0x18039890C  test    r15, r15                                  
+  0x18039890F  je      0x180398cd8                               
+  0x180398915  mov     qword ptr [r15 + 0x18], rax                  ; r15->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x180398919  cmp     dword ptr [rip + 0x2d408a4], 0               ; data_30D91C4
+  0x180398920  je      0x180398969                               
+  0x180398922  lea     r8, [r15 + 0x18]                             ; r15->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x180398926  shr     r8, 0xc                                   
+  0x18039892A  and     r8d, 0x1fffff                             
+  0x180398931  mov     eax, r8d                                  
+  0x180398934  shr     rax, 6                                    
+  0x180398938  lea     rdx, [r12 + rax*8]                        
+  0x18039893C  and     r8d, 0x3f                                 
+  0x180398940  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180398947  nop     word ptr [rax + rax]                      
+
+180398950:
+  0x180398950  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398957  mov     rcx, rax                                  
+  0x18039895A  bts     rcx, r8                                   
+  0x18039895E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398967  jne     0x180398950                               
+
+180398969:
+  0x180398969  cmp     qword ptr [r15 + 0x18], 0                    ; r15->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x18039896E  je      0x1803989aa                               
+  0x180398970  mov     r8, qword ptr [rbx + 0x10]                   ; rbx->DefaultLocaleSelector.<DefaultLocale>k__BackingField | ConfigJson.AvailableTextLang | <>c.<>9__9_1
+  0x180398974  test    r8, r8                                    
+  0x180398977  je      0x180398cce                               
+  0x18039897D  mov     ecx, 4                                    
+  0x180398982  mov     r9, qword ptr [rdi + 0x28]                   ; rdi-><LoadAsync>d__9.<key>5__2
+  0x180398986  mov     rdx, qword ptr [rip + 0x2ac2603]             ; TYPE System.Collections.Generic.ICollection<string>_TypeInfo
+  0x18039898D  call    0x180003140                                  ; -> sub_3140 (runtime/helper)
+  0x180398992  test    al, al                                    
+  0x180398994  je      0x1803989aa                               
+  0x180398996  xor     edx, edx                                  
+  0x180398998  mov     rcx, qword ptr [rdi + 0x28]                  ; rdi-><LoadAsync>d__9.<key>5__2
+  0x18039899C  call    0x180cd1050                                  ; -> GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToLocaleKind
+  0x1803989A1  mov     dword ptr [r15 + 0x10], eax                  ; r15->DefaultLocaleSelector.<DefaultLocale>k__BackingField | <>c.<>9__9_1
+  0x1803989A5  jmp     0x180398afa                               
+
+1803989AA:
+  0x1803989AA  cmp     qword ptr [rbx + 0x18], 0                    ; rbx->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x1803989AF  je      0x180398a9e                               
+  0x1803989B5  mov     r14, qword ptr [rbx + 0x18]                  ; rbx->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x1803989B9  mov     r13, qword ptr [rdi + 0x28]                  ; rdi-><LoadAsync>d__9.<key>5__2
+  0x1803989BD  mov     r9, qword ptr [rip + 0x2ac25c4]              ; TYPE System.Collections.Generic.IDictionary<string, string>_TypeInfo
+  0x1803989C4  mov     r10, qword ptr [r14]                      
+  0x1803989C7  movzx   ecx, si                                   
+  0x1803989CA  movzx   edx, word ptr [r10 + 0x12e]               
+  0x1803989D2  cmp     si, dx                                    
+  0x1803989D5  jae     0x1803989f4                               
+  0x1803989D7  mov     r8, qword ptr [r10 + 0xb0]                
+  0x1803989DE  nop                                               
+
+1803989E0:
+  0x1803989E0  movzx   eax, cx                                   
+  0x1803989E3  add     rax, rax                                  
+  0x1803989E6  cmp     qword ptr [r8 + rax*8], r9                
+  0x1803989EA  je      0x180398a68                               
+  0x1803989EC  inc     cx                                        
+  0x1803989EF  cmp     cx, dx                                    
+  0x1803989F2  jb      0x1803989e0                               
+
+1803989F4:
+  0x1803989F4  mov     r8d, 7                                    
+  0x1803989FA  mov     rdx, r9                                   
+  0x1803989FD  mov     rcx, r14                                  
+  0x180398A00  call    0x180243a20                                  ; resolve interface method slot
+  0x180398A05  mov     r9, rax                                   
+
+180398A08:
+  0x180398A08  mov     rax, qword ptr [r9]                       
+  0x180398A0B  mov     r9, qword ptr [r9 + 8]                    
+  0x180398A0F  lea     r8, [rsp + 0x38]                          
+  0x180398A14  mov     rdx, r13                                  
+  0x180398A17  mov     rcx, r14                                  
+  0x180398A1A  call    rax                                       
+  0x180398A1C  test    al, al                                    
+  0x180398A1E  jne     0x180398a8c                               
+  0x180398A20  mov     r8, qword ptr [rbx + 0x18]                   ; rbx->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x180398A24  test    r8, r8                                    
+  0x180398A27  je      0x180398cd3                               
+  0x180398A2D  mov     ecx, 7                                    
+  0x180398A32  lea     rax, [rsp + 0x30]                         
+  0x180398A37  mov     qword ptr [rsp + 0x20], rax               
+  0x180398A3C  mov     r9, qword ptr [rip + 0x2ac24f5]              ; STR 'default'
+  0x180398A43  mov     rdx, qword ptr [rip + 0x2ac253e]             ; TYPE System.Collections.Generic.IDictionary<string, string>_TypeInfo
+  0x180398A4A  call    0x180008000                                  ; -> sub_8000 (runtime/helper)
+  0x180398A4F  test    al, al                                    
+  0x180398A51  je      0x180398a9e                               
+  0x180398A53  xor     edx, edx                                  
+  0x180398A55  mov     rcx, qword ptr [rsp + 0x30]               
+  0x180398A5A  call    0x180cd1050                                  ; -> GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToLocaleKind
+  0x180398A5F  mov     dword ptr [r15 + 0x10], eax                  ; r15->DefaultLocaleSelector.<DefaultLocale>k__BackingField | <>c.<>9__9_1
+  0x180398A63  jmp     0x180398afa                               
+
+180398A68:
+  0x180398A68  movzx   ecx, cx                                   
+  0x180398A6B  add     rcx, rcx                                  
+  0x180398A6E  mov     ecx, dword ptr [r8 + rcx*8 + 8]           
+  0x180398A73  add     ecx, 7                                    
+  0x180398A76  movsxd  r9, ecx                                   
+  0x180398A79  shl     r9, 4                                     
+  0x180398A7D  add     r9, 0x138                                 
+  0x180398A84  add     r9, r10                                   
+  0x180398A87  jmp     0x180398a08                               
+
+180398A8C:
+  0x180398A8C  xor     edx, edx                                  
+  0x180398A8E  mov     rcx, qword ptr [rsp + 0x38]               
+  0x180398A93  call    0x180cd1050                                  ; -> GigaCreation.Essentials.Localization.LocaleKindExtensions$$ToLocaleKind
+  0x180398A98  mov     dword ptr [r15 + 0x10], eax                  ; r15->DefaultLocaleSelector.<DefaultLocale>k__BackingField | <>c.<>9__9_1
+  0x180398A9C  jmp     0x180398afa                               
+
+180398A9E:
+  0x180398A9E  mov     rcx, qword ptr [rip + 0x2ab983b]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180398AA5  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180398AAC  jne     0x180398ab3                               
+  0x180398AAE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180398AB3:
+  0x180398AB3  xor     edx, edx                                  
+  0x180398AB5  mov     rcx, qword ptr [rip + 0x2ac248c]             ; STR 'The config.json structure is invalid.'
+  0x180398ABC  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+  0x180398AC1  nop                                               
+  0x180398AC2  jmp     0x180398afa                               
+
+180398AC4:
+  0x180398AC4  xor     r8d, r8d                                  
+  0x180398AC7  mov     rdx, qword ptr [rdi + 0x30]                  ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x180398ACB  mov     rcx, qword ptr [rip + 0x2ac246e]             ; STR 'Failed to load config.json: '
+  0x180398AD2  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x180398AD7  mov     rbx, rax                                  
+  0x180398ADA  mov     rcx, qword ptr [rip + 0x2ab97ff]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180398AE1  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180398AE8  jne     0x180398aef                               
+  0x180398AEA  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180398AEF:
+  0x180398AEF  xor     edx, edx                                  
+  0x180398AF1  mov     rcx, rbx                                  
+  0x180398AF4  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+  0x180398AF9  nop                                               
+
+180398AFA:
+  0x180398AFA  mov     dword ptr [rdi], 0xfffffffe               
+  0x180398B00  mov     qword ptr [rdi + 0x28], rsi                  ; rdi-><LoadAsync>d__9.<key>5__2
+  0x180398B04  mov     eax, dword ptr [rip + 0x2d406ba]             ; data_30D91C4
+  0x180398B0A  test    eax, eax                                  
+  0x180398B0C  je      0x180398b5f                               
+  0x180398B0E  lea     r8, [rdi + 0x28]                             ; rdi-><LoadAsync>d__9.<key>5__2
+  0x180398B12  shr     r8, 0xc                                   
+  0x180398B16  and     r8d, 0x1fffff                             
+  0x180398B1D  mov     eax, r8d                                  
+  0x180398B20  shr     rax, 6                                    
+  0x180398B24  lea     rdx, [r12 + rax*8]                        
+  0x180398B28  and     r8d, 0x3f                                 
+  0x180398B2C  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180398B33  nop     dword ptr [rax]                           
+  0x180398B37  nop     word ptr [rax + rax]                      
+
+180398B40:
+  0x180398B40  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398B47  mov     rcx, rax                                  
+  0x180398B4A  bts     rcx, r8                                   
+  0x180398B4E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398B57  jne     0x180398b40                               
+  0x180398B59  mov     eax, dword ptr [rip + 0x2d40665]             ; data_30D91C4
+
+180398B5F:
+  0x180398B5F  mov     qword ptr [rdi + 0x30], rsi                  ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x180398B63  test    eax, eax                                  
+  0x180398B65  je      0x180398ba9                               
+  0x180398B67  lea     r8, [rdi + 0x30]                             ; rdi-><LoadAsync>d__9.<jsonPath>5__3
+  0x180398B6B  shr     r8, 0xc                                   
+  0x180398B6F  and     r8d, 0x1fffff                             
+  0x180398B76  mov     eax, r8d                                  
+  0x180398B79  shr     rax, 6                                    
+  0x180398B7D  lea     rdx, [r12 + rax*8]                        
+  0x180398B81  and     r8d, 0x3f                                 
+  0x180398B85  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180398B8C  nop     dword ptr [rax]                           
+
+180398B90:
+  0x180398B90  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398B97  mov     rcx, rax                                  
+  0x180398B9A  bts     rcx, r8                                   
+  0x180398B9E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398BA7  jne     0x180398b90                               
+
+180398BA9:
+  0x180398BA9  cmp     byte ptr [rip + 0x2d3e96a], 0                ; data_30D751A
+  0x180398BB0  jne     0x180398bca                               
+  0x180398BB2  lea     rcx, [rip + 0x2ab85b7]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180398BB9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180398BBE  lock or dword ptr [rsp], 0                        
+  0x180398BC3  mov     byte ptr [rip + 0x2d3e950], 1                ; data_30D751A
+
+180398BCA:
+  0x180398BCA  cmp     qword ptr [rdi + 8], 0                    
+  0x180398BCF  je      0x180398be6                               
+  0x180398BD1  mov     ecx, 2                                    
+  0x180398BD6  mov     r8, qword ptr [rdi + 8]                   
+  0x180398BDA  mov     rdx, qword ptr [rip + 0x2ab858f]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180398BE1  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180398BE6:
+  0x180398BE6  add     rsp, 0x60                                 
+  0x180398BEA  pop     r15                                       
+  0x180398BEC  pop     r14                                       
+  0x180398BEE  pop     r13                                       
+  0x180398BF0  pop     r12                                       
+  0x180398BF2  pop     rdi                                       
+  0x180398BF3  pop     rsi                                       
+  0x180398BF4  pop     rbx                                       
+  0x180398BF5  ret                                               
+
+180398BF6:
+  0x180398BF6  mov     dword ptr [rdi], esi                      
+  0x180398BF8  mov     rax, qword ptr [rsp + 0xb8]               
+  0x180398C00  mov     qword ptr [rdi + 0x38], rax                  ; rdi-><LoadAsync>d__9.<>u__1
+  0x180398C04  cmp     dword ptr [rip + 0x2d405b9], 0               ; data_30D91C4
+  0x180398C0B  je      0x180398c4b                               
+  0x180398C0D  lea     r8, [rdi + 0x38]                             ; rdi-><LoadAsync>d__9.<>u__1
+  0x180398C11  shr     r8, 0xc                                   
+  0x180398C15  and     r8d, 0x1fffff                             
+  0x180398C1C  mov     eax, r8d                                  
+  0x180398C1F  shr     rax, 6                                    
+  0x180398C23  lea     rdx, [r12 + rax*8]                        
+  0x180398C27  and     r8d, 0x3f                                 
+  0x180398C2B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180398C32:
+  0x180398C32  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398C39  mov     rcx, rax                                  
+  0x180398C3C  bts     rcx, r8                                   
+  0x180398C40  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398C49  jne     0x180398c32                               
+
+180398C4B:
+  0x180398C4B  lea     rcx, [rdi + 8]                            
+  0x180398C4F  mov     r9, qword ptr [rip + 0x2ac236a]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<TaskAwaiter<string>, DefaultLocaleSelector.<LoadAsync>d__9>()
+  0x180398C56  mov     r8, rdi                                   
+  0x180398C59  lea     rdx, [rsp + 0xb8]                         
+  0x180398C61  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180398C66  nop                                               
+  0x180398C67  jmp     0x180398be6                               
+  0x180398C6C  mov     r9, qword ptr [rsp + 0xa0]                
+  0x180398C74  mov     dword ptr [r9], 0xfffffffe                
+  0x180398C7B  xor     esi, esi                                  
+  0x180398C7D  mov     qword ptr [r9 + 0x28], rsi                   ; r9-><LoadAsync>d__9.<key>5__2
+  0x180398C81  lea     rcx, [r9 + 0x28]                             ; r9-><LoadAsync>d__9.<key>5__2
+  0x180398C85  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180398C8A  mov     qword ptr [r9 + 0x30], rsi                   ; r9-><LoadAsync>d__9.<jsonPath>5__3
+  0x180398C8E  lea     rcx, [r9 + 0x30]                             ; r9-><LoadAsync>d__9.<jsonPath>5__3
+  0x180398C92  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180398C97  lea     rcx, [r9 + 8]                             
+  0x180398C9B  mov     rdx, qword ptr [rsp + 0xb0]               
+  0x180398CA3  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180398CA8  add     rsp, 0x60                                 
+  0x180398CAC  pop     r15                                       
+  0x180398CAE  pop     r14                                       
+  0x180398CB0  pop     r13                                       
+  0x180398CB2  pop     r12                                       
+  0x180398CB4  pop     rdi                                       
+  0x180398CB5  pop     rsi                                       
+  0x180398CB6  pop     rbx                                       
+  0x180398CB7  ret                                               
+
+180398CB8:
+  0x180398CB8  lea     rcx, [rip + 0x2255781]                       ; data_25EE440
+  0x180398CBF  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180398CC4  xor     edx, edx                                  
+  0x180398CC6  mov     rcx, rax                                  
+  0x180398CC9  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+
+180398CCE:
+  0x180398CCE  call    0x180246730                                  ; THROW NullReferenceException
+
+180398CD3:
+  0x180398CD3  call    0x180246730                                  ; THROW NullReferenceException
+
+180398CD8:
+  0x180398CD8  call    0x180246730                                  ; THROW NullReferenceException
+
+180398CDD:
+  0x180398CDD  call    0x180246730                                  ; THROW NullReferenceException
+
+180398CE2:
+  0x180398CE2  call    0x180246730                                  ; THROW NullReferenceException
+
+180398CE7:
+  0x180398CE7  call    0x180246730                                  ; THROW NullReferenceException

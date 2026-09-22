@@ -12,6 +12,12 @@
 # (G2/G3) and would make the project unreproducible.  Evidence (sizes + sha256) is written to
 # tools/unity-rebuild/out/unity/streamingassets_manifest.json.
 #
+# Also copies every loose file the shipped StreamingAssets holds next to aa/ into
+# Assets/StreamingAssets/ under the same name - today that is config.json
+# ({"available_text_lang":["ja","zh-Hans"],"unavailable_lang_fallback":{...}}), which
+# DefaultLocaleSelector.LoadAsync reads to pick the default locale.  Without it a Player cannot
+# choose zh-Hans and starts in Japanese.
+#
 # Nothing is written into the game directory.
 param([switch]$WhatIf)
 
@@ -62,6 +68,24 @@ foreach ($name in @('catalog.bin', 'catalog.hash', 'settings.json')) {
         }
     } else {
         $entry.action = 'missing'
+    }
+    $result.files += $entry
+}
+
+# Loose files next to aa/ (config.json): copied verbatim to Assets/StreamingAssets/<name>.
+$looseDir = Join-Path $script:GameRoot 'manosaba_Data\StreamingAssets'
+$looseTarget = Join-Path $script:UnityProject 'Assets\StreamingAssets'
+foreach ($file in Get-ChildItem -Path $looseDir -File) {
+    $dst = Join-Path $looseTarget $file.Name
+    $entry = [ordered]@{ name = $file.Name; source = $file.FullName; target = $dst; exists = $true }
+    $entry.source_bytes = $file.Length
+    $entry.sha256 = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
+    if ($WhatIf) {
+        $entry.action = 'would copy'
+    } else {
+        Copy-Item -Path $file.FullName -Destination $dst -Force
+        $entry.action = 'copied'
+        $entry.target_bytes = (Get-Item $dst).Length
     }
     $result.files += $entry
 }

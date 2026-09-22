@@ -1,0 +1,52 @@
+====================================================================================================
+FUNCTION RVA 0x398250  VA 0x180398250  size 0x36 (54 bytes)
+  managed: WitchTrials.Models.DefaultLocaleSelector.<>c$$<LoadAsync>b__9_0
+  csig   : int32_t WitchTrials_Models_DefaultLocaleSelector___c___LoadAsync_b__9_0 (WitchTrials_Models_DefaultLocaleSelector___c_o* __this, int32_t locale, const MethodInfo* method);
+  dump.cs: DefaultLocaleSelector.<>c :: internal SystemLanguage <LoadAsync>b__9_0(LocaleKind locale)
+  fields of WitchTrials.Models.DefaultLocaleSelector:
+      +0x10   <DefaultLocale>k__BackingField LocaleKind
+      +0x18   <AvailableTextLanguages>k__BackingField IList<string>
+  fields of DefaultLocaleSelector.ConfigJson:
+      +0x10   AvailableTextLang              IList<string>
+      +0x18   UnavailableLangFallback        IDictionary<string, string>
+  fields of DefaultLocaleSelector.<>c:
+      +0x0    <>9                            static readonly DefaultLocaleSelector.<>c
+      +0x8    <>9__9_0                       static Func<LocaleKind, SystemLanguage>
+      +0x10   <>9__9_1                       static Func<LocaleKind, string>
+  fields of DefaultLocaleSelector.<LoadAsync>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DefaultLocaleSelector
+      +0x28   <key>5__2                      string
+      +0x30   <jsonPath>5__3                 string
+      +0x38   <>u__1                         TaskAwaiter<string>
+====================================================================================================
+  0x180398250  test    edx, edx                                  
+  0x180398252  je      0x180398280                               
+  0x180398254  sub     edx, 1                                    
+  0x180398257  je      0x18039827a                               
+  0x180398259  sub     edx, 1                                    
+  0x18039825C  je      0x180398274                               
+  0x18039825E  sub     edx, 1                                    
+  0x180398261  je      0x18039826e                               
+  0x180398263  cmp     edx, 1                                    
+  0x180398266  jne     0x180398280                               
+  0x180398268  mov     eax, 0x17                                 
+  0x18039826D  ret                                               
+
+18039826E:
+  0x18039826E  mov     eax, 0x29                                 
+  0x180398273  ret                                               
+
+180398274:
+  0x180398274  mov     eax, 0x28                                 
+  0x180398279  ret                                               
+
+18039827A:
+  0x18039827A  mov     eax, 0xa                                  
+  0x18039827F  ret                                               
+
+180398280:
+  0x180398280  mov     eax, 0x16                                 
+  0x180398285  ret                                               

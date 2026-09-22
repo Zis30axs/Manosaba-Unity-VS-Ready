@@ -1,0 +1,131 @@
+====================================================================================================
+FUNCTION RVA 0x398000  VA 0x180398000  size 0x1A1 (417 bytes)
+  managed: WitchTrials.Models.DefaultLocaleSelector$$LoadAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o WitchTrials_Models_DefaultLocaleSelector__LoadAsync (WitchTrials_Models_DefaultLocaleSelector_o* __this, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: WitchTrials.Models.DefaultLocaleSelector :: public UniTask LoadAsync(CancellationToken ct)
+  fields of WitchTrials.Models.DefaultLocaleSelector:
+      +0x10   <DefaultLocale>k__BackingField LocaleKind
+      +0x18   <AvailableTextLanguages>k__BackingField IList<string>
+  fields of DefaultLocaleSelector.ConfigJson:
+      +0x10   AvailableTextLang              IList<string>
+      +0x18   UnavailableLangFallback        IDictionary<string, string>
+  fields of DefaultLocaleSelector.<>c:
+      +0x0    <>9                            static readonly DefaultLocaleSelector.<>c
+      +0x8    <>9__9_0                       static Func<LocaleKind, SystemLanguage>
+      +0x10   <>9__9_1                       static Func<LocaleKind, string>
+  fields of DefaultLocaleSelector.<LoadAsync>d__9:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   ct                             CancellationToken
+      +0x20   <>4__this                      DefaultLocaleSelector
+      +0x28   <key>5__2                      string
+      +0x30   <jsonPath>5__3                 string
+      +0x38   <>u__1                         TaskAwaiter<string>
+====================================================================================================
+  0x180398000  mov     qword ptr [rsp + 8], rbx                  
+  0x180398005  mov     qword ptr [rsp + 0x10], rsi               
+  0x18039800A  push    rdi                                       
+  0x18039800B  sub     rsp, 0x70                                 
+  0x18039800F  cmp     byte ptr [rip + 0x2d414f1], 0                ; data_30D9507
+  0x180398016  mov     rbx, r8                                   
+  0x180398019  mov     rdi, rdx                                  
+  0x18039801C  mov     rsi, rcx                                  
+  0x18039801F  jne     0x180398039                               
+  0x180398021  lea     rcx, [rip + 0x2ac2fa8]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<DefaultLocaleSelector.<LoadAsync>d__9>()
+  0x180398028  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x18039802D  lock or dword ptr [rsp], 0                        
+  0x180398032  mov     byte ptr [rip + 0x2d414ce], 1                ; data_30D9507
+
+180398039:
+  0x180398039  xor     eax, eax                                  
+  0x18039803B  lea     r9, [rip + 0x2d5625e]                        ; data_30EE2A0
+  0x180398042  xorps   xmm0, xmm0                                
+  0x180398045  mov     qword ptr [rsp + 0x30], rax               
+  0x18039804A  mov     qword ptr [rsp + 0x48], rax               
+  0x18039804F  xorps   xmm1, xmm1                                
+  0x180398052  mov     eax, dword ptr [rip + 0x2d4116c]             ; data_30D91C4
+  0x180398058  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x18039805E  movdqa  xmmword ptr [rsp + 0x60], xmm1            
+  0x180398064  movups  xmmword ptr [rsp + 0x38], xmm0            
+  0x180398069  test    eax, eax                                  
+  0x18039806B  je      0x1803980bf                               
+  0x18039806D  lea     r8, [rsp + 0x38]                          
+  0x180398072  shr     r8, 0xc                                   
+  0x180398076  and     r8d, 0x1fffff                             
+  0x18039807D  mov     eax, r8d                                  
+  0x180398080  shr     rax, 6                                    
+  0x180398084  and     r8d, 0x3f                                 
+  0x180398088  lea     rdx, [r9 + rax*8]                         
+  0x18039808C  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180398093  nop     dword ptr [rax]                           
+  0x180398097  nop     word ptr [rax + rax]                      
+
+1803980A0:
+  0x1803980A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1803980A7  mov     rcx, rax                                  
+  0x1803980AA  bts     rcx, r8                                   
+  0x1803980AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1803980B7  jne     0x1803980a0                               
+  0x1803980B9  mov     eax, dword ptr [rip + 0x2d41105]             ; data_30D91C4
+
+1803980BF:
+  0x1803980BF  mov     qword ptr [rsp + 0x50], rdi               
+  0x1803980C4  test    eax, eax                                  
+  0x1803980C6  je      0x18039810f                               
+  0x1803980C8  lea     r8, [rsp + 0x50]                          
+  0x1803980CD  shr     r8, 0xc                                   
+  0x1803980D1  and     r8d, 0x1fffff                             
+  0x1803980D8  mov     eax, r8d                                  
+  0x1803980DB  shr     rax, 6                                    
+  0x1803980DF  and     r8d, 0x3f                                 
+  0x1803980E3  lea     rdx, [r9 + rax*8]                         
+  0x1803980E7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1803980EE  nop                                               
+
+1803980F0:
+  0x1803980F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1803980F7  mov     rcx, rax                                  
+  0x1803980FA  bts     rcx, r8                                   
+  0x1803980FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398107  jne     0x1803980f0                               
+  0x180398109  mov     eax, dword ptr [rip + 0x2d410b5]             ; data_30D91C4
+
+18039810F:
+  0x18039810F  mov     qword ptr [rsp + 0x48], rbx               
+  0x180398114  test    eax, eax                                  
+  0x180398116  je      0x180398159                               
+  0x180398118  lea     r8, [rsp + 0x48]                          
+  0x18039811D  shr     r8, 0xc                                   
+  0x180398121  and     r8d, 0x1fffff                             
+  0x180398128  mov     eax, r8d                                  
+  0x18039812B  shr     rax, 6                                    
+  0x18039812F  and     r8d, 0x3f                                 
+  0x180398133  lea     rdx, [r9 + rax*8]                         
+  0x180398137  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18039813E  nop                                               
+
+180398140:
+  0x180398140  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180398147  mov     rcx, rax                                  
+  0x18039814A  bts     rcx, r8                                   
+  0x18039814E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180398157  jne     0x180398140                               
+
+180398159:
+  0x180398159  mov     r8, qword ptr [rip + 0x2ac2e70]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<DefaultLocaleSelector.<LoadAsync>d__9>()
+  0x180398160  lea     rdx, [rsp + 0x30]                         
+  0x180398165  lea     rcx, [rsp + 0x38]                         
+  0x18039816A  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180398172  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180398177  lea     rdx, [rsp + 0x38]                         
+  0x18039817C  lea     rcx, [rsp + 0x20]                         
+  0x180398181  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180398186  lea     r11, [rsp + 0x70]                         
+  0x18039818B  mov     rbx, qword ptr [r11 + 0x10]                  ; r11->DefaultLocaleSelector.<DefaultLocale>k__BackingField | ConfigJson.AvailableTextLang | <>c.<>9__9_1
+  0x18039818F  movups  xmm0, xmmword ptr [rax]                   
+  0x180398192  mov     rax, rsi                                  
+  0x180398195  movups  xmmword ptr [rsi], xmm0                   
+  0x180398198  mov     rsi, qword ptr [r11 + 0x18]                  ; r11->DefaultLocaleSelector.<AvailableTextLanguages>k__BackingField | ConfigJson.UnavailableLangFallback | <LoadAsync>d__9.ct
+  0x18039819C  mov     rsp, r11                                  
+  0x18039819F  pop     rdi                                       
+  0x1803981A0  ret                                               

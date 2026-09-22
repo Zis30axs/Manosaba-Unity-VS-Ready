@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using FastEnumUtility;
+using System.Text;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -133,12 +138,66 @@ namespace WitchTrials.Models
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x398000 (kickoff) / 0x3982A0 (<LoadAsync>d__9.MoveNext, 2638 B)
+    	// The body lives in LoadAsyncCore (XxxCore convention; the <LoadAsync>d__9 metadata stays).
+    	//   FastEnum.GetValues<LocaleKind>().ToDictionary(<>c.b__9_0, <>c.b__9_1): b__9_0 (0x398250) is ToSystemLanguage
+    	//   inlined (0 -> 22 Japanese, 1 -> 10 English, 2 -> 40 ChineseSimplified, 3 -> 41 ChineseTraditional, 4 -> 23 Korean),
+    	//   b__9_1 (0x398290) tail-jumps to ToTagName.  key (<key>5__2, +0x28) = GetValueOrDefault(map, Application.systemLanguage)
+    	//   with '' when absent (cmovne at 0x180398723); jsonPath (+0x30) = Path.Combine(streamingAssetsPath, "config.json");
+    	//   await File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct) through TaskAwaiter<string> (<>u__1, +0x38).
+    	//   Text null -> LogError("Failed to load config.json: " + jsonPath).  Otherwise ConfigJson from JsonConvert;
+    	//   AvailableTextLanguages (+0x18) = AvailableTextLang; ICollection<string>.Contains(key) (slot 4) -> DefaultLocale (+0x10)
+    	//   = key.ToLocaleKind(); else UnavailableLangFallback.TryGetValue(key) then TryGetValue("default") (IDictionary slot 7);
+    	//   nothing found -> LogError("The config.json structure is invalid.").  Every call in the body is accounted for: no
+    	//   user-level catch, only the compiler's SetException continuation at 0x180398C74.
+    	//   The stub left DefaultLocale at Ja, so a fresh install ran in Japanese: the zh-Hans title logo and every title
+    	//   button's Label@ZhHans hover sprite (LocalizeCanvasGroup, alpha = locale == ZhHans) stayed hidden.
+    	// Annotated disassembly: work/title-path/disas/dls_398000, dls_3982A0, dls_398250, dls_398290.txt
     	[Token(Token = "0x600062C")]
     	[Address(RVA = "0x398000", Offset = "0x396A00", VA = "0x180398000")]
     	[AsyncStateMachine(typeof(_003CLoadAsync_003Ed__9))]
     	public UniTask LoadAsync([Optional] CancellationToken ct)
     	{
-    		return default(UniTask);
+    		return LoadAsyncCore(ct);
+    	}
+
+    	private async UniTask LoadAsyncCore(CancellationToken ct)
+    	{
+    		Dictionary<SystemLanguage, string> tagsBySystemLanguage = FastEnum.GetValues<LocaleKind>().ToDictionary((LocaleKind locale) => locale.ToSystemLanguage(), (LocaleKind locale) => locale.ToTagName());
+    		string key = tagsBySystemLanguage.GetValueOrDefault(Application.systemLanguage) ?? "";
+    		string jsonPath = Path.Combine(Application.streamingAssetsPath, "config.json");
+    		string json = await File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct);
+    		// 0x1803988C2: the shipped binary tests the file text before parsing it
+    		if (json != null)
+    		{
+    			ConfigJson config = JsonConvert.DeserializeObject<ConfigJson>(json);
+    			AvailableTextLanguages = config.AvailableTextLang;
+    			// 0x180398969: the shipped binary tests the stored list before asking it for the key
+    			if (AvailableTextLanguages != null && config.AvailableTextLang.Contains(key))
+    			{
+    				DefaultLocale = key.ToLocaleKind();
+    				return;
+    			}
+    			// 0x1803989AA: the shipped binary tests the fallback table before looking the key up in it
+    			if (config.UnavailableLangFallback != null)
+    			{
+    				if (config.UnavailableLangFallback.TryGetValue(key, out string fallbackTag))
+    				{
+    					DefaultLocale = fallbackTag.ToLocaleKind();
+    					return;
+    				}
+    				if (config.UnavailableLangFallback.TryGetValue("default", out string defaultTag))
+    				{
+    					DefaultLocale = defaultTag.ToLocaleKind();
+    					return;
+    				}
+    			}
+    			UnityEngine.Debug.LogError("The config.json structure is invalid.");
+    		}
+    		else
+    		{
+    			UnityEngine.Debug.LogError("Failed to load config.json: " + jsonPath);
+    		}
     	}
 
     	[Token(Token = "0x600062D")]
