@@ -1,0 +1,120 @@
+====================================================================================================
+FUNCTION RVA 0xCE6C00  VA 0x180CE6C00  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralScreen$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* GigaCreation_Essentials_Ui_GeneralScreen__get_InputManager (GigaCreation_Essentials_Ui_GeneralScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralScreen :: private IInputManager get_InputManager()
+  fields of GigaCreation.Essentials.Ui.GeneralScreen:
+      +0x20   _canvas                        Canvas
+      +0x28   _canvasGroup                   CanvasGroup
+      +0x30   _underlay                      Underlay
+      +0x38   _closeButton                   Button
+      +0x40   _visibleOnAwake                bool
+      +0x44   _contentPresentDuration        float
+      +0x48   _contentDismissDuration        float
+      +0x4C   _enableCancelAction            bool
+      +0x50   _onBeginToPresent              UnityEvent
+      +0x58   _onEndToPresent                UnityEvent
+      +0x60   _onBeginToDismiss              UnityEvent
+      +0x68   _onEndToDismiss                UnityEvent
+      +0x70   _inputManager                  IInputManager
+      +0x78   _closeButtonDisposable         IDisposable
+      +0x80   _presentCts                    CancellationTokenSource
+      +0x88   _dismissCts                    CancellationTokenSource
+      +0x90   <IsCancelEventBlocked>k__BackingField bool
+  fields of GeneralScreen.<DismissAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeAsync>d__43:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   duration                       float
+      +0x24   to                             float
+      +0x28   updateMotionManually           bool
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeInAsync>d__41:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeOutAsync>d__42:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<PresentAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CE6C00  push    rbx                                       
+  0x180CE6C02  sub     rsp, 0x20                                 
+  0x180CE6C06  cmp     byte ptr [rip + 0x23f65ad], 0                ; data_30DD1BA
+  0x180CE6C0D  mov     rbx, rcx                                  
+  0x180CE6C10  jne     0x180ce6c3b                               
+  0x180CE6C12  lea     rcx, [rip + 0x216e5ef]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE6C19  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6C1E  lock or dword ptr [rsp], 0                        
+  0x180CE6C23  lea     rcx, [rip + 0x216b53e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE6C2A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6C2F  lock or dword ptr [rsp], 0                        
+  0x180CE6C34  mov     byte ptr [rip + 0x23f657f], 1                ; data_30DD1BA
+
+180CE6C3B:
+  0x180CE6C3B  mov     rax, qword ptr [rbx + 0x70]                  ; rbx->GeneralScreen._inputManager
+  0x180CE6C3F  test    rax, rax                                  
+  0x180CE6C42  jne     0x180ce6cb4                               
+  0x180CE6C44  mov     rcx, qword ptr [rip + 0x216b51d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE6C4B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CE6C51  jne     0x180ce6c58                               
+  0x180CE6C53  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE6C58:
+  0x180CE6C58  mov     rdx, qword ptr [rip + 0x216e5a9]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE6C5F  mov     cl, 1                                     
+  0x180CE6C61  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE6C66  cmp     dword ptr [rip + 0x23f2557], 0               ; data_30D91C4
+  0x180CE6C6D  mov     r9, rax                                   
+  0x180CE6C70  mov     qword ptr [rbx + 0x70], rax                  ; rbx->GeneralScreen._inputManager
+  0x180CE6C74  je      0x180ce6cb1                               
+  0x180CE6C76  lea     r8, [rbx + 0x70]                             ; rbx->GeneralScreen._inputManager
+  0x180CE6C7A  shr     r8, 0xc                                   
+  0x180CE6C7E  lea     rcx, [rip + 0x244d8fb]                       ; data_3134580
+  0x180CE6C85  and     r8d, 0x1fffff                             
+  0x180CE6C8C  mov     eax, r8d                                  
+  0x180CE6C8F  shr     rax, 6                                    
+  0x180CE6C93  and     r8d, 0x3f                                 
+  0x180CE6C97  lea     rdx, [rcx + rax*8]                        
+  0x180CE6C9B  prefetchw byte ptr [rdx]                            
+  0x180CE6C9E  nop                                               
+
+180CE6CA0:
+  0x180CE6CA0  mov     rax, qword ptr [rdx]                      
+  0x180CE6CA3  mov     rcx, rax                                  
+  0x180CE6CA6  bts     rcx, r8                                   
+  0x180CE6CAA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE6CAF  jne     0x180ce6ca0                               
+
+180CE6CB1:
+  0x180CE6CB1  mov     rax, r9                                   
+
+180CE6CB4:
+  0x180CE6CB4  add     rsp, 0x20                                 
+  0x180CE6CB8  pop     rbx                                       
+  0x180CE6CB9  ret                                               

@@ -1,0 +1,78 @@
+====================================================================================================
+FUNCTION RVA 0xCEA300  VA 0x180CEA300  size 0xF1 (241 bytes)
+  managed: GigaCreation.Essentials.Ui.Underlay$$SetInteractable
+  csig   : void GigaCreation_Essentials_Ui_Underlay__SetInteractable (GigaCreation_Essentials_Ui_Underlay_o* __this, bool enable, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Underlay :: public void SetInteractable(bool enable)
+  fields of GigaCreation.Essentials.Ui.Underlay:
+      +0x20   _graphic                       Graphic
+      +0x28   _button                        Button
+====================================================================================================
+  0x180CEA300  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEA305  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEA30A  push    rdi                                       
+  0x180CEA30B  sub     rsp, 0x20                                 
+  0x180CEA30F  cmp     byte ptr [rip + 0x23f2ebc], 0                ; data_30DD1D2
+  0x180CEA316  movzx   esi, dl                                   
+  0x180CEA319  mov     rdi, rcx                                  
+  0x180CEA31C  jne     0x180cea336                               
+  0x180CEA31E  lea     rcx, [rip + 0x2167f6b]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA325  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA32A  lock or dword ptr [rsp], 0                        
+  0x180CEA32F  mov     byte ptr [rip + 0x23f2e9c], 1                ; data_30DD1D2
+
+180CEA336:
+  0x180CEA336  mov     rcx, qword ptr [rip + 0x2167f53]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA33D  mov     rbx, qword ptr [rdi + 0x28]                  ; rdi->Underlay._button
+  0x180CEA341  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA348  jne     0x180cea34f                               
+  0x180CEA34A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA34F:
+  0x180CEA34F  cmp     byte ptr [rip + 0x23fe4d8], 0                ; data_30E882E
+  0x180CEA356  jne     0x180cea370                               
+  0x180CEA358  lea     rcx, [rip + 0x2167f31]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA35F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA364  lock or dword ptr [rsp], 0                        
+  0x180CEA369  mov     byte ptr [rip + 0x23fe4be], 1                ; data_30E882E
+
+180CEA370:
+  0x180CEA370  mov     rcx, qword ptr [rip + 0x2167f19]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA377  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA37E  jne     0x180cea385                               
+  0x180CEA380  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA385:
+  0x180CEA385  cmp     byte ptr [rip + 0x23fe4a3], 0                ; data_30E882F
+  0x180CEA38C  jne     0x180cea3a6                               
+  0x180CEA38E  lea     rcx, [rip + 0x2167efb]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA395  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA39A  lock or dword ptr [rsp], 0                        
+  0x180CEA39F  mov     byte ptr [rip + 0x23fe489], 1                ; data_30E882F
+
+180CEA3A6:
+  0x180CEA3A6  test    rbx, rbx                                  
+  0x180CEA3A9  je      0x180cea3dc                               
+  0x180CEA3AB  mov     rcx, qword ptr [rip + 0x2167ede]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA3B2  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA3B9  jne     0x180cea3c0                               
+  0x180CEA3BB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA3C0:
+  0x180CEA3C0  cmp     qword ptr [rbx + 0x10], 0                 
+  0x180CEA3C5  je      0x180cea3dc                               
+  0x180CEA3C7  mov     rcx, qword ptr [rdi + 0x28]                  ; rdi->Underlay._button
+  0x180CEA3CB  test    rcx, rcx                                  
+  0x180CEA3CE  je      0x180cea3ec                               
+  0x180CEA3D0  xor     r8d, r8d                                  
+  0x180CEA3D3  movzx   edx, sil                                  
+  0x180CEA3D7  call    0x182498180                                  ; -> UnityEngine.UI.Selectable$$set_interactable
+
+180CEA3DC:
+  0x180CEA3DC  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEA3E1  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CEA3E6  add     rsp, 0x20                                 
+  0x180CEA3EA  pop     rdi                                       
+  0x180CEA3EB  ret                                               
+
+180CEA3EC:
+  0x180CEA3EC  call    0x180246730                                  ; THROW NullReferenceException

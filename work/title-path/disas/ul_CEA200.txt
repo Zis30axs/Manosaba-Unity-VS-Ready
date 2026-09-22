@@ -1,0 +1,80 @@
+====================================================================================================
+FUNCTION RVA 0xCEA200  VA 0x180CEA200  size 0xFC (252 bytes)
+  managed: GigaCreation.Essentials.Ui.Underlay$$SetRaycastTargetEnabled
+  csig   : void GigaCreation_Essentials_Ui_Underlay__SetRaycastTargetEnabled (GigaCreation_Essentials_Ui_Underlay_o* __this, bool enable, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Underlay :: public void SetRaycastTargetEnabled(bool enable)
+  fields of GigaCreation.Essentials.Ui.Underlay:
+      +0x20   _graphic                       Graphic
+      +0x28   _button                        Button
+====================================================================================================
+  0x180CEA200  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEA205  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEA20A  push    rdi                                       
+  0x180CEA20B  sub     rsp, 0x20                                 
+  0x180CEA20F  cmp     byte ptr [rip + 0x23f2fbb], 0                ; data_30DD1D1
+  0x180CEA216  movzx   esi, dl                                   
+  0x180CEA219  mov     rdi, rcx                                  
+  0x180CEA21C  jne     0x180cea236                               
+  0x180CEA21E  lea     rcx, [rip + 0x216806b]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA225  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA22A  lock or dword ptr [rsp], 0                        
+  0x180CEA22F  mov     byte ptr [rip + 0x23f2f9b], 1                ; data_30DD1D1
+
+180CEA236:
+  0x180CEA236  mov     rcx, qword ptr [rip + 0x2168053]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA23D  mov     rbx, qword ptr [rdi + 0x20]                  ; rdi->Underlay._graphic
+  0x180CEA241  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA248  jne     0x180cea24f                               
+  0x180CEA24A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA24F:
+  0x180CEA24F  cmp     byte ptr [rip + 0x23fe5d8], 0                ; data_30E882E
+  0x180CEA256  jne     0x180cea270                               
+  0x180CEA258  lea     rcx, [rip + 0x2168031]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA25F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA264  lock or dword ptr [rsp], 0                        
+  0x180CEA269  mov     byte ptr [rip + 0x23fe5be], 1                ; data_30E882E
+
+180CEA270:
+  0x180CEA270  mov     rcx, qword ptr [rip + 0x2168019]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA277  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA27E  jne     0x180cea285                               
+  0x180CEA280  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA285:
+  0x180CEA285  cmp     byte ptr [rip + 0x23fe5a3], 0                ; data_30E882F
+  0x180CEA28C  jne     0x180cea2a6                               
+  0x180CEA28E  lea     rcx, [rip + 0x2167ffb]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA295  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA29A  lock or dword ptr [rsp], 0                        
+  0x180CEA29F  mov     byte ptr [rip + 0x23fe589], 1                ; data_30E882F
+
+180CEA2A6:
+  0x180CEA2A6  test    rbx, rbx                                  
+  0x180CEA2A9  je      0x180cea2e7                               
+  0x180CEA2AB  mov     rcx, qword ptr [rip + 0x2167fde]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEA2B2  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEA2B9  jne     0x180cea2c0                               
+  0x180CEA2BB  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEA2C0:
+  0x180CEA2C0  cmp     qword ptr [rbx + 0x10], 0                 
+  0x180CEA2C5  je      0x180cea2e7                               
+  0x180CEA2C7  mov     rcx, qword ptr [rdi + 0x20]                  ; rdi->Underlay._graphic
+  0x180CEA2CB  test    rcx, rcx                                  
+  0x180CEA2CE  je      0x180cea2f7                               
+  0x180CEA2D0  mov     r8, qword ptr [rcx]                       
+  0x180CEA2D3  movzx   edx, sil                                  
+  0x180CEA2D7  mov     rax, qword ptr [r8 + 0x2c8]               
+  0x180CEA2DE  mov     r8, qword ptr [r8 + 0x2d0]                
+  0x180CEA2E5  call    rax                                       
+
+180CEA2E7:
+  0x180CEA2E7  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEA2EC  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CEA2F1  add     rsp, 0x20                                 
+  0x180CEA2F5  pop     rdi                                       
+  0x180CEA2F6  ret                                               
+
+180CEA2F7:
+  0x180CEA2F7  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,267 @@
+====================================================================================================
+FUNCTION RVA 0xCE9700  VA 0x180CE9700  size 0x301 (769 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralScreen.<FadeOutAsync>d__42$$MoveNext
+  csig   : void GigaCreation_Essentials_Ui_GeneralScreen__FadeOutAsync_d__42__MoveNext (GigaCreation_Essentials_Ui_GeneralScreen__FadeOutAsync_d__42_o __this, const MethodInfo* method);
+  dump.cs: GeneralScreen.<FadeOutAsync>d__42 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Ui.GeneralScreen:
+      +0x20   _canvas                        Canvas
+      +0x28   _canvasGroup                   CanvasGroup
+      +0x30   _underlay                      Underlay
+      +0x38   _closeButton                   Button
+      +0x40   _visibleOnAwake                bool
+      +0x44   _contentPresentDuration        float
+      +0x48   _contentDismissDuration        float
+      +0x4C   _enableCancelAction            bool
+      +0x50   _onBeginToPresent              UnityEvent
+      +0x58   _onEndToPresent                UnityEvent
+      +0x60   _onBeginToDismiss              UnityEvent
+      +0x68   _onEndToDismiss                UnityEvent
+      +0x70   _inputManager                  IInputManager
+      +0x78   _closeButtonDisposable         IDisposable
+      +0x80   _presentCts                    CancellationTokenSource
+      +0x88   _dismissCts                    CancellationTokenSource
+      +0x90   <IsCancelEventBlocked>k__BackingField bool
+  fields of GeneralScreen.<DismissAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeAsync>d__43:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   duration                       float
+      +0x24   to                             float
+      +0x28   updateMotionManually           bool
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeInAsync>d__41:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeOutAsync>d__42:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<PresentAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CE9700  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CE9705  mov     qword ptr [rsp + 8], rcx                  
+  0x180CE970A  push    rdi                                       
+  0x180CE970B  sub     rsp, 0x80                                 
+  0x180CE9712  movaps  xmmword ptr [rsp + 0x70], xmm6            
+  0x180CE9717  mov     rbx, rcx                                  
+  0x180CE971A  cmp     byte ptr [rip + 0x23f3aad], 0                ; data_30DD1CE
+  0x180CE9721  jne     0x180ce974c                               
+  0x180CE9723  lea     rcx, [rip + 0x217ebe6]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, GeneralScreen.<FadeOutAsync>d__42>()
+  0x180CE972A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE972F  lock or dword ptr [rsp], 0                        
+  0x180CE9734  lea     rcx, [rip + 0x21689cd]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE973B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9740  lock or dword ptr [rsp], 0                        
+  0x180CE9745  mov     byte ptr [rip + 0x23f3a82], 1                ; data_30DD1CE
+
+180CE974C:
+  0x180CE974C  xorps   xmm0, xmm0                                
+  0x180CE974F  movups  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CE9754  mov     eax, dword ptr [rbx]                      
+  0x180CE9756  mov     rdx, qword ptr [rbx + 0x18]                  ; rbx-><DismissAsync>d__31.<>4__this | <FadeAsync>d__43.<>4__this | <FadeInAsync>d__41.<>4__this
+  0x180CE975A  test    eax, eax                                  
+  0x180CE975C  jne     0x180ce977b                               
+  0x180CE975E  movups  xmm1, xmmword ptr [rbx + 0x30]               ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE9762  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180CE9767  movups  xmmword ptr [rbx + 0x30], xmm0               ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE976B  mov     dword ptr [rbx], 0xffffffff               
+  0x180CE9771  movq    r8, xmm1                                  
+  0x180CE9776  jmp     0x180ce993e                               
+
+180CE977B:
+  0x180CE977B  cmp     byte ptr [rbx + 0x20], 0                     ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <FadeInAsync>d__41.instantly
+  0x180CE977F  je      0x180ce979a                               
+  0x180CE9781  xorps   xmm2, xmm2                                
+  0x180CE9784  movzx   ecx, byte ptr [rbx + 0x21]                   ; rbx-><FadeInAsync>d__41.updateMotionManually | <FadeOutAsync>d__42.updateMotionManually
+  0x180CE9788  mov     rax, qword ptr [rbx + 0x28]                  ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE978C  xorps   xmm3, xmm3                                
+  0x180CE978F  test    rdx, rdx                                  
+  0x180CE9792  je      0x180ce99f6                               
+  0x180CE9798  jmp     0x180ce97b3                               
+
+180CE979A:
+  0x180CE979A  test    rdx, rdx                                  
+  0x180CE979D  je      0x180ce99fc                               
+  0x180CE97A3  movss   xmm3, dword ptr [rdx + 0x48]                 ; rdx->GeneralScreen._contentDismissDuration
+  0x180CE97A8  movzx   ecx, byte ptr [rbx + 0x21]                   ; rbx-><FadeInAsync>d__41.updateMotionManually | <FadeOutAsync>d__42.updateMotionManually
+  0x180CE97AC  mov     rax, qword ptr [rbx + 0x28]                  ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE97B0  xorps   xmm2, xmm2                                
+
+180CE97B3:
+  0x180CE97B3  mov     qword ptr [rsp + 0x30], 0                 
+  0x180CE97BC  mov     qword ptr [rsp + 0x28], rax               
+  0x180CE97C1  mov     byte ptr [rsp + 0x20], cl                 
+  0x180CE97C5  lea     rcx, [rsp + 0x60]                         
+  0x180CE97CA  call    0x180ce8620                                  ; -> GigaCreation.Essentials.Ui.GeneralScreen$$FadeAsync
+  0x180CE97CF  movups  xmm6, xmmword ptr [rax]                   
+  0x180CE97D2  mov     rcx, qword ptr [rip + 0x216892f]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE97D9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE97E0  jne     0x180ce97e7                               
+  0x180CE97E2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE97E7:
+  0x180CE97E7  movaps  xmmword ptr [rsp + 0x60], xmm6            
+  0x180CE97EC  lea     rdi, [rip + 0x2404aad]                       ; data_30EE2A0
+  0x180CE97F3  cmp     dword ptr [rip + 0x23ef9ca], 0               ; data_30D91C4
+  0x180CE97FA  je      0x180ce9840                               
+  0x180CE97FC  lea     r8, [rsp + 0x60]                          
+  0x180CE9801  shr     r8, 0xc                                   
+  0x180CE9805  and     r8d, 0x1fffff                             
+  0x180CE980C  mov     edx, r8d                                  
+  0x180CE980F  shr     rdx, 6                                    
+  0x180CE9813  and     r8d, 0x3f                                 
+  0x180CE9817  prefetchw byte ptr [rdi + rdx*8 + 0x462e0]          
+  0x180CE981F  nop                                               
+
+180CE9820:
+  0x180CE9820  mov     rax, qword ptr [rdi + rdx*8 + 0x462e0]    
+  0x180CE9828  mov     rcx, rax                                  
+  0x180CE982B  bts     rcx, r8                                   
+  0x180CE982F  lock cmpxchg qword ptr [rdi + rdx*8 + 0x462e0], rcx    
+  0x180CE9839  jne     0x180ce9820                               
+  0x180CE983B  movaps  xmm6, xmmword ptr [rsp + 0x60]            
+
+180CE9840:
+  0x180CE9840  movdqa  xmmword ptr [rsp + 0x50], xmm6            
+  0x180CE9846  cmp     byte ptr [rip + 0x23edcd0], 0                ; data_30D751D
+  0x180CE984D  jne     0x180ce9867                               
+  0x180CE984F  lea     rcx, [rip + 0x21688b2]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE9856  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE985B  lock or dword ptr [rsp], 0                        
+  0x180CE9860  mov     byte ptr [rip + 0x23edcb6], 1                ; data_30D751D
+
+180CE9867:
+  0x180CE9867  mov     rcx, qword ptr [rip + 0x216889a]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE986E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE9875  jne     0x180ce987c                               
+  0x180CE9877  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE987C:
+  0x180CE987C  cmp     byte ptr [rip + 0x23edc93], 0                ; data_30D7516
+  0x180CE9883  jne     0x180ce989d                               
+  0x180CE9885  lea     rcx, [rip + 0x21678dc]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE988C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9891  lock or dword ptr [rsp], 0                        
+  0x180CE9896  mov     byte ptr [rip + 0x23edc79], 1                ; data_30D7516
+
+180CE989D:
+  0x180CE989D  mov     r8, qword ptr [rsp + 0x50]                
+  0x180CE98A2  test    r8, r8                                    
+  0x180CE98A5  je      0x180ce993e                               
+  0x180CE98AB  xor     ecx, ecx                                  
+  0x180CE98AD  movzx   r9d, word ptr [rsp + 0x58]                
+  0x180CE98B3  mov     rdx, qword ptr [rip + 0x21678ae]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE98BA  call    0x180003000                                  ; -> sub_3000 (runtime/helper)
+  0x180CE98BF  test    eax, eax                                  
+  0x180CE98C1  jne     0x180ce9939                               
+  0x180CE98C3  mov     dword ptr [rbx], eax                      
+  0x180CE98C5  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180CE98CA  movups  xmmword ptr [rbx + 0x30], xmm0               ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE98CE  cmp     dword ptr [rip + 0x23ef8f0], eax             ; data_30D91C4
+  0x180CE98D4  je      0x180ce991b                               
+  0x180CE98D6  lea     r8, [rbx + 0x30]                             ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE98DA  shr     r8, 0xc                                   
+  0x180CE98DE  and     r8d, 0x1fffff                             
+  0x180CE98E5  mov     edx, r8d                                  
+  0x180CE98E8  shr     rdx, 6                                    
+  0x180CE98EC  and     r8d, 0x3f                                 
+  0x180CE98F0  prefetchw byte ptr [rdi + rdx*8 + 0x462e0]          
+  0x180CE98F8  nop     dword ptr [rax + rax]                     
+
+180CE9900:
+  0x180CE9900  mov     rax, qword ptr [rdi + rdx*8 + 0x462e0]    
+  0x180CE9908  mov     rcx, rax                                  
+  0x180CE990B  bts     rcx, r8                                   
+  0x180CE990F  lock cmpxchg qword ptr [rdi + rdx*8 + 0x462e0], rcx    
+  0x180CE9919  jne     0x180ce9900                               
+
+180CE991B:
+  0x180CE991B  lea     rcx, [rbx + 8]                            
+  0x180CE991F  mov     r9, qword ptr [rip + 0x217e9ea]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, GeneralScreen.<FadeOutAsync>d__42>()
+  0x180CE9926  mov     r8, rbx                                   
+  0x180CE9929  lea     rdx, [rsp + 0x50]                         
+  0x180CE992E  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CE9933  nop                                               
+  0x180CE9934  jmp     0x180ce99bf                               
+
+180CE9939:
+  0x180CE9939  mov     r8, qword ptr [rsp + 0x50]                
+
+180CE993E:
+  0x180CE993E  cmp     byte ptr [rip + 0x23edbd7], 0                ; data_30D751C
+  0x180CE9945  jne     0x180ce9964                               
+  0x180CE9947  lea     rcx, [rip + 0x216781a]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE994E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9953  lock or dword ptr [rsp], 0                        
+  0x180CE9958  mov     byte ptr [rip + 0x23edbbd], 1                ; data_30D751C
+  0x180CE995F  mov     r8, qword ptr [rsp + 0x50]                
+
+180CE9964:
+  0x180CE9964  test    r8, r8                                    
+  0x180CE9967  je      0x180ce997c                               
+  0x180CE9969  movzx   r9d, word ptr [rsp + 0x58]                
+  0x180CE996F  mov     rdx, qword ptr [rip + 0x21677f2]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE9976  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+  0x180CE997B  nop                                               
+
+180CE997C:
+  0x180CE997C  mov     dword ptr [rbx], 0xfffffffe               
+  0x180CE9982  cmp     byte ptr [rip + 0x23edb91], 0                ; data_30D751A
+  0x180CE9989  jne     0x180ce99a3                               
+  0x180CE998B  lea     rcx, [rip + 0x21677de]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CE9992  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9997  lock or dword ptr [rsp], 0                        
+  0x180CE999C  mov     byte ptr [rip + 0x23edb77], 1                ; data_30D751A
+
+180CE99A3:
+  0x180CE99A3  cmp     qword ptr [rbx + 8], 0                    
+  0x180CE99A8  je      0x180ce99bf                               
+  0x180CE99AA  mov     ecx, 2                                    
+  0x180CE99AF  mov     r8, qword ptr [rbx + 8]                   
+  0x180CE99B3  mov     rdx, qword ptr [rip + 0x21677b6]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CE99BA  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CE99BF:
+  0x180CE99BF  mov     rbx, qword ptr [rsp + 0x98]               
+  0x180CE99C7  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180CE99CC  add     rsp, 0x80                                 
+  0x180CE99D3  pop     rdi                                       
+  0x180CE99D4  ret                                               
+  0x180CE99D5  mov     rcx, qword ptr [rsp + 0x90]               
+  0x180CE99DD  mov     dword ptr [rcx], 0xfffffffe               
+  0x180CE99E3  add     rcx, 8                                    
+  0x180CE99E7  mov     rdx, qword ptr [rsp + 0xa0]               
+  0x180CE99EF  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180CE99F4  jmp     0x180ce99bf                               
+
+180CE99F6:
+  0x180CE99F6  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE99FB  nop                                               
+
+180CE99FC:
+  0x180CE99FC  call    0x180246730                                  ; THROW NullReferenceException

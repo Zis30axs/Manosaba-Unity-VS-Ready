@@ -1,0 +1,406 @@
+====================================================================================================
+FUNCTION RVA 0xCE8EC0  VA 0x180CE8EC0  size 0x522 (1314 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralScreen.<FadeAsync>d__43$$MoveNext
+  csig   : void GigaCreation_Essentials_Ui_GeneralScreen__FadeAsync_d__43__MoveNext (GigaCreation_Essentials_Ui_GeneralScreen__FadeAsync_d__43_o __this, const MethodInfo* method);
+  dump.cs: GeneralScreen.<FadeAsync>d__43 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Ui.GeneralScreen:
+      +0x20   _canvas                        Canvas
+      +0x28   _canvasGroup                   CanvasGroup
+      +0x30   _underlay                      Underlay
+      +0x38   _closeButton                   Button
+      +0x40   _visibleOnAwake                bool
+      +0x44   _contentPresentDuration        float
+      +0x48   _contentDismissDuration        float
+      +0x4C   _enableCancelAction            bool
+      +0x50   _onBeginToPresent              UnityEvent
+      +0x58   _onEndToPresent                UnityEvent
+      +0x60   _onBeginToDismiss              UnityEvent
+      +0x68   _onEndToDismiss                UnityEvent
+      +0x70   _inputManager                  IInputManager
+      +0x78   _closeButtonDisposable         IDisposable
+      +0x80   _presentCts                    CancellationTokenSource
+      +0x88   _dismissCts                    CancellationTokenSource
+      +0x90   <IsCancelEventBlocked>k__BackingField bool
+  fields of GeneralScreen.<DismissAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeAsync>d__43:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   duration                       float
+      +0x24   to                             float
+      +0x28   updateMotionManually           bool
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeInAsync>d__41:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeOutAsync>d__42:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<PresentAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CE8EC0  mov     qword ptr [rsp + 8], rcx                  
+  0x180CE8EC5  push    rbx                                       
+  0x180CE8EC6  push    rsi                                       
+  0x180CE8EC7  push    rdi                                       
+  0x180CE8EC8  sub     rsp, 0x80                                 
+  0x180CE8ECF  movaps  xmmword ptr [rsp + 0x70], xmm6            
+  0x180CE8ED4  mov     rbx, rcx                                  
+  0x180CE8ED7  cmp     byte ptr [rip + 0x23f42ee], 0                ; data_30DD1CC
+  0x180CE8EDE  jne     0x180ce8f84                               
+  0x180CE8EE4  lea     rcx, [rip + 0x217f465]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, GeneralScreen.<FadeAsync>d__43>()
+  0x180CE8EEB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8EF0  lock or dword ptr [rsp], 0                        
+  0x180CE8EF5  lea     rcx, [rip + 0x21693e4]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CE8EFC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F01  lock or dword ptr [rsp], 0                        
+  0x180CE8F06  lea     rcx, [rip + 0x216c64b]                       ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180CE8F0D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F12  lock or dword ptr [rsp], 0                        
+  0x180CE8F17  lea     rcx, [rip + 0x216a54a]                       ; METHODINFO Method$LitMotion.MotionBuilder<float, NoOptions, FloatMotionAdapter>.WithScheduler()
+  0x180CE8F1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F23  lock or dword ptr [rsp], 0                        
+  0x180CE8F28  lea     rcx, [rip + 0x216a531]                       ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CE8F2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F34  lock or dword ptr [rsp], 0                        
+  0x180CE8F39  lea     rcx, [rip + 0x2169350]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE8F40  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F45  lock or dword ptr [rsp], 0                        
+  0x180CE8F4A  lea     rcx, [rip + 0x21691b7]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE8F51  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F56  lock or dword ptr [rsp], 0                        
+  0x180CE8F5B  lea     rcx, [rip + 0x217e23e]                       ; STR '時間は 0 以上でなければいけません：{0}'
+  0x180CE8F62  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F67  lock or dword ptr [rsp], 0                        
+  0x180CE8F6C  lea     rcx, [rip + 0x217f3cd]                       ; STR 'Canvas Group がアタッチされていないため、フェードさせることはできません：'
+  0x180CE8F73  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8F78  lock or dword ptr [rsp], 0                        
+  0x180CE8F7D  mov     byte ptr [rip + 0x23f4248], 1                ; data_30DD1CC
+
+180CE8F84:
+  0x180CE8F84  xorps   xmm0, xmm0                                
+  0x180CE8F87  movups  xmmword ptr [rsp + 0x60], xmm0            
+  0x180CE8F8C  mov     eax, dword ptr [rbx]                      
+  0x180CE8F8E  mov     rdi, qword ptr [rbx + 0x18]                  ; rbx-><DismissAsync>d__31.<>4__this | <FadeAsync>d__43.<>4__this | <FadeInAsync>d__41.<>4__this
+  0x180CE8F92  test    eax, eax                                  
+  0x180CE8F94  jne     0x180ce8fb1                               
+  0x180CE8F96  movups  xmm0, xmmword ptr [rbx + 0x38]               ; rbx->GeneralScreen._closeButton | <DismissAsync>d__31.<>u__1 | <FadeAsync>d__43.<>u__1
+  0x180CE8F9A  movaps  xmmword ptr [rsp + 0x60], xmm0            
+  0x180CE8F9F  xorps   xmm1, xmm1                                
+  0x180CE8FA2  movups  xmmword ptr [rbx + 0x38], xmm1               ; rbx->GeneralScreen._closeButton | <DismissAsync>d__31.<>u__1 | <FadeAsync>d__43.<>u__1
+  0x180CE8FA6  mov     dword ptr [rbx], 0xffffffff               
+  0x180CE8FAC  jmp     0x180ce9240                               
+
+180CE8FB1:
+  0x180CE8FB1  test    rdi, rdi                                  
+  0x180CE8FB4  je      0x180ce93dd                               
+  0x180CE8FBA  mov     rsi, qword ptr [rdi + 0x28]                  ; rdi->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE8FBE  mov     rcx, qword ptr [rip + 0x21692cb]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE8FC5  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE8FCC  jne     0x180ce8fd3                               
+  0x180CE8FCE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE8FD3:
+  0x180CE8FD3  cmp     byte ptr [rip + 0x23ff854], 0                ; data_30E882E
+  0x180CE8FDA  jne     0x180ce8ff4                               
+  0x180CE8FDC  lea     rcx, [rip + 0x21692ad]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE8FE3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE8FE8  lock or dword ptr [rsp], 0                        
+  0x180CE8FED  mov     byte ptr [rip + 0x23ff83a], 1                ; data_30E882E
+
+180CE8FF4:
+  0x180CE8FF4  mov     rcx, qword ptr [rip + 0x2169295]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE8FFB  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE9002  jne     0x180ce9009                               
+  0x180CE9004  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE9009:
+  0x180CE9009  cmp     byte ptr [rip + 0x23ff81f], 0                ; data_30E882F
+  0x180CE9010  jne     0x180ce902a                               
+  0x180CE9012  lea     rcx, [rip + 0x2169277]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE9019  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE901E  lock or dword ptr [rsp], 0                        
+  0x180CE9023  mov     byte ptr [rip + 0x23ff805], 1                ; data_30E882F
+
+180CE902A:
+  0x180CE902A  test    rsi, rsi                                  
+  0x180CE902D  je      0x180ce904f                               
+  0x180CE902F  mov     rcx, qword ptr [rip + 0x216925a]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE9036  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE903D  jne     0x180ce9044                               
+  0x180CE903F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE9044:
+  0x180CE9044  xor     eax, eax                                  
+  0x180CE9046  cmp     qword ptr [rsi + 0x10], rax               
+  0x180CE904A  setne   al                                        
+  0x180CE904D  jmp     0x180ce9051                               
+
+180CE904F:
+  0x180CE904F  xor     eax, eax                                  
+
+180CE9051:
+  0x180CE9051  test    al, al                                    
+  0x180CE9053  je      0x180ce9312                               
+  0x180CE9059  xorps   xmm0, xmm0                                
+  0x180CE905C  comiss  xmm0, dword ptr [rbx + 0x20]                 ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <FadeAsync>d__43.duration
+  0x180CE9060  ja      0x180ce92b9                               
+  0x180CE9066  mov     rcx, qword ptr [rdi + 0x28]                  ; rdi->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE906A  test    rcx, rcx                                  
+  0x180CE906D  je      0x180ce93d7                               
+  0x180CE9073  xor     edx, edx                                  
+  0x180CE9075  call    0x182464420                                  ; -> UnityEngine.CanvasGroup$$get_alpha
+  0x180CE907A  movss   xmm6, dword ptr [rbx + 0x20]                 ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <FadeAsync>d__43.duration
+  0x180CE907F  movss   xmm1, dword ptr [rbx + 0x24]                 ; rbx-><FadeAsync>d__43.to
+  0x180CE9084  movss   dword ptr [rsp + 0xb0], xmm1              
+  0x180CE908D  movss   dword ptr [rsp + 0xb8], xmm0              
+  0x180CE9096  cmp     byte ptr [rip + 0x23f458b], 0                ; data_30DD628
+  0x180CE909D  jne     0x180ce90b7                               
+  0x180CE909F  lea     rcx, [rip + 0x2112bfa]                       ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180CE90A6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE90AB  lock or dword ptr [rsp], 0                        
+  0x180CE90B0  mov     byte ptr [rip + 0x23f4571], 1                ; data_30DD628
+
+180CE90B7:
+  0x180CE90B7  mov     rax, qword ptr [rip + 0x2112be2]             ; METHODINFO Method$LitMotion.LMotion.Create<float, NoOptions, FloatMotionAdapter>()
+  0x180CE90BE  mov     qword ptr [rsp + 0x20], rax               
+  0x180CE90C3  movaps  xmm3, xmm6                                
+  0x180CE90C6  lea     r8, [rsp + 0xb0]                          
+  0x180CE90CE  lea     rdx, [rsp + 0xb8]                         
+  0x180CE90D6  lea     rcx, [rsp + 0x50]                         
+  0x180CE90DB  call    0x1806ea5e0                                  ; -> LitMotion.LMotion$$Create<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180CE90E0  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180CE90E5  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CE90EB  cmp     byte ptr [rbx + 0x28], 0                     ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE90EF  je      0x180ce910f                               
+  0x180CE90F1  mov     rcx, qword ptr [rip + 0x216a368]             ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CE90F8  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE90FF  jne     0x180ce9106                               
+  0x180CE9101  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE9106:
+  0x180CE9106  xor     ecx, ecx                                  
+  0x180CE9108  call    0x180da6b00                                  ; -> LitMotion.MotionScheduler$$get_Manual
+  0x180CE910D  jmp     0x180ce9139                               
+
+180CE910F:
+  0x180CE910F  mov     rax, qword ptr [rip + 0x216a34a]             ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CE9116  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180CE911D  jne     0x180ce912e                               
+  0x180CE911F  mov     rcx, rax                                  
+  0x180CE9122  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CE9127  mov     rax, qword ptr [rip + 0x216a332]             ; TYPE LitMotion.MotionScheduler_TypeInfo
+
+180CE912E:
+  0x180CE912E  mov     rax, qword ptr [rax + 0xb8]               
+  0x180CE9135  mov     rax, qword ptr [rax + 0x60]                  ; rax->GeneralScreen._onBeginToDismiss
+
+180CE9139:
+  0x180CE9139  mov     r9, qword ptr [rip + 0x216a328]              ; METHODINFO Method$LitMotion.MotionBuilder<float, NoOptions, FloatMotionAdapter>.WithScheduler()
+  0x180CE9140  mov     r8, rax                                   
+  0x180CE9143  lea     rdx, [rsp + 0x50]                         
+  0x180CE9148  lea     rcx, [rsp + 0x40]                         
+  0x180CE914D  call    0x180356930                                  ; -> LitMotion.MotionBuilder<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>$$WithScheduler
+  0x180CE9152  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180CE9157  movdqa  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CE915D  mov     r9, qword ptr [rip + 0x216c3f4]              ; METHODINFO Method$LitMotion.Extensions.LitMotionUGUIExtensions.BindToAlpha<NoOptions, FloatMotionAdapter>()
+  0x180CE9164  mov     r8, qword ptr [rdi + 0x28]                   ; rdi->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE9168  lea     rdx, [rsp + 0x50]                         
+  0x180CE916D  lea     rcx, [rsp + 0x40]                         
+  0x180CE9172  call    0x180708100                                  ; -> LitMotion.Extensions.LitMotionUGUIExtensions$$BindToAlpha<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180CE9177  movsd   xmm0, qword ptr [rsp + 0x40]              
+  0x180CE917D  movsd   qword ptr [rsp + 0x50], xmm0              
+  0x180CE9183  mov     eax, dword ptr [rsp + 0x48]               
+  0x180CE9187  mov     dword ptr [rsp + 0x58], eax               
+  0x180CE918B  xor     r9d, r9d                                  
+  0x180CE918E  mov     r8, rdi                                   
+  0x180CE9191  lea     rdx, [rsp + 0x50]                         
+  0x180CE9196  lea     rcx, [rsp + 0x40]                         
+  0x180CE919B  call    0x180da53d0                                  ; -> LitMotion.MotionHandleExtensions$$AddTo
+  0x180CE91A0  movsd   xmm0, qword ptr [rax]                     
+  0x180CE91A4  movsd   qword ptr [rsp + 0x50], xmm0              
+  0x180CE91AA  mov     eax, dword ptr [rax + 8]                  
+  0x180CE91AD  mov     dword ptr [rsp + 0x58], eax               
+  0x180CE91B1  xor     r9d, r9d                                  
+  0x180CE91B4  mov     r8, qword ptr [rbx + 0x30]                   ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE91B8  lea     rdx, [rsp + 0x50]                         
+  0x180CE91BD  lea     rcx, [rsp + 0x40]                         
+  0x180CE91C2  call    0x180d83990                                  ; -> LitMotion.LitMotionUniTaskExtensions$$ToUniTask
+  0x180CE91C7  movups  xmm6, xmmword ptr [rax]                   
+  0x180CE91CA  mov     rcx, qword ptr [rip + 0x2168f37]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CE91D1  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE91D8  jne     0x180ce91df                               
+  0x180CE91DA  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE91DF:
+  0x180CE91DF  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180CE91E4  cmp     dword ptr [rip + 0x23effd9], 0               ; data_30D91C4
+  0x180CE91EB  je      0x180ce922c                               
+  0x180CE91ED  lea     r8, [rsp + 0x50]                          
+  0x180CE91F2  shr     r8, 0xc                                   
+  0x180CE91F6  and     r8d, 0x1fffff                             
+  0x180CE91FD  mov     edx, r8d                                  
+  0x180CE9200  shr     rdx, 6                                    
+  0x180CE9204  lea     r9, [rip + 0x244b375]                        ; data_3134580
+  0x180CE920B  and     r8d, 0x3f                                 
+  0x180CE920F  prefetchw byte ptr [r9 + rdx*8]                     
+
+180CE9214:
+  0x180CE9214  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180CE9218  mov     rcx, rax                                  
+  0x180CE921B  bts     rcx, r8                                   
+  0x180CE921F  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180CE9225  jne     0x180ce9214                               
+  0x180CE9227  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+
+180CE922C:
+  0x180CE922C  movdqa  xmmword ptr [rsp + 0x60], xmm6            
+  0x180CE9232  lea     rcx, [rsp + 0x60]                         
+  0x180CE9237  call    0x1803314b0                                  ; -> sub_3314B0 (runtime/helper)
+  0x180CE923C  test    al, al                                    
+  0x180CE923E  je      0x180ce9283                               
+
+180CE9240:
+  0x180CE9240  cmp     byte ptr [rip + 0x23ee2d5], 0                ; data_30D751C
+  0x180CE9247  jne     0x180ce9261                               
+  0x180CE9249  lea     rcx, [rip + 0x2167f18]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE9250  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9255  lock or dword ptr [rsp], 0                        
+  0x180CE925A  mov     byte ptr [rip + 0x23ee2bb], 1                ; data_30D751C
+
+180CE9261:
+  0x180CE9261  mov     r8, qword ptr [rsp + 0x60]                
+  0x180CE9266  test    r8, r8                                    
+  0x180CE9269  je      0x180ce927e                               
+  0x180CE926B  movzx   r9d, word ptr [rsp + 0x68]                
+  0x180CE9271  mov     rdx, qword ptr [rip + 0x2167ef0]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CE9278  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+  0x180CE927D  nop                                               
+
+180CE927E:
+  0x180CE927E  jmp     0x180ce9355                               
+
+180CE9283:
+  0x180CE9283  mov     dword ptr [rbx], 0                        
+  0x180CE9289  movaps  xmm0, xmmword ptr [rsp + 0x60]            
+  0x180CE928E  movups  xmmword ptr [rbx + 0x38], xmm0               ; rbx->GeneralScreen._closeButton | <DismissAsync>d__31.<>u__1 | <FadeAsync>d__43.<>u__1
+  0x180CE9292  lea     rcx, [rbx + 0x38]                            ; rbx->GeneralScreen._closeButton | <DismissAsync>d__31.<>u__1 | <FadeAsync>d__43.<>u__1
+  0x180CE9296  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180CE929B  lea     rcx, [rbx + 8]                            
+  0x180CE929F  mov     r9, qword ptr [rip + 0x217f0aa]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, GeneralScreen.<FadeAsync>d__43>()
+  0x180CE92A6  mov     r8, rbx                                   
+  0x180CE92A9  lea     rdx, [rsp + 0x60]                         
+  0x180CE92AE  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CE92B3  nop                                               
+  0x180CE92B4  jmp     0x180ce9398                               
+
+180CE92B9:
+  0x180CE92B9  movss   xmm0, dword ptr [rbx + 0x20]                 ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <FadeAsync>d__43.duration
+  0x180CE92BE  movss   dword ptr [rsp + 0xb0], xmm0              
+  0x180CE92C7  lea     rdx, [rsp + 0xb0]                         
+  0x180CE92CF  mov     rcx, qword ptr [rip + 0x23ee3f2]             ; data_30D76C8
+  0x180CE92D6  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x180CE92DB  xor     r8d, r8d                                  
+  0x180CE92DE  mov     rdx, rax                                  
+  0x180CE92E1  mov     rcx, qword ptr [rip + 0x217deb8]             ; STR '時間は 0 以上でなければいけません：{0}'
+  0x180CE92E8  call    0x180e26ec0                                  ; -> System.String$$Format
+  0x180CE92ED  mov     rdi, rax                                  
+  0x180CE92F0  mov     rcx, qword ptr [rip + 0x2168fe9]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CE92F7  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE92FE  jne     0x180ce9305                               
+  0x180CE9300  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE9305:
+  0x180CE9305  xor     edx, edx                                  
+  0x180CE9307  mov     rcx, rdi                                  
+  0x180CE930A  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CE930F  nop                                               
+  0x180CE9310  jmp     0x180ce9355                               
+
+180CE9312:
+  0x180CE9312  xor     edx, edx                                  
+  0x180CE9314  mov     rcx, rdi                                  
+  0x180CE9317  call    0x182073890                                  ; -> UnityEngine.Object$$GetName
+  0x180CE931C  xor     r8d, r8d                                  
+  0x180CE931F  mov     rdx, rax                                  
+  0x180CE9322  mov     rcx, qword ptr [rip + 0x217f017]             ; STR 'Canvas Group がアタッチされていないため、フェードさせることはできません：'
+  0x180CE9329  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x180CE932E  mov     rsi, rax                                  
+  0x180CE9331  mov     rcx, qword ptr [rip + 0x2168fa8]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CE9338  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE933F  jne     0x180ce9346                               
+  0x180CE9341  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE9346:
+  0x180CE9346  xor     r8d, r8d                                  
+  0x180CE9349  mov     rdx, rdi                                  
+  0x180CE934C  mov     rcx, rsi                                  
+  0x180CE934F  call    0x181fef000                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CE9354  nop                                               
+
+180CE9355:
+  0x180CE9355  mov     dword ptr [rbx], 0xfffffffe               
+  0x180CE935B  cmp     byte ptr [rip + 0x23ee1b8], 0                ; data_30D751A
+  0x180CE9362  jne     0x180ce937c                               
+  0x180CE9364  lea     rcx, [rip + 0x2167e05]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CE936B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE9370  lock or dword ptr [rsp], 0                        
+  0x180CE9375  mov     byte ptr [rip + 0x23ee19e], 1                ; data_30D751A
+
+180CE937C:
+  0x180CE937C  cmp     qword ptr [rbx + 8], 0                    
+  0x180CE9381  je      0x180ce9398                               
+  0x180CE9383  mov     ecx, 2                                    
+  0x180CE9388  mov     r8, qword ptr [rbx + 8]                   
+  0x180CE938C  mov     rdx, qword ptr [rip + 0x2167ddd]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CE9393  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CE9398:
+  0x180CE9398  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180CE939D  add     rsp, 0x80                                 
+  0x180CE93A4  pop     rdi                                       
+  0x180CE93A5  pop     rsi                                       
+  0x180CE93A6  pop     rbx                                       
+  0x180CE93A7  ret                                               
+  0x180CE93A8  mov     rcx, qword ptr [rsp + 0xa0]               
+  0x180CE93B0  mov     dword ptr [rcx], 0xfffffffe               
+  0x180CE93B6  add     rcx, 8                                    
+  0x180CE93BA  mov     rdx, qword ptr [rsp + 0xb0]               
+  0x180CE93C2  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180CE93C7  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180CE93CC  add     rsp, 0x80                                 
+  0x180CE93D3  pop     rdi                                       
+  0x180CE93D4  pop     rsi                                       
+  0x180CE93D5  pop     rbx                                       
+  0x180CE93D6  ret                                               
+
+180CE93D7:
+  0x180CE93D7  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE93DC  nop                                               
+
+180CE93DD:
+  0x180CE93DD  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,164 @@
+====================================================================================================
+FUNCTION RVA 0xCE6EA0  VA 0x180CE6EA0  size 0x195 (405 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralScreen$$Reset
+  csig   : void GigaCreation_Essentials_Ui_GeneralScreen__Reset (GigaCreation_Essentials_Ui_GeneralScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralScreen :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.GeneralScreen:
+      +0x20   _canvas                        Canvas
+      +0x28   _canvasGroup                   CanvasGroup
+      +0x30   _underlay                      Underlay
+      +0x38   _closeButton                   Button
+      +0x40   _visibleOnAwake                bool
+      +0x44   _contentPresentDuration        float
+      +0x48   _contentDismissDuration        float
+      +0x4C   _enableCancelAction            bool
+      +0x50   _onBeginToPresent              UnityEvent
+      +0x58   _onEndToPresent                UnityEvent
+      +0x60   _onBeginToDismiss              UnityEvent
+      +0x68   _onEndToDismiss                UnityEvent
+      +0x70   _inputManager                  IInputManager
+      +0x78   _closeButtonDisposable         IDisposable
+      +0x80   _presentCts                    CancellationTokenSource
+      +0x88   _dismissCts                    CancellationTokenSource
+      +0x90   <IsCancelEventBlocked>k__BackingField bool
+  fields of GeneralScreen.<DismissAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeAsync>d__43:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   duration                       float
+      +0x24   to                             float
+      +0x28   updateMotionManually           bool
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeInAsync>d__41:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeOutAsync>d__42:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<PresentAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CE6EA0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CE6EA5  push    rdi                                       
+  0x180CE6EA6  sub     rsp, 0x20                                 
+  0x180CE6EAA  cmp     byte ptr [rip + 0x23f630b], 0                ; data_30DD1BC
+  0x180CE6EB1  mov     rbx, rcx                                  
+  0x180CE6EB4  jne     0x180ce6ef0                               
+  0x180CE6EB6  lea     rcx, [rip + 0x21815eb]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Underlay>()
+  0x180CE6EBD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6EC2  lock or dword ptr [rsp], 0                        
+  0x180CE6EC7  lea     rcx, [rip + 0x216d6da]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180CE6ECE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6ED3  lock or dword ptr [rsp], 0                        
+  0x180CE6ED8  lea     rcx, [rip + 0x216b3a1]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Canvas>()
+  0x180CE6EDF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6EE4  lock or dword ptr [rsp], 0                        
+  0x180CE6EE9  mov     byte ptr [rip + 0x23f62cc], 1                ; data_30DD1BC
+
+180CE6EF0:
+  0x180CE6EF0  mov     r8, qword ptr [rip + 0x216b389]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Canvas>()
+  0x180CE6EF7  lea     rdx, [rsp + 0x30]                         
+  0x180CE6EFC  mov     rcx, rbx                                  
+  0x180CE6EFF  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CE6F04  cmp     dword ptr [rip + 0x23f22b9], 0               ; data_30D91C4
+  0x180CE6F0B  lea     rdi, [rip + 0x240738e]                       ; data_30EE2A0
+  0x180CE6F12  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CE6F17  mov     qword ptr [rbx + 0x20], rax                  ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <PresentAsync>d__28.ct
+  0x180CE6F1B  je      0x180ce6f5b                               
+  0x180CE6F1D  lea     r8, [rbx + 0x20]                             ; rbx->GeneralScreen._canvas | <DismissAsync>d__31.ct | <FadeAsync>d__43.duration
+  0x180CE6F21  shr     r8, 0xc                                   
+  0x180CE6F25  and     r8d, 0x1fffff                             
+  0x180CE6F2C  mov     eax, r8d                                  
+  0x180CE6F2F  shr     rax, 6                                    
+  0x180CE6F33  and     r8d, 0x3f                                 
+  0x180CE6F37  lea     rdx, [rdi + rax*8]                        
+  0x180CE6F3B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CE6F42:
+  0x180CE6F42  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE6F49  mov     rcx, rax                                  
+  0x180CE6F4C  bts     rcx, r8                                   
+  0x180CE6F50  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE6F59  jne     0x180ce6f42                               
+
+180CE6F5B:
+  0x180CE6F5B  mov     r8, qword ptr [rip + 0x216d646]              ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180CE6F62  lea     rdx, [rsp + 0x30]                         
+  0x180CE6F67  mov     rcx, rbx                                  
+  0x180CE6F6A  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CE6F6F  cmp     dword ptr [rip + 0x23f224e], 0               ; data_30D91C4
+  0x180CE6F76  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CE6F7B  mov     qword ptr [rbx + 0x28], rax                  ; rbx->GeneralScreen._canvasGroup | <FadeInAsync>d__41.ct | <FadeOutAsync>d__42.ct
+  0x180CE6F7F  je      0x180ce6fc9                               
+  0x180CE6F81  lea     r8, [rbx + 0x28]                             ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE6F85  shr     r8, 0xc                                   
+  0x180CE6F89  and     r8d, 0x1fffff                             
+  0x180CE6F90  mov     eax, r8d                                  
+  0x180CE6F93  shr     rax, 6                                    
+  0x180CE6F97  and     r8d, 0x3f                                 
+  0x180CE6F9B  lea     rdx, [rdi + rax*8]                        
+  0x180CE6F9F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE6FA6  nop     word ptr [rax + rax]                      
+
+180CE6FB0:
+  0x180CE6FB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE6FB7  mov     rcx, rax                                  
+  0x180CE6FBA  bts     rcx, r8                                   
+  0x180CE6FBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE6FC7  jne     0x180ce6fb0                               
+
+180CE6FC9:
+  0x180CE6FC9  mov     r8, qword ptr [rip + 0x21814d8]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Underlay>()
+  0x180CE6FD0  lea     rdx, [rsp + 0x30]                         
+  0x180CE6FD5  mov     rcx, rbx                                  
+  0x180CE6FD8  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CE6FDD  cmp     dword ptr [rip + 0x23f21e0], 0               ; data_30D91C4
+  0x180CE6FE4  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CE6FE9  mov     qword ptr [rbx + 0x30], rax                  ; rbx->GeneralScreen._underlay | <DismissAsync>d__31.<linkedCts>5__2 | <FadeAsync>d__43.ct
+  0x180CE6FED  je      0x180ce702a                               
+  0x180CE6FEF  add     rbx, 0x30                                 
+  0x180CE6FF3  shr     rbx, 0xc                                  
+  0x180CE6FF7  and     ebx, 0x1fffff                             
+  0x180CE6FFD  mov     eax, ebx                                  
+  0x180CE6FFF  shr     rax, 6                                    
+  0x180CE7003  and     ebx, 0x3f                                 
+  0x180CE7006  lea     rdx, [rdi + rax*8]                        
+  0x180CE700A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CE7011:
+  0x180CE7011  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE7018  mov     rcx, rax                                  
+  0x180CE701B  bts     rcx, rbx                                  
+  0x180CE701F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE7028  jne     0x180ce7011                               
+
+180CE702A:
+  0x180CE702A  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CE702F  add     rsp, 0x20                                 
+  0x180CE7033  pop     rdi                                       
+  0x180CE7034  ret                                               

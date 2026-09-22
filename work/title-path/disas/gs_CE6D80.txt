@@ -1,0 +1,148 @@
+====================================================================================================
+FUNCTION RVA 0xCE6D80  VA 0x180CE6D80  size 0x114 (276 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralScreen$$Awake
+  csig   : void GigaCreation_Essentials_Ui_GeneralScreen__Awake (GigaCreation_Essentials_Ui_GeneralScreen_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralScreen :: private void Awake()
+  fields of GigaCreation.Essentials.Ui.GeneralScreen:
+      +0x20   _canvas                        Canvas
+      +0x28   _canvasGroup                   CanvasGroup
+      +0x30   _underlay                      Underlay
+      +0x38   _closeButton                   Button
+      +0x40   _visibleOnAwake                bool
+      +0x44   _contentPresentDuration        float
+      +0x48   _contentDismissDuration        float
+      +0x4C   _enableCancelAction            bool
+      +0x50   _onBeginToPresent              UnityEvent
+      +0x58   _onEndToPresent                UnityEvent
+      +0x60   _onBeginToDismiss              UnityEvent
+      +0x68   _onEndToDismiss                UnityEvent
+      +0x70   _inputManager                  IInputManager
+      +0x78   _closeButtonDisposable         IDisposable
+      +0x80   _presentCts                    CancellationTokenSource
+      +0x88   _dismissCts                    CancellationTokenSource
+      +0x90   <IsCancelEventBlocked>k__BackingField bool
+  fields of GeneralScreen.<DismissAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeAsync>d__43:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   duration                       float
+      +0x24   to                             float
+      +0x28   updateMotionManually           bool
+      +0x30   ct                             CancellationToken
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeInAsync>d__41:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<FadeOutAsync>d__42:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   instantly                      bool
+      +0x21   updateMotionManually           bool
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of GeneralScreen.<PresentAsync>d__28:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      GeneralScreen
+      +0x20   ct                             CancellationToken
+      +0x28   instantly                      bool
+      +0x30   <linkedCts>5__2                CancellationTokenSource
+      +0x38   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CE6D80  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE6D85  push    rdi                                       
+  0x180CE6D86  sub     rsp, 0x20                                 
+  0x180CE6D8A  cmp     byte ptr [rip + 0x23f642a], 0                ; data_30DD1BB
+  0x180CE6D91  mov     rbx, rcx                                  
+  0x180CE6D94  jne     0x180ce6dae                               
+  0x180CE6D96  lea     rcx, [rip + 0x216b4f3]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6D9D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6DA2  lock or dword ptr [rsp], 0                        
+  0x180CE6DA7  mov     byte ptr [rip + 0x23f640d], 1                ; data_30DD1BB
+
+180CE6DAE:
+  0x180CE6DAE  movzx   edx, byte ptr [rbx + 0x40]                   ; rbx->GeneralScreen._visibleOnAwake
+  0x180CE6DB2  xor     r9d, r9d                                  
+  0x180CE6DB5  xor     r8d, r8d                                  
+  0x180CE6DB8  mov     rcx, rbx                                  
+  0x180CE6DBB  call    0x180ce7a60                                  ; -> GigaCreation.Essentials.Ui.GeneralScreen$$SetCanvasesEnabled
+  0x180CE6DC0  movzx   edx, byte ptr [rbx + 0x40]                   ; rbx->GeneralScreen._visibleOnAwake
+  0x180CE6DC4  xor     r8d, r8d                                  
+  0x180CE6DC7  mov     rcx, rbx                                  
+  0x180CE6DCA  call    0x180ce7c60                                  ; -> GigaCreation.Essentials.Ui.GeneralScreen$$SetGraphicRaycastersEnabled
+  0x180CE6DCF  mov     rcx, qword ptr [rip + 0x216b4ba]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6DD6  mov     rdi, qword ptr [rbx + 0x28]                  ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE6DDA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE6DE1  jne     0x180ce6de8                               
+  0x180CE6DE3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE6DE8:
+  0x180CE6DE8  cmp     byte ptr [rip + 0x2401a3f], 0                ; data_30E882E
+  0x180CE6DEF  jne     0x180ce6e09                               
+  0x180CE6DF1  lea     rcx, [rip + 0x216b498]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6DF8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6DFD  lock or dword ptr [rsp], 0                        
+  0x180CE6E02  mov     byte ptr [rip + 0x2401a25], 1                ; data_30E882E
+
+180CE6E09:
+  0x180CE6E09  mov     rcx, qword ptr [rip + 0x216b480]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6E10  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE6E17  jne     0x180ce6e1e                               
+  0x180CE6E19  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE6E1E:
+  0x180CE6E1E  cmp     byte ptr [rip + 0x2401a0a], 0                ; data_30E882F
+  0x180CE6E25  jne     0x180ce6e3f                               
+  0x180CE6E27  lea     rcx, [rip + 0x216b462]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6E2E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE6E33  lock or dword ptr [rsp], 0                        
+  0x180CE6E38  mov     byte ptr [rip + 0x24019f0], 1                ; data_30E882F
+
+180CE6E3F:
+  0x180CE6E3F  test    rdi, rdi                                  
+  0x180CE6E42  je      0x180ce6e84                               
+  0x180CE6E44  mov     rcx, qword ptr [rip + 0x216b445]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE6E4B  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE6E52  jne     0x180ce6e59                               
+  0x180CE6E54  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE6E59:
+  0x180CE6E59  cmp     qword ptr [rdi + 0x10], 0                 
+  0x180CE6E5E  je      0x180ce6e84                               
+  0x180CE6E60  cmp     byte ptr [rbx + 0x40], 0                     ; rbx->GeneralScreen._visibleOnAwake
+  0x180CE6E64  je      0x180ce6e70                               
+  0x180CE6E66  movss   xmm1, dword ptr [rip + 0x1dfb9b2]            ; data_2AE2820
+  0x180CE6E6E  jmp     0x180ce6e73                               
+
+180CE6E70:
+  0x180CE6E70  xorps   xmm1, xmm1                                
+
+180CE6E73:
+  0x180CE6E73  mov     rcx, qword ptr [rbx + 0x28]                  ; rbx->GeneralScreen._canvasGroup | <DismissAsync>d__31.instantly | <FadeAsync>d__43.updateMotionManually
+  0x180CE6E77  test    rcx, rcx                                  
+  0x180CE6E7A  je      0x180ce6e8f                               
+  0x180CE6E7C  xor     r8d, r8d                                  
+  0x180CE6E7F  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180CE6E84:
+  0x180CE6E84  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE6E89  add     rsp, 0x20                                 
+  0x180CE6E8D  pop     rdi                                       
+  0x180CE6E8E  ret                                               
+
+180CE6E8F:
+  0x180CE6E8F  call    0x180246730                                  ; THROW NullReferenceException

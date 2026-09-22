@@ -1,0 +1,80 @@
+====================================================================================================
+FUNCTION RVA 0xCEA0D0  VA 0x180CEA0D0  size 0x124 (292 bytes)
+  managed: GigaCreation.Essentials.Ui.Underlay$$Reset
+  csig   : void GigaCreation_Essentials_Ui_Underlay__Reset (GigaCreation_Essentials_Ui_Underlay_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Underlay :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.Underlay:
+      +0x20   _graphic                       Graphic
+      +0x28   _button                        Button
+====================================================================================================
+  0x180CEA0D0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CEA0D5  push    rdi                                       
+  0x180CEA0D6  sub     rsp, 0x20                                 
+  0x180CEA0DA  cmp     byte ptr [rip + 0x23f30ef], 0                ; data_30DD1D0
+  0x180CEA0E1  mov     rbx, rcx                                  
+  0x180CEA0E4  jne     0x180cea10f                               
+  0x180CEA0E6  lea     rcx, [rip + 0x216eb33]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Button>()
+  0x180CEA0ED  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA0F2  lock or dword ptr [rsp], 0                        
+  0x180CEA0F7  lea     rcx, [rip + 0x217e1e2]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Graphic>()
+  0x180CEA0FE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEA103  lock or dword ptr [rsp], 0                        
+  0x180CEA108  mov     byte ptr [rip + 0x23f30c1], 1                ; data_30DD1D0
+
+180CEA10F:
+  0x180CEA10F  mov     r8, qword ptr [rip + 0x217e1ca]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Graphic>()
+  0x180CEA116  lea     rdx, [rsp + 0x30]                         
+  0x180CEA11B  mov     rcx, rbx                                  
+  0x180CEA11E  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEA123  cmp     dword ptr [rip + 0x23ef09a], 0               ; data_30D91C4
+  0x180CEA12A  lea     rdi, [rip + 0x240416f]                       ; data_30EE2A0
+  0x180CEA131  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEA136  mov     qword ptr [rbx + 0x20], rax                  ; rbx->Underlay._graphic
+  0x180CEA13A  je      0x180cea17a                               
+  0x180CEA13C  lea     r8, [rbx + 0x20]                             ; rbx->Underlay._graphic
+  0x180CEA140  shr     r8, 0xc                                   
+  0x180CEA144  and     r8d, 0x1fffff                             
+  0x180CEA14B  mov     eax, r8d                                  
+  0x180CEA14E  shr     rax, 6                                    
+  0x180CEA152  and     r8d, 0x3f                                 
+  0x180CEA156  lea     rdx, [rdi + rax*8]                        
+  0x180CEA15A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CEA161:
+  0x180CEA161  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEA168  mov     rcx, rax                                  
+  0x180CEA16B  bts     rcx, r8                                   
+  0x180CEA16F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEA178  jne     0x180cea161                               
+
+180CEA17A:
+  0x180CEA17A  mov     r8, qword ptr [rip + 0x216ea9f]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Button>()
+  0x180CEA181  lea     rdx, [rsp + 0x30]                         
+  0x180CEA186  mov     rcx, rbx                                  
+  0x180CEA189  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEA18E  cmp     dword ptr [rip + 0x23ef02f], 0               ; data_30D91C4
+  0x180CEA195  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEA19A  mov     qword ptr [rbx + 0x28], rax                  ; rbx->Underlay._button
+  0x180CEA19E  je      0x180cea1e9                               
+  0x180CEA1A0  lea     r8, [rbx + 0x28]                             ; rbx->Underlay._button
+  0x180CEA1A4  shr     r8, 0xc                                   
+  0x180CEA1A8  and     r8d, 0x1fffff                             
+  0x180CEA1AF  mov     eax, r8d                                  
+  0x180CEA1B2  shr     rax, 6                                    
+  0x180CEA1B6  and     r8d, 0x3f                                 
+  0x180CEA1BA  lea     rdx, [rdi + rax*8]                        
+  0x180CEA1BE  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEA1C5  nop     word ptr [rax + rax]                      
+
+180CEA1D0:
+  0x180CEA1D0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEA1D7  mov     rcx, rax                                  
+  0x180CEA1DA  bts     rcx, r8                                   
+  0x180CEA1DE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEA1E7  jne     0x180cea1d0                               
+
+180CEA1E9:
+  0x180CEA1E9  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CEA1EE  add     rsp, 0x20                                 
+  0x180CEA1F2  pop     rdi                                       
+  0x180CEA1F3  ret                                               
