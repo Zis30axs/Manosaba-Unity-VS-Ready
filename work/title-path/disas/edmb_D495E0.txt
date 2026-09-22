@@ -1,0 +1,42 @@
+====================================================================================================
+FUNCTION RVA 0xD495E0  VA 0x180D495E0  size 0x7E (126 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton.<>c__DisplayClass6_0$$<Start>b__2
+  csig   : bool GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0___Start_b__2 (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: EnableDebugModeButton.<>c__DisplayClass6_0 :: internal bool <Start>b__2(PointerEventData _)
+====================================================================================================
+  0x180D495E0  push    rbx                                       
+  0x180D495E2  sub     rsp, 0x20                                 
+  0x180D495E6  cmp     byte ptr [rip + 0x2393e3b], 0                ; data_30DD428
+  0x180D495ED  mov     rbx, rcx                                  
+  0x180D495F0  jne     0x180d4961b                               
+  0x180D495F2  lea     rcx, [rip + 0x2112abf]                       ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D495F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D495FE  lock or dword ptr [rsp], 0                        
+  0x180D49603  lea     rcx, [rip + 0x2112aa6]                       ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D4960A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4960F  lock or dword ptr [rsp], 0                        
+  0x180D49614  mov     byte ptr [rip + 0x2393e0d], 1                ; data_30DD428
+
+180D4961B:
+  0x180D4961B  mov     rax, qword ptr [rbx + 0x10]               
+  0x180D4961F  test    rax, rax                                  
+  0x180D49622  je      0x180d49659                               
+  0x180D49624  mov     r8, qword ptr [rax + 0x40]                
+  0x180D49628  test    r8, r8                                    
+  0x180D4962B  je      0x180d49659                               
+  0x180D4962D  mov     rdx, qword ptr [rip + 0x2112a84]             ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D49634  xor     ecx, ecx                                  
+  0x180D49636  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D4963B  test    rax, rax                                  
+  0x180D4963E  je      0x180d49659                               
+  0x180D49640  mov     rdx, qword ptr [rip + 0x2112a69]             ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D49647  xor     ecx, ecx                                  
+  0x180D49649  mov     r8, rax                                   
+  0x180D4964C  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D49651  xor     al, 1                                     
+  0x180D49653  add     rsp, 0x20                                 
+  0x180D49657  pop     rbx                                       
+  0x180D49658  ret                                               
+
+180D49659:
+  0x180D49659  call    0x180246730                                  ; THROW NullReferenceException

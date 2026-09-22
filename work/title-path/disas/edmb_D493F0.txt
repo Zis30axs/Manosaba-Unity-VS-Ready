@@ -1,0 +1,35 @@
+====================================================================================================
+FUNCTION RVA 0xD493F0  VA 0x180D493F0  size 0x4A (74 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton$$.ctor
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___ctor (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton :: public void .ctor()
+  fields of GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _image                         Image
+      +0x30   _selectable                    Selectable
+      +0x38   _longPressDuration             float
+      +0x40   _debugManager                  IDebugManager
+      +0x48   _isPressed                     bool
+  fields of EnableDebugModeButton.<>c__DisplayClass6_0:
+      +0x10   <>4__this                      EnableDebugModeButton
+      +0x18   pressedTime                    float
+====================================================================================================
+  0x180D493F0  sub     rsp, 0x28                                 
+  0x180D493F4  cmp     byte ptr [rip + 0x239f0f2], 0                ; data_30E84ED
+  0x180D493FB  mov     dword ptr [rcx + 0x38], 0x3f800000           ; rcx->EnableDebugModeButton._longPressDuration
+  0x180D49402  jne     0x180d4941c                               
+  0x180D49404  lea     rcx, [rip + 0x2108e85]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D4940B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D49410  lock or dword ptr [rsp], 0                        
+  0x180D49415  mov     byte ptr [rip + 0x239f0d1], 1                ; data_30E84ED
+
+180D4941C:
+  0x180D4941C  mov     rcx, qword ptr [rip + 0x2108e6d]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D49423  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D4942A  jne     0x180d49435                               
+  0x180D4942C  add     rsp, 0x28                                 
+  0x180D49430  jmp     0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D49435:
+  0x180D49435  add     rsp, 0x28                                 
+  0x180D49439  ret                                               

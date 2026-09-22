@@ -1,0 +1,113 @@
+====================================================================================================
+FUNCTION RVA 0xD49460  VA 0x180D49460  size 0x17E (382 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton.<>c__DisplayClass6_0$$<Start>b__1
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0___Start_b__1 (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0_o* __this, UniRx_Unit_o __, const MethodInfo* method);
+  dump.cs: EnableDebugModeButton.<>c__DisplayClass6_0 :: internal void <Start>b__1(Unit _)
+====================================================================================================
+  0x180D49460  push    rbx                                       
+  0x180D49462  sub     rsp, 0x20                                 
+  0x180D49466  cmp     byte ptr [rip + 0x2393fba], 0                ; data_30DD427
+  0x180D4946D  mov     rbx, rcx                                  
+  0x180D49470  jne     0x180d4949b                               
+  0x180D49472  lea     rcx, [rip + 0x2112c3f]                       ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D49479  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4947E  lock or dword ptr [rsp], 0                        
+  0x180D49483  lea     rcx, [rip + 0x2112c26]                       ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D4948A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4948F  lock or dword ptr [rsp], 0                        
+  0x180D49494  mov     byte ptr [rip + 0x2393f8c], 1                ; data_30DD427
+
+180D4949B:
+  0x180D4949B  mov     rax, qword ptr [rbx + 0x10]               
+  0x180D4949F  mov     qword ptr [rsp + 0x30], rdi               
+  0x180D494A4  test    rax, rax                                  
+  0x180D494A7  je      0x180d495ab                               
+  0x180D494AD  mov     rdi, qword ptr [rax + 0x28]               
+  0x180D494B1  mov     rax, qword ptr [rip + 0x239f728]             ; data_30E8BE0
+  0x180D494B8  test    rax, rax                                  
+  0x180D494BB  jne     0x180d494d9                               
+  0x180D494BD  lea     rcx, [rip + 0x18bf82c]                       ; data_2608CF0
+  0x180D494C4  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D494C9  test    rax, rax                                  
+  0x180D494CC  je      0x180d495b1                               
+  0x180D494D2  mov     qword ptr [rip + 0x239f707], rax             ; data_30E8BE0
+
+180D494D9:
+  0x180D494D9  call    rax                                       
+  0x180D494DB  mov     rax, qword ptr [rbx + 0x10]               
+  0x180D494DF  test    rax, rax                                  
+  0x180D494E2  je      0x180d495ab                               
+  0x180D494E8  test    rdi, rdi                                  
+  0x180D494EB  je      0x180d495ab                               
+  0x180D494F1  subss   xmm0, dword ptr [rbx + 0x18]              
+  0x180D494F6  xor     r8d, r8d                                  
+  0x180D494F9  mov     rcx, rdi                                  
+  0x180D494FC  divss   xmm0, dword ptr [rax + 0x38]              
+  0x180D49501  movaps  xmm1, xmm0                                
+  0x180D49504  call    0x1821f86c0                                  ; -> UnityEngine.UI.Image$$set_fillAmount
+  0x180D49509  mov     rax, qword ptr [rip + 0x239f6d0]             ; data_30E8BE0
+  0x180D49510  test    rax, rax                                  
+  0x180D49513  jne     0x180d49531                               
+  0x180D49515  lea     rcx, [rip + 0x18bf7d4]                       ; data_2608CF0
+  0x180D4951C  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D49521  test    rax, rax                                  
+  0x180D49524  je      0x180d495c8                               
+  0x180D4952A  mov     qword ptr [rip + 0x239f6af], rax             ; data_30E8BE0
+
+180D49531:
+  0x180D49531  call    rax                                       
+  0x180D49533  mov     rax, qword ptr [rbx + 0x10]               
+  0x180D49537  test    rax, rax                                  
+  0x180D4953A  je      0x180d495ab                               
+  0x180D4953C  subss   xmm0, dword ptr [rbx + 0x18]              
+  0x180D49541  movss   xmm1, dword ptr [rax + 0x38]              
+  0x180D49546  comiss  xmm1, xmm0                                
+  0x180D49549  ja      0x180d495a0                               
+  0x180D4954B  mov     rcx, qword ptr [rax + 0x28]               
+  0x180D4954F  mov     byte ptr [rax + 0x48], 0                  
+  0x180D49553  test    rcx, rcx                                  
+  0x180D49556  je      0x180d495ab                               
+  0x180D49558  xor     r8d, r8d                                  
+  0x180D4955B  xorps   xmm1, xmm1                                
+  0x180D4955E  call    0x1821f86c0                                  ; -> UnityEngine.UI.Image$$set_fillAmount
+  0x180D49563  mov     r8, qword ptr [rbx + 0x10]                
+  0x180D49567  test    r8, r8                                    
+  0x180D4956A  je      0x180d495ab                               
+  0x180D4956C  mov     r8, qword ptr [r8 + 0x40]                 
+  0x180D49570  test    r8, r8                                    
+  0x180D49573  je      0x180d495ab                               
+  0x180D49575  mov     rdx, qword ptr [rip + 0x2112b3c]             ; TYPE GigaCreation.Tools.Debugging.Core.IDebugManager_TypeInfo
+  0x180D4957C  xor     ecx, ecx                                  
+  0x180D4957E  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D49583  test    rax, rax                                  
+  0x180D49586  je      0x180d495ab                               
+  0x180D49588  mov     rdx, qword ptr [rip + 0x2112b21]             ; TYPE UniRx.IReactiveProperty<bool>_TypeInfo
+  0x180D4958F  mov     ecx, 1                                    
+  0x180D49594  movzx   r9d, cl                                   
+  0x180D49598  mov     r8, rax                                   
+  0x180D4959B  call    0x180004040                                  ; -> sub_4040 (runtime/helper)
+
+180D495A0:
+  0x180D495A0  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180D495A5  add     rsp, 0x20                                 
+  0x180D495A9  pop     rbx                                       
+  0x180D495AA  ret                                               
+
+180D495AB:
+  0x180D495AB  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D495B0  int3                                              
+
+180D495B1:
+  0x180D495B1  lea     rcx, [rip + 0x18bf738]                       ; data_2608CF0
+  0x180D495B8  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D495BD  mov     rcx, rax                                  
+  0x180D495C0  xor     edx, edx                                  
+  0x180D495C2  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D495C7  int3                                              
+
+180D495C8:
+  0x180D495C8  lea     rcx, [rip + 0x18bf721]                       ; data_2608CF0
+  0x180D495CF  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D495D4  mov     rcx, rax                                  
+  0x180D495D7  xor     edx, edx                                  
+  0x180D495D9  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)

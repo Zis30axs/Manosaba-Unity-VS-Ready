@@ -1,0 +1,115 @@
+====================================================================================================
+FUNCTION RVA 0xD49220  VA 0x180D49220  size 0x195 (405 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton$$Reset
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton__Reset (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton :: private void Reset()
+  fields of GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _image                         Image
+      +0x30   _selectable                    Selectable
+      +0x38   _longPressDuration             float
+      +0x40   _debugManager                  IDebugManager
+      +0x48   _isPressed                     bool
+  fields of EnableDebugModeButton.<>c__DisplayClass6_0:
+      +0x10   <>4__this                      EnableDebugModeButton
+      +0x18   pressedTime                    float
+====================================================================================================
+  0x180D49220  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D49225  push    rdi                                       
+  0x180D49226  sub     rsp, 0x20                                 
+  0x180D4922A  cmp     byte ptr [rip + 0x23941f5], 0                ; data_30DD426
+  0x180D49231  mov     rbx, rcx                                  
+  0x180D49234  jne     0x180d49270                               
+  0x180D49236  lea     rcx, [rip + 0x210b36b]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180D4923D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D49242  lock or dword ptr [rsp], 0                        
+  0x180D49247  lea     rcx, [rip + 0x2108f82]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Image>()
+  0x180D4924E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D49253  lock or dword ptr [rsp], 0                        
+  0x180D49258  lea     rcx, [rip + 0x20e90f1]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<Selectable>()
+  0x180D4925F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D49264  lock or dword ptr [rsp], 0                        
+  0x180D49269  mov     byte ptr [rip + 0x23941b6], 1                ; data_30DD426
+
+180D49270:
+  0x180D49270  mov     r8, qword ptr [rip + 0x210b331]              ; METHODINFO Method$UnityEngine.Component.GetComponent<CanvasGroup>()
+  0x180D49277  lea     rdx, [rsp + 0x30]                         
+  0x180D4927C  mov     rcx, rbx                                  
+  0x180D4927F  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180D49284  cmp     dword ptr [rip + 0x238ff39], 0               ; data_30D91C4
+  0x180D4928B  lea     rdi, [rip + 0x23a500e]                       ; data_30EE2A0
+  0x180D49292  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D49297  mov     qword ptr [rbx + 0x20], rax                  ; rbx->EnableDebugModeButton._canvasGroup
+  0x180D4929B  je      0x180d492db                               
+  0x180D4929D  lea     r8, [rbx + 0x20]                             ; rbx->EnableDebugModeButton._canvasGroup
+  0x180D492A1  shr     r8, 0xc                                   
+  0x180D492A5  and     r8d, 0x1fffff                             
+  0x180D492AC  mov     eax, r8d                                  
+  0x180D492AF  shr     rax, 6                                    
+  0x180D492B3  and     r8d, 0x3f                                 
+  0x180D492B7  lea     rdx, [rdi + rax*8]                        
+  0x180D492BB  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D492C2:
+  0x180D492C2  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D492C9  mov     rcx, rax                                  
+  0x180D492CC  bts     rcx, r8                                   
+  0x180D492D0  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D492D9  jne     0x180d492c2                               
+
+180D492DB:
+  0x180D492DB  mov     r8, qword ptr [rip + 0x2108eee]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Image>()
+  0x180D492E2  lea     rdx, [rsp + 0x30]                         
+  0x180D492E7  mov     rcx, rbx                                  
+  0x180D492EA  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180D492EF  cmp     dword ptr [rip + 0x238fece], 0               ; data_30D91C4
+  0x180D492F6  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D492FB  mov     qword ptr [rbx + 0x28], rax                  ; rbx->EnableDebugModeButton._image
+  0x180D492FF  je      0x180d49349                               
+  0x180D49301  lea     r8, [rbx + 0x28]                             ; rbx->EnableDebugModeButton._image
+  0x180D49305  shr     r8, 0xc                                   
+  0x180D49309  and     r8d, 0x1fffff                             
+  0x180D49310  mov     eax, r8d                                  
+  0x180D49313  shr     rax, 6                                    
+  0x180D49317  and     r8d, 0x3f                                 
+  0x180D4931B  lea     rdx, [rdi + rax*8]                        
+  0x180D4931F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D49326  nop     word ptr [rax + rax]                      
+
+180D49330:
+  0x180D49330  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D49337  mov     rcx, rax                                  
+  0x180D4933A  bts     rcx, r8                                   
+  0x180D4933E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D49347  jne     0x180d49330                               
+
+180D49349:
+  0x180D49349  mov     r8, qword ptr [rip + 0x20e9000]              ; METHODINFO Method$UnityEngine.Component.GetComponent<Selectable>()
+  0x180D49350  lea     rdx, [rsp + 0x30]                         
+  0x180D49355  mov     rcx, rbx                                  
+  0x180D49358  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180D4935D  cmp     dword ptr [rip + 0x238fe60], 0               ; data_30D91C4
+  0x180D49364  mov     rax, qword ptr [rsp + 0x30]               
+  0x180D49369  mov     qword ptr [rbx + 0x30], rax                  ; rbx->EnableDebugModeButton._selectable
+  0x180D4936D  je      0x180d493aa                               
+  0x180D4936F  add     rbx, 0x30                                 
+  0x180D49373  shr     rbx, 0xc                                  
+  0x180D49377  and     ebx, 0x1fffff                             
+  0x180D4937D  mov     eax, ebx                                  
+  0x180D4937F  shr     rax, 6                                    
+  0x180D49383  and     ebx, 0x3f                                 
+  0x180D49386  lea     rdx, [rdi + rax*8]                        
+  0x180D4938A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D49391:
+  0x180D49391  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D49398  mov     rcx, rax                                  
+  0x180D4939B  bts     rcx, rbx                                  
+  0x180D4939F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D493A8  jne     0x180d49391                               
+
+180D493AA:
+  0x180D493AA  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D493AF  add     rsp, 0x20                                 
+  0x180D493B3  pop     rdi                                       
+  0x180D493B4  ret                                               

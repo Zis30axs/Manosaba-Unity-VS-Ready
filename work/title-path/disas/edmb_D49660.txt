@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xD49660  VA 0x180D49660  size 0x63 (99 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton.<>c__DisplayClass6_0$$<Start>b__3
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0___Start_b__3 (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: EnableDebugModeButton.<>c__DisplayClass6_0 :: internal void <Start>b__3(PointerEventData _)
+====================================================================================================
+  0x180D49660  push    rbx                                       
+  0x180D49662  sub     rsp, 0x20                                 
+  0x180D49666  mov     rax, qword ptr [rcx + 0x10]               
+  0x180D4966A  mov     rbx, rcx                                  
+  0x180D4966D  test    rax, rax                                  
+  0x180D49670  je      0x180d496a7                               
+  0x180D49672  mov     byte ptr [rax + 0x48], 1                  
+  0x180D49676  mov     rax, qword ptr [rip + 0x239f563]             ; data_30E8BE0
+  0x180D4967D  test    rax, rax                                  
+  0x180D49680  jne     0x180d4969a                               
+  0x180D49682  lea     rcx, [rip + 0x18bf667]                       ; data_2608CF0
+  0x180D49689  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D4968E  test    rax, rax                                  
+  0x180D49691  je      0x180d496ad                               
+  0x180D49693  mov     qword ptr [rip + 0x239f546], rax             ; data_30E8BE0
+
+180D4969A:
+  0x180D4969A  call    rax                                       
+  0x180D4969C  movss   dword ptr [rbx + 0x18], xmm0              
+  0x180D496A1  add     rsp, 0x20                                 
+  0x180D496A5  pop     rbx                                       
+  0x180D496A6  ret                                               
+
+180D496A7:
+  0x180D496A7  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D496AC  int3                                              
+
+180D496AD:
+  0x180D496AD  lea     rcx, [rip + 0x18bf63c]                       ; data_2608CF0
+  0x180D496B4  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D496B9  mov     rcx, rax                                  
+  0x180D496BC  xor     edx, edx                                  
+  0x180D496BE  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)

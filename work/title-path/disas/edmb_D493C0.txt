@@ -1,0 +1,28 @@
+====================================================================================================
+FUNCTION RVA 0xD493C0  VA 0x180D493C0  size 0x25 (37 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton$$ResetToDefault
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton__ResetToDefault (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton :: private void ResetToDefault()
+  fields of GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _image                         Image
+      +0x30   _selectable                    Selectable
+      +0x38   _longPressDuration             float
+      +0x40   _debugManager                  IDebugManager
+      +0x48   _isPressed                     bool
+  fields of EnableDebugModeButton.<>c__DisplayClass6_0:
+      +0x10   <>4__this                      EnableDebugModeButton
+      +0x18   pressedTime                    float
+====================================================================================================
+  0x180D493C0  sub     rsp, 0x28                                 
+  0x180D493C4  mov     byte ptr [rcx + 0x48], 0                     ; rcx->EnableDebugModeButton._isPressed
+  0x180D493C8  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->EnableDebugModeButton._image
+  0x180D493CC  test    rcx, rcx                                  
+  0x180D493CF  je      0x180d493e0                               
+  0x180D493D1  xor     r8d, r8d                                  
+  0x180D493D4  xorps   xmm1, xmm1                                
+  0x180D493D7  add     rsp, 0x28                                 
+  0x180D493DB  jmp     0x1821f86c0                                  ; -> UnityEngine.UI.Image$$set_fillAmount
+
+180D493E0:
+  0x180D493E0  call    0x180246730                                  ; THROW NullReferenceException

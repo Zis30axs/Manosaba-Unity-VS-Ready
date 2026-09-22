@@ -1,0 +1,54 @@
+====================================================================================================
+FUNCTION RVA 0xD49780  VA 0x180D49780  size 0x8A (138 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.EnableDebugModeButton.<>c__DisplayClass6_0$$<Start>b__6
+  csig   : void GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0___Start_b__6 (GigaCreation_Tools_Debugging_Ui_EnableDebugModeButton___c__DisplayClass6_0_o* __this, bool x, const MethodInfo* method);
+  dump.cs: EnableDebugModeButton.<>c__DisplayClass6_0 :: internal void <Start>b__6(bool x)
+====================================================================================================
+  0x180D49780  mov     qword ptr [rsp + 8], rbx                  
+  0x180D49785  push    rdi                                       
+  0x180D49786  sub     rsp, 0x20                                 
+  0x180D4978A  mov     rax, qword ptr [rcx + 0x10]               
+  0x180D4978E  movzx   ebx, dl                                   
+  0x180D49791  mov     rdi, rcx                                  
+  0x180D49794  test    rax, rax                                  
+  0x180D49797  je      0x180d49805                               
+  0x180D49799  test    dl, dl                                    
+  0x180D4979B  je      0x180d497a2                               
+  0x180D4979D  xorps   xmm1, xmm1                                
+  0x180D497A0  jmp     0x180d497aa                               
+
+180D497A2:
+  0x180D497A2  movss   xmm1, dword ptr [rip + 0x1d99076]            ; data_2AE2820
+
+180D497AA:
+  0x180D497AA  mov     rcx, qword ptr [rax + 0x20]               
+  0x180D497AE  test    rcx, rcx                                  
+  0x180D497B1  je      0x180d49805                               
+  0x180D497B3  xor     r8d, r8d                                  
+  0x180D497B6  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D497BB  mov     rcx, qword ptr [rdi + 0x10]               
+  0x180D497BF  test    rcx, rcx                                  
+  0x180D497C2  je      0x180d49805                               
+  0x180D497C4  mov     rcx, qword ptr [rcx + 0x20]               
+  0x180D497C8  test    rcx, rcx                                  
+  0x180D497CB  je      0x180d49805                               
+  0x180D497CD  movzx   edx, bl                                   
+  0x180D497D0  xor     r8d, r8d                                  
+  0x180D497D3  xor     dl, 1                                     
+  0x180D497D6  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180D497DB  mov     rcx, qword ptr [rdi + 0x10]               
+  0x180D497DF  test    rcx, rcx                                  
+  0x180D497E2  je      0x180d49805                               
+  0x180D497E4  mov     rcx, qword ptr [rcx + 0x20]               
+  0x180D497E8  test    rcx, rcx                                  
+  0x180D497EB  je      0x180d49805                               
+  0x180D497ED  xor     bl, 1                                     
+  0x180D497F0  xor     r8d, r8d                                  
+  0x180D497F3  movzx   edx, bl                                   
+  0x180D497F6  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D497FB  add     rsp, 0x20                                 
+  0x180D497FF  pop     rdi                                       
+  0x180D49800  jmp     0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+
+180D49805:
+  0x180D49805  call    0x180246730                                  ; THROW NullReferenceException
