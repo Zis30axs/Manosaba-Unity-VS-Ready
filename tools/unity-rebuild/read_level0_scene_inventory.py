@@ -65,11 +65,58 @@ def vec(v):
 
 
 def as_int(value):
-    """UnityPy exposes some integer fields as typed BitField wrappers rather than plain ints."""
+    """UnityPy exposes some integer fields as typed wrappers rather than plain ints (a camera's culling mask is a
+    BitField whose value is `m_Bits`; reading `.value` of it returned 0, so every rebuilt camera culled everything)."""
     try:
         return int(value)
     except (TypeError, ValueError):
-        return int(getattr(value, "value", 0))
+        for attribute in ("m_Bits", "value"):
+            if hasattr(value, attribute):
+                return int(getattr(value, attribute))
+        raise
+
+
+# Unity's fixed tag ids; project tags start at 20000 and are listed by the TagManager in globalgamemanagers.
+BUILTIN_TAGS = {0: "Untagged", 1: "Respawn", 2: "Finish", 3: "EditorOnly", 5: "MainCamera", 6: "Player",
+                7: "GameController"}
+
+
+def tag_names(scene):
+    """tag id -> name, custom tags from the shipped TagManager (the GameObject stores only the id)."""
+    names = dict(BUILTIN_TAGS)
+    try:
+        managers = UnityPy.load(os.path.join(os.path.dirname(scene), "globalgamemanagers"))
+        for obj in managers.objects:
+            if obj.type.name == "TagManager":
+                for index, name in enumerate(obj.read().tags):
+                    names[20000 + index] = name
+    except Exception:   # custom tags stay unnamed; the row keeps the numeric id either way
+        pass
+    return names
+
+
+def texture_reference(pptr):
+    """A camera's m_TargetTexture: where it lives and what it is, so the rebuild can author the same texture."""
+    if pptr is None or int(pptr.m_PathID) == 0:
+        return None
+    info = {"m_FileID": int(pptr.m_FileID), "m_PathID": int(pptr.m_PathID)}
+    try:
+        target = pptr.read()
+        info["type"] = type(target).__name__
+        info["name"] = getattr(target, "m_Name", "") or ""
+        if hasattr(target, "m_Width"):
+            settings = target.m_TextureSettings
+            info["descriptor"] = {
+                "width": int(target.m_Width), "height": int(target.m_Height),
+                "anti_aliasing": int(target.m_AntiAliasing), "color_format": int(target.m_ColorFormat),
+                "depth_stencil_format": int(target.m_DepthStencilFormat or 0), "dimension": int(target.m_Dimension),
+                "volume_depth": int(target.m_VolumeDepth), "mip_map": bool(target.m_MipMap),
+                "generate_mips": bool(target.m_GenerateMips), "srgb": bool(target.m_SRGB),
+                "filter_mode": int(settings.m_FilterMode), "aniso": int(settings.m_Aniso),
+                "wrap_u": int(settings.m_WrapU), "wrap_v": int(settings.m_WrapV)}
+    except Exception as ex:
+        info["error"] = f"{type(ex).__name__}: {ex}"
+    return info
 
 
 def transform_state(obj):
@@ -103,9 +150,12 @@ def component_state(obj):
     except Exception:
         return None
     if obj.type.name == "Canvas":
+        camera = getattr(data, "m_Camera", None)
         return {"render_mode": as_int(data.m_RenderMode), "sorting_order": as_int(data.m_SortingOrder),
                 "override_sorting": bool(getattr(data, "m_OverrideSorting", False)),
-                "pixel_perfect": bool(getattr(data, "m_PixelPerfect", False))}
+                "pixel_perfect": bool(getattr(data, "m_PixelPerfect", False)),
+                "plane_distance": round(float(getattr(data, "m_PlaneDistance", 100.0)), 6),
+                "world_camera_path_id": int(camera.m_PathID) if camera is not None and int(camera.m_FileID) == 0 else 0}
     if obj.type.name == "CanvasGroup":
         return {"alpha": round(float(data.m_Alpha), 6),
                 "interactable": bool(data.m_Interactable),
@@ -119,7 +169,8 @@ def component_state(obj):
                 "clear_flags": as_int(data.m_ClearFlags), "culling_mask": as_int(data.m_CullingMask),
                 "background_color": [round(float(c), 6) for c in
                                      (data.m_BackGroundColor.r, data.m_BackGroundColor.g,
-                                      data.m_BackGroundColor.b, data.m_BackGroundColor.a)]}
+                                      data.m_BackGroundColor.b, data.m_BackGroundColor.a)],
+                "target_texture": texture_reference(getattr(data, "m_TargetTexture", None))}
     return None
 
 
@@ -216,6 +267,7 @@ def main():
     scene = os.path.join(game_root(), "manosaba_Data", "level0")
     env = UnityPy.load(scene)
     monoscripts = load_monoscripts()
+    tags = tag_names(scene)
 
     objects, by_path = [], {}
     for obj in env.objects:
@@ -231,7 +283,11 @@ def main():
         if raw_type == "GameObject":
             try:
                 data = obj.read()
-                row["tag"] = data.m_TagString or ""
+                # UnityPy's GameObject has the numeric m_Tag, not a tag string: asking for `m_TagString` raised
+                # for every object, so tag, layer *and* active state were all lost (MainCamera untagged, the
+                # inactive SteamManager rebuilt active).
+                row["tag_id"] = int(data.m_Tag)
+                row["tag"] = tags.get(int(data.m_Tag), "")
                 row["layer"] = int(data.m_Layer)
                 row["active"] = bool(data.m_IsActive)
             except Exception as ex:

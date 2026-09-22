@@ -207,21 +207,53 @@ namespace Manosaba.EditorTools
                     // --- 4b. decoded component values (the shipped scene's serialized fields) -----------------
                     ApplyDecodedValues(created, ownerOf, projectRoot, result);
 
-                    // Screen-space-camera canvases need a camera; the shipped scene's m_Camera PPtr is not part of
-                    // the decode, so bind the scene's main camera (tag or name) and report it as a stated deviation.
-                    Camera mainCamera = created.Values.Select(go => go.GetComponent<Camera>())
-                        .FirstOrDefault(c => c != null && c.CompareTag("MainCamera"))
-                        ?? created.Values.Select(go => go.GetComponent<Camera>())
-                            .FirstOrDefault(c => c != null && c.gameObject.name == "MainCamera");
-                    foreach (var canvas in created.Values.Select(go => go.GetComponent<Canvas>()).Where(c => c != null))
+                    // Built-in references the inventory decodes: a canvas's m_Camera and plane distance (all four
+                    // shipped canvases are Screen Space - Camera on MainCamera), and a camera's m_TargetTexture (the two
+                    // stage cameras render into RenderTexture_1/_2, which the stage screens' RawImages show).
+                    foreach (var node in nodes)
                     {
-                        if (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera == null && mainCamera != null)
+                        long pathId = (long)node["path_id"];
+                        if (!componentsByOwner.TryGetValue(pathId, out var rows)) continue;
+                        foreach (var row in rows)
                         {
-                            canvas.worldCamera = mainCamera;
-                            result.deviations.Add("canvas '" + canvas.name +
-                                                  "': worldCamera bound to the scene's MainCamera (m_Camera PPtr not decoded)");
+                            var data = row["data"] as JObject;
+                            if (data == null) continue;
+                            string type = (string)row["type"];
+                            if (type == "Canvas")
+                            {
+                                var canvas = created[pathId].GetComponent<Canvas>();
+                                if (data["plane_distance"] != null) canvas.planeDistance = (float)data["plane_distance"];
+                                long cameraPathId = (long?)data["world_camera_path_id"] ?? 0;
+                                if (cameraPathId == 0) continue;
+                                var camera = ComponentOn(created, ownerOf, cameraPathId, "Camera", result) as Camera;
+                                if (camera == null) continue;
+                                canvas.worldCamera = camera;
+                                result.camera_links.Add("canvas '" + canvas.name + "'.worldCamera -> " + camera.name);
+                            }
+                            else if (type == "Camera" && data["target_texture"] is JObject texture)
+                            {
+                                var camera = created[pathId].GetComponent<Camera>();
+                                var target = ResolveExternal(new JObject
+                                {
+                                    ["file"] = "m_FileID " + (int)texture["m_FileID"],
+                                    ["path_id"] = texture["m_PathID"],
+                                    ["type"] = texture["type"],
+                                    ["name"] = texture["name"],
+                                    ["descriptor"] = texture["descriptor"],
+                                    ["error"] = texture["error"],
+                                }, result, out string why) as RenderTexture;
+                                if (target == null)
+                                {
+                                    result.deviations.Add("camera '" + camera.name + "'.targetTexture: " + why);
+                                    continue;
+                                }
+                                camera.targetTexture = target;
+                                result.camera_links.Add("camera '" + camera.name + "'.targetTexture -> " + target.name);
+                            }
                         }
                     }
+                    Camera mainCamera = created.Values.Select(go => go.GetComponent<Camera>())
+                        .FirstOrDefault(c => c != null && c.CompareTag("MainCamera"));
                     result.main_camera = mainCamera == null ? null : mainCamera.gameObject.name;
 
                     // --- 5. the entry component's serialized references --------------------------------------
@@ -470,29 +502,8 @@ namespace Manosaba.EditorTools
                     }
                     try
                     {
-                        if ((string)value["kind"] == "component_ref")
-                        {
-                            UnityEngine.Object target = ResolveReference(created, ownerOf, value);
-                            if (target == null)
-                            {
-                                result.component_values_skipped.Add(className + "." + fieldName +
-                                                                     " (target " + (long)value["m_PathID"] + " unresolved)");
-                                continue;
-                            }
-                            property.objectReferenceValue = target;
-                        }
-                        else if ((string)value["kind"] == "array")
-                        {
-                            if (!ApplyReferenceArray(property, created, ownerOf, value, className + "." + fieldName, result))
-                                continue;
-                        }
-                        else if (!AssignScalar(property, value))
-                        {
-                            result.component_values_skipped.Add(className + "." + fieldName + " (kind " +
-                                                                 (string)value["kind"] + " not applied)");
-                            continue;
-                        }
-                        result.component_values_applied++;
+                        if (ApplyValue(property, value, className + "." + fieldName, created, ownerOf, result))
+                            result.component_values_applied++;
                     }
                     catch (Exception ex)
                     {
@@ -504,51 +515,262 @@ namespace Manosaba.EditorTools
         }
 
         /// <summary>
-        /// Applies an array of object references (e.g. StageCameraController's `_cameraContainers`).  The whole
-        /// array is written only when *every* element resolves: a partially filled array would silently change the
-        /// scene's behaviour, which is worse than leaving the field empty and saying so.
+        /// Applies one decoded value to its property, recursing the way the decoder walked it: a struct or
+        /// [Serializable] class field by field (PerspectiveStagePresenter's stage list, a Button's colour block, a
+        /// UnityEvent's persistent calls), an array element by element, an Addressables reference by its three
+        /// strings.  Returns false - with the reason in the report - when the value cannot be applied faithfully.
         /// </summary>
-        private static bool ApplyReferenceArray(SerializedProperty property, Dictionary<long, GameObject> created,
-                                                Dictionary<long, long> ownerOf, JObject value, string label,
-                                                BuildResult result)
+        private static bool ApplyValue(SerializedProperty property, JObject value, string label,
+                                       Dictionary<long, GameObject> created, Dictionary<long, long> ownerOf,
+                                       BuildResult result)
         {
-            if (property.propertyType != SerializedPropertyType.Generic || !property.isArray)
+            switch ((string)value["kind"])
             {
-                result.component_values_skipped.Add(label + " (decoded as an array but the field is not an array)");
-                return false;
-            }
-            var items = (JArray)value["items"];
-            var resolved = new List<UnityEngine.Object>(items.Count);
-            foreach (var item in items)
-            {
-                var element = (JObject)item;
-                UnityEngine.Object target = (string)element["kind"] == "component_ref"
-                    ? ResolveReference(created, ownerOf, element) : null;
-                if (target == null)
+                case "component_ref":
                 {
-                    result.component_values_skipped.Add(label + " (element " + resolved.Count + " unresolved)");
-                    return false;
+                    if (property.propertyType != SerializedPropertyType.ObjectReference)
+                    {
+                        result.component_values_skipped.Add(label + " (decoded as a reference, the field is " +
+                                                             property.propertyType + ")");
+                        return false;
+                    }
+                    if (!TryResolveReference(created, ownerOf, value, result, out UnityEngine.Object target, out string why))
+                    {
+                        result.component_values_skipped.Add(label + " (" + why + ")");
+                        return false;
+                    }
+                    property.objectReferenceValue = target;
+                    return true;
                 }
-                resolved.Add(target);
+                case "struct":
+                {
+                    bool complete = true;
+                    foreach (var field in (JObject)value["fields"])
+                    {
+                        SerializedProperty child = property.FindPropertyRelative(field.Key);
+                        if (child == null)
+                        {
+                            result.component_values_skipped.Add(label + "." + field.Key + " (no such serialized field)");
+                            complete = false;
+                            continue;
+                        }
+                        complete &= ApplyValue(child, (JObject)field.Value, label + "." + field.Key, created, ownerOf, result);
+                    }
+                    return complete;
+                }
+                case "array":
+                {
+                    if (!property.isArray || property.propertyType == SerializedPropertyType.String)
+                    {
+                        result.component_values_skipped.Add(label + " (decoded as an array but the field is not an array)");
+                        return false;
+                    }
+                    // All or nothing: an array with some links missing would silently change the scene's behaviour,
+                    // which is worse than leaving it empty and saying so.
+                    var items = (JArray)value["items"];
+                    for (int index = 0; index < items.Count; index++)
+                    {
+                        string why = FirstUnresolved((JObject)items[index], created, ownerOf, result);
+                        if (why != null)
+                        {
+                            result.component_values_skipped.Add(label + " (element " + index + ": " + why + ")");
+                            return false;
+                        }
+                    }
+                    property.arraySize = items.Count;
+                    bool complete = true;
+                    for (int index = 0; index < items.Count; index++)
+                        complete &= ApplyValue(property.GetArrayElementAtIndex(index), (JObject)items[index],
+                                               label + "[" + index + "]", created, ownerOf, result);
+                    return complete;
+                }
+                case "asset_reference":
+                {
+                    string guid = (string)value["m_AssetGUID"] ?? "";
+                    if (guid.Length > 0 && string.IsNullOrEmpty(AssetDatabase.GUIDToAssetPath(guid)))
+                    {
+                        result.component_values_skipped.Add(label + " (AssetReference " + guid + " is not in the project)");
+                        return false;
+                    }
+                    property.FindPropertyRelative("m_AssetGUID").stringValue = guid;
+                    property.FindPropertyRelative("m_SubObjectName").stringValue = (string)value["m_SubObjectName"] ?? "";
+                    SerializedProperty subType = property.FindPropertyRelative("m_SubObjectType");
+                    if (subType != null) subType.stringValue = (string)value["m_SubObjectType"] ?? "";
+                    return true;
+                }
+                default:
+                    if (AssignScalar(property, value)) return true;
+                    result.component_values_skipped.Add(label + " (kind " + (string)value["kind"] + " not applied to " +
+                                                         property.propertyType + ")");
+                    return false;
             }
-            property.arraySize = resolved.Count;
-            for (int index = 0; index < resolved.Count; index++)
-                property.GetArrayElementAtIndex(index).objectReferenceValue = resolved[index];
-            return true;   // the caller counts the applied value
         }
 
-        /// <summary>Resolves a decoded PPtr through the shipped path_id -> rebuilt component mapping.</summary>
+        /// <summary>The first reference inside a decoded value that cannot be resolved, or null when all can.</summary>
+        private static string FirstUnresolved(JObject value, Dictionary<long, GameObject> created,
+                                              Dictionary<long, long> ownerOf, BuildResult result)
+        {
+            switch ((string)value["kind"])
+            {
+                case "component_ref":
+                    return TryResolveReference(created, ownerOf, value, result, out _, out string why) ? null : why;
+                case "struct":
+                    foreach (var field in (JObject)value["fields"])
+                    {
+                        string nested = FirstUnresolved((JObject)field.Value, created, ownerOf, result);
+                        if (nested != null) return field.Key + ": " + nested;
+                    }
+                    return null;
+                case "array":
+                    foreach (var item in (JArray)value["items"])
+                    {
+                        string nested = FirstUnresolved((JObject)item, created, ownerOf, result);
+                        if (nested != null) return nested;
+                    }
+                    return null;
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Resolves a decoded PPtr.  (0, 0) is a genuine null; m_FileID 0 goes through the shipped path_id -> rebuilt
+        /// object mapping; m_FileID > 0 points into another shipped file and is bound to the project's copy of that
+        /// object (see <see cref="ResolveExternal"/>).
+        /// </summary>
+        private static bool TryResolveReference(Dictionary<long, GameObject> created, Dictionary<long, long> ownerOf,
+                                                JObject value, BuildResult result, out UnityEngine.Object target,
+                                                out string why)
+        {
+            target = null;
+            why = null;
+            int fileId = (int)value["m_FileID"];
+            long pathId = (long)value["m_PathID"];
+            if (pathId == 0) return true;
+            if (fileId != 0)
+            {
+                target = ResolveExternal(value["external"] as JObject, result, out why);
+                return target != null;
+            }
+            target = ResolveReference(created, ownerOf, value);
+            if (target == null) why = "target " + pathId + " (" + (string)value["target_class"] + ") unresolved";
+            return target != null;
+        }
+
+        /// <summary>Resolves an in-scene PPtr through the shipped path_id -> rebuilt object mapping.</summary>
         private static UnityEngine.Object ResolveReference(Dictionary<long, GameObject> created,
                                                             Dictionary<long, long> ownerOf, JObject value)
         {
             if ((int)value["m_FileID"] != 0) return null;      // a different serialized file: not in this scene
             long targetPathId = (long)value["m_PathID"];
             string targetClass = (string)value["target_class"];
+            // a GameObject reference (EventSystem.m_FirstSelected) names the object itself, not a component on it
+            if (targetClass == "GameObject")
+                return created.TryGetValue(targetPathId, out var gameObject) ? gameObject : null;
             long owner = ownerOf.TryGetValue(targetPathId, out long ownerPathId) ? ownerPathId : 0;
             if (owner == 0 || !created.TryGetValue(owner, out var host)) return null;
             Type type = FindType(targetClass);
             if (type == null) return null;
             return host.GetComponent(type);
+        }
+
+        private const string RenderTextureFolder = "Assets/GameContent/Uncategorized/RenderTexture";
+
+        /// <summary>
+        /// Binds a reference into another shipped file (decoded by type + name, e.g. sharedassets0's
+        /// "BrandLogo_Acacia" Sprite) to the project's copy: exactly one asset of that type with that name, or
+        /// nothing.  A RenderTexture is not an extracted asset, so it is authored from the shipped descriptor.
+        /// </summary>
+        private static UnityEngine.Object ResolveExternal(JObject external, BuildResult result, out string why)
+        {
+            why = null;
+            if (external == null)
+            {
+                why = "external reference not decoded";
+                return null;
+            }
+            string typeName = (string)external["type"];
+            string name = (string)external["name"];
+            JToken errorToken = external["error"];
+            string error = errorToken == null || errorToken.Type == JTokenType.Null ? null : (string)errorToken;
+            if (error != null || string.IsNullOrEmpty(typeName) || name == null)
+            {
+                why = "external " + (string)external["file"] + ":" + (long?)external["path_id"] + " unreadable (" +
+                      (error ?? "no type or name decoded") + ")";
+                return null;
+            }
+            if (typeName == "RenderTexture")
+                return RenderTextureFor(name, external["descriptor"] as JObject, result, out why);
+
+            Type type = typeName == "MonoBehaviour" ? FindType((string)external["script"]) : FindUnityType(typeName);
+            if (type == null)
+            {
+                why = "external " + typeName + " '" + name + "': type " + ((string)external["script"] ?? typeName) +
+                      " not found";
+                return null;
+            }
+            // a name with path separators ("UI/Point") cannot be a search term; search by type alone then
+            string filter = name.IndexOfAny(new[] { '/', '\\', ' ' }) < 0 ? name + " t:" + type.Name : "t:" + type.Name;
+            var matches = new List<UnityEngine.Object>();
+            foreach (string path in AssetDatabase.FindAssets(filter).Select(AssetDatabase.GUIDToAssetPath).Distinct())
+            {
+                foreach (UnityEngine.Object candidate in AssetDatabase.LoadAllAssetsAtPath(path))
+                {
+                    if (candidate != null && type.IsInstanceOfType(candidate) && candidate.name == name)
+                        matches.Add(candidate);
+                }
+            }
+            if (matches.Count != 1)
+            {
+                why = "external " + type.Name + " '" + name + "' (" + (string)external["file"] + "): " +
+                      (matches.Count == 0 ? "no such asset in the project" : matches.Count + " assets share that name");
+                return null;
+            }
+            result.external_references_bound.Add(type.Name + " '" + name + "' -> " + AssetDatabase.GetAssetPath(matches[0]));
+            return matches[0];
+        }
+
+        private static Type FindUnityType(string typeName)
+        {
+            return FindType(typeName) ?? FindType("UnityEngine." + typeName);
+        }
+
+        /// <summary>
+        /// The project's copy of a shipped RenderTexture: RenderTexture assets are not part of the extraction, so the
+        /// texture is authored once with the shipped descriptor (size, formats, MSAA, mips, filtering, wrapping) and
+        /// reused on later rebuilds - both the stage camera writing it and the RawImage showing it bind the same asset.
+        /// </summary>
+        private static UnityEngine.Object RenderTextureFor(string name, JObject descriptor, BuildResult result, out string why)
+        {
+            why = null;
+            string path = RenderTextureFolder + "/" + name + ".renderTexture";
+            var existing = AssetDatabase.LoadAssetAtPath<RenderTexture>(path);
+            if (existing != null) return existing;
+            if (descriptor == null)
+            {
+                why = "RenderTexture '" + name + "' has no decoded descriptor";
+                return null;
+            }
+            var colorFormat = (UnityEngine.Experimental.Rendering.GraphicsFormat)(int)descriptor["color_format"];
+            var depthFormat = (UnityEngine.Experimental.Rendering.GraphicsFormat)(int)descriptor["depth_stencil_format"];
+            var texture = new RenderTexture((int)descriptor["width"], (int)descriptor["height"], colorFormat, depthFormat)
+            {
+                name = name,
+                antiAliasing = Math.Max(1, (int)descriptor["anti_aliasing"]),
+                dimension = (UnityEngine.Rendering.TextureDimension)(int)descriptor["dimension"],
+                volumeDepth = Math.Max(1, (int)descriptor["volume_depth"]),
+                useMipMap = (bool)descriptor["mip_map"],
+                autoGenerateMips = (bool)descriptor["generate_mips"],
+                filterMode = (FilterMode)(int)descriptor["filter_mode"],
+                anisoLevel = (int)descriptor["aniso"],
+                wrapModeU = (TextureWrapMode)(int)descriptor["wrap_u"],
+                wrapModeV = (TextureWrapMode)(int)descriptor["wrap_v"],
+            };
+            Directory.CreateDirectory(RenderTextureFolder);
+            AssetDatabase.CreateAsset(texture, path);
+            result.render_textures_created.Add(path + " (" + descriptor["width"] + "x" + descriptor["height"] + " " +
+                                               colorFormat + " / " + depthFormat + ", MSAA " + texture.antiAliasing + ")");
+            return texture;
         }
 
         private static bool AssignScalar(SerializedProperty property, JObject value)
@@ -572,14 +794,33 @@ namespace Manosaba.EditorTools
                     return true;
                 }
                 case SerializedPropertyType.Vector2:
+                {
+                    var array = (JArray)value["value"];
+                    property.vector2Value = new Vector2((float)array[0], (float)array[1]);
+                    return true;
+                }
                 case SerializedPropertyType.Vector3:
+                {
+                    var array = (JArray)value["value"];
+                    property.vector3Value = new Vector3((float)array[0], (float)array[1], (float)array[2]);
+                    return true;
+                }
                 case SerializedPropertyType.Vector4:
+                {
+                    var array = (JArray)value["value"];
+                    property.vector4Value = new Vector4((float)array[0], (float)array[1], (float)array[2], (float)array[3]);
+                    return true;
+                }
                 case SerializedPropertyType.Quaternion:
                 {
                     var array = (JArray)value["value"];
-                    property.vector4Value = new Vector4((float)array[0], (float)array[1],
-                                                        array.Count > 2 ? (float)array[2] : 0f,
-                                                        array.Count > 3 ? (float)array[3] : 0f);
+                    property.quaternionValue = new Quaternion((float)array[0], (float)array[1], (float)array[2], (float)array[3]);
+                    return true;
+                }
+                case SerializedPropertyType.Rect:
+                {
+                    var array = (JArray)value["value"];
+                    property.rectValue = new Rect((float)array[0], (float)array[1], (float)array[2], (float)array[3]);
                     return true;
                 }
                 default:
@@ -683,6 +924,9 @@ namespace Manosaba.EditorTools
             public bool probe_object_added;
             public int component_values_applied;
             public List<string> component_values_skipped = new List<string>();
+            public List<string> external_references_bound = new List<string>();
+            public List<string> render_textures_created = new List<string>();
+            public List<string> camera_links = new List<string>();
             public string main_camera;
             public List<string> created_paths = new List<string>();
             public List<string> entry_wired = new List<string>();

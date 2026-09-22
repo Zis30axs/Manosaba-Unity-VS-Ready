@@ -6,6 +6,12 @@
 // Output: dist/player/manosaba-rebuild.exe (+ result JSON in
 // tools/unity-rebuild/out/unity/build_player.json).
 //
+// `-executeMethod Manosaba.EditorTools.BuildPlayer.RunRelease` builds the same scenes without
+// BuildOptions.Development into dist/player-release/manosaba-rebuild.exe (result: build_player_release.json).
+// That is the build the shipped game is: Debug.isDebugBuild is false, so DebugPresenter registers no
+// IDebugManager and DestroySelfIfReleaseBuild removes the debug canvas - the shipped boot scene starts its
+// DebugPresenter with _isDebugMode = true, so a development build shows the game's own debug panel.
+//
 // Development build on the Mono scripting backend: fast to produce and enough to prove that the
 // reconstructed assemblies can be packaged and started.  IL2CPP is the fidelity target for the real
 // G5 pass and is tracked separately (the module is installed, the managed stripping/AOT/link
@@ -26,6 +32,8 @@ namespace Manosaba.EditorTools
     {
         private const string OutputRelativePath = "../tools/unity-rebuild/out/unity/build_player.json";
         private const string PlayerRelativePath = "../dist/player/manosaba-rebuild.exe";
+        private const string ReleaseOutputRelativePath = "../tools/unity-rebuild/out/unity/build_player_release.json";
+        private const string ReleasePlayerRelativePath = "../dist/player-release/manosaba-rebuild.exe";
 
         [MenuItem("Manosaba/Build Windows Player (reconstruction smoke)")]
         public static void Run()
@@ -34,11 +42,23 @@ namespace Manosaba.EditorTools
             if (Application.isBatchMode) EditorApplication.Exit(code);
         }
 
+        [MenuItem("Manosaba/Build Windows Player (release, as shipped)")]
+        public static void RunRelease()
+        {
+            int code = Execute(true);
+            if (Application.isBatchMode) EditorApplication.Exit(code);
+        }
+
         public static int Execute()
         {
-            var result = new PlayerBuildResult { generated = DateTime.UtcNow.ToString("o") };
+            return Execute(false);
+        }
+
+        public static int Execute(bool release)
+        {
+            var result = new PlayerBuildResult { generated = DateTime.UtcNow.ToString("o"), release = release };
             string projectRoot = Directory.GetParent(Application.dataPath).FullName;
-            string outPath = Path.GetFullPath(Path.Combine(projectRoot, OutputRelativePath));
+            string outPath = Path.GetFullPath(Path.Combine(projectRoot, release ? ReleaseOutputRelativePath : OutputRelativePath));
 
             try
             {
@@ -53,7 +73,7 @@ namespace Manosaba.EditorTools
                     return 2;
                 }
 
-                string exe = Path.GetFullPath(Path.Combine(projectRoot, PlayerRelativePath));
+                string exe = Path.GetFullPath(Path.Combine(projectRoot, release ? ReleasePlayerRelativePath : PlayerRelativePath));
                 Directory.CreateDirectory(Path.GetDirectoryName(exe));
 
                 var options = new BuildPlayerOptions
@@ -62,7 +82,7 @@ namespace Manosaba.EditorTools
                     locationPathName = exe,
                     target = BuildTarget.StandaloneWindows64,
                     targetGroup = BuildTargetGroup.Standalone,
-                    options = BuildOptions.Development,
+                    options = release ? BuildOptions.None : BuildOptions.Development,
                 };
                 result.player_path = exe;
 
@@ -130,6 +150,7 @@ namespace Manosaba.EditorTools
         {
             public string status = "NOT_RUN";
             public string generated;
+            public bool release;
             public string error;
             public string result;
             public string player_path;
