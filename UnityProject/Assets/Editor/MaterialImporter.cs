@@ -77,6 +77,13 @@ namespace Manosaba.EditorTools
     {
         private const string InputRelativePath = "../tools/unity-rebuild/out/unity/material_import_plan.json";
         private const string OutputRelativePath = "../tools/unity-rebuild/out/unity/material_import.json";
+        private const string PlanDirectoryRelativePath = "../tools/unity-rebuild/out/unity";
+        /// <summary>
+        /// Another plan in the same format, by file name in tools/unity-rebuild/out/unity (the report is then written
+        /// next to it as material_import_&lt;plan name&gt;.json): `material_embedded_plan.json`, written by
+        /// plan_embedded_materials.py, carries the layer materials the content bundles embed.
+        /// </summary>
+        private const string PlanEnv = "MANOSABA_MATERIAL_PLAN";
 
         /// <summary>Where a material goes when the plan does not say (it always does; this is the fallback and
         /// it is the same folder, so the two can never disagree silently).</summary>
@@ -97,6 +104,13 @@ namespace Manosaba.EditorTools
             string projectRoot = Directory.GetParent(Application.dataPath).FullName;
             string inputPath = Path.GetFullPath(Path.Combine(projectRoot, InputRelativePath));
             string outPath = Path.GetFullPath(Path.Combine(projectRoot, OutputRelativePath));
+            string planOverride = Environment.GetEnvironmentVariable(PlanEnv);
+            if (!string.IsNullOrEmpty(planOverride))
+            {
+                inputPath = Path.GetFullPath(Path.Combine(projectRoot, PlanDirectoryRelativePath, planOverride));
+                outPath = Path.GetFullPath(Path.Combine(projectRoot, PlanDirectoryRelativePath,
+                    "material_import_" + Path.GetFileNameWithoutExtension(planOverride) + ".json"));
+            }
             result.input = inputPath;
 
             int exitCode = 1;
@@ -629,7 +643,11 @@ namespace Manosaba.EditorTools
                         owners[binding.owner_asset] = serialized;
                     }
 
-                    SerializedProperty property = serialized.FindProperty(binding.field);
+                    // The recorded path uses the decoder's element notation (metas[3]); SerializedObject spells an array
+                    // element metas.Array.data[3].
+                    string unityPath = System.Text.RegularExpressions.Regex.Replace(binding.field, @"\[(\d+)\]",
+                                                                                    ".Array.data[$1]");
+                    SerializedProperty property = serialized.FindProperty(unityPath);
                     if (property == null)
                     {
                         binding.status = "SKIPPED";

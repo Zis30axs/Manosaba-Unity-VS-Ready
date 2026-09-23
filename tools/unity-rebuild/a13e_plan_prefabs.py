@@ -54,6 +54,11 @@ GRAPH_TYPES = {
     "ParticleSystem", "ParticleSystemRenderer", "RotationConstraint", "PlayableDirector",
     "GridLayoutGroup", "HorizontalLayoutGroup", "VerticalLayoutGroup", "ContentSizeFitter",
     "LayoutElement", "AspectRatioFitter", "CanvasScaler", "GraphicRaycaster", "EventTrigger",
+    # The layered-character prefabs' render cameras (LayeredActorBehaviour.renderCamera: shipped clear Nothing,
+    # orthographic, culling mask 0 - Naninovel disables them and renders into a texture) and the court stage's
+    # lights.  Skipping them left renderCamera unbound and a default camera (Skybox, perspective, all layers)
+    # drawing every frame over the main camera in story scenes.
+    "Camera", "Light",
 }
 
 
@@ -95,6 +100,7 @@ def load_index():
 
 
 LEDGER = os.path.join(OUT_DIR, "a13_import_ledger.csv")
+EMBEDDED_MATERIALS = os.path.join(OUT_DIR, "material_embedded_pointer_map.json")
 
 
 def load_ledger():
@@ -121,6 +127,15 @@ def load_ledger():
             pid = (row.get("path_id") or "").strip()
             if bundle and pid:
                 sidecar.setdefault((bundle, pid), "Assets/" + target.split(marker, 1)[1])
+    # Materials the bundles embed (the layered characters' Naninovel_* layer materials): no importer writes them,
+    # plan_embedded_materials.py plans one project material per distinct shipped copy and MaterialImporter creates
+    # it; the pointer map says which project material each (bundle, path_id) copy became.
+    if os.path.exists(EMBEDDED_MATERIALS):
+        with open(EMBEDDED_MATERIALS, encoding="utf-8") as fh:
+            for key, target in (json.load(fh).get("pointers") or {}).items():
+                bundle, _, pid = key.rpartition("|")
+                if bundle and pid:
+                    sidecar.setdefault((bundle.lower(), pid), target)
     return sidecar
 
 

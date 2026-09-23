@@ -518,6 +518,10 @@ def collect_config_references():
                 "owner_asset": row.get("asset_path"),
                 "owner_type": row.get("type_name"),
                 "field": record.get("field"),
+                # carried through so MaterialImporter.BindRecordedReferences can verify class and name before it
+                # writes the field (it refuses a binding whose recorded target is not this Material)
+                "target_class": record.get("target_class"),
+                "target_name": record.get("target_name"),
                 "target_path_id": record.get("target_path_id"),
                 "target_file_id": record.get("target_file_id"),
                 "recorded_reason": record.get("reason"),
