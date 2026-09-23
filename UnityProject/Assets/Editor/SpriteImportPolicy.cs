@@ -1,14 +1,20 @@
 // Sprite import policy for the reconstructed sprite crops.
 //
-// In the shipped build a Sprite is a sub-asset of its Texture2D.  The extraction pipeline dumped the
-// sprite *pixels* as one crop per sprite (files named "<texture>.sprite.png" / "<texture>.sprite~N.png")
-// but not the sprite rect/pivot/border, so the sub-asset form cannot be rebuilt yet (see
-// tools/unity-rebuild/a13_import_assets.py -> dest_for_sprite, and the ledger's DEFERRED_COMPOSITE
-// entries for the metadata half).
+// In the shipped build a Sprite is a sub-asset of its Texture2D (or lives on a SpriteAtlas page).  The extraction
+// pipeline dumped the sprite *pixels* as one crop per sprite (files named "<texture>.sprite.png" /
+// "<texture>.sprite~N.png"), and a13 writes each crop as "<original sprite name>.png" under "<texture>.sprites/", so
+// the imported sprite keeps the name the game's prefabs refer to.  This postprocessor makes each crop import as a
+// Sprite instead of a Texture2D.
 //
-// This postprocessor makes each crop import as a Sprite instead of a Texture2D.  Unity derives the
-// asset name from the file name, and a13 writes the crops as "<original sprite name>.png", so the
-// imported sprite keeps the name the game's prefabs refer to.
+// The shipped Sprite's own settings come from tools/unity-rebuild/out/unity/sprite_settings_plan.json
+// (tools/unity-rebuild/plan_sprite_settings.py, read from the shipped Sprite objects): pixels per unit, pivot, 9-slice
+// border, mesh type, and the settings of the texture its pixels live in (format, filter, wrap, mipmaps, colour space),
+// with a max size that never downscales.  A crop the plan does not list keeps the placeholders this policy always used
+// (100 PPU, centre pivot, max 2048, default compression) - recorded as a deviation, not as recovered data.
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,26 +24,153 @@ namespace Manosaba.EditorTools
     {
         /// <summary>Only crops carry this marker; the owning sheet textures stay plain textures.</summary>
         private const string CropMarker = ".sprite";
+        private const string PlanRelativePath = "../tools/unity-rebuild/out/unity/sprite_settings_plan.json";
+
+        private static Dictionary<string, JObject> plan;
+        private static DateTime planStamp;
 
         void OnPreprocessTexture()
         {
-            if (assetPath == null || assetPath.IndexOf(CropMarker, System.StringComparison.Ordinal) < 0) return;
+            if (assetPath == null || assetPath.IndexOf(CropMarker, StringComparison.Ordinal) < 0) return;
 
             var importer = assetImporter as TextureImporter;
             if (importer == null) return;
 
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
-            // The original pixels-per-unit and pivot were not dumped; 100 PPU / centre pivot is the
-            // documented placeholder (recorded as a deviation, not as recovered data).
-            importer.spritePixelsPerUnit = 100f;
-            importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
-            importer.wrapMode = TextureWrapMode.Clamp;
-            importer.filterMode = FilterMode.Bilinear;
-            importer.maxTextureSize = 2048;
-            importer.textureCompression = TextureImporterCompression.Compressed;
             importer.isReadable = false;
+
+            JObject entry = PlanEntry(assetPath);
+            if (entry == null)
+            {
+                importer.spritePixelsPerUnit = 100f;
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.maxTextureSize = 2048;
+                importer.textureCompression = TextureImporterCompression.Compressed;
+                return;
+            }
+
+            importer.spritePixelsPerUnit = (float)entry["pixels_per_unit"];
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            var pivot = new Vector2((float)entry["pivot"][0], (float)entry["pivot"][1]);
+            settings.spriteAlignment = pivot == new Vector2(0.5f, 0.5f)
+                ? (int)SpriteAlignment.Center : (int)SpriteAlignment.Custom;
+            settings.spritePivot = pivot;
+            settings.spriteBorder = new Vector4((float)entry["border"][0], (float)entry["border"][1],
+                (float)entry["border"][2], (float)entry["border"][3]);
+            settings.spriteMeshType = (bool)entry["full_rect_mesh"] ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
+            importer.SetTextureSettings(settings);
+
+            int rectW = (int)entry["rect_size"][0], rectH = (int)entry["rect_size"][1];
+            int maxSize = 32;
+            while (maxSize < Math.Max(rectW, rectH)) maxSize *= 2;
+            importer.maxTextureSize = maxSize;
+
+            var tex = entry["texture"] as JObject;
+            if (tex == null)
+            {
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.textureCompression = TextureImporterCompression.Compressed;
+                return;
+            }
+            importer.mipmapEnabled = (int)tex["mip_count"] > 1;
+            importer.sRGBTexture = (int)tex["color_space"] == 1;
+            importer.filterMode = (FilterMode)(int)tex["filter_mode"];
+            importer.wrapModeU = (TextureWrapMode)(int)tex["wrap_u"];
+            importer.wrapModeV = (TextureWrapMode)(int)tex["wrap_v"];
+            importer.anisoLevel = (int)tex["aniso"];
+            string formatName = Enum.GetName(typeof(TextureFormat), (int)tex["format_value"]);
+            var standalone = importer.GetPlatformTextureSettings("Standalone");
+            standalone.overridden = false;
+            if (formatName != null && Enum.TryParse(formatName, out TextureImporterFormat importerFormat))
+            {
+                standalone.overridden = true;
+                standalone.format = importerFormat;
+                standalone.maxTextureSize = maxSize;
+            }
+            importer.SetPlatformTextureSettings(standalone);
+            importer.textureCompression = IsUncompressed(formatName)
+                ? TextureImporterCompression.Uncompressed : TextureImporterCompression.Compressed;
+        }
+
+        /// <summary>
+        /// Reimports every crop the plan lists, so a new plan reaches assets that are already imported (the policy only
+        /// runs when an asset imports).  Batch: Unity -batchmode -quit -projectPath UnityProject
+        /// -executeMethod Manosaba.EditorTools.SpriteImportPolicy.ReimportPlanned -logFile -
+        /// </summary>
+        [MenuItem("Manosaba/Reimport Sprite Crops (shipped sprite settings)")]
+        public static void ReimportPlanned()
+        {
+            PlanEntry("");
+            int count = 0;
+            AssetDatabase.StartAssetEditing();
+            try
+            {
+                foreach (string path in plan == null ? new List<string>() : new List<string>(plan.Keys))
+                {
+                    if (!File.Exists(Path.Combine(Directory.GetParent(Application.dataPath).FullName, path))) continue;
+                    AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+                    count++;
+                }
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+            int mismatched = 0;
+            foreach (var pair in plan ?? new Dictionary<string, JObject>())
+            {
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(pair.Key);
+                if (sprite == null) continue;
+                if (Math.Abs(sprite.pixelsPerUnit - (float)pair.Value["pixels_per_unit"]) > 1e-3f ||
+                    (int)sprite.rect.width != (int)pair.Value["rect_size"][0] ||
+                    (int)sprite.rect.height != (int)pair.Value["rect_size"][1])
+                {
+                    mismatched++;
+                    if (mismatched <= 20)
+                        Debug.LogWarning("[SpriteImportPolicy] " + pair.Key + " imported ppu=" + sprite.pixelsPerUnit +
+                                         " rect=" + sprite.rect.size + ", shipped ppu=" + pair.Value["pixels_per_unit"] +
+                                         " rect=" + pair.Value["rect_size"]);
+                }
+            }
+            Debug.Log("[SpriteImportPolicy] reimported " + count + " planned crops; " + mismatched +
+                      " differ from the shipped pixels-per-unit / rect size");
+            if (Application.isBatchMode) EditorApplication.Exit(mismatched == 0 ? 0 : 1);
+        }
+
+        /// <summary>The plan row for a crop, reloading the plan when the file changed.</summary>
+        private static JObject PlanEntry(string path)
+        {
+            string file = Path.GetFullPath(Path.Combine(Directory.GetParent(Application.dataPath).FullName, PlanRelativePath));
+            if (!File.Exists(file)) return null;
+            DateTime stamp = File.GetLastWriteTimeUtc(file);
+            if (plan == null || stamp != planStamp)
+            {
+                plan = new Dictionary<string, JObject>(StringComparer.Ordinal);
+                foreach (var property in ((JObject)JObject.Parse(File.ReadAllText(file))["sprites"]).Properties())
+                    plan[property.Name] = (JObject)property.Value;
+                planStamp = stamp;
+            }
+            return plan.TryGetValue(path, out JObject entry) ? entry : null;
+        }
+
+        private static bool IsUncompressed(string formatName)
+        {
+            switch (formatName)
+            {
+                case "Alpha8": case "R8": case "R16": case "RG16": case "RGB24": case "RGBA32": case "ARGB32":
+                case "BGRA32": case "RHalf": case "RGHalf": case "RGBAHalf": case "RFloat": case "RGFloat":
+                case "RGBAFloat": case "RGB565": case "ARGB4444": case "RGBA4444":
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

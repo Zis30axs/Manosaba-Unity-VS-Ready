@@ -82,6 +82,20 @@ namespace Manosaba.Integration
                         r is SpriteRenderer sr && sr.sprite ? sr.sprite.name : "-"));
                 }
             }
+            // Naninovel actors draw through TransitionalRenderer (Graphics.DrawMesh, not a Renderer component): their
+            // world rectangle, texture, tint / opacity and blur are what decide what a background or character covers.
+            foreach (var tr in FindObjectsByType<Naninovel.TransitionalRenderer>(FindObjectsSortMode.None))
+            {
+                var mesh = tr.GetComponent<MeshFilter>();
+                Bounds local = mesh && mesh.sharedMesh ? mesh.sharedMesh.bounds : default;
+                Vector3 size = Vector3.Scale(local.size, tr.transform.lossyScale);
+                var tex = tr.MainTexture;
+                sb.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                    "actor {0} active={1} {2} pos={3} worldSize=({4:0.##},{5:0.##}) tex={6} {7}x{8} tint={9} opacity={10:0.##} blur={11:0.##}",
+                    PathOf(tr.transform), tr.isActiveAndEnabled, tr.GetType().Name, tr.transform.position, size.x, size.y,
+                    tex ? tex.name : "NONE", tex ? tex.width : 0, tex ? tex.height : 0, tr.TintColor, tr.Opacity,
+                    tr.BlurIntensity));
+            }
             var canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(c => c.isRootCanvas)
                 .OrderBy(c => c.sortingLayerID).ThenBy(c => c.sortingOrder).ToList();
             float screenArea = Mathf.Max(1f, Screen.width * (float)Screen.height);

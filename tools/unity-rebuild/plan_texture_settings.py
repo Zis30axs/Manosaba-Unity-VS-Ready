@@ -8,10 +8,19 @@ normal compression).  That is harmless for most art but wrong for data textures:
 compressed, mipmapped and wrapped it returns different values, so the tone curve itself would change.
 
 This reads each shipped Texture2D object with UnityPy (it has no typetree issue: the objects carry their own
-settings) and records width, height, format, mip count, colour space and sampler settings.  Scope: every texture
-a material plan binds (material_import_plan.json + material_embedded_plan.json, `texenv` rows whose texture
-resolved to a project asset).  Output: texture_settings_plan.json, consumed by
-Assets/Editor/TextureSettingsImporter.cs.
+settings) and records width, height, format, mip count, colour space and sampler settings.  Output:
+texture_settings_plan.json, consumed by Assets/Editor/TextureSettingsImporter.cs.
+
+Scope:
+  default       every texture a material plan binds (material_import_plan.json + material_embedded_plan.json,
+                `texenv` rows whose texture resolved to a project asset);
+  --scope all   additionally every Texture2D the import ledger IMPORTED as a plain texture - backgrounds, stills,
+                clue images, diced / packed atlases, ...  Those imported with Unity's defaults, and the default that
+                matters most is "Non-Power of 2: To Nearest": the shipped 2560x1440 backgrounds became 2048x1024, so
+                Naninovel (which sizes a background from its texture) drew every background at 2:1 - the title still
+                stretched 12.5 % sideways and the black "Overlay" fader 1920x960 on a 1080-pixel screen, which is the
+                unfaded / unblurred band at the top and bottom of the title fade-in.  Sprite crops (".sprite" in the
+                path; SpriteImportPolicy owns them) and font atlases (the font pipeline owns them) are left out.
 """
 from __future__ import annotations
 
@@ -57,6 +66,31 @@ def wanted_textures():
     return wanted
 
 
+LEDGER = os.path.join(OUT_DIR, "a13_import_ledger.csv")
+SKIP_PARTS = (".sprite", "/Fonts/", "/RuntimeFonts/")
+
+
+def ledger_textures(wanted):
+    """Every plain Texture2D the import ledger IMPORTED, keyed like wanted_textures(); existing entries win."""
+    import csv
+    known = {target["asset_path"] for target in wanted.values()}
+    with io.open(LEDGER, encoding="utf-8-sig") as fh:
+        for row in csv.DictReader(fh):
+            if row["type"] != "Texture2D" or row["status"] != "IMPORTED":
+                continue
+            target = (row.get("target_path") or "").replace(BACKSLASH, "/")
+            if not target.startswith("UnityProject/") or any(part in target for part in SKIP_PARTS):
+                continue
+            if not os.path.exists(os.path.join(REPO, target)):
+                continue
+            asset_path = target[len("UnityProject/"):]
+            if asset_path in known:
+                continue          # a material plan already reads it
+            source = row["bundle"].replace(BACKSLASH, "/")      # relative to manosaba_Data
+            wanted[(source, str(row["path_id"]))] = {"asset_path": asset_path, "material": None, "property": None}
+    return wanted
+
+
 def shipped_file(root, source):
     """The file a row's source names: resources.assets / sharedassetsN.assets in manosaba_Data, or a bundle."""
     source = source.replace(BACKSLASH, "/")
@@ -75,9 +109,12 @@ def shipped_file(root, source):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--scope", choices=("materials", "all"), default="materials")
     args = ap.parse_args()
     root = game_root()
     wanted = wanted_textures()
+    if args.scope == "all":
+        wanted = ledger_textures(wanted)
     by_file = {}
     for (source, pid), target in wanted.items():
         by_file.setdefault(source, {})[pid] = target
@@ -107,7 +144,9 @@ def main():
                             "filter_mode": int(ts.m_FilterMode), "aniso": int(ts.m_Aniso),
                             "mip_bias": float(ts.m_MipBias), "wrap_u": int(ts.m_WrapU), "wrap_v": int(ts.m_WrapV)})
     doc = {"generated": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-           "generated_by": "tools/unity-rebuild/plan_texture_settings.py", "scope": "textures bound by " + ", ".join(PLANS),
+           "generated_by": "tools/unity-rebuild/plan_texture_settings.py",
+           "scope": ("textures bound by " + ", ".join(PLANS)) + (" + every plain Texture2D of the import ledger"
+                                                                 if args.scope == "all" else ""),
            "textures": entries}
     for e in entries:
         print("  %-10s %-52s %s" % (e["status"], e.get("asset_path"),
