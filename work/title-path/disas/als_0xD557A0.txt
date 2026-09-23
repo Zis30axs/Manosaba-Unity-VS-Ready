@@ -1,0 +1,71 @@
+====================================================================================================
+FUNCTION RVA 0xD557A0  VA 0x180D557A0  size 0x62 (98 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_1
+  csig   : UnityEngine_RectTransform_o* GigaCreation_Tools_Ui_AutoLayoutSupporter___c___UpdateReferences_b__9_1 (GigaCreation_Tools_Ui_AutoLayoutSupporter___c_o* __this, UnityEngine_UI_LayoutGroup_o* group, const MethodInfo* method);
+  dump.cs: AutoLayoutSupporter.<>c :: internal RectTransform <UpdateReferences>b__9_1(LayoutGroup group)
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D557A0  push    rbx                                       
+  0x180D557A2  sub     rsp, 0x20                                 
+  0x180D557A6  cmp     byte ptr [rip + 0x2387ca3], 0                ; data_30DD450
+  0x180D557AD  mov     rbx, rdx                                  
+  0x180D557B0  jne     0x180d557ca                               
+  0x180D557B2  lea     rcx, [rip + 0x20fead7]                       ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180D557B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D557BE  lock or dword ptr [rsp], 0                        
+  0x180D557C3  mov     byte ptr [rip + 0x2387c86], 1                ; data_30DD450
+
+180D557CA:
+  0x180D557CA  test    rbx, rbx                                  
+  0x180D557CD  je      0x180d557fd                               
+  0x180D557CF  xor     edx, edx                                  
+  0x180D557D1  mov     rcx, rbx                                  
+  0x180D557D4  call    0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+  0x180D557D9  mov     rdx, rax                                  
+  0x180D557DC  test    rax, rax                                  
+  0x180D557DF  jne     0x180d557e7                               
+  0x180D557E1  add     rsp, 0x20                                 
+  0x180D557E5  pop     rbx                                       
+  0x180D557E6  ret                                               
+
+180D557E7:
+  0x180D557E7  mov     rcx, qword ptr [rip + 0x20feaa2]             ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180D557EE  xor     eax, eax                                  
+  0x180D557F0  cmp     qword ptr [rdx], rcx                      
+  0x180D557F3  cmove   rax, rdx                                  
+  0x180D557F7  add     rsp, 0x20                                 
+  0x180D557FB  pop     rbx                                       
+  0x180D557FC  ret                                               
+
+180D557FD:
+  0x180D557FD  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,335 @@
+====================================================================================================
+FUNCTION RVA 0xD558A0  VA 0x180D558A0  size 0x44E (1102 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11$$MoveNext
+  csig   : void GigaCreation_Tools_Ui_AutoLayoutSupporter__ExecuteRebuildingAsync_d__11__MoveNext (GigaCreation_Tools_Ui_AutoLayoutSupporter__ExecuteRebuildingAsync_d__11_o __this, const MethodInfo* method);
+  dump.cs: AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11 :: private void MoveNext()
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D558A0  mov     rax, rsp                                  
+  0x180D558A3  mov     qword ptr [rax + 0x10], rbx                  ; rax-><>c.<>9__9_1
+  0x180D558A7  mov     qword ptr [rax + 0x20], rsi                  ; rax->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D558AB  mov     qword ptr [rax + 8], rcx                  
+  0x180D558AF  push    rdi                                       
+  0x180D558B0  push    r14                                       
+  0x180D558B2  push    r15                                       
+  0x180D558B4  sub     rsp, 0xb0                                 
+  0x180D558BB  movaps  xmmword ptr [rax - 0x28], xmm6            
+  0x180D558BF  mov     rsi, rcx                                  
+  0x180D558C2  mov     qword ptr [rsp + 0xe0], rcx               
+  0x180D558CA  cmp     byte ptr [rip + 0x2387b81], 0                ; data_30DD452
+  0x180D558D1  jne     0x180d558fc                               
+  0x180D558D3  lea     rcx, [rip + 0x20dd5f6]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11>()
+  0x180D558DA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D558DF  lock or dword ptr [rsp], 0                        
+  0x180D558E4  lea     rcx, [rip + 0x20fc81d]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D558EB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D558F0  lock or dword ptr [rsp], 0                        
+  0x180D558F5  mov     byte ptr [rip + 0x2387b56], 1                ; data_30DD452
+
+180D558FC:
+  0x180D558FC  xorps   xmm0, xmm0                                
+  0x180D558FF  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D55904  xor     r15d, r15d                                
+  0x180D55907  mov     dword ptr [rsp + 0x38], r15d              
+  0x180D5590C  mov     eax, dword ptr [rsi]                      
+  0x180D5590E  mov     r14, qword ptr [rsi + 0x18]                  ; rsi-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D55912  test    eax, eax                                  
+  0x180D55914  jne     0x180d55931                               
+  0x180D55916  movups  xmm0, xmmword ptr [rsi + 0x28]               ; rsi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D5591A  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D5591F  xorps   xmm1, xmm1                                
+  0x180D55922  movups  xmmword ptr [rsi + 0x28], xmm1               ; rsi-><ExecuteRebuildingAsync>d__11.<>u__1 | <RebuildLayoutAsync>d__12.<>u__1
+  0x180D55926  mov     dword ptr [rsi], 0xffffffff               
+  0x180D5592C  jmp     0x180d55bd4                               
+
+180D55931:
+  0x180D55931  test    r14, r14                                  
+  0x180D55934  je      0x180d55ce9                               
+  0x180D5593A  cmp     byte ptr [r14 + 0x38], 0                     ; r14->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D5593F  jne     0x180d55c44                               
+  0x180D55945  cmp     byte ptr [rip + 0x2387afc], 0                ; data_30DD448
+  0x180D5594C  jne     0x180d55966                               
+  0x180D5594E  lea     rcx, [rip + 0x20dd653]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<AutoLayoutSupporter>()
+  0x180D55955  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5595A  lock or dword ptr [rsp], 0                        
+  0x180D5595F  mov     byte ptr [rip + 0x2387ae2], 1                ; data_30DD448
+
+180D55966:
+  0x180D55966  mov     rbx, qword ptr [rip + 0x20dd63b]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<AutoLayoutSupporter>()
+  0x180D5596D  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D55972  jne     0x180d5597c                               
+  0x180D55974  mov     rcx, rbx                                  
+  0x180D55977  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D5597C:
+  0x180D5597C  xor     edx, edx                                  
+  0x180D5597E  mov     rcx, r14                                  
+  0x180D55981  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D55986  test    rax, rax                                  
+  0x180D55989  je      0x180d55ce4                               
+  0x180D5598F  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D55993  mov     r8, qword ptr [r8]                        
+  0x180D55996  mov     dl, 1                                     
+  0x180D55998  mov     rcx, rax                                  
+  0x180D5599B  call    0x1806b7660                                  ; -> UnityEngine.GameObject$$GetComponentsInChildren<__Il2CppFullySharedGenericType>
+  0x180D559A0  mov     rdi, rax                                  
+  0x180D559A3  mov     ebx, r15d                                 
+  0x180D559A6  test    rax, rax                                  
+  0x180D559A9  je      0x180d55cdf                               
+
+180D559AF:
+  0x180D559AF  cmp     ebx, dword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D559B2  jge     0x180d559d6                               
+  0x180D559B4  jae     0x180d55cd4                               
+  0x180D559BA  movsxd  rax, ebx                                  
+  0x180D559BD  mov     rcx, qword ptr [rdi + rax*8 + 0x20]       
+  0x180D559C2  test    rcx, rcx                                  
+  0x180D559C5  je      0x180d55cda                               
+  0x180D559CB  xor     edx, edx                                  
+  0x180D559CD  call    0x180d54580                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$UpdateReferences
+  0x180D559D2  inc     ebx                                       
+  0x180D559D4  jmp     0x180d559af                               
+
+180D559D6:
+  0x180D559D6  mov     rbx, qword ptr [rsi + 0x20]                  ; rsi->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D559DA  cmp     byte ptr [rip + 0x2387a6a], 0                ; data_30DD44B
+  0x180D559E1  jne     0x180d559fb                               
+  0x180D559E3  lea     rcx, [rip + 0x20dd52e]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<AutoLayoutSupporter.<RebuildLayoutAsync>d__12>()
+  0x180D559EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D559EF  lock or dword ptr [rsp], 0                        
+  0x180D559F4  mov     byte ptr [rip + 0x2387a50], 1                ; data_30DD44B
+
+180D559FB:
+  0x180D559FB  mov     qword ptr [rsp + 0x60], r15               
+  0x180D55A00  mov     qword ptr [rsp + 0x78], r15               
+  0x180D55A05  mov     qword ptr [rsp + 0x80], r15               
+  0x180D55A0D  xorps   xmm0, xmm0                                
+  0x180D55A10  movdqu  xmmword ptr [rsp + 0x88], xmm0            
+  0x180D55A19  xorps   xmm1, xmm1                                
+  0x180D55A1C  movups  xmmword ptr [rsp + 0x68], xmm1            
+  0x180D55A21  mov     eax, dword ptr [rip + 0x238379d]             ; data_30D91C4
+  0x180D55A27  lea     rdi, [rip + 0x2398872]                       ; data_30EE2A0
+  0x180D55A2E  test    eax, eax                                  
+  0x180D55A30  je      0x180d55a7f                               
+  0x180D55A32  lea     r8, [rsp + 0x68]                          
+  0x180D55A37  shr     r8, 0xc                                   
+  0x180D55A3B  and     r8d, 0x1fffff                             
+  0x180D55A42  mov     eax, r8d                                  
+  0x180D55A45  shr     rax, 6                                    
+  0x180D55A49  lea     rdx, [rdi + rax*8]                        
+  0x180D55A4D  and     r8d, 0x3f                                 
+  0x180D55A51  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D55A58  nop     dword ptr [rax + rax]                     
+
+180D55A60:
+  0x180D55A60  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D55A67  mov     rcx, rax                                  
+  0x180D55A6A  bts     rcx, r8                                   
+  0x180D55A6E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D55A77  jne     0x180d55a60                               
+  0x180D55A79  mov     eax, dword ptr [rip + 0x2383745]             ; data_30D91C4
+
+180D55A7F:
+  0x180D55A7F  mov     qword ptr [rsp + 0x78], r14               
+  0x180D55A84  test    eax, eax                                  
+  0x180D55A86  je      0x180d55acf                               
+  0x180D55A88  lea     r8, [rsp + 0x78]                          
+  0x180D55A8D  shr     r8, 0xc                                   
+  0x180D55A91  and     r8d, 0x1fffff                             
+  0x180D55A98  mov     eax, r8d                                  
+  0x180D55A9B  shr     rax, 6                                    
+  0x180D55A9F  lea     rdx, [rdi + rax*8]                        
+  0x180D55AA3  and     r8d, 0x3f                                 
+  0x180D55AA7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D55AAE  nop                                               
+
+180D55AB0:
+  0x180D55AB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D55AB7  mov     rcx, rax                                  
+  0x180D55ABA  bts     rcx, r8                                   
+  0x180D55ABE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D55AC7  jne     0x180d55ab0                               
+  0x180D55AC9  mov     eax, dword ptr [rip + 0x23836f5]             ; data_30D91C4
+
+180D55ACF:
+  0x180D55ACF  mov     qword ptr [rsp + 0x80], rbx               
+  0x180D55AD7  test    eax, eax                                  
+  0x180D55AD9  je      0x180d55b29                               
+  0x180D55ADB  lea     r8, [rsp + 0x80]                          
+  0x180D55AE3  shr     r8, 0xc                                   
+  0x180D55AE7  and     r8d, 0x1fffff                             
+  0x180D55AEE  mov     eax, r8d                                  
+  0x180D55AF1  shr     rax, 6                                    
+  0x180D55AF5  lea     rdx, [rdi + rax*8]                        
+  0x180D55AF9  and     r8d, 0x3f                                 
+  0x180D55AFD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D55B04  nop     dword ptr [rax]                           
+  0x180D55B08  nop     dword ptr [rax + rax]                     
+
+180D55B10:
+  0x180D55B10  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D55B17  mov     rcx, rax                                  
+  0x180D55B1A  bts     rcx, r8                                   
+  0x180D55B1E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D55B27  jne     0x180d55b10                               
+
+180D55B29:
+  0x180D55B29  mov     dword ptr [rsp + 0x60], 0xffffffff        
+  0x180D55B31  mov     r8, qword ptr [rip + 0x20dd3e0]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<AutoLayoutSupporter.<RebuildLayoutAsync>d__12>()
+  0x180D55B38  lea     rdx, [rsp + 0x60]                         
+  0x180D55B3D  lea     rcx, [rsp + 0x68]                         
+  0x180D55B42  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D55B47  lea     rdx, [rsp + 0x68]                         
+  0x180D55B4C  lea     rcx, [rsp + 0x50]                         
+  0x180D55B51  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180D55B56  movups  xmm6, xmmword ptr [rax]                   
+  0x180D55B59  mov     rcx, qword ptr [rip + 0x20fc5a8]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180D55B60  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D55B67  jne     0x180d55b6e                               
+  0x180D55B69  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D55B6E:
+  0x180D55B6E  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180D55B73  cmp     dword ptr [rip + 0x238364a], 0               ; data_30D91C4
+  0x180D55B7A  je      0x180d55bc0                               
+  0x180D55B7C  lea     r8, [rsp + 0x50]                          
+  0x180D55B81  shr     r8, 0xc                                   
+  0x180D55B85  and     r8d, 0x1fffff                             
+  0x180D55B8C  mov     eax, r8d                                  
+  0x180D55B8F  shr     rax, 6                                    
+  0x180D55B93  lea     rdx, [rdi + rax*8]                        
+  0x180D55B97  and     r8d, 0x3f                                 
+  0x180D55B9B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D55BA2:
+  0x180D55BA2  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D55BA9  mov     rcx, rax                                  
+  0x180D55BAC  bts     rcx, r8                                   
+  0x180D55BB0  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D55BB9  jne     0x180d55ba2                               
+  0x180D55BBB  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+
+180D55BC0:
+  0x180D55BC0  movdqa  xmmword ptr [rsp + 0x20], xmm6            
+  0x180D55BC6  lea     rcx, [rsp + 0x20]                         
+  0x180D55BCB  call    0x1803314b0                                  ; -> sub_3314B0 (runtime/helper)
+  0x180D55BD0  test    al, al                                    
+  0x180D55BD2  je      0x180d55c14                               
+
+180D55BD4:
+  0x180D55BD4  cmp     byte ptr [rip + 0x2381941], 0                ; data_30D751C
+  0x180D55BDB  jne     0x180d55bf5                               
+  0x180D55BDD  lea     rcx, [rip + 0x20fb584]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D55BE4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D55BE9  lock or dword ptr [rsp], 0                        
+  0x180D55BEE  mov     byte ptr [rip + 0x2381927], 1                ; data_30D751C
+
+180D55BF5:
+  0x180D55BF5  mov     r8, qword ptr [rsp + 0x20]                
+  0x180D55BFA  test    r8, r8                                    
+  0x180D55BFD  je      0x180d55c12                               
+  0x180D55BFF  movzx   r9d, word ptr [rsp + 0x28]                
+  0x180D55C05  mov     rdx, qword ptr [rip + 0x20fb55c]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180D55C0C  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+  0x180D55C11  nop                                               
+
+180D55C12:
+  0x180D55C12  jmp     0x180d55c44                               
+
+180D55C14:
+  0x180D55C14  mov     dword ptr [rsi], r15d                     
+  0x180D55C17  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D55C1C  movups  xmmword ptr [rsi + 0x28], xmm0               ; rsi-><ExecuteRebuildingAsync>d__11.<>u__1 | <RebuildLayoutAsync>d__12.<>u__1
+  0x180D55C20  lea     rcx, [rsi + 0x28]                            ; rsi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D55C24  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180D55C29  lea     rcx, [rsi + 8]                            
+  0x180D55C2D  mov     r9, qword ptr [rip + 0x20dd29c]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter, AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11>()
+  0x180D55C34  mov     r8, rsi                                   
+  0x180D55C37  lea     rdx, [rsp + 0x20]                         
+  0x180D55C3C  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180D55C41  nop                                               
+  0x180D55C42  jmp     0x180d55c87                               
+
+180D55C44:
+  0x180D55C44  mov     dword ptr [rsi], 0xfffffffe               
+  0x180D55C4A  cmp     byte ptr [rip + 0x23818c9], 0                ; data_30D751A
+  0x180D55C51  jne     0x180d55c6b                               
+  0x180D55C53  lea     rcx, [rip + 0x20fb516]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180D55C5A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D55C5F  lock or dword ptr [rsp], 0                        
+  0x180D55C64  mov     byte ptr [rip + 0x23818af], 1                ; data_30D751A
+
+180D55C6B:
+  0x180D55C6B  cmp     qword ptr [rsi + 8], 0                    
+  0x180D55C70  je      0x180d55c87                               
+  0x180D55C72  mov     ecx, 2                                    
+  0x180D55C77  mov     r8, qword ptr [rsi + 8]                   
+  0x180D55C7B  mov     rdx, qword ptr [rip + 0x20fb4ee]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180D55C82  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D55C87:
+  0x180D55C87  lea     r11, [rsp + 0xb0]                         
+  0x180D55C8F  mov     rbx, qword ptr [r11 + 0x28]                  ; r11->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D55C93  mov     rsi, qword ptr [r11 + 0x38]                  ; r11->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D55C97  movaps  xmm6, xmmword ptr [r11 - 0x10]            
+  0x180D55C9C  mov     rsp, r11                                  
+  0x180D55C9F  pop     r15                                       
+  0x180D55CA1  pop     r14                                       
+  0x180D55CA3  pop     rdi                                       
+  0x180D55CA4  ret                                               
+  0x180D55CA5  mov     rax, qword ptr [rsp + 0xe0]               
+  0x180D55CAD  mov     dword ptr [rax], 0xfffffffe               
+  0x180D55CB3  mov     eax, dword ptr [rsp + 0x38]               
+  0x180D55CB7  dec     eax                                       
+  0x180D55CB9  movsxd  rdx, eax                                  
+  0x180D55CBC  mov     rcx, qword ptr [rsp + 0xd0]               
+  0x180D55CC4  add     rcx, 8                                    
+  0x180D55CC8  mov     rdx, qword ptr [rsp + rdx*8 + 0x30]       
+  0x180D55CCD  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180D55CD2  jmp     0x180d55c87                               
+
+180D55CD4:
+  0x180D55CD4  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D55CD9  nop                                               
+
+180D55CDA:
+  0x180D55CDA  call    0x180246730                                  ; THROW NullReferenceException
+
+180D55CDF:
+  0x180D55CDF  call    0x180246730                                  ; THROW NullReferenceException
+
+180D55CE4:
+  0x180D55CE4  call    0x180246730                                  ; THROW NullReferenceException
+
+180D55CE9:
+  0x180D55CE9  call    0x180246730                                  ; THROW NullReferenceException

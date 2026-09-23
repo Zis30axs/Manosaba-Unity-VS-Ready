@@ -1,0 +1,78 @@
+====================================================================================================
+FUNCTION RVA 0xD55810  VA 0x180D55810  size 0x82 (130 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_2
+  csig   : int32_t GigaCreation_Tools_Ui_AutoLayoutSupporter___c___UpdateReferences_b__9_2 (GigaCreation_Tools_Ui_AutoLayoutSupporter___c_o* __this, UnityEngine_RectTransform_o* rt, const MethodInfo* method);
+  dump.cs: AutoLayoutSupporter.<>c :: internal int <UpdateReferences>b__9_2(RectTransform rt)
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D55810  push    rdi                                       
+  0x180D55812  sub     rsp, 0x20                                 
+  0x180D55816  cmp     byte ptr [rip + 0x2387c34], 0                ; data_30DD451
+  0x180D5581D  mov     rdi, rdx                                  
+  0x180D55820  jne     0x180d5583a                               
+  0x180D55822  lea     rcx, [rip + 0x20dd697]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<Transform>()
+  0x180D55829  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5582E  lock or dword ptr [rsp], 0                        
+  0x180D55833  mov     byte ptr [rip + 0x2387c17], 1                ; data_30DD451
+
+180D5583A:
+  0x180D5583A  mov     qword ptr [rsp + 0x30], rbx               
+  0x180D5583F  test    rdi, rdi                                  
+  0x180D55842  je      0x180d5588d                               
+  0x180D55844  mov     rbx, qword ptr [rip + 0x20dd675]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<Transform>()
+  0x180D5584B  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D55850  jne     0x180d5585a                               
+  0x180D55852  mov     rcx, rbx                                  
+  0x180D55855  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D5585A:
+  0x180D5585A  xor     edx, edx                                  
+  0x180D5585C  mov     rcx, rdi                                  
+  0x180D5585F  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D55864  test    rax, rax                                  
+  0x180D55867  je      0x180d5588d                               
+  0x180D55869  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D5586D  mov     dl, 1                                     
+  0x180D5586F  mov     rcx, rax                                  
+  0x180D55872  mov     r8, qword ptr [r8]                        
+  0x180D55875  call    0x180032470                                  ; -> sub_32470 (runtime/helper)
+  0x180D5587A  test    rax, rax                                  
+  0x180D5587D  je      0x180d5588d                               
+  0x180D5587F  mov     eax, dword ptr [rax + 0x18]                  ; rax-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D55882  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D55887  add     rsp, 0x20                                 
+  0x180D5588B  pop     rdi                                       
+  0x180D5588C  ret                                               
+
+180D5588D:
+  0x180D5588D  call    0x180246730                                  ; THROW NullReferenceException

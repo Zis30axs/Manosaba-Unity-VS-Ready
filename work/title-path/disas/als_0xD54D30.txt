@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xD54D30  VA 0x180D54D30  size 0x47 (71 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter$$ExecuteRebuilding
+  csig   : void GigaCreation_Tools_Ui_AutoLayoutSupporter__ExecuteRebuilding (GigaCreation_Tools_Ui_AutoLayoutSupporter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Ui.AutoLayoutSupporter :: public void ExecuteRebuilding()
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D54D30  push    rbx                                       
+  0x180D54D32  sub     rsp, 0x30                                 
+  0x180D54D36  mov     rbx, rcx                                  
+  0x180D54D39  test    rcx, rcx                                  
+  0x180D54D3C  je      0x180d54d72                               
+  0x180D54D3E  xor     edx, edx                                  
+  0x180D54D40  call    0x18206a7a0                                  ; -> UnityEngine.MonoBehaviour$$get_destroyCancellationToken
+  0x180D54D45  xor     r9d, r9d                                  
+  0x180D54D48  lea     rcx, [rsp + 0x20]                         
+  0x180D54D4D  mov     r8, rax                                   
+  0x180D54D50  mov     rdx, rbx                                  
+  0x180D54D53  call    0x180d54d80                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$ExecuteRebuildingAsync
+  0x180D54D58  xor     edx, edx                                  
+  0x180D54D5A  lea     rcx, [rsp + 0x20]                         
+  0x180D54D5F  movups  xmm0, xmmword ptr [rax]                   
+  0x180D54D62  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D54D67  call    0x18181f300                                  ; -> Cysharp.Threading.Tasks.UniTaskExtensions$$Forget
+  0x180D54D6C  add     rsp, 0x30                                 
+  0x180D54D70  pop     rbx                                       
+  0x180D54D71  ret                                               
+
+180D54D72:
+  0x180D54D72  call    0x180246730                                  ; THROW NullReferenceException

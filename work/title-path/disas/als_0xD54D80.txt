@@ -1,0 +1,141 @@
+====================================================================================================
+FUNCTION RVA 0xD54D80  VA 0x180D54D80  size 0x191 (401 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter$$ExecuteRebuildingAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o GigaCreation_Tools_Ui_AutoLayoutSupporter__ExecuteRebuildingAsync (GigaCreation_Tools_Ui_AutoLayoutSupporter_o* __this, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Ui.AutoLayoutSupporter :: public UniTask ExecuteRebuildingAsync(CancellationToken ct)
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D54D80  mov     qword ptr [rsp + 8], rbx                  
+  0x180D54D85  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D54D8A  push    rdi                                       
+  0x180D54D8B  sub     rsp, 0x70                                 
+  0x180D54D8F  cmp     byte ptr [rip + 0x23886b4], 0                ; data_30DD44A
+  0x180D54D96  mov     rbx, r8                                   
+  0x180D54D99  mov     rdi, rdx                                  
+  0x180D54D9C  mov     rsi, rcx                                  
+  0x180D54D9F  jne     0x180d54db9                               
+  0x180D54DA1  lea     rcx, [rip + 0x20de168]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11>()
+  0x180D54DA8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D54DAD  lock or dword ptr [rsp], 0                        
+  0x180D54DB2  mov     byte ptr [rip + 0x2388691], 1                ; data_30DD44A
+
+180D54DB9:
+  0x180D54DB9  xor     eax, eax                                  
+  0x180D54DBB  lea     r9, [rip + 0x23994de]                        ; data_30EE2A0
+  0x180D54DC2  mov     qword ptr [rsp + 0x30], rax               
+  0x180D54DC7  xorps   xmm0, xmm0                                
+  0x180D54DCA  mov     qword ptr [rsp + 0x48], rax               
+  0x180D54DCF  xorps   xmm1, xmm1                                
+  0x180D54DD2  mov     qword ptr [rsp + 0x50], rax               
+  0x180D54DD7  mov     eax, dword ptr [rip + 0x23843e7]             ; data_30D91C4
+  0x180D54DDD  movdqu  xmmword ptr [rsp + 0x58], xmm0            
+  0x180D54DE3  movups  xmmword ptr [rsp + 0x38], xmm1            
+  0x180D54DE8  test    eax, eax                                  
+  0x180D54DEA  je      0x180d54e31                               
+  0x180D54DEC  lea     r8, [rsp + 0x38]                          
+  0x180D54DF1  shr     r8, 0xc                                   
+  0x180D54DF5  and     r8d, 0x1fffff                             
+  0x180D54DFC  mov     eax, r8d                                  
+  0x180D54DFF  shr     rax, 6                                    
+  0x180D54E03  and     r8d, 0x3f                                 
+  0x180D54E07  lea     rdx, [r9 + rax*8]                         
+  0x180D54E0B  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D54E12:
+  0x180D54E12  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54E19  mov     rcx, rax                                  
+  0x180D54E1C  bts     rcx, r8                                   
+  0x180D54E20  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D54E29  jne     0x180d54e12                               
+  0x180D54E2B  mov     eax, dword ptr [rip + 0x2384393]             ; data_30D91C4
+
+180D54E31:
+  0x180D54E31  mov     qword ptr [rsp + 0x48], rdi               
+  0x180D54E36  test    eax, eax                                  
+  0x180D54E38  je      0x180d54e7f                               
+  0x180D54E3A  lea     r8, [rsp + 0x48]                          
+  0x180D54E3F  shr     r8, 0xc                                   
+  0x180D54E43  and     r8d, 0x1fffff                             
+  0x180D54E4A  mov     eax, r8d                                  
+  0x180D54E4D  shr     rax, 6                                    
+  0x180D54E51  and     r8d, 0x3f                                 
+  0x180D54E55  lea     rdx, [r9 + rax*8]                         
+  0x180D54E59  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180D54E60:
+  0x180D54E60  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54E67  mov     rcx, rax                                  
+  0x180D54E6A  bts     rcx, r8                                   
+  0x180D54E6E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D54E77  jne     0x180d54e60                               
+  0x180D54E79  mov     eax, dword ptr [rip + 0x2384345]             ; data_30D91C4
+
+180D54E7F:
+  0x180D54E7F  mov     qword ptr [rsp + 0x50], rbx               
+  0x180D54E84  test    eax, eax                                  
+  0x180D54E86  je      0x180d54ec9                               
+  0x180D54E88  lea     r8, [rsp + 0x50]                          
+  0x180D54E8D  shr     r8, 0xc                                   
+  0x180D54E91  and     r8d, 0x1fffff                             
+  0x180D54E98  mov     eax, r8d                                  
+  0x180D54E9B  shr     rax, 6                                    
+  0x180D54E9F  and     r8d, 0x3f                                 
+  0x180D54EA3  lea     rdx, [r9 + rax*8]                         
+  0x180D54EA7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D54EAE  nop                                               
+
+180D54EB0:
+  0x180D54EB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54EB7  mov     rcx, rax                                  
+  0x180D54EBA  bts     rcx, r8                                   
+  0x180D54EBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D54EC7  jne     0x180d54eb0                               
+
+180D54EC9:
+  0x180D54EC9  mov     r8, qword ptr [rip + 0x20de040]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11>()
+  0x180D54ED0  lea     rdx, [rsp + 0x30]                         
+  0x180D54ED5  lea     rcx, [rsp + 0x38]                         
+  0x180D54EDA  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180D54EE2  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180D54EE7  lea     rdx, [rsp + 0x38]                         
+  0x180D54EEC  lea     rcx, [rsp + 0x20]                         
+  0x180D54EF1  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180D54EF6  lea     r11, [rsp + 0x70]                         
+  0x180D54EFB  mov     rbx, qword ptr [r11 + 0x10]                  ; r11-><>c.<>9__9_1
+  0x180D54EFF  movups  xmm0, xmmword ptr [rax]                   
+  0x180D54F02  mov     rax, rsi                                  
+  0x180D54F05  movups  xmmword ptr [rsi], xmm0                   
+  0x180D54F08  mov     rsi, qword ptr [r11 + 0x18]                  ; r11-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D54F0C  mov     rsp, r11                                  
+  0x180D54F0F  pop     rdi                                       
+  0x180D54F10  ret                                               

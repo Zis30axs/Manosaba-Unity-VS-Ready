@@ -1,0 +1,518 @@
+====================================================================================================
+FUNCTION RVA 0xD54580  VA 0x180D54580  size 0x7AC (1964 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter$$UpdateReferences
+  csig   : void GigaCreation_Tools_Ui_AutoLayoutSupporter__UpdateReferences (GigaCreation_Tools_Ui_AutoLayoutSupporter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Ui.AutoLayoutSupporter :: private void UpdateReferences()
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D54580  push    rbx                                       
+  0x180D54582  push    rdi                                       
+  0x180D54583  sub     rsp, 0x48                                 
+  0x180D54587  cmp     byte ptr [rip + 0x2388ebb], 0                ; data_30DD449
+  0x180D5458E  mov     rdi, rcx                                  
+  0x180D54591  jne     0x180d546bf                               
+  0x180D54597  lea     rcx, [rip + 0x20dea02]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<ContentSizeFitter>()
+  0x180D5459E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545A3  lock or dword ptr [rsp], 0                        
+  0x180D545A8  lea     rcx, [rip + 0x20de9c1]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<LayoutGroup>()
+  0x180D545AF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545B4  lock or dword ptr [rsp], 0                        
+  0x180D545B9  lea     rcx, [rip + 0x20de9b8]                       ; METHODINFO Method$System.Linq.Enumerable.Concat<RectTransform>()
+  0x180D545C0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545C5  lock or dword ptr [rsp], 0                        
+  0x180D545CA  lea     rcx, [rip + 0x20de98f]                       ; METHODINFO Method$System.Linq.Enumerable.Distinct<RectTransform>()
+  0x180D545D1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545D6  lock or dword ptr [rsp], 0                        
+  0x180D545DB  lea     rcx, [rip + 0x20de986]                       ; METHODINFO Method$System.Linq.Enumerable.OrderByDescending<RectTransform, int>()
+  0x180D545E2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545E7  lock or dword ptr [rsp], 0                        
+  0x180D545EC  lea     rcx, [rip + 0x20de99d]                       ; METHODINFO Method$System.Linq.Enumerable.Select<ContentSizeFitter, RectTransform>()
+  0x180D545F3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D545F8  lock or dword ptr [rsp], 0                        
+  0x180D545FD  lea     rcx, [rip + 0x20de994]                       ; METHODINFO Method$System.Linq.Enumerable.Select<LayoutGroup, RectTransform>()
+  0x180D54604  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D54609  lock or dword ptr [rsp], 0                        
+  0x180D5460E  lea     rcx, [rip + 0x20de96b]                       ; METHODINFO Method$System.Linq.Enumerable.ToArray<ContentSizeFitter>()
+  0x180D54615  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5461A  lock or dword ptr [rsp], 0                        
+  0x180D5461F  lea     rcx, [rip + 0x20de962]                       ; METHODINFO Method$System.Linq.Enumerable.ToArray<LayoutGroup>()
+  0x180D54626  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5462B  lock or dword ptr [rsp], 0                        
+  0x180D54630  lea     rcx, [rip + 0x20de8f9]                       ; METHODINFO Method$System.Linq.Enumerable.ToArray<RectTransform>()
+  0x180D54637  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5463C  lock or dword ptr [rsp], 0                        
+  0x180D54641  lea     rcx, [rip + 0x20de8f0]                       ; TYPE System.Func<LayoutGroup, RectTransform>_TypeInfo
+  0x180D54648  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5464D  lock or dword ptr [rsp], 0                        
+  0x180D54652  lea     rcx, [rip + 0x20de8c7]                       ; TYPE System.Func<RectTransform, int>_TypeInfo
+  0x180D54659  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5465E  lock or dword ptr [rsp], 0                        
+  0x180D54663  lea     rcx, [rip + 0x20de8be]                       ; TYPE System.Func<ContentSizeFitter, RectTransform>_TypeInfo
+  0x180D5466A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5466F  lock or dword ptr [rsp], 0                        
+  0x180D54674  lea     rcx, [rip + 0x20de8d5]                       ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_0() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_0
+  0x180D5467B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D54680  lock or dword ptr [rsp], 0                        
+  0x180D54685  lea     rcx, [rip + 0x20de8cc]                       ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_1() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_1
+  0x180D5468C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D54691  lock or dword ptr [rsp], 0                        
+  0x180D54696  lea     rcx, [rip + 0x20de8a3]                       ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_2() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_2
+  0x180D5469D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D546A2  lock or dword ptr [rsp], 0                        
+  0x180D546A7  lea     rcx, [rip + 0x20de89a]                       ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D546AE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D546B3  lock or dword ptr [rsp], 0                        
+  0x180D546B8  mov     byte ptr [rip + 0x2388d8a], 1                ; data_30DD449
+
+180D546BF:
+  0x180D546BF  mov     rbx, qword ptr [rip + 0x20de8da]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<ContentSizeFitter>()
+  0x180D546C6  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D546CB  jne     0x180d546d5                               
+  0x180D546CD  mov     rcx, rbx                                  
+  0x180D546D0  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D546D5:
+  0x180D546D5  mov     qword ptr [rsp + 0x68], rsi               
+  0x180D546DA  xor     edx, edx                                  
+  0x180D546DC  mov     rcx, rdi                                  
+  0x180D546DF  mov     qword ptr [rsp + 0x40], r15               
+  0x180D546E4  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D546E9  test    rax, rax                                  
+  0x180D546EC  je      0x180d54c9f                               
+  0x180D546F2  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D546F6  mov     dl, 1                                     
+  0x180D546F8  mov     rcx, rax                                  
+  0x180D546FB  mov     r8, qword ptr [r8]                        
+  0x180D546FE  call    0x1806b7660                                  ; -> UnityEngine.GameObject$$GetComponentsInChildren<__Il2CppFullySharedGenericType>
+  0x180D54703  mov     rbx, qword ptr [rip + 0x20de876]             ; METHODINFO Method$System.Linq.Enumerable.ToArray<ContentSizeFitter>()
+  0x180D5470A  mov     rsi, rax                                  
+  0x180D5470D  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54712  jne     0x180d5471c                               
+  0x180D54714  mov     rcx, rbx                                  
+  0x180D54717  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D5471C:
+  0x180D5471C  test    rsi, rsi                                  
+  0x180D5471F  je      0x180d54d0b                               
+  0x180D54725  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54729  lea     rcx, [rsp + 0x20]                         
+  0x180D5472E  xorps   xmm0, xmm0                                
+  0x180D54731  mov     rdx, rsi                                  
+  0x180D54734  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D54739  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__9_1
+  0x180D5473D  call    0x180c15d80                                  ; -> System.Linq.Buffer<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D54742  mov     rdx, qword ptr [rbx + 0x38]                  ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54746  lea     rcx, [rsp + 0x30]                         
+  0x180D5474B  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D54750  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D54756  mov     rdx, qword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D5475A  call    0x180033520                                  ; -> sub_33520 (runtime/helper)
+  0x180D5475F  cmp     dword ptr [rip + 0x2384a5e], 0               ; data_30D91C4
+  0x180D54766  lea     r15, [rip + 0x2399b33]                       ; data_30EE2A0
+  0x180D5476D  mov     qword ptr [rdi + 0x20], rax                  ; rdi->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D54771  je      0x180d547b9                               
+  0x180D54773  lea     r8, [rdi + 0x20]                             ; rdi->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D54777  shr     r8, 0xc                                   
+  0x180D5477B  and     r8d, 0x1fffff                             
+  0x180D54782  mov     eax, r8d                                  
+  0x180D54785  shr     rax, 6                                    
+  0x180D54789  and     r8d, 0x3f                                 
+  0x180D5478D  lea     rdx, [r15 + rax*8]                        
+  0x180D54791  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D54798  nop     dword ptr [rax + rax]                     
+
+180D547A0:
+  0x180D547A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D547A7  mov     rcx, rax                                  
+  0x180D547AA  bts     rcx, r8                                   
+  0x180D547AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D547B7  jne     0x180d547a0                               
+
+180D547B9:
+  0x180D547B9  mov     rbx, qword ptr [rip + 0x20de7b0]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<LayoutGroup>()
+  0x180D547C0  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D547C5  jne     0x180d547cf                               
+  0x180D547C7  mov     rcx, rbx                                  
+  0x180D547CA  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D547CF:
+  0x180D547CF  xor     edx, edx                                  
+  0x180D547D1  mov     rcx, rdi                                  
+  0x180D547D4  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180D547D9  test    rax, rax                                  
+  0x180D547DC  je      0x180d54c9f                               
+  0x180D547E2  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D547E6  mov     dl, 1                                     
+  0x180D547E8  mov     rcx, rax                                  
+  0x180D547EB  mov     r8, qword ptr [r8]                        
+  0x180D547EE  call    0x1806b7660                                  ; -> UnityEngine.GameObject$$GetComponentsInChildren<__Il2CppFullySharedGenericType>
+  0x180D547F3  mov     rbx, qword ptr [rip + 0x20de78e]             ; METHODINFO Method$System.Linq.Enumerable.ToArray<LayoutGroup>()
+  0x180D547FA  mov     rsi, rax                                  
+  0x180D547FD  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54802  jne     0x180d5480c                               
+  0x180D54804  mov     rcx, rbx                                  
+  0x180D54807  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D5480C:
+  0x180D5480C  test    rsi, rsi                                  
+  0x180D5480F  je      0x180d54ce9                               
+  0x180D54815  mov     qword ptr [rsp + 0x60], rbp               
+  0x180D5481A  mov     qword ptr [rsp + 0x70], r14               
+  0x180D5481F  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54823  lea     rcx, [rsp + 0x20]                         
+  0x180D54828  xorps   xmm0, xmm0                                
+  0x180D5482B  mov     rdx, rsi                                  
+  0x180D5482E  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D54833  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__9_1
+  0x180D54837  call    0x180c15d80                                  ; -> System.Linq.Buffer<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D5483C  mov     rdx, qword ptr [rbx + 0x38]                  ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54840  lea     rcx, [rsp + 0x30]                         
+  0x180D54845  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D5484A  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D54850  mov     rdx, qword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D54854  call    0x180033520                                  ; -> sub_33520 (runtime/helper)
+  0x180D54859  cmp     dword ptr [rip + 0x2384964], 0               ; data_30D91C4
+  0x180D54860  mov     qword ptr [rdi + 0x28], rax                  ; rdi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D54864  je      0x180d548a9                               
+  0x180D54866  lea     r8, [rdi + 0x28]                             ; rdi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D5486A  shr     r8, 0xc                                   
+  0x180D5486E  and     r8d, 0x1fffff                             
+  0x180D54875  mov     eax, r8d                                  
+  0x180D54878  shr     rax, 6                                    
+  0x180D5487C  and     r8d, 0x3f                                 
+  0x180D54880  lea     rdx, [r15 + rax*8]                        
+  0x180D54884  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D5488B  nop     dword ptr [rax + rax]                     
+
+180D54890:
+  0x180D54890  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54897  mov     rcx, rax                                  
+  0x180D5489A  bts     rcx, r8                                   
+  0x180D5489E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D548A7  jne     0x180d54890                               
+
+180D548A9:
+  0x180D548A9  mov     rcx, qword ptr [rip + 0x20de698]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D548B0  mov     rbp, qword ptr [rdi + 0x20]                  ; rdi->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D548B4  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D548BB  jne     0x180d548c9                               
+  0x180D548BD  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D548C2  mov     rcx, qword ptr [rip + 0x20de67f]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D548C9:
+  0x180D548C9  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180D548D0  mov     rsi, qword ptr [rax + 8]                  
+  0x180D548D4  test    rsi, rsi                                  
+  0x180D548D7  jne     0x180d54989                               
+  0x180D548DD  cmp     dword ptr [rcx + 0xe4], esi               
+  0x180D548E3  jne     0x180d548f1                               
+  0x180D548E5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D548EA  mov     rcx, qword ptr [rip + 0x20de657]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D548F1:
+  0x180D548F1  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180D548F8  mov     rcx, qword ptr [rip + 0x20de629]             ; TYPE System.Func<ContentSizeFitter, RectTransform>_TypeInfo
+  0x180D548FF  mov     rbx, qword ptr [rax]                      
+  0x180D54902  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D54907  mov     r8, qword ptr [rip + 0x20de642]              ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_0() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_0
+  0x180D5490E  xor     r9d, r9d                                  
+  0x180D54911  mov     rdx, rbx                                  
+  0x180D54914  mov     rcx, rax                                  
+  0x180D54917  mov     rsi, rax                                  
+  0x180D5491A  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D5491F  mov     rax, qword ptr [rip + 0x20de622]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54926  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D5492D  mov     qword ptr [rcx + 8], rsi                  
+  0x180D54931  cmp     dword ptr [rip + 0x238488c], 0               ; data_30D91C4
+  0x180D54938  je      0x180d54989                               
+  0x180D5493A  mov     rax, qword ptr [rip + 0x20de607]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54941  mov     r9, qword ptr [rax + 0xb8]                
+  0x180D54948  add     r9, 8                                     
+  0x180D5494C  shr     r9, 0xc                                   
+  0x180D54950  and     r9d, 0x1fffff                             
+  0x180D54957  mov     eax, r9d                                  
+  0x180D5495A  shr     rax, 6                                    
+  0x180D5495E  and     r9d, 0x3f                                 
+  0x180D54962  lea     r8, [r15 + rax*8]                         
+  0x180D54966  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x180D5496E  nop                                               
+
+180D54970:
+  0x180D54970  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180D54977  mov     rdx, rax                                  
+  0x180D5497A  bts     rdx, r9                                   
+  0x180D5497E  lock cmpxchg qword ptr [r8 + 0x462e0], rdx             
+  0x180D54987  jne     0x180d54970                               
+
+180D54989:
+  0x180D54989  mov     r8, qword ptr [rip + 0x20de600]              ; METHODINFO Method$System.Linq.Enumerable.Select<ContentSizeFitter, RectTransform>()
+  0x180D54990  mov     rdx, rsi                                  
+  0x180D54993  mov     rcx, rbp                                  
+  0x180D54996  call    0x180689630                                  ; -> System.Linq.Enumerable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180D5499B  mov     r14, qword ptr [rdi + 0x28]                  ; rdi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D5499F  mov     rbp, rax                                  
+  0x180D549A2  mov     rax, qword ptr [rip + 0x20de59f]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D549A9  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180D549B0  jne     0x180d549c1                               
+  0x180D549B2  mov     rcx, rax                                  
+  0x180D549B5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D549BA  mov     rax, qword ptr [rip + 0x20de587]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D549C1:
+  0x180D549C1  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D549C8  mov     rsi, qword ptr [rcx + 0x10]                  ; rcx-><>c.<>9__9_1
+  0x180D549CC  test    rsi, rsi                                  
+  0x180D549CF  jne     0x180d54a89                               
+  0x180D549D5  cmp     dword ptr [rax + 0xe4], esi               
+  0x180D549DB  jne     0x180d549ec                               
+  0x180D549DD  mov     rcx, rax                                  
+  0x180D549E0  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D549E5  mov     rax, qword ptr [rip + 0x20de55c]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D549EC:
+  0x180D549EC  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D549F3  mov     rcx, qword ptr [rip + 0x20de53e]             ; TYPE System.Func<LayoutGroup, RectTransform>_TypeInfo
+  0x180D549FA  mov     rbx, qword ptr [rax]                      
+  0x180D549FD  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D54A02  mov     r8, qword ptr [rip + 0x20de54f]              ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_1() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_1
+  0x180D54A09  xor     r9d, r9d                                  
+  0x180D54A0C  mov     rdx, rbx                                  
+  0x180D54A0F  mov     rcx, rax                                  
+  0x180D54A12  mov     rsi, rax                                  
+  0x180D54A15  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D54A1A  mov     rax, qword ptr [rip + 0x20de527]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54A21  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D54A28  mov     qword ptr [rcx + 0x10], rsi                  ; rcx-><>c.<>9__9_1
+  0x180D54A2C  cmp     dword ptr [rip + 0x2384791], 0               ; data_30D91C4
+  0x180D54A33  je      0x180d54a89                               
+  0x180D54A35  mov     rax, qword ptr [rip + 0x20de50c]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54A3C  mov     r9, qword ptr [rax + 0xb8]                
+  0x180D54A43  add     r9, 0x10                                  
+  0x180D54A47  shr     r9, 0xc                                   
+  0x180D54A4B  and     r9d, 0x1fffff                             
+  0x180D54A52  mov     eax, r9d                                  
+  0x180D54A55  shr     rax, 6                                    
+  0x180D54A59  and     r9d, 0x3f                                 
+  0x180D54A5D  lea     r8, [r15 + rax*8]                         
+  0x180D54A61  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x180D54A69  nop     dword ptr [rax]                           
+
+180D54A70:
+  0x180D54A70  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180D54A77  mov     rdx, rax                                  
+  0x180D54A7A  bts     rdx, r9                                   
+  0x180D54A7E  lock cmpxchg qword ptr [r8 + 0x462e0], rdx             
+  0x180D54A87  jne     0x180d54a70                               
+
+180D54A89:
+  0x180D54A89  mov     r8, qword ptr [rip + 0x20de508]              ; METHODINFO Method$System.Linq.Enumerable.Select<LayoutGroup, RectTransform>()
+  0x180D54A90  mov     rdx, rsi                                  
+  0x180D54A93  mov     rcx, r14                                  
+  0x180D54A96  call    0x180689630                                  ; -> System.Linq.Enumerable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180D54A9B  mov     r8, qword ptr [rip + 0x20de4d6]              ; METHODINFO Method$System.Linq.Enumerable.Concat<RectTransform>()
+  0x180D54AA2  mov     rdx, rax                                  
+  0x180D54AA5  mov     rcx, rbp                                  
+  0x180D54AA8  call    0x1806848d0                                  ; -> System.Linq.Enumerable$$Concat<__Il2CppFullySharedGenericType>
+  0x180D54AAD  mov     rbx, qword ptr [rip + 0x20de4ac]             ; METHODINFO Method$System.Linq.Enumerable.Distinct<RectTransform>()
+  0x180D54AB4  mov     rsi, rax                                  
+  0x180D54AB7  mov     r14, qword ptr [rsp + 0x70]               
+  0x180D54ABC  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54AC1  jne     0x180d54acb                               
+  0x180D54AC3  mov     rcx, rbx                                  
+  0x180D54AC6  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D54ACB:
+  0x180D54ACB  test    rsi, rsi                                  
+  0x180D54ACE  je      0x180d54cc7                               
+  0x180D54AD4  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54AD8  xor     edx, edx                                  
+  0x180D54ADA  mov     rcx, rsi                                  
+  0x180D54ADD  mov     r8, qword ptr [r8 + 8]                    
+  0x180D54AE1  call    0x180033390                                  ; -> sub_33390 (runtime/helper)
+  0x180D54AE6  mov     rbp, rax                                  
+  0x180D54AE9  mov     rax, qword ptr [rip + 0x20de458]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54AF0  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180D54AF7  jne     0x180d54b08                               
+  0x180D54AF9  mov     rcx, rax                                  
+  0x180D54AFC  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D54B01  mov     rax, qword ptr [rip + 0x20de440]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D54B08:
+  0x180D54B08  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D54B0F  mov     rsi, qword ptr [rcx + 0x18]                  ; rcx-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D54B13  test    rsi, rsi                                  
+  0x180D54B16  jne     0x180d54bc9                               
+  0x180D54B1C  cmp     dword ptr [rax + 0xe4], esi               
+  0x180D54B22  jne     0x180d54b33                               
+  0x180D54B24  mov     rcx, rax                                  
+  0x180D54B27  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180D54B2C  mov     rax, qword ptr [rip + 0x20de415]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+
+180D54B33:
+  0x180D54B33  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D54B3A  mov     rcx, qword ptr [rip + 0x20de3df]             ; TYPE System.Func<RectTransform, int>_TypeInfo
+  0x180D54B41  mov     rbx, qword ptr [rax]                      
+  0x180D54B44  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D54B49  mov     r8, qword ptr [rip + 0x20de3f0]              ; METHODINFO Method$GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c.<UpdateReferences>b__9_2() => GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c$$<UpdateReferences>b__9_2
+  0x180D54B50  xor     r9d, r9d                                  
+  0x180D54B53  mov     rdx, rbx                                  
+  0x180D54B56  mov     rcx, rax                                  
+  0x180D54B59  mov     rsi, rax                                  
+  0x180D54B5C  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180D54B61  mov     rax, qword ptr [rip + 0x20de3e0]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54B68  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180D54B6F  mov     qword ptr [rcx + 0x18], rsi                  ; rcx-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D54B73  cmp     dword ptr [rip + 0x238464a], 0               ; data_30D91C4
+  0x180D54B7A  je      0x180d54bc9                               
+  0x180D54B7C  mov     rax, qword ptr [rip + 0x20de3c5]             ; TYPE GigaCreation.Tools.Ui.AutoLayoutSupporter.<>c_TypeInfo
+  0x180D54B83  mov     r8, qword ptr [rax + 0xb8]                
+  0x180D54B8A  add     r8, 0x18                                  
+  0x180D54B8E  shr     r8, 0xc                                   
+  0x180D54B92  and     r8d, 0x1fffff                             
+  0x180D54B99  mov     eax, r8d                                  
+  0x180D54B9C  shr     rax, 6                                    
+  0x180D54BA0  and     r8d, 0x3f                                 
+  0x180D54BA4  lea     rdx, [r15 + rax*8]                        
+  0x180D54BA8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D54BAF  nop                                               
+
+180D54BB0:
+  0x180D54BB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54BB7  mov     rcx, rax                                  
+  0x180D54BBA  bts     rcx, r8                                   
+  0x180D54BBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D54BC7  jne     0x180d54bb0                               
+
+180D54BC9:
+  0x180D54BC9  mov     r8, qword ptr [rip + 0x20de398]              ; METHODINFO Method$System.Linq.Enumerable.OrderByDescending<RectTransform, int>()
+  0x180D54BD0  mov     rdx, rsi                                  
+  0x180D54BD3  mov     rcx, rbp                                  
+  0x180D54BD6  call    0x1806891d0                                  ; -> System.Linq.Enumerable$$OrderByDescending<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180D54BDB  mov     rbx, qword ptr [rip + 0x20de34e]             ; METHODINFO Method$System.Linq.Enumerable.ToArray<RectTransform>()
+  0x180D54BE2  mov     rsi, rax                                  
+  0x180D54BE5  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54BEA  jne     0x180d54bf4                               
+  0x180D54BEC  mov     rcx, rbx                                  
+  0x180D54BEF  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180D54BF4:
+  0x180D54BF4  test    rsi, rsi                                  
+  0x180D54BF7  je      0x180d54ca5                               
+  0x180D54BFD  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54C01  lea     rcx, [rsp + 0x20]                         
+  0x180D54C06  xorps   xmm0, xmm0                                
+  0x180D54C09  mov     rdx, rsi                                  
+  0x180D54C0C  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180D54C11  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c.<>9__9_1
+  0x180D54C15  call    0x180c15d80                                  ; -> System.Linq.Buffer<__Il2CppFullySharedGenericType>$$.ctor
+  0x180D54C1A  mov     rdx, qword ptr [rbx + 0x38]                  ; rbx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180D54C1E  lea     rcx, [rsp + 0x30]                         
+  0x180D54C23  movaps  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180D54C28  movdqa  xmmword ptr [rsp + 0x30], xmm0            
+  0x180D54C2E  mov     rdx, qword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__9_2 | <ExecuteRebuildingAsync>d__11.<>4__this | <MarkAllRectTransformsForRebuildAsync>d__13.<>4__this
+  0x180D54C32  call    0x180033520                                  ; -> sub_33520 (runtime/helper)
+  0x180D54C37  cmp     dword ptr [rip + 0x2384586], 0               ; data_30D91C4
+  0x180D54C3E  mov     qword ptr [rdi + 0x30], rax                  ; rdi->AutoLayoutSupporter._rectTransforms
+  0x180D54C42  je      0x180d54c89                               
+  0x180D54C44  lea     r8, [rdi + 0x30]                             ; rdi->AutoLayoutSupporter._rectTransforms | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap2
+  0x180D54C48  shr     r8, 0xc                                   
+  0x180D54C4C  and     r8d, 0x1fffff                             
+  0x180D54C53  mov     eax, r8d                                  
+  0x180D54C56  shr     rax, 6                                    
+  0x180D54C5A  and     r8d, 0x3f                                 
+  0x180D54C5E  lea     rdx, [r15 + rax*8]                        
+  0x180D54C62  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180D54C69  nop     dword ptr [rax]                           
+
+180D54C70:
+  0x180D54C70  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180D54C77  mov     rcx, rax                                  
+  0x180D54C7A  bts     rcx, r8                                   
+  0x180D54C7E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180D54C87  jne     0x180d54c70                               
+
+180D54C89:
+  0x180D54C89  mov     rbp, qword ptr [rsp + 0x60]               
+  0x180D54C8E  mov     r15, qword ptr [rsp + 0x40]               
+  0x180D54C93  mov     rsi, qword ptr [rsp + 0x68]               
+  0x180D54C98  add     rsp, 0x48                                 
+  0x180D54C9C  pop     rdi                                       
+  0x180D54C9D  pop     rbx                                       
+  0x180D54C9E  ret                                               
+
+180D54C9F:
+  0x180D54C9F  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D54CA4  int3                                              
+
+180D54CA5:
+  0x180D54CA5  lea     rcx, [rip + 0x20c208c]                       ; STR 'source'
+  0x180D54CAC  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D54CB1  mov     rcx, rax                                  
+  0x180D54CB4  xor     edx, edx                                  
+  0x180D54CB6  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D54CBB  mov     rdx, rbx                                  
+  0x180D54CBE  mov     rcx, rax                                  
+  0x180D54CC1  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D54CC6  int3                                              
+
+180D54CC7:
+  0x180D54CC7  lea     rcx, [rip + 0x20c206a]                       ; STR 'source'
+  0x180D54CCE  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D54CD3  mov     rcx, rax                                  
+  0x180D54CD6  xor     edx, edx                                  
+  0x180D54CD8  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D54CDD  mov     rdx, rbx                                  
+  0x180D54CE0  mov     rcx, rax                                  
+  0x180D54CE3  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D54CE8  int3                                              
+
+180D54CE9:
+  0x180D54CE9  lea     rcx, [rip + 0x20c2048]                       ; STR 'source'
+  0x180D54CF0  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D54CF5  mov     rcx, rax                                  
+  0x180D54CF8  xor     edx, edx                                  
+  0x180D54CFA  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D54CFF  mov     rdx, rbx                                  
+  0x180D54D02  mov     rcx, rax                                  
+  0x180D54D05  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D54D0A  int3                                              
+
+180D54D0B:
+  0x180D54D0B  lea     rcx, [rip + 0x20c2026]                       ; STR 'source'
+  0x180D54D12  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180D54D17  mov     rcx, rax                                  
+  0x180D54D1A  xor     edx, edx                                  
+  0x180D54D1C  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180D54D21  mov     rdx, rbx                                  
+  0x180D54D24  mov     rcx, rax                                  
+  0x180D54D27  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

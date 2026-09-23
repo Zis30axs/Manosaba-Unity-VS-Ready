@@ -1,0 +1,46 @@
+====================================================================================================
+FUNCTION RVA 0xBDA9F0  VA 0x180BDA9F0  size 0x5 (5 bytes)
+  managed: System.Runtime.Serialization.Formatters.Binary.BinaryMethodCall$$.ctor
+  managed: UnityEngine.UIElements.DataBindingManager.HierarchyBindingTracker$$SetDirty
+  managed: System.Diagnostics.AsyncStreamReader$$CancelOperation
+  managed: Cysharp.Threading.Tasks.Triggers.AsyncTriggerBase<__Il2CppFullySharedGenericType>$$Awake
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter$$OnDestroy
+  csig   : void System_Runtime_Serialization_Formatters_Binary_BinaryMethodCall___ctor (System_Runtime_Serialization_Formatters_Binary_BinaryMethodCall_o* __this, const MethodInfo* method);
+  dump.cs: System.Runtime.Serialization.Formatters.Binary.BinaryMethodCall :: public void .ctor()
+  dump.cs: DataBindingManager.HierarchyBindingTracker :: public void SetDirty()
+  dump.cs: System.Diagnostics.AsyncStreamReader :: internal void CancelOperation()
+  dump.cs: GigaCreation.Tools.Ui.AutoLayoutSupporter :: private void OnDestroy()
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180BDA9F0  mov     byte ptr [rcx + 0x38], 1                     ; rcx->AutoLayoutSupporter._isDestroying | <MarkAllRectTransformsForRebuildAsync>d__13.<>u__1
+  0x180BDA9F4  ret                                               

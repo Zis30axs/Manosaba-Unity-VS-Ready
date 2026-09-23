@@ -1,0 +1,111 @@
+====================================================================================================
+FUNCTION RVA 0xD543D0  VA 0x180D543D0  size 0xE4 (228 bytes)
+  managed: GigaCreation.Tools.Ui.AutoLayoutSupporter$$DisableLayoutComponents
+  csig   : void GigaCreation_Tools_Ui_AutoLayoutSupporter__DisableLayoutComponents (GigaCreation_Tools_Ui_AutoLayoutSupporter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Ui.AutoLayoutSupporter :: public void DisableLayoutComponents()
+  fields of GigaCreation.Tools.Ui.AutoLayoutSupporter:
+      +0x20   _contentSizeFitters            ContentSizeFitter[]
+      +0x28   _layoutGroups                  LayoutGroup[]
+      +0x30   _rectTransforms                RectTransform[]
+      +0x38   _isDestroying                  bool
+  fields of AutoLayoutSupporter.<>c:
+      +0x0    <>9                            static readonly AutoLayoutSupporter.<>c
+      +0x8    <>9__9_0                       static Func<ContentSizeFitter, RectTransform>
+      +0x10   <>9__9_1                       static Func<LayoutGroup, RectTransform>
+      +0x18   <>9__9_2                       static Func<RectTransform, int>
+      +0x20   <>9__14_0                      static Func<IEnumerable<Behaviour>, IEnumerable<Behaviour>>
+  fields of AutoLayoutSupporter.<ExecuteRebuildingAsync>d__11:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<MarkAllRectTransformsForRebuildAsync>d__13:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>7__wrap1                     RectTransform[]
+      +0x30   <>7__wrap2                     int
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of AutoLayoutSupporter.<RebuildLayoutAsync>d__12:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      AutoLayoutSupporter
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180D543D0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D543D5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180D543DA  push    rdi                                       
+  0x180D543DB  sub     rsp, 0x20                                 
+  0x180D543DF  cmp     byte ptr [rip + 0x2389061], 0                ; data_30DD447
+  0x180D543E6  mov     rsi, rcx                                  
+  0x180D543E9  jne     0x180d54403                               
+  0x180D543EB  lea     rcx, [rip + 0x20debc6]                       ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180D543F2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D543F7  lock or dword ptr [rsp], 0                        
+  0x180D543FC  mov     byte ptr [rip + 0x2389044], 1                ; data_30DD447
+
+180D54403:
+  0x180D54403  mov     rcx, qword ptr [rip + 0x20debae]             ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180D5440A  mov     edx, 2                                    
+  0x180D5440F  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180D54414  mov     rdi, qword ptr [rsi + 0x20]                  ; rsi->AutoLayoutSupporter._contentSizeFitters | <>c.<>9__14_0 | <ExecuteRebuildingAsync>d__11.ct
+  0x180D54418  mov     rbx, rax                                  
+  0x180D5441B  test    rax, rax                                  
+  0x180D5441E  je      0x180d5448f                               
+  0x180D54420  test    rdi, rdi                                  
+  0x180D54423  je      0x180d54439                               
+  0x180D54425  mov     rdx, qword ptr [rax]                      
+  0x180D54428  mov     rcx, rdi                                  
+  0x180D5442B  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180D5442F  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D54434  test    rax, rax                                  
+  0x180D54437  je      0x180d54495                               
+
+180D54439:
+  0x180D54439  mov     r8, rdi                                   
+  0x180D5443C  xor     edx, edx                                  
+  0x180D5443E  mov     rcx, rbx                                  
+  0x180D54441  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D54446  mov     rdi, qword ptr [rsi + 0x28]                  ; rsi->AutoLayoutSupporter._layoutGroups | <ExecuteRebuildingAsync>d__11.<>u__1 | <MarkAllRectTransformsForRebuildAsync>d__13.<>7__wrap1
+  0x180D5444A  test    rdi, rdi                                  
+  0x180D5444D  je      0x180d54463                               
+  0x180D5444F  mov     rdx, qword ptr [rbx]                      
+  0x180D54452  mov     rcx, rdi                                  
+  0x180D54455  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180D54459  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180D5445E  test    rax, rax                                  
+  0x180D54461  je      0x180d544a5                               
+
+180D54463:
+  0x180D54463  mov     r8, rdi                                   
+  0x180D54466  mov     edx, 1                                    
+  0x180D5446B  mov     rcx, rbx                                  
+  0x180D5446E  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180D54473  xor     r8d, r8d                                  
+  0x180D54476  mov     rdx, rbx                                  
+  0x180D54479  xor     ecx, ecx                                  
+  0x180D5447B  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D54480  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180D54485  add     rsp, 0x20                                 
+  0x180D54489  pop     rdi                                       
+  0x180D5448A  jmp     0x180d55270                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$SetComponentsEnabled
+
+180D5448F:
+  0x180D5448F  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D54494  int3                                              
+
+180D54495:
+  0x180D54495  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180D5449A  mov     rcx, rax                                  
+  0x180D5449D  xor     edx, edx                                  
+  0x180D5449F  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180D544A4  int3                                              
+
+180D544A5:
+  0x180D544A5  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180D544AA  mov     rcx, rax                                  
+  0x180D544AD  xor     edx, edx                                  
+  0x180D544AF  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
