@@ -1,0 +1,94 @@
+====================================================================================================
+FUNCTION RVA 0xD1E140  VA 0x180D1E140  size 0xF2 (242 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.LayerModifier$$SetRendererEnabled
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_LayerModifier__SetRendererEnabled (GigaCreation_NaninovelExtender_ExtendedActors_LayerModifier_o* __this, bool enable, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.LayerModifier :: public void SetRendererEnabled(bool enable)
+  fields of LayerModifier.<>c:
+      +0x0    <>9                            static readonly LayerModifier.<>c
+      +0x8    <>9__1_0                       static Func<LayeredActorLayer, Renderer>
+      +0x10   <>9__1_1                       static Func<Renderer, bool>
+====================================================================================================
+  0x180D1E140  mov     qword ptr [rsp + 8], rbx                  
+  0x180D1E145  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D1E14A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D1E14F  push    rdi                                       
+  0x180D1E150  push    r14                                       
+  0x180D1E152  push    r15                                       
+  0x180D1E154  sub     rsp, 0x20                                 
+  0x180D1E158  mov     rbp, qword ptr [rcx + 0x20]               
+  0x180D1E15C  xor     edi, edi                                  
+  0x180D1E15E  movzx   r15d, dl                                  
+  0x180D1E162  mov     eax, edi                                  
+  0x180D1E164  test    rbp, rbp                                  
+  0x180D1E167  je      0x180d1e22d                               
+  0x180D1E16D  lea     r14, [rbp + 0x20]                         
+
+180D1E171:
+  0x180D1E171  cmp     eax, dword ptr [rbp + 0x18]               
+  0x180D1E174  jge     0x180d1e1ec                               
+  0x180D1E176  cmp     edi, dword ptr [rbp + 0x18]               
+  0x180D1E179  jae     0x180d1e227                               
+  0x180D1E17F  mov     rbx, qword ptr [r14]                      
+  0x180D1E182  test    rbx, rbx                                  
+  0x180D1E185  je      0x180d1e22d                               
+  0x180D1E18B  cmp     byte ptr [rip + 0x23c8a9d], 0                ; data_30E6C2F
+  0x180D1E192  jne     0x180d1e1ac                               
+  0x180D1E194  lea     rcx, [rip + 0x21437d5]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Renderer>()
+  0x180D1E19B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E1A0  lock or dword ptr [rsp], 0                        
+  0x180D1E1A5  mov     byte ptr [rip + 0x23c8a83], 1                ; data_30E6C2F
+
+180D1E1AC:
+  0x180D1E1AC  mov     rsi, qword ptr [rbx + 0x10]                  ; rbx-><>c.<>9__1_1
+  0x180D1E1B0  test    rsi, rsi                                  
+  0x180D1E1B3  je      0x180d1e21c                               
+  0x180D1E1B5  mov     rax, qword ptr [rip + 0x23c8abc]             ; data_30E6C78
+  0x180D1E1BC  test    rax, rax                                  
+  0x180D1E1BF  jne     0x180d1e1d9                               
+  0x180D1E1C1  lea     rcx, [rip + 0x18d7998]                       ; data_25F5B60
+  0x180D1E1C8  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1E1CD  test    rax, rax                                  
+  0x180D1E1D0  je      0x180d1e205                               
+  0x180D1E1D2  mov     qword ptr [rip + 0x23c8a9f], rax             ; data_30E6C78
+
+180D1E1D9:
+  0x180D1E1D9  movzx   edx, r15b                                 
+  0x180D1E1DD  mov     rcx, rsi                                  
+  0x180D1E1E0  call    rax                                       
+  0x180D1E1E2  inc     edi                                       
+  0x180D1E1E4  add     r14, 8                                    
+  0x180D1E1E8  mov     eax, edi                                  
+  0x180D1E1EA  jmp     0x180d1e171                               
+
+180D1E1EC:
+  0x180D1E1EC  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180D1E1F1  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180D1E1F6  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D1E1FB  add     rsp, 0x20                                 
+  0x180D1E1FF  pop     r15                                       
+  0x180D1E201  pop     r14                                       
+  0x180D1E203  pop     rdi                                       
+  0x180D1E204  ret                                               
+
+180D1E205:
+  0x180D1E205  lea     rcx, [rip + 0x18d7954]                       ; data_25F5B60
+  0x180D1E20C  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1E211  mov     rcx, rax                                  
+  0x180D1E214  xor     edx, edx                                  
+  0x180D1E216  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1E21B  int3                                              
+
+180D1E21C:
+  0x180D1E21C  xor     edx, edx                                  
+  0x180D1E21E  mov     rcx, rbx                                  
+  0x180D1E221  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D1E226  int3                                              
+
+180D1E227:
+  0x180D1E227  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D1E22C  int3                                              
+
+180D1E22D:
+  0x180D1E22D  call    0x180246730                                  ; THROW NullReferenceException
+
+; icall: data_25F5B60 = "UnityEngine.Renderer::set_enabled_Injected(System.IntPtr,System.Boolean)" (0x180D1E1E0, dl = enable)

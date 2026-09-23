@@ -1,0 +1,144 @@
+====================================================================================================
+FUNCTION RVA 0xD1DF90  VA 0x180D1DF90  size 0x1A4 (420 bytes)
+  managed: GigaCreation.NaninovelExtender.ExtendedActors.LayerModifier$$ModifyLayers
+  csig   : void GigaCreation_NaninovelExtender_ExtendedActors_LayerModifier__ModifyLayers (GigaCreation_NaninovelExtender_ExtendedActors_LayerModifier_o* __this, int32_t cameraCullingLayer, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.ExtendedActors.LayerModifier :: public void ModifyLayers(int cameraCullingLayer)
+  fields of LayerModifier.<>c:
+      +0x0    <>9                            static readonly LayerModifier.<>c
+      +0x8    <>9__1_0                       static Func<LayeredActorLayer, Renderer>
+      +0x10   <>9__1_1                       static Func<Renderer, bool>
+====================================================================================================
+  0x180D1DF90  mov     qword ptr [rsp + 8], rbx                  
+  0x180D1DF95  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D1DF9A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D1DF9F  push    rdi                                       
+  0x180D1DFA0  push    r14                                       
+  0x180D1DFA2  push    r15                                       
+  0x180D1DFA4  sub     rsp, 0x20                                 
+  0x180D1DFA8  mov     rbp, qword ptr [rcx + 0x20]               
+  0x180D1DFAC  xor     edi, edi                                  
+  0x180D1DFAE  mov     r15d, edx                                 
+  0x180D1DFB1  mov     eax, edi                                  
+  0x180D1DFB3  test    rbp, rbp                                  
+  0x180D1DFB6  je      0x180d1e12f                               
+  0x180D1DFBC  lea     r14, [rbp + 0x20]                         
+
+180D1DFC0:
+  0x180D1DFC0  cmp     eax, dword ptr [rbp + 0x18]               
+  0x180D1DFC3  jge     0x180d1e0cc                               
+  0x180D1DFC9  cmp     edi, dword ptr [rbp + 0x18]               
+  0x180D1DFCC  jae     0x180d1e129                               
+  0x180D1DFD2  mov     rbx, qword ptr [r14]                      
+  0x180D1DFD5  test    rbx, rbx                                  
+  0x180D1DFD8  je      0x180d1e12f                               
+  0x180D1DFDE  cmp     byte ptr [rip + 0x23ca502], 0                ; data_30E84E7
+  0x180D1DFE5  jne     0x180d1e010                               
+  0x180D1DFE7  lea     rcx, [rip + 0x214778a]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Component>()
+  0x180D1DFEE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1DFF3  lock or dword ptr [rsp], 0                        
+  0x180D1DFF8  lea     rcx, [rip + 0x2147771]                       ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180D1DFFF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E004  lock or dword ptr [rsp], 0                        
+  0x180D1E009  mov     byte ptr [rip + 0x23ca4d7], 1                ; data_30E84E7
+
+180D1E010:
+  0x180D1E010  mov     rsi, qword ptr [rbx + 0x10]                  ; rbx-><>c.<>9__1_1
+  0x180D1E014  test    rsi, rsi                                  
+  0x180D1E017  je      0x180d1e11e                               
+  0x180D1E01D  mov     rax, qword ptr [rip + 0x23ca4d4]             ; data_30E84F8
+  0x180D1E024  test    rax, rax                                  
+  0x180D1E027  jne     0x180d1e045                               
+  0x180D1E029  lea     rcx, [rip + 0x18e6cf8]                       ; data_2604D28
+  0x180D1E030  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1E035  test    rax, rax                                  
+  0x180D1E038  je      0x180d1e0e5                               
+  0x180D1E03E  mov     qword ptr [rip + 0x23ca4b3], rax             ; data_30E84F8
+
+180D1E045:
+  0x180D1E045  mov     rcx, rsi                                  
+  0x180D1E048  call    rax                                       
+  0x180D1E04A  mov     rdx, qword ptr [rip + 0x214771f]             ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180D1E051  mov     rcx, rax                                  
+  0x180D1E054  call    0x18079a980                                  ; -> UnityEngine.Bindings.Unmarshal$$UnmarshalUnityObject<object>
+  0x180D1E059  mov     rsi, rax                                  
+  0x180D1E05C  test    rax, rax                                  
+  0x180D1E05F  je      0x180d1e12f                               
+  0x180D1E065  cmp     byte ptr [rip + 0x23ca4e9], 0                ; data_30E8555
+  0x180D1E06C  jne     0x180d1e086                               
+  0x180D1E06E  lea     rcx, [rip + 0x213afbb]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<GameObject>()
+  0x180D1E075  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D1E07A  lock or dword ptr [rsp], 0                        
+  0x180D1E07F  mov     byte ptr [rip + 0x23ca4cf], 1                ; data_30E8555
+
+180D1E086:
+  0x180D1E086  mov     rbx, qword ptr [rsi + 0x10]                  ; rsi-><>c.<>9__1_1
+  0x180D1E08A  test    rbx, rbx                                  
+  0x180D1E08D  je      0x180d1e113                               
+  0x180D1E093  mov     rax, qword ptr [rip + 0x23ca576]             ; data_30E8610
+  0x180D1E09A  test    rax, rax                                  
+  0x180D1E09D  jne     0x180d1e0b7                               
+  0x180D1E09F  lea     rcx, [rip + 0x18e765a]                       ; data_2605700
+  0x180D1E0A6  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D1E0AB  test    rax, rax                                  
+  0x180D1E0AE  je      0x180d1e0fc                               
+  0x180D1E0B0  mov     qword ptr [rip + 0x23ca559], rax             ; data_30E8610
+
+180D1E0B7:
+  0x180D1E0B7  mov     edx, r15d                                 
+  0x180D1E0BA  mov     rcx, rbx                                  
+  0x180D1E0BD  call    rax                                       
+  0x180D1E0BF  inc     edi                                       
+  0x180D1E0C1  add     r14, 8                                    
+  0x180D1E0C5  mov     eax, edi                                  
+  0x180D1E0C7  jmp     0x180d1dfc0                               
+
+180D1E0CC:
+  0x180D1E0CC  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180D1E0D1  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180D1E0D6  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180D1E0DB  add     rsp, 0x20                                 
+  0x180D1E0DF  pop     r15                                       
+  0x180D1E0E1  pop     r14                                       
+  0x180D1E0E3  pop     rdi                                       
+  0x180D1E0E4  ret                                               
+
+180D1E0E5:
+  0x180D1E0E5  lea     rcx, [rip + 0x18e6c3c]                       ; data_2604D28
+  0x180D1E0EC  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1E0F1  mov     rcx, rax                                  
+  0x180D1E0F4  xor     edx, edx                                  
+  0x180D1E0F6  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1E0FB  int3                                              
+
+180D1E0FC:
+  0x180D1E0FC  lea     rcx, [rip + 0x18e75fd]                       ; data_2605700
+  0x180D1E103  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D1E108  mov     rcx, rax                                  
+  0x180D1E10B  xor     edx, edx                                  
+  0x180D1E10D  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D1E112  int3                                              
+
+180D1E113:
+  0x180D1E113  xor     edx, edx                                  
+  0x180D1E115  mov     rcx, rsi                                  
+  0x180D1E118  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D1E11D  int3                                              
+
+180D1E11E:
+  0x180D1E11E  xor     edx, edx                                  
+  0x180D1E120  mov     rcx, rbx                                  
+  0x180D1E123  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D1E128  int3                                              
+
+180D1E129:
+  0x180D1E129  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D1E12E  int3                                              
+
+180D1E12F:
+  0x180D1E12F  call    0x180246730                                  ; THROW NullReferenceException
+
+; icall names resolved from the string table (il2cpp_pe.PE().read):
+;   data_2604D28 = "UnityEngine.Component::get_gameObject_Injected(System.IntPtr)"   (0x180D1E048, arg = renderer m_CachedPtr [rbx+0x10])
+;   data_2605700 = "UnityEngine.GameObject::set_layer_Injected(System.IntPtr,System.Int32)" (0x180D1E0BD, edx = cameraCullingLayer)
+; The disassembler's "<>c.<>9__1_1" annotations on [reg+0x10] are wrong here: the register holds a UnityEngine.Object and
+; +0x10 is its m_CachedPtr (the MarshalNotNull null-check before each icall).
