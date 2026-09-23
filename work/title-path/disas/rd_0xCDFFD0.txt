@@ -1,0 +1,59 @@
+====================================================================================================
+FUNCTION RVA 0xCDFFD0  VA 0x180CDFFD0  size 0x27 (39 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0$$<SetInternalData>b__0
+  csig   : void GigaCreation_Essentials_Ui_RebuildableDialog___c__DisplayClass30_0___SetInternalData_b__0 (GigaCreation_Essentials_Ui_RebuildableDialog___c__DisplayClass30_0_o* __this, GigaCreation_Essentials_Ui_RebuildableDialog_o* __, const MethodInfo* method);
+  dump.cs: RebuildableDialog.<>c__DisplayClass30_0 :: internal void <SetInternalData>b__0(RebuildableDialog _)
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDFFD0  sub     rsp, 0x28                                 
+  0x180CDFFD4  mov     rax, qword ptr [rcx + 0x18]                  ; rcx-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDFFD8  test    rax, rax                                  
+  0x180CDFFDB  je      0x180cdfff2                               
+  0x180CDFFDD  mov     rcx, qword ptr [rcx + 0x10]                  ; rcx-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDFFE1  test    rcx, rcx                                  
+  0x180CDFFE4  je      0x180cdfff2                               
+  0x180CDFFE6  movzx   eax, byte ptr [rax + 0x20]                   ; rax->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDFFEA  mov     byte ptr [rcx + 0x6c], al                    ; rcx->RebuildableDialog._cancelableByAction
+  0x180CDFFED  add     rsp, 0x28                                 
+  0x180CDFFF1  ret                                               
+
+180CDFFF2:
+  0x180CDFFF2  call    0x180246730                                  ; THROW NullReferenceException

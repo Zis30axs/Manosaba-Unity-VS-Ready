@@ -1,0 +1,365 @@
+====================================================================================================
+FUNCTION RVA 0xCDEA40  VA 0x180CDEA40  size 0x49A (1178 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog$$RebuildMessageLabels
+  csig   : void GigaCreation_Essentials_Ui_RebuildableDialog__RebuildMessageLabels (GigaCreation_Essentials_Ui_RebuildableDialog_o* __this, System_Collections_Generic_IReadOnlyList_LabelData__o* labelsData, bool atRuntime, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableDialog :: private void RebuildMessageLabels(IReadOnlyList<LabelData> labelsData, bool atRuntime, Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDEA40  push    rbx                                       
+  0x180CDEA42  push    r12                                       
+  0x180CDEA44  push    r13                                       
+  0x180CDEA46  push    r15                                       
+  0x180CDEA48  sub     rsp, 0x38                                 
+  0x180CDEA4C  cmp     byte ptr [rip + 0x23fe726], 0                ; data_30DD179
+  0x180CDEA53  mov     rbx, r9                                   
+  0x180CDEA56  movzx   r13d, r8b                                 
+  0x180CDEA5A  mov     r12, rdx                                  
+  0x180CDEA5D  mov     r15, rcx                                  
+  0x180CDEA60  jne     0x180cdeaf5                               
+  0x180CDEA66  lea     rcx, [rip + 0x218a17b]                       ; TYPE System.Collections.Generic.IReadOnlyCollection<LabelData>_TypeInfo
+  0x180CDEA6D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEA72  lock or dword ptr [rsp], 0                        
+  0x180CDEA77  lea     rcx, [rip + 0x218a11a]                       ; TYPE System.Collections.Generic.IReadOnlyList<LabelData>_TypeInfo
+  0x180CDEA7E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEA83  lock or dword ptr [rsp], 0                        
+  0x180CDEA88  lea     rcx, [rip + 0x218a101]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.Add()
+  0x180CDEA8F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEA94  lock or dword ptr [rsp], 0                        
+  0x180CDEA99  lea     rcx, [rip + 0x218a0e8]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.RemoveAt()
+  0x180CDEAA0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEAA5  lock or dword ptr [rsp], 0                        
+  0x180CDEAAA  lea     rcx, [rip + 0x218a0c7]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.get_Count()
+  0x180CDEAB1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEAB6  lock or dword ptr [rsp], 0                        
+  0x180CDEABB  lea     rcx, [rip + 0x218a0f6]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.get_Item()
+  0x180CDEAC2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEAC7  lock or dword ptr [rsp], 0                        
+  0x180CDEACC  lea     rcx, [rip + 0x218a0d5]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableLabel>()
+  0x180CDEAD3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEAD8  lock or dword ptr [rsp], 0                        
+  0x180CDEADD  lea     rcx, [rip + 0x21737ac]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDEAE4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEAE9  lock or dword ptr [rsp], 0                        
+  0x180CDEAEE  mov     byte ptr [rip + 0x23fe684], 1                ; data_30DD179
+
+180CDEAF5:
+  0x180CDEAF5  xor     edx, edx                                  
+  0x180CDEAF7  mov     rcx, r15                                  
+  0x180CDEAFA  call    0x180cdd670                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$get_ExistingMessageLabels
+  0x180CDEAFF  cmp     dword ptr [rip + 0x23fa6be], 0               ; data_30D91C4
+  0x180CDEB06  mov     qword ptr [r15 + 0x70], rax                  ; r15->RebuildableDialog._messageLabels
+  0x180CDEB0A  je      0x180cdeb45                               
+  0x180CDEB0C  lea     r8, [r15 + 0x70]                             ; r15->RebuildableDialog._messageLabels
+  0x180CDEB10  shr     r8, 0xc                                   
+  0x180CDEB14  lea     r9, [rip + 0x2455a65]                        ; data_3134580
+  0x180CDEB1B  and     r8d, 0x1fffff                             
+  0x180CDEB22  mov     edx, r8d                                  
+  0x180CDEB25  shr     rdx, 6                                    
+  0x180CDEB29  and     r8d, 0x3f                                 
+  0x180CDEB2D  prefetchw byte ptr [r9 + rdx*8]                     
+
+180CDEB32:
+  0x180CDEB32  mov     rax, qword ptr [r9 + rdx*8]               
+  0x180CDEB36  mov     rcx, rax                                  
+  0x180CDEB39  bts     rcx, r8                                   
+  0x180CDEB3D  lock cmpxchg qword ptr [r9 + rdx*8], rcx               
+  0x180CDEB43  jne     0x180cdeb32                               
+
+180CDEB45:
+  0x180CDEB45  mov     rax, qword ptr [r15 + 0x70]                  ; r15->RebuildableDialog._messageLabels
+  0x180CDEB49  mov     qword ptr [rsp + 0x68], rbp               
+  0x180CDEB4E  mov     qword ptr [rsp + 0x70], rsi               
+  0x180CDEB53  mov     qword ptr [rsp + 0x78], rdi               
+  0x180CDEB58  mov     qword ptr [rsp + 0x30], r14               
+  0x180CDEB5D  test    rax, rax                                  
+  0x180CDEB60  je      0x180cdeed5                               
+  0x180CDEB66  mov     ebp, dword ptr [rax + 0x18]                  ; rax-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDEB69  dec     ebp                                       
+  0x180CDEB6B  test    r12, r12                                  
+  0x180CDEB6E  je      0x180cdeed5                               
+  0x180CDEB74  xor     r14d, r14d                                
+  0x180CDEB77  nop     word ptr [rax + rax]                      
+
+180CDEB80:
+  0x180CDEB80  mov     r10, qword ptr [r12]                      
+  0x180CDEB84  movzx   ecx, r14w                                 
+  0x180CDEB88  mov     r9, qword ptr [rip + 0x218a059]              ; TYPE System.Collections.Generic.IReadOnlyCollection<LabelData>_TypeInfo
+  0x180CDEB8F  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDEB97  cmp     r14w, dx                                  
+  0x180CDEB9B  jae     0x180cdebc8                               
+  0x180CDEB9D  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDEBA4  nop     dword ptr [rax]                           
+  0x180CDEBA8  nop     dword ptr [rax + rax]                     
+
+180CDEBB0:
+  0x180CDEBB0  movzx   eax, cx                                   
+  0x180CDEBB3  add     rax, rax                                  
+  0x180CDEBB6  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CDEBBA  je      0x180cded33                               
+  0x180CDEBC0  inc     cx                                        
+  0x180CDEBC3  cmp     cx, dx                                    
+  0x180CDEBC6  jb      0x180cdebb0                               
+
+180CDEBC8:
+  0x180CDEBC8  xor     r8d, r8d                                  
+  0x180CDEBCB  mov     rdx, r9                                   
+  0x180CDEBCE  mov     rcx, r12                                  
+  0x180CDEBD1  call    0x180243a20                                  ; resolve interface method slot
+
+180CDEBD6:
+  0x180CDEBD6  mov     r8, qword ptr [rax]                       
+  0x180CDEBD9  mov     rcx, r12                                  
+  0x180CDEBDC  mov     rdx, qword ptr [rax + 8]                  
+  0x180CDEBE0  call    r8                                        
+  0x180CDEBE3  cmp     ebp, eax                                  
+  0x180CDEBE5  jl      0x180cded50                               
+  0x180CDEBEB  mov     rcx, qword ptr [r15 + 0x70]                  ; r15->RebuildableDialog._messageLabels
+  0x180CDEBEF  test    rcx, rcx                                  
+  0x180CDEBF2  je      0x180cdeed5                               
+  0x180CDEBF8  mov     r9, qword ptr [rip + 0x2189fb9]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.get_Item()
+  0x180CDEBFF  lea     r8, [rsp + 0x60]                          
+  0x180CDEC04  mov     edx, ebp                                  
+  0x180CDEC06  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CDEC0B  mov     rdi, qword ptr [rsp + 0x60]               
+  0x180CDEC10  test    rdi, rdi                                  
+  0x180CDEC13  je      0x180cdeed5                               
+  0x180CDEC19  cmp     byte ptr [rip + 0x24098c7], r14b             ; data_30E84E7
+  0x180CDEC20  jne     0x180cdec4b                               
+  0x180CDEC22  lea     rcx, [rip + 0x2186b4f]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Component>()
+  0x180CDEC29  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEC2E  lock or dword ptr [rsp], r14d                     
+  0x180CDEC33  lea     rcx, [rip + 0x2186b36]                       ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180CDEC3A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEC3F  lock or dword ptr [rsp], r14d                     
+  0x180CDEC44  mov     byte ptr [rip + 0x240989c], 1                ; data_30E84E7
+
+180CDEC4B:
+  0x180CDEC4B  mov     rsi, qword ptr [rdi + 0x10]                  ; rdi-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDEC4F  test    rsi, rsi                                  
+  0x180CDEC52  je      0x180cdeeca                               
+  0x180CDEC58  mov     rax, qword ptr [rip + 0x2409899]             ; data_30E84F8
+  0x180CDEC5F  test    rax, rax                                  
+  0x180CDEC62  jne     0x180cdec80                               
+  0x180CDEC64  lea     rcx, [rip + 0x19260bd]                       ; data_2604D28
+  0x180CDEC6B  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CDEC70  test    rax, rax                                  
+  0x180CDEC73  je      0x180cdeeb3                               
+  0x180CDEC79  mov     qword ptr [rip + 0x2409878], rax             ; data_30E84F8
+
+180CDEC80:
+  0x180CDEC80  mov     rcx, rsi                                  
+  0x180CDEC83  call    rax                                       
+  0x180CDEC85  mov     rdx, qword ptr [rip + 0x2186ae4]             ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180CDEC8C  mov     rcx, rax                                  
+  0x180CDEC8F  call    0x18079a980                                  ; -> UnityEngine.Bindings.Unmarshal$$UnmarshalUnityObject<object>
+  0x180CDEC94  cmp     byte ptr [rip + 0x23fe7df], r14b             ; data_30DD47A
+  0x180CDEC9B  mov     rdi, rax                                  
+  0x180CDEC9E  jne     0x180cdecb8                               
+  0x180CDECA0  lea     rcx, [rip + 0x21735e9]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDECA7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDECAC  lock or dword ptr [rsp], r14d                     
+  0x180CDECB1  mov     byte ptr [rip + 0x23fe7c2], 1                ; data_30DD47A
+
+180CDECB8:
+  0x180CDECB8  mov     rcx, qword ptr [rip + 0x21735d1]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDECBF  cmp     dword ptr [rcx + 0xe4], r14d              
+  0x180CDECC6  jne     0x180cdeccd                               
+  0x180CDECC8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDECCD:
+  0x180CDECCD  cmp     byte ptr [rip + 0x2409b64], r14b             ; data_30E8838
+  0x180CDECD4  jne     0x180cdecee                               
+  0x180CDECD6  lea     rcx, [rip + 0x21735b3]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDECDD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDECE2  lock or dword ptr [rsp], r14d                     
+  0x180CDECE7  mov     byte ptr [rip + 0x2409b4a], 1                ; data_30E8838
+
+180CDECEE:
+  0x180CDECEE  mov     rcx, qword ptr [rip + 0x217359b]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDECF5  cmp     dword ptr [rcx + 0xe4], r14d              
+  0x180CDECFC  jne     0x180cded03                               
+  0x180CDECFE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDED03:
+  0x180CDED03  xor     r8d, r8d                                  
+  0x180CDED06  xorps   xmm1, xmm1                                
+  0x180CDED09  mov     rcx, rdi                                  
+  0x180CDED0C  call    0x182071c60                                  ; -> UnityEngine.Object$$Destroy
+  0x180CDED11  mov     rcx, qword ptr [r15 + 0x70]                  ; r15->RebuildableDialog._messageLabels
+  0x180CDED15  test    rcx, rcx                                  
+  0x180CDED18  je      0x180cdeed5                               
+  0x180CDED1E  mov     r8, qword ptr [rip + 0x2189e63]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.RemoveAt()
+  0x180CDED25  mov     edx, ebp                                  
+  0x180CDED27  call    0x18085bb10                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$RemoveAt
+  0x180CDED2C  dec     ebp                                       
+  0x180CDED2E  jmp     0x180cdeb80                               
+
+180CDED33:
+  0x180CDED33  movzx   ecx, cx                                   
+  0x180CDED36  add     rcx, rcx                                  
+  0x180CDED39  movsxd  rax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDED3E  shl     rax, 4                                    
+  0x180CDED42  add     rax, 0x138                                
+  0x180CDED48  add     rax, r10                                  
+  0x180CDED4B  jmp     0x180cdebd6                               
+
+180CDED50:
+  0x180CDED50  mov     edi, r14d                                 
+  0x180CDED53  mov     esi, r14d                                 
+  0x180CDED56  nop     word ptr [rax + rax]                      
+
+180CDED60:
+  0x180CDED60  mov     r10, qword ptr [r12]                      
+  0x180CDED64  movzx   ecx, r14w                                 
+  0x180CDED68  mov     r9, qword ptr [rip + 0x2189e79]              ; TYPE System.Collections.Generic.IReadOnlyCollection<LabelData>_TypeInfo
+  0x180CDED6F  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDED77  cmp     r14w, dx                                  
+  0x180CDED7B  jae     0x180cdeda8                               
+  0x180CDED7D  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDED84  nop     dword ptr [rax]                           
+  0x180CDED88  nop     dword ptr [rax + rax]                     
+
+180CDED90:
+  0x180CDED90  movzx   eax, cx                                   
+  0x180CDED93  add     rax, rax                                  
+  0x180CDED96  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CDED9A  je      0x180cdee76                               
+  0x180CDEDA0  inc     cx                                        
+  0x180CDEDA3  cmp     cx, dx                                    
+  0x180CDEDA6  jb      0x180cded90                               
+
+180CDEDA8:
+  0x180CDEDA8  xor     r8d, r8d                                  
+  0x180CDEDAB  mov     rdx, r9                                   
+  0x180CDEDAE  mov     rcx, r12                                  
+  0x180CDEDB1  call    0x180243a20                                  ; resolve interface method slot
+
+180CDEDB6:
+  0x180CDEDB6  mov     r8, qword ptr [rax]                       
+  0x180CDEDB9  mov     rcx, r12                                  
+  0x180CDEDBC  mov     rdx, qword ptr [rax + 8]                  
+  0x180CDEDC0  call    r8                                        
+  0x180CDEDC3  cmp     esi, eax                                  
+  0x180CDEDC5  jge     0x180cdee93                               
+  0x180CDEDCB  mov     rax, qword ptr [r15 + 0x70]                  ; r15->RebuildableDialog._messageLabels
+  0x180CDEDCF  test    rax, rax                                  
+  0x180CDEDD2  je      0x180cdeed5                               
+  0x180CDEDD8  cmp     edi, dword ptr [rax + 0x18]                  ; rax-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDEDDB  jl      0x180cdee24                               
+  0x180CDEDDD  mov     rcx, qword ptr [rip + 0x21734ac]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDEDE4  mov     r14, rax                                  
+  0x180CDEDE7  mov     rsi, qword ptr [r15 + 0x20]                  ; r15->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDEDEB  mov     rbp, qword ptr [r15 + 0x50]                  ; r15->RebuildableDialog._messageLabelRoot
+  0x180CDEDEF  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDEDF6  jne     0x180cdedfd                               
+  0x180CDEDF8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDEDFD:
+  0x180CDEDFD  mov     r8, qword ptr [rip + 0x2189da4]              ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableLabel>()
+  0x180CDEE04  mov     rdx, rbp                                  
+  0x180CDEE07  mov     rcx, rsi                                  
+  0x180CDEE0A  call    0x180721660                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CDEE0F  mov     r8, qword ptr [rip + 0x2189d7a]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.Add()
+  0x180CDEE16  mov     rdx, rax                                  
+  0x180CDEE19  mov     rcx, r14                                  
+  0x180CDEE1C  call    0x180331f40                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Add
+  0x180CDEE21  xor     r14d, r14d                                
+
+180CDEE24:
+  0x180CDEE24  mov     rcx, qword ptr [r15 + 0x70]                  ; r15->RebuildableDialog._messageLabels
+  0x180CDEE28  test    rcx, rcx                                  
+  0x180CDEE2B  je      0x180cdeed5                               
+  0x180CDEE31  mov     r9, qword ptr [rip + 0x2189d80]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableLabel>.get_Item()
+  0x180CDEE38  lea     r8, [rsp + 0x60]                          
+  0x180CDEE3D  mov     edx, edi                                  
+  0x180CDEE3F  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CDEE44  mov     r9d, edi                                  
+  0x180CDEE47  mov     r8, r12                                   
+  0x180CDEE4A  call    0x18007f970                                  ; -> sub_7F970 (runtime/helper)
+  0x180CDEE4F  mov     rcx, qword ptr [rsp + 0x60]               
+  0x180CDEE54  test    rcx, rcx                                  
+  0x180CDEE57  je      0x180cdeed5                               
+  0x180CDEE59  mov     r9, rbx                                   
+  0x180CDEE5C  mov     qword ptr [rsp + 0x20], r14               
+  0x180CDEE61  movzx   r8d, r13b                                 
+  0x180CDEE65  mov     rdx, rax                                  
+  0x180CDEE68  call    0x180ce44a0                                  ; -> GigaCreation.Essentials.Ui.RebuildableLabel$$Rebuild
+  0x180CDEE6D  inc     edi                                       
+  0x180CDEE6F  mov     esi, edi                                  
+  0x180CDEE71  jmp     0x180cded60                               
+
+180CDEE76:
+  0x180CDEE76  movzx   ecx, cx                                   
+  0x180CDEE79  add     rcx, rcx                                  
+  0x180CDEE7C  movsxd  rax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDEE81  shl     rax, 4                                    
+  0x180CDEE85  add     rax, 0x138                                
+  0x180CDEE8B  add     rax, r10                                  
+  0x180CDEE8E  jmp     0x180cdedb6                               
+
+180CDEE93:
+  0x180CDEE93  mov     r14, qword ptr [rsp + 0x30]               
+  0x180CDEE98  mov     rdi, qword ptr [rsp + 0x78]               
+  0x180CDEE9D  mov     rsi, qword ptr [rsp + 0x70]               
+  0x180CDEEA2  mov     rbp, qword ptr [rsp + 0x68]               
+  0x180CDEEA7  add     rsp, 0x38                                 
+  0x180CDEEAB  pop     r15                                       
+  0x180CDEEAD  pop     r13                                       
+  0x180CDEEAF  pop     r12                                       
+  0x180CDEEB1  pop     rbx                                       
+  0x180CDEEB2  ret                                               
+
+180CDEEB3:
+  0x180CDEEB3  lea     rcx, [rip + 0x1925e6e]                       ; data_2604D28
+  0x180CDEEBA  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CDEEBF  mov     rcx, rax                                  
+  0x180CDEEC2  xor     edx, edx                                  
+  0x180CDEEC4  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CDEEC9  int3                                              
+
+180CDEECA:
+  0x180CDEECA  xor     edx, edx                                  
+  0x180CDEECC  mov     rcx, rdi                                  
+  0x180CDEECF  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180CDEED4  int3                                              
+
+180CDEED5:
+  0x180CDEED5  call    0x180246730                                  ; THROW NullReferenceException

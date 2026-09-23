@@ -1,0 +1,81 @@
+====================================================================================================
+FUNCTION RVA 0xCDD530  VA 0x180CDD530  size 0x6B (107 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog$$get_ResponseButtons
+  csig   : System_Collections_Generic_IReadOnlyList_RebuildableButton__o* GigaCreation_Essentials_Ui_RebuildableDialog__get_ResponseButtons (GigaCreation_Essentials_Ui_RebuildableDialog_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableDialog :: protected IReadOnlyList<RebuildableButton> get_ResponseButtons()
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDD530  push    rbx                                       
+  0x180CDD532  sub     rsp, 0x20                                 
+  0x180CDD536  mov     rax, qword ptr [rcx + 0x78]                  ; rcx->RebuildableDialog._responseButtons
+  0x180CDD53A  mov     rbx, rcx                                  
+  0x180CDD53D  test    rax, rax                                  
+  0x180CDD540  jne     0x180cdd595                               
+  0x180CDD542  xor     edx, edx                                  
+  0x180CDD544  call    0x180cdd9e0                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$get_ExistingResponseButtons
+  0x180CDD549  cmp     dword ptr [rip + 0x23fbc74], 0               ; data_30D91C4
+  0x180CDD550  mov     r9, rax                                   
+  0x180CDD553  mov     qword ptr [rbx + 0x78], rax                  ; rbx->RebuildableDialog._responseButtons
+  0x180CDD557  je      0x180cdd592                               
+  0x180CDD559  lea     r8, [rbx + 0x78]                             ; rbx->RebuildableDialog._responseButtons
+  0x180CDD55D  shr     r8, 0xc                                   
+  0x180CDD561  lea     rcx, [rip + 0x2457018]                       ; data_3134580
+  0x180CDD568  and     r8d, 0x1fffff                             
+  0x180CDD56F  mov     eax, r8d                                  
+  0x180CDD572  shr     rax, 6                                    
+  0x180CDD576  and     r8d, 0x3f                                 
+  0x180CDD57A  lea     rdx, [rcx + rax*8]                        
+  0x180CDD57E  prefetchw byte ptr [rdx]                            
+
+180CDD581:
+  0x180CDD581  mov     rax, qword ptr [rdx]                      
+  0x180CDD584  mov     rcx, rax                                  
+  0x180CDD587  bts     rcx, r8                                   
+  0x180CDD58B  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CDD590  jne     0x180cdd581                               
+
+180CDD592:
+  0x180CDD592  mov     rax, r9                                   
+
+180CDD595:
+  0x180CDD595  add     rsp, 0x20                                 
+  0x180CDD599  pop     rbx                                       
+  0x180CDD59A  ret                                               

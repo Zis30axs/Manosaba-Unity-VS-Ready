@@ -1,0 +1,100 @@
+====================================================================================================
+FUNCTION RVA 0xCDD5A0  VA 0x180CDD5A0  size 0xCA (202 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog$$get_LocalizationProvider
+  csig   : GigaCreation_Essentials_Localization_ILocalizationProvider_o* GigaCreation_Essentials_Ui_RebuildableDialog__get_LocalizationProvider (GigaCreation_Essentials_Ui_RebuildableDialog_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableDialog :: private ILocalizationProvider get_LocalizationProvider()
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDD5A0  push    rbx                                       
+  0x180CDD5A2  sub     rsp, 0x20                                 
+  0x180CDD5A6  cmp     byte ptr [rip + 0x23ffbc4], 0                ; data_30DD171
+  0x180CDD5AD  mov     rbx, rcx                                  
+  0x180CDD5B0  jne     0x180cdd5db                               
+  0x180CDD5B2  lea     rcx, [rip + 0x2174b07]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180CDD5B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD5BE  lock or dword ptr [rsp], 0                        
+  0x180CDD5C3  lea     rcx, [rip + 0x2174b9e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CDD5CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD5CF  lock or dword ptr [rsp], 0                        
+  0x180CDD5D4  mov     byte ptr [rip + 0x23ffb96], 1                ; data_30DD171
+
+180CDD5DB:
+  0x180CDD5DB  mov     rax, qword ptr [rbx + 0x80]                  ; rbx->RebuildableDialog._localizationProvider
+  0x180CDD5E2  test    rax, rax                                  
+  0x180CDD5E5  jne     0x180cdd664                               
+  0x180CDD5E7  mov     rcx, qword ptr [rip + 0x2174b7a]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CDD5EE  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CDD5F4  jne     0x180cdd5fb                               
+  0x180CDD5F6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDD5FB:
+  0x180CDD5FB  mov     rdx, qword ptr [rip + 0x2174abe]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180CDD602  xor     ecx, ecx                                  
+  0x180CDD604  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CDD609  cmp     dword ptr [rip + 0x23fbbb4], 0               ; data_30D91C4
+  0x180CDD610  mov     r9, rax                                   
+  0x180CDD613  mov     qword ptr [rbx + 0x80], rax                  ; rbx->RebuildableDialog._localizationProvider
+  0x180CDD61A  je      0x180cdd661                               
+  0x180CDD61C  lea     r8, [rbx + 0x80]                             ; rbx->RebuildableDialog._localizationProvider
+  0x180CDD623  shr     r8, 0xc                                   
+  0x180CDD627  lea     rcx, [rip + 0x2456f52]                       ; data_3134580
+  0x180CDD62E  and     r8d, 0x1fffff                             
+  0x180CDD635  mov     eax, r8d                                  
+  0x180CDD638  shr     rax, 6                                    
+  0x180CDD63C  and     r8d, 0x3f                                 
+  0x180CDD640  lea     rdx, [rcx + rax*8]                        
+  0x180CDD644  prefetchw byte ptr [rdx]                            
+  0x180CDD647  nop     word ptr [rax + rax]                      
+
+180CDD650:
+  0x180CDD650  mov     rax, qword ptr [rdx]                      
+  0x180CDD653  mov     rcx, rax                                  
+  0x180CDD656  bts     rcx, r8                                   
+  0x180CDD65A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CDD65F  jne     0x180cdd650                               
+
+180CDD661:
+  0x180CDD661  mov     rax, r9                                   
+
+180CDD664:
+  0x180CDD664  add     rsp, 0x20                                 
+  0x180CDD668  pop     rbx                                       
+  0x180CDD669  ret                                               

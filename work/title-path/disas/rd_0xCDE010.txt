@@ -1,0 +1,335 @@
+====================================================================================================
+FUNCTION RVA 0xCDE010  VA 0x180CDE010  size 0x480 (1152 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog$$RebuildElements
+  csig   : void GigaCreation_Essentials_Ui_RebuildableDialog__RebuildElements (GigaCreation_Essentials_Ui_RebuildableDialog_o* __this, GigaCreation_Essentials_Ui_DialogData_o* dialogData, bool atRuntime, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableDialog :: private void RebuildElements(DialogData dialogData, bool atRuntime, Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDE010  push    rbp                                       
+  0x180CDE012  push    r12                                       
+  0x180CDE014  push    r13                                       
+  0x180CDE016  push    r14                                       
+  0x180CDE018  push    r15                                       
+  0x180CDE01A  sub     rsp, 0x50                                 
+  0x180CDE01E  lea     rbp, [rsp + 0x30]                         
+  0x180CDE023  cmp     byte ptr [rip + 0x23ff14b], 0                ; data_30DD175
+  0x180CDE02A  movzx   r13d, r8b                                 
+  0x180CDE02E  mov     qword ptr [rbp + 0x50], rbx                  ; rbp->RebuildableDialog._messageLabelRoot
+  0x180CDE032  mov     r15, rdx                                  
+  0x180CDE035  mov     qword ptr [rbp + 0x60], rsi                  ; rbp->RebuildableDialog._dialogData
+  0x180CDE039  mov     rbx, r9                                   
+  0x180CDE03C  mov     qword ptr [rbp + 0x68], rdi               
+  0x180CDE040  mov     r14, rcx                                  
+  0x180CDE043  movaps  xmmword ptr [rbp + 0x10], xmm6               ; rbp-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE047  jne     0x180cde083                               
+  0x180CDE049  lea     rcx, [rip + 0x2173748]                       ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180CDE050  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE055  lock or dword ptr [rsp], 0                        
+  0x180CDE05A  lea     rcx, [rip + 0x2173767]                       ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180CDE061  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE066  lock or dword ptr [rsp], 0                        
+  0x180CDE06B  lea     rcx, [rip + 0x218ac06]                       ; METHODINFO Method$GigaCreation.Essentials.Toggleables.ToggleableStruct<float>.op_Implicit()
+  0x180CDE072  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE077  lock or dword ptr [rsp], 0                        
+  0x180CDE07C  mov     byte ptr [rip + 0x23ff0f2], 1                ; data_30DD175
+
+180CDE083:
+  0x180CDE083  cmp     byte ptr [rip + 0x23ff0ec], 0                ; data_30DD176
+  0x180CDE08A  jne     0x180cde0e8                               
+  0x180CDE08C  lea     rcx, [rip + 0x218abfd]                       ; TYPE System.Action<RebuildableDialog>_TypeInfo
+  0x180CDE093  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE098  lock or dword ptr [rsp], 0                        
+  0x180CDE09D  lea     rcx, [rip + 0x218abe4]                       ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<RebuildableDialog>()
+  0x180CDE0A4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE0A9  lock or dword ptr [rsp], 0                        
+  0x180CDE0AE  lea     rcx, [rip + 0x218abcb]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0.<SetInternalData>b__0() => GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0$$<SetInternalData>b__0
+  0x180CDE0B5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE0BA  lock or dword ptr [rsp], 0                        
+  0x180CDE0BF  lea     rcx, [rip + 0x218ab5a]                       ; TYPE GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0_TypeInfo
+  0x180CDE0C6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE0CB  lock or dword ptr [rsp], 0                        
+  0x180CDE0D0  lea     rcx, [rip + 0x218b181]                       ; STR 'Set Internal Data'
+  0x180CDE0D7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE0DC  lock or dword ptr [rsp], 0                        
+  0x180CDE0E1  mov     byte ptr [rip + 0x23ff08e], 1                ; data_30DD176
+
+180CDE0E8:
+  0x180CDE0E8  mov     rcx, qword ptr [rip + 0x218ab31]             ; TYPE GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0_TypeInfo
+  0x180CDE0EF  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDE0F4  mov     rsi, rax                                  
+  0x180CDE0F7  test    rax, rax                                  
+  0x180CDE0FA  je      0x180cde48b                               
+  0x180CDE100  mov     qword ptr [rax + 0x10], r14                  ; rax-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE104  lea     r9, [rip + 0x2410195]                        ; data_30EE2A0
+  0x180CDE10B  mov     eax, dword ptr [rip + 0x23fb0b3]             ; data_30D91C4
+  0x180CDE111  test    eax, eax                                  
+  0x180CDE113  je      0x180cde161                               
+  0x180CDE115  lea     r8, [rsi + 0x10]                             ; rsi-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE119  shr     r8, 0xc                                   
+  0x180CDE11D  and     r8d, 0x1fffff                             
+  0x180CDE124  mov     edx, r8d                                  
+  0x180CDE127  shr     rdx, 6                                    
+  0x180CDE12B  and     r8d, 0x3f                                 
+  0x180CDE12F  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CDE138  nop     dword ptr [rax + rax]                     
+
+180CDE140:
+  0x180CDE140  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CDE148  mov     rcx, rax                                  
+  0x180CDE14B  bts     rcx, r8                                   
+  0x180CDE14F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CDE159  jne     0x180cde140                               
+  0x180CDE15B  mov     eax, dword ptr [rip + 0x23fb063]             ; data_30D91C4
+
+180CDE161:
+  0x180CDE161  mov     qword ptr [rsi + 0x18], r15                  ; rsi-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE165  test    eax, eax                                  
+  0x180CDE167  je      0x180cde1ab                               
+  0x180CDE169  lea     r8, [rsi + 0x18]                             ; rsi-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE16D  shr     r8, 0xc                                   
+  0x180CDE171  and     r8d, 0x1fffff                             
+  0x180CDE178  mov     edx, r8d                                  
+  0x180CDE17B  shr     rdx, 6                                    
+  0x180CDE17F  and     r8d, 0x3f                                 
+  0x180CDE183  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CDE18C  nop     dword ptr [rax]                           
+
+180CDE190:
+  0x180CDE190  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CDE198  mov     rcx, rax                                  
+  0x180CDE19B  bts     rcx, r8                                   
+  0x180CDE19F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CDE1A9  jne     0x180cde190                               
+
+180CDE1AB:
+  0x180CDE1AB  mov     rcx, qword ptr [rip + 0x218aade]             ; TYPE System.Action<RebuildableDialog>_TypeInfo
+  0x180CDE1B2  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDE1B7  mov     r8, qword ptr [rip + 0x218aac2]              ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0.<SetInternalData>b__0() => GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass30_0$$<SetInternalData>b__0
+  0x180CDE1BE  xor     r9d, r9d                                  
+  0x180CDE1C1  mov     rdx, rsi                                  
+  0x180CDE1C4  mov     rcx, rax                                  
+  0x180CDE1C7  mov     rdi, rax                                  
+  0x180CDE1CA  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CDE1CF  mov     rcx, qword ptr [rip + 0x218aab2]             ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<RebuildableDialog>()
+  0x180CDE1D6  cmp     qword ptr [rcx + 0x38], 0                    ; rcx->RebuildableDialog._viewRootAutoLayoutSupporter | <RebuildAtRuntimeAsync>d__27.<linkedCts>5__2
+  0x180CDE1DB  jne     0x180cde1e2                               
+  0x180CDE1DD  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CDE1E2:
+  0x180CDE1E2  test    rdi, rdi                                  
+  0x180CDE1E5  je      0x180cde48b                               
+  0x180CDE1EB  mov     rax, qword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE1EF  mov     rdx, r14                                  
+  0x180CDE1F2  mov     r8, qword ptr [rdi + 0x28]                   ; rdi->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDE1F6  mov     rcx, qword ptr [rdi + 0x40]                  ; rdi->RebuildableDialog._titleLabel | <RebuildAtRuntimeAsync>d__27.<timeRequestedToPresent>5__3
+  0x180CDE1FA  call    rax                                       
+  0x180CDE1FC  test    r15, r15                                  
+  0x180CDE1FF  je      0x180cde48b                               
+  0x180CDE205  mov     rdx, qword ptr [r15 + 0x10]                  ; r15-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE209  mov     r9, rbx                                   
+  0x180CDE20C  movzx   r8d, r13b                                 
+  0x180CDE210  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CDE219  mov     rcx, r14                                  
+  0x180CDE21C  call    0x180cde640                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$ModifyTitleLabel
+  0x180CDE221  mov     rax, qword ptr [r15 + 0x18]                  ; r15-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE225  lea     rdx, [rbp]                                
+  0x180CDE229  mov     r8, qword ptr [rip + 0x218aa48]              ; METHODINFO Method$GigaCreation.Essentials.Toggleables.ToggleableStruct<float>.op_Implicit()
+  0x180CDE230  lea     rcx, [rbp + 0x58]                            ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE234  mov     qword ptr [rbp + 0x58], rax                  ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE238  call    0x18095c510                                  ; -> GigaCreation.Essentials.Toggleables.ToggleableStruct<__Il2CppFullySharedGenericStructType>$$op_Implicit
+  0x180CDE23D  mov     rax, qword ptr [rbp]                      
+  0x180CDE241  mov     qword ptr [rbp + 0x58], rax                  ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE245  mov     rax, qword ptr [rip + 0x217357c]             ; METHODINFO Method$System.Nullable<float>.get_HasValue()
+  0x180CDE24C  mov     rax, qword ptr [rax + 0x20]                  ; rax->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDE250  test    byte ptr [rax + 0x135], 1                 
+  0x180CDE257  jne     0x180cde261                               
+  0x180CDE259  mov     rcx, rax                                  
+  0x180CDE25C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CDE261:
+  0x180CDE261  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CDE268  lea     r8, [rbp + 0x58]                             ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE26C  mov     rcx, qword ptr [rax + 8]                  
+  0x180CDE270  mov     rdx, qword ptr [rcx + 0x80]                  ; rcx->RebuildableDialog._localizationProvider
+  0x180CDE277  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE27B  add     r8, rax                                   
+  0x180CDE27E  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE282  cmp     dword ptr [rax + 0x28], 0                    ; rax->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDE286  lea     rcx, [r8 - 0x10]                          
+  0x180CDE28A  cmovge  rcx, r8                                   
+  0x180CDE28E  cmp     byte ptr [rcx], 0                         
+  0x180CDE291  je      0x180cde34a                               
+  0x180CDE297  mov     rdi, qword ptr [rip + 0x21734fa]             ; METHODINFO Method$System.Nullable<float>.GetValueOrDefault()
+  0x180CDE29E  mov     rax, qword ptr [rdi + 0x20]                  ; rdi->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDE2A2  test    byte ptr [rax + 0x135], 1                 
+  0x180CDE2A9  jne     0x180cde2b3                               
+  0x180CDE2AB  mov     rcx, rax                                  
+  0x180CDE2AE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CDE2B3:
+  0x180CDE2B3  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CDE2BA  mov     rcx, qword ptr [rax]                      
+  0x180CDE2BD  mov     esi, dword ptr [rcx + 0xfc]               
+  0x180CDE2C3  lea     rax, [rsi + 0xf]                          
+  0x180CDE2C7  cmp     rax, rsi                                  
+  0x180CDE2CA  ja      0x180cde2d6                               
+  0x180CDE2CC  movabs  rax, 0xffffffffffffff0                    
+
+180CDE2D6:
+  0x180CDE2D6  and     rax, 0xfffffffffffffff0                   
+  0x180CDE2DA  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CDE2DF  sub     rsp, rax                                  
+  0x180CDE2E2  mov     rax, qword ptr [rdi + 0x20]                  ; rdi->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDE2E6  test    byte ptr [rax + 0x135], 1                 
+  0x180CDE2ED  lea     r12, [rsp + 0x30]                         
+  0x180CDE2F2  jne     0x180cde2fc                               
+  0x180CDE2F4  mov     rcx, rax                                  
+  0x180CDE2F7  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CDE2FC:
+  0x180CDE2FC  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CDE303  mov     r8, rsi                                   
+  0x180CDE306  mov     rcx, qword ptr [rax + 8]                  
+  0x180CDE30A  mov     r9, qword ptr [rcx + 0x80]                   ; rcx->RebuildableDialog._localizationProvider
+  0x180CDE311  lea     rcx, [rbp + 0x58]                            ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE315  movsxd  rax, dword ptr [r9 + 0x38]                   ; r9->RebuildableDialog._viewRootAutoLayoutSupporter | <RebuildAtRuntimeAsync>d__27.<linkedCts>5__2
+  0x180CDE319  add     rcx, rax                                  
+  0x180CDE31C  mov     rax, qword ptr [r9 + 0x30]                   ; r9->RebuildableDialog._viewLayoutElement | <RebuildAtRuntimeAsync>d__27.dialogData
+  0x180CDE320  cmp     dword ptr [rax + 0x28], 0                    ; rax->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDE324  lea     rdx, [rcx - 0x10]                         
+  0x180CDE328  cmovge  rdx, rcx                                  
+  0x180CDE32C  mov     rcx, r12                                  
+  0x180CDE32F  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CDE334  mov     r8, rsi                                   
+  0x180CDE337  lea     rcx, [rbp + 0x58]                            ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE33B  mov     rdx, r12                                  
+  0x180CDE33E  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CDE343  movss   xmm6, dword ptr [rbp + 0x58]                 ; rbp->RebuildableDialog._responseButtonRoot
+  0x180CDE348  jmp     0x180cde350                               
+
+180CDE34A:
+  0x180CDE34A  movss   xmm6, dword ptr [r14 + 0x68]                 ; r14->RebuildableDialog._defaultWidth
+
+180CDE350:
+  0x180CDE350  test    r14, r14                                  
+  0x180CDE353  je      0x180cde48b                               
+  0x180CDE359  cmp     byte ptr [rip + 0x23fee18], 0                ; data_30DD178
+  0x180CDE360  jne     0x180cde3be                               
+  0x180CDE362  lea     rcx, [rip + 0x218af17]                       ; TYPE System.Action<LayoutElement>_TypeInfo
+  0x180CDE369  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE36E  lock or dword ptr [rsp], 0                        
+  0x180CDE373  lea     rcx, [rip + 0x218aef6]                       ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<LayoutElement>()
+  0x180CDE37A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE37F  lock or dword ptr [rsp], 0                        
+  0x180CDE384  lea     rcx, [rip + 0x218a84d]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0.<ModifyMinWidth>b__0() => GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0$$<ModifyMinWidth>b__0
+  0x180CDE38B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE390  lock or dword ptr [rsp], 0                        
+  0x180CDE395  lea     rcx, [rip + 0x218a834]                       ; TYPE GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0_TypeInfo
+  0x180CDE39C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE3A1  lock or dword ptr [rsp], 0                        
+  0x180CDE3A6  lea     rcx, [rip + 0x218a843]                       ; STR 'Modify Min Width'
+  0x180CDE3AD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDE3B2  lock or dword ptr [rsp], 0                        
+  0x180CDE3B7  mov     byte ptr [rip + 0x23fedba], 1                ; data_30DD178
+
+180CDE3BE:
+  0x180CDE3BE  mov     rcx, qword ptr [rip + 0x218a80b]             ; TYPE GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0_TypeInfo
+  0x180CDE3C5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDE3CA  mov     rsi, rax                                  
+  0x180CDE3CD  test    rax, rax                                  
+  0x180CDE3D0  je      0x180cde48b                               
+  0x180CDE3D6  xorps   xmm1, xmm1                                
+  0x180CDE3D9  movss   dword ptr [rax + 0x10], xmm6                 ; rax-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE3DE  movaps  xmm0, xmm6                                
+  0x180CDE3E1  call    0x180331670                                  ; -> sub_331670 (runtime/helper)
+  0x180CDE3E6  test    al, al                                    
+  0x180CDE3E8  jne     0x180cde43b                               
+  0x180CDE3EA  mov     rcx, qword ptr [rip + 0x218ae8f]             ; TYPE System.Action<LayoutElement>_TypeInfo
+  0x180CDE3F1  mov     r12, qword ptr [r14 + 0x30]                  ; r14->RebuildableDialog._viewLayoutElement | <RebuildAtRuntimeAsync>d__27.dialogData
+  0x180CDE3F5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDE3FA  mov     r8, qword ptr [rip + 0x218a7d7]              ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0.<ModifyMinWidth>b__0() => GigaCreation.Essentials.Ui.RebuildableDialog.<>c__DisplayClass32_0$$<ModifyMinWidth>b__0
+  0x180CDE401  xor     r9d, r9d                                  
+  0x180CDE404  mov     rdx, rsi                                  
+  0x180CDE407  mov     rcx, rax                                  
+  0x180CDE40A  mov     rdi, rax                                  
+  0x180CDE40D  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CDE412  mov     rcx, qword ptr [rip + 0x218ae57]             ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<LayoutElement>()
+  0x180CDE419  cmp     qword ptr [rcx + 0x38], 0                    ; rcx->RebuildableDialog._viewRootAutoLayoutSupporter | <RebuildAtRuntimeAsync>d__27.<linkedCts>5__2
+  0x180CDE41E  jne     0x180cde425                               
+  0x180CDE420  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CDE425:
+  0x180CDE425  test    rdi, rdi                                  
+  0x180CDE428  je      0x180cde48b                               
+  0x180CDE42A  mov     rax, qword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDE42E  mov     rdx, r12                                  
+  0x180CDE431  mov     r8, qword ptr [rdi + 0x28]                   ; rdi->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDE435  mov     rcx, qword ptr [rdi + 0x40]                  ; rdi->RebuildableDialog._titleLabel | <RebuildAtRuntimeAsync>d__27.<timeRequestedToPresent>5__3
+  0x180CDE439  call    rax                                       
+
+180CDE43B:
+  0x180CDE43B  mov     rdx, qword ptr [r15 + 0x28]                  ; r15->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDE43F  xor     edi, edi                                  
+  0x180CDE441  mov     r9, rbx                                   
+  0x180CDE444  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CDE449  movzx   r8d, r13b                                 
+  0x180CDE44D  mov     rcx, r14                                  
+  0x180CDE450  call    0x180cdea40                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$RebuildMessageLabels
+  0x180CDE455  mov     rdx, qword ptr [r15 + 0x30]                  ; r15->RebuildableDialog._viewLayoutElement | <RebuildAtRuntimeAsync>d__27.dialogData
+  0x180CDE459  mov     r9, rbx                                   
+  0x180CDE45C  movzx   r8d, r13b                                 
+  0x180CDE460  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CDE465  mov     rcx, r14                                  
+  0x180CDE468  call    0x180cdeee0                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$RebuildResponseButtons
+  0x180CDE46D  mov     rbx, qword ptr [rbp + 0x50]                  ; rbp->RebuildableDialog._messageLabelRoot
+  0x180CDE471  mov     rsi, qword ptr [rbp + 0x60]                  ; rbp->RebuildableDialog._dialogData
+  0x180CDE475  mov     rdi, qword ptr [rbp + 0x68]                  ; rbp->RebuildableDialog._defaultWidth
+  0x180CDE479  movaps  xmm6, xmmword ptr [rbp + 0x10]               ; rbp-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDE47D  lea     rsp, [rbp + 0x20]                            ; rbp->RebuildableDialog._messageLabelPrefab | <>c.<>9__26_1 | <RebuildAtRuntimeAsync>d__27.<>4__this
+  0x180CDE481  pop     r15                                       
+  0x180CDE483  pop     r14                                       
+  0x180CDE485  pop     r13                                       
+  0x180CDE487  pop     r12                                       
+  0x180CDE489  pop     rbp                                       
+  0x180CDE48A  ret                                               
+
+180CDE48B:
+  0x180CDE48B  call    0x180246730                                  ; THROW NullReferenceException

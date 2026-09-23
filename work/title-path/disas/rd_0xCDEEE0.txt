@@ -1,0 +1,405 @@
+====================================================================================================
+FUNCTION RVA 0xCDEEE0  VA 0x180CDEEE0  size 0x544 (1348 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableDialog$$RebuildResponseButtons
+  csig   : void GigaCreation_Essentials_Ui_RebuildableDialog__RebuildResponseButtons (GigaCreation_Essentials_Ui_RebuildableDialog_o* __this, System_Collections_Generic_IReadOnlyList_ButtonData__o* buttonsData, bool atRuntime, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableDialog :: private void RebuildResponseButtons(IReadOnlyList<ButtonData> buttonsData, bool atRuntime, Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Ui.RebuildableDialog:
+      +0x20   _messageLabelPrefab            RebuildableLabel
+      +0x28   _responseButtonPrefab          RebuildableButton
+      +0x30   _viewLayoutElement             LayoutElement
+      +0x38   _viewRootAutoLayoutSupporter   AutoLayoutSupporter
+      +0x40   _titleLabel                    TextMeshProUGUI
+      +0x48   _titleFontMaterialChanger      FontMaterialChanger
+      +0x50   _messageLabelRoot              Transform
+      +0x58   _responseButtonRoot            Transform
+      +0x60   _dialogData                    DialogData
+      +0x68   _defaultWidth                  float
+      +0x6C   _cancelableByAction            bool
+      +0x70   _messageLabels                 List<RebuildableLabel>
+      +0x78   _responseButtons               List<RebuildableButton>
+      +0x80   _localizationProvider          ILocalizationProvider
+      +0x88   _rebuildCts                    CancellationTokenSource
+  fields of RebuildableDialog.<>c:
+      +0x0    <>9                            static readonly RebuildableDialog.<>c
+      +0x8    <>9__24_0                      static Func<Transform, RebuildableLabel>
+      +0x10   <>9__24_1                      static Func<RebuildableLabel, bool>
+      +0x18   <>9__26_0                      static Func<Transform, RebuildableButton>
+      +0x20   <>9__26_1                      static Func<RebuildableButton, bool>
+  fields of RebuildableDialog.<>c__DisplayClass30_0:
+      +0x10   <>4__this                      RebuildableDialog
+      +0x18   dialogData                     DialogData
+  fields of RebuildableDialog.<>c__DisplayClass31_0:
+      +0x10   localizableText                LocalizableText
+      +0x18   locale                         Nullable<LocaleKind>
+  fields of RebuildableDialog.<>c__DisplayClass32_0:
+      +0x10   minWidth                       float
+  fields of RebuildableDialog.<RebuildAtRuntimeAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<float>
+      +0x20   <>4__this                      RebuildableDialog
+      +0x28   ct                             CancellationToken
+      +0x30   dialogData                     DialogData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <timeRequestedToPresent>5__3   float
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDEEE0  push    rbx                                       
+  0x180CDEEE2  push    r12                                       
+  0x180CDEEE4  push    r13                                       
+  0x180CDEEE6  push    r14                                       
+  0x180CDEEE8  sub     rsp, 0x48                                 
+  0x180CDEEEC  cmp     byte ptr [rip + 0x23fe287], 0                ; data_30DD17A
+  0x180CDEEF3  mov     rbx, r9                                   
+  0x180CDEEF6  movzx   r13d, r8b                                 
+  0x180CDEEFA  mov     r12, rdx                                  
+  0x180CDEEFD  mov     r14, rcx                                  
+  0x180CDEF00  jne     0x180cdefa6                               
+  0x180CDEF06  lea     rcx, [rip + 0x2189c1b]                       ; TYPE System.Collections.Generic.IReadOnlyCollection<ButtonData>_TypeInfo
+  0x180CDEF0D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF12  lock or dword ptr [rsp], 0                        
+  0x180CDEF17  lea     rcx, [rip + 0x2189bf2]                       ; TYPE System.Collections.Generic.IReadOnlyList<ButtonData>_TypeInfo
+  0x180CDEF1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF23  lock or dword ptr [rsp], 0                        
+  0x180CDEF28  lea     rcx, [rip + 0x2189bc9]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.Add()
+  0x180CDEF2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF34  lock or dword ptr [rsp], 0                        
+  0x180CDEF39  lea     rcx, [rip + 0x2189bb0]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.RemoveAt()
+  0x180CDEF40  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF45  lock or dword ptr [rsp], 0                        
+  0x180CDEF4A  lea     rcx, [rip + 0x2189c17]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.get_Count()
+  0x180CDEF51  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF56  lock or dword ptr [rsp], 0                        
+  0x180CDEF5B  lea     rcx, [rip + 0x2189bf6]                       ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.get_Item()
+  0x180CDEF62  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF67  lock or dword ptr [rsp], 0                        
+  0x180CDEF6C  lea     rcx, [rip + 0x2172fed]                       ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x180CDEF73  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF78  lock or dword ptr [rsp], 0                        
+  0x180CDEF7D  lea     rcx, [rip + 0x2189bc4]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableButton>()
+  0x180CDEF84  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF89  lock or dword ptr [rsp], 0                        
+  0x180CDEF8E  lea     rcx, [rip + 0x21732fb]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDEF95  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDEF9A  lock or dword ptr [rsp], 0                        
+  0x180CDEF9F  mov     byte ptr [rip + 0x23fe1d4], 1                ; data_30DD17A
+
+180CDEFA6:
+  0x180CDEFA6  xor     edx, edx                                  
+  0x180CDEFA8  mov     rcx, r14                                  
+  0x180CDEFAB  call    0x180cdd9e0                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$get_ExistingResponseButtons
+  0x180CDEFB0  cmp     dword ptr [rip + 0x23fa20d], 0               ; data_30D91C4
+  0x180CDEFB7  mov     qword ptr [r14 + 0x78], rax                  ; r14->RebuildableDialog._responseButtons
+  0x180CDEFBB  je      0x180cdf001                               
+  0x180CDEFBD  lea     r8, [r14 + 0x78]                             ; r14->RebuildableDialog._responseButtons
+  0x180CDEFC1  shr     r8, 0xc                                   
+  0x180CDEFC5  lea     rcx, [rip + 0x24555b4]                       ; data_3134580
+  0x180CDEFCC  and     r8d, 0x1fffff                             
+  0x180CDEFD3  mov     eax, r8d                                  
+  0x180CDEFD6  shr     rax, 6                                    
+  0x180CDEFDA  and     r8d, 0x3f                                 
+  0x180CDEFDE  lea     rdx, [rcx + rax*8]                        
+  0x180CDEFE2  prefetchw byte ptr [rdx]                            
+  0x180CDEFE5  nop     word ptr [rax + rax]                      
+
+180CDEFF0:
+  0x180CDEFF0  mov     rax, qword ptr [rdx]                      
+  0x180CDEFF3  mov     rcx, rax                                  
+  0x180CDEFF6  bts     rcx, r8                                   
+  0x180CDEFFA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CDEFFF  jne     0x180cdeff0                               
+
+180CDF001:
+  0x180CDF001  mov     rax, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF005  mov     qword ptr [rsp + 0x78], rbp               
+  0x180CDF00A  mov     qword ptr [rsp + 0x80], rsi               
+  0x180CDF012  mov     qword ptr [rsp + 0x88], rdi               
+  0x180CDF01A  mov     qword ptr [rsp + 0x40], r15               
+  0x180CDF01F  test    rax, rax                                  
+  0x180CDF022  je      0x180cdf41f                               
+  0x180CDF028  mov     ebp, dword ptr [rax + 0x18]                  ; rax-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDF02B  dec     ebp                                       
+  0x180CDF02D  test    r12, r12                                  
+  0x180CDF030  je      0x180cdf41f                               
+
+180CDF036:
+  0x180CDF036  xor     esi, esi                                  
+  0x180CDF038  nop     dword ptr [rax + rax]                     
+  0x180CDF040  mov     r10, qword ptr [r12]                      
+  0x180CDF044  movzx   ecx, si                                   
+  0x180CDF047  mov     r9, qword ptr [rip + 0x2189ada]              ; TYPE System.Collections.Generic.IReadOnlyCollection<ButtonData>_TypeInfo
+  0x180CDF04E  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDF056  cmp     si, dx                                    
+  0x180CDF059  jae     0x180cdf088                               
+  0x180CDF05B  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDF062  nop     dword ptr [rax]                           
+  0x180CDF066  nop     word ptr [rax + rax]                      
+
+180CDF070:
+  0x180CDF070  movzx   eax, cx                                   
+  0x180CDF073  add     rax, rax                                  
+  0x180CDF076  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CDF07A  je      0x180cdf245                               
+  0x180CDF080  inc     cx                                        
+  0x180CDF083  cmp     cx, dx                                    
+  0x180CDF086  jb      0x180cdf070                               
+
+180CDF088:
+  0x180CDF088  xor     r8d, r8d                                  
+  0x180CDF08B  mov     rdx, r9                                   
+  0x180CDF08E  mov     rcx, r12                                  
+  0x180CDF091  call    0x180243a20                                  ; resolve interface method slot
+
+180CDF096:
+  0x180CDF096  mov     r8, qword ptr [rax]                       
+  0x180CDF099  mov     rcx, r12                                  
+  0x180CDF09C  mov     rdx, qword ptr [rax + 8]                  
+  0x180CDF0A0  call    r8                                        
+  0x180CDF0A3  cmp     ebp, eax                                  
+  0x180CDF0A5  jl      0x180cdf262                               
+  0x180CDF0AB  mov     rcx, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF0AF  test    rcx, rcx                                  
+  0x180CDF0B2  je      0x180cdf41f                               
+  0x180CDF0B8  mov     r9, qword ptr [rip + 0x2189a99]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.get_Item()
+  0x180CDF0BF  lea     r8, [rsp + 0x70]                          
+  0x180CDF0C4  mov     edx, ebp                                  
+  0x180CDF0C6  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CDF0CB  mov     rdi, qword ptr [rsp + 0x70]               
+  0x180CDF0D0  test    rdi, rdi                                  
+  0x180CDF0D3  je      0x180cdf41f                               
+  0x180CDF0D9  cmp     byte ptr [rip + 0x2409407], 0                ; data_30E84E7
+  0x180CDF0E0  jne     0x180cdf10b                               
+  0x180CDF0E2  lea     rcx, [rip + 0x218668f]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Component>()
+  0x180CDF0E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDF0EE  lock or dword ptr [rsp], 0                        
+  0x180CDF0F3  lea     rcx, [rip + 0x2186676]                       ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180CDF0FA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDF0FF  lock or dword ptr [rsp], 0                        
+  0x180CDF104  mov     byte ptr [rip + 0x24093dc], 1                ; data_30E84E7
+
+180CDF10B:
+  0x180CDF10B  mov     rsi, qword ptr [rdi + 0x10]                  ; rdi-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDF10F  test    rsi, rsi                                  
+  0x180CDF112  je      0x180cdf40e                               
+  0x180CDF118  mov     rax, qword ptr [rip + 0x24093d9]             ; data_30E84F8
+  0x180CDF11F  test    rax, rax                                  
+  0x180CDF122  jne     0x180cdf140                               
+  0x180CDF124  lea     rcx, [rip + 0x1925bfd]                       ; data_2604D28
+  0x180CDF12B  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CDF130  test    rax, rax                                  
+  0x180CDF133  je      0x180cdf3f7                               
+  0x180CDF139  mov     qword ptr [rip + 0x24093b8], rax             ; data_30E84F8
+
+180CDF140:
+  0x180CDF140  mov     rcx, rsi                                  
+  0x180CDF143  call    rax                                       
+  0x180CDF145  mov     rdx, qword ptr [rip + 0x2186624]             ; METHODINFO Method$UnityEngine.Bindings.Unmarshal.UnmarshalUnityObject<GameObject>()
+  0x180CDF14C  mov     rcx, rax                                  
+  0x180CDF14F  call    0x18079a980                                  ; -> UnityEngine.Bindings.Unmarshal$$UnmarshalUnityObject<object>
+  0x180CDF154  mov     rcx, qword ptr [rip + 0x2173135]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF15B  mov     rdi, rax                                  
+  0x180CDF15E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDF165  jne     0x180cdf16c                               
+  0x180CDF167  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDF16C:
+  0x180CDF16C  cmp     byte ptr [rip + 0x24096bb], 0                ; data_30E882E
+  0x180CDF173  jne     0x180cdf18d                               
+  0x180CDF175  lea     rcx, [rip + 0x2173114]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF17C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDF181  lock or dword ptr [rsp], 0                        
+  0x180CDF186  mov     byte ptr [rip + 0x24096a1], 1                ; data_30E882E
+
+180CDF18D:
+  0x180CDF18D  mov     rcx, qword ptr [rip + 0x21730fc]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF194  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDF19B  jne     0x180cdf1a2                               
+  0x180CDF19D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDF1A2:
+  0x180CDF1A2  cmp     byte ptr [rip + 0x2409686], 0                ; data_30E882F
+  0x180CDF1A9  jne     0x180cdf1c3                               
+  0x180CDF1AB  lea     rcx, [rip + 0x21730de]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF1B2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDF1B7  lock or dword ptr [rsp], 0                        
+  0x180CDF1BC  mov     byte ptr [rip + 0x240966c], 1                ; data_30E882F
+
+180CDF1C3:
+  0x180CDF1C3  test    rdi, rdi                                  
+  0x180CDF1C6  je      0x180cdf223                               
+  0x180CDF1C8  mov     rcx, qword ptr [rip + 0x21730c1]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF1CF  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDF1D6  jne     0x180cdf1dd                               
+  0x180CDF1D8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDF1DD:
+  0x180CDF1DD  cmp     qword ptr [rdi + 0x10], 0                    ; rdi-><>c.<>9__24_1 | <>c__DisplayClass30_0.<>4__this | <>c__DisplayClass31_0.localizableText
+  0x180CDF1E2  je      0x180cdf223                               
+  0x180CDF1E4  mov     rcx, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF1E8  test    rcx, rcx                                  
+  0x180CDF1EB  je      0x180cdf41f                               
+  0x180CDF1F1  mov     r9, qword ptr [rip + 0x2189960]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.get_Item()
+  0x180CDF1F8  lea     r8, [rsp + 0x38]                          
+  0x180CDF1FD  mov     edx, ebp                                  
+  0x180CDF1FF  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CDF204  mov     rcx, qword ptr [rsp + 0x38]               
+  0x180CDF209  test    rcx, rcx                                  
+  0x180CDF20C  je      0x180cdf41f                               
+  0x180CDF212  xor     edx, edx                                  
+  0x180CDF214  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CDF219  xor     edx, edx                                  
+  0x180CDF21B  mov     rcx, rax                                  
+  0x180CDF21E  call    0x180d5d180                                  ; -> GigaCreation.Tools.UndoExtensions.ObjectExtensions$$DestroyAsUndoable
+
+180CDF223:
+  0x180CDF223  mov     rcx, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF227  test    rcx, rcx                                  
+  0x180CDF22A  je      0x180cdf41f                               
+  0x180CDF230  mov     r8, qword ptr [rip + 0x21898b9]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.RemoveAt()
+  0x180CDF237  mov     edx, ebp                                  
+  0x180CDF239  call    0x18085bb10                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$RemoveAt
+  0x180CDF23E  dec     ebp                                       
+  0x180CDF240  jmp     0x180cdf036                               
+
+180CDF245:
+  0x180CDF245  movzx   ecx, cx                                   
+  0x180CDF248  add     rcx, rcx                                  
+  0x180CDF24B  movsxd  rax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDF250  shl     rax, 4                                    
+  0x180CDF254  add     rax, 0x138                                
+  0x180CDF25A  add     rax, r10                                  
+  0x180CDF25D  jmp     0x180cdf096                               
+
+180CDF262:
+  0x180CDF262  mov     ebp, esi                                  
+  0x180CDF264  mov     edi, esi                                  
+  0x180CDF266  nop     word ptr [rax + rax]                      
+
+180CDF270:
+  0x180CDF270  mov     r10, qword ptr [r12]                      
+  0x180CDF274  movzx   ecx, si                                   
+  0x180CDF277  mov     r9, qword ptr [rip + 0x21898aa]              ; TYPE System.Collections.Generic.IReadOnlyCollection<ButtonData>_TypeInfo
+  0x180CDF27E  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CDF286  cmp     si, dx                                    
+  0x180CDF289  jae     0x180cdf2b8                               
+  0x180CDF28B  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CDF292  nop     dword ptr [rax]                           
+  0x180CDF296  nop     word ptr [rax + rax]                      
+
+180CDF2A0:
+  0x180CDF2A0  movzx   eax, cx                                   
+  0x180CDF2A3  add     rax, rax                                  
+  0x180CDF2A6  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CDF2AA  je      0x180cdf3b4                               
+  0x180CDF2B0  inc     cx                                        
+  0x180CDF2B3  cmp     cx, dx                                    
+  0x180CDF2B6  jb      0x180cdf2a0                               
+
+180CDF2B8:
+  0x180CDF2B8  xor     r8d, r8d                                  
+  0x180CDF2BB  mov     rdx, r9                                   
+  0x180CDF2BE  mov     rcx, r12                                  
+  0x180CDF2C1  call    0x180243a20                                  ; resolve interface method slot
+
+180CDF2C6:
+  0x180CDF2C6  mov     r8, qword ptr [rax]                       
+  0x180CDF2C9  mov     rcx, r12                                  
+  0x180CDF2CC  mov     rdx, qword ptr [rax + 8]                  
+  0x180CDF2D0  call    r8                                        
+  0x180CDF2D3  cmp     edi, eax                                  
+  0x180CDF2D5  jge     0x180cdf3d1                               
+  0x180CDF2DB  mov     rax, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF2DF  test    rax, rax                                  
+  0x180CDF2E2  je      0x180cdf41f                               
+  0x180CDF2E8  cmp     ebp, dword ptr [rax + 0x18]                  ; rax-><>c.<>9__26_0 | <>c__DisplayClass30_0.dialogData | <>c__DisplayClass31_0.locale
+  0x180CDF2EB  jl      0x180cdf333                               
+  0x180CDF2ED  mov     rcx, qword ptr [rip + 0x2172f9c]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CDF2F4  mov     r15, rax                                  
+  0x180CDF2F7  mov     rdi, qword ptr [r14 + 0x28]                  ; r14->RebuildableDialog._responseButtonPrefab | <RebuildAtRuntimeAsync>d__27.ct
+  0x180CDF2FB  mov     rsi, qword ptr [r14 + 0x58]                  ; r14->RebuildableDialog._responseButtonRoot
+  0x180CDF2FF  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDF306  jne     0x180cdf30d                               
+  0x180CDF308  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDF30D:
+  0x180CDF30D  mov     r8, qword ptr [rip + 0x2189834]              ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableButton>()
+  0x180CDF314  mov     rdx, rsi                                  
+  0x180CDF317  mov     rcx, rdi                                  
+  0x180CDF31A  call    0x180721660                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CDF31F  mov     r8, qword ptr [rip + 0x21897d2]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.Add()
+  0x180CDF326  mov     rdx, rax                                  
+  0x180CDF329  mov     rcx, r15                                  
+  0x180CDF32C  call    0x180331f40                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Add
+  0x180CDF331  xor     esi, esi                                  
+
+180CDF333:
+  0x180CDF333  mov     rcx, qword ptr [r14 + 0x78]                  ; r14->RebuildableDialog._responseButtons
+  0x180CDF337  test    rcx, rcx                                  
+  0x180CDF33A  je      0x180cdf419                               
+  0x180CDF340  mov     r9, qword ptr [rip + 0x2189811]              ; METHODINFO Method$System.Collections.Generic.List<RebuildableButton>.get_Item()
+  0x180CDF347  lea     r8, [rsp + 0x38]                          
+  0x180CDF34C  mov     edx, ebp                                  
+  0x180CDF34E  call    0x180858210                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$get_Item
+  0x180CDF353  mov     r9d, ebp                                  
+  0x180CDF356  mov     r8, r12                                   
+  0x180CDF359  call    0x18007f8e0                                  ; -> sub_7F8E0 (runtime/helper)
+  0x180CDF35E  mov     r8, qword ptr [rip + 0x2172bfb]              ; METHODINFO Method$System.Nullable<bool>..ctor()
+  0x180CDF365  lea     rdx, [rsp + 0x70]                         
+  0x180CDF36A  lea     rcx, [rsp + 0x30]                         
+  0x180CDF36F  mov     word ptr [rsp + 0x30], si                 
+  0x180CDF374  mov     rdi, rax                                  
+  0x180CDF377  mov     byte ptr [rsp + 0x70], 0                  
+  0x180CDF37C  call    0x18088f1b0                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$.ctor
+  0x180CDF381  mov     rcx, qword ptr [rsp + 0x38]               
+  0x180CDF386  test    rcx, rcx                                  
+  0x180CDF389  je      0x180cdf419                               
+  0x180CDF38F  movzx   r9d, word ptr [rsp + 0x30]                
+  0x180CDF395  movzx   r8d, r13b                                 
+  0x180CDF399  mov     qword ptr [rsp + 0x28], rsi               
+  0x180CDF39E  mov     rdx, rdi                                  
+  0x180CDF3A1  mov     qword ptr [rsp + 0x20], rbx               
+  0x180CDF3A6  call    0x180cd8170                                  ; -> GigaCreation.Essentials.Ui.RebuildableButton$$Rebuild
+  0x180CDF3AB  inc     ebp                                       
+  0x180CDF3AD  mov     edi, ebp                                  
+  0x180CDF3AF  jmp     0x180cdf270                               
+
+180CDF3B4:
+  0x180CDF3B4  movzx   ecx, cx                                   
+  0x180CDF3B7  add     rcx, rcx                                  
+  0x180CDF3BA  movsxd  rax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CDF3BF  shl     rax, 4                                    
+  0x180CDF3C3  add     rax, 0x138                                
+  0x180CDF3C9  add     rax, r10                                  
+  0x180CDF3CC  jmp     0x180cdf2c6                               
+
+180CDF3D1:
+  0x180CDF3D1  mov     r15, qword ptr [rsp + 0x40]               
+  0x180CDF3D6  mov     rdi, qword ptr [rsp + 0x88]               
+  0x180CDF3DE  mov     rsi, qword ptr [rsp + 0x80]               
+  0x180CDF3E6  mov     rbp, qword ptr [rsp + 0x78]               
+  0x180CDF3EB  add     rsp, 0x48                                 
+  0x180CDF3EF  pop     r14                                       
+  0x180CDF3F1  pop     r13                                       
+  0x180CDF3F3  pop     r12                                       
+  0x180CDF3F5  pop     rbx                                       
+  0x180CDF3F6  ret                                               
+
+180CDF3F7:
+  0x180CDF3F7  lea     rcx, [rip + 0x192592a]                       ; data_2604D28
+  0x180CDF3FE  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CDF403  mov     rcx, rax                                  
+  0x180CDF406  xor     edx, edx                                  
+  0x180CDF408  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CDF40D  int3                                              
+
+180CDF40E:
+  0x180CDF40E  xor     edx, edx                                  
+  0x180CDF410  mov     rcx, rdi                                  
+  0x180CDF413  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180CDF418  int3                                              
+
+180CDF419:
+  0x180CDF419  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDF41E  int3                                              
+
+180CDF41F:
+  0x180CDF41F  call    0x180246730                                  ; THROW NullReferenceException
