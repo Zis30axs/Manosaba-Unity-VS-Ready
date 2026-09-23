@@ -1,0 +1,67 @@
+====================================================================================================
+FUNCTION RVA 0xCECC50  VA 0x180CECC50  size 0x5B (91 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$RebuildInEditor
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__RebuildInEditor (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: public void RebuildInEditor()
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CECC50  push    rbx                                       
+  0x180CECC52  sub     rsp, 0x30                                 
+  0x180CECC56  xor     r9d, r9d                                  
+  0x180CECC59  xor     r8d, r8d                                  
+  0x180CECC5C  xor     edx, edx                                  
+  0x180CECC5E  mov     rbx, rcx                                  
+  0x180CECC61  call    0x180ceccb0                                  ; -> GigaCreation.Essentials.Ui.RebuildableToggle$$RebuildElements
+  0x180CECC66  mov     rbx, qword ptr [rbx + 0x48]                  ; rbx->RebuildableToggle._autoLayoutSupporter
+  0x180CECC6A  test    rbx, rbx                                  
+  0x180CECC6D  je      0x180cecca6                               
+  0x180CECC6F  xor     edx, edx                                  
+  0x180CECC71  mov     rcx, rbx                                  
+  0x180CECC74  call    0x18206a7a0                                  ; -> UnityEngine.MonoBehaviour$$get_destroyCancellationToken
+  0x180CECC79  xor     r9d, r9d                                  
+  0x180CECC7C  lea     rcx, [rsp + 0x20]                         
+  0x180CECC81  mov     r8, rax                                   
+  0x180CECC84  mov     rdx, rbx                                  
+  0x180CECC87  call    0x180d54d80                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$ExecuteRebuildingAsync
+  0x180CECC8C  xor     edx, edx                                  
+  0x180CECC8E  lea     rcx, [rsp + 0x20]                         
+  0x180CECC93  movups  xmm0, xmmword ptr [rax]                   
+  0x180CECC96  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CECC9B  call    0x18181f300                                  ; -> Cysharp.Threading.Tasks.UniTaskExtensions$$Forget
+  0x180CECCA0  add     rsp, 0x30                                 
+  0x180CECCA4  pop     rbx                                       
+  0x180CECCA5  ret                                               
+
+180CECCA6:
+  0x180CECCA6  call    0x180246730                                  ; THROW NullReferenceException

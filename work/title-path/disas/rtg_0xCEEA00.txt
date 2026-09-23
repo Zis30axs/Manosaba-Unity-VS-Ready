@@ -1,0 +1,230 @@
+====================================================================================================
+FUNCTION RVA 0xCEEA00  VA 0x180CEEA00  size 0x305 (773 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$GetReferences
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__GetReferences (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: private void GetReferences()
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEEA00  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CEEA05  push    rdi                                       
+  0x180CEEA06  sub     rsp, 0x20                                 
+  0x180CEEA0A  cmp     byte ptr [rip + 0x23ee7eb], 0                ; data_30DD1FC
+  0x180CEEA11  mov     rbx, rcx                                  
+  0x180CEEA14  jne     0x180ceea72                               
+  0x180CEEA16  lea     rcx, [rip + 0x21796cb]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Toggle>()
+  0x180CEEA1D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEEA22  lock or dword ptr [rsp], 0                        
+  0x180CEEA27  lea     rcx, [rip + 0x217a69a]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<AutoLayoutSupporter>()
+  0x180CEEA2E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEEA33  lock or dword ptr [rsp], 0                        
+  0x180CEEA38  lea     rcx, [rip + 0x217a639]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<ContentSizeFitter>()
+  0x180CEEA3F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEEA44  lock or dword ptr [rsp], 0                        
+  0x180CEEA49  lea     rcx, [rip + 0x217a620]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<LayoutElement>()
+  0x180CEEA50  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEEA55  lock or dword ptr [rsp], 0                        
+  0x180CEEA5A  lea     rcx, [rip + 0x216582f]                       ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180CEEA61  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEEA66  lock or dword ptr [rsp], 0                        
+  0x180CEEA6B  mov     byte ptr [rip + 0x23ee78a], 1                ; data_30DD1FC
+
+180CEEA72:
+  0x180CEEA72  xor     edx, edx                                  
+  0x180CEEA74  mov     rcx, rbx                                  
+  0x180CEEA77  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CEEA7C  cmp     dword ptr [rip + 0x23ea741], 0               ; data_30D91C4
+  0x180CEEA83  lea     rdi, [rip + 0x23ff816]                       ; data_30EE2A0
+  0x180CEEA8A  mov     qword ptr [rbx + 0x28], rax                  ; rbx->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEEA8E  je      0x180ceead9                               
+  0x180CEEA90  lea     r8, [rbx + 0x28]                             ; rbx->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEEA94  shr     r8, 0xc                                   
+  0x180CEEA98  and     r8d, 0x1fffff                             
+  0x180CEEA9F  mov     eax, r8d                                  
+  0x180CEEAA2  shr     rax, 6                                    
+  0x180CEEAA6  and     r8d, 0x3f                                 
+  0x180CEEAAA  lea     rdx, [rdi + rax*8]                        
+  0x180CEEAAE  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEAB5  nop     word ptr [rax + rax]                      
+
+180CEEAC0:
+  0x180CEEAC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEAC7  mov     rcx, rax                                  
+  0x180CEEACA  bts     rcx, r8                                   
+  0x180CEEACE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEAD7  jne     0x180ceeac0                               
+
+180CEEAD9:
+  0x180CEEAD9  xor     edx, edx                                  
+  0x180CEEADB  mov     rcx, rbx                                  
+  0x180CEEADE  call    0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+  0x180CEEAE3  xor     ecx, ecx                                  
+  0x180CEEAE5  mov     rdx, rax                                  
+  0x180CEEAE8  test    rax, rax                                  
+  0x180CEEAEB  je      0x180ceeafb                               
+  0x180CEEAED  mov     rax, qword ptr [rip + 0x216579c]             ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180CEEAF4  cmp     qword ptr [rdx], rax                      
+  0x180CEEAF7  cmove   rcx, rdx                                  
+
+180CEEAFB:
+  0x180CEEAFB  cmp     dword ptr [rip + 0x23ea6c2], 0               ; data_30D91C4
+  0x180CEEB02  mov     qword ptr [rbx + 0x30], rcx                  ; rbx->RebuildableToggle._rectTransform
+  0x180CEEB06  je      0x180ceeb49                               
+  0x180CEEB08  lea     r8, [rbx + 0x30]                             ; rbx->RebuildableToggle._rectTransform
+  0x180CEEB0C  shr     r8, 0xc                                   
+  0x180CEEB10  and     r8d, 0x1fffff                             
+  0x180CEEB17  mov     eax, r8d                                  
+  0x180CEEB1A  shr     rax, 6                                    
+  0x180CEEB1E  and     r8d, 0x3f                                 
+  0x180CEEB22  lea     rdx, [rdi + rax*8]                        
+  0x180CEEB26  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEB2D  nop     dword ptr [rax]                           
+
+180CEEB30:
+  0x180CEEB30  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEB37  mov     rcx, rax                                  
+  0x180CEEB3A  bts     rcx, r8                                   
+  0x180CEEB3E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEB47  jne     0x180ceeb30                               
+
+180CEEB49:
+  0x180CEEB49  mov     r8, qword ptr [rip + 0x217a520]              ; METHODINFO Method$UnityEngine.Component.GetComponent<LayoutElement>()
+  0x180CEEB50  lea     rdx, [rsp + 0x30]                         
+  0x180CEEB55  mov     rcx, rbx                                  
+  0x180CEEB58  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEEB5D  cmp     dword ptr [rip + 0x23ea660], 0               ; data_30D91C4
+  0x180CEEB64  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEEB69  mov     qword ptr [rbx + 0x38], rax                  ; rbx->RebuildableToggle._layoutElement
+  0x180CEEB6D  je      0x180ceebb9                               
+  0x180CEEB6F  lea     r8, [rbx + 0x38]                             ; rbx->RebuildableToggle._layoutElement
+  0x180CEEB73  shr     r8, 0xc                                   
+  0x180CEEB77  and     r8d, 0x1fffff                             
+  0x180CEEB7E  mov     eax, r8d                                  
+  0x180CEEB81  shr     rax, 6                                    
+  0x180CEEB85  and     r8d, 0x3f                                 
+  0x180CEEB89  lea     rdx, [rdi + rax*8]                        
+  0x180CEEB8D  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEB94  nop     dword ptr [rax]                           
+  0x180CEEB98  nop     dword ptr [rax + rax]                     
+
+180CEEBA0:
+  0x180CEEBA0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEBA7  mov     rcx, rax                                  
+  0x180CEEBAA  bts     rcx, r8                                   
+  0x180CEEBAE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEBB7  jne     0x180ceeba0                               
+
+180CEEBB9:
+  0x180CEEBB9  mov     r8, qword ptr [rip + 0x217a4b8]              ; METHODINFO Method$UnityEngine.Component.GetComponent<ContentSizeFitter>()
+  0x180CEEBC0  lea     rdx, [rsp + 0x30]                         
+  0x180CEEBC5  mov     rcx, rbx                                  
+  0x180CEEBC8  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEEBCD  cmp     dword ptr [rip + 0x23ea5f0], 0               ; data_30D91C4
+  0x180CEEBD4  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEEBD9  mov     qword ptr [rbx + 0x40], rax                  ; rbx->RebuildableToggle._contentSizeFitter
+  0x180CEEBDD  je      0x180ceec29                               
+  0x180CEEBDF  lea     r8, [rbx + 0x40]                             ; rbx->RebuildableToggle._contentSizeFitter
+  0x180CEEBE3  shr     r8, 0xc                                   
+  0x180CEEBE7  and     r8d, 0x1fffff                             
+  0x180CEEBEE  mov     eax, r8d                                  
+  0x180CEEBF1  shr     rax, 6                                    
+  0x180CEEBF5  and     r8d, 0x3f                                 
+  0x180CEEBF9  lea     rdx, [rdi + rax*8]                        
+  0x180CEEBFD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEC04  nop     dword ptr [rax]                           
+  0x180CEEC08  nop     dword ptr [rax + rax]                     
+
+180CEEC10:
+  0x180CEEC10  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEC17  mov     rcx, rax                                  
+  0x180CEEC1A  bts     rcx, r8                                   
+  0x180CEEC1E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEC27  jne     0x180ceec10                               
+
+180CEEC29:
+  0x180CEEC29  mov     r8, qword ptr [rip + 0x217a498]              ; METHODINFO Method$UnityEngine.Component.GetComponent<AutoLayoutSupporter>()
+  0x180CEEC30  lea     rdx, [rsp + 0x30]                         
+  0x180CEEC35  mov     rcx, rbx                                  
+  0x180CEEC38  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEEC3D  cmp     dword ptr [rip + 0x23ea580], 0               ; data_30D91C4
+  0x180CEEC44  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEEC49  mov     qword ptr [rbx + 0x48], rax                  ; rbx->RebuildableToggle._autoLayoutSupporter
+  0x180CEEC4D  je      0x180ceec99                               
+  0x180CEEC4F  lea     r8, [rbx + 0x48]                             ; rbx->RebuildableToggle._autoLayoutSupporter
+  0x180CEEC53  shr     r8, 0xc                                   
+  0x180CEEC57  and     r8d, 0x1fffff                             
+  0x180CEEC5E  mov     eax, r8d                                  
+  0x180CEEC61  shr     rax, 6                                    
+  0x180CEEC65  and     r8d, 0x3f                                 
+  0x180CEEC69  lea     rdx, [rdi + rax*8]                        
+  0x180CEEC6D  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEC74  nop     dword ptr [rax]                           
+  0x180CEEC78  nop     dword ptr [rax + rax]                     
+
+180CEEC80:
+  0x180CEEC80  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEC87  mov     rcx, rax                                  
+  0x180CEEC8A  bts     rcx, r8                                   
+  0x180CEEC8E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEC97  jne     0x180ceec80                               
+
+180CEEC99:
+  0x180CEEC99  mov     r8, qword ptr [rip + 0x2179448]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Toggle>()
+  0x180CEECA0  lea     rdx, [rsp + 0x30]                         
+  0x180CEECA5  mov     rcx, rbx                                  
+  0x180CEECA8  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CEECAD  cmp     dword ptr [rip + 0x23ea510], 0               ; data_30D91C4
+  0x180CEECB4  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CEECB9  mov     qword ptr [rbx + 0x50], rax                  ; rbx->RebuildableToggle._uiToggle
+  0x180CEECBD  je      0x180ceecfa                               
+  0x180CEECBF  add     rbx, 0x50                                 
+  0x180CEECC3  shr     rbx, 0xc                                  
+  0x180CEECC7  and     ebx, 0x1fffff                             
+  0x180CEECCD  mov     eax, ebx                                  
+  0x180CEECCF  shr     rax, 6                                    
+  0x180CEECD3  and     ebx, 0x3f                                 
+  0x180CEECD6  lea     rdx, [rdi + rax*8]                        
+  0x180CEECDA  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CEECE1:
+  0x180CEECE1  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEECE8  mov     rcx, rax                                  
+  0x180CEECEB  bts     rcx, rbx                                  
+  0x180CEECEF  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEECF8  jne     0x180ceece1                               
+
+180CEECFA:
+  0x180CEECFA  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CEECFF  add     rsp, 0x20                                 
+  0x180CEED03  pop     rdi                                       
+  0x180CEED04  ret                                               

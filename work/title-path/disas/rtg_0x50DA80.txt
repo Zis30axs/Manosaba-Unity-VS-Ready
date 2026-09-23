@@ -1,0 +1,63 @@
+====================================================================================================
+FUNCTION RVA 0x50DA80  VA 0x18050DA80  size 0x52 (82 bytes)
+  managed: Naninovel.Commands.TransitionScene$$ReleaseResources
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$<DestroyHoldenLabel>b__22_0
+  csig   : void Naninovel_Commands_TransitionScene__ReleaseResources (Naninovel_Commands_TransitionScene_o* __this, const MethodInfo* method);
+  dump.cs: Naninovel.Commands.TransitionScene :: public virtual void ReleaseResources()
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: private void <DestroyHoldenLabel>b__22_0(RebuildableToggle _)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x18050DA80  cmp     dword ptr [rip + 0x2bcb73d], 0               ; data_30D91C4
+  0x18050DA87  mov     qword ptr [rcx + 0x60], 0                    ; rcx->RebuildableToggle._label
+  0x18050DA8F  je      0x18050dad1                               
+  0x18050DA91  lea     r8, [rcx + 0x60]                             ; rcx->RebuildableToggle._label
+  0x18050DA95  shr     r8, 0xc                                   
+  0x18050DA99  lea     rcx, [rip + 0x2c26ae0]                       ; data_3134580
+  0x18050DAA0  and     r8d, 0x1fffff                             
+  0x18050DAA7  mov     eax, r8d                                  
+  0x18050DAAA  shr     rax, 6                                    
+  0x18050DAAE  and     r8d, 0x3f                                 
+  0x18050DAB2  lea     rdx, [rcx + rax*8]                        
+  0x18050DAB6  prefetchw byte ptr [rdx]                            
+  0x18050DAB9  nop     dword ptr [rax]                           
+
+18050DAC0:
+  0x18050DAC0  mov     rax, qword ptr [rdx]                      
+  0x18050DAC3  mov     rcx, rax                                  
+  0x18050DAC6  bts     rcx, r8                                   
+  0x18050DACA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x18050DACF  jne     0x18050dac0                               
+
+18050DAD1:
+  0x18050DAD1  ret                                               

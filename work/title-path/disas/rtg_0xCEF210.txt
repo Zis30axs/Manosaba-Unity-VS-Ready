@@ -1,0 +1,93 @@
+====================================================================================================
+FUNCTION RVA 0xCEF210  VA 0x180CEF210  size 0xD1 (209 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$<GenerateAndHoldLabel>b__24_0
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle___GenerateAndHoldLabel_b__24_0 (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, GigaCreation_Essentials_Ui_RebuildableToggle_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: private void <GenerateAndHoldLabel>b__24_0(RebuildableToggle _)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEF210  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEF215  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEF21A  push    rdi                                       
+  0x180CEF21B  sub     rsp, 0x20                                 
+  0x180CEF21F  cmp     byte ptr [rip + 0x23edfda], 0                ; data_30DD200
+  0x180CEF226  mov     rbx, rcx                                  
+  0x180CEF229  jne     0x180cef254                               
+  0x180CEF22B  lea     rcx, [rip + 0x2179976]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableLabel>()
+  0x180CEF232  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEF237  lock or dword ptr [rsp], 0                        
+  0x180CEF23C  lea     rcx, [rip + 0x216304d]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEF243  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEF248  lock or dword ptr [rsp], 0                        
+  0x180CEF24D  mov     byte ptr [rip + 0x23edfac], 1                ; data_30DD200
+
+180CEF254:
+  0x180CEF254  mov     rcx, qword ptr [rip + 0x2163035]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEF25B  mov     rdi, qword ptr [rbx + 0x20]                  ; rbx->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEF25F  mov     rsi, qword ptr [rbx + 0x58]                  ; rbx->RebuildableToggle._labelParent
+  0x180CEF263  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEF26A  jne     0x180cef271                               
+  0x180CEF26C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEF271:
+  0x180CEF271  mov     r8, qword ptr [rip + 0x2179930]              ; METHODINFO Method$UnityEngine.Object.Instantiate<RebuildableLabel>()
+  0x180CEF278  mov     rdx, rsi                                  
+  0x180CEF27B  mov     rcx, rdi                                  
+  0x180CEF27E  call    0x180721660                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CEF283  cmp     dword ptr [rip + 0x23e9f3a], 0               ; data_30D91C4
+  0x180CEF28A  mov     qword ptr [rbx + 0x60], rax                  ; rbx->RebuildableToggle._label
+  0x180CEF28E  je      0x180cef2d1                               
+  0x180CEF290  lea     r8, [rbx + 0x60]                             ; rbx->RebuildableToggle._label
+  0x180CEF294  shr     r8, 0xc                                   
+  0x180CEF298  lea     rcx, [rip + 0x24452e1]                       ; data_3134580
+  0x180CEF29F  and     r8d, 0x1fffff                             
+  0x180CEF2A6  mov     eax, r8d                                  
+  0x180CEF2A9  shr     rax, 6                                    
+  0x180CEF2AD  and     r8d, 0x3f                                 
+  0x180CEF2B1  lea     rdx, [rcx + rax*8]                        
+  0x180CEF2B5  prefetchw byte ptr [rdx]                            
+  0x180CEF2B8  nop     dword ptr [rax + rax]                     
+
+180CEF2C0:
+  0x180CEF2C0  mov     rax, qword ptr [rdx]                      
+  0x180CEF2C3  mov     rcx, rax                                  
+  0x180CEF2C6  bts     rcx, r8                                   
+  0x180CEF2CA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEF2CF  jne     0x180cef2c0                               
+
+180CEF2D1:
+  0x180CEF2D1  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEF2D6  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CEF2DB  add     rsp, 0x20                                 
+  0x180CEF2DF  pop     rdi                                       
+  0x180CEF2E0  ret                                               

@@ -1,0 +1,276 @@
+====================================================================================================
+FUNCTION RVA 0xCEFC60  VA 0x180CEFC60  size 0x373 (883 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle.<OnValueChangedAsync>d__31$$MoveNext
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__OnValueChangedAsync_d__31__MoveNext (GigaCreation_Essentials_Ui_RebuildableToggle__OnValueChangedAsync_d__31_o __this, const MethodInfo* method);
+  dump.cs: RebuildableToggle.<OnValueChangedAsync>d__31 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEFC60  mov     qword ptr [rsp + 8], rcx                  
+  0x180CEFC65  push    rbp                                       
+  0x180CEFC66  push    rdi                                       
+  0x180CEFC67  push    r14                                       
+  0x180CEFC69  sub     rsp, 0x60                                 
+  0x180CEFC6D  lea     rbp, [rsp + 0x30]                         
+  0x180CEFC72  mov     qword ptr [rbp + 0x58], rbx                  ; rbp->RebuildableToggle._labelParent
+  0x180CEFC76  mov     qword ptr [rbp + 0x68], rsi               
+  0x180CEFC7A  mov     rdi, rcx                                  
+  0x180CEFC7D  cmp     byte ptr [rip + 0x23ed584], 0                ; data_30DD208
+  0x180CEFC84  jne     0x180cefcd1                               
+  0x180CEFC86  lea     rcx, [rip + 0x2178453]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<bool>, RebuildableToggle.<OnValueChangedAsync>d__31>()
+  0x180CEFC8D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFC92  lock or dword ptr [rsp], 0                        
+  0x180CEFC97  lea     rcx, [rip + 0x2164bf2]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<bool>.GetResult()
+  0x180CEFC9E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFCA3  lock or dword ptr [rsp], 0                        
+  0x180CEFCA8  lea     rcx, [rip + 0x2164bd1]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<bool>.get_IsCompleted()
+  0x180CEFCAF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFCB4  lock or dword ptr [rsp], 0                        
+  0x180CEFCB9  lea     rcx, [rip + 0x2164b80]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<bool>.GetAwaiter()
+  0x180CEFCC0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFCC5  lock or dword ptr [rsp], 0                        
+  0x180CEFCCA  mov     byte ptr [rip + 0x23ed537], 1                ; data_30DD208
+
+180CEFCD1:
+  0x180CEFCD1  xorps   xmm0, xmm0                                
+  0x180CEFCD4  movups  xmmword ptr [rbp + 0x10], xmm0               ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFCD8  mov     ecx, dword ptr [rdi]                      
+  0x180CEFCDA  mov     rax, qword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CEFCDE  test    ecx, ecx                                  
+  0x180CEFCE0  jne     0x180cefcfc                               
+  0x180CEFCE2  movups  xmm0, xmmword ptr [rdi + 0x28]               ; rdi->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFCE6  movaps  xmmword ptr [rbp + 0x10], xmm0               ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFCEA  xorps   xmm1, xmm1                                
+  0x180CEFCED  movups  xmmword ptr [rdi + 0x28], xmm1               ; rdi->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFCF1  mov     dword ptr [rdi], 0xffffffff               
+  0x180CEFCF7  jmp     0x180cefec8                               
+
+180CEFCFC:
+  0x180CEFCFC  test    rax, rax                                  
+  0x180CEFCFF  je      0x180ceffce                               
+  0x180CEFD05  mov     rsi, qword ptr [rax + 0x50]                  ; rax->RebuildableToggle._uiToggle
+  0x180CEFD09  mov     rbx, qword ptr [rdi + 0x20]                  ; rdi->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFD0D  cmp     byte ptr [rip + 0x23f2270], 0                ; data_30E1F84
+  0x180CEFD14  jne     0x180cefd50                               
+  0x180CEFD16  lea     rcx, [rip + 0x211dc13]                       ; METHODINFO Method$Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>.OnInvokeAsync()
+  0x180CEFD1D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFD22  lock or dword ptr [rsp], 0                        
+  0x180CEFD27  lea     rcx, [rip + 0x211dc22]                       ; METHODINFO Method$Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>..ctor()
+  0x180CEFD2E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFD33  lock or dword ptr [rsp], 0                        
+  0x180CEFD38  lea     rcx, [rip + 0x211dc19]                       ; TYPE Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>_TypeInfo
+  0x180CEFD3F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFD44  lock or dword ptr [rsp], 0                        
+  0x180CEFD49  mov     byte ptr [rip + 0x23f2234], 1                ; data_30E1F84
+
+180CEFD50:
+  0x180CEFD50  test    rsi, rsi                                  
+  0x180CEFD53  je      0x180ceffc9                               
+  0x180CEFD59  mov     r14, qword ptr [rsi + 0x118]              
+  0x180CEFD60  mov     rcx, qword ptr [rip + 0x211dbf1]             ; TYPE Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>_TypeInfo
+  0x180CEFD67  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEFD6C  mov     rsi, rax                                  
+  0x180CEFD6F  mov     rcx, qword ptr [rip + 0x211dbda]             ; METHODINFO Method$Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>..ctor()
+  0x180CEFD76  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CEFD7B  mov     r9b, 1                                    
+  0x180CEFD7E  mov     r8, rbx                                   
+  0x180CEFD81  mov     rdx, r14                                  
+  0x180CEFD84  mov     rcx, rax                                  
+  0x180CEFD87  call    0x180be7960                                  ; -> Cysharp.Threading.Tasks.AsyncUnityEventHandler<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CEFD8C  test    rsi, rsi                                  
+  0x180CEFD8F  je      0x180ceffc3                               
+  0x180CEFD95  mov     r8, qword ptr [rip + 0x211db94]              ; METHODINFO Method$Cysharp.Threading.Tasks.AsyncUnityEventHandler<bool>.OnInvokeAsync()
+  0x180CEFD9C  lea     rdx, [rbp + 0x20]                            ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFDA0  mov     rcx, rsi                                  
+  0x180CEFDA3  call    0x180be7d60                                  ; -> Cysharp.Threading.Tasks.AsyncUnityEventHandler<__Il2CppFullySharedGenericType>$$OnInvokeAsync
+  0x180CEFDA8  movaps  xmm0, xmmword ptr [rbp + 0x20]               ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFDAC  movdqa  xmmword ptr [rbp + 0x20], xmm0               ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFDB1  mov     r14, qword ptr [rip + 0x2164a88]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<bool>.GetAwaiter()
+  0x180CEFDB8  mov     rax, qword ptr [r14 + 0x20]                  ; r14->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFDBC  test    byte ptr [rax + 0x135], 1                 
+  0x180CEFDC3  jne     0x180cefdcd                               
+  0x180CEFDC5  mov     rcx, rax                                  
+  0x180CEFDC8  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CEFDCD:
+  0x180CEFDCD  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CEFDD4  mov     rcx, qword ptr [rax + 0x20]                  ; rax->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFDD8  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180CEFDDE  lea     rax, [rbx + 0xf]                          
+  0x180CEFDE2  cmp     rax, rbx                                  
+  0x180CEFDE5  ja      0x180cefdf1                               
+  0x180CEFDE7  movabs  rax, 0xffffffffffffff0                    
+
+180CEFDF1:
+  0x180CEFDF1  and     rax, 0xfffffffffffffff0                   
+  0x180CEFDF5  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CEFDFA  sub     rsp, rax                                  
+  0x180CEFDFD  lea     rsi, [rsp + 0x30]                         
+  0x180CEFE02  mov     r8, rbx                                   
+  0x180CEFE05  xor     edx, edx                                  
+  0x180CEFE07  mov     rcx, rsi                                  
+  0x180CEFE0A  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x180CEFE0F  mov     rax, qword ptr [r14 + 0x20]                  ; r14->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE13  test    byte ptr [rax + 0x135], 1                 
+  0x180CEFE1A  jne     0x180cefe24                               
+  0x180CEFE1C  mov     rcx, rax                                  
+  0x180CEFE1F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CEFE24:
+  0x180CEFE24  mov     r8, qword ptr [rax + 0xc0]                
+  0x180CEFE2B  mov     r8, qword ptr [r8 + 0x28]                    ; r8->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFE2F  lea     rdx, [rbp + 0x20]                            ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE33  mov     rcx, rsi                                  
+  0x180CEFE36  call    0x180002850                                  ; -> sub_2850 (runtime/helper)
+  0x180CEFE3B  mov     r8, rbx                                   
+  0x180CEFE3E  mov     rdx, rsi                                  
+  0x180CEFE41  lea     rcx, [rbp + 0x20]                            ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE45  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CEFE4A  movaps  xmm0, xmmword ptr [rbp + 0x20]               ; rbp->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE4E  movdqa  xmmword ptr [rbp + 0x10], xmm0               ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFE53  mov     rbx, qword ptr [rip + 0x2164a26]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<bool>.get_IsCompleted()
+  0x180CEFE5A  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE5E  test    byte ptr [rax + 0x135], 1                 
+  0x180CEFE65  jne     0x180cefe6f                               
+  0x180CEFE67  mov     rcx, rax                                  
+  0x180CEFE6A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CEFE6F:
+  0x180CEFE6F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CEFE76  mov     rsi, qword ptr [rax + 0x18]                  ; rax-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CEFE7A  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->RebuildableToggle._labelPrefab | <OnValueChangedAsync>d__31.ct
+  0x180CEFE7E  test    byte ptr [rax + 0x135], 1                 
+  0x180CEFE85  jne     0x180cefe8f                               
+  0x180CEFE87  mov     rcx, rax                                  
+  0x180CEFE8A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CEFE8F:
+  0x180CEFE8F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CEFE96  mov     rcx, qword ptr [rax + 0x10]                  ; rax-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFE9A  mov     r8, qword ptr [rcx + 0x80]                
+  0x180CEFEA1  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CEFEA5  lea     r9, [rbp + 0x10]                             ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFEA9  add     r9, rax                                   
+  0x180CEFEAC  mov     rax, qword ptr [r8 + 0x10]                   ; r8-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFEB0  lea     rcx, [r9 - 0x10]                          
+  0x180CEFEB4  cmp     dword ptr [rax + 0x28], 0                    ; rax->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFEB8  cmovge  rcx, r9                                   
+  0x180CEFEBC  mov     rdx, rsi                                  
+  0x180CEFEBF  call    0x180002920                                  ; -> sub_2920 (runtime/helper)
+  0x180CEFEC4  test    eax, eax                                  
+  0x180CEFEC6  je      0x180ceff31                               
+
+180CEFEC8:
+  0x180CEFEC8  mov     r8, qword ptr [rip + 0x21649c1]              ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<bool>.GetResult()
+  0x180CEFECF  lea     rdx, [rbp + 0x60]                            ; rbp->RebuildableToggle._label
+  0x180CEFED3  lea     rcx, [rbp + 0x10]                            ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFED7  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180CEFEDC  nop                                               
+  0x180CEFEDD  mov     dword ptr [rdi], 0xfffffffe               
+  0x180CEFEE3  cmp     byte ptr [rip + 0x23e7630], 0                ; data_30D751A
+  0x180CEFEEA  jne     0x180ceff04                               
+  0x180CEFEEC  lea     rcx, [rip + 0x216127d]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CEFEF3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFEF8  lock or dword ptr [rsp], 0                        
+  0x180CEFEFD  mov     byte ptr [rip + 0x23e7616], 1                ; data_30D751A
+
+180CEFF04:
+  0x180CEFF04  cmp     qword ptr [rdi + 8], 0                    
+  0x180CEFF09  je      0x180ceff20                               
+  0x180CEFF0B  mov     ecx, 2                                    
+  0x180CEFF10  mov     r8, qword ptr [rdi + 8]                   
+  0x180CEFF14  mov     rdx, qword ptr [rip + 0x2161255]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x180CEFF1B  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CEFF20:
+  0x180CEFF20  mov     rbx, qword ptr [rbp + 0x58]                  ; rbp->RebuildableToggle._labelParent
+  0x180CEFF24  mov     rsi, qword ptr [rbp + 0x68]                  ; rbp->RebuildableToggle._dontRegenerateLabel
+  0x180CEFF28  lea     rsp, [rbp + 0x30]                            ; rbp->RebuildableToggle._rectTransform
+  0x180CEFF2C  pop     r14                                       
+  0x180CEFF2E  pop     rdi                                       
+  0x180CEFF2F  pop     rbp                                       
+  0x180CEFF30  ret                                               
+
+180CEFF31:
+  0x180CEFF31  mov     dword ptr [rdi], 0                        
+  0x180CEFF37  movaps  xmm0, xmmword ptr [rbp + 0x10]               ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFF3B  movups  xmmword ptr [rdi + 0x28], xmm0               ; rdi->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFF3F  cmp     dword ptr [rip + 0x23e927e], 0               ; data_30D91C4
+  0x180CEFF46  je      0x180ceff81                               
+  0x180CEFF48  lea     r8, [rdi + 0x28]                             ; rdi->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEFF4C  shr     r8, 0xc                                   
+  0x180CEFF50  and     r8d, 0x1fffff                             
+  0x180CEFF57  mov     eax, r8d                                  
+  0x180CEFF5A  shr     rax, 6                                    
+  0x180CEFF5E  lea     rcx, [rip + 0x244461b]                       ; data_3134580
+  0x180CEFF65  lea     rdx, [rcx + rax*8]                        
+  0x180CEFF69  and     r8d, 0x3f                                 
+  0x180CEFF6D  prefetchw byte ptr [rdx]                            
+
+180CEFF70:
+  0x180CEFF70  mov     rax, qword ptr [rdx]                      
+  0x180CEFF73  mov     rcx, rax                                  
+  0x180CEFF76  bts     rcx, r8                                   
+  0x180CEFF7A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEFF7F  jne     0x180ceff70                               
+
+180CEFF81:
+  0x180CEFF81  lea     rcx, [rdi + 8]                            
+  0x180CEFF85  mov     r9, qword ptr [rip + 0x2178154]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.AwaitUnsafeOnCompleted<UniTask.Awaiter<bool>, RebuildableToggle.<OnValueChangedAsync>d__31>()
+  0x180CEFF8C  mov     r8, rdi                                   
+  0x180CEFF8F  lea     rdx, [rbp + 0x10]                            ; rbp-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEFF93  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CEFF98  nop                                               
+  0x180CEFF99  jmp     0x180ceff20                               
+  0x180CEFF9B  mov     rcx, qword ptr [rbp + 0x50]                  ; rbp->RebuildableToggle._uiToggle
+  0x180CEFF9F  mov     dword ptr [rcx], 0xfffffffe               
+  0x180CEFFA5  add     rcx, 8                                    
+  0x180CEFFA9  mov     rdx, qword ptr [rbp + 0x60]                  ; rbp->RebuildableToggle._label
+  0x180CEFFAD  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x180CEFFB2  mov     rbx, qword ptr [rbp + 0x58]                  ; rbp->RebuildableToggle._labelParent
+  0x180CEFFB6  mov     rsi, qword ptr [rbp + 0x68]                  ; rbp->RebuildableToggle._dontRegenerateLabel
+  0x180CEFFBA  lea     rsp, [rbp + 0x30]                            ; rbp->RebuildableToggle._rectTransform
+  0x180CEFFBE  pop     r14                                       
+  0x180CEFFC0  pop     rdi                                       
+  0x180CEFFC1  pop     rbp                                       
+  0x180CEFFC2  ret                                               
+
+180CEFFC3:
+  0x180CEFFC3  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CEFFC8  nop                                               
+
+180CEFFC9:
+  0x180CEFFC9  call    0x180246730                                  ; THROW NullReferenceException
+
+180CEFFCE:
+  0x180CEFFCE  call    0x180246730                                  ; THROW NullReferenceException

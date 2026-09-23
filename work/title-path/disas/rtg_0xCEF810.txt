@@ -1,0 +1,70 @@
+====================================================================================================
+FUNCTION RVA 0xCEF810  VA 0x180CEF810  size 0x6B (107 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle.<>c__DisplayClass23_0$$<HoldExistingLabel>b__2
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle___c__DisplayClass23_0___HoldExistingLabel_b__2 (GigaCreation_Essentials_Ui_RebuildableToggle___c__DisplayClass23_0_o* __this, GigaCreation_Essentials_Ui_RebuildableToggle_o* __, const MethodInfo* method);
+  dump.cs: RebuildableToggle.<>c__DisplayClass23_0 :: internal void <HoldExistingLabel>b__2(RebuildableToggle _)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEF810  sub     rsp, 0x28                                 
+  0x180CEF814  mov     r8, qword ptr [rcx + 0x10]                   ; rcx-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEF818  test    r8, r8                                    
+  0x180CEF81B  je      0x180cef876                               
+  0x180CEF81D  cmp     dword ptr [rip + 0x23e99a0], 0               ; data_30D91C4
+  0x180CEF824  mov     rax, qword ptr [rcx + 0x18]                  ; rcx-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CEF828  mov     qword ptr [r8 + 0x60], rax                   ; r8->RebuildableToggle._label
+  0x180CEF82C  je      0x180cef871                               
+  0x180CEF82E  add     r8, 0x60                                  
+  0x180CEF832  lea     rcx, [rip + 0x2444d47]                       ; data_3134580
+  0x180CEF839  shr     r8, 0xc                                   
+  0x180CEF83D  and     r8d, 0x1fffff                             
+  0x180CEF844  mov     eax, r8d                                  
+  0x180CEF847  shr     rax, 6                                    
+  0x180CEF84B  and     r8d, 0x3f                                 
+  0x180CEF84F  lea     rdx, [rcx + rax*8]                        
+  0x180CEF853  prefetchw byte ptr [rdx]                            
+  0x180CEF856  nop     word ptr [rax + rax]                      
+
+180CEF860:
+  0x180CEF860  mov     rax, qword ptr [rdx]                      
+  0x180CEF863  mov     rcx, rax                                  
+  0x180CEF866  bts     rcx, r8                                   
+  0x180CEF86A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEF86F  jne     0x180cef860                               
+
+180CEF871:
+  0x180CEF871  add     rsp, 0x28                                 
+  0x180CEF875  ret                                               
+
+180CEF876:
+  0x180CEF876  call    0x180246730                                  ; THROW NullReferenceException

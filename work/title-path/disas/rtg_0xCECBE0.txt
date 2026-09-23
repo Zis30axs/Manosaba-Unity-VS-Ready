@@ -1,0 +1,49 @@
+====================================================================================================
+FUNCTION RVA 0xCECBE0  VA 0x180CECBE0  size 0x21 (33 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$set_IsOn
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__set_IsOn (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, bool value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: public void set_IsOn(bool value)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CECBE0  sub     rsp, 0x28                                 
+  0x180CECBE4  mov     rcx, qword ptr [rcx + 0x50]                  ; rcx->RebuildableToggle._uiToggle
+  0x180CECBE8  test    rcx, rcx                                  
+  0x180CECBEB  je      0x180cecbfc                               
+  0x180CECBED  xor     r9d, r9d                                  
+  0x180CECBF0  mov     r8b, 1                                    
+  0x180CECBF3  add     rsp, 0x28                                 
+  0x180CECBF7  jmp     0x1824a2770                                  ; -> UnityEngine.UI.Toggle$$Set
+
+180CECBFC:
+  0x180CECBFC  call    0x180246730                                  ; THROW NullReferenceException

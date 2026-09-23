@@ -1,0 +1,62 @@
+====================================================================================================
+FUNCTION RVA 0xCEF6E0  VA 0x180CEF6E0  size 0x53 (83 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle.<>c$$<HoldExistingLabel>b__23_0
+  csig   : GigaCreation_Essentials_Ui_RebuildableLabel_o* GigaCreation_Essentials_Ui_RebuildableToggle___c___HoldExistingLabel_b__23_0 (GigaCreation_Essentials_Ui_RebuildableToggle___c_o* __this, UnityEngine_Transform_o* trans, const MethodInfo* method);
+  dump.cs: RebuildableToggle.<>c :: internal RebuildableLabel <HoldExistingLabel>b__23_0(Transform trans)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEF6E0  push    rbx                                       
+  0x180CEF6E2  sub     rsp, 0x20                                 
+  0x180CEF6E6  cmp     byte ptr [rip + 0x23edb17], 0                ; data_30DD204
+  0x180CEF6ED  mov     rbx, rdx                                  
+  0x180CEF6F0  jne     0x180cef70a                               
+  0x180CEF6F2  lea     rcx, [rip + 0x2179317]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<RebuildableLabel>()
+  0x180CEF6F9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEF6FE  lock or dword ptr [rsp], 0                        
+  0x180CEF703  mov     byte ptr [rip + 0x23edafa], 1                ; data_30DD204
+
+180CEF70A:
+  0x180CEF70A  test    rbx, rbx                                  
+  0x180CEF70D  je      0x180cef72e                               
+  0x180CEF70F  mov     r8, qword ptr [rip + 0x21792fa]              ; METHODINFO Method$UnityEngine.Component.GetComponent<RebuildableLabel>()
+  0x180CEF716  lea     rdx, [rsp + 0x38]                         
+  0x180CEF71B  mov     rcx, rbx                                  
+  0x180CEF71E  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CEF723  mov     rax, qword ptr [rsp + 0x38]               
+  0x180CEF728  add     rsp, 0x20                                 
+  0x180CEF72C  pop     rbx                                       
+  0x180CEF72D  ret                                               
+
+180CEF72E:
+  0x180CEF72E  call    0x180246730                                  ; THROW NullReferenceException

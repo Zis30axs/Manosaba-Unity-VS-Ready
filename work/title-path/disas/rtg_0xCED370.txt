@@ -1,0 +1,187 @@
+====================================================================================================
+FUNCTION RVA 0xCED370  VA 0x180CED370  size 0x20B (523 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$RebuildLabel
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__RebuildLabel (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, GigaCreation_Essentials_Ui_LabelData_o* labelData, bool atRuntime, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: private void RebuildLabel(LabelData labelData, bool atRuntime, Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CED370  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CED375  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CED37A  push    rdi                                       
+  0x180CED37B  push    r12                                       
+  0x180CED37D  push    r14                                       
+  0x180CED37F  sub     rsp, 0x30                                 
+  0x180CED383  mov     rbx, r9                                   
+  0x180CED386  movzx   r12d, r8b                                 
+  0x180CED38A  mov     r14, rdx                                  
+  0x180CED38D  mov     rsi, rcx                                  
+  0x180CED390  test    rdx, rdx                                  
+  0x180CED393  je      0x180ced576                               
+  0x180CED399  mov     rdi, qword ptr [rdx + 0x10]                  ; rdx-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CED39D  test    rdi, rdi                                  
+  0x180CED3A0  je      0x180ced576                               
+  0x180CED3A6  cmp     byte ptr [rip + 0x23efd73], 0                ; data_30DD120
+  0x180CED3AD  jne     0x180ced3fa                               
+  0x180CED3AF  lea     rcx, [rip + 0x217a232]                       ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CED3B6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CED3BB  lock or dword ptr [rsp], 0                        
+  0x180CED3C0  lea     rcx, [rip + 0x217a219]                       ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CED3C7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CED3CC  lock or dword ptr [rsp], 0                        
+  0x180CED3D1  lea     rcx, [rip + 0x217a218]                       ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CED3D8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CED3DD  lock or dword ptr [rsp], 0                        
+  0x180CED3E2  lea     rcx, [rip + 0x217a20f]                       ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CED3E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CED3EE  lock or dword ptr [rsp], 0                        
+  0x180CED3F3  mov     byte ptr [rip + 0x23efd26], 1                ; data_30DD120
+
+180CED3FA:
+  0x180CED3FA  mov     rax, qword ptr [rdi + 0x10]                  ; rdi-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CED3FE  test    rax, rax                                  
+  0x180CED401  je      0x180ced40d                               
+  0x180CED403  cmp     dword ptr [rax + 0x10], 0                    ; rax-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CED407  ja      0x180ced511                               
+
+180CED40D:
+  0x180CED40D  mov     qword ptr [rsp + 0x50], rbp               
+  0x180CED412  mov     qword ptr [rsp + 0x58], r15               
+  0x180CED417  mov     rcx, qword ptr [rip + 0x217a1da]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CED41E  mov     r15, qword ptr [rdi + 0x18]                  ; rdi-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CED422  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CED429  jne     0x180ced437                               
+  0x180CED42B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CED430  mov     rcx, qword ptr [rip + 0x217a1c1]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CED437:
+  0x180CED437  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CED43E  mov     rbp, qword ptr [rax + 0x18]                  ; rax-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CED442  test    rbp, rbp                                  
+  0x180CED445  jne     0x180ced4f1                               
+  0x180CED44B  cmp     dword ptr [rcx + 0xe4], ebp               
+  0x180CED451  jne     0x180ced45f                               
+  0x180CED453  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CED458  mov     rcx, qword ptr [rip + 0x217a199]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CED45F:
+  0x180CED45F  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CED466  mov     rcx, qword ptr [rip + 0x217a173]             ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CED46D  mov     rdi, qword ptr [rax]                      
+  0x180CED470  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CED475  mov     r8, qword ptr [rip + 0x217a174]              ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CED47C  xor     r9d, r9d                                  
+  0x180CED47F  mov     rdx, rdi                                  
+  0x180CED482  mov     rcx, rax                                  
+  0x180CED485  mov     rbp, rax                                  
+  0x180CED488  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CED48D  mov     rax, qword ptr [rip + 0x217a164]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CED494  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CED49B  mov     qword ptr [rcx + 0x18], rbp                  ; rcx-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CED49F  cmp     dword ptr [rip + 0x23ebd1e], 0               ; data_30D91C4
+  0x180CED4A6  je      0x180ced4f1                               
+  0x180CED4A8  mov     rax, qword ptr [rip + 0x217a149]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CED4AF  lea     rcx, [rip + 0x24470ca]                       ; data_3134580
+  0x180CED4B6  mov     r10, qword ptr [rax + 0xb8]               
+  0x180CED4BD  add     r10, 0x18                                 
+  0x180CED4C1  shr     r10, 0xc                                  
+  0x180CED4C5  and     r10d, 0x1fffff                            
+  0x180CED4CC  mov     eax, r10d                                 
+  0x180CED4CF  shr     rax, 6                                    
+  0x180CED4D3  and     r10d, 0x3f                                
+  0x180CED4D7  lea     r9, [rcx + rax*8]                         
+  0x180CED4DB  prefetchw byte ptr [r9]                             
+  0x180CED4DF  nop                                               
+
+180CED4E0:
+  0x180CED4E0  mov     rax, qword ptr [r9]                       
+  0x180CED4E3  mov     r8, rax                                   
+  0x180CED4E6  bts     r8, r10                                   
+  0x180CED4EA  lock cmpxchg qword ptr [r9], r8                        
+  0x180CED4EF  jne     0x180ced4e0                               
+
+180CED4F1:
+  0x180CED4F1  mov     r8, qword ptr [rip + 0x217a0f0]              ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CED4F8  mov     rdx, rbp                                  
+  0x180CED4FB  mov     rcx, r15                                  
+  0x180CED4FE  call    0x180683d10                                  ; -> System.Linq.Enumerable$$All<__Il2CppFullySharedGenericType>
+  0x180CED503  mov     r15, qword ptr [rsp + 0x58]               
+  0x180CED508  mov     rbp, qword ptr [rsp + 0x50]               
+  0x180CED50D  test    al, al                                    
+  0x180CED50F  jne     0x180ced56a                               
+
+180CED511:
+  0x180CED511  xor     edx, edx                                  
+  0x180CED513  mov     rcx, rsi                                  
+  0x180CED516  cmp     byte ptr [rsi + 0x68], dl                    ; rsi->RebuildableToggle._dontRegenerateLabel
+  0x180CED519  jne     0x180ced522                               
+  0x180CED51B  call    0x180ced580                                  ; -> GigaCreation.Essentials.Ui.RebuildableToggle$$DestroyHoldenLabel
+  0x180CED520  jmp     0x180ced52b                               
+
+180CED522:
+  0x180CED522  call    0x180ced700                                  ; -> GigaCreation.Essentials.Ui.RebuildableToggle$$HoldExistingLabel
+  0x180CED527  test    al, al                                    
+  0x180CED529  jne     0x180ced535                               
+
+180CED52B:
+  0x180CED52B  xor     edx, edx                                  
+  0x180CED52D  mov     rcx, rsi                                  
+  0x180CED530  call    0x180cedcb0                                  ; -> GigaCreation.Essentials.Ui.RebuildableToggle$$GenerateAndHoldLabel
+
+180CED535:
+  0x180CED535  mov     rcx, qword ptr [rsi + 0x60]                  ; rsi->RebuildableToggle._label
+  0x180CED539  test    rcx, rcx                                  
+  0x180CED53C  je      0x180ced576                               
+  0x180CED53E  mov     r9, rbx                                   
+  0x180CED541  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CED54A  movzx   r8d, r12b                                 
+  0x180CED54E  mov     rdx, r14                                  
+  0x180CED551  call    0x180ce44a0                                  ; -> GigaCreation.Essentials.Ui.RebuildableLabel$$Rebuild
+
+180CED556:
+  0x180CED556  mov     rbx, qword ptr [rsp + 0x60]               
+  0x180CED55B  mov     rsi, qword ptr [rsp + 0x68]               
+  0x180CED560  add     rsp, 0x30                                 
+  0x180CED564  pop     r14                                       
+  0x180CED566  pop     r12                                       
+  0x180CED568  pop     rdi                                       
+  0x180CED569  ret                                               
+
+180CED56A:
+  0x180CED56A  xor     edx, edx                                  
+  0x180CED56C  mov     rcx, rsi                                  
+  0x180CED56F  call    0x180ced580                                  ; -> GigaCreation.Essentials.Ui.RebuildableToggle$$DestroyHoldenLabel
+  0x180CED574  jmp     0x180ced556                               
+
+180CED576:
+  0x180CED576  call    0x180246730                                  ; THROW NullReferenceException

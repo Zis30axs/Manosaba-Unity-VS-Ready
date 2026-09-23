@@ -1,0 +1,142 @@
+====================================================================================================
+FUNCTION RVA 0xCEE860  VA 0x180CEE860  size 0x191 (401 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$OnValueChangedAsync
+  csig   : Cysharp_Threading_Tasks_UniTask_o GigaCreation_Essentials_Ui_RebuildableToggle__OnValueChangedAsync (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, System_Threading_CancellationToken_o ct, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: public UniTask OnValueChangedAsync(CancellationToken ct)
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEE860  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEE865  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEE86A  push    rdi                                       
+  0x180CEE86B  sub     rsp, 0x70                                 
+  0x180CEE86F  cmp     byte ptr [rip + 0x23ee985], 0                ; data_30DD1FB
+  0x180CEE876  mov     rbx, r8                                   
+  0x180CEE879  mov     rdi, rdx                                  
+  0x180CEE87C  mov     rsi, rcx                                  
+  0x180CEE87F  jne     0x180cee899                               
+  0x180CEE881  lea     rcx, [rip + 0x2179888]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<RebuildableToggle.<OnValueChangedAsync>d__31>()
+  0x180CEE888  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEE88D  lock or dword ptr [rsp], 0                        
+  0x180CEE892  mov     byte ptr [rip + 0x23ee962], 1                ; data_30DD1FB
+
+180CEE899:
+  0x180CEE899  xor     eax, eax                                  
+  0x180CEE89B  lea     r9, [rip + 0x23ff9fe]                        ; data_30EE2A0
+  0x180CEE8A2  mov     qword ptr [rsp + 0x30], rax               
+  0x180CEE8A7  xorps   xmm0, xmm0                                
+  0x180CEE8AA  mov     qword ptr [rsp + 0x48], rax               
+  0x180CEE8AF  xorps   xmm1, xmm1                                
+  0x180CEE8B2  mov     qword ptr [rsp + 0x50], rax               
+  0x180CEE8B7  mov     eax, dword ptr [rip + 0x23ea907]             ; data_30D91C4
+  0x180CEE8BD  movdqu  xmmword ptr [rsp + 0x58], xmm0            
+  0x180CEE8C3  movups  xmmword ptr [rsp + 0x38], xmm1            
+  0x180CEE8C8  test    eax, eax                                  
+  0x180CEE8CA  je      0x180cee911                               
+  0x180CEE8CC  lea     r8, [rsp + 0x38]                          
+  0x180CEE8D1  shr     r8, 0xc                                   
+  0x180CEE8D5  and     r8d, 0x1fffff                             
+  0x180CEE8DC  mov     eax, r8d                                  
+  0x180CEE8DF  shr     rax, 6                                    
+  0x180CEE8E3  and     r8d, 0x3f                                 
+  0x180CEE8E7  lea     rdx, [r9 + rax*8]                         
+  0x180CEE8EB  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CEE8F2:
+  0x180CEE8F2  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEE8F9  mov     rcx, rax                                  
+  0x180CEE8FC  bts     rcx, r8                                   
+  0x180CEE900  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEE909  jne     0x180cee8f2                               
+  0x180CEE90B  mov     eax, dword ptr [rip + 0x23ea8b3]             ; data_30D91C4
+
+180CEE911:
+  0x180CEE911  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CEE916  test    eax, eax                                  
+  0x180CEE918  je      0x180cee95f                               
+  0x180CEE91A  lea     r8, [rsp + 0x48]                          
+  0x180CEE91F  shr     r8, 0xc                                   
+  0x180CEE923  and     r8d, 0x1fffff                             
+  0x180CEE92A  mov     eax, r8d                                  
+  0x180CEE92D  shr     rax, 6                                    
+  0x180CEE931  and     r8d, 0x3f                                 
+  0x180CEE935  lea     rdx, [r9 + rax*8]                         
+  0x180CEE939  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CEE940:
+  0x180CEE940  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEE947  mov     rcx, rax                                  
+  0x180CEE94A  bts     rcx, r8                                   
+  0x180CEE94E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEE957  jne     0x180cee940                               
+  0x180CEE959  mov     eax, dword ptr [rip + 0x23ea865]             ; data_30D91C4
+
+180CEE95F:
+  0x180CEE95F  mov     qword ptr [rsp + 0x50], rbx               
+  0x180CEE964  test    eax, eax                                  
+  0x180CEE966  je      0x180cee9a9                               
+  0x180CEE968  lea     r8, [rsp + 0x50]                          
+  0x180CEE96D  shr     r8, 0xc                                   
+  0x180CEE971  and     r8d, 0x1fffff                             
+  0x180CEE978  mov     eax, r8d                                  
+  0x180CEE97B  shr     rax, 6                                    
+  0x180CEE97F  and     r8d, 0x3f                                 
+  0x180CEE983  lea     rdx, [r9 + rax*8]                         
+  0x180CEE987  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEE98E  nop                                               
+
+180CEE990:
+  0x180CEE990  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEE997  mov     rcx, rax                                  
+  0x180CEE99A  bts     rcx, r8                                   
+  0x180CEE99E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEE9A7  jne     0x180cee990                               
+
+180CEE9A9:
+  0x180CEE9A9  mov     r8, qword ptr [rip + 0x2179760]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<RebuildableToggle.<OnValueChangedAsync>d__31>()
+  0x180CEE9B0  lea     rdx, [rsp + 0x30]                         
+  0x180CEE9B5  lea     rcx, [rsp + 0x38]                         
+  0x180CEE9BA  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180CEE9C2  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CEE9C7  lea     rdx, [rsp + 0x38]                         
+  0x180CEE9CC  lea     rcx, [rsp + 0x20]                         
+  0x180CEE9D1  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180CEE9D6  lea     r11, [rsp + 0x70]                         
+  0x180CEE9DB  mov     rbx, qword ptr [r11 + 0x10]                  ; r11-><>c.<>9__23_0 | <>c__DisplayClass23_0.<>4__this | <>c__DisplayClass26_0.<>4__this
+  0x180CEE9DF  movups  xmm0, xmmword ptr [rax]                   
+  0x180CEE9E2  mov     rax, rsi                                  
+  0x180CEE9E5  movups  xmmword ptr [rsi], xmm0                   
+  0x180CEE9E8  mov     rsi, qword ptr [r11 + 0x18]                  ; r11-><>c.<>9__23_1 | <>c__DisplayClass23_0.existingLabel | <>c__DisplayClass26_0.widthData
+  0x180CEE9EC  mov     rsp, r11                                  
+  0x180CEE9EF  pop     rdi                                       
+  0x180CEE9F0  ret                                               

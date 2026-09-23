@@ -1,0 +1,195 @@
+====================================================================================================
+FUNCTION RVA 0xCEED10  VA 0x180CEED10  size 0x23A (570 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableToggle$$PurgeReferences
+  csig   : void GigaCreation_Essentials_Ui_RebuildableToggle__PurgeReferences (GigaCreation_Essentials_Ui_RebuildableToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableToggle :: private void PurgeReferences()
+  fields of GigaCreation.Essentials.Ui.RebuildableToggle:
+      +0x20   _labelPrefab                   RebuildableLabel
+      +0x28   _gameObject                    GameObject
+      +0x30   _rectTransform                 RectTransform
+      +0x38   _layoutElement                 LayoutElement
+      +0x40   _contentSizeFitter             ContentSizeFitter
+      +0x48   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x50   _uiToggle                      Toggle
+      +0x58   _labelParent                   Transform
+      +0x60   _label                         RebuildableLabel
+      +0x68   _dontRegenerateLabel           bool
+      +0x70   _toggleData                    ToggleData
+  fields of RebuildableToggle.<>c:
+      +0x0    <>9                            static readonly RebuildableToggle.<>c
+      +0x8    <>9__20_2                      static Action<ContentSizeFitter>
+      +0x10   <>9__23_0                      static Func<Transform, RebuildableLabel>
+      +0x18   <>9__23_1                      static Func<RebuildableLabel, bool>
+  fields of RebuildableToggle.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   existingLabel                  RebuildableLabel
+  fields of RebuildableToggle.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableToggle.<>c__DisplayClass27_0:
+      +0x10   <>4__this                      RebuildableToggle
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableToggle.<OnValueChangedAsync>d__31:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      RebuildableToggle
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter<bool>
+====================================================================================================
+  0x180CEED10  mov     eax, dword ptr [rip + 0x23ea4ae]             ; data_30D91C4
+  0x180CEED16  lea     r11, [rip + 0x23ff583]                       ; data_30EE2A0
+  0x180CEED1D  xor     r10d, r10d                                
+  0x180CEED20  mov     r8, rcx                                   
+  0x180CEED23  mov     qword ptr [rcx + 0x28], r10                  ; rcx->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEED27  test    eax, eax                                  
+  0x180CEED29  je      0x180ceed6f                               
+  0x180CEED2B  lea     r9, [rcx + 0x28]                             ; rcx->RebuildableToggle._gameObject | <OnValueChangedAsync>d__31.<>u__1
+  0x180CEED2F  shr     r9, 0xc                                   
+  0x180CEED33  and     r9d, 0x1fffff                             
+  0x180CEED3A  mov     eax, r9d                                  
+  0x180CEED3D  shr     rax, 6                                    
+  0x180CEED41  and     r9d, 0x3f                                 
+  0x180CEED45  lea     rdx, [r11 + rax*8]                        
+  0x180CEED49  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CEED50:
+  0x180CEED50  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEED57  mov     rcx, rax                                  
+  0x180CEED5A  bts     rcx, r9                                   
+  0x180CEED5E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEED67  jne     0x180ceed50                               
+  0x180CEED69  mov     eax, dword ptr [rip + 0x23ea455]             ; data_30D91C4
+
+180CEED6F:
+  0x180CEED6F  mov     qword ptr [r8 + 0x30], r10                   ; r8->RebuildableToggle._rectTransform
+  0x180CEED73  test    eax, eax                                  
+  0x180CEED75  je      0x180ceedbf                               
+  0x180CEED77  lea     r9, [r8 + 0x30]                              ; r8->RebuildableToggle._rectTransform
+  0x180CEED7B  shr     r9, 0xc                                   
+  0x180CEED7F  and     r9d, 0x1fffff                             
+  0x180CEED86  mov     eax, r9d                                  
+  0x180CEED89  shr     rax, 6                                    
+  0x180CEED8D  and     r9d, 0x3f                                 
+  0x180CEED91  lea     rdx, [r11 + rax*8]                        
+  0x180CEED95  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEED9C  nop     dword ptr [rax]                           
+
+180CEEDA0:
+  0x180CEEDA0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEDA7  mov     rcx, rax                                  
+  0x180CEEDAA  bts     rcx, r9                                   
+  0x180CEEDAE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEDB7  jne     0x180ceeda0                               
+  0x180CEEDB9  mov     eax, dword ptr [rip + 0x23ea405]             ; data_30D91C4
+
+180CEEDBF:
+  0x180CEEDBF  mov     qword ptr [r8 + 0x38], r10                   ; r8->RebuildableToggle._layoutElement
+  0x180CEEDC3  test    eax, eax                                  
+  0x180CEEDC5  je      0x180ceee0f                               
+  0x180CEEDC7  lea     r9, [r8 + 0x38]                              ; r8->RebuildableToggle._layoutElement
+  0x180CEEDCB  shr     r9, 0xc                                   
+  0x180CEEDCF  and     r9d, 0x1fffff                             
+  0x180CEEDD6  mov     eax, r9d                                  
+  0x180CEEDD9  shr     rax, 6                                    
+  0x180CEEDDD  and     r9d, 0x3f                                 
+  0x180CEEDE1  lea     rdx, [r11 + rax*8]                        
+  0x180CEEDE5  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEDEC  nop     dword ptr [rax]                           
+
+180CEEDF0:
+  0x180CEEDF0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEDF7  mov     rcx, rax                                  
+  0x180CEEDFA  bts     rcx, r9                                   
+  0x180CEEDFE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEE07  jne     0x180ceedf0                               
+  0x180CEEE09  mov     eax, dword ptr [rip + 0x23ea3b5]             ; data_30D91C4
+
+180CEEE0F:
+  0x180CEEE0F  mov     qword ptr [r8 + 0x40], r10                   ; r8->RebuildableToggle._contentSizeFitter
+  0x180CEEE13  test    eax, eax                                  
+  0x180CEEE15  je      0x180ceee5f                               
+  0x180CEEE17  lea     r9, [r8 + 0x40]                              ; r8->RebuildableToggle._contentSizeFitter
+  0x180CEEE1B  shr     r9, 0xc                                   
+  0x180CEEE1F  and     r9d, 0x1fffff                             
+  0x180CEEE26  mov     eax, r9d                                  
+  0x180CEEE29  shr     rax, 6                                    
+  0x180CEEE2D  and     r9d, 0x3f                                 
+  0x180CEEE31  lea     rdx, [r11 + rax*8]                        
+  0x180CEEE35  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEE3C  nop     dword ptr [rax]                           
+
+180CEEE40:
+  0x180CEEE40  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEE47  mov     rcx, rax                                  
+  0x180CEEE4A  bts     rcx, r9                                   
+  0x180CEEE4E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEE57  jne     0x180ceee40                               
+  0x180CEEE59  mov     eax, dword ptr [rip + 0x23ea365]             ; data_30D91C4
+
+180CEEE5F:
+  0x180CEEE5F  mov     qword ptr [r8 + 0x48], r10                   ; r8->RebuildableToggle._autoLayoutSupporter
+  0x180CEEE63  test    eax, eax                                  
+  0x180CEEE65  je      0x180ceeeaf                               
+  0x180CEEE67  lea     r9, [r8 + 0x48]                              ; r8->RebuildableToggle._autoLayoutSupporter
+  0x180CEEE6B  shr     r9, 0xc                                   
+  0x180CEEE6F  and     r9d, 0x1fffff                             
+  0x180CEEE76  mov     eax, r9d                                  
+  0x180CEEE79  shr     rax, 6                                    
+  0x180CEEE7D  and     r9d, 0x3f                                 
+  0x180CEEE81  lea     rdx, [r11 + rax*8]                        
+  0x180CEEE85  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEE8C  nop     dword ptr [rax]                           
+
+180CEEE90:
+  0x180CEEE90  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEE97  mov     rcx, rax                                  
+  0x180CEEE9A  bts     rcx, r9                                   
+  0x180CEEE9E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEEA7  jne     0x180ceee90                               
+  0x180CEEEA9  mov     eax, dword ptr [rip + 0x23ea315]             ; data_30D91C4
+
+180CEEEAF:
+  0x180CEEEAF  mov     qword ptr [r8 + 0x50], r10                   ; r8->RebuildableToggle._uiToggle
+  0x180CEEEB3  test    eax, eax                                  
+  0x180CEEEB5  je      0x180ceeeff                               
+  0x180CEEEB7  lea     r9, [r8 + 0x50]                              ; r8->RebuildableToggle._uiToggle
+  0x180CEEEBB  shr     r9, 0xc                                   
+  0x180CEEEBF  and     r9d, 0x1fffff                             
+  0x180CEEEC6  mov     eax, r9d                                  
+  0x180CEEEC9  shr     rax, 6                                    
+  0x180CEEECD  and     r9d, 0x3f                                 
+  0x180CEEED1  lea     rdx, [r11 + rax*8]                        
+  0x180CEEED5  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEEDC  nop     dword ptr [rax]                           
+
+180CEEEE0:
+  0x180CEEEE0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEEE7  mov     rcx, rax                                  
+  0x180CEEEEA  bts     rcx, r9                                   
+  0x180CEEEEE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEEF7  jne     0x180ceeee0                               
+  0x180CEEEF9  mov     eax, dword ptr [rip + 0x23ea2c5]             ; data_30D91C4
+
+180CEEEFF:
+  0x180CEEEFF  mov     qword ptr [r8 + 0x60], r10                   ; r8->RebuildableToggle._label
+  0x180CEEF03  test    eax, eax                                  
+  0x180CEEF05  je      0x180ceef49                               
+  0x180CEEF07  add     r8, 0x60                                  
+  0x180CEEF0B  shr     r8, 0xc                                   
+  0x180CEEF0F  and     r8d, 0x1fffff                             
+  0x180CEEF16  mov     eax, r8d                                  
+  0x180CEEF19  shr     rax, 6                                    
+  0x180CEEF1D  and     r8d, 0x3f                                 
+  0x180CEEF21  lea     rdx, [r11 + rax*8]                        
+  0x180CEEF25  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEEF2C  nop     dword ptr [rax]                           
+
+180CEEF30:
+  0x180CEEF30  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEEF37  mov     rcx, rax                                  
+  0x180CEEF3A  bts     rcx, r8                                   
+  0x180CEEF3E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEEF47  jne     0x180ceef30                               
+
+180CEEF49:
+  0x180CEEF49  ret                                               
