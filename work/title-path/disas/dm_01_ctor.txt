@@ -1,71 +1,167 @@
 ====================================================================================================
-FUNCTION RVA 0xD42010  VA 0x180D42010  size 0xD1 (209 bytes)
-  managed: GigaCreation.Tools.Debugging.Core.DebugManager$$.ctor
-  csig   : void GigaCreation_Tools_Debugging_Core_DebugManager___ctor (GigaCreation_Tools_Debugging_Core_DebugManager_o* __this, bool initialMode, const MethodInfo* method);
-  dump.cs: GigaCreation.Tools.Debugging.Core.DebugManager :: public void .ctor(bool initialMode)
-  fields of DebugManager.UIMode:
-      +0x0    value__                        int
-  fields of DebugManager.UIState:
-      +0x10   mode                           DebugManager.UIMode
-      +0x14   m_Open                         bool
-  fields of DebugManager.<>c:
-      +0x0    <>9                            static readonly DebugManager.<>c
-      +0x8    <>9__49_0                      static Action<bool>
-      +0x10   <>9__49_1                      static Action
-      +0x18   <>9__60_0                      static Func<DebugUI.Widget, int>
-  fields of DebugManager.<>c__DisplayClass67_0:
-      +0x10   displayName                    string
+FUNCTION RVA 0xCCE440  VA 0x180CCE440  size 0x271 (625 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Models.DialogManager$$.ctor
+  csig   : void GigaCreation_Essentials_Dialogs_Models_DialogManager___ctor (GigaCreation_Essentials_Dialogs_Models_DialogManager_o* __this, int32_t baseSortingOrder, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Models.DialogManager :: public void .ctor(int baseSortingOrder)
+  fields of GigaCreation.Essentials.Dialogs.Models.DialogManager:
+      +0x10   _addDialogSubject              readonly ISubject<AddDialogData>
+      +0x18   _addDialogData                 readonly AddDialogData
+      +0x20   _dialogs                       readonly IList<ProvidableDialog>
+      +0x28   _baseSortingOrder              readonly int
+  fields of DialogManager.<>c:
+      +0x0    <>9                            static readonly DialogManager.<>c
+      +0x8    <>9__5_0                       static Func<ProvidableDialog, bool>
+      +0x10   <>9__5_1                       static Func<IGrouping<bool, ProvidableDialog>, bool>
+      +0x18   <>9__5_2                       static Func<IGrouping<bool, ProvidableDialog>, ProvidableDialog[]>
+      +0x20   <>9__5_3                       static Func<ProvidableDialog, int>
 ====================================================================================================
-  0x180D42010  mov     qword ptr [rsp + 8], rbx                  
-  0x180D42015  mov     qword ptr [rsp + 0x18], rsi               
-  0x180D4201A  push    rdi                                       
-  0x180D4201B  sub     rsp, 0x20                                 
-  0x180D4201F  cmp     byte ptr [rip + 0x239b3c5], 0                ; data_30DD3EB
-  0x180D42026  movzx   esi, dl                                   
-  0x180D42029  mov     rdi, rcx                                  
-  0x180D4202C  jne     0x180d42057                               
-  0x180D4202E  lea     rcx, [rip + 0x2118e43]                       ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
-  0x180D42035  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
-  0x180D4203A  lock or dword ptr [rsp], 0                        
-  0x180D4203F  lea     rcx, [rip + 0x2118e2a]                       ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
-  0x180D42046  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
-  0x180D4204B  lock or dword ptr [rsp], 0                        
-  0x180D42050  mov     byte ptr [rip + 0x239b394], 1                ; data_30DD3EB
+  0x180CCE440  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCE445  mov     qword ptr [rsp + 0x10], rbp               
+  0x180CCE44A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CCE44F  push    rdi                                       
+  0x180CCE450  sub     rsp, 0x20                                 
+  0x180CCE454  cmp     byte ptr [rip + 0x240eca9], 0                ; data_30DD104
+  0x180CCE45B  mov     esi, edx                                  
+  0x180CCE45D  mov     rdi, rcx                                  
+  0x180CCE460  jne     0x180cce4be                               
+  0x180CCE462  lea     rcx, [rip + 0x2198bc7]                       ; TYPE GigaCreation.Essentials.Dialogs.Models.AddDialogData_TypeInfo
+  0x180CCE469  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE46E  lock or dword ptr [rsp], 0                        
+  0x180CCE473  lea     rcx, [rip + 0x2198bae]                       ; METHODINFO Method$System.Collections.Generic.List<ProvidableDialog>..ctor()
+  0x180CCE47A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE47F  lock or dword ptr [rsp], 0                        
+  0x180CCE484  lea     rcx, [rip + 0x2198b95]                       ; TYPE System.Collections.Generic.List<ProvidableDialog>_TypeInfo
+  0x180CCE48B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE490  lock or dword ptr [rsp], 0                        
+  0x180CCE495  lea     rcx, [rip + 0x2198b34]                       ; METHODINFO Method$UniRx.Subject<AddDialogData>..ctor()
+  0x180CCE49C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE4A1  lock or dword ptr [rsp], 0                        
+  0x180CCE4A6  lea     rcx, [rip + 0x2198b13]                       ; TYPE UniRx.Subject<AddDialogData>_TypeInfo
+  0x180CCE4AD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE4B2  lock or dword ptr [rsp], 0                        
+  0x180CCE4B7  mov     byte ptr [rip + 0x240ec46], 1                ; data_30DD104
 
-180D42057:
-  0x180D42057  mov     rcx, qword ptr [rip + 0x2118e12]             ; TYPE UniRx.ReactiveProperty<bool>_TypeInfo
-  0x180D4205E  call    0x1802980e0                                  ; il2cpp_codegen_object_new
-  0x180D42063  mov     r8, qword ptr [rip + 0x2118e0e]              ; METHODINFO Method$UniRx.ReactiveProperty<bool>..ctor()
-  0x180D4206A  lea     rdx, [rsp + 0x38]                         
-  0x180D4206F  mov     rcx, rax                                  
-  0x180D42072  mov     byte ptr [rsp + 0x38], sil                
-  0x180D42077  mov     rbx, rax                                  
-  0x180D4207A  call    0x1808c4a20                                  ; -> UniRx.ReactiveProperty<__Il2CppFullySharedGenericType>$$.ctor
-  0x180D4207F  cmp     dword ptr [rip + 0x239713e], 0               ; data_30D91C4
-  0x180D42086  mov     qword ptr [rdi + 0x10], rbx                  ; rdi->UIState.mode | <>c.<>9__49_1 | <>c__DisplayClass67_0.displayName
-  0x180D4208A  je      0x180d420d1                               
-  0x180D4208C  lea     r8, [rdi + 0x10]                             ; rdi->UIState.mode | <>c.<>9__49_1 | <>c__DisplayClass67_0.displayName
-  0x180D42090  shr     r8, 0xc                                   
-  0x180D42094  lea     rcx, [rip + 0x23f24e5]                       ; data_3134580
-  0x180D4209B  and     r8d, 0x1fffff                             
-  0x180D420A2  mov     eax, r8d                                  
-  0x180D420A5  shr     rax, 6                                    
-  0x180D420A9  and     r8d, 0x3f                                 
-  0x180D420AD  lea     rdx, [rcx + rax*8]                        
-  0x180D420B1  prefetchw byte ptr [rdx]                            
-  0x180D420B4  nop     dword ptr [rax]                           
-  0x180D420B8  nop     dword ptr [rax + rax]                     
+180CCE4BE:
+  0x180CCE4BE  mov     rcx, qword ptr [rip + 0x2198afb]             ; TYPE UniRx.Subject<AddDialogData>_TypeInfo
+  0x180CCE4C5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE4CA  mov     rdx, qword ptr [rip + 0x2198aff]             ; METHODINFO Method$UniRx.Subject<AddDialogData>..ctor()
+  0x180CCE4D1  mov     rcx, rax                                  
+  0x180CCE4D4  mov     rbx, rax                                  
+  0x180CCE4D7  call    0x1809294d0                                  ; -> UniRx.Subject<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CCE4DC  cmp     dword ptr [rip + 0x240ace1], 0               ; data_30D91C4
+  0x180CCE4E3  lea     rbp, [rip + 0x241fdb6]                       ; data_30EE2A0
+  0x180CCE4EA  mov     qword ptr [rdi + 0x10], rbx                  ; rdi->DialogManager._addDialogSubject | <>c.<>9__5_1
+  0x180CCE4EE  je      0x180cce539                               
+  0x180CCE4F0  lea     r8, [rdi + 0x10]                             ; rdi->DialogManager._addDialogSubject | <>c.<>9__5_1
+  0x180CCE4F4  shr     r8, 0xc                                   
+  0x180CCE4F8  and     r8d, 0x1fffff                             
+  0x180CCE4FF  mov     eax, r8d                                  
+  0x180CCE502  shr     rax, 6                                    
+  0x180CCE506  lea     rdx, [rax*8]                              
+  0x180CCE50E  add     rdx, rbp                                  
+  0x180CCE511  and     r8d, 0x3f                                 
+  0x180CCE515  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCE51C  nop     dword ptr [rax]                           
 
-180D420C0:
-  0x180D420C0  mov     rax, qword ptr [rdx]                      
-  0x180D420C3  mov     rcx, rax                                  
-  0x180D420C6  bts     rcx, r8                                   
-  0x180D420CA  lock cmpxchg qword ptr [rdx], rcx                      
-  0x180D420CF  jne     0x180d420c0                               
+180CCE520:
+  0x180CCE520  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE527  mov     rcx, rax                                  
+  0x180CCE52A  bts     rcx, r8                                   
+  0x180CCE52E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE537  jne     0x180cce520                               
 
-180D420D1:
-  0x180D420D1  mov     rbx, qword ptr [rsp + 0x30]               
-  0x180D420D6  mov     rsi, qword ptr [rsp + 0x40]               
-  0x180D420DB  add     rsp, 0x20                                 
-  0x180D420DF  pop     rdi                                       
-  0x180D420E0  ret                                               
+180CCE539:
+  0x180CCE539  mov     rcx, qword ptr [rip + 0x2198af0]             ; TYPE GigaCreation.Essentials.Dialogs.Models.AddDialogData_TypeInfo
+  0x180CCE540  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE545  cmp     dword ptr [rip + 0x240ac78], 0               ; data_30D91C4
+  0x180CCE54C  mov     qword ptr [rdi + 0x18], rax                  ; rdi->DialogManager._addDialogData | <>c.<>9__5_2
+  0x180CCE550  je      0x180cce599                               
+  0x180CCE552  lea     r8, [rdi + 0x18]                             ; rdi->DialogManager._addDialogData | <>c.<>9__5_2
+  0x180CCE556  shr     r8, 0xc                                   
+  0x180CCE55A  and     r8d, 0x1fffff                             
+  0x180CCE561  mov     eax, r8d                                  
+  0x180CCE564  shr     rax, 6                                    
+  0x180CCE568  lea     rdx, [rax*8]                              
+  0x180CCE570  add     rdx, rbp                                  
+  0x180CCE573  and     r8d, 0x3f                                 
+  0x180CCE577  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCE57E  nop                                               
+
+180CCE580:
+  0x180CCE580  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE587  mov     rcx, rax                                  
+  0x180CCE58A  bts     rcx, r8                                   
+  0x180CCE58E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE597  jne     0x180cce580                               
+
+180CCE599:
+  0x180CCE599  mov     rcx, qword ptr [rip + 0x2198a80]             ; TYPE System.Collections.Generic.List<ProvidableDialog>_TypeInfo
+  0x180CCE5A0  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE5A5  mov     rcx, qword ptr [rip + 0x2198a7c]             ; METHODINFO Method$System.Collections.Generic.List<ProvidableDialog>..ctor()
+  0x180CCE5AC  mov     rbx, rax                                  
+  0x180CCE5AF  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->DialogManager._dialogs | <>c.<>9__5_3
+  0x180CCE5B3  mov     rdx, qword ptr [rcx + 0xc0]               
+  0x180CCE5BA  mov     rax, qword ptr [rdx + 0x18]                  ; rdx->DialogManager._addDialogData | <>c.<>9__5_2
+  0x180CCE5BE  test    byte ptr [rax + 0x135], 1                 
+  0x180CCE5C5  jne     0x180cce5cf                               
+  0x180CCE5C7  mov     rcx, rax                                  
+  0x180CCE5CA  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCE5CF:
+  0x180CCE5CF  mov     edx, 8                                    
+  0x180CCE5D4  mov     rcx, rax                                  
+  0x180CCE5D7  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CCE5DC  mov     qword ptr [rbx + 0x10], rax                  ; rbx->DialogManager._addDialogSubject | <>c.<>9__5_1
+  0x180CCE5E0  mov     eax, dword ptr [rip + 0x240abde]             ; data_30D91C4
+  0x180CCE5E6  test    eax, eax                                  
+  0x180CCE5E8  je      0x180cce63f                               
+  0x180CCE5EA  lea     r8, [rbx + 0x10]                             ; rbx->DialogManager._addDialogSubject | <>c.<>9__5_1
+  0x180CCE5EE  shr     r8, 0xc                                   
+  0x180CCE5F2  and     r8d, 0x1fffff                             
+  0x180CCE5F9  mov     eax, r8d                                  
+  0x180CCE5FC  shr     rax, 6                                    
+  0x180CCE600  lea     rdx, [rax*8]                              
+  0x180CCE608  add     rdx, rbp                                  
+  0x180CCE60B  and     r8d, 0x3f                                 
+  0x180CCE60F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCE616  nop     word ptr [rax + rax]                      
+
+180CCE620:
+  0x180CCE620  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE627  mov     rcx, rax                                  
+  0x180CCE62A  bts     rcx, r8                                   
+  0x180CCE62E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE637  jne     0x180cce620                               
+  0x180CCE639  mov     eax, dword ptr [rip + 0x240ab85]             ; data_30D91C4
+
+180CCE63F:
+  0x180CCE63F  mov     qword ptr [rdi + 0x20], rbx                  ; rdi->DialogManager._dialogs | <>c.<>9__5_3
+  0x180CCE643  test    eax, eax                                  
+  0x180CCE645  je      0x180cce699                               
+  0x180CCE647  lea     r8, [rdi + 0x20]                             ; rdi->DialogManager._dialogs | <>c.<>9__5_3
+  0x180CCE64B  shr     r8, 0xc                                   
+  0x180CCE64F  and     r8d, 0x1fffff                             
+  0x180CCE656  mov     eax, r8d                                  
+  0x180CCE659  shr     rax, 6                                    
+  0x180CCE65D  lea     rdx, [rax*8]                              
+  0x180CCE665  add     rdx, rbp                                  
+  0x180CCE668  and     r8d, 0x3f                                 
+  0x180CCE66C  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCE673  nop     dword ptr [rax]                           
+  0x180CCE677  nop     word ptr [rax + rax]                      
+
+180CCE680:
+  0x180CCE680  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE687  mov     rcx, rax                                  
+  0x180CCE68A  bts     rcx, r8                                   
+  0x180CCE68E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE697  jne     0x180cce680                               
+
+180CCE699:
+  0x180CCE699  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CCE69E  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180CCE6A3  mov     dword ptr [rdi + 0x28], esi                  ; rdi->DialogManager._baseSortingOrder
+  0x180CCE6A6  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180CCE6AB  add     rsp, 0x20                                 
+  0x180CCE6AF  pop     rdi                                       
+  0x180CCE6B0  ret                                               

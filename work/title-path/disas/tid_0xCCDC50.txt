@@ -1,0 +1,69 @@
+====================================================================================================
+FUNCTION RVA 0xCCDC50  VA 0x180CCDC50  size 0xD5 (213 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$PrintMembers
+  csig   : bool GigaCreation_Essentials_Dialogs_Views_TextInsertData__PrintMembers (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, System_Text_StringBuilder_o* builder, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: protected virtual bool PrintMembers(StringBuilder builder)
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCDC50  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCDC55  push    rdi                                       
+  0x180CCDC56  sub     rsp, 0x20                                 
+  0x180CCDC5A  cmp     byte ptr [rip + 0x240f49b], 0                ; data_30DD0FC
+  0x180CCDC61  mov     rbx, rdx                                  
+  0x180CCDC64  mov     rdi, rcx                                  
+  0x180CCDC67  jne     0x180ccdc92                               
+  0x180CCDC69  lea     rcx, [rip + 0x21994a0]                       ; STR ', Texts = '
+  0x180CCDC70  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDC75  lock or dword ptr [rsp], 0                        
+  0x180CCDC7A  lea     rcx, [rip + 0x219947f]                       ; STR 'LabelId = '
+  0x180CCDC81  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDC86  lock or dword ptr [rsp], 0                        
+  0x180CCDC8B  mov     byte ptr [rip + 0x240f46a], 1                ; data_30DD0FC
+
+180CCDC92:
+  0x180CCDC92  test    rbx, rbx                                  
+  0x180CCDC95  je      0x180ccdd20                               
+  0x180CCDC9B  mov     rdx, qword ptr [rip + 0x219945e]             ; STR 'LabelId = '
+  0x180CCDCA2  xor     r8d, r8d                                  
+  0x180CCDCA5  mov     rcx, rbx                                  
+  0x180CCDCA8  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180CCDCAD  mov     rcx, qword ptr [rdi + 0x10]                  ; rdi->TextInsertData.<LabelId>k__BackingField
+  0x180CCDCB1  test    rcx, rcx                                  
+  0x180CCDCB4  je      0x180ccdcd7                               
+  0x180CCDCB6  mov     rdx, qword ptr [rcx]                      
+  0x180CCDCB9  mov     rax, qword ptr [rdx + 0x168]              
+  0x180CCDCC0  mov     rdx, qword ptr [rdx + 0x170]              
+  0x180CCDCC7  call    rax                                       
+  0x180CCDCC9  xor     r8d, r8d                                  
+  0x180CCDCCC  mov     rdx, rax                                  
+  0x180CCDCCF  mov     rcx, rbx                                  
+  0x180CCDCD2  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+
+180CCDCD7:
+  0x180CCDCD7  mov     rdx, qword ptr [rip + 0x2199432]             ; STR ', Texts = '
+  0x180CCDCDE  xor     r8d, r8d                                  
+  0x180CCDCE1  mov     rcx, rbx                                  
+  0x180CCDCE4  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+  0x180CCDCE9  mov     rcx, qword ptr [rdi + 0x18]                  ; rdi->TextInsertData.<Texts>k__BackingField
+  0x180CCDCED  test    rcx, rcx                                  
+  0x180CCDCF0  je      0x180ccdd13                               
+  0x180CCDCF2  mov     rdx, qword ptr [rcx]                      
+  0x180CCDCF5  mov     rax, qword ptr [rdx + 0x168]              
+  0x180CCDCFC  mov     rdx, qword ptr [rdx + 0x170]              
+  0x180CCDD03  call    rax                                       
+  0x180CCDD05  xor     r8d, r8d                                  
+  0x180CCDD08  mov     rdx, rax                                  
+  0x180CCDD0B  mov     rcx, rbx                                  
+  0x180CCDD0E  call    0x180e34ef0                                  ; -> System.Text.StringBuilder$$Append
+
+180CCDD13:
+  0x180CCDD13  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CCDD18  mov     al, 1                                     
+  0x180CCDD1A  add     rsp, 0x20                                 
+  0x180CCDD1E  pop     rdi                                       
+  0x180CCDD1F  ret                                               
+
+180CCDD20:
+  0x180CCDD20  call    0x180246730                                  ; THROW NullReferenceException

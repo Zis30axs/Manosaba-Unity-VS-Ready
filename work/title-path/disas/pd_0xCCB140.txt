@@ -1,0 +1,778 @@
+====================================================================================================
+FUNCTION RVA 0xCCB140  VA 0x180CCB140  size 0xA5E (2654 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<OnResponseAsync>d__26$$MoveNext
+  csig   : void GigaCreation_Essentials_Dialogs_Views_ProvidableDialog__OnResponseAsync_d__26__MoveNext (GigaCreation_Essentials_Dialogs_Views_ProvidableDialog__OnResponseAsync_d__26_o __this, const MethodInfo* method);
+  dump.cs: ProvidableDialog.<OnResponseAsync>d__26 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Dialogs.Views.ProvidableDialog:
+      +0x90   _generalScreen                 GeneralScreen
+      +0x98   _viewRootTransform             Transform
+      +0xA0   _scaleUpDuration               float
+      +0xA4   _scaleDownDuration             float
+      +0xA8   _inputManager                  IInputManager
+      +0xB0   _presentCts                    CancellationTokenSource
+      +0xB8   _dismissCts                    CancellationTokenSource
+      +0xC0   <InUse>k__BackingField         bool
+  fields of ProvidableDialog.<>c__DisplayClass21_0:
+      +0x10   textInsertData                 TextInsertData
+  fields of ProvidableDialog.<>c__DisplayClass26_0:
+      +0x10   linkedCts                      CancellationTokenSource
+  fields of ProvidableDialog.<ConfirmAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      ProvidableDialog
+      +0x28   dialogData                     DialogData
+      +0x30   textInsertData                 TextInsertData
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ResponseKind>
+  fields of ProvidableDialog.<DismissAndReleaseAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<DismissAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<DisposeAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<OnResponseAsync>d__26:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   ct                             CancellationToken
+      +0x28   <>4__this                      ProvidableDialog
+      +0x30   <>8__1                         ProvidableDialog.<>c__DisplayClass26_0
+      +0x38   <>u__1                         UniTask.Awaiter<ValueTuple<int, ResponseKind>>
+  fields of ProvidableDialog.<PlayDismissAnimationAsync>d__24:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<PlayPresentAnimationAsync>d__22:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   timePosition                   float
+      +0x30   <manualMotionSkipper>5__2      IManualMotionSkipper
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<RebuildAndPresentAsync>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   dialogData                     DialogData
+      +0x30   textInsertData                 TextInsertData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter<float>
+      +0x50   <>u__2                         UniTask.Awaiter
+  fields of ProvidableDialog.<ScaleAsync>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   duration                       float
+      +0x1C   from                           Nullable<float>
+      +0x28   <>4__this                      ProvidableDialog
+      +0x30   to                             float
+      +0x34   ease                           Ease
+      +0x38   updateMotionManually           bool
+      +0x40   ct                             CancellationToken
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CCB140  mov     qword ptr [rsp + 8], rcx                  
+  0x180CCB145  push    rbp                                       
+  0x180CCB146  push    rbx                                       
+  0x180CCB147  push    rsi                                       
+  0x180CCB148  push    rdi                                       
+  0x180CCB149  push    r12                                       
+  0x180CCB14B  push    r14                                       
+  0x180CCB14D  push    r15                                       
+  0x180CCB14F  sub     rsp, 0xe0                                 
+  0x180CCB156  lea     rbp, [rsp + 0x30]                         
+  0x180CCB15B  cmp     byte ptr [rip + 0x2411f92], 0                ; data_30DD0F4
+  0x180CCB162  jne     0x180ccb2a8                               
+  0x180CCB168  lea     rcx, [rip + 0x219c161]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.AwaitUnsafeOnCompleted<UniTask.Awaiter<ValueTuple<int, ResponseKind>>, ProvidableDialog.<OnResponseAsync>d__26>()
+  0x180CCB16F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB174  lock or dword ptr [rsp], 0                        
+  0x180CCB179  lea     rcx, [rip + 0x219c168]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetResult()
+  0x180CCB180  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB185  lock or dword ptr [rsp], 0                        
+  0x180CCB18A  lea     rcx, [rip + 0x219c137]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<ValueTuple<int, ResponseKind>>.GetResult()
+  0x180CCB191  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB196  lock or dword ptr [rsp], 0                        
+  0x180CCB19B  lea     rcx, [rip + 0x219c11e]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<ValueTuple<int, ResponseKind>>.get_IsCompleted()
+  0x180CCB1A2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1A7  lock or dword ptr [rsp], 0                        
+  0x180CCB1AC  lea     rcx, [rip + 0x21865a5]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCB1B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1B8  lock or dword ptr [rsp], 0                        
+  0x180CCB1BD  lea     rcx, [rip + 0x218e7a4]                       ; TYPE System.Threading.CancellationToken[]_TypeInfo
+  0x180CCB1C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1C9  lock or dword ptr [rsp], 0                        
+  0x180CCB1CE  lea     rcx, [rip + 0x219c0bb]                       ; METHODINFO Method$System.Linq.Enumerable.Select<RebuildableButton, UniTask<ResponseKind>>()
+  0x180CCB1D5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1DA  lock or dword ptr [rsp], 0                        
+  0x180CCB1DF  lea     rcx, [rip + 0x219c0a2]                       ; METHODINFO Method$System.Linq.Enumerable.ToList<UniTask<ResponseKind>>()
+  0x180CCB1E6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1EB  lock or dword ptr [rsp], 0                        
+  0x180CCB1F0  lea     rcx, [rip + 0x219c089]                       ; TYPE System.Func<RebuildableButton, UniTask<ResponseKind>>_TypeInfo
+  0x180CCB1F7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB1FC  lock or dword ptr [rsp], 0                        
+  0x180CCB201  lea     rcx, [rip + 0x219c070]                       ; TYPE System.Collections.Generic.ICollection<UniTask<ResponseKind>>_TypeInfo
+  0x180CCB208  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB20D  lock or dword ptr [rsp], 0                        
+  0x180CCB212  lea     rcx, [rip + 0x2186f37]                       ; TYPE System.IDisposable_TypeInfo
+  0x180CCB219  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB21E  lock or dword ptr [rsp], 0                        
+  0x180CCB223  lea     rcx, [rip + 0x2189f0e]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CCB22A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB22F  lock or dword ptr [rsp], 0                        
+  0x180CCB234  lea     rcx, [rip + 0x219c075]                       ; METHODINFO Method$GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0.<OnResponseAsync>b__0() => GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0$$<OnResponseAsync>b__0
+  0x180CCB23B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB240  lock or dword ptr [rsp], 0                        
+  0x180CCB245  lea     rcx, [rip + 0x219c05c]                       ; TYPE GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0_TypeInfo
+  0x180CCB24C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB251  lock or dword ptr [rsp], 0                        
+  0x180CCB256  lea     rcx, [rip + 0x219c043]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<ValueTuple<int, ResponseKind>>.GetAwaiter()
+  0x180CCB25D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB262  lock or dword ptr [rsp], 0                        
+  0x180CCB267  lea     rcx, [rip + 0x219c02a]                       ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.WhenAny<ResponseKind>()
+  0x180CCB26E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB273  lock or dword ptr [rsp], 0                        
+  0x180CCB278  lea     rcx, [rip + 0x2186e89]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CCB27F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB284  lock or dword ptr [rsp], 0                        
+  0x180CCB289  lea     rcx, [rip + 0x2186938]                       ; STR 'Cancel'
+  0x180CCB290  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB295  lock or dword ptr [rsp], 0                        
+  0x180CCB29A  mov     byte ptr [rip + 0x2411e53], 1                ; data_30DD0F4
+  0x180CCB2A1  mov     rcx, qword ptr [rbp + 0xf0]               
+
+180CCB2A8:
+  0x180CCB2A8  xor     r15d, r15d                                
+  0x180CCB2AB  mov     qword ptr [rbp + 0x38], r15                  ; rbp-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB2AF  xorps   xmm0, xmm0                                
+  0x180CCB2B2  movups  xmmword ptr [rbp + 0x90], xmm0               ; rbp->ProvidableDialog._generalScreen
+  0x180CCB2B9  xorps   xmm1, xmm1                                
+  0x180CCB2BC  xor     eax, eax                                  
+  0x180CCB2BE  movups  xmmword ptr [rbp + 0x20], xmm1               ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB2C2  mov     qword ptr [rbp + 0x30], rax                  ; rbp-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB2C6  mov     dword ptr [rbp + 0x78], r15d              
+  0x180CCB2CA  mov     eax, dword ptr [rcx]                      
+  0x180CCB2CC  mov     dword ptr [rbp + 0x100], eax              
+  0x180CCB2D2  mov     r14, qword ptr [rcx + 0x28]                  ; rcx-><ConfirmAsync>d__19.dialogData | <DismissAndReleaseAsync>d__27.<>u__1 | <DismissAsync>d__23.<linkedCts>5__2
+  0x180CCB2D6  cmp     dword ptr [rbp + 0x100], r15d             
+  0x180CCB2DD  je      0x180ccb40b                               
+  0x180CCB2E3  mov     rcx, qword ptr [rip + 0x219bfbe]             ; TYPE GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0_TypeInfo
+  0x180CCB2EA  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCB2EF  mov     rcx, qword ptr [rbp + 0xf0]               
+  0x180CCB2F6  mov     qword ptr [rcx + 0x30], rax                  ; rcx-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB2FA  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB301  lea     r8, [rax + 0x30]                             ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB305  lea     r12, [rip + 0x2422f94]                       ; data_30EE2A0
+  0x180CCB30C  cmp     dword ptr [rip + 0x240deb1], r15d            ; data_30D91C4
+  0x180CCB313  je      0x180ccb360                               
+  0x180CCB315  shr     r8, 0xc                                   
+  0x180CCB319  and     r8d, 0x1fffff                             
+  0x180CCB320  mov     eax, r8d                                  
+  0x180CCB323  shr     rax, 6                                    
+  0x180CCB327  lea     rdx, [r12 + rax*8]                        
+  0x180CCB32B  and     r8d, 0x3f                                 
+  0x180CCB32F  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCB336  nop     word ptr [rax + rax]                      
+
+180CCB340:
+  0x180CCB340  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCB347  mov     rcx, rax                                  
+  0x180CCB34A  bts     rcx, r8                                   
+  0x180CCB34E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCB357  jne     0x180ccb340                               
+  0x180CCB359  mov     rax, qword ptr [rbp + 0xf0]               
+
+180CCB360:
+  0x180CCB360  mov     rdi, qword ptr [rax + 0x30]                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB364  mov     edx, 1                                    
+  0x180CCB369  mov     rcx, qword ptr [rip + 0x218e5f8]             ; TYPE System.Threading.CancellationToken[]_TypeInfo
+  0x180CCB370  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CCB375  mov     rbx, rax                                  
+  0x180CCB378  mov     r8, qword ptr [rbp + 0xf0]                
+  0x180CCB37F  test    rax, rax                                  
+  0x180CCB382  je      0x180ccbabe                               
+  0x180CCB388  mov     r8, qword ptr [r8 + 0x20]                    ; r8-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB38C  xor     edx, edx                                  
+  0x180CCB38E  mov     rcx, rax                                  
+  0x180CCB391  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CCB396  mov     rcx, qword ptr [rip + 0x21863bb]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCB39D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCB3A4  jne     0x180ccb3ab                               
+  0x180CCB3A6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCB3AB:
+  0x180CCB3AB  xor     edx, edx                                  
+  0x180CCB3AD  mov     rcx, rbx                                  
+  0x180CCB3B0  call    0x1810a39d0                                  ; -> System.Threading.CancellationTokenSource$$CreateLinkedTokenSource
+  0x180CCB3B5  test    rdi, rdi                                  
+  0x180CCB3B8  je      0x180ccbab9                               
+  0x180CCB3BE  mov     qword ptr [rdi + 0x10], rax                  ; rdi-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB3C2  cmp     dword ptr [rip + 0x240ddfb], 0               ; data_30D91C4
+  0x180CCB3C9  je      0x180ccb412                               
+  0x180CCB3CB  lea     r8, [rdi + 0x10]                             ; rdi-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB3CF  shr     r8, 0xc                                   
+  0x180CCB3D3  and     r8d, 0x1fffff                             
+  0x180CCB3DA  mov     eax, r8d                                  
+  0x180CCB3DD  shr     rax, 6                                    
+  0x180CCB3E1  lea     rdx, [r12 + rax*8]                        
+  0x180CCB3E5  and     r8d, 0x3f                                 
+  0x180CCB3E9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CCB3F0:
+  0x180CCB3F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCB3F7  mov     rcx, rax                                  
+  0x180CCB3FA  bts     rcx, r8                                   
+  0x180CCB3FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCB407  jne     0x180ccb3f0                               
+  0x180CCB409  jmp     0x180ccb412                               
+
+180CCB40B:
+  0x180CCB40B  lea     r12, [rip + 0x2422e8e]                       ; data_30EE2A0
+
+180CCB412:
+  0x180CCB412  mov     qword ptr [rbp + 0x58], r15               
+  0x180CCB416  lea     rax, [rbp + 0x100]                        
+  0x180CCB41D  mov     qword ptr [rbp + 0x60], rax               
+  0x180CCB421  lea     rax, [rbp + 0xf0]                         
+  0x180CCB428  mov     qword ptr [rbp + 0x68], rax               
+  0x180CCB42C  cmp     dword ptr [rbp + 0x100], 0                
+  0x180CCB433  jne     0x180ccb477                               
+  0x180CCB435  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB43C  movups  xmm0, xmmword ptr [rax + 0x38]               ; rax-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB440  movups  xmmword ptr [rbp + 0x20], xmm0               ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB444  movsd   xmm1, qword ptr [rax + 0x48]                 ; rax-><ScaleAsync>d__25.<>u__1
+  0x180CCB449  movsd   qword ptr [rbp + 0x30], xmm1                 ; rbp-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB44E  xorps   xmm0, xmm0                                
+  0x180CCB451  xor     ecx, ecx                                  
+  0x180CCB453  movups  xmmword ptr [rax + 0x38], xmm0               ; rax-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB457  mov     qword ptr [rax + 0x48], rcx                  ; rax-><ScaleAsync>d__25.<>u__1
+  0x180CCB45B  mov     dword ptr [rbp + 0x100], 0xffffffff       
+  0x180CCB465  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB46C  mov     dword ptr [rax], 0xffffffff               
+  0x180CCB472  jmp     0x180ccb81f                               
+
+180CCB477:
+  0x180CCB477  test    r14, r14                                  
+  0x180CCB47A  je      0x180ccbb39                               
+  0x180CCB480  mov     rbx, qword ptr [r14 + 0x78]               
+  0x180CCB484  test    rbx, rbx                                  
+  0x180CCB487  jne     0x180ccb4e9                               
+  0x180CCB489  xor     edx, edx                                  
+  0x180CCB48B  mov     rcx, r14                                  
+  0x180CCB48E  call    0x180cdd9e0                                  ; -> GigaCreation.Essentials.Ui.RebuildableDialog$$get_ExistingResponseButtons
+  0x180CCB493  mov     rbx, rax                                  
+  0x180CCB496  mov     qword ptr [r14 + 0x78], rax               
+  0x180CCB49A  cmp     dword ptr [rip + 0x240dd23], 0               ; data_30D91C4
+  0x180CCB4A1  je      0x180ccb4e9                               
+  0x180CCB4A3  lea     r8, [r14 + 0x78]                          
+  0x180CCB4A7  shr     r8, 0xc                                   
+  0x180CCB4AB  and     r8d, 0x1fffff                             
+  0x180CCB4B2  mov     eax, r8d                                  
+  0x180CCB4B5  shr     rax, 6                                    
+  0x180CCB4B9  lea     rdx, [r12 + rax*8]                        
+  0x180CCB4BD  and     r8d, 0x3f                                 
+  0x180CCB4C1  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCB4C8  nop     dword ptr [rax + rax]                     
+
+180CCB4D0:
+  0x180CCB4D0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCB4D7  mov     rcx, rax                                  
+  0x180CCB4DA  bts     rcx, r8                                   
+  0x180CCB4DE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCB4E7  jne     0x180ccb4d0                               
+
+180CCB4E9:
+  0x180CCB4E9  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB4F0  mov     rsi, qword ptr [rax + 0x30]                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB4F4  mov     rcx, qword ptr [rip + 0x219bd85]             ; TYPE System.Func<RebuildableButton, UniTask<ResponseKind>>_TypeInfo
+  0x180CCB4FB  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCB500  mov     rdi, rax                                  
+  0x180CCB503  xor     r9d, r9d                                  
+  0x180CCB506  mov     r8, qword ptr [rip + 0x219bda3]              ; METHODINFO Method$GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0.<OnResponseAsync>b__0() => GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass26_0$$<OnResponseAsync>b__0
+  0x180CCB50D  mov     rdx, rsi                                  
+  0x180CCB510  mov     rcx, rax                                  
+  0x180CCB513  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CCB518  mov     r8, qword ptr [rip + 0x219bd71]              ; METHODINFO Method$System.Linq.Enumerable.Select<RebuildableButton, UniTask<ResponseKind>>()
+  0x180CCB51F  mov     rdx, rdi                                  
+  0x180CCB522  mov     rcx, rbx                                  
+  0x180CCB525  call    0x180689630                                  ; -> System.Linq.Enumerable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180CCB52A  mov     rsi, rax                                  
+  0x180CCB52D  mov     rbx, qword ptr [rip + 0x219bd54]             ; METHODINFO Method$System.Linq.Enumerable.ToList<UniTask<ResponseKind>>()
+  0x180CCB534  cmp     qword ptr [rbx + 0x38], 0                    ; rbx-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB539  jne     0x180ccb543                               
+  0x180CCB53B  mov     rcx, rbx                                  
+  0x180CCB53E  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CCB543:
+  0x180CCB543  test    rsi, rsi                                  
+  0x180CCB546  je      0x180ccbb18                               
+  0x180CCB54C  mov     rax, qword ptr [rbx + 0x38]                  ; rbx-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB550  mov     rax, qword ptr [rax + 8]                  
+  0x180CCB554  test    byte ptr [rax + 0x135], 1                 
+  0x180CCB55B  jne     0x180ccb565                               
+  0x180CCB55D  mov     rcx, rax                                  
+  0x180CCB560  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCB565:
+  0x180CCB565  mov     rcx, rax                                  
+  0x180CCB568  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCB56D  mov     rdi, rax                                  
+  0x180CCB570  mov     r8, qword ptr [rbx + 0x38]                   ; rbx-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB574  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB578  mov     rdx, rsi                                  
+  0x180CCB57B  mov     rcx, rax                                  
+  0x180CCB57E  call    0x180857de0                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CCB583  cmp     byte ptr [r14 + 0x6c], 0                  
+  0x180CCB588  je      0x180ccb6c1                               
+  0x180CCB58E  xor     edx, edx                                  
+  0x180CCB590  mov     rcx, r14                                  
+  0x180CCB593  call    0x180cc8370                                  ; -> GigaCreation.Essentials.Dialogs.Views.ProvidableDialog$$get_InputManager
+  0x180CCB598  test    rax, rax                                  
+  0x180CCB59B  je      0x180ccbaec                               
+  0x180CCB5A1  lea     rcx, [rbp + 0x38]                            ; rbp-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB5A5  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CCB5AA  mov     r9, qword ptr [rip + 0x2186617]              ; STR 'Cancel'
+  0x180CCB5B1  mov     r8, rax                                   
+  0x180CCB5B4  call    0x180008090                                  ; -> sub_8090 (runtime/helper)
+  0x180CCB5B9  test    al, al                                    
+  0x180CCB5BB  je      0x180ccb62e                               
+  0x180CCB5BD  mov     rbx, qword ptr [rbp + 0x38]                  ; rbp-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB5C1  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB5C8  mov     rcx, qword ptr [rax + 0x30]                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB5CC  test    rcx, rcx                                  
+  0x180CCB5CF  je      0x180ccbace                               
+  0x180CCB5D5  mov     rcx, qword ptr [rcx + 0x10]                  ; rcx-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB5D9  test    rcx, rcx                                  
+  0x180CCB5DC  je      0x180ccbac9                               
+  0x180CCB5E2  xor     edx, edx                                  
+  0x180CCB5E4  call    0x1810a22f0                                  ; -> System.Threading.CancellationTokenSource$$get_Token
+  0x180CCB5E9  xor     r9d, r9d                                  
+  0x180CCB5EC  mov     r8, rax                                   
+  0x180CCB5EF  mov     rdx, rbx                                  
+  0x180CCB5F2  lea     rcx, [rbp]                                
+  0x180CCB5F6  call    0x180cd0800                                  ; -> GigaCreation.Essentials.Input.InputSystemExtensions$$OnPerformAsync
+  0x180CCB5FB  movups  xmm0, xmmword ptr [rax]                   
+  0x180CCB5FE  movaps  xmmword ptr [rbp], xmm0                   
+  0x180CCB602  xor     r8d, r8d                                  
+  0x180CCB605  lea     rdx, [rbp]                                
+  0x180CCB609  lea     rcx, [rbp + 0x40]                            ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB60D  call    0x180cd0a80                                  ; -> GigaCreation.Essentials.Input.ResponseExtensions$$ToCancel
+  0x180CCB612  test    rdi, rdi                                  
+  0x180CCB615  je      0x180ccbac4                               
+  0x180CCB61B  movups  xmm0, xmmword ptr [rax]                   
+  0x180CCB61E  movaps  xmmword ptr [rbp], xmm0                   
+  0x180CCB622  lea     r9, [rbp]                                 
+  0x180CCB626  mov     r8, rdi                                   
+  0x180CCB629  call    0x18007f260                                  ; -> sub_7F260 (runtime/helper)
+
+180CCB62E:
+  0x180CCB62E  mov     rbx, qword ptr [r14 + 0x90]                  ; r14->ProvidableDialog._generalScreen
+  0x180CCB635  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB63C  mov     rcx, qword ptr [rax + 0x30]                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB640  test    rcx, rcx                                  
+  0x180CCB643  je      0x180ccbae7                               
+  0x180CCB649  mov     rcx, qword ptr [rcx + 0x10]                  ; rcx-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB64D  test    rcx, rcx                                  
+  0x180CCB650  je      0x180ccbae2                               
+  0x180CCB656  xor     edx, edx                                  
+  0x180CCB658  call    0x1810a22f0                                  ; -> System.Threading.CancellationTokenSource$$get_Token
+  0x180CCB65D  test    rbx, rbx                                  
+  0x180CCB660  je      0x180ccbadd                               
+  0x180CCB666  mov     rcx, qword ptr [rbx + 0x30]                  ; rbx-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB66A  test    rcx, rcx                                  
+  0x180CCB66D  je      0x180ccbad8                               
+  0x180CCB673  xor     r9d, r9d                                  
+  0x180CCB676  mov     r8, rax                                   
+  0x180CCB679  lea     rdx, [rbp + 0x90]                            ; rbp->ProvidableDialog._generalScreen
+  0x180CCB680  call    0x180cea400                                  ; -> GigaCreation.Essentials.Ui.Underlay$$TryGetClickTask
+  0x180CCB685  test    al, al                                    
+  0x180CCB687  je      0x180ccb6c1                               
+  0x180CCB689  movaps  xmm0, xmmword ptr [rbp + 0x90]               ; rbp->ProvidableDialog._generalScreen
+  0x180CCB690  movdqa  xmmword ptr [rbp], xmm0                   
+  0x180CCB695  xor     r8d, r8d                                  
+  0x180CCB698  lea     rdx, [rbp]                                
+  0x180CCB69C  lea     rcx, [rbp + 0x40]                            ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB6A0  call    0x180cd0a80                                  ; -> GigaCreation.Essentials.Input.ResponseExtensions$$ToCancel
+  0x180CCB6A5  test    rdi, rdi                                  
+  0x180CCB6A8  je      0x180ccbad3                               
+  0x180CCB6AE  movups  xmm0, xmmword ptr [rax]                   
+  0x180CCB6B1  movaps  xmmword ptr [rbp], xmm0                   
+  0x180CCB6B5  lea     r9, [rbp]                                 
+  0x180CCB6B9  mov     r8, rdi                                   
+  0x180CCB6BC  call    0x18007f260                                  ; -> sub_7F260 (runtime/helper)
+
+180CCB6C1:
+  0x180CCB6C1  mov     rcx, qword ptr [rip + 0x2186a40]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CCB6C8  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCB6CF  jne     0x180ccb6d6                               
+  0x180CCB6D1  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCB6D6:
+  0x180CCB6D6  mov     r8, qword ptr [rip + 0x219bbbb]              ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.WhenAny<ResponseKind>()
+  0x180CCB6DD  lea     rdx, [rbp + 0x40]                            ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB6E1  mov     rcx, rdi                                  
+  0x180CCB6E4  call    0x18077e9f0                                  ; -> Cysharp.Threading.Tasks.UniTask$$WhenAny<__Il2CppFullySharedGenericType>
+  0x180CCB6E9  movups  xmm0, xmmword ptr [rbp + 0x40]               ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB6ED  movups  xmmword ptr [rbp], xmm0                   
+  0x180CCB6F1  movsd   xmm1, qword ptr [rbp + 0x50]                 ; rbp-><ConfirmAsync>d__19.<>u__2 | <RebuildAndPresentAsync>d__20.<>u__2
+  0x180CCB6F6  movsd   qword ptr [rbp + 0x10], xmm1                 ; rbp-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB6FB  mov     rsi, qword ptr [rip + 0x219bb9e]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask<ValueTuple<int, ResponseKind>>.GetAwaiter()
+  0x180CCB702  mov     rax, qword ptr [rsi + 0x20]                  ; rsi-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB706  test    byte ptr [rax + 0x135], 1                 
+  0x180CCB70D  jne     0x180ccb717                               
+  0x180CCB70F  mov     rcx, rax                                  
+  0x180CCB712  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCB717:
+  0x180CCB717  mov     rax, qword ptr [rax + 0xc0]                  ; rax->ProvidableDialog.<InUse>k__BackingField
+  0x180CCB71E  mov     rcx, qword ptr [rax + 0x20]                  ; rax-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB722  mov     ebx, dword ptr [rcx + 0xfc]               
+  0x180CCB728  lea     rax, [rbx + 0xf]                          
+  0x180CCB72C  cmp     rax, rbx                                  
+  0x180CCB72F  ja      0x180ccb73b                               
+  0x180CCB731  movabs  rax, 0xffffffffffffff0                    
+
+180CCB73B:
+  0x180CCB73B  and     rax, 0xfffffffffffffff0                   
+  0x180CCB73F  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CCB744  sub     rsp, rax                                  
+  0x180CCB747  lea     rdi, [rsp + 0x30]                         
+  0x180CCB74C  mov     r8, rbx                                   
+  0x180CCB74F  xor     edx, edx                                  
+  0x180CCB751  mov     rcx, rdi                                  
+  0x180CCB754  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x180CCB759  mov     rax, qword ptr [rsi + 0x20]                  ; rsi-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB75D  test    byte ptr [rax + 0x135], 1                 
+  0x180CCB764  jne     0x180ccb76e                               
+  0x180CCB766  mov     rcx, rax                                  
+  0x180CCB769  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCB76E:
+  0x180CCB76E  mov     r8, qword ptr [rax + 0xc0]                   ; rax->ProvidableDialog.<InUse>k__BackingField
+  0x180CCB775  mov     r8, qword ptr [r8 + 0x28]                    ; r8-><ConfirmAsync>d__19.dialogData | <DismissAndReleaseAsync>d__27.<>u__1 | <DismissAsync>d__23.<linkedCts>5__2
+  0x180CCB779  lea     rdx, [rbp]                                
+  0x180CCB77D  mov     rcx, rdi                                  
+  0x180CCB780  call    0x180002850                                  ; -> sub_2850 (runtime/helper)
+  0x180CCB785  mov     r8, rbx                                   
+  0x180CCB788  mov     rdx, rdi                                  
+  0x180CCB78B  lea     rcx, [rbp + 0x40]                            ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB78F  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CCB794  movups  xmm0, xmmword ptr [rbp + 0x40]               ; rbp-><ConfirmAsync>d__19.<>u__1 | <RebuildAndPresentAsync>d__20.<>u__1 | <ScaleAsync>d__25.ct
+  0x180CCB798  movups  xmmword ptr [rbp + 0x20], xmm0               ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB79C  movsd   xmm1, qword ptr [rbp + 0x50]                 ; rbp-><ConfirmAsync>d__19.<>u__2 | <RebuildAndPresentAsync>d__20.<>u__2
+  0x180CCB7A1  movsd   qword ptr [rbp + 0x30], xmm1                 ; rbp-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB7A6  mov     rbx, qword ptr [rip + 0x219bb13]             ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<ValueTuple<int, ResponseKind>>.get_IsCompleted()
+  0x180CCB7AD  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB7B1  test    byte ptr [rax + 0x135], 1                 
+  0x180CCB7B8  jne     0x180ccb7c2                               
+  0x180CCB7BA  mov     rcx, rax                                  
+  0x180CCB7BD  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCB7C2:
+  0x180CCB7C2  mov     rax, qword ptr [rax + 0xc0]                  ; rax->ProvidableDialog.<InUse>k__BackingField
+  0x180CCB7C9  mov     rdi, qword ptr [rax + 0x18]                  ; rax-><DismissAndReleaseAsync>d__27.<>4__this | <DismissAsync>d__23.<>4__this | <DisposeAsync>d__18.<>4__this
+  0x180CCB7CD  mov     rax, qword ptr [rbx + 0x20]                  ; rbx-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB7D1  test    byte ptr [rax + 0x135], 1                 
+  0x180CCB7D8  jne     0x180ccb7e2                               
+  0x180CCB7DA  mov     rcx, rax                                  
+  0x180CCB7DD  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CCB7E2:
+  0x180CCB7E2  mov     rax, qword ptr [rax + 0xc0]                  ; rax->ProvidableDialog.<InUse>k__BackingField
+  0x180CCB7E9  mov     rcx, qword ptr [rax + 0x10]                  ; rax-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB7ED  mov     r8, qword ptr [rcx + 0x80]                
+  0x180CCB7F4  movsxd  rax, dword ptr [r8 + 0x18]                   ; r8-><DismissAndReleaseAsync>d__27.<>4__this | <DismissAsync>d__23.<>4__this | <DisposeAsync>d__18.<>4__this
+  0x180CCB7F8  lea     r9, [rbp + 0x20]                             ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB7FC  add     r9, rax                                   
+  0x180CCB7FF  mov     rax, qword ptr [r8 + 0x10]                   ; r8-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB803  lea     rcx, [r9 - 0x10]                          
+  0x180CCB807  cmp     dword ptr [rax + 0x28], 0                    ; rax-><ConfirmAsync>d__19.dialogData | <DismissAndReleaseAsync>d__27.<>u__1 | <DismissAsync>d__23.<linkedCts>5__2
+  0x180CCB80B  cmovge  rcx, r9                                   
+  0x180CCB80F  mov     rdx, rdi                                  
+  0x180CCB812  call    0x180002920                                  ; -> sub_2920 (runtime/helper)
+  0x180CCB817  test    eax, eax                                  
+  0x180CCB819  je      0x180ccb99f                               
+
+180CCB81F:
+  0x180CCB81F  mov     r8, qword ptr [rip + 0x219baa2]              ; METHODINFO Method$Cysharp.Threading.Tasks.UniTask.Awaiter<ValueTuple<int, ResponseKind>>.GetResult()
+  0x180CCB826  lea     rdx, [rbp + 0x108]                        
+  0x180CCB82D  lea     rcx, [rbp + 0x20]                            ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB831  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x180CCB836  mov     rdi, qword ptr [rbp + 0x108]              
+  0x180CCB83D  shr     rdi, 0x20                                 
+  0x180CCB841  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB848  mov     rbx, qword ptr [rax + 0x30]                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB84C  test    rbx, rbx                                  
+  0x180CCB84F  je      0x180ccbb13                               
+  0x180CCB855  mov     rbx, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCB859  test    rbx, rbx                                  
+  0x180CCB85C  je      0x180ccbb0e                               
+  0x180CCB862  cmp     byte ptr [rip + 0x24132f1], 0                ; data_30DEB5A
+  0x180CCB869  jne     0x180ccb883                               
+  0x180CCB86B  lea     rcx, [rip + 0x2185ee6]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCB872  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB877  lock or dword ptr [rsp], 0                        
+  0x180CCB87C  mov     byte ptr [rip + 0x24132d7], 1                ; data_30DEB5A
+
+180CCB883:
+  0x180CCB883  cmp     byte ptr [rbx + 0x28], 0                     ; rbx-><ConfirmAsync>d__19.dialogData | <DismissAndReleaseAsync>d__27.<>u__1 | <DismissAsync>d__23.<linkedCts>5__2
+  0x180CCB887  jne     0x180ccbafb                               
+  0x180CCB88D  xor     r8d, r8d                                  
+  0x180CCB890  xor     edx, edx                                  
+  0x180CCB892  mov     rcx, rbx                                  
+  0x180CCB895  call    0x1810a2fb0                                  ; -> System.Threading.CancellationTokenSource$$NotifyCancellation
+  0x180CCB89A  test    r14, r14                                  
+  0x180CCB89D  je      0x180ccbaf6                               
+  0x180CCB8A3  cmp     byte ptr [rip + 0x2411844], 0                ; data_30DD0EE
+  0x180CCB8AA  jne     0x180ccb8c4                               
+  0x180CCB8AC  lea     rcx, [rip + 0x2189885]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CCB8B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCB8B8  lock or dword ptr [rsp], 0                        
+  0x180CCB8BD  mov     byte ptr [rip + 0x241182a], 1                ; data_30DD0EE
+
+180CCB8C4:
+  0x180CCB8C4  xor     edx, edx                                  
+  0x180CCB8C6  mov     rcx, r14                                  
+  0x180CCB8C9  call    0x180cc8370                                  ; -> GigaCreation.Essentials.Dialogs.Views.ProvidableDialog$$get_InputManager
+  0x180CCB8CE  mov     r9d, r15d                                 
+  0x180CCB8D1  test    edi, edi                                  
+  0x180CCB8D3  setne   r9b                                       
+  0x180CCB8D7  test    rax, rax                                  
+  0x180CCB8DA  je      0x180ccbaf1                               
+  0x180CCB8E0  xor     ecx, ecx                                  
+  0x180CCB8E2  mov     r8, rax                                   
+  0x180CCB8E5  mov     rdx, qword ptr [rip + 0x218984c]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CCB8EC  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180CCB8F1  nop                                               
+  0x180CCB8F2  lea     rcx, [rbp + 0x60]                         
+  0x180CCB8F6  call    0x180ccbb50                                  ; -> sub_CCBB50 (runtime/helper)
+  0x180CCB8FB  nop                                               
+  0x180CCB8FC  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB903  mov     dword ptr [rax], 0xfffffffe               
+  0x180CCB909  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB910  mov     qword ptr [rax + 0x30], r15                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB914  cmp     dword ptr [rip + 0x240d8a9], 0               ; data_30D91C4
+  0x180CCB91B  je      0x180ccb969                               
+  0x180CCB91D  mov     r8, qword ptr [rbp + 0xf0]                
+  0x180CCB924  add     r8, 0x30                                  
+  0x180CCB928  shr     r8, 0xc                                   
+  0x180CCB92C  and     r8d, 0x1fffff                             
+  0x180CCB933  mov     eax, r8d                                  
+  0x180CCB936  shr     rax, 6                                    
+  0x180CCB93A  lea     rdx, [r12 + rax*8]                        
+  0x180CCB93E  and     r8d, 0x3f                                 
+  0x180CCB942  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCB949  nop     dword ptr [rax]                           
+
+180CCB950:
+  0x180CCB950  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCB957  mov     rcx, rax                                  
+  0x180CCB95A  bts     rcx, r8                                   
+  0x180CCB95E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCB967  jne     0x180ccb950                               
+
+180CCB969:
+  0x180CCB969  mov     dword ptr [rbp + 0x108], edi              
+  0x180CCB96F  mov     rcx, qword ptr [rbp + 0xf0]               
+  0x180CCB976  add     rcx, 8                                    
+  0x180CCB97A  mov     r8, qword ptr [rip + 0x219b967]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetResult()
+  0x180CCB981  lea     rdx, [rbp + 0x108]                        
+  0x180CCB988  call    0x1803564e0                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetResult
+
+180CCB98D:
+  0x180CCB98D  lea     rsp, [rbp + 0xb0]                            ; rbp->ProvidableDialog._presentCts
+  0x180CCB994  pop     r15                                       
+  0x180CCB996  pop     r14                                       
+  0x180CCB998  pop     r12                                       
+  0x180CCB99A  pop     rdi                                       
+  0x180CCB99B  pop     rsi                                       
+  0x180CCB99C  pop     rbx                                       
+  0x180CCB99D  pop     rbp                                       
+  0x180CCB99E  ret                                               
+
+180CCB99F:
+  0x180CCB99F  mov     dword ptr [rbp + 0x100], r15d             
+  0x180CCB9A6  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB9AD  mov     dword ptr [rax], r15d                     
+  0x180CCB9B0  movups  xmm1, xmmword ptr [rbp + 0x20]               ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCB9B4  movsd   xmm0, qword ptr [rbp + 0x30]                 ; rbp-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCB9B9  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB9C0  movups  xmmword ptr [rax + 0x38], xmm1               ; rax-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB9C4  movsd   qword ptr [rax + 0x48], xmm0                 ; rax-><ScaleAsync>d__25.<>u__1
+  0x180CCB9C9  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCB9D0  lea     r8, [rax + 0x38]                             ; rax-><ConfirmAsync>d__19.ct | <OnResponseAsync>d__26.<>u__1 | <PlayPresentAnimationAsync>d__22.<>u__1
+  0x180CCB9D4  cmp     dword ptr [rip + 0x240d7e9], 0               ; data_30D91C4
+  0x180CCB9DB  je      0x180ccba20                               
+  0x180CCB9DD  shr     r8, 0xc                                   
+  0x180CCB9E1  and     r8d, 0x1fffff                             
+  0x180CCB9E8  mov     eax, r8d                                  
+  0x180CCB9EB  shr     rax, 6                                    
+  0x180CCB9EF  lea     rdx, [r12 + rax*8]                        
+  0x180CCB9F3  and     r8d, 0x3f                                 
+  0x180CCB9F7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CCB9FE  nop                                               
+
+180CCBA00:
+  0x180CCBA00  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCBA07  mov     rcx, rax                                  
+  0x180CCBA0A  bts     rcx, r8                                   
+  0x180CCBA0E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCBA17  jne     0x180ccba00                               
+  0x180CCBA19  mov     rax, qword ptr [rbp + 0xf0]               
+
+180CCBA20:
+  0x180CCBA20  lea     rcx, [rax + 8]                            
+  0x180CCBA24  mov     r9, qword ptr [rip + 0x219b8a5]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.AwaitUnsafeOnCompleted<UniTask.Awaiter<ValueTuple<int, ResponseKind>>, ProvidableDialog.<OnResponseAsync>d__26>()
+  0x180CCBA2B  mov     r8, rax                                   
+  0x180CCBA2E  lea     rdx, [rbp + 0x20]                            ; rbp-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CCBA32  call    0x180356170                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CCBA37  nop                                               
+  0x180CCBA38  lea     rcx, [rbp + 0x60]                         
+  0x180CCBA3C  call    0x180ccbb50                                  ; -> sub_CCBB50 (runtime/helper)
+  0x180CCBA41  nop                                               
+  0x180CCBA42  jmp     0x180ccb98d                               
+  0x180CCBA47  lea     rcx, [rbp + 0x60]                         
+  0x180CCBA4B  call    0x180ccbb50                                  ; -> sub_CCBB50 (runtime/helper)
+  0x180CCBA50  mov     rcx, qword ptr [rbp + 0x58]               
+  0x180CCBA54  test    rcx, rcx                                  
+  0x180CCBA57  jne     0x180ccbb3f                               
+  0x180CCBA5D  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCBA64  mov     dword ptr [rax], 0xfffffffe               
+  0x180CCBA6A  xor     r15d, r15d                                
+  0x180CCBA6D  mov     rax, qword ptr [rbp + 0xf0]               
+  0x180CCBA74  mov     qword ptr [rax + 0x30], r15                  ; rax-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCBA78  mov     rcx, qword ptr [rbp + 0xf0]               
+  0x180CCBA7F  add     rcx, 0x30                                 
+  0x180CCBA83  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+  0x180CCBA88  mov     rbx, qword ptr [rbp + 0xf0]               
+  0x180CCBA8F  lea     rcx, [rip + 0x219b87a]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetException()
+  0x180CCBA96  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCBA9B  mov     edx, dword ptr [rbp + 0x78]               
+  0x180CCBA9E  dec     edx                                       
+  0x180CCBAA0  movsxd  rdx, edx                                  
+  0x180CCBAA3  mov     r8, rax                                   
+  0x180CCBAA6  mov     rdx, qword ptr [rbp + rdx*8 + 0x70]       
+  0x180CCBAAB  lea     rcx, [rbx + 8]                            
+  0x180CCBAAF  call    0x180356390                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetException
+  0x180CCBAB4  jmp     0x180ccb98d                               
+
+180CCBAB9:
+  0x180CCBAB9  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBABE:
+  0x180CCBABE  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CCBAC3  nop                                               
+
+180CCBAC4:
+  0x180CCBAC4  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAC9:
+  0x180CCBAC9  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBACE:
+  0x180CCBACE  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAD3:
+  0x180CCBAD3  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAD8:
+  0x180CCBAD8  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBADD:
+  0x180CCBADD  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAE2:
+  0x180CCBAE2  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAE7:
+  0x180CCBAE7  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAEC:
+  0x180CCBAEC  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAF1:
+  0x180CCBAF1  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAF6:
+  0x180CCBAF6  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBAFB:
+  0x180CCBAFB  mov     rcx, qword ptr [rip + 0x2185c56]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCBB02  call    0x180004a30                                  ; -> sub_4A30 (runtime/helper)
+  0x180CCBB07  xor     ecx, ecx                                  
+  0x180CCBB09  call    0x1810a2980                                  ; -> System.Threading.CancellationTokenSource$$ThrowObjectDisposedException
+
+180CCBB0E:
+  0x180CCBB0E  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBB13:
+  0x180CCBB13  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCBB18:
+  0x180CCBB18  lea     rcx, [rip + 0x214b219]                       ; STR 'source'
+  0x180CCBB1F  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CCBB24  xor     edx, edx                                  
+  0x180CCBB26  mov     rcx, rax                                  
+  0x180CCBB29  call    0x181241a50                                  ; -> System.Linq.Error$$ArgumentNull
+  0x180CCBB2E  mov     rdx, rbx                                  
+  0x180CCBB31  mov     rcx, rax                                  
+  0x180CCBB34  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+
+180CCBB39:
+  0x180CCBB39  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CCBB3E  nop                                               
+
+180CCBB3F:
+  0x180CCBB3F  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x180CCBB44  int3                                              
+  0x180CCBB45  int3                                              
+  0x180CCBB46  int3                                              
+  0x180CCBB47  int3                                              
+  0x180CCBB48  int3                                              
+  0x180CCBB49  int3                                              
+  0x180CCBB4A  int3                                              
+  0x180CCBB4B  int3                                              
+  0x180CCBB4C  int3                                              
+  0x180CCBB4D  int3                                              
+  0x180CCBB4E  int3                                              
+  0x180CCBB4F  int3                                              
+  0x180CCBB50  sub     rsp, 0x28                                 
+  0x180CCBB54  mov     rax, qword ptr [rcx]                      
+  0x180CCBB57  cmp     dword ptr [rax], 0                        
+  0x180CCBB5A  jge     0x180ccbb94                               
+  0x180CCBB5C  mov     rax, qword ptr [rcx + 8]                  
+  0x180CCBB60  mov     rdx, qword ptr [rax]                      
+  0x180CCBB63  mov     rax, qword ptr [rdx + 0x30]                  ; rdx-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCBB67  test    rax, rax                                  
+  0x180CCBB6A  je      0x180ccbb99                               
+  0x180CCBB6C  cmp     qword ptr [rax + 0x10], 0                    ; rax-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCBB71  je      0x180ccbb94                               
+  0x180CCBB73  mov     rax, qword ptr [rcx + 8]                  
+  0x180CCBB77  mov     rdx, qword ptr [rip + 0x21865d2]             ; TYPE System.IDisposable_TypeInfo
+  0x180CCBB7E  mov     rcx, qword ptr [rax]                      
+  0x180CCBB81  mov     r8, qword ptr [rcx + 0x30]                   ; rcx-><ConfirmAsync>d__19.textInsertData | <DismissAsync>d__23.<>u__1 | <OnResponseAsync>d__26.<>8__1
+  0x180CCBB85  xor     ecx, ecx                                  
+  0x180CCBB87  mov     r8, qword ptr [r8 + 0x10]                    ; r8-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CCBB8B  add     rsp, 0x28                                 
+  0x180CCBB8F  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CCBB94:
+  0x180CCBB94  add     rsp, 0x28                                 
+  0x180CCBB98  ret                                               
+
+180CCBB99:
+  0x180CCBB99  call    0x180246730                                  ; THROW NullReferenceException

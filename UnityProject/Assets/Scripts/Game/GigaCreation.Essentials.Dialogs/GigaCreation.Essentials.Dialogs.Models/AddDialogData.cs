@@ -10,10 +10,13 @@ namespace GigaCreation.Essentials.Dialogs.Models
     	[FieldOffset(Offset = "0x10")]
     	public ProvidableDialog ProvidableDialog;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xC1B290 (shared 82 B body) -- ProvidableDialog (+0x10) = null
+    	// Annotated disassembly: work/title-path/disas/ad_0xC1B290.txt
     	[Token(Token = "0x6000044")]
     	[Address(RVA = "0xC1B290", Offset = "0xC19C90", VA = "0x180C1B290")]
     	public void Clear()
     	{
+    		ProvidableDialog = null;
     	}
 
     	[Token(Token = "0x6000045")]

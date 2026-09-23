@@ -1,0 +1,37 @@
+====================================================================================================
+FUNCTION RVA 0xCCE2F0  VA 0x180CCE2F0  size 0x68 (104 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter$$OnDestroy
+  csig   : void GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter__OnDestroy (GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter :: private void OnDestroy()
+  fields of GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter:
+      +0x20   _providableDialogPrefab        ProvidableDialog
+      +0x28   _dialogParent                  Transform
+      +0x30   _baseSortingOrder              int
+      +0x38   _dialogManager                 IDialogManager
+====================================================================================================
+  0x180CCE2F0  push    rbx                                       
+  0x180CCE2F2  sub     rsp, 0x20                                 
+  0x180CCE2F6  cmp     byte ptr [rip + 0x240ee05], 0                ; data_30DD102
+  0x180CCE2FD  mov     rbx, rcx                                  
+  0x180CCE300  jne     0x180cce32b                               
+  0x180CCE302  lea     rcx, [rip + 0x2198d7f]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<IDialogManager>()
+  0x180CCE309  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE30E  lock or dword ptr [rsp], 0                        
+  0x180CCE313  lea     rcx, [rip + 0x2183e4e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CCE31A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE31F  lock or dword ptr [rsp], 0                        
+  0x180CCE324  mov     byte ptr [rip + 0x240edd7], 1                ; data_30DD102
+
+180CCE32B:
+  0x180CCE32B  mov     rcx, qword ptr [rip + 0x2183e36]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CCE332  mov     rbx, qword ptr [rbx + 0x38]                  ; rbx->DialogPresenter._dialogManager
+  0x180CCE336  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCE33D  jne     0x180cce344                               
+  0x180CCE33F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCE344:
+  0x180CCE344  mov     rdx, qword ptr [rip + 0x2198d3d]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<IDialogManager>()
+  0x180CCE34B  mov     rcx, rbx                                  
+  0x180CCE34E  add     rsp, 0x20                                 
+  0x180CCE352  pop     rbx                                       
+  0x180CCE353  jmp     0x180752790                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Unregister<object>

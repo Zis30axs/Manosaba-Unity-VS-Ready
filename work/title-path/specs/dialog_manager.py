@@ -1,0 +1,30 @@
+FILE = "UnityProject/Assets/Scripts/Game/GigaCreation.Essentials.Dialogs/GigaCreation.Essentials.Dialogs.Models/DialogManager.cs"
+USINGS = ["using System.Linq;"]
+EV = "work/title-path/disas/dm_"
+BODIES = [
+    dict(rva="0xCCE440", signature="public DialogManager(int baseSortingOrder)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCCE440 -- new Subject<AddDialogData>() -> +0x10, new AddDialogData() -> +0x18,",
+                  "  new List<ProvidableDialog>(8) (List ctor inlined: _items = new T[8]) -> +0x20, baseSortingOrder -> +0x28",
+                  "Annotated disassembly: " + EV + "01_ctor.txt"],
+         body=["_addDialogSubject = new Subject<AddDialogData>();", "_addDialogData = new AddDialogData();",
+               "_dialogs = new List<ProvidableDialog>(8);", "_baseSortingOrder = baseSortingOrder;"]),
+    dict(rva="0xCCE6C0", signature="public ProvidableDialog GetOrAddDialog()",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCCE6C0, 2166 B -- _dialogs.GroupBy(<>c.b__5_0: InUse).ToDictionary(b__5_1: Key,",
+                  "  b__5_2: ToArray) held as IReadOnlyDictionary<bool, ProvidableDialog[]>; TryGetValue(false) (slot 1) -> First()",
+                  "  of the free dialogs; otherwise _addDialogData.Clear() (inlined: +0x10 = null), _addDialogSubject.OnNext(",
+                  "  _addDialogData) (IObserver slot 0) and _dialogs.Add(the ProvidableDialog it now holds) (ICollection slot 2);",
+                  "  the sorting order is one above Select(b__5_3: SortingOrder).Max() of the dialogs in use (TryGetValue(true)),",
+                  "  else _baseSortingOrder (+0x28); SortingOrder set (inlined onto the canvas), InUse = true (0x180CCEF1C)",
+                  "Annotated disassembly: " + EV + "02_GetOrAddDialog.txt"],
+         body=["IReadOnlyDictionary<bool, ProvidableDialog[]> readOnlyDictionary = _dialogs.GroupBy((ProvidableDialog dialog) => dialog.InUse)",
+               "\t.ToDictionary((IGrouping<bool, ProvidableDialog> group) => group.Key, (IGrouping<bool, ProvidableDialog> group) => group.ToArray());",
+               "ProvidableDialog providableDialog;",
+               "if (readOnlyDictionary.TryGetValue(false, out var value))", "{", "\tprovidableDialog = value.First();", "}",
+               "else", "{", "\t_addDialogData.Clear();", "\t_addDialogSubject.OnNext(_addDialogData);",
+               "\t_dialogs.Add(_addDialogData.ProvidableDialog);", "\tprovidableDialog = _addDialogData.ProvidableDialog;", "}",
+               "int sortingOrder = ((!readOnlyDictionary.TryGetValue(true, out var value2)) ? _baseSortingOrder : (value2.Select((ProvidableDialog dialog) => dialog.SortingOrder).Max() + 1));",
+               "providableDialog.SortingOrder = sortingOrder;", "providableDialog.InUse = true;", "return providableDialog;"]),
+    dict(rva="0x33FBC0", signature="public IObservable<AddDialogData> OnRequestToAddDialogAsObservable()",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0 (shared +0x10 getter) -- returns _addDialogSubject"],
+         body=["return _addDialogSubject;"]),
+]

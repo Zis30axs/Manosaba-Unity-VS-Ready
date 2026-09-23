@@ -1,0 +1,130 @@
+====================================================================================================
+FUNCTION RVA 0xCCF2A0  VA 0x180CCF2A0  size 0x1DC (476 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper$$StartUpdate
+  csig   : void GigaCreation_Essentials_Dialogs_Models_ManualMotionSkipper__StartUpdate (GigaCreation_Essentials_Dialogs_Models_ManualMotionSkipper_o* __this, float startTime, bool ignoreTimeScale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper :: public void StartUpdate(float startTime, bool ignoreTimeScale = False)
+  fields of GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper:
+      +0x10   _cts                           readonly CancellationTokenSource
+      +0x18   _started                       bool
+  fields of ManualMotionSkipper.<UpdateAsync>d__5:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ManualMotionSkipper
+      +0x20   ignoreTimeScale                bool
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CCF2A0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCF2A5  push    rdi                                       
+  0x180CCF2A6  sub     rsp, 0x80                                 
+  0x180CCF2AD  cmp     byte ptr [rip + 0x240de56], 0                ; data_30DD10A
+  0x180CCF2B4  movzx   edi, r8b                                  
+  0x180CCF2B8  movaps  xmmword ptr [rsp + 0x70], xmm6            
+  0x180CCF2BD  mov     rbx, rcx                                  
+  0x180CCF2C0  movaps  xmm6, xmm1                                
+  0x180CCF2C3  jne     0x180ccf2dd                               
+  0x180CCF2C5  lea     rcx, [rip + 0x2197c4c]                       ; TYPE LitMotion.ManualMotionDispatcher_TypeInfo
+  0x180CCF2CC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCF2D1  lock or dword ptr [rsp], 0                        
+  0x180CCF2D6  mov     byte ptr [rip + 0x240de2d], 1                ; data_30DD10A
+
+180CCF2DD:
+  0x180CCF2DD  cmp     byte ptr [rbx + 0x18], 0                     ; rbx->ManualMotionSkipper._started | <UpdateAsync>d__5.<>4__this
+  0x180CCF2E1  jne     0x180ccf461                               
+  0x180CCF2E7  mov     byte ptr [rbx + 0x18], 1                     ; rbx->ManualMotionSkipper._started | <UpdateAsync>d__5.<>4__this
+  0x180CCF2EB  mov     rax, qword ptr [rip + 0x2197c26]             ; TYPE LitMotion.ManualMotionDispatcher_TypeInfo
+  0x180CCF2F2  cmp     dword ptr [rax + 0xe4], 0                 
+  0x180CCF2F9  jne     0x180ccf30a                               
+  0x180CCF2FB  mov     rcx, rax                                  
+  0x180CCF2FE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CCF303  mov     rax, qword ptr [rip + 0x2197c0e]             ; TYPE LitMotion.ManualMotionDispatcher_TypeInfo
+
+180CCF30A:
+  0x180CCF30A  mov     rax, qword ptr [rax + 0xb8]               
+  0x180CCF311  mov     rcx, qword ptr [rax]                      
+  0x180CCF314  test    rcx, rcx                                  
+  0x180CCF317  je      0x180ccf477                               
+  0x180CCF31D  xorps   xmm1, xmm1                                
+  0x180CCF320  xor     r8d, r8d                                  
+  0x180CCF323  cvtss2sd xmm1, xmm6                                
+  0x180CCF327  call    0x180da1c40                                  ; -> LitMotion.ManualMotionDispatcher$$Update
+  0x180CCF32C  cmp     byte ptr [rip + 0x240ddd8], 0                ; data_30DD10B
+  0x180CCF333  jne     0x180ccf34d                               
+  0x180CCF335  lea     rcx, [rip + 0x2197ba4]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<ManualMotionSkipper.<UpdateAsync>d__5>()
+  0x180CCF33C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCF341  lock or dword ptr [rsp], 0                        
+  0x180CCF346  mov     byte ptr [rip + 0x240ddbe], 1                ; data_30DD10B
+
+180CCF34D:
+  0x180CCF34D  mov     eax, dword ptr [rip + 0x2409e71]             ; data_30D91C4
+  0x180CCF353  lea     r9, [rip + 0x241ef46]                        ; data_30EE2A0
+  0x180CCF35A  mov     qword ptr [rsp + 0x30], 0                 
+  0x180CCF363  xorps   xmm0, xmm0                                
+  0x180CCF366  xorps   xmm1, xmm1                                
+  0x180CCF369  movdqu  xmmword ptr [rsp + 0x48], xmm0            
+  0x180CCF36F  movdqu  xmmword ptr [rsp + 0x58], xmm1            
+  0x180CCF375  movups  xmmword ptr [rsp + 0x38], xmm0            
+  0x180CCF37A  test    eax, eax                                  
+  0x180CCF37C  je      0x180ccf3d1                               
+  0x180CCF37E  lea     r8, [rsp + 0x38]                          
+  0x180CCF383  shr     r8, 0xc                                   
+  0x180CCF387  and     r8d, 0x1fffff                             
+  0x180CCF38E  mov     edx, r8d                                  
+  0x180CCF391  shr     rdx, 6                                    
+  0x180CCF395  and     r8d, 0x3f                                 
+  0x180CCF399  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CCF3A2  nop     dword ptr [rax]                           
+  0x180CCF3A6  nop     word ptr [rax + rax]                      
+
+180CCF3B0:
+  0x180CCF3B0  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CCF3B8  mov     rcx, rax                                  
+  0x180CCF3BB  bts     rcx, r8                                   
+  0x180CCF3BF  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CCF3C9  jne     0x180ccf3b0                               
+  0x180CCF3CB  mov     eax, dword ptr [rip + 0x2409df3]             ; data_30D91C4
+
+180CCF3D1:
+  0x180CCF3D1  mov     qword ptr [rsp + 0x48], rbx               
+  0x180CCF3D6  test    eax, eax                                  
+  0x180CCF3D8  je      0x180ccf41b                               
+  0x180CCF3DA  lea     r8, [rsp + 0x48]                          
+  0x180CCF3DF  shr     r8, 0xc                                   
+  0x180CCF3E3  and     r8d, 0x1fffff                             
+  0x180CCF3EA  mov     edx, r8d                                  
+  0x180CCF3ED  shr     rdx, 6                                    
+  0x180CCF3F1  and     r8d, 0x3f                                 
+  0x180CCF3F5  prefetchw byte ptr [r9 + rdx*8 + 0x462e0]           
+  0x180CCF3FE  nop                                               
+
+180CCF400:
+  0x180CCF400  mov     rax, qword ptr [r9 + rdx*8 + 0x462e0]     
+  0x180CCF408  mov     rcx, rax                                  
+  0x180CCF40B  bts     rcx, r8                                   
+  0x180CCF40F  lock cmpxchg qword ptr [r9 + rdx*8 + 0x462e0], rcx     
+  0x180CCF419  jne     0x180ccf400                               
+
+180CCF41B:
+  0x180CCF41B  mov     r8, qword ptr [rip + 0x2197abe]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder.Start<ManualMotionSkipper.<UpdateAsync>d__5>()
+  0x180CCF422  lea     rdx, [rsp + 0x30]                         
+  0x180CCF427  lea     rcx, [rsp + 0x38]                         
+  0x180CCF42C  mov     byte ptr [rsp + 0x50], dil                
+  0x180CCF431  mov     dword ptr [rsp + 0x30], 0xffffffff        
+  0x180CCF439  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180CCF43E  lea     rdx, [rsp + 0x38]                         
+  0x180CCF443  lea     rcx, [rsp + 0x20]                         
+  0x180CCF448  call    0x1803313c0                                  ; -> sub_3313C0 (runtime/helper)
+  0x180CCF44D  xor     edx, edx                                  
+  0x180CCF44F  lea     rcx, [rsp + 0x20]                         
+  0x180CCF454  movups  xmm0, xmmword ptr [rax]                   
+  0x180CCF457  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CCF45C  call    0x18181f300                                  ; -> Cysharp.Threading.Tasks.UniTaskExtensions$$Forget
+
+180CCF461:
+  0x180CCF461  mov     rbx, qword ptr [rsp + 0x90]               
+  0x180CCF469  movaps  xmm6, xmmword ptr [rsp + 0x70]            
+  0x180CCF46E  add     rsp, 0x80                                 
+  0x180CCF475  pop     rdi                                       
+  0x180CCF476  ret                                               
+
+180CCF477:
+  0x180CCF477  call    0x180246730                                  ; THROW NullReferenceException

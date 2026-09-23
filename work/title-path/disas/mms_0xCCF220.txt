@@ -1,0 +1,54 @@
+====================================================================================================
+FUNCTION RVA 0xCCF220  VA 0x180CCF220  size 0x7D (125 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper$$Dispose
+  csig   : void GigaCreation_Essentials_Dialogs_Models_ManualMotionSkipper__Dispose (GigaCreation_Essentials_Dialogs_Models_ManualMotionSkipper_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper :: public void Dispose()
+  fields of GigaCreation.Essentials.Dialogs.Models.ManualMotionSkipper:
+      +0x10   _cts                           readonly CancellationTokenSource
+      +0x18   _started                       bool
+  fields of ManualMotionSkipper.<UpdateAsync>d__5:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ManualMotionSkipper
+      +0x20   ignoreTimeScale                bool
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CCF220  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCF225  push    rdi                                       
+  0x180CCF226  sub     rsp, 0x20                                 
+  0x180CCF22A  mov     rbx, qword ptr [rcx + 0x10]                  ; rcx->ManualMotionSkipper._cts
+  0x180CCF22E  mov     rdi, rcx                                  
+  0x180CCF231  test    rbx, rbx                                  
+  0x180CCF234  je      0x180ccf284                               
+  0x180CCF236  cmp     byte ptr [rip + 0x240f91d], 0                ; data_30DEB5A
+  0x180CCF23D  jne     0x180ccf257                               
+  0x180CCF23F  lea     rcx, [rip + 0x2182512]                       ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCF246  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCF24B  lock or dword ptr [rsp], 0                        
+  0x180CCF250  mov     byte ptr [rip + 0x240f903], 1                ; data_30DEB5A
+
+180CCF257:
+  0x180CCF257  cmp     byte ptr [rbx + 0x28], 0                     ; rbx-><UpdateAsync>d__5.<>u__1
+  0x180CCF25B  jne     0x180ccf28a                               
+  0x180CCF25D  xor     r8d, r8d                                  
+  0x180CCF260  xor     edx, edx                                  
+  0x180CCF262  mov     rcx, rbx                                  
+  0x180CCF265  call    0x1810a2fb0                                  ; -> System.Threading.CancellationTokenSource$$NotifyCancellation
+  0x180CCF26A  mov     rcx, qword ptr [rdi + 0x10]                  ; rdi->ManualMotionSkipper._cts
+  0x180CCF26E  test    rcx, rcx                                  
+  0x180CCF271  je      0x180ccf284                               
+  0x180CCF273  xor     edx, edx                                  
+  0x180CCF275  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CCF27A  add     rsp, 0x20                                 
+  0x180CCF27E  pop     rdi                                       
+  0x180CCF27F  jmp     0x1810a27c0                                  ; -> System.Threading.CancellationTokenSource$$Dispose
+
+180CCF284:
+  0x180CCF284  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CCF289  int3                                              
+
+180CCF28A:
+  0x180CCF28A  mov     rcx, qword ptr [rip + 0x21824c7]             ; TYPE System.Threading.CancellationTokenSource_TypeInfo
+  0x180CCF291  call    0x180004a30                                  ; -> sub_4A30 (runtime/helper)
+  0x180CCF296  xor     ecx, ecx                                  
+  0x180CCF298  call    0x1810a2980                                  ; -> System.Threading.CancellationTokenSource$$ThrowObjectDisposedException

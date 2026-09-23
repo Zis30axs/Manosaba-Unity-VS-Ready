@@ -1,0 +1,44 @@
+====================================================================================================
+FUNCTION RVA 0xCC9A50  VA 0x180CC9A50  size 0x62 (98 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.ProvidableDialog.<>c__DisplayClass21_0$$<InsertTexts>b__0
+  csig   : bool GigaCreation_Essentials_Dialogs_Views_ProvidableDialog___c__DisplayClass21_0___InsertTexts_b__0 (GigaCreation_Essentials_Dialogs_Views_ProvidableDialog___c__DisplayClass21_0_o* __this, GigaCreation_Essentials_Ui_RebuildableLabel_o* label, const MethodInfo* method);
+  dump.cs: ProvidableDialog.<>c__DisplayClass21_0 :: internal bool <InsertTexts>b__0(RebuildableLabel label)
+====================================================================================================
+  0x180CC9A50  sub     rsp, 0x28                                 
+  0x180CC9A54  mov     rax, rdx                                  
+  0x180CC9A57  test    rdx, rdx                                  
+  0x180CC9A5A  je      0x180cc9aad                               
+  0x180CC9A5C  mov     rdx, qword ptr [rcx + 0x10]               
+  0x180CC9A60  test    rdx, rdx                                  
+  0x180CC9A63  je      0x180cc9aad                               
+  0x180CC9A65  mov     rcx, qword ptr [rax + 0x50]               
+  0x180CC9A69  mov     rdx, qword ptr [rdx + 0x10]               
+  0x180CC9A6D  cmp     rcx, rdx                                  
+  0x180CC9A70  je      0x180cc9aa6                               
+  0x180CC9A72  test    rcx, rcx                                  
+  0x180CC9A75  je      0x180cc9a9f                               
+  0x180CC9A77  test    rdx, rdx                                  
+  0x180CC9A7A  je      0x180cc9a9f                               
+  0x180CC9A7C  mov     eax, dword ptr [rdx + 0x10]               
+  0x180CC9A7F  cmp     dword ptr [rcx + 0x10], eax               
+  0x180CC9A82  jne     0x180cc9a9f                               
+  0x180CC9A84  movsxd  r8, dword ptr [rcx + 0x10]                
+  0x180CC9A88  add     rdx, 0x14                                 
+  0x180CC9A8C  add     r8, r8                                    
+  0x180CC9A8F  add     rcx, 0x14                                 
+  0x180CC9A93  xor     r9d, r9d                                  
+  0x180CC9A96  add     rsp, 0x28                                 
+  0x180CC9A9A  jmp     0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+
+180CC9A9F:
+  0x180CC9A9F  xor     al, al                                    
+  0x180CC9AA1  add     rsp, 0x28                                 
+  0x180CC9AA5  ret                                               
+
+180CC9AA6:
+  0x180CC9AA6  mov     al, 1                                     
+  0x180CC9AA8  add     rsp, 0x28                                 
+  0x180CC9AAC  ret                                               
+
+180CC9AAD:
+  0x180CC9AAD  call    0x180246730                                  ; THROW NullReferenceException

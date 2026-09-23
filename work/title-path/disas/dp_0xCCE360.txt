@@ -1,0 +1,71 @@
+====================================================================================================
+FUNCTION RVA 0xCCE360  VA 0x180CCE360  size 0xD6 (214 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter$$<Awake>b__4_0
+  csig   : void GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter___Awake_b__4_0 (GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter_o* __this, GigaCreation_Essentials_Dialogs_Models_AddDialogData_o* data, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter :: private void <Awake>b__4_0(AddDialogData data)
+  fields of GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter:
+      +0x20   _providableDialogPrefab        ProvidableDialog
+      +0x28   _dialogParent                  Transform
+      +0x30   _baseSortingOrder              int
+      +0x38   _dialogManager                 IDialogManager
+====================================================================================================
+  0x180CCE360  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCE365  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CCE36A  push    rdi                                       
+  0x180CCE36B  sub     rsp, 0x20                                 
+  0x180CCE36F  cmp     byte ptr [rip + 0x240ed8d], 0                ; data_30DD103
+  0x180CCE376  mov     rbx, rdx                                  
+  0x180CCE379  mov     rdi, rcx                                  
+  0x180CCE37C  jne     0x180cce3a7                               
+  0x180CCE37E  lea     rcx, [rip + 0x2198c93]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<ProvidableDialog>()
+  0x180CCE385  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE38A  lock or dword ptr [rsp], 0                        
+  0x180CCE38F  lea     rcx, [rip + 0x2183efa]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CCE396  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE39B  lock or dword ptr [rsp], 0                        
+  0x180CCE3A0  mov     byte ptr [rip + 0x240ed5c], 1                ; data_30DD103
+
+180CCE3A7:
+  0x180CCE3A7  mov     rcx, qword ptr [rip + 0x2183ee2]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CCE3AE  mov     rsi, qword ptr [rdi + 0x20]                  ; rdi->DialogPresenter._providableDialogPrefab
+  0x180CCE3B2  mov     rdi, qword ptr [rdi + 0x28]                  ; rdi->DialogPresenter._dialogParent
+  0x180CCE3B6  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCE3BD  jne     0x180cce3c4                               
+  0x180CCE3BF  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCE3C4:
+  0x180CCE3C4  mov     r8, qword ptr [rip + 0x2198c4d]              ; METHODINFO Method$UnityEngine.Object.Instantiate<ProvidableDialog>()
+  0x180CCE3CB  mov     rdx, rdi                                  
+  0x180CCE3CE  mov     rcx, rsi                                  
+  0x180CCE3D1  call    0x180721660                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CCE3D6  test    rbx, rbx                                  
+  0x180CCE3D9  je      0x180cce431                               
+  0x180CCE3DB  cmp     dword ptr [rip + 0x240ade2], 0               ; data_30D91C4
+  0x180CCE3E2  mov     qword ptr [rbx + 0x10], rax               
+  0x180CCE3E6  je      0x180cce421                               
+  0x180CCE3E8  lea     r8, [rbx + 0x10]                          
+  0x180CCE3EC  shr     r8, 0xc                                   
+  0x180CCE3F0  lea     rcx, [rip + 0x2466189]                       ; data_3134580
+  0x180CCE3F7  and     r8d, 0x1fffff                             
+  0x180CCE3FE  mov     eax, r8d                                  
+  0x180CCE401  shr     rax, 6                                    
+  0x180CCE405  and     r8d, 0x3f                                 
+  0x180CCE409  lea     rdx, [rcx + rax*8]                        
+  0x180CCE40D  prefetchw byte ptr [rdx]                            
+
+180CCE410:
+  0x180CCE410  mov     rax, qword ptr [rdx]                      
+  0x180CCE413  mov     rcx, rax                                  
+  0x180CCE416  bts     rcx, r8                                   
+  0x180CCE41A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CCE41F  jne     0x180cce410                               
+
+180CCE421:
+  0x180CCE421  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CCE426  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CCE42B  add     rsp, 0x20                                 
+  0x180CCE42F  pop     rdi                                       
+  0x180CCE430  ret                                               
+
+180CCE431:
+  0x180CCE431  call    0x180246730                                  ; THROW NullReferenceException

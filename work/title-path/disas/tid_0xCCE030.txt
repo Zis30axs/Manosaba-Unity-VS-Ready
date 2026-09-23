@@ -1,0 +1,77 @@
+====================================================================================================
+FUNCTION RVA 0xCCE030  VA 0x180CCE030  size 0xF7 (247 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$<Clone>$
+  csig   : GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* GigaCreation_Essentials_Dialogs_Views_TextInsertData___Clone__ (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: public virtual TextInsertData <Clone>$()
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCE030  push    rbx                                       
+  0x180CCE032  sub     rsp, 0x20                                 
+  0x180CCE036  cmp     byte ptr [rip + 0x240f0c3], 0                ; data_30DD100
+  0x180CCE03D  mov     rbx, rcx                                  
+  0x180CCE040  jne     0x180cce05a                               
+  0x180CCE042  lea     rcx, [rip + 0x2199077]                       ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_TypeInfo
+  0x180CCE049  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE04E  lock or dword ptr [rsp], 0                        
+  0x180CCE053  mov     byte ptr [rip + 0x240f0a6], 1                ; data_30DD100
+
+180CCE05A:
+  0x180CCE05A  mov     rcx, qword ptr [rip + 0x219905f]             ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_TypeInfo
+  0x180CCE061  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE066  mov     r9, rax                                   
+  0x180CCE069  test    rbx, rbx                                  
+  0x180CCE06C  je      0x180cce122                               
+  0x180CCE072  mov     rcx, qword ptr [rbx + 0x10]                  ; rbx->TextInsertData.<LabelId>k__BackingField
+  0x180CCE076  lea     r10, [rip + 0x2420223]                       ; data_30EE2A0
+  0x180CCE07D  mov     qword ptr [rax + 0x10], rcx                  ; rax->TextInsertData.<LabelId>k__BackingField
+  0x180CCE081  mov     ecx, dword ptr [rip + 0x240b13d]             ; data_30D91C4
+  0x180CCE087  test    ecx, ecx                                  
+  0x180CCE089  je      0x180cce0cf                               
+  0x180CCE08B  lea     r8, [rax + 0x10]                             ; rax->TextInsertData.<LabelId>k__BackingField
+  0x180CCE08F  shr     r8, 0xc                                   
+  0x180CCE093  and     r8d, 0x1fffff                             
+  0x180CCE09A  mov     eax, r8d                                  
+  0x180CCE09D  shr     rax, 6                                    
+  0x180CCE0A1  and     r8d, 0x3f                                 
+  0x180CCE0A5  lea     rdx, [r10 + rax*8]                        
+  0x180CCE0A9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CCE0B0:
+  0x180CCE0B0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE0B7  mov     rcx, rax                                  
+  0x180CCE0BA  bts     rcx, r8                                   
+  0x180CCE0BE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE0C7  jne     0x180cce0b0                               
+  0x180CCE0C9  mov     ecx, dword ptr [rip + 0x240b0f5]             ; data_30D91C4
+
+180CCE0CF:
+  0x180CCE0CF  mov     rax, qword ptr [rbx + 0x18]                  ; rbx->TextInsertData.<Texts>k__BackingField
+  0x180CCE0D3  mov     qword ptr [r9 + 0x18], rax                   ; r9->TextInsertData.<Texts>k__BackingField
+  0x180CCE0D7  test    ecx, ecx                                  
+  0x180CCE0D9  je      0x180cce119                               
+  0x180CCE0DB  lea     r8, [r9 + 0x18]                              ; r9->TextInsertData.<Texts>k__BackingField
+  0x180CCE0DF  shr     r8, 0xc                                   
+  0x180CCE0E3  and     r8d, 0x1fffff                             
+  0x180CCE0EA  mov     eax, r8d                                  
+  0x180CCE0ED  shr     rax, 6                                    
+  0x180CCE0F1  and     r8d, 0x3f                                 
+  0x180CCE0F5  lea     rdx, [r10 + rax*8]                        
+  0x180CCE0F9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CCE100:
+  0x180CCE100  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CCE107  mov     rcx, rax                                  
+  0x180CCE10A  bts     rcx, r8                                   
+  0x180CCE10E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CCE117  jne     0x180cce100                               
+
+180CCE119:
+  0x180CCE119  mov     rax, r9                                   
+  0x180CCE11C  add     rsp, 0x20                                 
+  0x180CCE120  pop     rbx                                       
+  0x180CCE121  ret                                               
+
+180CCE122:
+  0x180CCE122  call    0x180246730                                  ; THROW NullReferenceException

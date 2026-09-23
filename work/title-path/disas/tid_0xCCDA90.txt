@@ -1,0 +1,47 @@
+====================================================================================================
+FUNCTION RVA 0xCCDA90  VA 0x180CCDA90  size 0x7D (125 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$get_EqualityContract
+  csig   : System_Type_o* GigaCreation_Essentials_Dialogs_Views_TextInsertData__get_EqualityContract (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: protected virtual Type get_EqualityContract()
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCDA90  push    rbx                                       
+  0x180CCDA92  sub     rsp, 0x20                                 
+  0x180CCDA96  cmp     byte ptr [rip + 0x240f65d], 0                ; data_30DD0FA
+  0x180CCDA9D  jne     0x180ccdab7                               
+  0x180CCDA9F  lea     rcx, [rip + 0x21996aa]                       ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_var
+  0x180CCDAA6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDAAB  lock or dword ptr [rsp], 0                        
+  0x180CCDAB0  mov     byte ptr [rip + 0x240f643], 1                ; data_30DD0FA
+
+180CCDAB7:
+  0x180CCDAB7  mov     rcx, qword ptr [rip + 0x2409c72]             ; data_30D7730
+  0x180CCDABE  mov     rbx, qword ptr [rip + 0x219968b]             ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_var
+  0x180CCDAC5  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCDACC  jne     0x180ccdada                               
+  0x180CCDACE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CCDAD3  mov     rcx, qword ptr [rip + 0x2409c56]             ; data_30D7730
+
+180CCDADA:
+  0x180CCDADA  test    rbx, rbx                                  
+  0x180CCDADD  je      0x180ccdb05                               
+  0x180CCDADF  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCDAE6  jne     0x180ccdaed                               
+  0x180CCDAE8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCDAED:
+  0x180CCDAED  mov     dl, 1                                     
+  0x180CCDAEF  mov     rcx, rbx                                  
+  0x180CCDAF2  call    0x18029f650                                  ; -> sub_29F650 (runtime/helper)
+  0x180CCDAF7  lea     rcx, [rax + 0x20]                         
+  0x180CCDAFB  add     rsp, 0x20                                 
+  0x180CCDAFF  pop     rbx                                       
+  0x180CCDB00  jmp     0x180299d20                               
+
+180CCDB05:
+  0x180CCDB05  xor     eax, eax                                  
+  0x180CCDB07  add     rsp, 0x20                                 
+  0x180CCDB0B  pop     rbx                                       
+  0x180CCDB0C  ret                                               

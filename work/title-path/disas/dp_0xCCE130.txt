@@ -1,0 +1,114 @@
+====================================================================================================
+FUNCTION RVA 0xCCE130  VA 0x180CCE130  size 0x1BA (442 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter$$Awake
+  csig   : void GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter__Awake (GigaCreation_Essentials_Dialogs_Presenters_DialogPresenter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter :: private void Awake()
+  fields of GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter:
+      +0x20   _providableDialogPrefab        ProvidableDialog
+      +0x28   _dialogParent                  Transform
+      +0x30   _baseSortingOrder              int
+      +0x38   _dialogManager                 IDialogManager
+====================================================================================================
+  0x180CCE130  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CCE135  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CCE13A  push    rdi                                       
+  0x180CCE13B  sub     rsp, 0x20                                 
+  0x180CCE13F  cmp     byte ptr [rip + 0x240efbb], 0                ; data_30DD101
+  0x180CCE146  mov     rsi, rcx                                  
+  0x180CCE149  jne     0x180cce1de                               
+  0x180CCE14F  lea     rcx, [rip + 0x2198f7a]                       ; TYPE System.Action<AddDialogData>_TypeInfo
+  0x180CCE156  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE15B  lock or dword ptr [rsp], 0                        
+  0x180CCE160  lea     rcx, [rip + 0x2198f11]                       ; TYPE GigaCreation.Essentials.Dialogs.Models.DialogManager_TypeInfo
+  0x180CCE167  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE16C  lock or dword ptr [rsp], 0                        
+  0x180CCE171  lea     rcx, [rip + 0x2198ef0]                       ; METHODINFO Method$GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter.<Awake>b__4_0() => GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter$$<Awake>b__4_0
+  0x180CCE178  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE17D  lock or dword ptr [rsp], 0                        
+  0x180CCE182  lea     rcx, [rip + 0x2183f17]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CCE189  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE18E  lock or dword ptr [rsp], 0                        
+  0x180CCE193  lea     rcx, [rip + 0x2198ebe]                       ; TYPE GigaCreation.Essentials.Dialogs.Models.IDialogManager_TypeInfo
+  0x180CCE19A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE19F  lock or dword ptr [rsp], 0                        
+  0x180CCE1A4  lea     rcx, [rip + 0x2198e9d]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<AddDialogData>()
+  0x180CCE1AB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE1B0  lock or dword ptr [rsp], 0                        
+  0x180CCE1B5  lea     rcx, [rip + 0x2198edc]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<IDialogManager>()
+  0x180CCE1BC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE1C1  lock or dword ptr [rsp], 0                        
+  0x180CCE1C6  lea     rcx, [rip + 0x2183f9b]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CCE1CD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCE1D2  lock or dword ptr [rsp], 0                        
+  0x180CCE1D7  mov     byte ptr [rip + 0x240ef23], 1                ; data_30DD101
+
+180CCE1DE:
+  0x180CCE1DE  mov     rcx, qword ptr [rip + 0x2198e93]             ; TYPE GigaCreation.Essentials.Dialogs.Models.DialogManager_TypeInfo
+  0x180CCE1E5  mov     edi, dword ptr [rsi + 0x30]                  ; rsi->DialogPresenter._baseSortingOrder
+  0x180CCE1E8  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE1ED  xor     r8d, r8d                                  
+  0x180CCE1F0  mov     edx, edi                                  
+  0x180CCE1F2  mov     rcx, rax                                  
+  0x180CCE1F5  mov     rbx, rax                                  
+  0x180CCE1F8  call    0x180cce440                                  ; -> GigaCreation.Essentials.Dialogs.Models.DialogManager$$.ctor
+  0x180CCE1FD  cmp     dword ptr [rip + 0x240afc0], 0               ; data_30D91C4
+  0x180CCE204  mov     qword ptr [rsi + 0x38], rbx                  ; rsi->DialogPresenter._dialogManager
+  0x180CCE208  je      0x180cce243                               
+  0x180CCE20A  lea     r8, [rsi + 0x38]                             ; rsi->DialogPresenter._dialogManager
+  0x180CCE20E  shr     r8, 0xc                                   
+  0x180CCE212  lea     r9, [rip + 0x2466367]                        ; data_3134580
+  0x180CCE219  and     r8d, 0x1fffff                             
+  0x180CCE220  mov     ecx, r8d                                  
+  0x180CCE223  shr     rcx, 6                                    
+  0x180CCE227  and     r8d, 0x3f                                 
+  0x180CCE22B  prefetchw byte ptr [r9 + rcx*8]                     
+
+180CCE230:
+  0x180CCE230  mov     rax, qword ptr [r9 + rcx*8]               
+  0x180CCE234  mov     rdx, rax                                  
+  0x180CCE237  bts     rdx, r8                                   
+  0x180CCE23B  lock cmpxchg qword ptr [r9 + rcx*8], rdx               
+  0x180CCE241  jne     0x180cce230                               
+
+180CCE243:
+  0x180CCE243  mov     r8, qword ptr [rsi + 0x38]                   ; rsi->DialogPresenter._dialogManager
+  0x180CCE247  test    r8, r8                                    
+  0x180CCE24A  je      0x180cce2e5                               
+  0x180CCE250  mov     rdx, qword ptr [rip + 0x2198e01]             ; TYPE GigaCreation.Essentials.Dialogs.Models.IDialogManager_TypeInfo
+  0x180CCE257  xor     ecx, ecx                                  
+  0x180CCE259  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CCE25E  mov     rcx, qword ptr [rip + 0x2198e6b]             ; TYPE System.Action<AddDialogData>_TypeInfo
+  0x180CCE265  mov     rdi, rax                                  
+  0x180CCE268  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCE26D  mov     r8, qword ptr [rip + 0x2198df4]              ; METHODINFO Method$GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter.<Awake>b__4_0() => GigaCreation.Essentials.Dialogs.Presenters.DialogPresenter$$<Awake>b__4_0
+  0x180CCE274  xor     r9d, r9d                                  
+  0x180CCE277  mov     rdx, rsi                                  
+  0x180CCE27A  mov     rcx, rax                                  
+  0x180CCE27D  mov     rbx, rax                                  
+  0x180CCE280  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CCE285  mov     r8, qword ptr [rip + 0x2198dbc]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<AddDialogData>()
+  0x180CCE28C  mov     rdx, rbx                                  
+  0x180CCE28F  mov     rcx, rdi                                  
+  0x180CCE292  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CCE297  mov     r9, qword ptr [rip + 0x2183e02]              ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CCE29E  lea     r8, [rsp + 0x30]                          
+  0x180CCE2A3  mov     rdx, rsi                                  
+  0x180CCE2A6  mov     rcx, rax                                  
+  0x180CCE2A9  call    0x18067f4a0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CCE2AE  mov     rcx, qword ptr [rip + 0x2183eb3]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CCE2B5  mov     rbx, qword ptr [rsi + 0x38]                  ; rsi->DialogPresenter._dialogManager
+  0x180CCE2B9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCE2C0  jne     0x180cce2c7                               
+  0x180CCE2C2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCE2C7:
+  0x180CCE2C7  mov     rdx, qword ptr [rip + 0x2198dca]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<IDialogManager>()
+  0x180CCE2CE  mov     rcx, rbx                                  
+  0x180CCE2D1  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CCE2D6  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180CCE2DB  add     rsp, 0x20                                 
+  0x180CCE2DF  pop     rdi                                       
+  0x180CCE2E0  jmp     0x180752130                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Register<object>
+
+180CCE2E5:
+  0x180CCE2E5  call    0x180246730                                  ; THROW NullReferenceException

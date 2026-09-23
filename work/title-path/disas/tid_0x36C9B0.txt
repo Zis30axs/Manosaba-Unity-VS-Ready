@@ -1,0 +1,65 @@
+====================================================================================================
+FUNCTION RVA 0x36C9B0  VA 0x18036C9B0  size 0xAA (170 bytes)
+  managed: WitchTrials.Views.CluePage.LocalizedTexts$$Deconstruct
+  managed: WitchTrials.Views.NotePage.LocalizedTexts$$Deconstruct
+  managed: WitchTrials.Views.RulePage.LocalizedTexts$$Deconstruct
+  managed: WitchTrials.Models.AuthorTextBuilder.FullName$$Deconstruct
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$Deconstruct
+  csig   : void WitchTrials_Views_CluePage_LocalizedTexts__Deconstruct (WitchTrials_Views_CluePage_LocalizedTexts_o* __this, System_String_o** Name, System_String_o** Description, const MethodInfo* method);
+  dump.cs: CluePage.LocalizedTexts :: public void Deconstruct(out string Name, out string Description)
+  dump.cs: NotePage.LocalizedTexts :: public void Deconstruct(out string Title, out string Description)
+  dump.cs: RulePage.LocalizedTexts :: public void Deconstruct(out string Subtitle, out string Description)
+  dump.cs: AuthorTextBuilder.FullName :: public void Deconstruct(out string Name, out string FamilyName)
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: public void Deconstruct(out string LabelId, out string[] Texts)
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x18036C9B0  mov     rax, qword ptr [rcx + 0x10]                  ; rcx->TextInsertData.<LabelId>k__BackingField
+  0x18036C9B4  lea     r11, [rip + 0x2d818e5]                       ; data_30EE2A0
+  0x18036C9BB  mov     qword ptr [rdx], rax                      
+  0x18036C9BE  mov     r9, rdx                                   
+  0x18036C9C1  mov     edx, dword ptr [rip + 0x2d6c7fd]             ; data_30D91C4
+  0x18036C9C7  mov     r10, rcx                                  
+  0x18036C9CA  test    edx, edx                                  
+  0x18036C9CC  je      0x18036ca0f                               
+  0x18036C9CE  shr     r9, 0xc                                   
+  0x18036C9D2  and     r9d, 0x1fffff                             
+  0x18036C9D9  mov     eax, r9d                                  
+  0x18036C9DC  shr     rax, 6                                    
+  0x18036C9E0  and     r9d, 0x3f                                 
+  0x18036C9E4  lea     rdx, [r11 + rax*8]                        
+  0x18036C9E8  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18036C9EF  nop                                               
+
+18036C9F0:
+  0x18036C9F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18036C9F7  mov     rcx, rax                                  
+  0x18036C9FA  bts     rcx, r9                                   
+  0x18036C9FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18036CA07  jne     0x18036c9f0                               
+  0x18036CA09  mov     edx, dword ptr [rip + 0x2d6c7b5]             ; data_30D91C4
+
+18036CA0F:
+  0x18036CA0F  mov     rax, qword ptr [r10 + 0x18]                  ; r10->TextInsertData.<Texts>k__BackingField
+  0x18036CA13  mov     qword ptr [r8], rax                       
+  0x18036CA16  test    edx, edx                                  
+  0x18036CA18  je      0x18036ca59                               
+  0x18036CA1A  shr     r8, 0xc                                   
+  0x18036CA1E  and     r8d, 0x1fffff                             
+  0x18036CA25  mov     eax, r8d                                  
+  0x18036CA28  shr     rax, 6                                    
+  0x18036CA2C  and     r8d, 0x3f                                 
+  0x18036CA30  lea     rdx, [r11 + rax*8]                        
+  0x18036CA34  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x18036CA3B  nop     dword ptr [rax + rax]                     
+
+18036CA40:
+  0x18036CA40  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x18036CA47  mov     rcx, rax                                  
+  0x18036CA4A  bts     rcx, r8                                   
+  0x18036CA4E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x18036CA57  jne     0x18036ca40                               
+
+18036CA59:
+  0x18036CA59  ret                                               

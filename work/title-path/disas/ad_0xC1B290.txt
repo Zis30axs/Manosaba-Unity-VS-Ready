@@ -1,0 +1,38 @@
+====================================================================================================
+FUNCTION RVA 0xC1B290  VA 0x180C1B290  size 0x52 (82 bytes)
+  managed: System.Globalization.CompareInfo$$OnDeserializing
+  managed: Newtonsoft.Json.Linq.JProperty.JPropertyList$$Clear
+  managed: System.Runtime.CompilerServices.CallSite<object>$$.ctor
+  managed: GigaCreation.Essentials.Dialogs.Models.AddDialogData$$Clear
+  managed: UnityEngine.Playables.PlayableSystems.DataPlayableOutputList.DataPlayableOutputEnumerator$$Dispose
+  csig   : void System_Globalization_CompareInfo__OnDeserializing (System_Globalization_CompareInfo_o* __this, System_Runtime_Serialization_StreamingContext_o ctx, const MethodInfo* method);
+  dump.cs: System.Globalization.CompareInfo :: private void OnDeserializing(StreamingContext ctx)
+  dump.cs: JProperty.JPropertyList :: public void Clear()
+  dump.cs: GigaCreation.Essentials.Dialogs.Models.AddDialogData :: public void Clear()
+  dump.cs: PlayableSystems.DataPlayableOutputList.DataPlayableOutputEnumerator :: public void Dispose()
+  fields of GigaCreation.Essentials.Dialogs.Models.AddDialogData:
+      +0x10   ProvidableDialog               ProvidableDialog
+====================================================================================================
+  0x180C1B290  cmp     dword ptr [rip + 0x24bdf2d], 0               ; data_30D91C4
+  0x180C1B297  mov     qword ptr [rcx + 0x10], 0                    ; rcx->AddDialogData.ProvidableDialog
+  0x180C1B29F  je      0x180c1b2e1                               
+  0x180C1B2A1  lea     r8, [rcx + 0x10]                             ; rcx->AddDialogData.ProvidableDialog
+  0x180C1B2A5  shr     r8, 0xc                                   
+  0x180C1B2A9  lea     rcx, [rip + 0x25192d0]                       ; data_3134580
+  0x180C1B2B0  and     r8d, 0x1fffff                             
+  0x180C1B2B7  mov     eax, r8d                                  
+  0x180C1B2BA  shr     rax, 6                                    
+  0x180C1B2BE  and     r8d, 0x3f                                 
+  0x180C1B2C2  lea     rdx, [rcx + rax*8]                        
+  0x180C1B2C6  prefetchw byte ptr [rdx]                            
+  0x180C1B2C9  nop     dword ptr [rax]                           
+
+180C1B2D0:
+  0x180C1B2D0  mov     rax, qword ptr [rdx]                      
+  0x180C1B2D3  mov     rcx, rax                                  
+  0x180C1B2D6  bts     rcx, r8                                   
+  0x180C1B2DA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180C1B2DF  jne     0x180c1b2d0                               
+
+180C1B2E1:
+  0x180C1B2E1  ret                                               

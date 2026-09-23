@@ -1,0 +1,97 @@
+====================================================================================================
+FUNCTION RVA 0xCCDEF0  VA 0x180CCDEF0  size 0x13E (318 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$Equals
+  csig   : bool GigaCreation_Essentials_Dialogs_Views_TextInsertData__Equals (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* other, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: public virtual bool Equals(TextInsertData other)
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCDEF0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CCDEF5  push    rdi                                       
+  0x180CCDEF6  sub     rsp, 0x20                                 
+  0x180CCDEFA  cmp     byte ptr [rip + 0x240f1fe], 0                ; data_30DD0FF
+  0x180CCDF01  mov     rbx, rdx                                  
+  0x180CCDF04  mov     rdi, rcx                                  
+  0x180CCDF07  jne     0x180ccdf32                               
+  0x180CCDF09  lea     rcx, [rip + 0x2199228]                       ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string[]>.get_Default()
+  0x180CCDF10  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDF15  lock or dword ptr [rsp], 0                        
+  0x180CCDF1A  lea     rcx, [rip + 0x218b54f]                       ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string>.get_Default()
+  0x180CCDF21  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDF26  lock or dword ptr [rsp], 0                        
+  0x180CCDF2B  mov     byte ptr [rip + 0x240f1cd], 1                ; data_30DD0FF
+
+180CCDF32:
+  0x180CCDF32  cmp     rdi, rbx                                  
+  0x180CCDF35  jne     0x180ccdf44                               
+  0x180CCDF37  mov     al, 1                                     
+  0x180CCDF39  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CCDF3E  add     rsp, 0x20                                 
+  0x180CCDF42  pop     rdi                                       
+  0x180CCDF43  ret                                               
+
+180CCDF44:
+  0x180CCDF44  test    rbx, rbx                                  
+  0x180CCDF47  je      0x180cce01c                               
+  0x180CCDF4D  mov     rdx, qword ptr [rdi]                      
+  0x180CCDF50  mov     rcx, rdi                                  
+  0x180CCDF53  mov     qword ptr [rsp + 0x30], rbp               
+  0x180CCDF58  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CCDF5D  mov     rax, qword ptr [rdx + 0x188]              
+  0x180CCDF64  mov     rdx, qword ptr [rdx + 0x190]              
+  0x180CCDF6B  call    rax                                       
+  0x180CCDF6D  mov     rdx, qword ptr [rbx]                      
+  0x180CCDF70  mov     rcx, rbx                                  
+  0x180CCDF73  mov     rsi, rax                                  
+  0x180CCDF76  mov     r8, qword ptr [rdx + 0x188]               
+  0x180CCDF7D  mov     rdx, qword ptr [rdx + 0x190]              
+  0x180CCDF84  call    r8                                        
+  0x180CCDF87  mov     rcx, qword ptr [rip + 0x24097a2]             ; data_30D7730
+  0x180CCDF8E  mov     rbp, rax                                  
+  0x180CCDF91  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CCDF98  jne     0x180ccdf9f                               
+  0x180CCDF9A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CCDF9F:
+  0x180CCDF9F  cmp     rsi, rbp                                  
+  0x180CCDFA2  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CCDFA7  mov     rbp, qword ptr [rsp + 0x30]               
+  0x180CCDFAC  jne     0x180cce01c                               
+  0x180CCDFAE  mov     rcx, qword ptr [rip + 0x218b4bb]             ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string>.get_Default()
+  0x180CCDFB5  call    0x18037e3d0                                  ; -> System.Collections.Generic.EqualityComparer<__Il2CppFullySharedGenericType>$$get_Default
+  0x180CCDFBA  test    rax, rax                                  
+  0x180CCDFBD  je      0x180cce029                               
+  0x180CCDFBF  mov     r9, qword ptr [rax]                       
+  0x180CCDFC2  mov     rcx, rax                                  
+  0x180CCDFC5  mov     r8, qword ptr [rbx + 0x10]                   ; rbx->TextInsertData.<LabelId>k__BackingField
+  0x180CCDFC9  mov     rdx, qword ptr [rdi + 0x10]                  ; rdi->TextInsertData.<LabelId>k__BackingField
+  0x180CCDFCD  mov     r10, qword ptr [r9 + 0x1b8]               
+  0x180CCDFD4  mov     r9, qword ptr [r9 + 0x1c0]                
+  0x180CCDFDB  call    r10                                       
+  0x180CCDFDE  test    al, al                                    
+  0x180CCDFE0  je      0x180cce01c                               
+  0x180CCDFE2  mov     rcx, qword ptr [rip + 0x219914f]             ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string[]>.get_Default()
+  0x180CCDFE9  call    0x18037e3d0                                  ; -> System.Collections.Generic.EqualityComparer<__Il2CppFullySharedGenericType>$$get_Default
+  0x180CCDFEE  test    rax, rax                                  
+  0x180CCDFF1  je      0x180cce029                               
+  0x180CCDFF3  mov     r9, qword ptr [rax]                       
+  0x180CCDFF6  mov     rcx, rax                                  
+  0x180CCDFF9  mov     r8, qword ptr [rbx + 0x18]                   ; rbx->TextInsertData.<Texts>k__BackingField
+  0x180CCDFFD  mov     rdx, qword ptr [rdi + 0x18]                  ; rdi->TextInsertData.<Texts>k__BackingField
+  0x180CCE001  mov     r10, qword ptr [r9 + 0x1b8]               
+  0x180CCE008  mov     r9, qword ptr [r9 + 0x1c0]                
+  0x180CCE00F  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CCE014  add     rsp, 0x20                                 
+  0x180CCE018  pop     rdi                                       
+  0x180CCE019  jmp     r10                                       
+
+180CCE01C:
+  0x180CCE01C  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CCE021  xor     al, al                                    
+  0x180CCE023  add     rsp, 0x20                                 
+  0x180CCE027  pop     rdi                                       
+  0x180CCE028  ret                                               
+
+180CCE029:
+  0x180CCE029  call    0x180246730                                  ; THROW NullReferenceException

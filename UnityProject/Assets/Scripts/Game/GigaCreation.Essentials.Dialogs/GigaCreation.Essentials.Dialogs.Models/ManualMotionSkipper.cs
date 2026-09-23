@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -70,24 +71,55 @@ namespace GigaCreation.Essentials.Dialogs.Models
     		ManualMotionDispatcher.Default.Reset();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCCF220, 125 B -- _cts (+0x10).Cancel() (inlined: disposed check,
+    	//   NotifyCancellation(false)), then tail jump _cts.Dispose()
+    	// Annotated disassembly: work/title-path/disas/mms_0xCCF220.txt
     	[Token(Token = "0x6000053")]
     	[Address(RVA = "0xCCF220", Offset = "0xCCDC20", VA = "0x180CCF220", Slot = "5")]
     	public void Dispose()
     	{
+    		_cts.Cancel();
+    		_cts.Dispose();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCCF2A0, 476 B -- only the first call does anything (_started +0x18,
+    	//   0x180CCF2E1): _started = true; ManualMotionDispatcher.Default.Update(startTime) (float widened to double);
+    	//   UpdateAsync(ignoreTimeScale).Forget()
+    	// Annotated disassembly: work/title-path/disas/mms_0xCCF2A0.txt
     	[Token(Token = "0x6000054")]
     	[Address(RVA = "0xCCF2A0", Offset = "0xCCDCA0", VA = "0x180CCF2A0", Slot = "4")]
     	public void StartUpdate(float startTime, bool ignoreTimeScale = false)
     	{
+    		// 0x180CCF2E1: the shipped code starts the update loop once
+    		if (_started)
+    		{
+    			return;
+    		}
+    		_started = true;
+    		ManualMotionDispatcher.Default.Update(startTime);
+    		UpdateAsync(ignoreTimeScale).Forget();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCCF480 (kickoff) / 0xCCF5D0 (<UpdateAsync>d__5.MoveNext, 953 B): until _cts
+    	//   is cancelled (IsCancellationRequested inlined: state >= 2, 0x180CCF692): await UniTask.Yield(_cts.Token), then
+    	//   ManualMotionDispatcher.Default.Update(ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime) (icalls
+    	//   named at data 0x2608F48 / 0x2608950). Body in UpdateAsyncCore.
+    	// Annotated disassembly: work/title-path/disas/mms_0xCCF5D0.txt
     	[Token(Token = "0x6000055")]
     	[Address(RVA = "0xCCF480", Offset = "0xCCDE80", VA = "0x180CCF480")]
     	[AsyncStateMachine(typeof(_003CUpdateAsync_003Ed__5))]
     	private UniTask UpdateAsync(bool ignoreTimeScale = false)
     	{
-    		return default(UniTask);
+    		return UpdateAsyncCore(ignoreTimeScale);
+    	}
+
+    	private async UniTask UpdateAsyncCore(bool ignoreTimeScale)
+    	{
+    		while (!_cts.IsCancellationRequested)
+    		{
+    			await UniTask.Yield(_cts.Token);
+    			ManualMotionDispatcher.Default.Update(ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime);
+    		}
     	}
     }
 }

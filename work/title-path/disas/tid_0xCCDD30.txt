@@ -1,0 +1,78 @@
+====================================================================================================
+FUNCTION RVA 0xCCDD30  VA 0x180CCDD30  size 0x11F (287 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$GetHashCode
+  csig   : int32_t GigaCreation_Essentials_Dialogs_Views_TextInsertData__GetHashCode (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: public override int GetHashCode()
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCDD30  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CCDD35  push    rdi                                       
+  0x180CCDD36  sub     rsp, 0x20                                 
+  0x180CCDD3A  cmp     byte ptr [rip + 0x240f3bc], 0                ; data_30DD0FD
+  0x180CCDD41  mov     rbx, rcx                                  
+  0x180CCDD44  jne     0x180ccdd80                               
+  0x180CCDD46  lea     rcx, [rip + 0x21993eb]                       ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string[]>.get_Default()
+  0x180CCDD4D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDD52  lock or dword ptr [rsp], 0                        
+  0x180CCDD57  lea     rcx, [rip + 0x218b712]                       ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string>.get_Default()
+  0x180CCDD5E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDD63  lock or dword ptr [rsp], 0                        
+  0x180CCDD68  lea     rcx, [rip + 0x218b6f9]                       ; METHODINFO Method$System.Collections.Generic.EqualityComparer<Type>.get_Default()
+  0x180CCDD6F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDD74  lock or dword ptr [rsp], 0                        
+  0x180CCDD79  mov     byte ptr [rip + 0x240f37d], 1                ; data_30DD0FD
+
+180CCDD80:
+  0x180CCDD80  mov     rcx, qword ptr [rip + 0x218b6e1]             ; METHODINFO Method$System.Collections.Generic.EqualityComparer<Type>.get_Default()
+  0x180CCDD87  mov     qword ptr [rsp + 0x30], rsi               
+  0x180CCDD8C  call    0x18037e3d0                                  ; -> System.Collections.Generic.EqualityComparer<__Il2CppFullySharedGenericType>$$get_Default
+  0x180CCDD91  mov     rdx, qword ptr [rbx]                      
+  0x180CCDD94  mov     rcx, rbx                                  
+  0x180CCDD97  mov     rdi, rax                                  
+  0x180CCDD9A  mov     r8, qword ptr [rdx + 0x188]               
+  0x180CCDDA1  mov     rdx, qword ptr [rdx + 0x190]              
+  0x180CCDDA8  call    r8                                        
+  0x180CCDDAB  test    rdi, rdi                                  
+  0x180CCDDAE  je      0x180ccde4a                               
+  0x180CCDDB4  mov     r8, qword ptr [rdi]                       
+  0x180CCDDB7  mov     rdx, rax                                  
+  0x180CCDDBA  mov     rcx, rdi                                  
+  0x180CCDDBD  mov     r9, qword ptr [r8 + 0x1c8]                
+  0x180CCDDC4  mov     r8, qword ptr [r8 + 0x1d0]                
+  0x180CCDDCB  call    r9                                        
+  0x180CCDDCE  mov     rcx, qword ptr [rip + 0x218b69b]             ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string>.get_Default()
+  0x180CCDDD5  mov     esi, eax                                  
+  0x180CCDDD7  call    0x18037e3d0                                  ; -> System.Collections.Generic.EqualityComparer<__Il2CppFullySharedGenericType>$$get_Default
+  0x180CCDDDC  test    rax, rax                                  
+  0x180CCDDDF  je      0x180ccde4a                               
+  0x180CCDDE1  mov     r8, qword ptr [rax]                       
+  0x180CCDDE4  mov     rcx, rax                                  
+  0x180CCDDE7  mov     rdx, qword ptr [rbx + 0x10]                  ; rbx->TextInsertData.<LabelId>k__BackingField
+  0x180CCDDEB  mov     r9, qword ptr [r8 + 0x1c8]                
+  0x180CCDDF2  mov     r8, qword ptr [r8 + 0x1d0]                
+  0x180CCDDF9  call    r9                                        
+  0x180CCDDFC  mov     rcx, qword ptr [rip + 0x2199335]             ; METHODINFO Method$System.Collections.Generic.EqualityComparer<string[]>.get_Default()
+  0x180CCDE03  mov     edi, eax                                  
+  0x180CCDE05  call    0x18037e3d0                                  ; -> System.Collections.Generic.EqualityComparer<__Il2CppFullySharedGenericType>$$get_Default
+  0x180CCDE0A  test    rax, rax                                  
+  0x180CCDE0D  je      0x180ccde4a                               
+  0x180CCDE0F  mov     r8, qword ptr [rax]                       
+  0x180CCDE12  mov     rcx, rax                                  
+  0x180CCDE15  mov     rdx, qword ptr [rbx + 0x18]                  ; rbx->TextInsertData.<Texts>k__BackingField
+  0x180CCDE19  mov     r9, qword ptr [r8 + 0x1c8]                
+  0x180CCDE20  mov     r8, qword ptr [r8 + 0x1d0]                
+  0x180CCDE27  call    r9                                        
+  0x180CCDE2A  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CCDE2F  imul    edx, esi, 0x838e4091                      
+  0x180CCDE35  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180CCDE3A  imul    ecx, edi, 0x5aaaaad7                      
+  0x180CCDE40  sub     edx, ecx                                  
+  0x180CCDE42  add     eax, edx                                  
+  0x180CCDE44  add     rsp, 0x20                                 
+  0x180CCDE48  pop     rdi                                       
+  0x180CCDE49  ret                                               
+
+180CCDE4A:
+  0x180CCDE4A  call    0x180246730                                  ; THROW NullReferenceException

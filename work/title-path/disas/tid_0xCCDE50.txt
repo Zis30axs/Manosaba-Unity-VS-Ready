@@ -1,0 +1,52 @@
+====================================================================================================
+FUNCTION RVA 0xCCDE50  VA 0x180CCDE50  size 0x92 (146 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.TextInsertData$$Equals
+  csig   : bool GigaCreation_Essentials_Dialogs_Views_TextInsertData__Equals (GigaCreation_Essentials_Dialogs_Views_TextInsertData_o* __this, Il2CppObject* obj, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.TextInsertData :: public override bool Equals(object obj)
+  fields of GigaCreation.Essentials.Dialogs.Views.TextInsertData:
+      +0x10   <LabelId>k__BackingField       readonly string
+      +0x18   <Texts>k__BackingField         readonly string[]
+====================================================================================================
+  0x180CCDE50  mov     qword ptr [rsp + 8], rbx                  
+  0x180CCDE55  push    rdi                                       
+  0x180CCDE56  sub     rsp, 0x20                                 
+  0x180CCDE5A  cmp     byte ptr [rip + 0x240f29d], 0                ; data_30DD0FE
+  0x180CCDE61  mov     rbx, rdx                                  
+  0x180CCDE64  mov     rdi, rcx                                  
+  0x180CCDE67  jne     0x180ccde81                               
+  0x180CCDE69  lea     rcx, [rip + 0x2199250]                       ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_TypeInfo
+  0x180CCDE70  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCDE75  lock or dword ptr [rsp], 0                        
+  0x180CCDE7A  mov     byte ptr [rip + 0x240f27d], 1                ; data_30DD0FE
+
+180CCDE81:
+  0x180CCDE81  xor     edx, edx                                  
+  0x180CCDE83  test    rbx, rbx                                  
+  0x180CCDE86  je      0x180ccdec1                               
+  0x180CCDE88  mov     r8, qword ptr [rip + 0x2199231]              ; TYPE GigaCreation.Essentials.Dialogs.Views.TextInsertData_TypeInfo
+  0x180CCDE8F  mov     r9, qword ptr [rbx]                       
+  0x180CCDE92  movzx   eax, byte ptr [r8 + 0x130]                
+  0x180CCDE9A  cmp     byte ptr [r9 + 0x130], al                 
+  0x180CCDEA1  jb      0x180ccdeb9                               
+  0x180CCDEA3  movzx   ecx, al                                   
+  0x180CCDEA6  mov     rax, qword ptr [r9 + 0xc8]                
+  0x180CCDEAD  cmp     qword ptr [rax + rcx*8 - 8], r8           
+  0x180CCDEB2  mov     eax, 1                                    
+  0x180CCDEB7  je      0x180ccdebb                               
+
+180CCDEB9:
+  0x180CCDEB9  mov     eax, edx                                  
+
+180CCDEBB:
+  0x180CCDEBB  test    eax, eax                                  
+  0x180CCDEBD  cmovne  rdx, rbx                                  
+
+180CCDEC1:
+  0x180CCDEC1  mov     r8, qword ptr [rdi]                       
+  0x180CCDEC4  mov     rcx, rdi                                  
+  0x180CCDEC7  mov     rax, qword ptr [r8 + 0x1a8]               
+  0x180CCDECE  mov     r8, qword ptr [r8 + 0x1b0]                
+  0x180CCDED5  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CCDEDA  add     rsp, 0x20                                 
+  0x180CCDEDE  pop     rdi                                       
+  0x180CCDEDF  jmp     rax                                       

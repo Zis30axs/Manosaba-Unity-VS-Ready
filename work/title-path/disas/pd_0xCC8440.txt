@@ -1,0 +1,140 @@
+====================================================================================================
+FUNCTION RVA 0xCC8440  VA 0x180CC8440  size 0xA5 (165 bytes)
+  managed: GigaCreation.Essentials.Dialogs.Views.ProvidableDialog$$get_SortingOrder
+  csig   : int32_t GigaCreation_Essentials_Dialogs_Views_ProvidableDialog__get_SortingOrder (GigaCreation_Essentials_Dialogs_Views_ProvidableDialog_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Dialogs.Views.ProvidableDialog :: public int get_SortingOrder()
+  fields of GigaCreation.Essentials.Dialogs.Views.ProvidableDialog:
+      +0x90   _generalScreen                 GeneralScreen
+      +0x98   _viewRootTransform             Transform
+      +0xA0   _scaleUpDuration               float
+      +0xA4   _scaleDownDuration             float
+      +0xA8   _inputManager                  IInputManager
+      +0xB0   _presentCts                    CancellationTokenSource
+      +0xB8   _dismissCts                    CancellationTokenSource
+      +0xC0   <InUse>k__BackingField         bool
+  fields of ProvidableDialog.<>c__DisplayClass21_0:
+      +0x10   textInsertData                 TextInsertData
+  fields of ProvidableDialog.<>c__DisplayClass26_0:
+      +0x10   linkedCts                      CancellationTokenSource
+  fields of ProvidableDialog.<ConfirmAsync>d__19:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      ProvidableDialog
+      +0x28   dialogData                     DialogData
+      +0x30   textInsertData                 TextInsertData
+      +0x38   ct                             CancellationToken
+      +0x40   <>u__1                         UniTask.Awaiter
+      +0x50   <>u__2                         UniTask.Awaiter<ResponseKind>
+  fields of ProvidableDialog.<DismissAndReleaseAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<DismissAsync>d__23:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <linkedCts>5__2                CancellationTokenSource
+      +0x30   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<DisposeAsync>d__18:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<OnResponseAsync>d__26:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   ct                             CancellationToken
+      +0x28   <>4__this                      ProvidableDialog
+      +0x30   <>8__1                         ProvidableDialog.<>c__DisplayClass26_0
+      +0x38   <>u__1                         UniTask.Awaiter<ValueTuple<int, ResponseKind>>
+  fields of ProvidableDialog.<PlayDismissAnimationAsync>d__24:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<PlayPresentAnimationAsync>d__22:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   timePosition                   float
+      +0x30   <manualMotionSkipper>5__2      IManualMotionSkipper
+      +0x38   <>u__1                         UniTask.Awaiter
+  fields of ProvidableDialog.<RebuildAndPresentAsync>d__20:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      ProvidableDialog
+      +0x20   ct                             CancellationToken
+      +0x28   dialogData                     DialogData
+      +0x30   textInsertData                 TextInsertData
+      +0x38   <linkedCts>5__2                CancellationTokenSource
+      +0x40   <>u__1                         UniTask.Awaiter<float>
+      +0x50   <>u__2                         UniTask.Awaiter
+  fields of ProvidableDialog.<ScaleAsync>d__25:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   duration                       float
+      +0x1C   from                           Nullable<float>
+      +0x28   <>4__this                      ProvidableDialog
+      +0x30   to                             float
+      +0x34   ease                           Ease
+      +0x38   updateMotionManually           bool
+      +0x40   ct                             CancellationToken
+      +0x48   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CC8440  push    rbx                                       
+  0x180CC8442  sub     rsp, 0x20                                 
+  0x180CC8446  mov     rbx, qword ptr [rcx + 0x90]                  ; rcx->ProvidableDialog._generalScreen
+  0x180CC844D  test    rbx, rbx                                  
+  0x180CC8450  je      0x180cc84be                               
+  0x180CC8452  mov     rbx, qword ptr [rbx + 0x20]                  ; rbx-><ConfirmAsync>d__19.<>4__this | <DismissAndReleaseAsync>d__27.ct | <DismissAsync>d__23.ct
+  0x180CC8456  test    rbx, rbx                                  
+  0x180CC8459  je      0x180cc84be                               
+  0x180CC845B  cmp     byte ptr [rip + 0x2424c45], 0                ; data_30ED0A7
+  0x180CC8462  mov     qword ptr [rsp + 0x30], rdi               
+  0x180CC8467  jne     0x180cc8481                               
+  0x180CC8469  lea     rcx, [rip + 0x212b4a0]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Canvas>()
+  0x180CC8470  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CC8475  lock or dword ptr [rsp], 0                        
+  0x180CC847A  mov     byte ptr [rip + 0x2424c26], 1                ; data_30ED0A7
+
+180CC8481:
+  0x180CC8481  mov     rdi, qword ptr [rbx + 0x10]                  ; rbx-><>c__DisplayClass21_0.textInsertData | <>c__DisplayClass26_0.linkedCts
+  0x180CC8485  test    rdi, rdi                                  
+  0x180CC8488  je      0x180cc84db                               
+  0x180CC848A  mov     rax, qword ptr [rip + 0x2424cdf]             ; data_30ED170
+  0x180CC8491  test    rax, rax                                  
+  0x180CC8494  jne     0x180cc84ae                               
+  0x180CC8496  lea     rcx, [rip + 0x1960d63]                       ; data_2629200
+  0x180CC849D  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CC84A2  test    rax, rax                                  
+  0x180CC84A5  je      0x180cc84c4                               
+  0x180CC84A7  mov     qword ptr [rip + 0x2424cc2], rax             ; data_30ED170
+
+180CC84AE:
+  0x180CC84AE  mov     rcx, rdi                                  
+  0x180CC84B1  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180CC84B6  add     rsp, 0x20                                 
+  0x180CC84BA  pop     rbx                                       
+  0x180CC84BB  jmp     rax                                       
+
+180CC84BE:
+  0x180CC84BE  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CC84C3  int3                                              
+
+180CC84C4:
+  0x180CC84C4  lea     rcx, [rip + 0x1960d35]                       ; data_2629200
+  0x180CC84CB  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CC84D0  mov     rcx, rax                                  
+  0x180CC84D3  xor     edx, edx                                  
+  0x180CC84D5  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CC84DA  int3                                              
+
+180CC84DB:
+  0x180CC84DB  xor     edx, edx                                  
+  0x180CC84DD  mov     rcx, rbx                                  
+  0x180CC84E0  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
