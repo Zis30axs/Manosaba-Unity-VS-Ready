@@ -1,0 +1,40 @@
+====================================================================================================
+FUNCTION RVA 0xCE42D0  VA 0x180CE42D0  size 0x2A (42 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableLabel$$get_PreferredWidth
+  csig   : float GigaCreation_Essentials_Ui_RebuildableLabel__get_PreferredWidth (GigaCreation_Essentials_Ui_RebuildableLabel_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableLabel :: public float get_PreferredWidth()
+  fields of GigaCreation.Essentials.Ui.RebuildableLabel:
+      +0x20   _uiLabel                       TextMeshProUGUI
+      +0x28   _labelData                     LabelData
+      +0x30   _defaultFontSize               float
+      +0x34   _defaultLabelColor             Color
+      +0x44   _defaultCharacterSpacing       float
+      +0x48   _defaultHorizontalAlignment    HorizontalAlignmentOptions
+      +0x50   _labelId                       string
+      +0x58   _localizationProvider          ILocalizationProvider
+  fields of RebuildableLabel.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableLabel
+      +0x18   labelData                      LabelData
+  fields of RebuildableLabel.<>c__DisplayClass25_0:
+      +0x10   labelData                      LabelData
+      +0x18   locale                         Nullable<LocaleKind>
+      +0x20   <>4__this                      RebuildableLabel
+  fields of RebuildableLabel.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableLabel
+      +0x18   texts                          string[]
+  fields of RebuildableLabel.<>c__DisplayClass26_1:
+      +0x10   j                              int
+      +0x18   CS$<>8__locals1                RebuildableLabel.<>c__DisplayClass26_0
+====================================================================================================
+  0x180CE42D0  sub     rsp, 0x28                                 
+  0x180CE42D4  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->RebuildableLabel._uiLabel | <>c__DisplayClass25_0.<>4__this
+  0x180CE42D8  test    rcx, rcx                                  
+  0x180CE42DB  je      0x180ce42f5                               
+  0x180CE42DD  mov     rdx, qword ptr [rcx]                      
+  0x180CE42E0  mov     rax, qword ptr [rdx + 0x678]              
+  0x180CE42E7  mov     rdx, qword ptr [rdx + 0x680]              
+  0x180CE42EE  add     rsp, 0x28                                 
+  0x180CE42F2  jmp     rax                                       
+
+180CE42F5:
+  0x180CE42F5  call    0x180246730                                  ; THROW NullReferenceException

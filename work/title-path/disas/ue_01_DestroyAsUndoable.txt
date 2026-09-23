@@ -1,0 +1,43 @@
+====================================================================================================
+FUNCTION RVA 0xD5D180  VA 0x180D5D180  size 0x88 (136 bytes)
+  managed: GigaCreation.Tools.UndoExtensions.ObjectExtensions$$DestroyAsUndoable
+  csig   : void GigaCreation_Tools_UndoExtensions_ObjectExtensions__DestroyAsUndoable (UnityEngine_Object_o* self, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.UndoExtensions.ObjectExtensions :: public static void DestroyAsUndoable(Object self)
+====================================================================================================
+  0x180D5D180  push    rbx                                       
+  0x180D5D182  sub     rsp, 0x20                                 
+  0x180D5D186  cmp     byte ptr [rip + 0x23802ed], 0                ; data_30DD47A
+  0x180D5D18D  mov     rbx, rcx                                  
+  0x180D5D190  jne     0x180d5d1aa                               
+  0x180D5D192  lea     rcx, [rip + 0x20f50f7]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D5D199  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5D19E  lock or dword ptr [rsp], 0                        
+  0x180D5D1A3  mov     byte ptr [rip + 0x23802d0], 1                ; data_30DD47A
+
+180D5D1AA:
+  0x180D5D1AA  mov     rcx, qword ptr [rip + 0x20f50df]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D5D1B1  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D5D1B8  jne     0x180d5d1bf                               
+  0x180D5D1BA  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D5D1BF:
+  0x180D5D1BF  cmp     byte ptr [rip + 0x238b672], 0                ; data_30E8838
+  0x180D5D1C6  jne     0x180d5d1e0                               
+  0x180D5D1C8  lea     rcx, [rip + 0x20f50c1]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180D5D1CF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D5D1D4  lock or dword ptr [rsp], 0                        
+  0x180D5D1D9  mov     byte ptr [rip + 0x238b658], 1                ; data_30E8838
+
+180D5D1E0:
+  0x180D5D1E0  mov     rcx, qword ptr [rip + 0x20f50a9]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180D5D1E7  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D5D1EE  jne     0x180d5d1f5                               
+  0x180D5D1F0  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D5D1F5:
+  0x180D5D1F5  xor     r8d, r8d                                  
+  0x180D5D1F8  xorps   xmm1, xmm1                                
+  0x180D5D1FB  mov     rcx, rbx                                  
+  0x180D5D1FE  add     rsp, 0x20                                 
+  0x180D5D202  pop     rbx                                       
+  0x180D5D203  jmp     0x182071c60                                  ; -> UnityEngine.Object$$Destroy

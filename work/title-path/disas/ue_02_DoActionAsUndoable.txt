@@ -1,0 +1,29 @@
+====================================================================================================
+FUNCTION RVA 0x7239F0  VA 0x1807239F0  size 0x45 (69 bytes)
+  managed: GigaCreation.Tools.UndoExtensions.ObjectExtensions$$DoActionAsUndoable<object>
+  csig   : void GigaCreation_Tools_UndoExtensions_ObjectExtensions__DoActionAsUndoable_object_ (Il2CppObject* self, System_String_o* name, System_Action_T__o* undoableAction, const MethodInfo_7239F0* method);
+====================================================================================================
+  0x1807239F0  mov     qword ptr [rsp + 8], rbx                  
+  0x1807239F5  push    rdi                                       
+  0x1807239F6  sub     rsp, 0x20                                 
+  0x1807239FA  cmp     qword ptr [r9 + 0x38], 0                  
+  0x1807239FF  mov     rbx, r8                                   
+  0x180723A02  mov     rdi, rcx                                  
+  0x180723A05  jne     0x180723a0f                               
+  0x180723A07  mov     rcx, r9                                   
+  0x180723A0A  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180723A0F:
+  0x180723A0F  test    rbx, rbx                                  
+  0x180723A12  je      0x180723a30                               
+  0x180723A14  mov     rax, qword ptr [rbx + 0x18]               
+  0x180723A18  mov     rdx, rdi                                  
+  0x180723A1B  mov     r8, qword ptr [rbx + 0x28]                
+  0x180723A1F  mov     rcx, qword ptr [rbx + 0x40]               
+  0x180723A23  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180723A28  add     rsp, 0x20                                 
+  0x180723A2C  pop     rdi                                       
+  0x180723A2D  jmp     rax                                       
+
+180723A30:
+  0x180723A30  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,91 @@
+====================================================================================================
+FUNCTION RVA 0xCE5A10  VA 0x180CE5A10  size 0x148 (328 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableLabel.<>c__DisplayClass26_1$$<InsertTexts>b__0
+  csig   : void GigaCreation_Essentials_Ui_RebuildableLabel___c__DisplayClass26_1___InsertTexts_b__0 (GigaCreation_Essentials_Ui_RebuildableLabel___c__DisplayClass26_1_o* __this, TMPro_TextMeshProUGUI_o* label, const MethodInfo* method);
+  dump.cs: RebuildableLabel.<>c__DisplayClass26_1 :: internal void <InsertTexts>b__0(TextMeshProUGUI label)
+====================================================================================================
+  0x180CE5A10  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CE5A15  push    rdi                                       
+  0x180CE5A16  sub     rsp, 0x60                                 
+  0x180CE5A1A  cmp     byte ptr [rip + 0x23f778e], 0                ; data_30DD1AF
+  0x180CE5A21  mov     rsi, rdx                                  
+  0x180CE5A24  mov     rdi, rcx                                  
+  0x180CE5A27  jne     0x180ce5a41                               
+  0x180CE5A29  lea     rcx, [rip + 0x2182b80]                       ; STR '{{{0}}}'
+  0x180CE5A30  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE5A35  lock or dword ptr [rsp], 0                        
+  0x180CE5A3A  mov     byte ptr [rip + 0x23f776e], 1                ; data_30DD1AF
+
+180CE5A41:
+  0x180CE5A41  mov     rax, qword ptr [rdi + 0x18]               
+  0x180CE5A45  mov     qword ptr [rsp + 0x80], rbp               
+  0x180CE5A4D  test    rax, rax                                  
+  0x180CE5A50  je      0x180ce5b4d                               
+  0x180CE5A56  mov     rcx, qword ptr [rax + 0x10]               
+  0x180CE5A5A  test    rcx, rcx                                  
+  0x180CE5A5D  je      0x180ce5b4d                               
+  0x180CE5A63  mov     rcx, qword ptr [rcx + 0x20]               
+  0x180CE5A67  test    rcx, rcx                                  
+  0x180CE5A6A  je      0x180ce5b4d                               
+  0x180CE5A70  mov     rdx, qword ptr [rcx]                      
+  0x180CE5A73  mov     qword ptr [rsp + 0x78], rbx               
+  0x180CE5A78  mov     rax, qword ptr [rdx + 0x548]              
+  0x180CE5A7F  mov     rdx, qword ptr [rdx + 0x550]              
+  0x180CE5A86  call    rax                                       
+  0x180CE5A88  mov     ecx, dword ptr [rdi + 0x10]               
+  0x180CE5A8B  lea     rdx, [rsp + 0x70]                         
+  0x180CE5A90  mov     dword ptr [rsp + 0x70], ecx               
+  0x180CE5A94  mov     rbp, rax                                  
+  0x180CE5A97  mov     rcx, qword ptr [rip + 0x23f1bfa]             ; data_30D7698
+  0x180CE5A9E  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x180CE5AA3  mov     rbx, qword ptr [rip + 0x2182b06]             ; STR '{{{0}}}'
+  0x180CE5AAA  lea     rcx, [rsp + 0x20]                         
+  0x180CE5AAF  xorps   xmm0, xmm0                                
+  0x180CE5AB2  xor     r8d, r8d                                  
+  0x180CE5AB5  mov     rdx, rax                                  
+  0x180CE5AB8  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CE5ABD  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CE5AC2  call    0x181031d10                                  ; -> System.ParamsArray$$.ctor
+  0x180CE5AC7  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180CE5ACC  xor     r9d, r9d                                  
+  0x180CE5ACF  lea     r8, [rsp + 0x40]                          
+  0x180CE5AD4  movups  xmm1, xmmword ptr [rsp + 0x30]            
+  0x180CE5AD9  mov     rdx, rbx                                  
+  0x180CE5ADC  xor     ecx, ecx                                  
+  0x180CE5ADE  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CE5AE3  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180CE5AE8  call    0x180e27120                                  ; -> System.String$$FormatHelper
+  0x180CE5AED  mov     rcx, qword ptr [rdi + 0x18]               
+  0x180CE5AF1  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180CE5AF6  test    rcx, rcx                                  
+  0x180CE5AF9  je      0x180ce5b4d                               
+  0x180CE5AFB  mov     rcx, qword ptr [rcx + 0x18]               
+  0x180CE5AFF  test    rcx, rcx                                  
+  0x180CE5B02  je      0x180ce5b4d                               
+  0x180CE5B04  movsxd  rdx, dword ptr [rdi + 0x10]               
+  0x180CE5B08  cmp     edx, dword ptr [rcx + 0x18]               
+  0x180CE5B0B  jae     0x180ce5b53                               
+  0x180CE5B0D  test    rbp, rbp                                  
+  0x180CE5B10  je      0x180ce5b4d                               
+  0x180CE5B12  mov     r8, qword ptr [rcx + rdx*8 + 0x20]        
+  0x180CE5B17  xor     r9d, r9d                                  
+  0x180CE5B1A  mov     rdx, rax                                  
+  0x180CE5B1D  mov     rcx, rbp                                  
+  0x180CE5B20  call    0x180e28520                                  ; -> System.String$$Replace
+  0x180CE5B25  test    rsi, rsi                                  
+  0x180CE5B28  je      0x180ce5b4d                               
+  0x180CE5B2A  xor     r8d, r8d                                  
+  0x180CE5B2D  mov     rdx, rax                                  
+  0x180CE5B30  mov     rcx, rsi                                  
+  0x180CE5B33  mov     rbp, qword ptr [rsp + 0x80]               
+  0x180CE5B3B  mov     rsi, qword ptr [rsp + 0x88]               
+  0x180CE5B43  add     rsp, 0x60                                 
+  0x180CE5B47  pop     rdi                                       
+  0x180CE5B48  jmp     0x181f05050                                  ; -> TMPro.TMP_Text$$SetText (+1 aliases)
+
+180CE5B4D:
+  0x180CE5B4D  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE5B52  int3                                              
+
+180CE5B53:
+  0x180CE5B53  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

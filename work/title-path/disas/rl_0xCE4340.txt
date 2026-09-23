@@ -1,0 +1,83 @@
+====================================================================================================
+FUNCTION RVA 0xCE4340  VA 0x180CE4340  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableLabel$$get_LocalizationProvider
+  csig   : GigaCreation_Essentials_Localization_ILocalizationProvider_o* GigaCreation_Essentials_Ui_RebuildableLabel__get_LocalizationProvider (GigaCreation_Essentials_Ui_RebuildableLabel_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableLabel :: private ILocalizationProvider get_LocalizationProvider()
+  fields of GigaCreation.Essentials.Ui.RebuildableLabel:
+      +0x20   _uiLabel                       TextMeshProUGUI
+      +0x28   _labelData                     LabelData
+      +0x30   _defaultFontSize               float
+      +0x34   _defaultLabelColor             Color
+      +0x44   _defaultCharacterSpacing       float
+      +0x48   _defaultHorizontalAlignment    HorizontalAlignmentOptions
+      +0x50   _labelId                       string
+      +0x58   _localizationProvider          ILocalizationProvider
+  fields of RebuildableLabel.<>c__DisplayClass23_0:
+      +0x10   <>4__this                      RebuildableLabel
+      +0x18   labelData                      LabelData
+  fields of RebuildableLabel.<>c__DisplayClass25_0:
+      +0x10   labelData                      LabelData
+      +0x18   locale                         Nullable<LocaleKind>
+      +0x20   <>4__this                      RebuildableLabel
+  fields of RebuildableLabel.<>c__DisplayClass26_0:
+      +0x10   <>4__this                      RebuildableLabel
+      +0x18   texts                          string[]
+  fields of RebuildableLabel.<>c__DisplayClass26_1:
+      +0x10   j                              int
+      +0x18   CS$<>8__locals1                RebuildableLabel.<>c__DisplayClass26_0
+====================================================================================================
+  0x180CE4340  push    rbx                                       
+  0x180CE4342  sub     rsp, 0x20                                 
+  0x180CE4346  cmp     byte ptr [rip + 0x23f8e59], 0                ; data_30DD1A6
+  0x180CE434D  mov     rbx, rcx                                  
+  0x180CE4350  jne     0x180ce437b                               
+  0x180CE4352  lea     rcx, [rip + 0x216dd67]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180CE4359  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE435E  lock or dword ptr [rsp], 0                        
+  0x180CE4363  lea     rcx, [rip + 0x216ddfe]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE436A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE436F  lock or dword ptr [rsp], 0                        
+  0x180CE4374  mov     byte ptr [rip + 0x23f8e2b], 1                ; data_30DD1A6
+
+180CE437B:
+  0x180CE437B  mov     rax, qword ptr [rbx + 0x58]                  ; rbx->RebuildableLabel._localizationProvider
+  0x180CE437F  test    rax, rax                                  
+  0x180CE4382  jne     0x180ce43f4                               
+  0x180CE4384  mov     rcx, qword ptr [rip + 0x216dddd]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE438B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CE4391  jne     0x180ce4398                               
+  0x180CE4393  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE4398:
+  0x180CE4398  mov     rdx, qword ptr [rip + 0x216dd21]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180CE439F  mov     cl, 1                                     
+  0x180CE43A1  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE43A6  cmp     dword ptr [rip + 0x23f4e17], 0               ; data_30D91C4
+  0x180CE43AD  mov     r9, rax                                   
+  0x180CE43B0  mov     qword ptr [rbx + 0x58], rax                  ; rbx->RebuildableLabel._localizationProvider
+  0x180CE43B4  je      0x180ce43f1                               
+  0x180CE43B6  lea     r8, [rbx + 0x58]                             ; rbx->RebuildableLabel._localizationProvider
+  0x180CE43BA  shr     r8, 0xc                                   
+  0x180CE43BE  lea     rcx, [rip + 0x24501bb]                       ; data_3134580
+  0x180CE43C5  and     r8d, 0x1fffff                             
+  0x180CE43CC  mov     eax, r8d                                  
+  0x180CE43CF  shr     rax, 6                                    
+  0x180CE43D3  and     r8d, 0x3f                                 
+  0x180CE43D7  lea     rdx, [rcx + rax*8]                        
+  0x180CE43DB  prefetchw byte ptr [rdx]                            
+  0x180CE43DE  nop                                               
+
+180CE43E0:
+  0x180CE43E0  mov     rax, qword ptr [rdx]                      
+  0x180CE43E3  mov     rcx, rax                                  
+  0x180CE43E6  bts     rcx, r8                                   
+  0x180CE43EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE43EF  jne     0x180ce43e0                               
+
+180CE43F1:
+  0x180CE43F1  mov     rax, r9                                   
+
+180CE43F4:
+  0x180CE43F4  add     rsp, 0x20                                 
+  0x180CE43F8  pop     rbx                                       
+  0x180CE43F9  ret                                               
