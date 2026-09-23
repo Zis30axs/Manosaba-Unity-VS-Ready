@@ -1,0 +1,139 @@
+====================================================================================================
+FUNCTION RVA 0xCF0D70  VA 0x180CF0D70  size 0x21D (541 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningToggle$$Initialize
+  csig   : void GigaCreation_Essentials_Ui_TweeningToggle__Initialize (GigaCreation_Essentials_Ui_TweeningToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningToggle :: private void Initialize()
+  fields of GigaCreation.Essentials.Ui.TweeningToggle:
+      +0x128  _transform                     Transform
+      +0x130  _canvasGroup                   CanvasGroup
+      +0x138  _scaleUpWhenHighlighted        bool
+      +0x140  _scaleUtil                     ScaleUtility
+      +0x148  _fadeOutWhenOff                bool
+      +0x149  _fadeOutWhenDisabled           bool
+      +0x150  _fadeUtil                      FadeUtility
+      +0x158  _disableRaycastBlockingWhenOff bool
+      +0x160  _disposables                   readonly CompositeDisposable
+      +0x168  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0D70  push    rsi                                       
+  0x180CF0D72  sub     rsp, 0x30                                 
+  0x180CF0D76  cmp     byte ptr [rip + 0x23ec491], 0                ; data_30DD20E
+  0x180CF0D7D  mov     rsi, rcx                                  
+  0x180CF0D80  jne     0x180cf0e00                               
+  0x180CF0D82  lea     rcx, [rip + 0x21614e7]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180CF0D89  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0D8E  lock or dword ptr [rsp], 0                        
+  0x180CF0D93  lea     rcx, [rip + 0x21614ce]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF0D9A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0D9F  lock or dword ptr [rsp], 0                        
+  0x180CF0DA4  lea     rcx, [rip + 0x21614b5]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0DAB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0DB0  lock or dword ptr [rsp], 0                        
+  0x180CF0DB5  lea     rcx, [rip + 0x21772e4]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnEnablingChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnEnablingChanged
+  0x180CF0DBC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0DC1  lock or dword ptr [rsp], 0                        
+  0x180CF0DC6  lea     rcx, [rip + 0x21772cb]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnHighlightingChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnHighlightingChanged
+  0x180CF0DCD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0DD2  lock or dword ptr [rsp], 0                        
+  0x180CF0DD7  lea     rcx, [rip + 0x21772d2]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnValueChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnValueChanged
+  0x180CF0DDE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0DE3  lock or dword ptr [rsp], 0                        
+  0x180CF0DE8  lea     rcx, [rip + 0x213f9d9]                       ; METHODINFO Method$UnityEngine.Events.UnityEvent<bool>.Invoke()
+  0x180CF0DEF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0DF4  lock or dword ptr [rsp], 0                        
+  0x180CF0DF9  mov     byte ptr [rip + 0x23ec40e], 1                ; data_30DD20E
+
+180CF0E00:
+  0x180CF0E00  mov     qword ptr [rsp + 0x40], rbx               
+  0x180CF0E05  xor     edx, edx                                  
+  0x180CF0E07  mov     rcx, rsi                                  
+  0x180CF0E0A  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CF0E0F  call    0x180cf0bf0                                  ; -> GigaCreation.Essentials.Ui.TweeningToggle$$get_SelectableUtil
+  0x180CF0E14  test    rax, rax                                  
+  0x180CF0E17  je      0x180cf0f88                               
+  0x180CF0E1D  mov     rcx, qword ptr [rip + 0x216144c]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CF0E24  mov     rdi, qword ptr [rax + 0x10]               
+  0x180CF0E28  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF0E2D  mov     r8, qword ptr [rip + 0x2177264]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnHighlightingChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnHighlightingChanged
+  0x180CF0E34  xor     r9d, r9d                                  
+  0x180CF0E37  mov     rdx, rsi                                  
+  0x180CF0E3A  mov     rcx, rax                                  
+  0x180CF0E3D  mov     rbx, rax                                  
+  0x180CF0E40  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF0E45  mov     r8, qword ptr [rip + 0x2161414]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0E4C  mov     rdx, rbx                                  
+  0x180CF0E4F  mov     rcx, rdi                                  
+  0x180CF0E52  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CF0E57  mov     rcx, qword ptr [rip + 0x216140a]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF0E5E  lea     r9, [rsp + 0x50]                          
+  0x180CF0E63  mov     rdx, qword ptr [rsi + 0x160]                 ; rsi->TweeningToggle._disposables
+  0x180CF0E6A  mov     r8, rsi                                   
+  0x180CF0E6D  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CF0E72  mov     rcx, rax                                  
+  0x180CF0E75  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CF0E7A  xor     edx, edx                                  
+  0x180CF0E7C  mov     rcx, rsi                                  
+  0x180CF0E7F  call    0x180cf0bf0                                  ; -> GigaCreation.Essentials.Ui.TweeningToggle$$get_SelectableUtil
+  0x180CF0E84  test    rax, rax                                  
+  0x180CF0E87  je      0x180cf0f88                               
+  0x180CF0E8D  mov     rcx, qword ptr [rip + 0x21613dc]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CF0E94  mov     rdi, qword ptr [rax + 0x18]               
+  0x180CF0E98  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF0E9D  mov     r8, qword ptr [rip + 0x21771fc]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnEnablingChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnEnablingChanged
+  0x180CF0EA4  xor     r9d, r9d                                  
+  0x180CF0EA7  mov     rdx, rsi                                  
+  0x180CF0EAA  mov     rcx, rax                                  
+  0x180CF0EAD  mov     rbx, rax                                  
+  0x180CF0EB0  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF0EB5  mov     r8, qword ptr [rip + 0x21613a4]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0EBC  mov     rdx, rbx                                  
+  0x180CF0EBF  mov     rcx, rdi                                  
+  0x180CF0EC2  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CF0EC7  mov     rcx, qword ptr [rip + 0x216139a]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF0ECE  lea     r9, [rsp + 0x50]                          
+  0x180CF0ED3  mov     rdx, qword ptr [rsi + 0x160]                 ; rsi->TweeningToggle._disposables
+  0x180CF0EDA  mov     r8, rsi                                   
+  0x180CF0EDD  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CF0EE2  mov     rcx, rax                                  
+  0x180CF0EE5  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CF0EEA  xor     edx, edx                                  
+  0x180CF0EEC  mov     rcx, rsi                                  
+  0x180CF0EEF  call    0x1817e0470                                  ; -> UniRx.UnityUIComponentExtensions$$OnValueChangedAsObservable
+  0x180CF0EF4  mov     rcx, qword ptr [rip + 0x2161375]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CF0EFB  mov     rdi, rax                                  
+  0x180CF0EFE  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF0F03  mov     r8, qword ptr [rip + 0x21771a6]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningToggle.OnValueChanged() => GigaCreation.Essentials.Ui.TweeningToggle$$OnValueChanged
+  0x180CF0F0A  xor     r9d, r9d                                  
+  0x180CF0F0D  mov     rdx, rsi                                  
+  0x180CF0F10  mov     rcx, rax                                  
+  0x180CF0F13  mov     rbx, rax                                  
+  0x180CF0F16  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF0F1B  mov     r8, qword ptr [rip + 0x216133e]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0F22  mov     rdx, rbx                                  
+  0x180CF0F25  mov     rcx, rdi                                  
+  0x180CF0F28  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CF0F2D  mov     rcx, qword ptr [rip + 0x2161334]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF0F34  lea     r9, [rsp + 0x50]                          
+  0x180CF0F39  mov     rdx, qword ptr [rsi + 0x160]                 ; rsi->TweeningToggle._disposables
+  0x180CF0F40  mov     r8, rsi                                   
+  0x180CF0F43  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CF0F48  mov     rcx, rax                                  
+  0x180CF0F4B  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CF0F50  mov     rcx, qword ptr [rsi + 0x118]              
+  0x180CF0F57  test    rcx, rcx                                  
+  0x180CF0F5A  je      0x180cf0f78                               
+  0x180CF0F5C  movzx   eax, byte ptr [rsi + 0x120]               
+  0x180CF0F63  lea     rdx, [rsp + 0x50]                         
+  0x180CF0F68  mov     r8, qword ptr [rip + 0x213f859]              ; METHODINFO Method$UnityEngine.Events.UnityEvent<bool>.Invoke()
+  0x180CF0F6F  mov     byte ptr [rsp + 0x50], al                 
+  0x180CF0F73  call    0x1809768d0                                  ; -> UnityEngine.Events.UnityEvent<__Il2CppFullySharedGenericType>$$Invoke
+
+180CF0F78:
+  0x180CF0F78  mov     rdi, qword ptr [rsp + 0x48]               
+  0x180CF0F7D  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CF0F82  add     rsp, 0x30                                 
+  0x180CF0F86  pop     rsi                                       
+  0x180CF0F87  ret                                               
+
+180CF0F88:
+  0x180CF0F88  call    0x180246730                                  ; THROW NullReferenceException

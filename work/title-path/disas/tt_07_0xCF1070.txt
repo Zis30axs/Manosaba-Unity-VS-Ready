@@ -1,0 +1,51 @@
+====================================================================================================
+FUNCTION RVA 0xCF1070  VA 0x180CF1070  size 0x6D (109 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningToggle$$OnValueChanged
+  csig   : void GigaCreation_Essentials_Ui_TweeningToggle__OnValueChanged (GigaCreation_Essentials_Ui_TweeningToggle_o* __this, bool turnedOn, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningToggle :: private void OnValueChanged(bool turnedOn)
+  fields of GigaCreation.Essentials.Ui.TweeningToggle:
+      +0x128  _transform                     Transform
+      +0x130  _canvasGroup                   CanvasGroup
+      +0x138  _scaleUpWhenHighlighted        bool
+      +0x140  _scaleUtil                     ScaleUtility
+      +0x148  _fadeOutWhenOff                bool
+      +0x149  _fadeOutWhenDisabled           bool
+      +0x150  _fadeUtil                      FadeUtility
+      +0x158  _disableRaycastBlockingWhenOff bool
+      +0x160  _disposables                   readonly CompositeDisposable
+      +0x168  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF1070  mov     qword ptr [rsp + 8], rbx                  
+  0x180CF1075  push    rdi                                       
+  0x180CF1076  sub     rsp, 0x20                                 
+  0x180CF107A  cmp     byte ptr [rcx + 0x148], 0                    ; rcx->TweeningToggle._fadeOutWhenOff
+  0x180CF1081  movzx   edi, dl                                   
+  0x180CF1084  mov     rbx, rcx                                  
+  0x180CF1087  je      0x180cf10a8                               
+  0x180CF1089  mov     rcx, qword ptr [rcx + 0x150]                 ; rcx->TweeningToggle._fadeUtil
+  0x180CF1090  test    rcx, rcx                                  
+  0x180CF1093  je      0x180cf10d8                               
+  0x180CF1095  movzx   r8d, dl                                   
+  0x180CF1099  xor     r9d, r9d                                  
+  0x180CF109C  mov     rdx, qword ptr [rbx + 0x130]                 ; rbx->TweeningToggle._canvasGroup
+  0x180CF10A3  call    0x180cdbcc0                                  ; -> GigaCreation.Essentials.Ui.FadeUtility$$Fade
+
+180CF10A8:
+  0x180CF10A8  cmp     byte ptr [rbx + 0x158], 0                    ; rbx->TweeningToggle._disableRaycastBlockingWhenOff
+  0x180CF10AF  je      0x180cf10cd                               
+  0x180CF10B1  mov     rcx, qword ptr [rbx + 0x130]                 ; rbx->TweeningToggle._canvasGroup
+  0x180CF10B8  test    rcx, rcx                                  
+  0x180CF10BB  je      0x180cf10d8                               
+  0x180CF10BD  xor     dil, 1                                    
+  0x180CF10C1  xor     r8d, r8d                                  
+  0x180CF10C4  movzx   edx, dil                                  
+  0x180CF10C8  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+
+180CF10CD:
+  0x180CF10CD  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CF10D2  add     rsp, 0x20                                 
+  0x180CF10D6  pop     rdi                                       
+  0x180CF10D7  ret                                               
+
+180CF10D8:
+  0x180CF10D8  call    0x180246730                                  ; THROW NullReferenceException

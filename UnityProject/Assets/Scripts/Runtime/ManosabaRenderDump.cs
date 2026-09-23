@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,12 +55,32 @@ namespace Manosaba.Integration
         {
             sb.AppendLine("==== t=" + t.ToString("0.0", CultureInfo.InvariantCulture) + " frame=" + Time.frameCount +
                           " screen=" + Screen.width + "x" + Screen.height);
+            string locale = LocaleState();
+            sb.AppendLine(locale);
+            Debug.Log("[ManosabaRenderDump] " + locale);
             foreach (Camera cam in Camera.allCameras.OrderBy(c => c.depth))
             {
                 sb.AppendLine(string.Format(CultureInfo.InvariantCulture,
                     "camera {0} depth={1} clear={2} bg={3} mask=0x{4:X} rt={5} ortho={6} tag={7}",
                     PathOf(cam.transform), cam.depth, cam.clearFlags, cam.backgroundColor, cam.cullingMask,
                     cam.targetTexture ? cam.targetTexture.name : "-", cam.orthographic, cam.tag));
+                sb.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                    "   pos={0} size={1:0.###} near={2:0.###} far={3:0.###} enabled={4}",
+                    cam.transform.position, cam.orthographicSize, cam.nearClipPlane, cam.farClipPlane, cam.enabled));
+                // Scene renderers (not UI) this camera draws: in its culling mask, enabled, and inside its frustum.
+                Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
+                foreach (Renderer r in FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+                {
+                    if (!r.enabled || !r.gameObject.activeInHierarchy || r.forceRenderingOff) continue;
+                    if (r is CanvasRenderer || (cam.cullingMask & (1 << r.gameObject.layer)) == 0) continue;
+                    if (!GeometryUtility.TestPlanesAABB(planes, r.bounds)) continue;
+                    var mat = r.sharedMaterial;
+                    sb.AppendLine(string.Format(CultureInfo.InvariantCulture,
+                        "   renderer {0} {1} layer={2} sort={3}/{4} center={5} size={6} shader={7} sprite={8}",
+                        r.GetType().Name, PathOf(r.transform), r.gameObject.layer, r.sortingLayerName, r.sortingOrder,
+                        r.bounds.center, r.bounds.size, mat ? mat.shader.name : "NONE",
+                        r is SpriteRenderer sr && sr.sprite ? sr.sprite.name : "-"));
+                }
             }
             var canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(c => c.isRootCanvas)
                 .OrderBy(c => c.sortingLayerID).ThenBy(c => c.sortingOrder).ToList();
@@ -79,7 +100,8 @@ namespace Manosaba.Integration
                     Rect r = ScreenRect(g.rectTransform, canvas);
                     float cover = Mathf.Max(0f, r.width) * Mathf.Max(0f, r.height) / screenArea;
                     if (cover < 0.02f) continue;
-                    string source = g is Image img ? "sprite=" + (img.sprite ? img.sprite.name : "NONE")
+                    // overrideSprite is what the Image draws (LocalizeImage swaps it per locale; it falls back to sprite)
+                    string source = g is Image img ? "sprite=" + (img.overrideSprite ? img.overrideSprite.name : "NONE")
                         : g is RawImage raw ? "texture=" + (raw.texture ? raw.texture.name : "NONE")
                         : g is TMPro.TMP_Text tmp ? "text='" + Trim(tmp.text) + "'" : g.GetType().Name;
                     sb.AppendLine(string.Format(CultureInfo.InvariantCulture,
@@ -87,6 +109,47 @@ namespace Manosaba.Integration
                         cover * 100f, alpha, g.GetType().Name, PathOf(g.transform), g.color, source, r.x, r.y, r.width, r.height));
                 }
             }
+        }
+
+        /// <summary>
+        /// Which locale the game is in and why: the OS language Unity reports, the game's default-locale selector (while it is
+        /// registered), the game's own localization manager and Naninovel's.  Read by reflection so this diagnostic adds no
+        /// assembly references; anything unreadable is printed as such.
+        /// </summary>
+        private static string LocaleState()
+        {
+            var sb = new StringBuilder("locale systemLanguage=" + Application.systemLanguage);
+            sb.Append(" selector=" + DescribeService("GigaCreation.Essentials.Localization.IDefaultLocaleSelector", "DefaultLocale", "AvailableTextLanguages"));
+            sb.Append(" giga=" + DescribeService("GigaCreation.Essentials.Localization.ILocalizationManager", "CurrentLocale"));
+            try
+            {
+                var naninovel = Naninovel.Engine.GetService<Naninovel.ILocalizationManager>();
+                sb.Append(" naninovel=" + (naninovel == null ? "(no service)" :
+                    naninovel.SelectedLocale + " available=[" + string.Join(",", naninovel.AvailableLocales) + "]"));
+            }
+            catch (Exception ex) { sb.Append(" naninovel=(" + ex.GetType().Name + ")"); }
+            return sb.ToString();
+        }
+
+        private static string DescribeService(string interfaceName, params string[] properties)
+        {
+            try
+            {
+                Type type = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(interfaceName, false)).FirstOrDefault(x => x != null);
+                if (type == null) return "(type not loaded)";
+                MethodInfo tryGet = typeof(GigaCreation.Tools.Service.ServiceLocator).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .First(m => m.Name == "TryGet" && m.IsGenericMethodDefinition && m.GetParameters().Length == 2).MakeGenericMethod(type);
+                var args = new object[] { null, true };
+                if (!(bool)tryGet.Invoke(null, args)) return "(not registered)";
+                return "{" + string.Join(" ", properties.Select(name =>
+                {
+                    // the concrete object's property: an interface type does not list properties it inherits
+                    object value = args[0].GetType().GetProperty(name)?.GetValue(args[0]);
+                    return name + "=" + (value is System.Collections.IEnumerable list && !(value is string)
+                        ? "[" + string.Join(",", list.Cast<object>()) + "]" : value ?? "null");
+                })) + "}";
+            }
+            catch (Exception ex) { return "(" + ex.GetType().Name + ": " + ex.Message + ")"; }
         }
 
         private static float GroupAlpha(Transform t)

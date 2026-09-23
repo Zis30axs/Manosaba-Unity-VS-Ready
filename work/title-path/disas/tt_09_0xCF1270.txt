@@ -1,0 +1,24 @@
+====================================================================================================
+FUNCTION RVA 0xCF1270  VA 0x180CF1270  size 0x13 (19 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningToggle$$IsFadeEnabled
+  csig   : bool GigaCreation_Essentials_Ui_TweeningToggle__IsFadeEnabled (GigaCreation_Essentials_Ui_TweeningToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningToggle :: private bool IsFadeEnabled()
+  fields of GigaCreation.Essentials.Ui.TweeningToggle:
+      +0x128  _transform                     Transform
+      +0x130  _canvasGroup                   CanvasGroup
+      +0x138  _scaleUpWhenHighlighted        bool
+      +0x140  _scaleUtil                     ScaleUtility
+      +0x148  _fadeOutWhenOff                bool
+      +0x149  _fadeOutWhenDisabled           bool
+      +0x150  _fadeUtil                      FadeUtility
+      +0x158  _disableRaycastBlockingWhenOff bool
+      +0x160  _disposables                   readonly CompositeDisposable
+      +0x168  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF1270  cmp     byte ptr [rcx + 0x148], 0                    ; rcx->TweeningToggle._fadeOutWhenOff
+  0x180CF1277  mov     al, 1                                     
+  0x180CF1279  jne     0x180cf1282                               
+  0x180CF127B  movzx   eax, byte ptr [rcx + 0x149]                  ; rcx->TweeningToggle._fadeOutWhenDisabled
+
+180CF1282:
+  0x180CF1282  ret                                               

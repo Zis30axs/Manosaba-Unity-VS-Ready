@@ -1,0 +1,54 @@
+====================================================================================================
+FUNCTION RVA 0xCF0CC0  VA 0x180CF0CC0  size 0x69 (105 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningToggle$$OnEnable
+  csig   : void GigaCreation_Essentials_Ui_TweeningToggle__OnEnable (GigaCreation_Essentials_Ui_TweeningToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningToggle :: protected override void OnEnable()
+  fields of GigaCreation.Essentials.Ui.TweeningToggle:
+      +0x128  _transform                     Transform
+      +0x130  _canvasGroup                   CanvasGroup
+      +0x138  _scaleUpWhenHighlighted        bool
+      +0x140  _scaleUtil                     ScaleUtility
+      +0x148  _fadeOutWhenOff                bool
+      +0x149  _fadeOutWhenDisabled           bool
+      +0x150  _fadeUtil                      FadeUtility
+      +0x158  _disableRaycastBlockingWhenOff bool
+      +0x160  _disposables                   readonly CompositeDisposable
+      +0x168  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0CC0  push    rbx                                       
+  0x180CF0CC2  sub     rsp, 0x20                                 
+  0x180CF0CC6  xor     edx, edx                                  
+  0x180CF0CC8  mov     rbx, rcx                                  
+  0x180CF0CCB  call    0x182498b80                                  ; -> UnityEngine.UI.Selectable$$OnEnable
+  0x180CF0CD0  mov     rdx, qword ptr [rbx + 0x110]              
+  0x180CF0CD7  xor     r9d, r9d                                  
+  0x180CF0CDA  xor     r8d, r8d                                  
+  0x180CF0CDD  mov     rcx, rbx                                  
+  0x180CF0CE0  call    0x1824a23a0                                  ; -> UnityEngine.UI.Toggle$$SetToggleGroup
+  0x180CF0CE5  xor     r8d, r8d                                  
+  0x180CF0CE8  mov     dl, 1                                     
+  0x180CF0CEA  mov     rcx, rbx                                  
+  0x180CF0CED  call    0x1824a2980                                  ; -> UnityEngine.UI.Toggle$$PlayEffect
+  0x180CF0CF2  xor     edx, edx                                  
+  0x180CF0CF4  mov     rcx, rbx                                  
+  0x180CF0CF7  call    0x180cf0bf0                                  ; -> GigaCreation.Essentials.Ui.TweeningToggle$$get_SelectableUtil
+  0x180CF0CFC  test    rax, rax                                  
+  0x180CF0CFF  je      0x180cf0d24                               
+  0x180CF0D01  xor     edx, edx                                  
+  0x180CF0D03  mov     rcx, rax                                  
+  0x180CF0D06  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CF0D0B  test    al, al                                    
+  0x180CF0D0D  je      0x180cf0d1e                               
+  0x180CF0D0F  xor     edx, edx                                  
+  0x180CF0D11  mov     rcx, rbx                                  
+  0x180CF0D14  add     rsp, 0x20                                 
+  0x180CF0D18  pop     rbx                                       
+  0x180CF0D19  jmp     0x180cf0d70                                  ; -> GigaCreation.Essentials.Ui.TweeningToggle$$Initialize
+
+180CF0D1E:
+  0x180CF0D1E  add     rsp, 0x20                                 
+  0x180CF0D22  pop     rbx                                       
+  0x180CF0D23  ret                                               
+
+180CF0D24:
+  0x180CF0D24  call    0x180246730                                  ; THROW NullReferenceException
