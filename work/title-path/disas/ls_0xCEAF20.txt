@@ -1,0 +1,89 @@
+====================================================================================================
+FUNCTION RVA 0xCEAF20  VA 0x180CEAF20  size 0x11A (282 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$BuildValueText
+  csig   : System_String_o* GigaCreation_Essentials_Ui_LabeledSlider__BuildValueText (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, float value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private string BuildValueText(float value)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEAF20  push    rbx                                       
+  0x180CEAF22  sub     rsp, 0x30                                 
+  0x180CEAF26  cmp     byte ptr [rip + 0x23f22b0], 0                ; data_30DD1DD
+  0x180CEAF2D  mov     rbx, rcx                                  
+  0x180CEAF30  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CEAF35  movaps  xmm6, xmm1                                
+  0x180CEAF38  jne     0x180ceaf52                               
+  0x180CEAF3A  lea     rcx, [rip + 0x2180337]                       ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180CEAF41  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAF46  lock or dword ptr [rsp], 0                        
+  0x180CEAF4B  mov     byte ptr [rip + 0x23f228b], 1                ; data_30DD1DD
+
+180CEAF52:
+  0x180CEAF52  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->LabeledSlider._slider
+  0x180CEAF56  test    rax, rax                                  
+  0x180CEAF59  je      0x180ceb035                               
+  0x180CEAF5F  cmp     byte ptr [rax + 0x11c], 0                 
+  0x180CEAF66  je      0x180ceaf77                               
+  0x180CEAF68  movaps  xmm0, xmm6                                
+  0x180CEAF6B  call    0x180355c90                                  ; -> sub_355C90 (runtime/helper)
+  0x180CEAF70  movd    xmm6, eax                                 
+  0x180CEAF74  cvtdq2ps xmm6, xmm6                                
+
+180CEAF77:
+  0x180CEAF77  mov     rcx, qword ptr [rip + 0x21802fa]             ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180CEAF7E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEAF85  jne     0x180ceaf8c                               
+  0x180CEAF87  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEAF8C:
+  0x180CEAF8C  cmp     byte ptr [rip + 0x23f33cd], 0                ; data_30DE360
+  0x180CEAF93  jne     0x180ceafad                               
+  0x180CEAF95  lea     rcx, [rip + 0x21802dc]                       ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180CEAF9C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAFA1  lock or dword ptr [rsp], 0                        
+  0x180CEAFA6  mov     byte ptr [rip + 0x23f33b3], 1                ; data_30DE360
+
+180CEAFAD:
+  0x180CEAFAD  mov     rcx, qword ptr [rip + 0x21802c4]             ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180CEAFB4  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEAFBB  jne     0x180ceafc2                               
+  0x180CEAFBD  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEAFC2:
+  0x180CEAFC2  mov     rax, qword ptr [rip + 0x21802af]             ; TYPE System.Globalization.CultureInfo_TypeInfo
+  0x180CEAFC9  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CEAFD0  mov     rbx, qword ptr [rcx]                      
+  0x180CEAFD3  lock or dword ptr [rsp], 0                        
+  0x180CEAFD8  cmp     byte ptr [rip + 0x23f384e], 0                ; data_30DE82D
+  0x180CEAFDF  jne     0x180ceaff9                               
+  0x180CEAFE1  lea     rcx, [rip + 0x2126cf0]                       ; TYPE System.Number_TypeInfo
+  0x180CEAFE8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAFED  lock or dword ptr [rsp], 0                        
+  0x180CEAFF2  mov     byte ptr [rip + 0x23f3834], 1                ; data_30DE82D
+
+180CEAFF9:
+  0x180CEAFF9  xor     edx, edx                                  
+  0x180CEAFFB  mov     rcx, rbx                                  
+  0x180CEAFFE  call    0x180f591f0                                  ; -> System.Globalization.NumberFormatInfo$$GetInstance
+  0x180CEB003  mov     rcx, qword ptr [rip + 0x2126cce]             ; TYPE System.Number_TypeInfo
+  0x180CEB00A  mov     rbx, rax                                  
+  0x180CEB00D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEB014  jne     0x180ceb01b                               
+  0x180CEB016  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB01B:
+  0x180CEB01B  xor     r9d, r9d                                  
+  0x180CEB01E  mov     r8, rbx                                   
+  0x180CEB021  xor     edx, edx                                  
+  0x180CEB023  movaps  xmm0, xmm6                                
+  0x180CEB026  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CEB02B  add     rsp, 0x30                                 
+  0x180CEB02F  pop     rbx                                       
+  0x180CEB030  jmp     0x1810244a0                                  ; -> System.Number$$FormatSingle
+
+180CEB035:
+  0x180CEB035  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,26 @@
+====================================================================================================
+FUNCTION RVA 0xCEB0E0  VA 0x180CEB0E0  size 0x31 (49 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$SetValue
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider__SetValue (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, int32_t value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public void SetValue(int value)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB0E0  sub     rsp, 0x28                                 
+  0x180CEB0E4  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->LabeledSlider._slider
+  0x180CEB0E8  test    rcx, rcx                                  
+  0x180CEB0EB  je      0x180ceb10c                               
+  0x180CEB0ED  mov     r8, qword ptr [rcx]                       
+  0x180CEB0F0  movd    xmm1, edx                                 
+  0x180CEB0F4  cvtdq2ps xmm1, xmm1                                
+  0x180CEB0F7  mov     rax, qword ptr [r8 + 0x428]               
+  0x180CEB0FE  mov     r8, qword ptr [r8 + 0x430]                
+  0x180CEB105  add     rsp, 0x28                                 
+  0x180CEB109  jmp     rax                                       
+
+180CEB10C:
+  0x180CEB10C  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,53 @@
+====================================================================================================
+FUNCTION RVA 0xCEB040  VA 0x180CEB040  size 0x95 (149 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$SetMaxValue
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider__SetMaxValue (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, float value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public void SetMaxValue(float value)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB040  push    rbx                                       
+  0x180CEB042  sub     rsp, 0x30                                 
+  0x180CEB046  mov     rbx, qword ptr [rcx + 0x20]                  ; rcx->LabeledSlider._slider
+  0x180CEB04A  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CEB04F  movaps  xmm6, xmm1                                
+  0x180CEB052  test    rbx, rbx                                  
+  0x180CEB055  je      0x180ceb0d0                               
+  0x180CEB057  cmp     byte ptr [rip + 0x240231d], 0                ; data_30ED37B
+  0x180CEB05E  jne     0x180ceb078                               
+  0x180CEB060  lea     rcx, [rip + 0x2159a79]                       ; METHODINFO Method$UnityEngine.UI.SetPropertyUtility.SetStruct<float>()
+  0x180CEB067  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB06C  lock or dword ptr [rsp], 0                        
+  0x180CEB071  mov     byte ptr [rip + 0x2402303], 1                ; data_30ED37B
+
+180CEB078:
+  0x180CEB078  mov     r8, qword ptr [rip + 0x2159a61]              ; METHODINFO Method$UnityEngine.UI.SetPropertyUtility.SetStruct<float>()
+  0x180CEB07F  lea     rcx, [rbx + 0x118]                        
+  0x180CEB086  lea     rdx, [rsp + 0x48]                         
+  0x180CEB08B  movss   dword ptr [rsp + 0x48], xmm6              
+  0x180CEB091  call    0x180753900                                  ; -> UnityEngine.UI.SetPropertyUtility$$SetStruct<__Il2CppFullySharedGenericStructType> (+1 aliases)
+  0x180CEB096  test    al, al                                    
+  0x180CEB098  je      0x180ceb0c5                               
+  0x180CEB09A  mov     r9, qword ptr [rbx]                       
+  0x180CEB09D  mov     r8b, 1                                    
+  0x180CEB0A0  movss   xmm1, dword ptr [rbx + 0x120]             
+  0x180CEB0A8  mov     rcx, rbx                                  
+  0x180CEB0AB  mov     rax, qword ptr [r9 + 0x488]               
+  0x180CEB0B2  mov     r9, qword ptr [r9 + 0x490]                
+  0x180CEB0B9  call    rax                                       
+  0x180CEB0BB  xor     edx, edx                                  
+  0x180CEB0BD  mov     rcx, rbx                                  
+  0x180CEB0C0  call    0x18249cc20                                  ; -> UnityEngine.UI.Slider$$UpdateVisuals
+
+180CEB0C5:
+  0x180CEB0C5  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CEB0CA  add     rsp, 0x30                                 
+  0x180CEB0CE  pop     rbx                                       
+  0x180CEB0CF  ret                                               
+
+180CEB0D0:
+  0x180CEB0D0  call    0x180246730                                  ; THROW NullReferenceException

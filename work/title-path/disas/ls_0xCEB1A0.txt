@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xCEB1A0  VA 0x180CEB1A0  size 0xCE (206 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$OnConfirmAsObservable
+  csig   : System_IObservable_float__o* GigaCreation_Essentials_Ui_LabeledSlider__OnConfirmAsObservable (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public IObservable<float> OnConfirmAsObservable()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB1A0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEB1A5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEB1AA  push    rdi                                       
+  0x180CEB1AB  sub     rsp, 0x20                                 
+  0x180CEB1AF  cmp     byte ptr [rip + 0x23f2029], 0                ; data_30DD1DF
+  0x180CEB1B6  mov     rbx, rcx                                  
+  0x180CEB1B9  jne     0x180ceb206                               
+  0x180CEB1BB  lea     rcx, [rip + 0x217d0ae]                       ; TYPE System.Func<PointerEventData, float>_TypeInfo
+  0x180CEB1C2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB1C7  lock or dword ptr [rsp], 0                        
+  0x180CEB1CC  lea     rcx, [rip + 0x217d095]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnConfirmAsObservable>b__18_0() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnConfirmAsObservable>b__18_0
+  0x180CEB1D3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB1D8  lock or dword ptr [rsp], 0                        
+  0x180CEB1DD  lea     rcx, [rip + 0x217d07c]                       ; METHODINFO Method$UniRx.Observable.Select<PointerEventData, float>()
+  0x180CEB1E4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB1E9  lock or dword ptr [rsp], 0                        
+  0x180CEB1EE  lea     rcx, [rip + 0x216e683]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CEB1F5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB1FA  lock or dword ptr [rsp], 0                        
+  0x180CEB1FF  mov     byte ptr [rip + 0x23f1fd9], 1                ; data_30DD1DF
+
+180CEB206:
+  0x180CEB206  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->LabeledSlider._slider
+  0x180CEB20A  xor     edx, edx                                  
+  0x180CEB20C  call    0x1817edcb0                                  ; -> UniRx.Triggers.ObservableTriggerExtensions$$OnPointerUpAsObservable
+  0x180CEB211  mov     rcx, qword ptr [rip + 0x217d058]             ; TYPE System.Func<PointerEventData, float>_TypeInfo
+  0x180CEB218  mov     rsi, rax                                  
+  0x180CEB21B  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEB220  mov     r8, qword ptr [rip + 0x217d041]              ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnConfirmAsObservable>b__18_0() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnConfirmAsObservable>b__18_0
+  0x180CEB227  xor     r9d, r9d                                  
+  0x180CEB22A  mov     rdx, rbx                                  
+  0x180CEB22D  mov     rcx, rax                                  
+  0x180CEB230  mov     rdi, rax                                  
+  0x180CEB233  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CEB238  mov     rcx, qword ptr [rip + 0x216e639]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CEB23F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEB246  jne     0x180ceb24d                               
+  0x180CEB248  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB24D:
+  0x180CEB24D  mov     r8, qword ptr [rip + 0x217d00c]              ; METHODINFO Method$UniRx.Observable.Select<PointerEventData, float>()
+  0x180CEB254  mov     rdx, rdi                                  
+  0x180CEB257  mov     rcx, rsi                                  
+  0x180CEB25A  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEB25F  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CEB264  add     rsp, 0x20                                 
+  0x180CEB268  pop     rdi                                       
+  0x180CEB269  jmp     0x18072eea0                                  ; -> UniRx.Observable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>

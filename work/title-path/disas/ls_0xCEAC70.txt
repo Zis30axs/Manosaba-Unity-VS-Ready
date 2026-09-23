@@ -1,0 +1,45 @@
+====================================================================================================
+FUNCTION RVA 0xCEAC70  VA 0x180CEAC70  size 0x7B (123 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$get_BuildLabelTextFunc
+  csig   : System_Func_float__string__o* GigaCreation_Essentials_Ui_LabeledSlider__get_BuildLabelTextFunc (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private Func<float, string> get_BuildLabelTextFunc()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEAC70  push    rdi                                       
+  0x180CEAC72  sub     rsp, 0x20                                 
+  0x180CEAC76  cmp     byte ptr [rip + 0x23f255d], 0                ; data_30DD1DA
+  0x180CEAC7D  mov     rdi, rcx                                  
+  0x180CEAC80  jne     0x180ceacab                               
+  0x180CEAC82  lea     rcx, [rip + 0x217d61f]                       ; TYPE System.Func<float, string>_TypeInfo
+  0x180CEAC89  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAC8E  lock or dword ptr [rsp], 0                        
+  0x180CEAC93  lea     rcx, [rip + 0x217d606]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.BuildValueText() => GigaCreation.Essentials.Ui.LabeledSlider$$BuildValueText
+  0x180CEAC9A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAC9F  lock or dword ptr [rsp], 0                        
+  0x180CEACA4  mov     byte ptr [rip + 0x23f252f], 1                ; data_30DD1DA
+
+180CEACAB:
+  0x180CEACAB  mov     rax, qword ptr [rdi + 0x40]                  ; rdi->LabeledSlider.<OverriddenBuildLabelTextFunc>k__BackingField
+  0x180CEACAF  test    rax, rax                                  
+  0x180CEACB2  jne     0x180ceace5                               
+  0x180CEACB4  mov     rcx, qword ptr [rip + 0x217d5ed]             ; TYPE System.Func<float, string>_TypeInfo
+  0x180CEACBB  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CEACC0  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEACC5  mov     r8, qword ptr [rip + 0x217d5d4]              ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.BuildValueText() => GigaCreation.Essentials.Ui.LabeledSlider$$BuildValueText
+  0x180CEACCC  xor     r9d, r9d                                  
+  0x180CEACCF  mov     rdx, rdi                                  
+  0x180CEACD2  mov     rcx, rax                                  
+  0x180CEACD5  mov     rbx, rax                                  
+  0x180CEACD8  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CEACDD  mov     rax, rbx                                  
+  0x180CEACE0  mov     rbx, qword ptr [rsp + 0x30]               
+
+180CEACE5:
+  0x180CEACE5  add     rsp, 0x20                                 
+  0x180CEACE9  pop     rdi                                       
+  0x180CEACEA  ret                                               

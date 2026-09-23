@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xCDCCC0  VA 0x180CDCCC0  size 0xBE (190 bytes)
+  managed: GigaCreation.Essentials.Ui.Quadrilateral$$Expand
+  csig   : void GigaCreation_Essentials_Ui_Quadrilateral__Expand (GigaCreation_Essentials_Ui_Quadrilateral_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Quadrilateral :: public void Expand()
+  fields of GigaCreation.Essentials.Ui.Quadrilateral:
+      +0xE0   _rectTransform                 RectTransform
+      +0xE8   _x                             Vector2
+      +0xF0   _y                             Vector2
+      +0xF8   _z                             Vector2
+      +0x100  _w                             Vector2
+====================================================================================================
+  0x180CDCCC0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CDCCC5  push    rdi                                       
+  0x180CDCCC6  sub     rsp, 0x20                                 
+  0x180CDCCCA  cmp     byte ptr [rip + 0x240049c], 0                ; data_30DD16D
+  0x180CDCCD1  mov     rdi, rcx                                  
+  0x180CDCCD4  jne     0x180cdcd21                               
+  0x180CDCCD6  lea     rcx, [rip + 0x218c1ab]                       ; TYPE System.Action<Quadrilateral>_TypeInfo
+  0x180CDCCDD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCCE2  lock or dword ptr [rsp], 0                        
+  0x180CDCCE7  lea     rcx, [rip + 0x218c112]                       ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<Quadrilateral>()
+  0x180CDCCEE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCCF3  lock or dword ptr [rsp], 0                        
+  0x180CDCCF8  lea     rcx, [rip + 0x218c0e1]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.Quadrilateral.<Expand>b__8_0() => GigaCreation.Essentials.Ui.Quadrilateral$$<Expand>b__8_0
+  0x180CDCCFF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCD04  lock or dword ptr [rsp], 0                        
+  0x180CDCD09  lea     rcx, [rip + 0x218c0c0]                       ; STR 'Expand'
+  0x180CDCD10  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCD15  lock or dword ptr [rsp], 0                        
+  0x180CDCD1A  mov     byte ptr [rip + 0x240044c], 1                ; data_30DD16D
+
+180CDCD21:
+  0x180CDCD21  mov     rcx, qword ptr [rip + 0x218c160]             ; TYPE System.Action<Quadrilateral>_TypeInfo
+  0x180CDCD28  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDCD2D  mov     r8, qword ptr [rip + 0x218c0ac]              ; METHODINFO Method$GigaCreation.Essentials.Ui.Quadrilateral.<Expand>b__8_0() => GigaCreation.Essentials.Ui.Quadrilateral$$<Expand>b__8_0
+  0x180CDCD34  xor     r9d, r9d                                  
+  0x180CDCD37  mov     rdx, rdi                                  
+  0x180CDCD3A  mov     rcx, rax                                  
+  0x180CDCD3D  mov     rbx, rax                                  
+  0x180CDCD40  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CDCD45  mov     rcx, qword ptr [rip + 0x218c0b4]             ; METHODINFO Method$GigaCreation.Tools.UndoExtensions.ObjectExtensions.DoActionAsUndoable<Quadrilateral>()
+  0x180CDCD4C  cmp     qword ptr [rcx + 0x38], 0                 
+  0x180CDCD51  jne     0x180cdcd58                               
+  0x180CDCD53  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180CDCD58:
+  0x180CDCD58  test    rbx, rbx                                  
+  0x180CDCD5B  je      0x180cdcd79                               
+  0x180CDCD5D  mov     rax, qword ptr [rbx + 0x18]               
+  0x180CDCD61  mov     rdx, rdi                                  
+  0x180CDCD64  mov     r8, qword ptr [rbx + 0x28]                
+  0x180CDCD68  mov     rcx, qword ptr [rbx + 0x40]               
+  0x180CDCD6C  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CDCD71  add     rsp, 0x20                                 
+  0x180CDCD75  pop     rdi                                       
+  0x180CDCD76  jmp     rax                                       
+
+180CDCD79:
+  0x180CDCD79  call    0x180246730                                  ; THROW NullReferenceException

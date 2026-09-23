@@ -1,0 +1,121 @@
+====================================================================================================
+FUNCTION RVA 0xCEB960  VA 0x180CEB960  size 0x1BB (443 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralToggle$$TurnedOff
+  csig   : void GigaCreation_Essentials_Ui_GeneralToggle__TurnedOff (GigaCreation_Essentials_Ui_GeneralToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralToggle :: private void TurnedOff()
+  fields of GigaCreation.Essentials.Ui.GeneralToggle:
+      +0x20   _toggle                        Toggle
+      +0x28   _dropShadow                    MPImage
+      +0x30   _frame                         MPImage
+      +0x38   _label                         TextMeshProUGUI
+      +0x40   _outlineWidthWhenOn            float
+      +0x44   _labelColorWhenOn              Color
+      +0x54   _colorWhenOff                  Color
+      +0x64   _labelColorWhenOff             Color
+      +0x78   _inputManager                  IInputManager
+====================================================================================================
+  0x180CEB960  push    rbx                                       
+  0x180CEB962  sub     rsp, 0x70                                 
+  0x180CEB966  cmp     byte ptr [rip + 0x23f1878], 0                ; data_30DD1E5
+  0x180CEB96D  mov     rbx, rcx                                  
+  0x180CEB970  jne     0x180ceb98a                               
+  0x180CEB972  lea     rcx, [rip + 0x217c8df]                       ; TYPE MPUIKIT.GradientEffect_TypeInfo
+  0x180CEB979  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB97E  lock or dword ptr [rsp], 0                        
+  0x180CEB983  mov     byte ptr [rip + 0x23f185b], 1                ; data_30DD1E5
+
+180CEB98A:
+  0x180CEB98A  mov     rcx, qword ptr [rbx + 0x28]                  ; rbx->GeneralToggle._dropShadow
+  0x180CEB98E  test    rcx, rcx                                  
+  0x180CEB991  je      0x180cebb16                               
+  0x180CEB997  xor     r8d, r8d                                  
+  0x180CEB99A  xor     edx, edx                                  
+  0x180CEB99C  call    0x182060c20                                  ; -> UnityEngine.Behaviour$$set_enabled
+  0x180CEB9A1  mov     rcx, qword ptr [rbx + 0x30]                  ; rbx->GeneralToggle._frame
+  0x180CEB9A5  test    rcx, rcx                                  
+  0x180CEB9A8  je      0x180cebb16                               
+  0x180CEB9AE  mov     r8, qword ptr [rcx]                       
+  0x180CEB9B1  lea     rdx, [rsp + 0x20]                         
+  0x180CEB9B6  movups  xmm0, xmmword ptr [rbx + 0x54]               ; rbx->GeneralToggle._colorWhenOff
+  0x180CEB9BA  mov     rax, qword ptr [r8 + 0x2a8]               
+  0x180CEB9C1  mov     r8, qword ptr [r8 + 0x2b0]                
+  0x180CEB9C8  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CEB9CD  call    rax                                       
+  0x180CEB9CF  mov     rcx, qword ptr [rbx + 0x30]                  ; rbx->GeneralToggle._frame
+  0x180CEB9D3  test    rcx, rcx                                  
+  0x180CEB9D6  je      0x180cebb16                               
+  0x180CEB9DC  xor     r8d, r8d                                  
+  0x180CEB9DF  xorps   xmm1, xmm1                                
+  0x180CEB9E2  call    0x180deb0e0                                  ; -> MPUIKIT.MPImage$$set_OutlineWidth
+  0x180CEB9E7  mov     rax, qword ptr [rbx + 0x30]                  ; rbx->GeneralToggle._frame
+  0x180CEB9EB  test    rax, rax                                  
+  0x180CEB9EE  je      0x180cebb16                               
+  0x180CEB9F4  movups  xmm0, xmmword ptr [rax + 0x2a0]           
+  0x180CEB9FB  mov     rcx, qword ptr [rip + 0x217c856]             ; TYPE MPUIKIT.GradientEffect_TypeInfo
+  0x180CEBA02  movups  xmm1, xmmword ptr [rax + 0x2b0]           
+  0x180CEBA09  movaps  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CEBA0E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEBA15  movups  xmm0, xmmword ptr [rax + 0x2c0]           
+  0x180CEBA1C  movaps  xmmword ptr [rsp + 0x40], xmm1            
+  0x180CEBA21  movups  xmm1, xmmword ptr [rax + 0x2d0]           
+  0x180CEBA28  movaps  xmmword ptr [rsp + 0x50], xmm0            
+  0x180CEBA2D  movaps  xmmword ptr [rsp + 0x60], xmm1            
+  0x180CEBA32  jne     0x180ceba39                               
+  0x180CEBA34  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEBA39:
+  0x180CEBA39  xor     r8d, r8d                                  
+  0x180CEBA3C  lea     rcx, [rsp + 0x30]                         
+  0x180CEBA41  xor     edx, edx                                  
+  0x180CEBA43  call    0x180de7da0                                  ; -> MPUIKIT.GradientEffect$$set_Enabled
+  0x180CEBA48  mov     rcx, qword ptr [rbx + 0x30]                  ; rbx->GeneralToggle._frame
+  0x180CEBA4C  test    rcx, rcx                                  
+  0x180CEBA4F  je      0x180cebb16                               
+  0x180CEBA55  cmp     dword ptr [rip + 0x23ed768], 0               ; data_30D91C4
+  0x180CEBA5C  movaps  xmm0, xmmword ptr [rsp + 0x30]            
+  0x180CEBA61  movaps  xmm1, xmmword ptr [rsp + 0x40]            
+  0x180CEBA66  movups  xmmword ptr [rcx + 0x2a0], xmm0           
+  0x180CEBA6D  movaps  xmm0, xmmword ptr [rsp + 0x50]            
+  0x180CEBA72  movups  xmmword ptr [rcx + 0x2b0], xmm1           
+  0x180CEBA79  movaps  xmm1, xmmword ptr [rsp + 0x60]            
+  0x180CEBA7E  movups  xmmword ptr [rcx + 0x2c0], xmm0           
+  0x180CEBA85  movups  xmmword ptr [rcx + 0x2d0], xmm1           
+  0x180CEBA8C  je      0x180cebad3                               
+  0x180CEBA8E  lea     r9, [rcx + 0x2a8]                         
+  0x180CEBA95  shr     r9, 0xc                                   
+  0x180CEBA99  lea     r10, [rip + 0x2448ae0]                       ; data_3134580
+  0x180CEBAA0  and     r9d, 0x1fffff                             
+  0x180CEBAA7  mov     r8d, r9d                                  
+  0x180CEBAAA  shr     r8, 6                                     
+  0x180CEBAAE  and     r9d, 0x3f                                 
+  0x180CEBAB2  prefetchw byte ptr [r10 + r8*8]                     
+  0x180CEBAB7  nop     word ptr [rax + rax]                      
+
+180CEBAC0:
+  0x180CEBAC0  mov     rax, qword ptr [r10 + r8*8]               
+  0x180CEBAC4  mov     rdx, rax                                  
+  0x180CEBAC7  bts     rdx, r9                                   
+  0x180CEBACB  lock cmpxchg qword ptr [r10 + r8*8], rdx               
+  0x180CEBAD1  jne     0x180cebac0                               
+
+180CEBAD3:
+  0x180CEBAD3  mov     rdx, qword ptr [rcx]                      
+  0x180CEBAD6  mov     rax, qword ptr [rdx + 0x308]              
+  0x180CEBADD  mov     rdx, qword ptr [rdx + 0x310]              
+  0x180CEBAE4  call    rax                                       
+  0x180CEBAE6  mov     rcx, qword ptr [rbx + 0x38]                  ; rbx->GeneralToggle._label
+  0x180CEBAEA  test    rcx, rcx                                  
+  0x180CEBAED  je      0x180cebb16                               
+  0x180CEBAEF  mov     r8, qword ptr [rcx]                       
+  0x180CEBAF2  lea     rdx, [rsp + 0x20]                         
+  0x180CEBAF7  movups  xmm0, xmmword ptr [rbx + 0x64]               ; rbx->GeneralToggle._labelColorWhenOff
+  0x180CEBAFB  mov     rax, qword ptr [r8 + 0x2a8]               
+  0x180CEBB02  mov     r8, qword ptr [r8 + 0x2b0]                
+  0x180CEBB09  movaps  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CEBB0E  call    rax                                       
+  0x180CEBB10  add     rsp, 0x70                                 
+  0x180CEBB14  pop     rbx                                       
+  0x180CEBB15  ret                                               
+
+180CEBB16:
+  0x180CEBB16  call    0x180246730                                  ; THROW NullReferenceException

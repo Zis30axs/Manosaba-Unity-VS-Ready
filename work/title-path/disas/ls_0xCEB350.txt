@@ -1,0 +1,68 @@
+====================================================================================================
+FUNCTION RVA 0xCEB350  VA 0x180CEB350  size 0xCF (207 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_0
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider___OnEnable_b__12_0 (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, float value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private void <OnEnable>b__12_0(float value)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB350  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CEB355  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CEB35A  push    rdi                                       
+  0x180CEB35B  sub     rsp, 0x30                                 
+  0x180CEB35F  cmp     byte ptr [rip + 0x23f1e74], 0                ; data_30DD1DA
+  0x180CEB366  mov     rdi, rcx                                  
+  0x180CEB369  mov     rsi, qword ptr [rcx + 0x28]                  ; rcx->LabeledSlider._label
+  0x180CEB36D  movaps  xmmword ptr [rsp + 0x20], xmm6            
+  0x180CEB372  movaps  xmm6, xmm1                                
+  0x180CEB375  jne     0x180ceb3a0                               
+  0x180CEB377  lea     rcx, [rip + 0x217cf2a]                       ; TYPE System.Func<float, string>_TypeInfo
+  0x180CEB37E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB383  lock or dword ptr [rsp], 0                        
+  0x180CEB388  lea     rcx, [rip + 0x217cf11]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.BuildValueText() => GigaCreation.Essentials.Ui.LabeledSlider$$BuildValueText
+  0x180CEB38F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB394  lock or dword ptr [rsp], 0                        
+  0x180CEB399  mov     byte ptr [rip + 0x23f1e3a], 1                ; data_30DD1DA
+
+180CEB3A0:
+  0x180CEB3A0  mov     rbx, qword ptr [rdi + 0x40]                  ; rdi->LabeledSlider.<OverriddenBuildLabelTextFunc>k__BackingField
+  0x180CEB3A4  test    rbx, rbx                                  
+  0x180CEB3A7  jne     0x180ceb3d2                               
+  0x180CEB3A9  mov     rcx, qword ptr [rip + 0x217cef8]             ; TYPE System.Func<float, string>_TypeInfo
+  0x180CEB3B0  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEB3B5  mov     r8, qword ptr [rip + 0x217cee4]              ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.BuildValueText() => GigaCreation.Essentials.Ui.LabeledSlider$$BuildValueText
+  0x180CEB3BC  xor     r9d, r9d                                  
+  0x180CEB3BF  mov     rdx, rdi                                  
+  0x180CEB3C2  mov     rcx, rax                                  
+  0x180CEB3C5  mov     rbx, rax                                  
+  0x180CEB3C8  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CEB3CD  test    rbx, rbx                                  
+  0x180CEB3D0  je      0x180ceb41a                               
+
+180CEB3D2:
+  0x180CEB3D2  mov     rax, qword ptr [rbx + 0x18]               
+  0x180CEB3D6  lea     r8, [rsp + 0x40]                          
+  0x180CEB3DB  mov     r9, qword ptr [rbx + 0x28]                   ; rbx->LabeledSlider._label
+  0x180CEB3DF  lea     rdx, [rsp + 0x48]                         
+  0x180CEB3E4  mov     rcx, qword ptr [rbx + 0x40]                  ; rbx->LabeledSlider.<OverriddenBuildLabelTextFunc>k__BackingField
+  0x180CEB3E8  movss   dword ptr [rsp + 0x48], xmm6              
+  0x180CEB3EE  call    rax                                       
+  0x180CEB3F0  test    rsi, rsi                                  
+  0x180CEB3F3  je      0x180ceb41a                               
+  0x180CEB3F5  mov     rdx, qword ptr [rsp + 0x40]               
+  0x180CEB3FA  xor     r8d, r8d                                  
+  0x180CEB3FD  mov     rcx, rsi                                  
+  0x180CEB400  call    0x181f05050                                  ; -> TMPro.TMP_Text$$SetText (+1 aliases)
+  0x180CEB405  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CEB40A  mov     rsi, qword ptr [rsp + 0x58]               
+  0x180CEB40F  movaps  xmm6, xmmword ptr [rsp + 0x20]            
+  0x180CEB414  add     rsp, 0x30                                 
+  0x180CEB418  pop     rdi                                       
+  0x180CEB419  ret                                               
+
+180CEB41A:
+  0x180CEB41A  call    0x180246730                                  ; THROW NullReferenceException

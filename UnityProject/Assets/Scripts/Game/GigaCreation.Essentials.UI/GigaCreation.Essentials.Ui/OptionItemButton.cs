@@ -14,17 +14,22 @@ namespace GigaCreation.Essentials.Ui
     	[SerializeField]
     	private Button _button;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCD80B0 -- GetComponentInChildren<Button>() -> _button (+0x20)
+    	// Annotated disassembly: work/title-path/disas/oib_0xCD80B0.txt
     	[Token(Token = "0x600001E")]
     	[Address(RVA = "0xCD80B0", Offset = "0xCD6AB0", VA = "0x180CD80B0")]
     	private void Reset()
     	{
+    		_button = GetComponentInChildren<Button>();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x33A4B0 -- tail jump UnityEventExtensions.AsObservable(_button.onClick)
+    	// Annotated disassembly: work/title-path/disas/oib_0x33A4B0.txt
     	[Token(Token = "0x600001F")]
     	[Address(RVA = "0x33A4B0", Offset = "0x338EB0", VA = "0x18033A4B0")]
     	public IObservable<Unit> OnClickAsObservable()
     	{
-    		return null;
+    		return _button.onClick.AsObservable();
     	}
 
     	[Token(Token = "0x6000020")]

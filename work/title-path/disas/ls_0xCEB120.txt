@@ -1,0 +1,42 @@
+====================================================================================================
+FUNCTION RVA 0xCEB120  VA 0x180CEB120  size 0x77 (119 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$OnSlideAsObservable
+  csig   : System_IObservable_float__o* GigaCreation_Essentials_Ui_LabeledSlider__OnSlideAsObservable (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public IObservable<float> OnSlideAsObservable()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB120  push    rbx                                       
+  0x180CEB122  sub     rsp, 0x20                                 
+  0x180CEB126  cmp     byte ptr [rip + 0x23f20b1], 0                ; data_30DD1DE
+  0x180CEB12D  mov     rbx, rcx                                  
+  0x180CEB130  jne     0x180ceb15b                               
+  0x180CEB132  lea     rcx, [rip + 0x216e747]                       ; METHODINFO Method$UniRx.Observable.Skip<float>()
+  0x180CEB139  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB13E  lock or dword ptr [rsp], 0                        
+  0x180CEB143  lea     rcx, [rip + 0x216e72e]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CEB14A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB14F  lock or dword ptr [rsp], 0                        
+  0x180CEB154  mov     byte ptr [rip + 0x23f2083], 1                ; data_30DD1DE
+
+180CEB15B:
+  0x180CEB15B  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->LabeledSlider._slider
+  0x180CEB15F  xor     edx, edx                                  
+  0x180CEB161  call    0x1817e0920                                  ; -> UniRx.UnityUIComponentExtensions$$OnValueChangedAsObservable
+  0x180CEB166  mov     rcx, qword ptr [rip + 0x216e70b]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CEB16D  mov     rbx, rax                                  
+  0x180CEB170  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEB177  jne     0x180ceb17e                               
+  0x180CEB179  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB17E:
+  0x180CEB17E  mov     r8, qword ptr [rip + 0x216e6fb]              ; METHODINFO Method$UniRx.Observable.Skip<float>()
+  0x180CEB185  mov     edx, 1                                    
+  0x180CEB18A  mov     rcx, rbx                                  
+  0x180CEB18D  add     rsp, 0x20                                 
+  0x180CEB191  pop     rbx                                       
+  0x180CEB192  jmp     0x18072fd70                                  ; -> UniRx.Observable$$Skip<__Il2CppFullySharedGenericType>

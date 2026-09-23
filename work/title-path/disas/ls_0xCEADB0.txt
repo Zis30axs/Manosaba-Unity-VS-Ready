@@ -1,0 +1,88 @@
+====================================================================================================
+FUNCTION RVA 0xCEADB0  VA 0x180CEADB0  size 0x14E (334 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$OnEnable
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider__OnEnable (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private void OnEnable()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEADB0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CEADB5  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CEADBA  push    rdi                                       
+  0x180CEADBB  sub     rsp, 0x30                                 
+  0x180CEADBF  cmp     byte ptr [rip + 0x23f2416], 0                ; data_30DD1DC
+  0x180CEADC6  mov     rsi, rcx                                  
+  0x180CEADC9  jne     0x180ceae27                               
+  0x180CEADCB  lea     rcx, [rip + 0x21663ee]                       ; TYPE System.Action<float>_TypeInfo
+  0x180CEADD2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEADD7  lock or dword ptr [rsp], 0                        
+  0x180CEADDC  lea     rcx, [rip + 0x2167485]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CEADE3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEADE8  lock or dword ptr [rsp], 0                        
+  0x180CEADED  lea     rcx, [rip + 0x217d4a4]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnEnable>b__12_0() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_0
+  0x180CEADF4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEADF9  lock or dword ptr [rsp], 0                        
+  0x180CEADFE  lea     rcx, [rip + 0x217d483]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnEnable>b__12_1() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_1
+  0x180CEAE05  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAE0A  lock or dword ptr [rsp], 0                        
+  0x180CEAE0F  lea     rcx, [rip + 0x21685fa]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<float>()
+  0x180CEAE16  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAE1B  lock or dword ptr [rsp], 0                        
+  0x180CEAE20  mov     byte ptr [rip + 0x23f23b5], 1                ; data_30DD1DC
+
+180CEAE27:
+  0x180CEAE27  mov     rcx, qword ptr [rsi + 0x20]                  ; rsi->LabeledSlider._slider
+  0x180CEAE2B  xor     edx, edx                                  
+  0x180CEAE2D  call    0x1817e0920                                  ; -> UniRx.UnityUIComponentExtensions$$OnValueChangedAsObservable
+  0x180CEAE32  mov     rcx, qword ptr [rip + 0x2166387]             ; TYPE System.Action<float>_TypeInfo
+  0x180CEAE39  mov     rdi, rax                                  
+  0x180CEAE3C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEAE41  mov     r8, qword ptr [rip + 0x217d450]              ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnEnable>b__12_0() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_0
+  0x180CEAE48  xor     r9d, r9d                                  
+  0x180CEAE4B  mov     rdx, rsi                                  
+  0x180CEAE4E  mov     rcx, rax                                  
+  0x180CEAE51  mov     rbx, rax                                  
+  0x180CEAE54  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CEAE59  mov     r8, qword ptr [rip + 0x21685b0]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<float>()
+  0x180CEAE60  mov     rdx, rbx                                  
+  0x180CEAE63  mov     rcx, rdi                                  
+  0x180CEAE66  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CEAE6B  mov     rcx, qword ptr [rip + 0x21673f6]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CEAE72  lea     r9, [rsp + 0x40]                          
+  0x180CEAE77  mov     rdx, qword ptr [rsi + 0x30]                  ; rsi->LabeledSlider._disposables
+  0x180CEAE7B  mov     r8, rsi                                   
+  0x180CEAE7E  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CEAE83  mov     rcx, rax                                  
+  0x180CEAE86  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CEAE8B  xor     edx, edx                                  
+  0x180CEAE8D  mov     rcx, rsi                                  
+  0x180CEAE90  call    0x180ceb1a0                                  ; -> GigaCreation.Essentials.Ui.LabeledSlider$$OnConfirmAsObservable
+  0x180CEAE95  mov     rcx, qword ptr [rip + 0x2166324]             ; TYPE System.Action<float>_TypeInfo
+  0x180CEAE9C  mov     rdi, rax                                  
+  0x180CEAE9F  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEAEA4  mov     r8, qword ptr [rip + 0x217d3dd]              ; METHODINFO Method$GigaCreation.Essentials.Ui.LabeledSlider.<OnEnable>b__12_1() => GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_1
+  0x180CEAEAB  xor     r9d, r9d                                  
+  0x180CEAEAE  mov     rdx, rsi                                  
+  0x180CEAEB1  mov     rcx, rax                                  
+  0x180CEAEB4  mov     rbx, rax                                  
+  0x180CEAEB7  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CEAEBC  mov     r8, qword ptr [rip + 0x216854d]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<float>()
+  0x180CEAEC3  mov     rdx, rbx                                  
+  0x180CEAEC6  mov     rcx, rdi                                  
+  0x180CEAEC9  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CEAECE  mov     rcx, qword ptr [rip + 0x2167393]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CEAED5  lea     r9, [rsp + 0x40]                          
+  0x180CEAEDA  mov     rdx, qword ptr [rsi + 0x30]                  ; rsi->LabeledSlider._disposables
+  0x180CEAEDE  mov     r8, rsi                                   
+  0x180CEAEE1  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CEAEE6  mov     rcx, rax                                  
+  0x180CEAEE9  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CEAEEE  mov     rbx, qword ptr [rsp + 0x48]               
+  0x180CEAEF3  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CEAEF8  add     rsp, 0x30                                 
+  0x180CEAEFC  pop     rdi                                       
+  0x180CEAEFD  ret                                               

@@ -1,0 +1,27 @@
+====================================================================================================
+FUNCTION RVA 0xCEB610  VA 0x180CEB610  size 0x21 (33 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralToggle$$set_IsOn
+  csig   : void GigaCreation_Essentials_Ui_GeneralToggle__set_IsOn (GigaCreation_Essentials_Ui_GeneralToggle_o* __this, bool value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralToggle :: public void set_IsOn(bool value)
+  fields of GigaCreation.Essentials.Ui.GeneralToggle:
+      +0x20   _toggle                        Toggle
+      +0x28   _dropShadow                    MPImage
+      +0x30   _frame                         MPImage
+      +0x38   _label                         TextMeshProUGUI
+      +0x40   _outlineWidthWhenOn            float
+      +0x44   _labelColorWhenOn              Color
+      +0x54   _colorWhenOff                  Color
+      +0x64   _labelColorWhenOff             Color
+      +0x78   _inputManager                  IInputManager
+====================================================================================================
+  0x180CEB610  sub     rsp, 0x28                                 
+  0x180CEB614  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->GeneralToggle._toggle
+  0x180CEB618  test    rcx, rcx                                  
+  0x180CEB61B  je      0x180ceb62c                               
+  0x180CEB61D  xor     r9d, r9d                                  
+  0x180CEB620  mov     r8b, 1                                    
+  0x180CEB623  add     rsp, 0x28                                 
+  0x180CEB627  jmp     0x1824a2770                                  ; -> UnityEngine.UI.Toggle$$Set
+
+180CEB62C:
+  0x180CEB62C  call    0x180246730                                  ; THROW NullReferenceException

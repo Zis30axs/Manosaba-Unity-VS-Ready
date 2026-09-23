@@ -1,0 +1,109 @@
+====================================================================================================
+FUNCTION RVA 0xCDCB20  VA 0x180CDCB20  size 0x19F (415 bytes)
+  managed: GigaCreation.Essentials.Ui.Quadrilateral$$SetUvs
+  csig   : void GigaCreation_Essentials_Ui_Quadrilateral__SetUvs (GigaCreation_Essentials_Ui_Quadrilateral_o* __this, UnityEngine_Vector2_o nx, UnityEngine_Vector2_o ny, UnityEngine_Vector2_o nz, UnityEngine_Vector2_o nw, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Quadrilateral :: public void SetUvs(Vector2 nx, Vector2 ny, Vector2 nz, Vector2 nw)
+  fields of GigaCreation.Essentials.Ui.Quadrilateral:
+      +0xE0   _rectTransform                 RectTransform
+      +0xE8   _x                             Vector2
+      +0xF0   _y                             Vector2
+      +0xF8   _z                             Vector2
+      +0x100  _w                             Vector2
+====================================================================================================
+  0x180CDCB20  push    rbx                                       
+  0x180CDCB22  push    rdi                                       
+  0x180CDCB23  sub     rsp, 0x58                                 
+  0x180CDCB27  mov     rbx, qword ptr [rcx + 0xe0]                  ; rcx->Quadrilateral._rectTransform
+  0x180CDCB2E  mov     rdi, rcx                                  
+  0x180CDCB31  mov     qword ptr [rsp + 0x30], r9                
+  0x180CDCB36  mov     qword ptr [rsp + 0x28], r8                
+  0x180CDCB3B  mov     qword ptr [rsp + 0x20], rdx               
+  0x180CDCB40  test    rbx, rbx                                  
+  0x180CDCB43  je      0x180cdcc98                               
+  0x180CDCB49  cmp     byte ptr [rip + 0x240c14a], 0                ; data_30E8C9A
+  0x180CDCB50  mov     qword ptr [rsp + 0x50], rsi               
+  0x180CDCB55  jne     0x180cdcb6f                               
+  0x180CDCB57  lea     rcx, [rip + 0x218e7ca]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<RectTransform>()
+  0x180CDCB5E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCB63  lock or dword ptr [rsp], 0                        
+  0x180CDCB68  mov     byte ptr [rip + 0x240c12b], 1                ; data_30E8C9A
+
+180CDCB6F:
+  0x180CDCB6F  xorps   xmm0, xmm0                                
+  0x180CDCB72  movups  xmmword ptr [rsp + 0x38], xmm0            
+  0x180CDCB77  mov     rsi, qword ptr [rbx + 0x10]               
+  0x180CDCB7B  test    rsi, rsi                                  
+  0x180CDCB7E  je      0x180cdccb5                               
+  0x180CDCB84  mov     rax, qword ptr [rip + 0x240c125]             ; data_30E8CB0
+  0x180CDCB8B  test    rax, rax                                  
+  0x180CDCB8E  jne     0x180cdcbac                               
+  0x180CDCB90  lea     rcx, [rip + 0x192c619]                       ; data_26091B0
+  0x180CDCB97  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180CDCB9C  test    rax, rax                                  
+  0x180CDCB9F  je      0x180cdcc9e                               
+  0x180CDCBA5  mov     qword ptr [rip + 0x240c104], rax             ; data_30E8CB0
+
+180CDCBAC:
+  0x180CDCBAC  lea     rdx, [rsp + 0x38]                         
+  0x180CDCBB1  mov     rcx, rsi                                  
+  0x180CDCBB4  call    rax                                       
+  0x180CDCBB6  movss   xmm5, dword ptr [rsp + 0x40]              
+  0x180CDCBBC  movss   xmm4, dword ptr [rsp + 0x44]              
+  0x180CDCBC2  movaps  xmm0, xmm5                                
+  0x180CDCBC5  mulss   xmm0, dword ptr [rsp + 0x20]              
+  0x180CDCBCB  movaps  xmm1, xmm4                                
+  0x180CDCBCE  mulss   xmm1, dword ptr [rsp + 0x24]              
+  0x180CDCBD4  movss   xmm3, dword ptr [rsp + 0x38]              
+  0x180CDCBDA  movss   xmm2, dword ptr [rsp + 0x3c]              
+  0x180CDCBE0  addss   xmm0, xmm3                                
+  0x180CDCBE4  addss   xmm1, xmm2                                
+  0x180CDCBE8  movss   dword ptr [rdi + 0xe8], xmm0                 ; rdi->Quadrilateral._x
+  0x180CDCBF0  movss   dword ptr [rdi + 0xec], xmm1              
+  0x180CDCBF8  movaps  xmm0, xmm5                                
+  0x180CDCBFB  movaps  xmm1, xmm4                                
+  0x180CDCBFE  mulss   xmm0, dword ptr [rsp + 0x28]              
+  0x180CDCC04  mulss   xmm1, dword ptr [rsp + 0x2c]              
+  0x180CDCC0A  addss   xmm0, xmm3                                
+  0x180CDCC0E  addss   xmm1, xmm2                                
+  0x180CDCC12  movss   dword ptr [rdi + 0xf0], xmm0                 ; rdi->Quadrilateral._y
+  0x180CDCC1A  movss   dword ptr [rdi + 0xf4], xmm1              
+  0x180CDCC22  movaps  xmm0, xmm5                                
+  0x180CDCC25  movaps  xmm1, xmm4                                
+  0x180CDCC28  mulss   xmm0, dword ptr [rsp + 0x30]              
+  0x180CDCC2E  mulss   xmm1, dword ptr [rsp + 0x34]              
+  0x180CDCC34  addss   xmm0, xmm3                                
+  0x180CDCC38  addss   xmm1, xmm2                                
+  0x180CDCC3C  movss   dword ptr [rdi + 0xf8], xmm0                 ; rdi->Quadrilateral._z
+  0x180CDCC44  movss   dword ptr [rdi + 0xfc], xmm1              
+  0x180CDCC4C  mov     rdx, qword ptr [rdi]                      
+  0x180CDCC4F  mov     rcx, rdi                                  
+  0x180CDCC52  mulss   xmm5, dword ptr [rsp + 0x90]              
+  0x180CDCC5B  mulss   xmm4, dword ptr [rsp + 0x94]              
+  0x180CDCC64  addss   xmm5, xmm3                                
+  0x180CDCC68  addss   xmm4, xmm2                                
+  0x180CDCC6C  movss   dword ptr [rdi + 0x100], xmm5                ; rdi->Quadrilateral._w
+  0x180CDCC74  movss   dword ptr [rdi + 0x104], xmm4             
+  0x180CDCC7C  mov     rax, qword ptr [rdx + 0x2d8]              
+  0x180CDCC83  mov     rdx, qword ptr [rdx + 0x2e0]              
+  0x180CDCC8A  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CDCC8F  add     rsp, 0x58                                 
+  0x180CDCC93  pop     rdi                                       
+  0x180CDCC94  pop     rbx                                       
+  0x180CDCC95  jmp     rax                                       
+
+180CDCC98:
+  0x180CDCC98  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDCC9D  int3                                              
+
+180CDCC9E:
+  0x180CDCC9E  lea     rcx, [rip + 0x192c50b]                       ; data_26091B0
+  0x180CDCCA5  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180CDCCAA  mov     rcx, rax                                  
+  0x180CDCCAD  xor     edx, edx                                  
+  0x180CDCCAF  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180CDCCB4  int3                                              
+
+180CDCCB5:
+  0x180CDCCB5  xor     edx, edx                                  
+  0x180CDCCB7  mov     rcx, rbx                                  
+  0x180CDCCBA  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

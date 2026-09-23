@@ -1,0 +1,112 @@
+====================================================================================================
+FUNCTION RVA 0xCDC760  VA 0x180CDC760  size 0x1D5 (469 bytes)
+  managed: GigaCreation.Essentials.Ui.Quadrilateral$$OnPopulateMesh
+  csig   : void GigaCreation_Essentials_Ui_Quadrilateral__OnPopulateMesh (GigaCreation_Essentials_Ui_Quadrilateral_o* __this, UnityEngine_UI_VertexHelper_o* vh, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Quadrilateral :: protected override void OnPopulateMesh(VertexHelper vh)
+  fields of GigaCreation.Essentials.Ui.Quadrilateral:
+      +0xE0   _rectTransform                 RectTransform
+      +0xE8   _x                             Vector2
+      +0xF0   _y                             Vector2
+      +0xF8   _z                             Vector2
+      +0x100  _w                             Vector2
+====================================================================================================
+  0x180CDC760  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDC765  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CDC76A  push    rdi                                       
+  0x180CDC76B  sub     rsp, 0x60                                 
+  0x180CDC76F  mov     r8, qword ptr [rcx]                       
+  0x180CDC772  mov     rsi, rdx                                  
+  0x180CDC775  mov     rdi, rcx                                  
+  0x180CDC778  mov     rdx, rcx                                  
+  0x180CDC77B  lea     rcx, [rsp + 0x40]                         
+  0x180CDC780  mov     rax, qword ptr [r8 + 0x298]               
+  0x180CDC787  mov     r8, qword ptr [r8 + 0x2a0]                
+  0x180CDC78E  call    rax                                       
+  0x180CDC790  lea     rcx, [rsp + 0x30]                         
+  0x180CDC795  movups  xmm0, xmmword ptr [rax]                   
+  0x180CDC798  movaps  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CDC79D  call    0x180cf15b0                                  ; -> sub_CF15B0 (runtime/helper)
+  0x180CDC7A2  mov     ebx, eax                                  
+  0x180CDC7A4  test    rsi, rsi                                  
+  0x180CDC7A7  je      0x180cdc930                               
+  0x180CDC7AD  mov     qword ptr [rsp + 0x70], rbp               
+  0x180CDC7B2  xor     edx, edx                                  
+  0x180CDC7B4  mov     rcx, rsi                                  
+  0x180CDC7B7  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180CDC7BC  call    0x1824a6ba0                                  ; -> UnityEngine.UI.VertexHelper$$Clear
+  0x180CDC7C1  movss   xmm2, dword ptr [rdi + 0x104]             
+  0x180CDC7C9  xorps   xmm6, xmm6                                
+  0x180CDC7CC  movss   xmm1, dword ptr [rdi + 0x100]                ; rdi->Quadrilateral._w
+  0x180CDC7D4  lea     r9, [rsp + 0x40]                          
+  0x180CDC7D9  unpcklps xmm1, xmm2                                
+  0x180CDC7DC  lea     rdx, [rsp + 0x30]                         
+  0x180CDC7E1  xorps   xmm0, xmm0                                
+  0x180CDC7E4  movsd   qword ptr [rsp + 0x30], xmm1              
+  0x180CDC7EA  xor     ebp, ebp                                  
+  0x180CDC7EC  movss   dword ptr [rsp + 0x38], xmm6              
+  0x180CDC7F2  mov     r8d, ebx                                  
+  0x180CDC7F5  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CDC7FB  mov     rcx, rsi                                  
+  0x180CDC7FE  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC803  call    0x1824a7860                                  ; -> UnityEngine.UI.VertexHelper$$AddVert
+  0x180CDC808  movss   xmm1, dword ptr [rdi + 0xec]              
+  0x180CDC810  movdqa  xmm0, xmmword ptr [rip + 0x1e06728]          ; data_2AE2F40
+  0x180CDC818  lea     r9, [rsp + 0x40]                          
+  0x180CDC81D  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CDC823  lea     rdx, [rsp + 0x30]                         
+  0x180CDC828  movss   xmm0, dword ptr [rdi + 0xe8]                 ; rdi->Quadrilateral._x
+  0x180CDC830  mov     r8d, ebx                                  
+  0x180CDC833  unpcklps xmm0, xmm1                                
+  0x180CDC836  mov     rcx, rsi                                  
+  0x180CDC839  movsd   qword ptr [rsp + 0x30], xmm0              
+  0x180CDC83F  movss   dword ptr [rsp + 0x38], xmm6              
+  0x180CDC845  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC84A  call    0x1824a7860                                  ; -> UnityEngine.UI.VertexHelper$$AddVert
+  0x180CDC84F  movss   xmm1, dword ptr [rdi + 0xf4]              
+  0x180CDC857  movdqa  xmm0, xmmword ptr [rip + 0x1e066f1]          ; data_2AE2F50
+  0x180CDC85F  lea     r9, [rsp + 0x40]                          
+  0x180CDC864  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CDC86A  lea     rdx, [rsp + 0x30]                         
+  0x180CDC86F  movss   xmm0, dword ptr [rdi + 0xf0]                 ; rdi->Quadrilateral._y
+  0x180CDC877  mov     r8d, ebx                                  
+  0x180CDC87A  unpcklps xmm0, xmm1                                
+  0x180CDC87D  mov     rcx, rsi                                  
+  0x180CDC880  movsd   qword ptr [rsp + 0x30], xmm0              
+  0x180CDC886  movss   dword ptr [rsp + 0x38], xmm6              
+  0x180CDC88C  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC891  call    0x1824a7860                                  ; -> UnityEngine.UI.VertexHelper$$AddVert
+  0x180CDC896  movss   xmm1, dword ptr [rdi + 0xfc]              
+  0x180CDC89E  movdqa  xmm0, xmmword ptr [rip + 0x1e065fa]          ; data_2AE2EA0
+  0x180CDC8A6  lea     r9, [rsp + 0x40]                          
+  0x180CDC8AB  movdqa  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CDC8B1  lea     rdx, [rsp + 0x30]                         
+  0x180CDC8B6  movss   xmm0, dword ptr [rdi + 0xf8]                 ; rdi->Quadrilateral._z
+  0x180CDC8BE  mov     r8d, ebx                                  
+  0x180CDC8C1  unpcklps xmm0, xmm1                                
+  0x180CDC8C4  mov     rcx, rsi                                  
+  0x180CDC8C7  movsd   qword ptr [rsp + 0x30], xmm0              
+  0x180CDC8CD  movss   dword ptr [rsp + 0x38], xmm6              
+  0x180CDC8D3  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC8D8  call    0x1824a7860                                  ; -> UnityEngine.UI.VertexHelper$$AddVert
+  0x180CDC8DD  xor     edx, edx                                  
+  0x180CDC8DF  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC8E4  mov     r9d, 2                                    
+  0x180CDC8EA  mov     r8d, 1                                    
+  0x180CDC8F0  mov     rcx, rsi                                  
+  0x180CDC8F3  call    0x1824a7b70                                  ; -> UnityEngine.UI.VertexHelper$$AddTriangle
+  0x180CDC8F8  xor     r9d, r9d                                  
+  0x180CDC8FB  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CDC900  mov     edx, 2                                    
+  0x180CDC905  mov     r8d, 3                                    
+  0x180CDC90B  mov     rcx, rsi                                  
+  0x180CDC90E  call    0x1824a7b70                                  ; -> UnityEngine.UI.VertexHelper$$AddTriangle
+  0x180CDC913  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+  0x180CDC918  mov     rbp, qword ptr [rsp + 0x70]               
+  0x180CDC91D  mov     rbx, qword ptr [rsp + 0x78]               
+  0x180CDC922  mov     rsi, qword ptr [rsp + 0x80]               
+  0x180CDC92A  add     rsp, 0x60                                 
+  0x180CDC92E  pop     rdi                                       
+  0x180CDC92F  ret                                               
+
+180CDC930:
+  0x180CDC930  call    0x180246730                                  ; THROW NullReferenceException

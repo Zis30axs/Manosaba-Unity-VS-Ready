@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xCEC340  VA 0x180CEC340  size 0x5A (90 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggle$$<OnEnable>b__3_1
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggle___OnEnable_b__3_1 (GigaCreation_Essentials_Ui_OptionItemToggle_o* __this, bool __, int32_t index, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggle :: private void <OnEnable>b__3_1(bool _, int index)
+  fields of GigaCreation.Essentials.Ui.OptionItemToggle:
+      +0x20   _toggles                       GeneralToggle[]
+      +0x28   _onValueChangedSubject         readonly ISubject<int>
+      +0x30   _disposables                   readonly CompositeDisposable
+  fields of OptionItemToggle.<>c:
+      +0x0    <>9                            static readonly OptionItemToggle.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC340  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEC345  push    rdi                                       
+  0x180CEC346  sub     rsp, 0x20                                 
+  0x180CEC34A  cmp     byte ptr [rip + 0x23f0e99], 0                ; data_30DD1EA
+  0x180CEC351  mov     edi, r8d                                  
+  0x180CEC354  mov     rbx, rcx                                  
+  0x180CEC357  jne     0x180cec371                               
+  0x180CEC359  lea     rcx, [rip + 0x217c520]                       ; TYPE System.IObserver<int>_TypeInfo
+  0x180CEC360  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC365  lock or dword ptr [rsp], 0                        
+  0x180CEC36A  mov     byte ptr [rip + 0x23f0e79], 1                ; data_30DD1EA
+
+180CEC371:
+  0x180CEC371  mov     r8, qword ptr [rbx + 0x28]                   ; rbx->OptionItemToggle._onValueChangedSubject
+  0x180CEC375  test    r8, r8                                    
+  0x180CEC378  je      0x180cec395                               
+  0x180CEC37A  mov     rdx, qword ptr [rip + 0x217c4ff]             ; TYPE System.IObserver<int>_TypeInfo
+  0x180CEC381  xor     ecx, ecx                                  
+  0x180CEC383  mov     r9d, edi                                  
+  0x180CEC386  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEC38B  add     rsp, 0x20                                 
+  0x180CEC38F  pop     rdi                                       
+  0x180CEC390  jmp     0x1800036f0                               
+
+180CEC395:
+  0x180CEC395  call    0x180246730                                  ; THROW NullReferenceException

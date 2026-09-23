@@ -1,0 +1,96 @@
+====================================================================================================
+FUNCTION RVA 0xCEC0C0  VA 0x180CEC0C0  size 0xFA (250 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggle$$SetValue
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggle__SetValue (GigaCreation_Essentials_Ui_OptionItemToggle_o* __this, int32_t index, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggle :: public void SetValue(int index)
+  fields of GigaCreation.Essentials.Ui.OptionItemToggle:
+      +0x20   _toggles                       GeneralToggle[]
+      +0x28   _onValueChangedSubject         readonly ISubject<int>
+      +0x30   _disposables                   readonly CompositeDisposable
+  fields of OptionItemToggle.<>c:
+      +0x0    <>9                            static readonly OptionItemToggle.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC0C0  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CEC0C5  push    rsi                                       
+  0x180CEC0C6  sub     rsp, 0x20                                 
+  0x180CEC0CA  cmp     byte ptr [rip + 0x23f1117], 0                ; data_30DD1E8
+  0x180CEC0D1  mov     esi, edx                                  
+  0x180CEC0D3  mov     rbp, rcx                                  
+  0x180CEC0D6  jne     0x180cec101                               
+  0x180CEC0D8  lea     rcx, [rip + 0x2166201]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CEC0DF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC0E4  lock or dword ptr [rsp], 0                        
+  0x180CEC0E9  lea     rcx, [rip + 0x217c140]                       ; STR '峺協されたトグルのインデックスが音屎です。'
+  0x180CEC0F0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC0F5  lock or dword ptr [rsp], 0                        
+  0x180CEC0FA  mov     byte ptr [rip + 0x23f10e7], 1                ; data_30DD1E8
+
+180CEC101:
+  0x180CEC101  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CEC106  mov     qword ptr [rsp + 0x38], rdi               
+  0x180CEC10B  test    esi, esi                                  
+  0x180CEC10D  js      0x180cec177                               
+  0x180CEC10F  mov     rax, qword ptr [rbp + 0x20]                  ; rbp->OptionItemToggle._toggles
+  0x180CEC113  test    rax, rax                                  
+  0x180CEC116  je      0x180cec1af                               
+  0x180CEC11C  cmp     esi, dword ptr [rax + 0x18]               
+  0x180CEC11F  jge     0x180cec177                               
+  0x180CEC121  xor     ebx, ebx                                  
+  0x180CEC123  mov     rcx, rax                                  
+  0x180CEC126  mov     edx, ebx                                  
+  0x180CEC128  mov     edi, 0x20                                 
+  0x180CEC12D  nop     dword ptr [rax]                           
+
+180CEC130:
+  0x180CEC130  cmp     edx, dword ptr [rcx + 0x18]               
+  0x180CEC133  jge     0x180cec19a                               
+  0x180CEC135  test    rax, rax                                  
+  0x180CEC138  je      0x180cec1af                               
+  0x180CEC13A  cmp     ebx, dword ptr [rax + 0x18]               
+  0x180CEC13D  jae     0x180cec1b5                               
+  0x180CEC13F  mov     rcx, qword ptr [rdi + rax]                
+  0x180CEC143  test    rcx, rcx                                  
+  0x180CEC146  je      0x180cec1af                               
+  0x180CEC148  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->OptionItemToggle._toggles
+  0x180CEC14C  test    rcx, rcx                                  
+  0x180CEC14F  je      0x180cec1af                               
+  0x180CEC151  cmp     ebx, esi                                  
+  0x180CEC153  mov     r8b, 1                                    
+  0x180CEC156  sete    dl                                        
+  0x180CEC159  xor     r9d, r9d                                  
+  0x180CEC15C  call    0x1824a2770                                  ; -> UnityEngine.UI.Toggle$$Set
+  0x180CEC161  mov     rax, qword ptr [rbp + 0x20]                  ; rbp->OptionItemToggle._toggles
+  0x180CEC165  inc     ebx                                       
+  0x180CEC167  add     rdi, 8                                    
+  0x180CEC16B  mov     edx, ebx                                  
+  0x180CEC16D  mov     rcx, rax                                  
+  0x180CEC170  test    rax, rax                                  
+  0x180CEC173  je      0x180cec1af                               
+  0x180CEC175  jmp     0x180cec130                               
+
+180CEC177:
+  0x180CEC177  mov     rcx, qword ptr [rip + 0x2166162]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CEC17E  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEC185  jne     0x180cec18c                               
+  0x180CEC187  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEC18C:
+  0x180CEC18C  mov     rcx, qword ptr [rip + 0x217c09d]             ; STR '峺協されたトグルのインデックスが音屎です。'
+  0x180CEC193  xor     edx, edx                                  
+  0x180CEC195  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+
+180CEC19A:
+  0x180CEC19A  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180CEC19F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEC1A4  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180CEC1A9  add     rsp, 0x20                                 
+  0x180CEC1AD  pop     rsi                                       
+  0x180CEC1AE  ret                                               
+
+180CEC1AF:
+  0x180CEC1AF  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CEC1B4  int3                                              
+
+180CEC1B5:
+  0x180CEC1B5  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

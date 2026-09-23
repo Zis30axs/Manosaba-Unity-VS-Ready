@@ -1,0 +1,31 @@
+====================================================================================================
+FUNCTION RVA 0xCDCD90  VA 0x180CDCD90  size 0x49 (73 bytes)
+  managed: GigaCreation.Essentials.Ui.Quadrilateral$$<Expand>b__8_0
+  csig   : void GigaCreation_Essentials_Ui_Quadrilateral___Expand_b__8_0 (GigaCreation_Essentials_Ui_Quadrilateral_o* __this, GigaCreation_Essentials_Ui_Quadrilateral_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.Quadrilateral :: private void <Expand>b__8_0(Quadrilateral _)
+  fields of GigaCreation.Essentials.Ui.Quadrilateral:
+      +0xE0   _rectTransform                 RectTransform
+      +0xE8   _x                             Vector2
+      +0xF0   _y                             Vector2
+      +0xF8   _z                             Vector2
+      +0x100  _w                             Vector2
+====================================================================================================
+  0x180CDCD90  push    rbx                                       
+  0x180CDCD92  sub     rsp, 0x20                                 
+  0x180CDCD96  cmp     byte ptr [rip + 0x24003d1], 0                ; data_30DD16E
+  0x180CDCD9D  mov     rbx, rcx                                  
+  0x180CDCDA0  jne     0x180cdcdba                               
+  0x180CDCDA2  lea     rcx, [rip + 0x218c077]                       ; METHODINFO Method$System.Array.Empty<Vector2>()
+  0x180CDCDA9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDCDAE  lock or dword ptr [rsp], 0                        
+  0x180CDCDB3  mov     byte ptr [rip + 0x24003b4], 1                ; data_30DD16E
+
+180CDCDBA:
+  0x180CDCDBA  mov     rcx, qword ptr [rip + 0x218c05f]             ; METHODINFO Method$System.Array.Empty<Vector2>()
+  0x180CDCDC1  call    0x1803317f0                                  ; -> System.Array$$Empty<__Il2CppFullySharedGenericType> (+7 aliases)
+  0x180CDCDC6  xor     r8d, r8d                                  
+  0x180CDCDC9  mov     rdx, rax                                  
+  0x180CDCDCC  mov     rcx, rbx                                  
+  0x180CDCDCF  add     rsp, 0x20                                 
+  0x180CDCDD3  pop     rbx                                       
+  0x180CDCDD4  jmp     0x180cdc940                                  ; -> GigaCreation.Essentials.Ui.Quadrilateral$$SetUvs

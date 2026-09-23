@@ -1,0 +1,67 @@
+====================================================================================================
+FUNCTION RVA 0xCEACF0  VA 0x180CEACF0  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* GigaCreation_Essentials_Ui_LabeledSlider__get_InputManager (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private IInputManager get_InputManager()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEACF0  push    rbx                                       
+  0x180CEACF2  sub     rsp, 0x20                                 
+  0x180CEACF6  cmp     byte ptr [rip + 0x23f24de], 0                ; data_30DD1DB
+  0x180CEACFD  mov     rbx, rcx                                  
+  0x180CEAD00  jne     0x180cead2b                               
+  0x180CEAD02  lea     rcx, [rip + 0x216a4ff]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEAD09  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAD0E  lock or dword ptr [rsp], 0                        
+  0x180CEAD13  lea     rcx, [rip + 0x216744e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEAD1A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEAD1F  lock or dword ptr [rsp], 0                        
+  0x180CEAD24  mov     byte ptr [rip + 0x23f24b0], 1                ; data_30DD1DB
+
+180CEAD2B:
+  0x180CEAD2B  mov     rax, qword ptr [rbx + 0x38]                  ; rbx->LabeledSlider._inputManager
+  0x180CEAD2F  test    rax, rax                                  
+  0x180CEAD32  jne     0x180ceada4                               
+  0x180CEAD34  mov     rcx, qword ptr [rip + 0x216742d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEAD3B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CEAD41  jne     0x180cead48                               
+  0x180CEAD43  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEAD48:
+  0x180CEAD48  mov     rdx, qword ptr [rip + 0x216a4b9]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEAD4F  mov     cl, 1                                     
+  0x180CEAD51  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CEAD56  cmp     dword ptr [rip + 0x23ee467], 0               ; data_30D91C4
+  0x180CEAD5D  mov     r9, rax                                   
+  0x180CEAD60  mov     qword ptr [rbx + 0x38], rax                  ; rbx->LabeledSlider._inputManager
+  0x180CEAD64  je      0x180ceada1                               
+  0x180CEAD66  lea     r8, [rbx + 0x38]                             ; rbx->LabeledSlider._inputManager
+  0x180CEAD6A  shr     r8, 0xc                                   
+  0x180CEAD6E  lea     rcx, [rip + 0x244980b]                       ; data_3134580
+  0x180CEAD75  and     r8d, 0x1fffff                             
+  0x180CEAD7C  mov     eax, r8d                                  
+  0x180CEAD7F  shr     rax, 6                                    
+  0x180CEAD83  and     r8d, 0x3f                                 
+  0x180CEAD87  lea     rdx, [rcx + rax*8]                        
+  0x180CEAD8B  prefetchw byte ptr [rdx]                            
+  0x180CEAD8E  nop                                               
+
+180CEAD90:
+  0x180CEAD90  mov     rax, qword ptr [rdx]                      
+  0x180CEAD93  mov     rcx, rax                                  
+  0x180CEAD96  bts     rcx, r8                                   
+  0x180CEAD9A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEAD9F  jne     0x180cead90                               
+
+180CEADA1:
+  0x180CEADA1  mov     rax, r9                                   
+
+180CEADA4:
+  0x180CEADA4  add     rsp, 0x20                                 
+  0x180CEADA8  pop     rbx                                       
+  0x180CEADA9  ret                                               

@@ -1,0 +1,85 @@
+====================================================================================================
+FUNCTION RVA 0xCEBD00  VA 0x180CEBD00  size 0xF4 (244 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralToggle$$<Start>b__13_1
+  csig   : void GigaCreation_Essentials_Ui_GeneralToggle___Start_b__13_1 (GigaCreation_Essentials_Ui_GeneralToggle_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralToggle :: private void <Start>b__13_1(PointerEventData _)
+  fields of GigaCreation.Essentials.Ui.GeneralToggle:
+      +0x20   _toggle                        Toggle
+      +0x28   _dropShadow                    MPImage
+      +0x30   _frame                         MPImage
+      +0x38   _label                         TextMeshProUGUI
+      +0x40   _outlineWidthWhenOn            float
+      +0x44   _labelColorWhenOn              Color
+      +0x54   _colorWhenOff                  Color
+      +0x64   _labelColorWhenOff             Color
+      +0x78   _inputManager                  IInputManager
+====================================================================================================
+  0x180CEBD00  push    rbx                                       
+  0x180CEBD02  sub     rsp, 0x20                                 
+  0x180CEBD06  cmp     byte ptr [rip + 0x23f14d9], 0                ; data_30DD1E6
+  0x180CEBD0D  mov     rbx, rcx                                  
+  0x180CEBD10  jne     0x180cebd2a                               
+  0x180CEBD12  lea     rcx, [rip + 0x216941f]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CEBD19  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBD1E  lock or dword ptr [rsp], 0                        
+  0x180CEBD23  mov     byte ptr [rip + 0x23f14bc], 1                ; data_30DD1E6
+
+180CEBD2A:
+  0x180CEBD2A  cmp     byte ptr [rip + 0x23f14b1], 0                ; data_30DD1E2
+  0x180CEBD31  jne     0x180cebd5c                               
+  0x180CEBD33  lea     rcx, [rip + 0x21694ce]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEBD3A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBD3F  lock or dword ptr [rsp], 0                        
+  0x180CEBD44  lea     rcx, [rip + 0x216641d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEBD4B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBD50  lock or dword ptr [rsp], 0                        
+  0x180CEBD55  mov     byte ptr [rip + 0x23f1486], 1                ; data_30DD1E2
+
+180CEBD5C:
+  0x180CEBD5C  mov     r8, qword ptr [rbx + 0x78]                   ; rbx->GeneralToggle._inputManager
+  0x180CEBD60  test    r8, r8                                    
+  0x180CEBD63  jne     0x180cebdd6                               
+  0x180CEBD65  mov     rcx, qword ptr [rip + 0x21663fc]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEBD6C  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180CEBD73  jne     0x180cebd7a                               
+  0x180CEBD75  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEBD7A:
+  0x180CEBD7A  mov     rdx, qword ptr [rip + 0x2169487]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEBD81  mov     cl, 1                                     
+  0x180CEBD83  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CEBD88  cmp     dword ptr [rip + 0x23ed435], 0               ; data_30D91C4
+  0x180CEBD8F  mov     r8, rax                                   
+  0x180CEBD92  mov     qword ptr [rbx + 0x78], rax                  ; rbx->GeneralToggle._inputManager
+  0x180CEBD96  je      0x180cebdd1                               
+  0x180CEBD98  lea     r9, [rbx + 0x78]                             ; rbx->GeneralToggle._inputManager
+  0x180CEBD9C  shr     r9, 0xc                                   
+  0x180CEBDA0  lea     rcx, [rip + 0x24487d9]                       ; data_3134580
+  0x180CEBDA7  and     r9d, 0x1fffff                             
+  0x180CEBDAE  mov     eax, r9d                                  
+  0x180CEBDB1  shr     rax, 6                                    
+  0x180CEBDB5  and     r9d, 0x3f                                 
+  0x180CEBDB9  lea     rdx, [rcx + rax*8]                        
+  0x180CEBDBD  prefetchw byte ptr [rdx]                            
+
+180CEBDC0:
+  0x180CEBDC0  mov     rax, qword ptr [rdx]                      
+  0x180CEBDC3  mov     rcx, rax                                  
+  0x180CEBDC6  bts     rcx, r9                                   
+  0x180CEBDCA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEBDCF  jne     0x180cebdc0                               
+
+180CEBDD1:
+  0x180CEBDD1  test    r8, r8                                    
+  0x180CEBDD4  je      0x180cebdef                               
+
+180CEBDD6:
+  0x180CEBDD6  mov     rdx, qword ptr [rip + 0x216935b]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CEBDDD  xor     ecx, ecx                                  
+  0x180CEBDDF  mov     r9d, 1                                    
+  0x180CEBDE5  add     rsp, 0x20                                 
+  0x180CEBDE9  pop     rbx                                       
+  0x180CEBDEA  jmp     0x1800036f0                               
+
+180CEBDEF:
+  0x180CEBDEF  call    0x180246730                                  ; THROW NullReferenceException

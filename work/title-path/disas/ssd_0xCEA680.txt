@@ -1,0 +1,17 @@
+====================================================================================================
+FUNCTION RVA 0xCEA680  VA 0x180CEA680  size 0x8 (8 bytes)
+  managed: System.Security.PermissionSet$$IsUnrestricted
+  managed: GigaCreation.Essentials.Ui.SelectableSizeData$$IsFixed
+  csig   : bool System_Security_PermissionSet__IsUnrestricted (System_Security_PermissionSet_o* __this, const MethodInfo* method);
+  dump.cs: System.Security.PermissionSet :: public bool IsUnrestricted()
+  dump.cs: GigaCreation.Essentials.Ui.SelectableSizeData :: private bool IsFixed()
+  fields of GigaCreation.Essentials.Ui.SelectableSizeData:
+      +0x10   _kind                          SelectableSizeData.OverrideKind
+      +0x14   _fixedSize                     float
+      +0x18   _padding                       float
+  fields of SelectableSizeData.OverrideKind:
+      +0x0    value__                        int
+====================================================================================================
+  0x180CEA680  cmp     dword ptr [rcx + 0x10], 1                    ; rcx->SelectableSizeData._kind
+  0x180CEA684  sete    al                                        
+  0x180CEA687  ret                                               

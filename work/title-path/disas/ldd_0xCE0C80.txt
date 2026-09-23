@@ -1,0 +1,47 @@
+====================================================================================================
+FUNCTION RVA 0xCE0C80  VA 0x180CE0C80  size 0x90 (144 bytes)
+  managed: GigaCreation.Essentials.Ui.LocalizationDropdown$$ChangeCaptionVisibility
+  csig   : void GigaCreation_Essentials_Ui_LocalizationDropdown__ChangeCaptionVisibility (GigaCreation_Essentials_Ui_LocalizationDropdown_o* __this, bool visible, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LocalizationDropdown :: public void ChangeCaptionVisibility(bool visible)
+====================================================================================================
+  0x180CE0C80  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE0C85  push    rdi                                       
+  0x180CE0C86  sub     rsp, 0x20                                 
+  0x180CE0C8A  cmp     byte ptr [rip + 0x23fc4f5], 0                ; data_30DD186
+  0x180CE0C91  mov     rbx, rcx                                  
+  0x180CE0C94  movzx   edi, dl                                   
+  0x180CE0C97  jne     0x180ce0cb1                               
+  0x180CE0C99  lea     rcx, [rip + 0x2187c70]                       ; TYPE GigaCreation.Essentials.Ui.TweeningDropdownLocalized_TypeInfo
+  0x180CE0CA0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE0CA5  lock or dword ptr [rsp], 0                        
+  0x180CE0CAA  mov     byte ptr [rip + 0x23fc4d5], 1                ; data_30DD186
+
+180CE0CB1:
+  0x180CE0CB1  mov     r8, qword ptr [rbx + 0x20]                
+  0x180CE0CB5  test    r8, r8                                    
+  0x180CE0CB8  je      0x180ce0d00                               
+  0x180CE0CBA  mov     rdx, qword ptr [rip + 0x2187c4f]             ; TYPE GigaCreation.Essentials.Ui.TweeningDropdownLocalized_TypeInfo
+  0x180CE0CC1  mov     r9, qword ptr [r8]                        
+  0x180CE0CC4  movzx   eax, byte ptr [rdx + 0x130]               
+  0x180CE0CCB  cmp     byte ptr [r9 + 0x130], al                 
+  0x180CE0CD2  jb      0x180ce0d00                               
+  0x180CE0CD4  movzx   ecx, al                                   
+  0x180CE0CD7  mov     rax, qword ptr [r9 + 0xc8]                
+  0x180CE0CDE  cmp     qword ptr [rax + rcx*8 - 8], rdx          
+  0x180CE0CE3  jne     0x180ce0d00                               
+  0x180CE0CE5  mov     rcx, qword ptr [r8 + 0x1e0]               
+  0x180CE0CEC  test    rcx, rcx                                  
+  0x180CE0CEF  je      0x180ce0d0b                               
+  0x180CE0CF1  movd    xmm1, edi                                 
+  0x180CE0CF5  xor     r8d, r8d                                  
+  0x180CE0CF8  cvtdq2ps xmm1, xmm1                                
+  0x180CE0CFB  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+
+180CE0D00:
+  0x180CE0D00  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE0D05  add     rsp, 0x20                                 
+  0x180CE0D09  pop     rdi                                       
+  0x180CE0D0A  ret                                               
+
+180CE0D0B:
+  0x180CE0D0B  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,70 @@
+====================================================================================================
+FUNCTION RVA 0xCEB270  VA 0x180CEB270  size 0xD2 (210 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider___ctor (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public void .ctor()
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB270  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEB275  push    rdi                                       
+  0x180CEB276  sub     rsp, 0x20                                 
+  0x180CEB27A  cmp     byte ptr [rip + 0x23f1f5f], 0                ; data_30DD1E0
+  0x180CEB281  mov     rdi, rcx                                  
+  0x180CEB284  jne     0x180ceb29e                               
+  0x180CEB286  lea     rcx, [rip + 0x2166fbb]                       ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CEB28D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB292  lock or dword ptr [rsp], 0                        
+  0x180CEB297  mov     byte ptr [rip + 0x23f1f42], 1                ; data_30DD1E0
+
+180CEB29E:
+  0x180CEB29E  mov     rcx, qword ptr [rip + 0x2166fa3]             ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CEB2A5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEB2AA  xor     edx, edx                                  
+  0x180CEB2AC  mov     rcx, rax                                  
+  0x180CEB2AF  mov     rbx, rax                                  
+  0x180CEB2B2  call    0x1817bc3c0                                  ; -> UniRx.CompositeDisposable$$.ctor
+  0x180CEB2B7  cmp     dword ptr [rip + 0x23edf06], 0               ; data_30D91C4
+  0x180CEB2BE  mov     qword ptr [rdi + 0x30], rbx                  ; rdi->LabeledSlider._disposables
+  0x180CEB2C2  je      0x180ceb301                               
+  0x180CEB2C4  lea     r8, [rdi + 0x30]                             ; rdi->LabeledSlider._disposables
+  0x180CEB2C8  shr     r8, 0xc                                   
+  0x180CEB2CC  lea     rcx, [rip + 0x24492ad]                       ; data_3134580
+  0x180CEB2D3  and     r8d, 0x1fffff                             
+  0x180CEB2DA  mov     eax, r8d                                  
+  0x180CEB2DD  shr     rax, 6                                    
+  0x180CEB2E1  and     r8d, 0x3f                                 
+  0x180CEB2E5  lea     rdx, [rcx + rax*8]                        
+  0x180CEB2E9  prefetchw byte ptr [rdx]                            
+  0x180CEB2EC  nop     dword ptr [rax]                           
+
+180CEB2F0:
+  0x180CEB2F0  mov     rax, qword ptr [rdx]                      
+  0x180CEB2F3  mov     rcx, rax                                  
+  0x180CEB2F6  bts     rcx, r8                                   
+  0x180CEB2FA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEB2FF  jne     0x180ceb2f0                               
+
+180CEB301:
+  0x180CEB301  cmp     byte ptr [rip + 0x23fd1e5], 0                ; data_30E84ED
+  0x180CEB308  jne     0x180ceb322                               
+  0x180CEB30A  lea     rcx, [rip + 0x2166f7f]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEB311  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB316  lock or dword ptr [rsp], 0                        
+  0x180CEB31B  mov     byte ptr [rip + 0x23fd1cb], 1                ; data_30E84ED
+
+180CEB322:
+  0x180CEB322  mov     rcx, qword ptr [rip + 0x2166f67]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEB329  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEB330  jne     0x180ceb337                               
+  0x180CEB332  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB337:
+  0x180CEB337  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEB33C  add     rsp, 0x20                                 
+  0x180CEB340  pop     rdi                                       
+  0x180CEB341  ret                                               

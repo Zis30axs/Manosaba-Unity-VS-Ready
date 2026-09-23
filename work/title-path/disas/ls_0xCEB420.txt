@@ -1,0 +1,81 @@
+====================================================================================================
+FUNCTION RVA 0xCEB420  VA 0x180CEB420  size 0xF4 (244 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$<OnEnable>b__12_1
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider___OnEnable_b__12_1 (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, float __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private void <OnEnable>b__12_1(float _)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB420  push    rbx                                       
+  0x180CEB422  sub     rsp, 0x20                                 
+  0x180CEB426  cmp     byte ptr [rip + 0x23f1db4], 0                ; data_30DD1E1
+  0x180CEB42D  mov     rbx, rcx                                  
+  0x180CEB430  jne     0x180ceb44a                               
+  0x180CEB432  lea     rcx, [rip + 0x2169cff]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CEB439  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB43E  lock or dword ptr [rsp], 0                        
+  0x180CEB443  mov     byte ptr [rip + 0x23f1d97], 1                ; data_30DD1E1
+
+180CEB44A:
+  0x180CEB44A  cmp     byte ptr [rip + 0x23f1d8a], 0                ; data_30DD1DB
+  0x180CEB451  jne     0x180ceb47c                               
+  0x180CEB453  lea     rcx, [rip + 0x2169dae]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEB45A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB45F  lock or dword ptr [rsp], 0                        
+  0x180CEB464  lea     rcx, [rip + 0x2166cfd]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEB46B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB470  lock or dword ptr [rsp], 0                        
+  0x180CEB475  mov     byte ptr [rip + 0x23f1d5f], 1                ; data_30DD1DB
+
+180CEB47C:
+  0x180CEB47C  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->LabeledSlider._inputManager
+  0x180CEB480  test    r8, r8                                    
+  0x180CEB483  jne     0x180ceb4f6                               
+  0x180CEB485  mov     rcx, qword ptr [rip + 0x2166cdc]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEB48C  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180CEB493  jne     0x180ceb49a                               
+  0x180CEB495  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB49A:
+  0x180CEB49A  mov     rdx, qword ptr [rip + 0x2169d67]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEB4A1  mov     cl, 1                                     
+  0x180CEB4A3  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CEB4A8  cmp     dword ptr [rip + 0x23edd15], 0               ; data_30D91C4
+  0x180CEB4AF  mov     r8, rax                                   
+  0x180CEB4B2  mov     qword ptr [rbx + 0x38], rax                  ; rbx->LabeledSlider._inputManager
+  0x180CEB4B6  je      0x180ceb4f1                               
+  0x180CEB4B8  lea     r9, [rbx + 0x38]                             ; rbx->LabeledSlider._inputManager
+  0x180CEB4BC  shr     r9, 0xc                                   
+  0x180CEB4C0  lea     rcx, [rip + 0x24490b9]                       ; data_3134580
+  0x180CEB4C7  and     r9d, 0x1fffff                             
+  0x180CEB4CE  mov     eax, r9d                                  
+  0x180CEB4D1  shr     rax, 6                                    
+  0x180CEB4D5  and     r9d, 0x3f                                 
+  0x180CEB4D9  lea     rdx, [rcx + rax*8]                        
+  0x180CEB4DD  prefetchw byte ptr [rdx]                            
+
+180CEB4E0:
+  0x180CEB4E0  mov     rax, qword ptr [rdx]                      
+  0x180CEB4E3  mov     rcx, rax                                  
+  0x180CEB4E6  bts     rcx, r9                                   
+  0x180CEB4EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEB4EF  jne     0x180ceb4e0                               
+
+180CEB4F1:
+  0x180CEB4F1  test    r8, r8                                    
+  0x180CEB4F4  je      0x180ceb50f                               
+
+180CEB4F6:
+  0x180CEB4F6  mov     rdx, qword ptr [rip + 0x2169c3b]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CEB4FD  xor     ecx, ecx                                  
+  0x180CEB4FF  mov     r9d, 1                                    
+  0x180CEB505  add     rsp, 0x20                                 
+  0x180CEB509  pop     rbx                                       
+  0x180CEB50A  jmp     0x1800036f0                               
+
+180CEB50F:
+  0x180CEB50F  call    0x180246730                                  ; THROW NullReferenceException

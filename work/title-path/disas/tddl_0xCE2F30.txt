@@ -1,0 +1,51 @@
+====================================================================================================
+FUNCTION RVA 0xCE2F30  VA 0x180CE2F30  size 0x52 (82 bytes)
+  managed: Unity.XR.OpenVR.OpenVRHMD$$set_leftEyeVelocity
+  managed: Unity.XR.OpenVR.OpenVRControllerWMR$$set_grip
+  managed: Unity.XR.OpenVR.ViveWand$$set_deviceVelocity
+  managed: Unity.XR.OpenVR.OpenVROculusTouchController$$set_thumbstickTouched
+  managed: Unity.XR.Oculus.Input.OculusHMD$$set_deviceAcceleration
+  managed: Unity.XR.Oculus.Input.OculusTouchController$$set_primaryTouched
+  managed: Unity.XR.Oculus.Input.GearVRTrackedController$$set_deviceAngularAcceleration
+  managed: Unity.XR.GoogleVr.DaydreamController$$set_touchpadTouched
+  managed: UnityEngine.XR.WindowsMR.Input.WMRSpatialController$$set_touchpadClicked
+  managed: UnityEngine.InputSystem.Gamepad$$set_rightStick
+  managed: UnityEngine.InputSystem.Mouse$$set_clickCount
+  managed: UnityEngine.InputSystem.Pen$$set_inRange
+  managed: GigaCreation.Essentials.Ui.TweeningDropdownLocalized$$set_ItemFontAssets
+  csig   : void Unity_XR_OpenVR_OpenVRHMD__set_leftEyeVelocity (Unity_XR_OpenVR_OpenVRHMD_o* __this, UnityEngine_InputSystem_Controls_Vector3Control_o* value, const MethodInfo* method);
+  dump.cs: Unity.XR.OpenVR.OpenVRHMD :: protected void set_leftEyeVelocity(Vector3Control value)
+  dump.cs: Unity.XR.OpenVR.OpenVRControllerWMR :: protected void set_grip(AxisControl value)
+  dump.cs: Unity.XR.OpenVR.ViveWand :: protected void set_deviceVelocity(Vector3Control value)
+  dump.cs: Unity.XR.OpenVR.OpenVROculusTouchController :: protected void set_thumbstickTouched(ButtonControl value)
+  dump.cs: Unity.XR.Oculus.Input.OculusHMD :: protected void set_deviceAcceleration(Vector3Control value)
+  dump.cs: Unity.XR.Oculus.Input.OculusTouchController :: protected void set_primaryTouched(ButtonControl value)
+  dump.cs: ... +7 more aliases (shared body)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdownLocalized:
+      +0x1E0  _captionCanvasGroup            CanvasGroup
+      +0x1E8  _currentItemIdx                int
+      +0x1F0  <ItemFontAssets>k__BackingField TMP_FontAsset[]
+====================================================================================================
+  0x180CE2F30  cmp     dword ptr [rip + 0x23f628d], 0               ; data_30D91C4
+  0x180CE2F37  mov     qword ptr [rcx + 0x1f0], rdx                 ; rcx->TweeningDropdownLocalized.<ItemFontAssets>k__BackingField
+  0x180CE2F3E  je      0x180ce2f81                               
+  0x180CE2F40  lea     r8, [rcx + 0x1f0]                            ; rcx->TweeningDropdownLocalized.<ItemFontAssets>k__BackingField
+  0x180CE2F47  shr     r8, 0xc                                   
+  0x180CE2F4B  lea     rcx, [rip + 0x245162e]                       ; data_3134580
+  0x180CE2F52  and     r8d, 0x1fffff                             
+  0x180CE2F59  mov     eax, r8d                                  
+  0x180CE2F5C  shr     rax, 6                                    
+  0x180CE2F60  and     r8d, 0x3f                                 
+  0x180CE2F64  lea     rdx, [rcx + rax*8]                        
+  0x180CE2F68  prefetchw byte ptr [rdx]                            
+  0x180CE2F6B  nop     dword ptr [rax + rax]                     
+
+180CE2F70:
+  0x180CE2F70  mov     rax, qword ptr [rdx]                      
+  0x180CE2F73  mov     rcx, rax                                  
+  0x180CE2F76  bts     rcx, r8                                   
+  0x180CE2F7A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE2F7F  jne     0x180ce2f70                               
+
+180CE2F81:
+  0x180CE2F81  ret                                               

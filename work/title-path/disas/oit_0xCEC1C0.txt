@@ -1,0 +1,107 @@
+====================================================================================================
+FUNCTION RVA 0xCEC1C0  VA 0x180CEC1C0  size 0x17F (383 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggle$$.ctor
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggle___ctor (GigaCreation_Essentials_Ui_OptionItemToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggle :: public void .ctor()
+  fields of GigaCreation.Essentials.Ui.OptionItemToggle:
+      +0x20   _toggles                       GeneralToggle[]
+      +0x28   _onValueChangedSubject         readonly ISubject<int>
+      +0x30   _disposables                   readonly CompositeDisposable
+  fields of OptionItemToggle.<>c:
+      +0x0    <>9                            static readonly OptionItemToggle.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC1C0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CEC1C5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CEC1CA  push    rdi                                       
+  0x180CEC1CB  sub     rsp, 0x20                                 
+  0x180CEC1CF  cmp     byte ptr [rip + 0x23f1013], 0                ; data_30DD1E9
+  0x180CEC1D6  mov     rdi, rcx                                  
+  0x180CEC1D9  jne     0x180cec215                               
+  0x180CEC1DB  lea     rcx, [rip + 0x2166066]                       ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CEC1E2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC1E7  lock or dword ptr [rsp], 0                        
+  0x180CEC1EC  lea     rcx, [rip + 0x2118425]                       ; METHODINFO Method$UniRx.Subject<int>..ctor()
+  0x180CEC1F3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC1F8  lock or dword ptr [rsp], 0                        
+  0x180CEC1FD  lea     rcx, [rip + 0x211841c]                       ; TYPE UniRx.Subject<int>_TypeInfo
+  0x180CEC204  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC209  lock or dword ptr [rsp], 0                        
+  0x180CEC20E  mov     byte ptr [rip + 0x23f0fd4], 1                ; data_30DD1E9
+
+180CEC215:
+  0x180CEC215  mov     rcx, qword ptr [rip + 0x2118404]             ; TYPE UniRx.Subject<int>_TypeInfo
+  0x180CEC21C  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEC221  mov     rdx, qword ptr [rip + 0x21183f0]             ; METHODINFO Method$UniRx.Subject<int>..ctor()
+  0x180CEC228  mov     rcx, rax                                  
+  0x180CEC22B  mov     rbx, rax                                  
+  0x180CEC22E  call    0x1809294d0                                  ; -> UniRx.Subject<__Il2CppFullySharedGenericType>$$.ctor
+  0x180CEC233  cmp     dword ptr [rip + 0x23ecf8a], 0               ; data_30D91C4
+  0x180CEC23A  lea     rsi, [rip + 0x240205f]                       ; data_30EE2A0
+  0x180CEC241  mov     qword ptr [rdi + 0x28], rbx                  ; rdi->OptionItemToggle._onValueChangedSubject
+  0x180CEC245  je      0x180cec289                               
+  0x180CEC247  lea     r8, [rdi + 0x28]                             ; rdi->OptionItemToggle._onValueChangedSubject
+  0x180CEC24B  shr     r8, 0xc                                   
+  0x180CEC24F  and     r8d, 0x1fffff                             
+  0x180CEC256  mov     eax, r8d                                  
+  0x180CEC259  shr     rax, 6                                    
+  0x180CEC25D  and     r8d, 0x3f                                 
+  0x180CEC261  lea     rdx, [rsi + rax*8]                        
+  0x180CEC265  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEC26C  nop     dword ptr [rax]                           
+
+180CEC270:
+  0x180CEC270  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEC277  mov     rcx, rax                                  
+  0x180CEC27A  bts     rcx, r8                                   
+  0x180CEC27E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEC287  jne     0x180cec270                               
+
+180CEC289:
+  0x180CEC289  mov     rcx, qword ptr [rip + 0x2165fb8]             ; TYPE UniRx.CompositeDisposable_TypeInfo
+  0x180CEC290  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEC295  xor     edx, edx                                  
+  0x180CEC297  mov     rcx, rax                                  
+  0x180CEC29A  mov     rbx, rax                                  
+  0x180CEC29D  call    0x1817bc3c0                                  ; -> UniRx.CompositeDisposable$$.ctor
+  0x180CEC2A2  cmp     dword ptr [rip + 0x23ecf1b], 0               ; data_30D91C4
+  0x180CEC2A9  mov     qword ptr [rdi + 0x30], rbx                  ; rdi->OptionItemToggle._disposables
+  0x180CEC2AD  je      0x180cec2f9                               
+  0x180CEC2AF  lea     r8, [rdi + 0x30]                             ; rdi->OptionItemToggle._disposables
+  0x180CEC2B3  shr     r8, 0xc                                   
+  0x180CEC2B7  and     r8d, 0x1fffff                             
+  0x180CEC2BE  mov     eax, r8d                                  
+  0x180CEC2C1  shr     rax, 6                                    
+  0x180CEC2C5  and     r8d, 0x3f                                 
+  0x180CEC2C9  lea     rdx, [rsi + rax*8]                        
+  0x180CEC2CD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CEC2D4  nop     dword ptr [rax]                           
+  0x180CEC2D8  nop     dword ptr [rax + rax]                     
+
+180CEC2E0:
+  0x180CEC2E0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CEC2E7  mov     rcx, rax                                  
+  0x180CEC2EA  bts     rcx, r8                                   
+  0x180CEC2EE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CEC2F7  jne     0x180cec2e0                               
+
+180CEC2F9:
+  0x180CEC2F9  cmp     byte ptr [rip + 0x23fc1ed], 0                ; data_30E84ED
+  0x180CEC300  jne     0x180cec31a                               
+  0x180CEC302  lea     rcx, [rip + 0x2165f87]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEC309  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC30E  lock or dword ptr [rsp], 0                        
+  0x180CEC313  mov     byte ptr [rip + 0x23fc1d3], 1                ; data_30E84ED
+
+180CEC31A:
+  0x180CEC31A  mov     rcx, qword ptr [rip + 0x2165f6f]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CEC321  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEC328  jne     0x180cec32f                               
+  0x180CEC32A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEC32F:
+  0x180CEC32F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CEC334  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CEC339  add     rsp, 0x20                                 
+  0x180CEC33D  pop     rdi                                       
+  0x180CEC33E  ret                                               

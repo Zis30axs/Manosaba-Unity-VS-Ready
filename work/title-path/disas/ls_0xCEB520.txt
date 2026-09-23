@@ -1,0 +1,24 @@
+====================================================================================================
+FUNCTION RVA 0xCEB520  VA 0x180CEB520  size 0x2A (42 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$<OnConfirmAsObservable>b__18_0
+  csig   : float GigaCreation_Essentials_Ui_LabeledSlider___OnConfirmAsObservable_b__18_0 (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: private float <OnConfirmAsObservable>b__18_0(PointerEventData _)
+  fields of GigaCreation.Essentials.Ui.LabeledSlider:
+      +0x20   _slider                        Slider
+      +0x28   _label                         TextMeshProUGUI
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+      +0x40   <OverriddenBuildLabelTextFunc>k__BackingField Func<float, string>
+====================================================================================================
+  0x180CEB520  sub     rsp, 0x28                                 
+  0x180CEB524  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->LabeledSlider._slider
+  0x180CEB528  test    rcx, rcx                                  
+  0x180CEB52B  je      0x180ceb545                               
+  0x180CEB52D  mov     rdx, qword ptr [rcx]                      
+  0x180CEB530  mov     rax, qword ptr [rdx + 0x418]              
+  0x180CEB537  mov     rdx, qword ptr [rdx + 0x420]              
+  0x180CEB53E  add     rsp, 0x28                                 
+  0x180CEB542  jmp     rax                                       
+
+180CEB545:
+  0x180CEB545  call    0x180246730                                  ; THROW NullReferenceException

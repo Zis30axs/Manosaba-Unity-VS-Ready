@@ -1,0 +1,181 @@
+====================================================================================================
+FUNCTION RVA 0xCEBE00  VA 0x180CEBE00  size 0x2B5 (693 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggle$$OnEnable
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggle__OnEnable (GigaCreation_Essentials_Ui_OptionItemToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggle :: private void OnEnable()
+  fields of GigaCreation.Essentials.Ui.OptionItemToggle:
+      +0x20   _toggles                       GeneralToggle[]
+      +0x28   _onValueChangedSubject         readonly ISubject<int>
+      +0x30   _disposables                   readonly CompositeDisposable
+  fields of OptionItemToggle.<>c:
+      +0x0    <>9                            static readonly OptionItemToggle.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEBE00  push    rbp                                       
+  0x180CEBE02  push    rsi                                       
+  0x180CEBE03  sub     rsp, 0x48                                 
+  0x180CEBE07  cmp     byte ptr [rip + 0x23f13d9], 0                ; data_30DD1E7
+  0x180CEBE0E  mov     rbp, rcx                                  
+  0x180CEBE11  jne     0x180cebec8                               
+  0x180CEBE17  lea     rcx, [rip + 0x217c422]                       ; TYPE System.Action<bool, int>_TypeInfo
+  0x180CEBE1E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE23  lock or dword ptr [rsp], 0                        
+  0x180CEBE28  lea     rcx, [rip + 0x2166439]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CEBE2F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE34  lock or dword ptr [rsp], 0                        
+  0x180CEBE39  lea     rcx, [rip + 0x216f0b8]                       ; TYPE System.Func<bool, bool>_TypeInfo
+  0x180CEBE40  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE45  lock or dword ptr [rsp], 0                        
+  0x180CEBE4A  lea     rcx, [rip + 0x217c3e7]                       ; METHODINFO Method$UniRx.ObservableExtensions.SubscribeWithState<bool, int>()
+  0x180CEBE51  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE56  lock or dword ptr [rsp], 0                        
+  0x180CEBE5B  lea     rcx, [rip + 0x217c3c6]                       ; METHODINFO Method$UniRx.Observable.Skip<bool>()
+  0x180CEBE62  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE67  lock or dword ptr [rsp], 0                        
+  0x180CEBE6C  lea     rcx, [rip + 0x216f075]                       ; METHODINFO Method$UniRx.Observable.Where<bool>()
+  0x180CEBE73  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE78  lock or dword ptr [rsp], 0                        
+  0x180CEBE7D  lea     rcx, [rip + 0x216d9f4]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CEBE84  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE89  lock or dword ptr [rsp], 0                        
+  0x180CEBE8E  lea     rcx, [rip + 0x217c38b]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.OptionItemToggle.<OnEnable>b__3_1() => GigaCreation.Essentials.Ui.OptionItemToggle$$<OnEnable>b__3_1
+  0x180CEBE95  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBE9A  lock or dword ptr [rsp], 0                        
+  0x180CEBE9F  lea     rcx, [rip + 0x217c372]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.OptionItemToggle.<>c.<OnEnable>b__3_0() => System.Collections.Generic.ByteEqualityComparer$$GetHashCode (+4 aliases)
+  0x180CEBEA6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBEAB  lock or dword ptr [rsp], 0                        
+  0x180CEBEB0  lea     rcx, [rip + 0x217c359]                       ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+  0x180CEBEB7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEBEBC  lock or dword ptr [rsp], 0                        
+  0x180CEBEC1  mov     byte ptr [rip + 0x23f131f], 1                ; data_30DD1E7
+
+180CEBEC8:
+  0x180CEBEC8  mov     rax, qword ptr [rbp + 0x20]                  ; rbp->OptionItemToggle._toggles
+  0x180CEBECC  xor     esi, esi                                  
+  0x180CEBECE  mov     qword ptr [rsp + 0x68], rbx               
+  0x180CEBED3  mov     ecx, esi                                  
+  0x180CEBED5  mov     qword ptr [rsp + 0x40], rdi               
+  0x180CEBEDA  mov     qword ptr [rsp + 0x38], r14               
+  0x180CEBEDF  mov     qword ptr [rsp + 0x30], r15               
+  0x180CEBEE4  test    rax, rax                                  
+  0x180CEBEE7  je      0x180cec0aa                               
+  0x180CEBEED  mov     r14d, 0x20                                
+
+180CEBEF3:
+  0x180CEBEF3  cmp     ecx, dword ptr [rax + 0x18]               
+  0x180CEBEF6  jge     0x180cec08f                               
+  0x180CEBEFC  mov     rax, qword ptr [rbp + 0x20]                  ; rbp->OptionItemToggle._toggles
+  0x180CEBF00  test    rax, rax                                  
+  0x180CEBF03  je      0x180cec0aa                               
+  0x180CEBF09  cmp     esi, dword ptr [rax + 0x18]               
+  0x180CEBF0C  jae     0x180cec0b0                               
+  0x180CEBF12  mov     rcx, qword ptr [r14 + rax]                
+  0x180CEBF16  test    rcx, rcx                                  
+  0x180CEBF19  je      0x180cec0aa                               
+  0x180CEBF1F  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->OptionItemToggle._toggles
+  0x180CEBF23  xor     edx, edx                                  
+  0x180CEBF25  call    0x1817e0470                                  ; -> UniRx.UnityUIComponentExtensions$$OnValueChangedAsObservable
+  0x180CEBF2A  mov     rcx, qword ptr [rip + 0x216d947]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CEBF31  mov     rbx, rax                                  
+  0x180CEBF34  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEBF3B  jne     0x180cebf42                               
+  0x180CEBF3D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEBF42:
+  0x180CEBF42  mov     r8, qword ptr [rip + 0x217c2df]              ; METHODINFO Method$UniRx.Observable.Skip<bool>()
+  0x180CEBF49  mov     edx, 1                                    
+  0x180CEBF4E  mov     rcx, rbx                                  
+  0x180CEBF51  call    0x18072fd70                                  ; -> UniRx.Observable$$Skip<__Il2CppFullySharedGenericType>
+  0x180CEBF56  mov     rcx, qword ptr [rip + 0x217c2b3]             ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+  0x180CEBF5D  mov     r15, rax                                  
+  0x180CEBF60  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEBF67  jne     0x180cebf75                               
+  0x180CEBF69  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CEBF6E  mov     rcx, qword ptr [rip + 0x217c29b]             ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+
+180CEBF75:
+  0x180CEBF75  mov     rdx, qword ptr [rcx + 0xb8]               
+  0x180CEBF7C  mov     rdi, qword ptr [rdx + 8]                  
+  0x180CEBF80  test    rdi, rdi                                  
+  0x180CEBF83  jne     0x180cebff0                               
+  0x180CEBF85  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180CEBF8B  jne     0x180cebf99                               
+  0x180CEBF8D  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CEBF92  mov     rcx, qword ptr [rip + 0x217c277]             ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+
+180CEBF99:
+  0x180CEBF99  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CEBFA0  mov     rcx, qword ptr [rip + 0x216ef51]             ; TYPE System.Func<bool, bool>_TypeInfo
+  0x180CEBFA7  mov     rbx, qword ptr [rax]                      
+  0x180CEBFAA  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEBFAF  mov     r8, qword ptr [rip + 0x217c262]              ; METHODINFO Method$GigaCreation.Essentials.Ui.OptionItemToggle.<>c.<OnEnable>b__3_0() => System.Collections.Generic.ByteEqualityComparer$$GetHashCode (+4 aliases)
+  0x180CEBFB6  xor     r9d, r9d                                  
+  0x180CEBFB9  mov     rdx, rbx                                  
+  0x180CEBFBC  mov     rcx, rax                                  
+  0x180CEBFBF  mov     rdi, rax                                  
+  0x180CEBFC2  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CEBFC7  mov     rax, qword ptr [rip + 0x217c242]             ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+  0x180CEBFCE  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CEBFD5  mov     qword ptr [rcx + 8], rdi                  
+  0x180CEBFD9  mov     rax, qword ptr [rip + 0x217c230]             ; TYPE GigaCreation.Essentials.Ui.OptionItemToggle.<>c_TypeInfo
+  0x180CEBFE0  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CEBFE7  add     rcx, 8                                    
+  0x180CEBFEB  call    0x1802460d0                                  ; -> sub_2460D0 (runtime/helper)
+
+180CEBFF0:
+  0x180CEBFF0  mov     rcx, qword ptr [rip + 0x216d881]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CEBFF7  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEBFFE  jne     0x180cec005                               
+  0x180CEC000  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEC005:
+  0x180CEC005  mov     r8, qword ptr [rip + 0x216eedc]              ; METHODINFO Method$UniRx.Observable.Where<bool>()
+  0x180CEC00C  mov     rdx, rdi                                  
+  0x180CEC00F  mov     rcx, r15                                  
+  0x180CEC012  call    0x180734b00                                  ; -> UniRx.Observable$$Where<__Il2CppFullySharedGenericType>
+  0x180CEC017  mov     rcx, qword ptr [rip + 0x217c222]             ; TYPE System.Action<bool, int>_TypeInfo
+  0x180CEC01E  mov     rdi, rax                                  
+  0x180CEC021  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CEC026  mov     r8, qword ptr [rip + 0x217c1f3]              ; METHODINFO Method$GigaCreation.Essentials.Ui.OptionItemToggle.<OnEnable>b__3_1() => GigaCreation.Essentials.Ui.OptionItemToggle$$<OnEnable>b__3_1
+  0x180CEC02D  xor     r9d, r9d                                  
+  0x180CEC030  mov     rdx, rbp                                  
+  0x180CEC033  mov     rcx, rax                                  
+  0x180CEC036  mov     rbx, rax                                  
+  0x180CEC039  call    0x18090d170                                  ; -> System.Action<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+5 aliases)
+  0x180CEC03E  mov     r9, qword ptr [rip + 0x217c1f3]              ; METHODINFO Method$UniRx.ObservableExtensions.SubscribeWithState<bool, int>()
+  0x180CEC045  lea     rdx, [rsp + 0x60]                         
+  0x180CEC04A  mov     r8, rbx                                   
+  0x180CEC04D  mov     dword ptr [rsp + 0x60], esi               
+  0x180CEC051  mov     rcx, rdi                                  
+  0x180CEC054  call    0x180735d10                                  ; -> UniRx.ObservableExtensions$$SubscribeWithState<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180CEC059  mov     rcx, qword ptr [rip + 0x2166208]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CEC060  lea     r9, [rsp + 0x70]                          
+  0x180CEC065  mov     rdx, qword ptr [rbp + 0x30]                  ; rbp->OptionItemToggle._disposables
+  0x180CEC069  mov     r8, rbp                                   
+  0x180CEC06C  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CEC071  mov     rcx, rax                                  
+  0x180CEC074  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CEC079  mov     rax, qword ptr [rbp + 0x20]                  ; rbp->OptionItemToggle._toggles
+  0x180CEC07D  inc     esi                                       
+  0x180CEC07F  add     r14, 8                                    
+  0x180CEC083  mov     ecx, esi                                  
+  0x180CEC085  test    rax, rax                                  
+  0x180CEC088  je      0x180cec0aa                               
+  0x180CEC08A  jmp     0x180cebef3                               
+
+180CEC08F:
+  0x180CEC08F  mov     r15, qword ptr [rsp + 0x30]               
+  0x180CEC094  mov     r14, qword ptr [rsp + 0x38]               
+  0x180CEC099  mov     rdi, qword ptr [rsp + 0x40]               
+  0x180CEC09E  mov     rbx, qword ptr [rsp + 0x68]               
+  0x180CEC0A3  add     rsp, 0x48                                 
+  0x180CEC0A7  pop     rsi                                       
+  0x180CEC0A8  pop     rbp                                       
+  0x180CEC0A9  ret                                               
+
+180CEC0AA:
+  0x180CEC0AA  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CEC0AF  int3                                              
+
+180CEC0B0:
+  0x180CEC0B0  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

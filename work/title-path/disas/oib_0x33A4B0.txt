@@ -1,0 +1,23 @@
+====================================================================================================
+FUNCTION RVA 0x33A4B0  VA 0x18033A4B0  size 0x24 (36 bytes)
+  managed: WitchTrials.Views.GoogleForm$$OnClickAsObservable
+  managed: GigaCreation.Essentials.Ui.OptionItemButton$$OnClickAsObservable
+  managed: GigaCreation.NaninovelExtender.Ui.ScriptNavigatorHeader$$OnClickSyncButtonAsObservable
+  csig   : System_IObservable_Unit__o* WitchTrials_Views_GoogleForm__OnClickAsObservable (WitchTrials_Views_GoogleForm_o* __this, const MethodInfo* method);
+  dump.cs: WitchTrials.Views.GoogleForm :: public IObservable<Unit> OnClickAsObservable()
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemButton :: public IObservable<Unit> OnClickAsObservable()
+  dump.cs: GigaCreation.NaninovelExtender.Ui.ScriptNavigatorHeader :: public IObservable<Unit> OnClickSyncButtonAsObservable()
+  fields of GigaCreation.Essentials.Ui.OptionItemButton:
+      +0x20   _button                        Button
+====================================================================================================
+  0x18033A4B0  sub     rsp, 0x28                                 
+  0x18033A4B4  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->OptionItemButton._button
+  0x18033A4B8  test    rcx, rcx                                  
+  0x18033A4BB  je      0x18033a4cf                               
+  0x18033A4BD  mov     rcx, qword ptr [rcx + 0x100]              
+  0x18033A4C4  xor     edx, edx                                  
+  0x18033A4C6  add     rsp, 0x28                                 
+  0x18033A4CA  jmp     0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+
+18033A4CF:
+  0x18033A4CF  call    0x180246730                                  ; THROW NullReferenceException

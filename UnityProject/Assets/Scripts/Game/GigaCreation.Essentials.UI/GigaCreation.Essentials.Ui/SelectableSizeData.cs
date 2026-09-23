@@ -70,18 +70,20 @@ namespace GigaCreation.Essentials.Ui
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCEA680, 8 B -- _kind (+0x10) == Fixed (1)
     	[Token(Token = "0x6000128")]
     	[Address(RVA = "0xCEA680", Offset = "0xCE9080", VA = "0x180CEA680")]
     	private bool IsFixed()
     	{
-    		return default(bool);
+    		return _kind == OverrideKind.Fixed;
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCEA690, 8 B -- _kind (+0x10) == Flexible (2)
     	[Token(Token = "0x6000129")]
     	[Address(RVA = "0xCEA690", Offset = "0xCE9090", VA = "0x180CEA690")]
     	private bool IsFlexible()
     	{
-    		return default(bool);
+    		return _kind == OverrideKind.Flexible;
     	}
 
     	[Token(Token = "0x600012A")]

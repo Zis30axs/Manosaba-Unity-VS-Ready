@@ -1,0 +1,49 @@
+====================================================================================================
+FUNCTION RVA 0xCD80B0  VA 0x180CD80B0  size 0x97 (151 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemButton$$Reset
+  csig   : void GigaCreation_Essentials_Ui_OptionItemButton__Reset (GigaCreation_Essentials_Ui_OptionItemButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemButton :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.OptionItemButton:
+      +0x20   _button                        Button
+====================================================================================================
+  0x180CD80B0  push    rbx                                       
+  0x180CD80B2  sub     rsp, 0x20                                 
+  0x180CD80B6  cmp     byte ptr [rip + 0x2405093], 0                ; data_30DD150
+  0x180CD80BD  mov     rbx, rcx                                  
+  0x180CD80C0  jne     0x180cd80da                               
+  0x180CD80C2  lea     rcx, [rip + 0x217cb7f]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Button>()
+  0x180CD80C9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD80CE  lock or dword ptr [rsp], 0                        
+  0x180CD80D3  mov     byte ptr [rip + 0x2405076], 1                ; data_30DD150
+
+180CD80DA:
+  0x180CD80DA  mov     r8, qword ptr [rip + 0x217cb67]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Button>()
+  0x180CD80E1  lea     rdx, [rsp + 0x30]                         
+  0x180CD80E6  mov     rcx, rbx                                  
+  0x180CD80E9  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CD80EE  cmp     dword ptr [rip + 0x24010cf], 0               ; data_30D91C4
+  0x180CD80F5  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD80FA  mov     qword ptr [rbx + 0x20], rax                  ; rbx->OptionItemButton._button
+  0x180CD80FE  je      0x180cd8141                               
+  0x180CD8100  lea     r8, [rbx + 0x20]                             ; rbx->OptionItemButton._button
+  0x180CD8104  shr     r8, 0xc                                   
+  0x180CD8108  lea     rcx, [rip + 0x245c471]                       ; data_3134580
+  0x180CD810F  and     r8d, 0x1fffff                             
+  0x180CD8116  mov     eax, r8d                                  
+  0x180CD8119  shr     rax, 6                                    
+  0x180CD811D  and     r8d, 0x3f                                 
+  0x180CD8121  lea     rdx, [rcx + rax*8]                        
+  0x180CD8125  prefetchw byte ptr [rdx]                            
+  0x180CD8128  nop     dword ptr [rax + rax]                     
+
+180CD8130:
+  0x180CD8130  mov     rax, qword ptr [rdx]                      
+  0x180CD8133  mov     rcx, rax                                  
+  0x180CD8136  bts     rcx, r8                                   
+  0x180CD813A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CD813F  jne     0x180cd8130                               
+
+180CD8141:
+  0x180CD8141  add     rsp, 0x20                                 
+  0x180CD8145  pop     rbx                                       
+  0x180CD8146  ret                                               

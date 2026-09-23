@@ -1,0 +1,71 @@
+====================================================================================================
+FUNCTION RVA 0xCEB550  VA 0x180CEB550  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.GeneralToggle$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* GigaCreation_Essentials_Ui_GeneralToggle__get_InputManager (GigaCreation_Essentials_Ui_GeneralToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.GeneralToggle :: private IInputManager get_InputManager()
+  fields of GigaCreation.Essentials.Ui.GeneralToggle:
+      +0x20   _toggle                        Toggle
+      +0x28   _dropShadow                    MPImage
+      +0x30   _frame                         MPImage
+      +0x38   _label                         TextMeshProUGUI
+      +0x40   _outlineWidthWhenOn            float
+      +0x44   _labelColorWhenOn              Color
+      +0x54   _colorWhenOff                  Color
+      +0x64   _labelColorWhenOff             Color
+      +0x78   _inputManager                  IInputManager
+====================================================================================================
+  0x180CEB550  push    rbx                                       
+  0x180CEB552  sub     rsp, 0x20                                 
+  0x180CEB556  cmp     byte ptr [rip + 0x23f1c85], 0                ; data_30DD1E2
+  0x180CEB55D  mov     rbx, rcx                                  
+  0x180CEB560  jne     0x180ceb58b                               
+  0x180CEB562  lea     rcx, [rip + 0x2169c9f]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEB569  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB56E  lock or dword ptr [rsp], 0                        
+  0x180CEB573  lea     rcx, [rip + 0x2166bee]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEB57A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEB57F  lock or dword ptr [rsp], 0                        
+  0x180CEB584  mov     byte ptr [rip + 0x23f1c57], 1                ; data_30DD1E2
+
+180CEB58B:
+  0x180CEB58B  mov     rax, qword ptr [rbx + 0x78]                  ; rbx->GeneralToggle._inputManager
+  0x180CEB58F  test    rax, rax                                  
+  0x180CEB592  jne     0x180ceb604                               
+  0x180CEB594  mov     rcx, qword ptr [rip + 0x2166bcd]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CEB59B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CEB5A1  jne     0x180ceb5a8                               
+  0x180CEB5A3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEB5A8:
+  0x180CEB5A8  mov     rdx, qword ptr [rip + 0x2169c59]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CEB5AF  mov     cl, 1                                     
+  0x180CEB5B1  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CEB5B6  cmp     dword ptr [rip + 0x23edc07], 0               ; data_30D91C4
+  0x180CEB5BD  mov     r9, rax                                   
+  0x180CEB5C0  mov     qword ptr [rbx + 0x78], rax                  ; rbx->GeneralToggle._inputManager
+  0x180CEB5C4  je      0x180ceb601                               
+  0x180CEB5C6  lea     r8, [rbx + 0x78]                             ; rbx->GeneralToggle._inputManager
+  0x180CEB5CA  shr     r8, 0xc                                   
+  0x180CEB5CE  lea     rcx, [rip + 0x2448fab]                       ; data_3134580
+  0x180CEB5D5  and     r8d, 0x1fffff                             
+  0x180CEB5DC  mov     eax, r8d                                  
+  0x180CEB5DF  shr     rax, 6                                    
+  0x180CEB5E3  and     r8d, 0x3f                                 
+  0x180CEB5E7  lea     rdx, [rcx + rax*8]                        
+  0x180CEB5EB  prefetchw byte ptr [rdx]                            
+  0x180CEB5EE  nop                                               
+
+180CEB5F0:
+  0x180CEB5F0  mov     rax, qword ptr [rdx]                      
+  0x180CEB5F3  mov     rcx, rax                                  
+  0x180CEB5F6  bts     rcx, r8                                   
+  0x180CEB5FA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEB5FF  jne     0x180ceb5f0                               
+
+180CEB601:
+  0x180CEB601  mov     rax, r9                                   
+
+180CEB604:
+  0x180CEB604  add     rsp, 0x20                                 
+  0x180CEB608  pop     rbx                                       
+  0x180CEB609  ret                                               

@@ -1,0 +1,74 @@
+====================================================================================================
+FUNCTION RVA 0xCE0B70  VA 0x180CE0B70  size 0x106 (262 bytes)
+  managed: GigaCreation.Essentials.Ui.LocalizationDropdown$$SetOptions
+  csig   : void GigaCreation_Essentials_Ui_LocalizationDropdown__SetOptions (GigaCreation_Essentials_Ui_LocalizationDropdown_o* __this, System_Collections_Generic_List_string__o* options, TMPro_TMP_FontAsset_array* fontAssets, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LocalizationDropdown :: public void SetOptions(List<string> options, TMP_FontAsset[] fontAssets)
+====================================================================================================
+  0x180CE0B70  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE0B75  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CE0B7A  push    rdi                                       
+  0x180CE0B7B  sub     rsp, 0x20                                 
+  0x180CE0B7F  cmp     byte ptr [rip + 0x23fc5ff], 0                ; data_30DD185
+  0x180CE0B86  mov     rdi, r8                                   
+  0x180CE0B89  mov     rsi, rdx                                  
+  0x180CE0B8C  mov     rbx, rcx                                  
+  0x180CE0B8F  jne     0x180ce0ba9                               
+  0x180CE0B91  lea     rcx, [rip + 0x2187d78]                       ; TYPE GigaCreation.Essentials.Ui.TweeningDropdownLocalized_TypeInfo
+  0x180CE0B98  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE0B9D  lock or dword ptr [rsp], 0                        
+  0x180CE0BA2  mov     byte ptr [rip + 0x23fc5dc], 1                ; data_30DD185
+
+180CE0BA9:
+  0x180CE0BA9  mov     rcx, qword ptr [rbx + 0x20]               
+  0x180CE0BAD  test    rcx, rcx                                  
+  0x180CE0BB0  je      0x180ce0c71                               
+  0x180CE0BB6  xor     edx, edx                                  
+  0x180CE0BB8  call    0x181ed18b0                                  ; -> TMPro.TMP_Dropdown$$ClearOptions
+  0x180CE0BBD  mov     rcx, qword ptr [rbx + 0x20]               
+  0x180CE0BC1  test    rcx, rcx                                  
+  0x180CE0BC4  je      0x180ce0c71                               
+  0x180CE0BCA  xor     r8d, r8d                                  
+  0x180CE0BCD  mov     rdx, rsi                                  
+  0x180CE0BD0  call    0x181ed15d0                                  ; -> TMPro.TMP_Dropdown$$AddOptions
+  0x180CE0BD5  mov     r8, qword ptr [rbx + 0x20]                
+  0x180CE0BD9  test    r8, r8                                    
+  0x180CE0BDC  je      0x180ce0c61                               
+  0x180CE0BE2  mov     rdx, qword ptr [rip + 0x2187d27]             ; TYPE GigaCreation.Essentials.Ui.TweeningDropdownLocalized_TypeInfo
+  0x180CE0BE9  mov     r9, qword ptr [r8]                        
+  0x180CE0BEC  movzx   eax, byte ptr [rdx + 0x130]               
+  0x180CE0BF3  cmp     byte ptr [r9 + 0x130], al                 
+  0x180CE0BFA  jb      0x180ce0c61                               
+  0x180CE0BFC  movzx   ecx, al                                   
+  0x180CE0BFF  mov     rax, qword ptr [r9 + 0xc8]                
+  0x180CE0C06  cmp     qword ptr [rax + rcx*8 - 8], rdx          
+  0x180CE0C0B  jne     0x180ce0c61                               
+  0x180CE0C0D  cmp     dword ptr [rip + 0x23f85b0], 0               ; data_30D91C4
+  0x180CE0C14  mov     qword ptr [r8 + 0x1f0], rdi               
+  0x180CE0C1B  je      0x180ce0c61                               
+  0x180CE0C1D  add     r8, 0x1f0                                 
+  0x180CE0C24  lea     rcx, [rip + 0x2453955]                       ; data_3134580
+  0x180CE0C2B  shr     r8, 0xc                                   
+  0x180CE0C2F  and     r8d, 0x1fffff                             
+  0x180CE0C36  mov     eax, r8d                                  
+  0x180CE0C39  shr     rax, 6                                    
+  0x180CE0C3D  and     r8d, 0x3f                                 
+  0x180CE0C41  lea     rdx, [rcx + rax*8]                        
+  0x180CE0C45  prefetchw byte ptr [rdx]                            
+  0x180CE0C48  nop     dword ptr [rax + rax]                     
+
+180CE0C50:
+  0x180CE0C50  mov     rax, qword ptr [rdx]                      
+  0x180CE0C53  mov     rcx, rax                                  
+  0x180CE0C56  bts     rcx, r8                                   
+  0x180CE0C5A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE0C5F  jne     0x180ce0c50                               
+
+180CE0C61:
+  0x180CE0C61  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE0C66  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CE0C6B  add     rsp, 0x20                                 
+  0x180CE0C6F  pop     rdi                                       
+  0x180CE0C70  ret                                               
+
+180CE0C71:
+  0x180CE0C71  call    0x180246730                                  ; THROW NullReferenceException
