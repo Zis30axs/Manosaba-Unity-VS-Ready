@@ -66,10 +66,11 @@ namespace CustomInspector
     	public int Year
     	{
     		[Token(Token = "0x6000116")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x331650, 4 B -- `mov eax, dword ptr [rcx + 0x10]; ret`: the backing field year (+0x10 in dump.cs)
     		[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
     		get
     		{
-    			return default(int);
+    			return year;
     		}
     		[Token(Token = "0x6000117")]
     		[Address(RVA = "0x4401B0", Offset = "0x43EBB0", VA = "0x1804401B0")]
@@ -82,10 +83,11 @@ namespace CustomInspector
     	public int Month
     	{
     		[Token(Token = "0x6000118")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F580, 4 B -- `mov eax, dword ptr [rcx + 0x14]; ret`: the backing field month (+0x14 in dump.cs)
     		[Address(RVA = "0x38F580", Offset = "0x38DF80", VA = "0x18038F580")]
     		get
     		{
-    			return default(int);
+    			return month;
     		}
     		[Token(Token = "0x6000119")]
     		[Address(RVA = "0x4401E0", Offset = "0x43EBE0", VA = "0x1804401E0")]
@@ -98,10 +100,11 @@ namespace CustomInspector
     	public int Day
     	{
     		[Token(Token = "0x600011A")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F590, 4 B -- `mov eax, dword ptr [rcx + 0x18]; ret`: the backing field day (+0x18 in dump.cs)
     		[Address(RVA = "0x38F590", Offset = "0x38DF90", VA = "0x18038F590")]
     		get
     		{
-    			return default(int);
+    			return day;
     		}
     		[Token(Token = "0x600011B")]
     		[Address(RVA = "0x440200", Offset = "0x43EC00", VA = "0x180440200")]
@@ -114,10 +117,11 @@ namespace CustomInspector
     	public int Hour
     	{
     		[Token(Token = "0x600011D")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F5A0, 4 B -- `mov eax, dword ptr [rcx + 0x1c]; ret`: the backing field hour (+0x1C in dump.cs)
     		[Address(RVA = "0x38F5A0", Offset = "0x38DFA0", VA = "0x18038F5A0")]
     		get
     		{
-    			return default(int);
+    			return hour;
     		}
     		[Token(Token = "0x600011E")]
     		[Address(RVA = "0x440340", Offset = "0x43ED40", VA = "0x180440340")]
@@ -130,10 +134,11 @@ namespace CustomInspector
     	public int Minute
     	{
     		[Token(Token = "0x600011F")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x440360, 4 B -- `mov eax, dword ptr [rcx + 0x20]; ret`: the backing field minute (+0x20 in dump.cs)
     		[Address(RVA = "0x440360", Offset = "0x43ED60", VA = "0x180440360")]
     		get
     		{
-    			return default(int);
+    			return minute;
     		}
     		[Token(Token = "0x6000120")]
     		[Address(RVA = "0x440370", Offset = "0x43ED70", VA = "0x180440370")]
@@ -146,10 +151,11 @@ namespace CustomInspector
     	public int Second
     	{
     		[Token(Token = "0x6000121")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x440390, 4 B -- `mov eax, dword ptr [rcx + 0x24]; ret`: the backing field second (+0x24 in dump.cs)
     		[Address(RVA = "0x440390", Offset = "0x43ED90", VA = "0x180440390")]
     		get
     		{
-    			return default(int);
+    			return second;
     		}
     		[Token(Token = "0x6000122")]
     		[Address(RVA = "0x4403A0", Offset = "0x43EDA0", VA = "0x1804403A0")]
@@ -162,10 +168,11 @@ namespace CustomInspector
     	public DateTimeKind Kind
     	{
     		[Token(Token = "0x6000123")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x4403C0, 4 B -- `mov eax, dword ptr [rcx + 0x28]; ret`: the backing field kind (+0x28 in dump.cs)
     		[Address(RVA = "0x4403C0", Offset = "0x43EDC0", VA = "0x1804403C0")]
     		get
     		{
-    			return default(DateTimeKind);
+    			return kind;
     		}
     		[Token(Token = "0x6000124")]
     		[Address(RVA = "0x4403D0", Offset = "0x43EDD0", VA = "0x1804403D0")]

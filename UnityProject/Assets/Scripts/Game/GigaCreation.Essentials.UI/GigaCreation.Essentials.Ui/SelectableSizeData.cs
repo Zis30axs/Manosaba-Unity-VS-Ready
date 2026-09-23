@@ -38,10 +38,11 @@ namespace GigaCreation.Essentials.Ui
     	public OverrideKind Kind
     	{
     		[Token(Token = "0x6000125")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x331650, 4 B -- `mov eax, dword ptr [rcx + 0x10]; ret`: the backing field _kind (+0x10 in dump.cs)
     		[Address(RVA = "0x331650", Offset = "0x330050", VA = "0x180331650")]
     		get
     		{
-    			return default(OverrideKind);
+    			return _kind;
     		}
     	}
 
@@ -49,10 +50,11 @@ namespace GigaCreation.Essentials.Ui
     	public float FixedSize
     	{
     		[Token(Token = "0x6000126")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x3686E0, 6 B -- `movss xmm0, dword ptr [rcx + 0x14]; ret`: the backing field _fixedSize (+0x14 in dump.cs)
     		[Address(RVA = "0x3686E0", Offset = "0x3670E0", VA = "0x1803686E0")]
     		get
     		{
-    			return default(float);
+    			return _fixedSize;
     		}
     	}
 
@@ -60,10 +62,11 @@ namespace GigaCreation.Essentials.Ui
     	public float Padding
     	{
     		[Token(Token = "0x6000127")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x39FB70, 6 B -- `movss xmm0, dword ptr [rcx + 0x18]; ret`: the backing field _padding (+0x18 in dump.cs)
     		[Address(RVA = "0x39FB70", Offset = "0x39E570", VA = "0x18039FB70")]
     		get
     		{
-    			return default(float);
+    			return _padding;
     		}
     	}
 

@@ -22,10 +22,11 @@ namespace CustomInspector
     	public float CapValue
     	{
     		[Token(Token = "0x600002B")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x39FB70, 6 B -- `movss xmm0, dword ptr [rcx + 0x18]; ret`: the backing field max (+0x18 in dump.cs)
     		[Address(RVA = "0x39FB70", Offset = "0x39E570", VA = "0x18039FB70", Slot = "7")]
     		get
     		{
-    			return default(float);
+    			return max;
     		}
     	}
 
@@ -33,10 +34,11 @@ namespace CustomInspector
     	public string CapPath
     	{
     		[Token(Token = "0x600002C")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x377910, 5 B -- `mov rax, qword ptr [rcx + 0x20]; ret`: the backing field maxPath (+0x20 in dump.cs)
     		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910", Slot = "8")]
     		get
     		{
-    			return null;
+    			return maxPath;
     		}
     	}
 

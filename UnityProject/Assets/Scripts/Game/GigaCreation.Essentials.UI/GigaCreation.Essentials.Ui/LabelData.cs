@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Text.RegularExpressions;
+using System;
 using GigaCreation.Essentials.Localization;
 using GigaCreation.Essentials.Toggleables;
 using Il2CppDummyDll;
@@ -48,10 +49,11 @@ namespace GigaCreation.Essentials.Ui
     	public LocalizableText LocalizableText
     	{
     		[Token(Token = "0x60000C5")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0, 5 B -- `mov rax, qword ptr [rcx + 0x10]; ret`: the backing field _localizableText (+0x10 in dump.cs)
     		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
     		get
     		{
-    			return null;
+    			return _localizableText;
     		}
     	}
 
@@ -59,21 +61,24 @@ namespace GigaCreation.Essentials.Ui
     	public ToggleableStruct<float> Scale
     	{
     		[Token(Token = "0x60000C6")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0, 5 B -- `mov rax, qword ptr [rcx + 0x18]; ret`: the backing field _scale (+0x18 in dump.cs)
     		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
     		get
     		{
-    			return default(ToggleableStruct<float>);
+    			return _scale;
     		}
     	}
 
     	[Token(Token = "0x17000023")]
     	public ToggleableStruct<Color> Color
     	{
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCE3F40, 17 B -- copies the 20-byte _color (+0x20) to the return buffer
+    		// Annotated disassembly: work/title-path/disas/ld_0xCE3F40.txt
     		[Token(Token = "0x60000C7")]
     		[Address(RVA = "0xCE3F40", Offset = "0xCE2940", VA = "0x180CE3F40")]
     		get
     		{
-    			return default(ToggleableStruct<Color>);
+    			return _color;
     		}
     	}
 
@@ -81,10 +86,11 @@ namespace GigaCreation.Essentials.Ui
     	public ToggleableStruct<float> CharacterSpacing
     	{
     		[Token(Token = "0x60000C8")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCE3F60, 5 B -- `mov rax, qword ptr [rcx + 0x34]; ret`: the backing field _characterSpacing (+0x34 in dump.cs)
     		[Address(RVA = "0xCE3F60", Offset = "0xCE2960", VA = "0x180CE3F60")]
     		get
     		{
-    			return default(ToggleableStruct<float>);
+    			return _characterSpacing;
     		}
     	}
 
@@ -92,10 +98,11 @@ namespace GigaCreation.Essentials.Ui
     	public ToggleableStruct<HorizontalAlignmentOptions> Alignment
     	{
     		[Token(Token = "0x60000C9")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCE3F70, 5 B -- `mov rax, qword ptr [rcx + 0x3c]; ret`: the backing field _alignment (+0x3C in dump.cs)
     		[Address(RVA = "0xCE3F70", Offset = "0xCE2970", VA = "0x180CE3F70")]
     		get
     		{
-    			return default(ToggleableStruct<HorizontalAlignmentOptions>);
+    			return _alignment;
     		}
     	}
 
@@ -103,25 +110,41 @@ namespace GigaCreation.Essentials.Ui
     	public string LabelId
     	{
     		[Token(Token = "0x60000CA")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x453470, 5 B -- `mov rax, qword ptr [rcx + 0x48]; ret`: the backing field _labelId (+0x48 in dump.cs)
     		[Address(RVA = "0x453470", Offset = "0x451E70", VA = "0x180453470")]
     		get
     		{
-    			return null;
+    			return _labelId;
     		}
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCE3F80, 387 B -- LocalizableText.IsEmpty inlined on _localizableText
+    	//   (+0x10; null throws NullReferenceException at 0x180CE4102)
+    	// Annotated disassembly: work/title-path/disas/ld_0xCE3F80.txt
     	[Token(Token = "0x60000CB")]
     	[Address(RVA = "0xCE3F80", Offset = "0xCE2980", VA = "0x180CE3F80")]
     	public bool IsEmpty()
     	{
-    		return default(bool);
+    		return _localizableText.IsEmpty();
     	}
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCE4110, 222 B -- empty -> true; !Regex.IsMatch(value, "^[0-9].*$") -> true;
+    	//   else Debug.LogWarning(literal 0x2E686E8 + value) and false
+    	// Annotated disassembly: work/title-path/disas/ld_0xCE4110.txt
     	[Token(Token = "0x60000CC")]
     	[Address(RVA = "0xCE4110", Offset = "0xCE2B10", VA = "0x180CE4110")]
     	public bool ValidateLabelId(string value)
     	{
-    		return default(bool);
+    		if (string.IsNullOrEmpty(value))
+    		{
+    			return true;
+    		}
+    		if (!Regex.IsMatch(value, "^[0-9].*$"))
+    		{
+    			return true;
+    		}
+    		Debug.LogWarning("ラベル ID の先頭は数字以外である必要があります：" + value);
+    		return false;
     	}
 
     	[Token(Token = "0x60000CD")]

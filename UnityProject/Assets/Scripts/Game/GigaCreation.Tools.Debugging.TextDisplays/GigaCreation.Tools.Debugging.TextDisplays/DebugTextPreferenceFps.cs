@@ -26,10 +26,11 @@ namespace GigaCreation.Tools.Debugging.TextDisplays
     	protected override string LabelText
     	{
     		[Token(Token = "0x6000018")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x453950, 5 B -- `mov rax, qword ptr [rcx + 0x58]; ret`: the backing field _fpsText (+0x58 in dump.cs)
     		[Address(RVA = "0x453950", Offset = "0x452350", VA = "0x180453950", Slot = "4")]
     		get
     		{
-    			return null;
+    			return _fpsText;
     		}
     	}
 

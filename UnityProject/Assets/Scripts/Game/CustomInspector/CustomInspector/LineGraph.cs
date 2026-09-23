@@ -23,10 +23,11 @@ namespace CustomInspector
     	public Vector2[] Points
     	{
     		[Token(Token = "0x60000BE")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33A4E0, 5 B -- `mov rax, qword ptr [rcx + 0x18]; ret`: the backing field points (+0x18 in dump.cs)
     		[Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0")]
     		get
     		{
-    			return null;
+    			return points;
     		}
     		[Token(Token = "0x60000BF")]
     		[Address(RVA = "0x43FC30", Offset = "0x43E630", VA = "0x18043FC30")]

@@ -35,10 +35,11 @@ namespace GigaCreation.Essentials.Ui
     	protected TMP_Dropdown Dropdown
     	{
     		[Token(Token = "0x6000090")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x377910, 5 B -- `mov rax, qword ptr [rcx + 0x20]; ret`: the backing field _dropdown (+0x20 in dump.cs)
     		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
     		get
     		{
-    			return null;
+    			return _dropdown;
     		}
     	}
 

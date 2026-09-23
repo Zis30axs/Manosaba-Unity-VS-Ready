@@ -1,0 +1,117 @@
+====================================================================================================
+FUNCTION RVA 0xCD1A80  VA 0x180CD1A80  size 0x182 (386 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizableText$$IsEmpty
+  csig   : bool GigaCreation_Essentials_Localization_LocalizableText__IsEmpty (GigaCreation_Essentials_Localization_LocalizableText_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizableText :: public bool IsEmpty()
+  fields of GigaCreation.Essentials.Localization.LocalizableText:
+      +0x10   _defaultText                   string
+      +0x18   _localizedTexts                LocalizedText[]
+      +0x20   _changeFont                    bool
+      +0x28   _localizedTextDict             Dictionary<LocaleKind, string>
+  fields of LocalizableText.<>c:
+      +0x0    <>9                            static readonly LocalizableText.<>c
+      +0x8    <>9__7_0                       static Func<LocalizedText, LocaleKind>
+      +0x10   <>9__7_1                       static Func<LocalizedText, string>
+      +0x18   <>9__10_0                      static Func<LocalizedText, bool>
+  fields of LocalizableText.<Load>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizableText
+      +0x20   holder                         object
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD1A80  push    rbx                                       
+  0x180CD1A82  sub     rsp, 0x20                                 
+  0x180CD1A86  cmp     byte ptr [rip + 0x240b693], 0                ; data_30DD120
+  0x180CD1A8D  mov     rbx, rcx                                  
+  0x180CD1A90  jne     0x180cd1add                               
+  0x180CD1A92  lea     rcx, [rip + 0x2195b4f]                       ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CD1A99  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1A9E  lock or dword ptr [rsp], 0                        
+  0x180CD1AA3  lea     rcx, [rip + 0x2195b36]                       ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CD1AAA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1AAF  lock or dword ptr [rsp], 0                        
+  0x180CD1AB4  lea     rcx, [rip + 0x2195b35]                       ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CD1ABB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1AC0  lock or dword ptr [rsp], 0                        
+  0x180CD1AC5  lea     rcx, [rip + 0x2195b2c]                       ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1ACC  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1AD1  lock or dword ptr [rsp], 0                        
+  0x180CD1AD6  mov     byte ptr [rip + 0x240b643], 1                ; data_30DD120
+
+180CD1ADD:
+  0x180CD1ADD  mov     rax, qword ptr [rbx + 0x10]                  ; rbx->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD1AE1  test    rax, rax                                  
+  0x180CD1AE4  je      0x180cd1af4                               
+  0x180CD1AE6  cmp     dword ptr [rax + 0x10], 0                    ; rax-><>c.<>9__7_1
+  0x180CD1AEA  jbe     0x180cd1af4                               
+  0x180CD1AEC  xor     al, al                                    
+  0x180CD1AEE  add     rsp, 0x20                                 
+  0x180CD1AF2  pop     rbx                                       
+  0x180CD1AF3  ret                                               
+
+180CD1AF4:
+  0x180CD1AF4  mov     qword ptr [rsp + 0x30], rsi               
+  0x180CD1AF9  mov     qword ptr [rsp + 0x38], rdi               
+  0x180CD1AFE  mov     rcx, qword ptr [rip + 0x2195af3]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1B05  mov     rsi, qword ptr [rbx + 0x18]                  ; rbx->LocalizableText._localizedTexts | <>c.<>9__10_0 | <Load>d__15.<>4__this
+  0x180CD1B09  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD1B10  jne     0x180cd1b1e                               
+  0x180CD1B12  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD1B17  mov     rcx, qword ptr [rip + 0x2195ada]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD1B1E:
+  0x180CD1B1E  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD1B25  mov     rdi, qword ptr [rax + 0x18]                  ; rax->LocalizableText._localizedTexts | <>c.<>9__10_0 | <Load>d__15.<>4__this
+  0x180CD1B29  test    rdi, rdi                                  
+  0x180CD1B2C  jne     0x180cd1be1                               
+  0x180CD1B32  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180CD1B38  jne     0x180cd1b46                               
+  0x180CD1B3A  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD1B3F  mov     rcx, qword ptr [rip + 0x2195ab2]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD1B46:
+  0x180CD1B46  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD1B4D  mov     rcx, qword ptr [rip + 0x2195a8c]             ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CD1B54  mov     rbx, qword ptr [rax]                      
+  0x180CD1B57  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD1B5C  mov     r8, qword ptr [rip + 0x2195a8d]              ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CD1B63  xor     r9d, r9d                                  
+  0x180CD1B66  mov     rdx, rbx                                  
+  0x180CD1B69  mov     rcx, rax                                  
+  0x180CD1B6C  mov     rdi, rax                                  
+  0x180CD1B6F  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CD1B74  mov     rax, qword ptr [rip + 0x2195a7d]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1B7B  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CD1B82  mov     qword ptr [rcx + 0x18], rdi                  ; rcx->LocalizableText._localizedTexts | <>c.<>9__10_0 | <Load>d__15.<>4__this
+  0x180CD1B86  cmp     dword ptr [rip + 0x2407637], 0               ; data_30D91C4
+  0x180CD1B8D  je      0x180cd1be1                               
+  0x180CD1B8F  mov     rax, qword ptr [rip + 0x2195a62]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1B96  lea     rcx, [rip + 0x24629e3]                       ; data_3134580
+  0x180CD1B9D  mov     r10, qword ptr [rax + 0xb8]               
+  0x180CD1BA4  add     r10, 0x18                                 
+  0x180CD1BA8  shr     r10, 0xc                                  
+  0x180CD1BAC  and     r10d, 0x1fffff                            
+  0x180CD1BB3  mov     eax, r10d                                 
+  0x180CD1BB6  shr     rax, 6                                    
+  0x180CD1BBA  and     r10d, 0x3f                                
+  0x180CD1BBE  lea     r9, [rcx + rax*8]                         
+  0x180CD1BC2  prefetchw byte ptr [r9]                             
+  0x180CD1BC6  nop     word ptr [rax + rax]                      
+
+180CD1BD0:
+  0x180CD1BD0  mov     rax, qword ptr [r9]                       
+  0x180CD1BD3  mov     r8, rax                                   
+  0x180CD1BD6  bts     r8, r10                                   
+  0x180CD1BDA  lock cmpxchg qword ptr [r9], r8                        
+  0x180CD1BDF  jne     0x180cd1bd0                               
+
+180CD1BE1:
+  0x180CD1BE1  mov     r8, qword ptr [rip + 0x2195a00]              ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CD1BE8  mov     rdx, rdi                                  
+  0x180CD1BEB  mov     rcx, rsi                                  
+  0x180CD1BEE  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180CD1BF3  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180CD1BF8  add     rsp, 0x20                                 
+  0x180CD1BFC  pop     rbx                                       
+  0x180CD1BFD  jmp     0x180683d10                                  ; -> System.Linq.Enumerable$$All<__Il2CppFullySharedGenericType>

@@ -1,0 +1,89 @@
+====================================================================================================
+FUNCTION RVA 0xCD17B0  VA 0x180CD17B0  size 0x10B (267 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizableText$$GetText
+  csig   : System_String_o* GigaCreation_Essentials_Localization_LocalizableText__GetText (GigaCreation_Essentials_Localization_LocalizableText_o* __this, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizableText :: public string GetText(Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Localization.LocalizableText:
+      +0x10   _defaultText                   string
+      +0x18   _localizedTexts                LocalizedText[]
+      +0x20   _changeFont                    bool
+      +0x28   _localizedTextDict             Dictionary<LocaleKind, string>
+  fields of LocalizableText.<>c:
+      +0x0    <>9                            static readonly LocalizableText.<>c
+      +0x8    <>9__7_0                       static Func<LocalizedText, LocaleKind>
+      +0x10   <>9__7_1                       static Func<LocalizedText, string>
+      +0x18   <>9__10_0                      static Func<LocalizedText, bool>
+  fields of LocalizableText.<Load>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizableText
+      +0x20   holder                         object
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD17B0  mov     qword ptr [rsp + 0x10], rdx               
+  0x180CD17B5  push    rdi                                       
+  0x180CD17B6  sub     rsp, 0x40                                 
+  0x180CD17BA  cmp     byte ptr [rip + 0x240b95d], 0                ; data_30DD11E
+  0x180CD17C1  mov     rdi, rcx                                  
+  0x180CD17C4  jne     0x180cd1800                               
+  0x180CD17C6  lea     rcx, [rip + 0x2195e43]                       ; METHODINFO Method$System.Collections.Generic.CollectionExtensions.GetValueOrDefault<LocaleKind, string>()
+  0x180CD17CD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD17D2  lock or dword ptr [rsp], 0                        
+  0x180CD17D7  lea     rcx, [rip + 0x2189b8a]                       ; METHODINFO Method$System.Nullable<LocaleKind>.get_HasValue()
+  0x180CD17DE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD17E3  lock or dword ptr [rsp], 0                        
+  0x180CD17E8  lea     rcx, [rip + 0x2189b71]                       ; METHODINFO Method$System.Nullable<LocaleKind>.get_Value()
+  0x180CD17EF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD17F4  lock or dword ptr [rsp], 0                        
+  0x180CD17F9  mov     byte ptr [rip + 0x240b91e], 1                ; data_30DD11E
+
+180CD1800:
+  0x180CD1800  mov     rax, qword ptr [rip + 0x2189b61]             ; METHODINFO Method$System.Nullable<LocaleKind>.get_HasValue()
+  0x180CD1807  mov     rax, qword ptr [rax + 0x20]                  ; rax->LocalizableText._changeFont | <Load>d__15.holder
+  0x180CD180B  test    byte ptr [rax + 0x135], 1                 
+  0x180CD1812  jne     0x180cd181c                               
+  0x180CD1814  mov     rcx, rax                                  
+  0x180CD1817  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD181C:
+  0x180CD181C  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD1823  lea     r8, [rsp + 0x58]                          
+  0x180CD1828  mov     rcx, qword ptr [rax + 8]                  
+  0x180CD182C  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180CD1833  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx->LocalizableText._localizedTexts | <>c.<>9__10_0 | <Load>d__15.<>4__this
+  0x180CD1837  add     r8, rax                                   
+  0x180CD183A  mov     rax, qword ptr [rdx + 0x10]                  ; rdx->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD183E  cmp     dword ptr [rax + 0x28], 0                    ; rax-><Load>d__15.<>u__1
+  0x180CD1842  lea     rcx, [r8 - 0x10]                          
+  0x180CD1846  cmovge  rcx, r8                                   
+  0x180CD184A  cmp     byte ptr [rcx], 0                         
+  0x180CD184D  je      0x180cd18b1                               
+  0x180CD184F  mov     qword ptr [rsp + 0x50], rbx               
+  0x180CD1854  xor     edx, edx                                  
+  0x180CD1856  mov     rcx, rdi                                  
+  0x180CD1859  call    0x180cd14c0                                  ; -> GigaCreation.Essentials.Localization.LocalizableText$$get_LocalizedTextDict
+  0x180CD185E  mov     r8, qword ptr [rip + 0x2189afb]              ; METHODINFO Method$System.Nullable<LocaleKind>.get_Value()
+  0x180CD1865  lea     rdx, [rsp + 0x68]                         
+  0x180CD186A  lea     rcx, [rsp + 0x58]                         
+  0x180CD186F  mov     rbx, rax                                  
+  0x180CD1872  call    0x18088f360                                  ; -> System.Nullable<__Il2CppFullySharedGenericStructType>$$get_Value
+  0x180CD1877  mov     ecx, dword ptr [rsp + 0x68]               
+  0x180CD187B  lea     r9, [rsp + 0x30]                          
+  0x180CD1880  mov     r8, qword ptr [rdi + 0x10]                   ; rdi->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD1884  lea     rdx, [rsp + 0x68]                         
+  0x180CD1889  mov     dword ptr [rsp + 0x68], ecx               
+  0x180CD188D  mov     rcx, qword ptr [rip + 0x2195d7c]             ; METHODINFO Method$System.Collections.Generic.CollectionExtensions.GetValueOrDefault<LocaleKind, string>()
+  0x180CD1894  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CD1899  mov     rcx, rbx                                  
+  0x180CD189C  call    0x18066c2a0                                  ; -> System.Collections.Generic.CollectionExtensions$$GetValueOrDefault<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+  0x180CD18A1  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD18A6  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CD18AB  add     rsp, 0x40                                 
+  0x180CD18AF  pop     rdi                                       
+  0x180CD18B0  ret                                               
+
+180CD18B1:
+  0x180CD18B1  mov     rax, qword ptr [rdi + 0x10]                  ; rdi->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD18B5  add     rsp, 0x40                                 
+  0x180CD18B9  pop     rdi                                       
+  0x180CD18BA  ret                                               

@@ -80,10 +80,11 @@ namespace GigaCreation.Essentials.Ui
     	public string LabelId
     	{
     		[Token(Token = "0x60000D0")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x453480, 5 B -- `mov rax, qword ptr [rcx + 0x50]; ret`: the backing field _labelId (+0x50 in dump.cs)
     		[Address(RVA = "0x453480", Offset = "0x451E80", VA = "0x180453480")]
     		get
     		{
-    			return null;
+    			return _labelId;
     		}
     	}
 
@@ -91,10 +92,11 @@ namespace GigaCreation.Essentials.Ui
     	protected TextMeshProUGUI UiLabel
     	{
     		[Token(Token = "0x60000D1")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x377910, 5 B -- `mov rax, qword ptr [rcx + 0x20]; ret`: the backing field _uiLabel (+0x20 in dump.cs)
     		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
     		get
     		{
-    			return null;
+    			return _uiLabel;
     		}
     	}
 

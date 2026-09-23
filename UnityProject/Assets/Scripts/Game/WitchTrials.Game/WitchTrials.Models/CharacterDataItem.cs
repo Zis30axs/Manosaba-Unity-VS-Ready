@@ -84,10 +84,11 @@ namespace WitchTrials.Models
     	public string Age
     	{
     		[Token(Token = "0x600059C")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F060, 5 B -- `mov rax, qword ptr [rcx + 0x28]; ret`: the backing field _age (+0x28 in dump.cs)
     		[Address(RVA = "0x38F060", Offset = "0x38DA60", VA = "0x18038F060")]
     		get
     		{
-    			return null;
+    			return _age;
     		}
     	}
 
@@ -95,10 +96,11 @@ namespace WitchTrials.Models
     	public string Height
     	{
     		[Token(Token = "0x600059D")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x3786A0, 5 B -- `mov rax, qword ptr [rcx + 0x30]; ret`: the backing field _height (+0x30 in dump.cs)
     		[Address(RVA = "0x3786A0", Offset = "0x3770A0", VA = "0x1803786A0")]
     		get
     		{
-    			return null;
+    			return _height;
     		}
     	}
 

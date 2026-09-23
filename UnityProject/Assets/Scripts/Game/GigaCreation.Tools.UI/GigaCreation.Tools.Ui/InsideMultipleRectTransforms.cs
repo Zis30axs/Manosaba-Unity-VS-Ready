@@ -95,10 +95,11 @@ namespace GigaCreation.Tools.Ui
     	public IList<RectTransform> InsideTargets
     	{
     		[Token(Token = "0x600003E")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x3786A0, 5 B -- `mov rax, qword ptr [rcx + 0x30]; ret`: the backing field _insideTargets (+0x30 in dump.cs)
     		[Address(RVA = "0x3786A0", Offset = "0x3770A0", VA = "0x1803786A0")]
     		get
     		{
-    			return null;
+    			return _insideTargets;
     		}
     	}
 

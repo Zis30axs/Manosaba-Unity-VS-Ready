@@ -37,10 +37,11 @@ namespace GigaCreation.Essentials.AddressablesUtils
     	public string AdditionalProjectId
     	{
     		[Token(Token = "0x6000003")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33FBC0, 5 B -- `mov rax, qword ptr [rcx + 0x10]; ret`: the backing field _additionalProjectId (+0x10 in dump.cs)
     		[Address(RVA = "0x33FBC0", Offset = "0x33E5C0", VA = "0x18033FBC0")]
     		get
     		{
-    			return null;
+    			return _additionalProjectId;
     		}
     	}
 
@@ -48,10 +49,11 @@ namespace GigaCreation.Essentials.AddressablesUtils
     	public bool IsRemote
     	{
     		[Token(Token = "0x6000004")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x44BDC0, 5 B -- `movzx eax, byte ptr [rcx + 0x18]; ret`: the backing field _isRemote (+0x18 in dump.cs)
     		[Address(RVA = "0x44BDC0", Offset = "0x44A7C0", VA = "0x18044BDC0")]
     		get
     		{
-    			return default(bool);
+    			return _isRemote;
     		}
     	}
 
@@ -59,10 +61,11 @@ namespace GigaCreation.Essentials.AddressablesUtils
     	public string ServerUrl
     	{
     		[Token(Token = "0x6000005")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x377910, 5 B -- `mov rax, qword ptr [rcx + 0x20]; ret`: the backing field _serverUrl (+0x20 in dump.cs)
     		[Address(RVA = "0x377910", Offset = "0x376310", VA = "0x180377910")]
     		get
     		{
-    			return null;
+    			return _serverUrl;
     		}
     	}
 
@@ -70,10 +73,11 @@ namespace GigaCreation.Essentials.AddressablesUtils
     	public string AdditionalAssetsVersion
     	{
     		[Token(Token = "0x6000006")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x38F060, 5 B -- `mov rax, qword ptr [rcx + 0x28]; ret`: the backing field _additionalAssetsVersion (+0x28 in dump.cs)
     		[Address(RVA = "0x38F060", Offset = "0x38DA60", VA = "0x18038F060")]
     		get
     		{
-    			return null;
+    			return _additionalAssetsVersion;
     		}
     	}
 
@@ -81,10 +85,11 @@ namespace GigaCreation.Essentials.AddressablesUtils
     	public DeploymentEnvironmentType AdditionalAssetsEnvironment
     	{
     		[Token(Token = "0x6000007")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x36DB50, 4 B -- `mov eax, dword ptr [rcx + 0x30]; ret`: the backing field _additionalAssetsEnvironment (+0x30 in dump.cs)
     		[Address(RVA = "0x36DB50", Offset = "0x36C550", VA = "0x18036DB50")]
     		get
     		{
-    			return default(DeploymentEnvironmentType);
+    			return _additionalAssetsEnvironment;
     		}
     	}
 

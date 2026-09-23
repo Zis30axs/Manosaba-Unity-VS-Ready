@@ -93,10 +93,11 @@ namespace WitchTrials.Views
     	public Pagination Pagination
     	{
     		[Token(Token = "0x6000482")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x3786A0, 5 B -- `mov rax, qword ptr [rcx + 0x30]; ret`: the backing field _pagination (+0x30 in dump.cs)
     		[Address(RVA = "0x3786A0", Offset = "0x3770A0", VA = "0x1803786A0")]
     		get
     		{
-    			return null;
+    			return _pagination;
     		}
     	}
 
@@ -104,10 +105,11 @@ namespace WitchTrials.Views
     	public float ItemInterval
     	{
     		[Token(Token = "0x6000483")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x3786B0, 6 B -- `movss xmm0, dword ptr [rcx + 0x38]; ret`: the backing field _itemInterval (+0x38 in dump.cs)
     		[Address(RVA = "0x3786B0", Offset = "0x3770B0", VA = "0x1803786B0")]
     		get
     		{
-    			return default(float);
+    			return _itemInterval;
     		}
     	}
 

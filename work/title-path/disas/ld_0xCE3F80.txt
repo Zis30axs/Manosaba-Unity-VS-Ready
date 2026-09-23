@@ -1,0 +1,112 @@
+====================================================================================================
+FUNCTION RVA 0xCE3F80  VA 0x180CE3F80  size 0x187 (391 bytes)
+  managed: GigaCreation.Essentials.Ui.LabelData$$IsEmpty
+  csig   : bool GigaCreation_Essentials_Ui_LabelData__IsEmpty (GigaCreation_Essentials_Ui_LabelData_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabelData :: public bool IsEmpty()
+  fields of GigaCreation.Essentials.Ui.LabelData:
+      +0x10   _localizableText               LocalizableText
+      +0x18   _scale                         ToggleableStruct<float>
+      +0x20   _color                         ToggleableStruct<Color>
+      +0x34   _characterSpacing              ToggleableStruct<float>
+      +0x3C   _alignment                     ToggleableStruct<HorizontalAlignmentOptions>
+      +0x48   _labelId                       string
+====================================================================================================
+  0x180CE3F80  push    rbx                                       
+  0x180CE3F82  sub     rsp, 0x20                                 
+  0x180CE3F86  mov     rbx, qword ptr [rcx + 0x10]                  ; rcx->LabelData._localizableText
+  0x180CE3F8A  test    rbx, rbx                                  
+  0x180CE3F8D  je      0x180ce4102                               
+  0x180CE3F93  cmp     byte ptr [rip + 0x23f9186], 0                ; data_30DD120
+  0x180CE3F9A  jne     0x180ce3fe7                               
+  0x180CE3F9C  lea     rcx, [rip + 0x2183645]                       ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CE3FA3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE3FA8  lock or dword ptr [rsp], 0                        
+  0x180CE3FAD  lea     rcx, [rip + 0x218362c]                       ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CE3FB4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE3FB9  lock or dword ptr [rsp], 0                        
+  0x180CE3FBE  lea     rcx, [rip + 0x218362b]                       ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CE3FC5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE3FCA  lock or dword ptr [rsp], 0                        
+  0x180CE3FCF  lea     rcx, [rip + 0x2183622]                       ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CE3FD6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE3FDB  lock or dword ptr [rsp], 0                        
+  0x180CE3FE0  mov     byte ptr [rip + 0x23f9139], 1                ; data_30DD120
+
+180CE3FE7:
+  0x180CE3FE7  mov     rax, qword ptr [rbx + 0x10]                  ; rbx->LabelData._localizableText
+  0x180CE3FEB  test    rax, rax                                  
+  0x180CE3FEE  je      0x180ce3ffe                               
+  0x180CE3FF0  cmp     dword ptr [rax + 0x10], 0                    ; rax->LabelData._localizableText
+  0x180CE3FF4  jbe     0x180ce3ffe                               
+  0x180CE3FF6  xor     al, al                                    
+  0x180CE3FF8  add     rsp, 0x20                                 
+  0x180CE3FFC  pop     rbx                                       
+  0x180CE3FFD  ret                                               
+
+180CE3FFE:
+  0x180CE3FFE  mov     qword ptr [rsp + 0x30], rsi               
+  0x180CE4003  mov     qword ptr [rsp + 0x38], rdi               
+  0x180CE4008  mov     rcx, qword ptr [rip + 0x21835e9]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CE400F  mov     rsi, qword ptr [rbx + 0x18]                  ; rbx->LabelData._scale
+  0x180CE4013  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE401A  jne     0x180ce4028                               
+  0x180CE401C  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CE4021  mov     rcx, qword ptr [rip + 0x21835d0]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CE4028:
+  0x180CE4028  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CE402F  mov     rdi, qword ptr [rax + 0x18]                  ; rax->LabelData._scale
+  0x180CE4033  test    rdi, rdi                                  
+  0x180CE4036  jne     0x180ce40e1                               
+  0x180CE403C  cmp     dword ptr [rcx + 0xe4], edi               
+  0x180CE4042  jne     0x180ce4050                               
+  0x180CE4044  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CE4049  mov     rcx, qword ptr [rip + 0x21835a8]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CE4050:
+  0x180CE4050  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CE4057  mov     rcx, qword ptr [rip + 0x2183582]             ; TYPE System.Func<LocalizedText, bool>_TypeInfo
+  0x180CE405E  mov     rbx, qword ptr [rax]                      
+  0x180CE4061  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE4066  mov     r8, qword ptr [rip + 0x2183583]              ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<IsEmpty>b__10_0() => GigaCreation.Essentials.Localization.LocalizableText.<>c$$<IsEmpty>b__10_0
+  0x180CE406D  xor     r9d, r9d                                  
+  0x180CE4070  mov     rdx, rbx                                  
+  0x180CE4073  mov     rcx, rax                                  
+  0x180CE4076  mov     rdi, rax                                  
+  0x180CE4079  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CE407E  mov     rax, qword ptr [rip + 0x2183573]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CE4085  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CE408C  mov     qword ptr [rcx + 0x18], rdi                  ; rcx->LabelData._scale
+  0x180CE4090  cmp     dword ptr [rip + 0x23f512d], 0               ; data_30D91C4
+  0x180CE4097  je      0x180ce40e1                               
+  0x180CE4099  mov     rax, qword ptr [rip + 0x2183558]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CE40A0  lea     rcx, [rip + 0x24504d9]                       ; data_3134580
+  0x180CE40A7  mov     r10, qword ptr [rax + 0xb8]               
+  0x180CE40AE  add     r10, 0x18                                 
+  0x180CE40B2  shr     r10, 0xc                                  
+  0x180CE40B6  and     r10d, 0x1fffff                            
+  0x180CE40BD  mov     eax, r10d                                 
+  0x180CE40C0  shr     rax, 6                                    
+  0x180CE40C4  and     r10d, 0x3f                                
+  0x180CE40C8  lea     r9, [rcx + rax*8]                         
+  0x180CE40CC  prefetchw byte ptr [r9]                             
+
+180CE40D0:
+  0x180CE40D0  mov     rax, qword ptr [r9]                       
+  0x180CE40D3  mov     r8, rax                                   
+  0x180CE40D6  bts     r8, r10                                   
+  0x180CE40DA  lock cmpxchg qword ptr [r9], r8                        
+  0x180CE40DF  jne     0x180ce40d0                               
+
+180CE40E1:
+  0x180CE40E1  mov     r8, qword ptr [rip + 0x2183500]              ; METHODINFO Method$System.Linq.Enumerable.All<LocalizedText>()
+  0x180CE40E8  mov     rdx, rdi                                  
+  0x180CE40EB  mov     rcx, rsi                                  
+  0x180CE40EE  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180CE40F3  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180CE40F8  add     rsp, 0x20                                 
+  0x180CE40FC  pop     rbx                                       
+  0x180CE40FD  jmp     0x180683d10                                  ; -> System.Linq.Enumerable$$All<__Il2CppFullySharedGenericType>
+
+180CE4102:
+  0x180CE4102  call    0x180246730                                  ; THROW NullReferenceException

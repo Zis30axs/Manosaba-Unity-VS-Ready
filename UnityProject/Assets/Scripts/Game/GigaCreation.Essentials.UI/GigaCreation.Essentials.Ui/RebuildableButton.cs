@@ -115,10 +115,11 @@ namespace GigaCreation.Essentials.Ui
     	public ResponseKind ResponseKind
     	{
     		[Token(Token = "0x6000021")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x841E80, 4 B -- `mov eax, dword ptr [rcx + 0x68]; ret`: the backing field _responseKind (+0x68 in dump.cs)
     		[Address(RVA = "0x841E80", Offset = "0x840880", VA = "0x180841E80")]
     		get
     		{
-    			return default(ResponseKind);
+    			return _responseKind;
     		}
     	}
 
@@ -126,10 +127,11 @@ namespace GigaCreation.Essentials.Ui
     	protected RebuildableLabel Label
     	{
     		[Token(Token = "0x6000022")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x44CE10, 5 B -- `mov rax, qword ptr [rcx + 0x40]; ret`: the backing field _label (+0x40 in dump.cs)
     		[Address(RVA = "0x44CE10", Offset = "0x44B810", VA = "0x18044CE10")]
     		get
     		{
-    			return null;
+    			return _label;
     		}
     	}
 

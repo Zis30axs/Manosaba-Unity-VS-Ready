@@ -1,0 +1,19 @@
+====================================================================================================
+FUNCTION RVA 0xCE3F40  VA 0x180CE3F40  size 0x11 (17 bytes)
+  managed: GigaCreation.Essentials.Ui.LabelData$$get_Color
+  csig   : GigaCreation_Essentials_Toggleables_ToggleableStruct_Color__o GigaCreation_Essentials_Ui_LabelData__get_Color (GigaCreation_Essentials_Ui_LabelData_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabelData :: public ToggleableStruct<Color> get_Color()
+  fields of GigaCreation.Essentials.Ui.LabelData:
+      +0x10   _localizableText               LocalizableText
+      +0x18   _scale                         ToggleableStruct<float>
+      +0x20   _color                         ToggleableStruct<Color>
+      +0x34   _characterSpacing              ToggleableStruct<float>
+      +0x3C   _alignment                     ToggleableStruct<HorizontalAlignmentOptions>
+      +0x48   _labelId                       string
+====================================================================================================
+  0x180CE3F40  mov     eax, dword ptr [rdx + 0x30]               
+  0x180CE3F43  movups  xmm0, xmmword ptr [rdx + 0x20]               ; rdx->LabelData._color
+  0x180CE3F47  movups  xmmword ptr [rcx], xmm0                   
+  0x180CE3F4A  mov     dword ptr [rcx + 0x10], eax                  ; rcx->LabelData._localizableText
+  0x180CE3F4D  mov     rax, rcx                                  
+  0x180CE3F50  ret                                               

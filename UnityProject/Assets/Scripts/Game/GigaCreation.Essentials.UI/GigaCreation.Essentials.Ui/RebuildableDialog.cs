@@ -150,10 +150,11 @@ namespace GigaCreation.Essentials.Ui
     	protected bool CancelableByAction
     	{
     		[Token(Token = "0x600006B")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xCDD4B0, 5 B -- `movzx eax, byte ptr [rcx + 0x6c]; ret`: the backing field _cancelableByAction (+0x6C in dump.cs)
     		[Address(RVA = "0xCDD4B0", Offset = "0xCDBEB0", VA = "0x180CDD4B0")]
     		get
     		{
-    			return default(bool);
+    			return _cancelableByAction;
     		}
     	}
 

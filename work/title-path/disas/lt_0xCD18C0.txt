@@ -1,0 +1,150 @@
+====================================================================================================
+FUNCTION RVA 0xCD18C0  VA 0x180CD18C0  size 0x1B5 (437 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizableText$$TryGetLocalizedText
+  csig   : bool GigaCreation_Essentials_Localization_LocalizableText__TryGetLocalizedText (GigaCreation_Essentials_Localization_LocalizableText_o* __this, int32_t locale, System_String_o** text, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizableText :: public bool TryGetLocalizedText(LocaleKind locale, out string text)
+  fields of GigaCreation.Essentials.Localization.LocalizableText:
+      +0x10   _defaultText                   string
+      +0x18   _localizedTexts                LocalizedText[]
+      +0x20   _changeFont                    bool
+      +0x28   _localizedTextDict             Dictionary<LocaleKind, string>
+  fields of LocalizableText.<>c:
+      +0x0    <>9                            static readonly LocalizableText.<>c
+      +0x8    <>9__7_0                       static Func<LocalizedText, LocaleKind>
+      +0x10   <>9__7_1                       static Func<LocalizedText, string>
+      +0x18   <>9__10_0                      static Func<LocalizedText, bool>
+  fields of LocalizableText.<Load>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizableText
+      +0x20   holder                         object
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD18C0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD18C5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180CD18CA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CD18CF  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CD18D4  push    r14                                       
+  0x180CD18D6  sub     rsp, 0x30                                 
+  0x180CD18DA  cmp     byte ptr [rip + 0x240b83e], 0                ; data_30DD11F
+  0x180CD18E1  mov     rbx, r8                                   
+  0x180CD18E4  mov     r14d, edx                                 
+  0x180CD18E7  mov     rbp, rcx                                  
+  0x180CD18EA  jne     0x180cd1904                               
+  0x180CD18EC  lea     rcx, [rip + 0x218221d]                       ; TYPE System.Collections.Generic.IReadOnlyDictionary<LocaleKind, string>_TypeInfo
+  0x180CD18F3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD18F8  lock or dword ptr [rsp], 0                        
+  0x180CD18FD  mov     byte ptr [rip + 0x240b81b], 1                ; data_30DD11F
+
+180CD1904:
+  0x180CD1904  xor     edi, edi                                  
+  0x180CD1906  xor     edx, edx                                  
+  0x180CD1908  mov     rcx, rbp                                  
+  0x180CD190B  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CD1910  call    0x180cd14c0                                  ; -> GigaCreation.Essentials.Localization.LocalizableText$$get_LocalizedTextDict
+  0x180CD1915  mov     rsi, rax                                  
+  0x180CD1918  test    rax, rax                                  
+  0x180CD191B  je      0x180cd1a70                               
+  0x180CD1921  mov     r9, qword ptr [rax]                       
+  0x180CD1924  mov     rdx, qword ptr [rip + 0x21821e5]             ; TYPE System.Collections.Generic.IReadOnlyDictionary<LocaleKind, string>_TypeInfo
+  0x180CD192B  movzx   ecx, word ptr [r9 + 0x12e]                
+  0x180CD1933  cmp     di, cx                                    
+  0x180CD1936  jae     0x180cd1958                               
+  0x180CD1938  mov     r8, qword ptr [r9 + 0xb0]                 
+  0x180CD193F  nop                                               
+
+180CD1940:
+  0x180CD1940  movzx   eax, di                                   
+  0x180CD1943  add     rax, rax                                  
+  0x180CD1946  cmp     qword ptr [r8 + rax*8], rdx               
+  0x180CD194A  je      0x180cd19f6                               
+  0x180CD1950  inc     di                                        
+  0x180CD1953  cmp     di, cx                                    
+  0x180CD1956  jb      0x180cd1940                               
+
+180CD1958:
+  0x180CD1958  mov     r8d, 1                                    
+  0x180CD195E  mov     rcx, rsi                                  
+  0x180CD1961  call    0x180243a20                                  ; resolve interface method slot
+
+180CD1966:
+  0x180CD1966  mov     r10, qword ptr [rax]                      
+  0x180CD1969  lea     r8, [rsp + 0x20]                          
+  0x180CD196E  mov     r9, qword ptr [rax + 8]                   
+  0x180CD1972  mov     edx, r14d                                 
+  0x180CD1975  mov     rcx, rsi                                  
+  0x180CD1978  call    r10                                       
+  0x180CD197B  test    al, al                                    
+  0x180CD197D  jne     0x180cd1a17                               
+  0x180CD1983  cmp     dword ptr [rip + 0x240783a], 0               ; data_30D91C4
+  0x180CD198A  mov     rax, qword ptr [rbp + 0x10]                  ; rbp->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD198E  mov     qword ptr [rbx], rax                      
+  0x180CD1991  je      0x180cd19d9                               
+  0x180CD1993  shr     rbx, 0xc                                  
+  0x180CD1997  lea     rcx, [rip + 0x241c902]                       ; data_30EE2A0
+  0x180CD199E  and     ebx, 0x1fffff                             
+  0x180CD19A4  mov     eax, ebx                                  
+  0x180CD19A6  shr     rax, 6                                    
+  0x180CD19AA  and     ebx, 0x3f                                 
+  0x180CD19AD  lea     rdx, [rcx + rax*8]                        
+  0x180CD19B1  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD19B8  nop     dword ptr [rax + rax]                     
+
+180CD19C0:
+  0x180CD19C0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD19C7  mov     rcx, rax                                  
+  0x180CD19CA  bts     rcx, rbx                                  
+  0x180CD19CE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD19D7  jne     0x180cd19c0                               
+
+180CD19D9:
+  0x180CD19D9  xor     al, al                                    
+
+180CD19DB:
+  0x180CD19DB  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CD19E0  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180CD19E5  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CD19EA  mov     rdi, qword ptr [rsp + 0x58]               
+  0x180CD19EF  add     rsp, 0x30                                 
+  0x180CD19F3  pop     r14                                       
+  0x180CD19F5  ret                                               
+
+180CD19F6:
+  0x180CD19F6  movzx   ecx, di                                   
+  0x180CD19F9  add     rcx, rcx                                  
+  0x180CD19FC  mov     eax, dword ptr [r8 + rcx*8 + 8]           
+  0x180CD1A01  inc     eax                                       
+  0x180CD1A03  cdqe                                              
+  0x180CD1A05  shl     rax, 4                                    
+  0x180CD1A09  add     rax, 0x138                                
+  0x180CD1A0F  add     rax, r9                                   
+  0x180CD1A12  jmp     0x180cd1966                               
+
+180CD1A17:
+  0x180CD1A17  cmp     dword ptr [rip + 0x24077a6], 0               ; data_30D91C4
+  0x180CD1A1E  mov     rax, qword ptr [rsp + 0x20]               
+  0x180CD1A23  mov     qword ptr [rbx], rax                      
+  0x180CD1A26  je      0x180cd1a69                               
+  0x180CD1A28  shr     rbx, 0xc                                  
+  0x180CD1A2C  lea     rcx, [rip + 0x241c86d]                       ; data_30EE2A0
+  0x180CD1A33  and     ebx, 0x1fffff                             
+  0x180CD1A39  mov     eax, ebx                                  
+  0x180CD1A3B  shr     rax, 6                                    
+  0x180CD1A3F  and     ebx, 0x3f                                 
+  0x180CD1A42  lea     rdx, [rcx + rax*8]                        
+  0x180CD1A46  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD1A4D  nop     dword ptr [rax]                           
+
+180CD1A50:
+  0x180CD1A50  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD1A57  mov     rcx, rax                                  
+  0x180CD1A5A  bts     rcx, rbx                                  
+  0x180CD1A5E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD1A67  jne     0x180cd1a50                               
+
+180CD1A69:
+  0x180CD1A69  mov     al, 1                                     
+  0x180CD1A6B  jmp     0x180cd19db                               
+
+180CD1A70:
+  0x180CD1A70  call    0x180246730                                  ; THROW NullReferenceException

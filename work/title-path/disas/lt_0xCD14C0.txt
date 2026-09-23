@@ -1,0 +1,200 @@
+====================================================================================================
+FUNCTION RVA 0xCD14C0  VA 0x180CD14C0  size 0x2E7 (743 bytes)
+  managed: GigaCreation.Essentials.Localization.LocalizableText$$get_LocalizedTextDict
+  csig   : System_Collections_Generic_IReadOnlyDictionary_LocaleKind__string__o* GigaCreation_Essentials_Localization_LocalizableText__get_LocalizedTextDict (GigaCreation_Essentials_Localization_LocalizableText_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Localization.LocalizableText :: private IReadOnlyDictionary<LocaleKind, string> get_LocalizedTextDict()
+  fields of GigaCreation.Essentials.Localization.LocalizableText:
+      +0x10   _defaultText                   string
+      +0x18   _localizedTexts                LocalizedText[]
+      +0x20   _changeFont                    bool
+      +0x28   _localizedTextDict             Dictionary<LocaleKind, string>
+  fields of LocalizableText.<>c:
+      +0x0    <>9                            static readonly LocalizableText.<>c
+      +0x8    <>9__7_0                       static Func<LocalizedText, LocaleKind>
+      +0x10   <>9__7_1                       static Func<LocalizedText, string>
+      +0x18   <>9__10_0                      static Func<LocalizedText, bool>
+  fields of LocalizableText.<Load>d__15:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder
+      +0x18   <>4__this                      LocalizableText
+      +0x20   holder                         object
+      +0x28   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD14C0  push    rdi                                       
+  0x180CD14C2  sub     rsp, 0x30                                 
+  0x180CD14C6  cmp     byte ptr [rip + 0x240bc50], 0                ; data_30DD11D
+  0x180CD14CD  mov     rdi, rcx                                  
+  0x180CD14D0  jne     0x180cd153f                               
+  0x180CD14D2  lea     rcx, [rip + 0x2182c3f]                       ; METHODINFO Method$System.Linq.Enumerable.ToDictionary<LocalizedText, LocaleKind, string>()
+  0x180CD14D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD14DE  lock or dword ptr [rsp], 0                        
+  0x180CD14E3  lea     rcx, [rip + 0x2182c1e]                       ; TYPE System.Func<LocalizedText, string>_TypeInfo
+  0x180CD14EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD14EF  lock or dword ptr [rsp], 0                        
+  0x180CD14F4  lea     rcx, [rip + 0x2182bfd]                       ; TYPE System.Func<LocalizedText, LocaleKind>_TypeInfo
+  0x180CD14FB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1500  lock or dword ptr [rsp], 0                        
+  0x180CD1505  lea     rcx, [rip + 0x21960fc]                       ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<get_LocalizedTextDict>b__7_0() => WitchTrials.Views.LocalizeImage.<>c$$<get_Map>b__8_0 (+25 aliases)
+  0x180CD150C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1511  lock or dword ptr [rsp], 0                        
+  0x180CD1516  lea     rcx, [rip + 0x21960e3]                       ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<get_LocalizedTextDict>b__7_1() => Naninovel.PlayedScriptRegister.<>c$$<GetPlayed>b__2_1 (+22 aliases)
+  0x180CD151D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1522  lock or dword ptr [rsp], 0                        
+  0x180CD1527  lea     rcx, [rip + 0x21960ca]                       ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD152E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD1533  lock or dword ptr [rsp], 0                        
+  0x180CD1538  mov     byte ptr [rip + 0x240bbde], 1                ; data_30DD11D
+
+180CD153F:
+  0x180CD153F  mov     rax, qword ptr [rdi + 0x28]                  ; rdi->LocalizableText._localizedTextDict | <Load>d__15.<>u__1
+  0x180CD1543  test    rax, rax                                  
+  0x180CD1546  jne     0x180cd17a1                               
+  0x180CD154C  mov     rcx, qword ptr [rip + 0x21960a5]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1553  mov     qword ptr [rsp + 0x48], rbp               
+  0x180CD1558  mov     qword ptr [rsp + 0x50], rsi               
+  0x180CD155D  mov     qword ptr [rsp + 0x28], r14               
+  0x180CD1562  mov     r14, qword ptr [rdi + 0x18]                  ; rdi->LocalizableText._localizedTexts | <>c.<>9__10_0 | <Load>d__15.<>4__this
+  0x180CD1566  mov     qword ptr [rsp + 0x20], r15               
+  0x180CD156B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CD1571  jne     0x180cd157f                               
+  0x180CD1573  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD1578  mov     rcx, qword ptr [rip + 0x2196079]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD157F:
+  0x180CD157F  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD1586  lea     r15, [rip + 0x241cd13]                       ; data_30EE2A0
+  0x180CD158D  mov     qword ptr [rsp + 0x40], rbx               
+  0x180CD1592  mov     rbp, qword ptr [rax + 8]                  
+  0x180CD1596  test    rbp, rbp                                  
+  0x180CD1599  jne     0x180cd1650                               
+  0x180CD159F  cmp     dword ptr [rcx + 0xe4], ebp               
+  0x180CD15A5  jne     0x180cd15b3                               
+  0x180CD15A7  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD15AC  mov     rcx, qword ptr [rip + 0x2196045]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD15B3:
+  0x180CD15B3  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD15BA  mov     rcx, qword ptr [rip + 0x2182b37]             ; TYPE System.Func<LocalizedText, LocaleKind>_TypeInfo
+  0x180CD15C1  mov     rbx, qword ptr [rax]                      
+  0x180CD15C4  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD15C9  mov     r8, qword ptr [rip + 0x2196038]              ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<get_LocalizedTextDict>b__7_0() => WitchTrials.Views.LocalizeImage.<>c$$<get_Map>b__8_0 (+25 aliases)
+  0x180CD15D0  xor     r9d, r9d                                  
+  0x180CD15D3  mov     rdx, rbx                                  
+  0x180CD15D6  mov     rcx, rax                                  
+  0x180CD15D9  mov     rbp, rax                                  
+  0x180CD15DC  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CD15E1  mov     rax, qword ptr [rip + 0x2196010]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD15E8  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CD15EF  mov     qword ptr [rcx + 8], rbp                  
+  0x180CD15F3  cmp     dword ptr [rip + 0x2407bca], 0               ; data_30D91C4
+  0x180CD15FA  je      0x180cd1649                               
+  0x180CD15FC  mov     rax, qword ptr [rip + 0x2195ff5]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD1603  mov     r8, qword ptr [rax + 0xb8]                
+  0x180CD160A  add     r8, 8                                     
+  0x180CD160E  shr     r8, 0xc                                   
+  0x180CD1612  and     r8d, 0x1fffff                             
+  0x180CD1619  mov     eax, r8d                                  
+  0x180CD161C  shr     rax, 6                                    
+  0x180CD1620  and     r8d, 0x3f                                 
+  0x180CD1624  lea     rdx, [r15 + rax*8]                        
+  0x180CD1628  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD162F  nop                                               
+
+180CD1630:
+  0x180CD1630  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD1637  mov     rcx, rax                                  
+  0x180CD163A  bts     rcx, r8                                   
+  0x180CD163E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD1647  jne     0x180cd1630                               
+
+180CD1649:
+  0x180CD1649  mov     rcx, qword ptr [rip + 0x2195fa8]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD1650:
+  0x180CD1650  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD1657  jne     0x180cd1665                               
+  0x180CD1659  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD165E  mov     rcx, qword ptr [rip + 0x2195f93]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD1665:
+  0x180CD1665  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD166C  mov     rsi, qword ptr [rax + 0x10]                  ; rax->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD1670  test    rsi, rsi                                  
+  0x180CD1673  jne     0x180cd1729                               
+  0x180CD1679  cmp     dword ptr [rcx + 0xe4], esi               
+  0x180CD167F  jne     0x180cd168d                               
+  0x180CD1681  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CD1686  mov     rcx, qword ptr [rip + 0x2195f6b]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+
+180CD168D:
+  0x180CD168D  mov     rax, qword ptr [rcx + 0xb8]               
+  0x180CD1694  mov     rcx, qword ptr [rip + 0x2182a6d]             ; TYPE System.Func<LocalizedText, string>_TypeInfo
+  0x180CD169B  mov     rbx, qword ptr [rax]                      
+  0x180CD169E  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD16A3  mov     r8, qword ptr [rip + 0x2195f56]              ; METHODINFO Method$GigaCreation.Essentials.Localization.LocalizableText.<>c.<get_LocalizedTextDict>b__7_1() => Naninovel.PlayedScriptRegister.<>c$$<GetPlayed>b__2_1 (+22 aliases)
+  0x180CD16AA  xor     r9d, r9d                                  
+  0x180CD16AD  mov     rdx, rbx                                  
+  0x180CD16B0  mov     rcx, rax                                  
+  0x180CD16B3  mov     rsi, rax                                  
+  0x180CD16B6  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CD16BB  mov     rax, qword ptr [rip + 0x2195f36]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD16C2  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180CD16C9  mov     qword ptr [rcx + 0x10], rsi                  ; rcx->LocalizableText._defaultText | <>c.<>9__7_1
+  0x180CD16CD  cmp     dword ptr [rip + 0x2407af0], 0               ; data_30D91C4
+  0x180CD16D4  je      0x180cd1729                               
+  0x180CD16D6  mov     rax, qword ptr [rip + 0x2195f1b]             ; TYPE GigaCreation.Essentials.Localization.LocalizableText.<>c_TypeInfo
+  0x180CD16DD  mov     r11, qword ptr [rax + 0xb8]               
+  0x180CD16E4  add     r11, 0x10                                 
+  0x180CD16E8  shr     r11, 0xc                                  
+  0x180CD16EC  and     r11d, 0x1fffff                            
+  0x180CD16F3  mov     eax, r11d                                 
+  0x180CD16F6  shr     rax, 6                                    
+  0x180CD16FA  and     r11d, 0x3f                                
+  0x180CD16FE  lea     r10, [r15 + rax*8]                        
+  0x180CD1702  prefetchw byte ptr [r10 + 0x462e0]                  
+  0x180CD170A  nop     word ptr [rax + rax]                      
+
+180CD1710:
+  0x180CD1710  mov     rax, qword ptr [r10 + 0x462e0]            
+  0x180CD1717  mov     r9, rax                                   
+  0x180CD171A  bts     r9, r11                                   
+  0x180CD171E  lock cmpxchg qword ptr [r10 + 0x462e0], r9             
+  0x180CD1727  jne     0x180cd1710                               
+
+180CD1729:
+  0x180CD1729  mov     r8, rsi                                   
+  0x180CD172C  mov     rdx, rbp                                  
+  0x180CD172F  mov     rcx, r14                                  
+  0x180CD1732  call    0x180004a60                                  ; -> sub_4A60 (runtime/helper)
+  0x180CD1737  cmp     dword ptr [rip + 0x2407a86], 0               ; data_30D91C4
+  0x180CD173E  mov     r9, rax                                   
+  0x180CD1741  mov     r14, qword ptr [rsp + 0x28]               
+  0x180CD1746  mov     rsi, qword ptr [rsp + 0x50]               
+  0x180CD174B  mov     rbp, qword ptr [rsp + 0x48]               
+  0x180CD1750  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CD1755  mov     qword ptr [rdi + 0x28], rax                  ; rdi->LocalizableText._localizedTextDict | <Load>d__15.<>u__1
+  0x180CD1759  je      0x180cd1799                               
+  0x180CD175B  lea     r8, [rdi + 0x28]                             ; rdi->LocalizableText._localizedTextDict | <Load>d__15.<>u__1
+  0x180CD175F  shr     r8, 0xc                                   
+  0x180CD1763  and     r8d, 0x1fffff                             
+  0x180CD176A  mov     eax, r8d                                  
+  0x180CD176D  shr     rax, 6                                    
+  0x180CD1771  and     r8d, 0x3f                                 
+  0x180CD1775  lea     rdx, [r15 + rax*8]                        
+  0x180CD1779  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CD1780:
+  0x180CD1780  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD1787  mov     rcx, rax                                  
+  0x180CD178A  bts     rcx, r8                                   
+  0x180CD178E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD1797  jne     0x180cd1780                               
+
+180CD1799:
+  0x180CD1799  mov     r15, qword ptr [rsp + 0x20]               
+  0x180CD179E  mov     rax, r9                                   
+
+180CD17A1:
+  0x180CD17A1  add     rsp, 0x30                                 
+  0x180CD17A5  pop     rdi                                       
+  0x180CD17A6  ret                                               

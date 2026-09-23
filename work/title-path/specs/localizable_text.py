@@ -1,0 +1,30 @@
+FILE = "UnityProject/Assets/Scripts/Game/GigaCreation.Essentials.Localization/GigaCreation.Essentials.Localization/LocalizableText.cs"
+USINGS = ["using System.Linq;"]
+EV = "work/title-path/disas/lt_"
+BODIES = [
+    dict(rva="0xCD14C0", signature="get",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCD14C0, 743 B -- lazy: [this+0x28], else",
+                  "  _localizedTexts (+0x18).ToDictionary(<>c.b__7_0 = t.Locale, <>c.b__7_1 = t.Text) stored to +0x28",
+                  "Annotated disassembly: " + EV + "0xCD14C0.txt"],
+         body=["if (_localizedTextDict == null)", "{",
+               "\t_localizedTextDict = _localizedTexts.ToDictionary((LocalizedText text) => text.Locale, (LocalizedText text) => text.Text);",
+               "}", "return _localizedTextDict;"]),
+    dict(rva="0xCD17B0", signature="public string GetText([Optional] LocaleKind? locale)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCD17B0, 267 B -- no locale: _defaultText (+0x10); else",
+                  "  LocalizedTextDict.GetValueOrDefault(locale.Value, _defaultText)",
+                  "Annotated disassembly: " + EV + "0xCD17B0.txt"],
+         body=["if (!locale.HasValue)", "{", "\treturn _defaultText;", "}",
+               "return LocalizedTextDict.GetValueOrDefault(locale.Value, _defaultText);"]),
+    dict(rva="0xCD18C0", signature="public bool TryGetLocalizedText(LocaleKind locale, out string text)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCD18C0, 437 B -- IReadOnlyDictionary.TryGetValue on LocalizedTextDict;",
+                  "  found: text = value, true; not found: text = _defaultText (+0x10), false",
+                  "Annotated disassembly: " + EV + "0xCD18C0.txt"],
+         body=["if (LocalizedTextDict.TryGetValue(locale, out string value))", "{", "\ttext = value;", "\treturn true;", "}",
+               "text = _defaultText;", "return false;"]),
+    dict(rva="0xCD1A80", signature="public bool IsEmpty()",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCD1A80, 399 B -- a non-empty _defaultText (+0x10) -> false; else",
+                  "  _localizedTexts (+0x18).All(<>c.b__10_0 (0xCD1CC0): string.IsNullOrEmpty(text.Text))",
+                  "Annotated disassembly: " + EV + "0xCD1A80.txt"],
+         body=["if (!string.IsNullOrEmpty(_defaultText))", "{", "\treturn false;", "}",
+               "return _localizedTexts.All((LocalizedText text) => string.IsNullOrEmpty(text.Text));"]),
+]

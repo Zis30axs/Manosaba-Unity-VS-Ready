@@ -1,0 +1,76 @@
+====================================================================================================
+FUNCTION RVA 0xCE4110  VA 0x180CE4110  size 0xDE (222 bytes)
+  managed: GigaCreation.Essentials.Ui.LabelData$$ValidateLabelId
+  csig   : bool GigaCreation_Essentials_Ui_LabelData__ValidateLabelId (GigaCreation_Essentials_Ui_LabelData_o* __this, System_String_o* value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabelData :: public bool ValidateLabelId(string value)
+  fields of GigaCreation.Essentials.Ui.LabelData:
+      +0x10   _localizableText               LocalizableText
+      +0x18   _scale                         ToggleableStruct<float>
+      +0x20   _color                         ToggleableStruct<Color>
+      +0x34   _characterSpacing              ToggleableStruct<float>
+      +0x3C   _alignment                     ToggleableStruct<HorizontalAlignmentOptions>
+      +0x48   _labelId                       string
+====================================================================================================
+  0x180CE4110  push    rbx                                       
+  0x180CE4112  sub     rsp, 0x20                                 
+  0x180CE4116  cmp     byte ptr [rip + 0x23f9087], 0                ; data_30DD1A4
+  0x180CE411D  mov     rbx, rdx                                  
+  0x180CE4120  jne     0x180ce416d                               
+  0x180CE4122  lea     rcx, [rip + 0x216e1b7]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CE4129  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE412E  lock or dword ptr [rsp], 0                        
+  0x180CE4133  lea     rcx, [rip + 0x216d59e]                       ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180CE413A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE413F  lock or dword ptr [rsp], 0                        
+  0x180CE4144  lea     rcx, [rip + 0x218459d]                       ; STR 'ラベル ID の先頭は数字以外である必要があります：'
+  0x180CE414B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE4150  lock or dword ptr [rsp], 0                        
+  0x180CE4155  lea     rcx, [rip + 0x21845ac]                       ; STR '^[0-9].*$'
+  0x180CE415C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE4161  lock or dword ptr [rsp], 0                        
+  0x180CE4166  mov     byte ptr [rip + 0x23f9037], 1                ; data_30DD1A4
+
+180CE416D:
+  0x180CE416D  test    rbx, rbx                                  
+  0x180CE4170  je      0x180ce41e3                               
+  0x180CE4172  cmp     dword ptr [rbx + 0x10], 0                    ; rbx->LabelData._localizableText
+  0x180CE4176  jbe     0x180ce41e3                               
+  0x180CE4178  mov     rcx, qword ptr [rip + 0x216d559]             ; TYPE System.Text.RegularExpressions.Regex_TypeInfo
+  0x180CE417F  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE4186  jne     0x180ce418d                               
+  0x180CE4188  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE418D:
+  0x180CE418D  mov     rdx, qword ptr [rip + 0x2184574]             ; STR '^[0-9].*$'
+  0x180CE4194  xor     r8d, r8d                                  
+  0x180CE4197  mov     rcx, rbx                                  
+  0x180CE419A  call    0x1816e5820                                  ; -> System.Text.RegularExpressions.Regex$$IsMatch
+  0x180CE419F  movzx   eax, al                                   
+  0x180CE41A2  xor     eax, 1                                    
+  0x180CE41A5  jne     0x180ce41e8                               
+  0x180CE41A7  mov     rcx, qword ptr [rip + 0x218453a]             ; STR 'ラベル ID の先頭は数字以外である必要があります：'
+  0x180CE41AE  xor     r8d, r8d                                  
+  0x180CE41B1  mov     rdx, rbx                                  
+  0x180CE41B4  call    0x180e265e0                                  ; -> System.String$$Concat
+  0x180CE41B9  mov     rcx, qword ptr [rip + 0x216e120]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CE41C0  mov     rbx, rax                                  
+  0x180CE41C3  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE41CA  jne     0x180ce41d1                               
+  0x180CE41CC  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE41D1:
+  0x180CE41D1  xor     edx, edx                                  
+  0x180CE41D3  mov     rcx, rbx                                  
+  0x180CE41D6  call    0x181feef30                                  ; -> UnityEngine.Debug$$LogWarning
+  0x180CE41DB  xor     eax, eax                                  
+  0x180CE41DD  add     rsp, 0x20                                 
+  0x180CE41E1  pop     rbx                                       
+  0x180CE41E2  ret                                               
+
+180CE41E3:
+  0x180CE41E3  mov     eax, 1                                    
+
+180CE41E8:
+  0x180CE41E8  add     rsp, 0x20                                 
+  0x180CE41EC  pop     rbx                                       
+  0x180CE41ED  ret                                               

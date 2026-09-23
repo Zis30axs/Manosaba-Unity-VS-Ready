@@ -188,10 +188,11 @@ namespace GigaCreation.Tools.Ui
     	public Sprite Sprite
     	{
     		[Token(Token = "0x600005B")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x33E0B0, 8 B -- `mov rax, qword ptr [rcx + 0xe0]; ret`: the backing field _sprite (+0xE0 in dump.cs)
     		[Address(RVA = "0x33E0B0", Offset = "0x33CAB0", VA = "0x18033E0B0")]
     		get
     		{
-    			return null;
+    			return _sprite;
     		}
     		[Token(Token = "0x600005C")]
     		[Address(RVA = "0xD59160", Offset = "0xD57B60", VA = "0x180D59160")]
@@ -204,10 +205,11 @@ namespace GigaCreation.Tools.Ui
     	public FillDirection Direction
     	{
     		[Token(Token = "0x600005D")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x8A4E40, 7 B -- `mov eax, dword ptr [rcx + 0xe8]; ret`: the backing field _fillDirection (+0xE8 in dump.cs)
     		[Address(RVA = "0x8A4E40", Offset = "0x8A3840", VA = "0x1808A4E40")]
     		get
     		{
-    			return default(FillDirection);
+    			return _fillDirection;
     		}
     		[Token(Token = "0x600005E")]
     		[Address(RVA = "0xD591E0", Offset = "0xD57BE0", VA = "0x180D591E0")]
@@ -220,10 +222,11 @@ namespace GigaCreation.Tools.Ui
     	public float FillAmount
     	{
     		[Token(Token = "0x600005F")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD59260, 9 B -- `movss xmm0, dword ptr [rcx + 0xec]; ret`: the backing field _fillAmount (+0xEC in dump.cs)
     		[Address(RVA = "0xD59260", Offset = "0xD57C60", VA = "0x180D59260")]
     		get
     		{
-    			return default(float);
+    			return _fillAmount;
     		}
     		[Token(Token = "0x6000060")]
     		[Address(RVA = "0xD59270", Offset = "0xD57C70", VA = "0x180D59270")]
@@ -236,10 +239,11 @@ namespace GigaCreation.Tools.Ui
     	public bool FillCenter
     	{
     		[Token(Token = "0x6000061")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD59310, 8 B -- `movzx eax, byte ptr [rcx + 0xf0]; ret`: the backing field _fillCenter (+0xF0 in dump.cs)
     		[Address(RVA = "0xD59310", Offset = "0xD57D10", VA = "0x180D59310")]
     		get
     		{
-    			return default(bool);
+    			return _fillCenter;
     		}
     		[Token(Token = "0x6000062")]
     		[Address(RVA = "0xD59320", Offset = "0xD57D20", VA = "0x180D59320")]
@@ -252,10 +256,11 @@ namespace GigaCreation.Tools.Ui
     	public float PixelsPerUnitMultiplier
     	{
     		[Token(Token = "0x6000063")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD593A0, 9 B -- `movss xmm0, dword ptr [rcx + 0xf4]; ret`: the backing field _pixelsPerUnitMultiplier (+0xF4 in dump.cs)
     		[Address(RVA = "0xD593A0", Offset = "0xD57DA0", VA = "0x180D593A0")]
     		get
     		{
-    			return default(float);
+    			return _pixelsPerUnitMultiplier;
     		}
     		[Token(Token = "0x6000064")]
     		[Address(RVA = "0xD593B0", Offset = "0xD57DB0", VA = "0x180D593B0")]
@@ -344,10 +349,11 @@ namespace GigaCreation.Tools.Ui
     	private float AlphaHitTestMinimumThreshold
     	{
     		[Token(Token = "0x600006D")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD59E70, 9 B -- `movss xmm0, dword ptr [rcx + 0xf8]; ret`: the backing field _alphaHitTestMinimumThreshold (+0xF8 in dump.cs)
     		[Address(RVA = "0xD59E70", Offset = "0xD58870", VA = "0x180D59E70")]
     		get
     		{
-    			return default(float);
+    			return _alphaHitTestMinimumThreshold;
     		}
     	}
 

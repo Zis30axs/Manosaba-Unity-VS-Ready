@@ -81,10 +81,11 @@ namespace WitchTrials.Models
     	public float SkipTimeScaleDuringDebate
     	{
     		[Token(Token = "0x600063B")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x398D00, 6 B -- `movss xmm0, dword ptr [rcx + 0x2c]; ret`: the backing field _skipTimeScaleDuringDebate (+0x2C in dump.cs)
     		[Address(RVA = "0x398D00", Offset = "0x397700", VA = "0x180398D00", Slot = "5")]
     		get
     		{
-    			return default(float);
+    			return _skipTimeScaleDuringDebate;
     		}
     	}
 
@@ -92,10 +93,11 @@ namespace WitchTrials.Models
     	public float VoicePitchOnSkip
     	{
     		[Token(Token = "0x600063C")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x398D10, 6 B -- `movss xmm0, dword ptr [rcx + 0x30]; ret`: the backing field _voicePitchOnSkip (+0x30 in dump.cs)
     		[Address(RVA = "0x398D10", Offset = "0x397710", VA = "0x180398D10", Slot = "6")]
     		get
     		{
-    			return default(float);
+    			return _voicePitchOnSkip;
     		}
     	}
 
