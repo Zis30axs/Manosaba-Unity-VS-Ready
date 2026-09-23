@@ -427,6 +427,32 @@ namespace Manosaba.EditorTools
                     }
                 }
 
+                // ---- sibling order -----------------------------------------------------------
+                // SetParent appends, so the loop above leaves every parent's children in plan order.  The shipped
+                // m_Children order is data: it is the UI draw order (a later sibling draws on top) and the order
+                // layout groups place children in.  Measured on NormalPrinter: shipped Wrapper = [Stream,
+                // Default-Stream(frames), Screen, Default-Stream(grass), AuthorPanel, MessageLabel, Indicators] came
+                // out [AuthorPanel, Stream, Screen, MessageLabel, Indicators, Default-Stream, Default-Stream], so the
+                // dark Screen gradient no longer covered the bottom frame and AuthorBase was drawn over AuthorLabel.
+                var transformNodeByPid = new Dictionary<string, Node>();
+                foreach (Node node in nodes.Where(n => n.isTransform))
+                    transformNodeByPid[node.pid] = node;
+                foreach (Node node in nodes.Where(n => n.isTransform))
+                {
+                    Transform parent = node.component as Transform;
+                    JArray children = node.json["m_Children"] as JArray;
+                    if (parent == null || children == null || children.Count < 2) continue;
+                    int siblingIndex = 0;
+                    foreach (JToken childToken in children)
+                    {
+                        if (!transformNodeByPid.TryGetValue(ReadPid(childToken).ToString(), out Node child)) continue;
+                        Transform childTransform = child.component as Transform;
+                        if (childTransform == null || childTransform.parent != parent) continue;
+                        if (childTransform.GetSiblingIndex() != siblingIndex) job.siblings_reordered++;
+                        childTransform.SetSiblingIndex(siblingIndex++);
+                    }
+                }
+
                 // ---- field values ------------------------------------------------------------
                 // Every transform whose father is outside this asset is a root of the prefab: the shipped
                 // data really does carry several (see the save step).
@@ -1177,6 +1203,7 @@ namespace Manosaba.EditorTools
             public List<string> graph_dump = new List<string>();
             public int parented;
             public int parent_missing;
+            public int siblings_reordered;
             public int transform_add_failed;
             public int component_add_failed;
             public int objects_unbuildable;
