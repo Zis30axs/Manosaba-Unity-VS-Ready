@@ -1,0 +1,159 @@
+====================================================================================================
+FUNCTION RVA 0xD3F320  VA 0x180D3F320  size 0x210 (528 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$Adjust
+  csig   : void GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster__Adjust (GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster :: public void Adjust()
+  fields of GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster:
+      +0x20   _scriptPlayerConfiguration     ScriptPlayerConfiguration
+      +0x28   _naniAudioManager              IAudioManager
+      +0x30   _isShortened                   bool
+      +0x34   _storedMinAutoPlayDelay        float
+      +0x38   _previousPlayedVoicePath       string
+====================================================================================================
+  0x180D3F320  mov     qword ptr [rsp + 0x10], rbx               
+  0x180D3F325  push    rsi                                       
+  0x180D3F326  sub     rsp, 0x20                                 
+  0x180D3F32A  cmp     byte ptr [rip + 0x239e0a2], 0                ; data_30DD3D3
+  0x180D3F331  mov     rbx, rcx                                  
+  0x180D3F334  jne     0x180d3f34e                               
+  0x180D3F336  lea     rcx, [rip + 0x2112b23]                       ; TYPE Naninovel.IAudioManager_TypeInfo
+  0x180D3F33D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F342  lock or dword ptr [rsp], 0                        
+  0x180D3F347  mov     byte ptr [rip + 0x239e085], 1                ; data_30DD3D3
+
+180D3F34E:
+  0x180D3F34E  cmp     byte ptr [rip + 0x239e07d], 0                ; data_30DD3D2
+  0x180D3F355  jne     0x180d3f380                               
+  0x180D3F357  lea     rcx, [rip + 0x2112b1a]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IAudioManager>()
+  0x180D3F35E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F363  lock or dword ptr [rsp], 0                        
+  0x180D3F368  lea     rcx, [rip + 0x2112bc1]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3F36F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F374  lock or dword ptr [rsp], 0                        
+  0x180D3F379  mov     byte ptr [rip + 0x239e052], 1                ; data_30DD3D2
+
+180D3F380:
+  0x180D3F380  mov     r8, qword ptr [rbx + 0x28]                   ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F384  lea     rsi, [rip + 0x23aef15]                       ; data_30EE2A0
+  0x180D3F38B  mov     qword ptr [rsp + 0x30], rdi               
+  0x180D3F390  test    r8, r8                                    
+  0x180D3F393  jne     0x180d3f414                               
+  0x180D3F395  mov     rcx, qword ptr [rip + 0x2112b94]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3F39C  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180D3F3A3  jne     0x180d3f3aa                               
+  0x180D3F3A5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3F3AA:
+  0x180D3F3AA  mov     rcx, qword ptr [rip + 0x2112ac7]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IAudioManager>()
+  0x180D3F3B1  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D3F3B6  cmp     dword ptr [rip + 0x2399e07], 0               ; data_30D91C4
+  0x180D3F3BD  mov     r8, rax                                   
+  0x180D3F3C0  mov     qword ptr [rbx + 0x28], rax                  ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F3C4  je      0x180d3f40b                               
+  0x180D3F3C6  lea     r9, [rbx + 0x28]                             ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F3CA  shr     r9, 0xc                                   
+  0x180D3F3CE  and     r9d, 0x1fffff                             
+  0x180D3F3D5  mov     edx, r9d                                  
+  0x180D3F3D8  shr     rdx, 6                                    
+  0x180D3F3DC  and     r9d, 0x3f                                 
+  0x180D3F3E0  prefetchw byte ptr [rsi + rdx*8 + 0x462e0]          
+  0x180D3F3E8  nop     dword ptr [rax + rax]                     
+
+180D3F3F0:
+  0x180D3F3F0  mov     rax, qword ptr [rsi + rdx*8 + 0x462e0]    
+  0x180D3F3F8  mov     rcx, rax                                  
+  0x180D3F3FB  bts     rcx, r9                                   
+  0x180D3F3FF  lock cmpxchg qword ptr [rsi + rdx*8 + 0x462e0], rcx    
+  0x180D3F409  jne     0x180d3f3f0                               
+
+180D3F40B:
+  0x180D3F40B  test    r8, r8                                    
+  0x180D3F40E  je      0x180d3f52b                               
+
+180D3F414:
+  0x180D3F414  mov     rdx, qword ptr [rip + 0x2112a45]             ; TYPE Naninovel.IAudioManager_TypeInfo
+  0x180D3F41B  mov     ecx, 0x1d                                 
+  0x180D3F420  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180D3F425  mov     rdi, rax                                  
+  0x180D3F428  test    rax, rax                                  
+  0x180D3F42B  je      0x180d3f4a8                               
+  0x180D3F42D  mov     rdx, qword ptr [rbx + 0x38]                  ; rbx->AutoDelayAdjuster._previousPlayedVoicePath
+  0x180D3F431  cmp     rax, rdx                                  
+  0x180D3F434  je      0x180d3f4a8                               
+  0x180D3F436  test    rdx, rdx                                  
+  0x180D3F439  je      0x180d3f45e                               
+  0x180D3F43B  mov     ecx, dword ptr [rdx + 0x10]               
+  0x180D3F43E  cmp     dword ptr [rax + 0x10], ecx               
+  0x180D3F441  jne     0x180d3f45e                               
+  0x180D3F443  movsxd  r8, dword ptr [rax + 0x10]                
+  0x180D3F447  lea     rcx, [rax + 0x14]                         
+  0x180D3F44B  add     r8, r8                                    
+  0x180D3F44E  add     rdx, 0x14                                 
+  0x180D3F452  xor     r9d, r9d                                  
+  0x180D3F455  call    0x181037c30                                  ; -> System.SpanHelpers$$SequenceEqual
+  0x180D3F45A  test    al, al                                    
+  0x180D3F45C  jne     0x180d3f4a8                               
+
+180D3F45E:
+  0x180D3F45E  cmp     byte ptr [rbx + 0x30], 0                     ; rbx->AutoDelayAdjuster._isShortened
+  0x180D3F462  jne     0x180d3f4c7                               
+  0x180D3F464  xor     edx, edx                                  
+  0x180D3F466  mov     rcx, rbx                                  
+  0x180D3F469  call    0x180d3f160                                  ; -> GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_ScriptPlayerConfiguration
+  0x180D3F46E  test    rax, rax                                  
+  0x180D3F471  je      0x180d3f52b                               
+  0x180D3F477  mov     eax, dword ptr [rax + 0x20]                  ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F47A  xor     edx, edx                                  
+  0x180D3F47C  mov     rcx, rbx                                  
+  0x180D3F47F  mov     dword ptr [rbx + 0x34], eax                  ; rbx->AutoDelayAdjuster._storedMinAutoPlayDelay
+  0x180D3F482  call    0x180d3f160                                  ; -> GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_ScriptPlayerConfiguration
+  0x180D3F487  test    rax, rax                                  
+  0x180D3F48A  je      0x180d3f52b                               
+  0x180D3F490  movss   xmm0, dword ptr [rax + 0x20]                 ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F495  mulss   xmm0, dword ptr [rip + 0x1da31d3]            ; data_2AE2670
+  0x180D3F49D  movss   dword ptr [rax + 0x20], xmm0                 ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F4A2  mov     byte ptr [rbx + 0x30], 1                     ; rbx->AutoDelayAdjuster._isShortened
+  0x180D3F4A6  jmp     0x180d3f4c7                               
+
+180D3F4A8:
+  0x180D3F4A8  cmp     byte ptr [rbx + 0x30], 0                     ; rbx->AutoDelayAdjuster._isShortened
+  0x180D3F4AC  je      0x180d3f4c7                               
+  0x180D3F4AE  xor     edx, edx                                  
+  0x180D3F4B0  mov     rcx, rbx                                  
+  0x180D3F4B3  call    0x180d3f160                                  ; -> GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_ScriptPlayerConfiguration
+  0x180D3F4B8  test    rax, rax                                  
+  0x180D3F4BB  je      0x180d3f52b                               
+  0x180D3F4BD  mov     ecx, dword ptr [rbx + 0x34]                  ; rbx->AutoDelayAdjuster._storedMinAutoPlayDelay
+  0x180D3F4C0  mov     dword ptr [rax + 0x20], ecx                  ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F4C3  mov     byte ptr [rbx + 0x30], 0                     ; rbx->AutoDelayAdjuster._isShortened
+
+180D3F4C7:
+  0x180D3F4C7  cmp     dword ptr [rip + 0x2399cf6], 0               ; data_30D91C4
+  0x180D3F4CE  mov     qword ptr [rbx + 0x38], rdi                  ; rbx->AutoDelayAdjuster._previousPlayedVoicePath
+  0x180D3F4D2  je      0x180d3f51b                               
+  0x180D3F4D4  add     rbx, 0x38                                 
+  0x180D3F4D8  shr     rbx, 0xc                                  
+  0x180D3F4DC  and     ebx, 0x1fffff                             
+  0x180D3F4E2  mov     edx, ebx                                  
+  0x180D3F4E4  shr     rdx, 6                                    
+  0x180D3F4E8  and     ebx, 0x3f                                 
+  0x180D3F4EB  prefetchw byte ptr [rsi + rdx*8 + 0x462e0]          
+  0x180D3F4F3  nop     dword ptr [rax]                           
+  0x180D3F4F7  nop     word ptr [rax + rax]                      
+
+180D3F500:
+  0x180D3F500  mov     rax, qword ptr [rsi + rdx*8 + 0x462e0]    
+  0x180D3F508  mov     rcx, rax                                  
+  0x180D3F50B  bts     rcx, rbx                                  
+  0x180D3F50F  lock cmpxchg qword ptr [rsi + rdx*8 + 0x462e0], rcx    
+  0x180D3F519  jne     0x180d3f500                               
+
+180D3F51B:
+  0x180D3F51B  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180D3F520  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180D3F525  add     rsp, 0x20                                 
+  0x180D3F529  pop     rsi                                       
+  0x180D3F52A  ret                                               
+
+180D3F52B:
+  0x180D3F52B  call    0x180246730                                  ; THROW NullReferenceException

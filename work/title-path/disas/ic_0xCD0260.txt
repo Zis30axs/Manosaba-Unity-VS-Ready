@@ -1,0 +1,94 @@
+====================================================================================================
+FUNCTION RVA 0xCD0260  VA 0x180CD0260  size 0x159 (345 bytes)
+  managed: GigaCreation.Essentials.Input.InputChecker$$LogInputNameCanceled
+  csig   : void GigaCreation_Essentials_Input_InputChecker__LogInputNameCanceled (GigaCreation_Essentials_Input_InputChecker_o* __this, UnityEngine_InputSystem_InputAction_CallbackContext_o context, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Input.InputChecker :: private void LogInputNameCanceled(InputAction.CallbackContext context)
+  fields of GigaCreation.Essentials.Input.InputChecker:
+      +0x20   _actionAsset                   InputActionAsset
+      +0x28   _enable                        bool
+      +0x30   _actionMapName                 string
+      +0x38   _actionMap                     InputActionMap
+====================================================================================================
+  0x180CD0260  mov     qword ptr [rsp + 8], rbx                  
+  0x180CD0265  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CD026A  push    rdi                                       
+  0x180CD026B  sub     rsp, 0x20                                 
+  0x180CD026F  cmp     byte ptr [rip + 0x240ce9b], 0                ; data_30DD111
+  0x180CD0276  mov     rdi, rdx                                  
+  0x180CD0279  mov     rsi, rcx                                  
+  0x180CD027C  jne     0x180cd02da                               
+  0x180CD027E  lea     rcx, [rip + 0x218205b]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CD0285  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD028A  lock or dword ptr [rsp], 0                        
+  0x180CD028F  lea     rcx, [rip + 0x218202a]                       ; TYPE string[]_TypeInfo
+  0x180CD0296  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD029B  lock or dword ptr [rsp], 0                        
+  0x180CD02A0  lea     rcx, [rip + 0x219b0d9]                       ; STR '/'
+  0x180CD02A7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD02AC  lock or dword ptr [rsp], 0                        
+  0x180CD02B1  lea     rcx, [rip + 0x2197150]                       ; STR "' canceled."
+  0x180CD02B8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD02BD  lock or dword ptr [rsp], 0                        
+  0x180CD02C2  lea     rcx, [rip + 0x219716f]                       ; STR "[UnityEngine.InputSystem.InputAction] '"
+  0x180CD02C9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD02CE  lock or dword ptr [rsp], 0                        
+  0x180CD02D3  mov     byte ptr [rip + 0x240ce37], 1                ; data_30DD111
+
+180CD02DA:
+  0x180CD02DA  mov     rcx, qword ptr [rip + 0x2181fdf]             ; TYPE string[]_TypeInfo
+  0x180CD02E1  mov     edx, 5                                    
+  0x180CD02E6  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CD02EB  mov     rbx, rax                                  
+  0x180CD02EE  test    rax, rax                                  
+  0x180CD02F1  je      0x180cd03b4                               
+  0x180CD02F7  mov     r8, qword ptr [rip + 0x219713a]              ; STR "[UnityEngine.InputSystem.InputAction] '"
+  0x180CD02FE  xor     edx, edx                                  
+  0x180CD0300  mov     rcx, rax                                  
+  0x180CD0303  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CD0308  mov     r8, qword ptr [rsi + 0x30]                   ; rsi->InputChecker._actionMapName
+  0x180CD030C  mov     edx, 1                                    
+  0x180CD0311  mov     rcx, rbx                                  
+  0x180CD0314  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CD0319  mov     r8, qword ptr [rip + 0x219b060]              ; STR '/'
+  0x180CD0320  mov     edx, 2                                    
+  0x180CD0325  mov     rcx, rbx                                  
+  0x180CD0328  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CD032D  mov     rcx, qword ptr [rdi]                      
+  0x180CD0330  test    rcx, rcx                                  
+  0x180CD0333  je      0x180cd03b4                               
+  0x180CD0335  movsxd  rax, dword ptr [rdi + 8]                  
+  0x180CD0339  mov     rdx, qword ptr [rcx + 0x60]               
+  0x180CD033D  imul    r8, rax, 0x44                             
+  0x180CD0341  movzx   edx, word ptr [r8 + rdx + 0x18]           
+  0x180CD0347  xor     r8d, r8d                                  
+  0x180CD034A  call    0x1819661b0                                  ; -> UnityEngine.InputSystem.InputActionState$$GetActionOrNull
+  0x180CD034F  test    rax, rax                                  
+  0x180CD0352  je      0x180cd03b4                               
+  0x180CD0354  mov     r8, qword ptr [rax + 0x10]                
+  0x180CD0358  mov     edx, 3                                    
+  0x180CD035D  mov     rcx, rbx                                  
+  0x180CD0360  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CD0365  mov     r8, qword ptr [rip + 0x219709c]              ; STR "' canceled."
+  0x180CD036C  mov     edx, 4                                    
+  0x180CD0371  mov     rcx, rbx                                  
+  0x180CD0374  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CD0379  xor     edx, edx                                  
+  0x180CD037B  mov     rcx, rbx                                  
+  0x180CD037E  call    0x180e26bc0                                  ; -> System.String$$Concat
+  0x180CD0383  mov     rcx, qword ptr [rip + 0x2181f56]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CD038A  mov     rbx, rax                                  
+  0x180CD038D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD0394  jne     0x180cd039b                               
+  0x180CD0396  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CD039B:
+  0x180CD039B  xor     edx, edx                                  
+  0x180CD039D  mov     rcx, rbx                                  
+  0x180CD03A0  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CD03A5  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CD03AA  add     rsp, 0x20                                 
+  0x180CD03AE  pop     rdi                                       
+  0x180CD03AF  jmp     0x181fee570                                  ; -> UnityEngine.Debug$$Log
+
+180CD03B4:
+  0x180CD03B4  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,40 @@
+====================================================================================================
+FUNCTION RVA 0xD3F540  VA 0x180D3F540  size 0x51 (81 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$ShortenIfNotShortened
+  csig   : void GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster__ShortenIfNotShortened (GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster :: private void ShortenIfNotShortened()
+  fields of GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster:
+      +0x20   _scriptPlayerConfiguration     ScriptPlayerConfiguration
+      +0x28   _naniAudioManager              IAudioManager
+      +0x30   _isShortened                   bool
+      +0x34   _storedMinAutoPlayDelay        float
+      +0x38   _previousPlayedVoicePath       string
+====================================================================================================
+  0x180D3F540  push    rbx                                       
+  0x180D3F542  sub     rsp, 0x20                                 
+  0x180D3F546  cmp     byte ptr [rcx + 0x30], 0                     ; rcx->AutoDelayAdjuster._isShortened
+  0x180D3F54A  mov     rbx, rcx                                  
+  0x180D3F54D  jne     0x180d3f586                               
+  0x180D3F54F  xor     edx, edx                                  
+  0x180D3F551  call    0x180d3f160                                  ; -> GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_ScriptPlayerConfiguration
+  0x180D3F556  test    rax, rax                                  
+  0x180D3F559  je      0x180d3f58c                               
+  0x180D3F55B  mov     eax, dword ptr [rax + 0x20]                  ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F55E  xor     edx, edx                                  
+  0x180D3F560  mov     rcx, rbx                                  
+  0x180D3F563  mov     dword ptr [rbx + 0x34], eax                  ; rbx->AutoDelayAdjuster._storedMinAutoPlayDelay
+  0x180D3F566  call    0x180d3f160                                  ; -> GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_ScriptPlayerConfiguration
+  0x180D3F56B  test    rax, rax                                  
+  0x180D3F56E  je      0x180d3f58c                               
+  0x180D3F570  movss   xmm0, dword ptr [rax + 0x20]                 ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F575  mulss   xmm0, dword ptr [rip + 0x1da30f3]            ; data_2AE2670
+  0x180D3F57D  movss   dword ptr [rax + 0x20], xmm0                 ; rax->AutoDelayAdjuster._scriptPlayerConfiguration
+  0x180D3F582  mov     byte ptr [rbx + 0x30], 1                     ; rbx->AutoDelayAdjuster._isShortened
+
+180D3F586:
+  0x180D3F586  add     rsp, 0x20                                 
+  0x180D3F58A  pop     rbx                                       
+  0x180D3F58B  ret                                               
+
+180D3F58C:
+  0x180D3F58C  call    0x180246730                                  ; THROW NullReferenceException

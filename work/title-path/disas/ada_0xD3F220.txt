@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xD3F220  VA 0x180D3F220  size 0xBA (186 bytes)
+  managed: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster$$get_NaniAudioManager
+  csig   : Naninovel_IAudioManager_o* GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster__get_NaniAudioManager (GigaCreation_NaninovelExtender_Ui_AutoDelayAdjuster_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster :: private IAudioManager get_NaniAudioManager()
+  fields of GigaCreation.NaninovelExtender.Ui.AutoDelayAdjuster:
+      +0x20   _scriptPlayerConfiguration     ScriptPlayerConfiguration
+      +0x28   _naniAudioManager              IAudioManager
+      +0x30   _isShortened                   bool
+      +0x34   _storedMinAutoPlayDelay        float
+      +0x38   _previousPlayedVoicePath       string
+====================================================================================================
+  0x180D3F220  push    rbx                                       
+  0x180D3F222  sub     rsp, 0x20                                 
+  0x180D3F226  cmp     byte ptr [rip + 0x239e1a5], 0                ; data_30DD3D2
+  0x180D3F22D  mov     rbx, rcx                                  
+  0x180D3F230  jne     0x180d3f25b                               
+  0x180D3F232  lea     rcx, [rip + 0x2112c3f]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IAudioManager>()
+  0x180D3F239  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F23E  lock or dword ptr [rsp], 0                        
+  0x180D3F243  lea     rcx, [rip + 0x2112ce6]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3F24A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D3F24F  lock or dword ptr [rsp], 0                        
+  0x180D3F254  mov     byte ptr [rip + 0x239e177], 1                ; data_30DD3D2
+
+180D3F25B:
+  0x180D3F25B  mov     rax, qword ptr [rbx + 0x28]                  ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F25F  test    rax, rax                                  
+  0x180D3F262  jne     0x180d3f2d4                               
+  0x180D3F264  mov     rcx, qword ptr [rip + 0x2112cc5]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180D3F26B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180D3F271  jne     0x180d3f278                               
+  0x180D3F273  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D3F278:
+  0x180D3F278  mov     rcx, qword ptr [rip + 0x2112bf9]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IAudioManager>()
+  0x180D3F27F  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180D3F284  cmp     dword ptr [rip + 0x2399f39], 0               ; data_30D91C4
+  0x180D3F28B  mov     r9, rax                                   
+  0x180D3F28E  mov     qword ptr [rbx + 0x28], rax                  ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F292  je      0x180d3f2d1                               
+  0x180D3F294  lea     r8, [rbx + 0x28]                             ; rbx->AutoDelayAdjuster._naniAudioManager
+  0x180D3F298  shr     r8, 0xc                                   
+  0x180D3F29C  lea     rcx, [rip + 0x23f52dd]                       ; data_3134580
+  0x180D3F2A3  and     r8d, 0x1fffff                             
+  0x180D3F2AA  mov     eax, r8d                                  
+  0x180D3F2AD  shr     rax, 6                                    
+  0x180D3F2B1  and     r8d, 0x3f                                 
+  0x180D3F2B5  lea     rdx, [rcx + rax*8]                        
+  0x180D3F2B9  prefetchw byte ptr [rdx]                            
+  0x180D3F2BC  nop     dword ptr [rax]                           
+
+180D3F2C0:
+  0x180D3F2C0  mov     rax, qword ptr [rdx]                      
+  0x180D3F2C3  mov     rcx, rax                                  
+  0x180D3F2C6  bts     rcx, r8                                   
+  0x180D3F2CA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D3F2CF  jne     0x180d3f2c0                               
+
+180D3F2D1:
+  0x180D3F2D1  mov     rax, r9                                   
+
+180D3F2D4:
+  0x180D3F2D4  add     rsp, 0x20                                 
+  0x180D3F2D8  pop     rbx                                       
+  0x180D3F2D9  ret                                               

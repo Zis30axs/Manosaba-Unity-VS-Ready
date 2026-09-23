@@ -1,0 +1,61 @@
+====================================================================================================
+FUNCTION RVA 0xD03A20  VA 0x180D03A20  size 0xCE (206 bytes)
+  managed: GigaCreation.NaninovelExtender.Core.NaninovelPresenter$$Awake
+  csig   : void GigaCreation_NaninovelExtender_Core_NaninovelPresenter__Awake (GigaCreation_NaninovelExtender_Core_NaninovelPresenter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Core.NaninovelPresenter :: protected virtual void Awake()
+  fields of GigaCreation.NaninovelExtender.Core.NaninovelPresenter:
+      +0x20   _naninovelManager              INaninovelManager
+====================================================================================================
+  0x180D03A20  push    rbx                                       
+  0x180D03A22  sub     rsp, 0x20                                 
+  0x180D03A26  cmp     byte ptr [rip + 0x23d9859], 0                ; data_30DD286
+  0x180D03A2D  mov     rbx, rcx                                  
+  0x180D03A30  jne     0x180d03a6c                               
+  0x180D03A32  lea     rcx, [rip + 0x2167e0f]                       ; TYPE GigaCreation.NaninovelExtender.Core.NaninovelManager_TypeInfo
+  0x180D03A39  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D03A3E  lock or dword ptr [rsp], 0                        
+  0x180D03A43  lea     rcx, [rip + 0x2167e16]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<INaninovelManager>()
+  0x180D03A4A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D03A4F  lock or dword ptr [rsp], 0                        
+  0x180D03A54  lea     rcx, [rip + 0x214e70d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D03A5B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D03A60  lock or dword ptr [rsp], 0                        
+  0x180D03A65  mov     byte ptr [rip + 0x23d981a], 1                ; data_30DD286
+
+180D03A6C:
+  0x180D03A6C  mov     rcx, qword ptr [rip + 0x2167dd5]             ; TYPE GigaCreation.NaninovelExtender.Core.NaninovelManager_TypeInfo
+  0x180D03A73  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180D03A78  cmp     dword ptr [rip + 0x23d5745], 0               ; data_30D91C4
+  0x180D03A7F  mov     qword ptr [rbx + 0x20], rax                  ; rbx->NaninovelPresenter._naninovelManager
+  0x180D03A83  je      0x180d03ac1                               
+  0x180D03A85  lea     r8, [rbx + 0x20]                             ; rbx->NaninovelPresenter._naninovelManager
+  0x180D03A89  shr     r8, 0xc                                   
+  0x180D03A8D  lea     rcx, [rip + 0x2430aec]                       ; data_3134580
+  0x180D03A94  and     r8d, 0x1fffff                             
+  0x180D03A9B  mov     eax, r8d                                  
+  0x180D03A9E  shr     rax, 6                                    
+  0x180D03AA2  and     r8d, 0x3f                                 
+  0x180D03AA6  lea     rdx, [rcx + rax*8]                        
+  0x180D03AAA  prefetchw byte ptr [rdx]                            
+  0x180D03AAD  nop     dword ptr [rax]                           
+
+180D03AB0:
+  0x180D03AB0  mov     rax, qword ptr [rdx]                      
+  0x180D03AB3  mov     rcx, rax                                  
+  0x180D03AB6  bts     rcx, r8                                   
+  0x180D03ABA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180D03ABF  jne     0x180d03ab0                               
+
+180D03AC1:
+  0x180D03AC1  mov     rcx, qword ptr [rip + 0x214e6a0]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D03AC8  mov     rbx, qword ptr [rbx + 0x20]                  ; rbx->NaninovelPresenter._naninovelManager
+  0x180D03ACC  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D03AD3  jne     0x180d03ada                               
+  0x180D03AD5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D03ADA:
+  0x180D03ADA  mov     rdx, qword ptr [rip + 0x2167d7f]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Register<INaninovelManager>()
+  0x180D03AE1  mov     rcx, rbx                                  
+  0x180D03AE4  add     rsp, 0x20                                 
+  0x180D03AE8  pop     rbx                                       
+  0x180D03AE9  jmp     0x180752130                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Register<object>

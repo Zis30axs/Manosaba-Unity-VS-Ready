@@ -1,0 +1,53 @@
+====================================================================================================
+FUNCTION RVA 0xCCFB00  VA 0x180CCFB00  size 0x7F (127 bytes)
+  managed: GigaCreation.Essentials.Input.InputChecker$$get_ActionMap
+  csig   : UnityEngine_InputSystem_InputActionMap_o* GigaCreation_Essentials_Input_InputChecker__get_ActionMap (GigaCreation_Essentials_Input_InputChecker_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Input.InputChecker :: private InputActionMap get_ActionMap()
+  fields of GigaCreation.Essentials.Input.InputChecker:
+      +0x20   _actionAsset                   InputActionAsset
+      +0x28   _enable                        bool
+      +0x30   _actionMapName                 string
+      +0x38   _actionMap                     InputActionMap
+====================================================================================================
+  0x180CCFB00  push    rbx                                       
+  0x180CCFB02  sub     rsp, 0x20                                 
+  0x180CCFB06  mov     r9, qword ptr [rcx + 0x38]                   ; rcx->InputChecker._actionMap
+  0x180CCFB0A  mov     rbx, rcx                                  
+  0x180CCFB0D  test    r9, r9                                    
+  0x180CCFB10  jne     0x180ccfb71                               
+  0x180CCFB12  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->InputChecker._actionAsset
+  0x180CCFB16  test    rcx, rcx                                  
+  0x180CCFB19  je      0x180ccfb7a                               
+  0x180CCFB1B  mov     rdx, qword ptr [rbx + 0x30]                  ; rbx->InputChecker._actionMapName
+  0x180CCFB1F  xor     r8d, r8d                                  
+  0x180CCFB22  call    0x1819363c0                                  ; -> UnityEngine.InputSystem.InputActionAsset$$FindActionMap
+  0x180CCFB27  cmp     dword ptr [rip + 0x2409696], 0               ; data_30D91C4
+  0x180CCFB2E  mov     r9, rax                                   
+  0x180CCFB31  mov     qword ptr [rbx + 0x38], rax                  ; rbx->InputChecker._actionMap
+  0x180CCFB35  je      0x180ccfb71                               
+  0x180CCFB37  lea     r8, [rbx + 0x38]                             ; rbx->InputChecker._actionMap
+  0x180CCFB3B  shr     r8, 0xc                                   
+  0x180CCFB3F  lea     rcx, [rip + 0x2464a3a]                       ; data_3134580
+  0x180CCFB46  and     r8d, 0x1fffff                             
+  0x180CCFB4D  mov     eax, r8d                                  
+  0x180CCFB50  shr     rax, 6                                    
+  0x180CCFB54  and     r8d, 0x3f                                 
+  0x180CCFB58  lea     rdx, [rcx + rax*8]                        
+  0x180CCFB5C  prefetchw byte ptr [rdx]                            
+  0x180CCFB5F  nop                                               
+
+180CCFB60:
+  0x180CCFB60  mov     rax, qword ptr [rdx]                      
+  0x180CCFB63  mov     rcx, rax                                  
+  0x180CCFB66  bts     rcx, r8                                   
+  0x180CCFB6A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CCFB6F  jne     0x180ccfb60                               
+
+180CCFB71:
+  0x180CCFB71  mov     rax, r9                                   
+  0x180CCFB74  add     rsp, 0x20                                 
+  0x180CCFB78  pop     rbx                                       
+  0x180CCFB79  ret                                               
+
+180CCFB7A:
+  0x180CCFB7A  call    0x180246730                                  ; THROW NullReferenceException

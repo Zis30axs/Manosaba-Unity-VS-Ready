@@ -1,0 +1,34 @@
+====================================================================================================
+FUNCTION RVA 0xD03AF0  VA 0x180D03AF0  size 0x68 (104 bytes)
+  managed: GigaCreation.NaninovelExtender.Core.NaninovelPresenter$$OnDestroy
+  csig   : void GigaCreation_NaninovelExtender_Core_NaninovelPresenter__OnDestroy (GigaCreation_NaninovelExtender_Core_NaninovelPresenter_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Core.NaninovelPresenter :: protected virtual void OnDestroy()
+  fields of GigaCreation.NaninovelExtender.Core.NaninovelPresenter:
+      +0x20   _naninovelManager              INaninovelManager
+====================================================================================================
+  0x180D03AF0  push    rbx                                       
+  0x180D03AF2  sub     rsp, 0x20                                 
+  0x180D03AF6  cmp     byte ptr [rip + 0x23d978a], 0                ; data_30DD287
+  0x180D03AFD  mov     rbx, rcx                                  
+  0x180D03B00  jne     0x180d03b2b                               
+  0x180D03B02  lea     rcx, [rip + 0x2167d4f]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<INaninovelManager>()
+  0x180D03B09  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D03B0E  lock or dword ptr [rsp], 0                        
+  0x180D03B13  lea     rcx, [rip + 0x214e64e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D03B1A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D03B1F  lock or dword ptr [rsp], 0                        
+  0x180D03B24  mov     byte ptr [rip + 0x23d975c], 1                ; data_30DD287
+
+180D03B2B:
+  0x180D03B2B  mov     rcx, qword ptr [rip + 0x214e636]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180D03B32  mov     rbx, qword ptr [rbx + 0x20]                  ; rbx->NaninovelPresenter._naninovelManager
+  0x180D03B36  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180D03B3D  jne     0x180d03b44                               
+  0x180D03B3F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180D03B44:
+  0x180D03B44  mov     rdx, qword ptr [rip + 0x2167d0d]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Unregister<INaninovelManager>()
+  0x180D03B4B  mov     rcx, rbx                                  
+  0x180D03B4E  add     rsp, 0x20                                 
+  0x180D03B52  pop     rbx                                       
+  0x180D03B53  jmp     0x180752790                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Unregister<object>

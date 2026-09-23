@@ -1,0 +1,203 @@
+====================================================================================================
+FUNCTION RVA 0xCCFB80  VA 0x180CCFB80  size 0x2B9 (697 bytes)
+  managed: GigaCreation.Essentials.Input.InputChecker$$Start
+  csig   : void GigaCreation_Essentials_Input_InputChecker__Start (GigaCreation_Essentials_Input_InputChecker_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Input.InputChecker :: private void Start()
+  fields of GigaCreation.Essentials.Input.InputChecker:
+      +0x20   _actionAsset                   InputActionAsset
+      +0x28   _enable                        bool
+      +0x30   _actionMapName                 string
+      +0x38   _actionMap                     InputActionMap
+====================================================================================================
+  0x180CCFB80  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CCFB85  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CCFB8A  push    rdi                                       
+  0x180CCFB8B  push    r14                                       
+  0x180CCFB8D  push    r15                                       
+  0x180CCFB8F  sub     rsp, 0x40                                 
+  0x180CCFB93  mov     r14, rcx                                  
+  0x180CCFB96  cmp     byte ptr [rip + 0x240d571], 0                ; data_30DD10E
+  0x180CCFB9D  jne     0x180ccfc0c                               
+  0x180CCFB9F  lea     rcx, [rip + 0x2189bfa]                       ; TYPE System.Action<InputAction.CallbackContext>_TypeInfo
+  0x180CCFBA6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFBAB  lock or dword ptr [rsp], 0                        
+  0x180CCFBB0  lea     rcx, [rip + 0x2182599]                       ; TYPE System.IDisposable_TypeInfo
+  0x180CCFBB7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFBBC  lock or dword ptr [rsp], 0                        
+  0x180CCFBC1  lea     rcx, [rip + 0x2197878]                       ; TYPE System.Collections.Generic.IEnumerator<InputAction>_TypeInfo
+  0x180CCFBC8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFBCD  lock or dword ptr [rsp], 0                        
+  0x180CCFBD2  lea     rcx, [rip + 0x2182047]                       ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CCFBD9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFBDE  lock or dword ptr [rsp], 0                        
+  0x180CCFBE3  lea     rcx, [rip + 0x219786e]                       ; METHODINFO Method$GigaCreation.Essentials.Input.InputChecker.LogInputNameCanceled() => GigaCreation.Essentials.Input.InputChecker$$LogInputNameCanceled
+  0x180CCFBEA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFBEF  lock or dword ptr [rsp], 0                        
+  0x180CCFBF4  lea     rcx, [rip + 0x2197855]                       ; METHODINFO Method$GigaCreation.Essentials.Input.InputChecker.LogInputNamePerformed() => GigaCreation.Essentials.Input.InputChecker$$LogInputNamePerformed
+  0x180CCFBFB  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFC00  lock or dword ptr [rsp], 0                        
+  0x180CCFC05  mov     byte ptr [rip + 0x240d502], 1                ; data_30DD10E
+
+180CCFC0C:
+  0x180CCFC0C  cmp     byte ptr [r14 + 0x28], 0                     ; r14->InputChecker._enable
+  0x180CCFC11  je      0x180ccfe09                               
+  0x180CCFC17  xor     edx, edx                                  
+  0x180CCFC19  mov     rcx, r14                                  
+  0x180CCFC1C  call    0x180ccfb00                                  ; -> GigaCreation.Essentials.Input.InputChecker$$get_ActionMap
+  0x180CCFC21  test    rax, rax                                  
+  0x180CCFC24  je      0x180ccfe34                               
+  0x180CCFC2A  xor     edx, edx                                  
+  0x180CCFC2C  mov     rcx, rax                                  
+  0x180CCFC2F  call    0x18193a1e0                                  ; -> UnityEngine.InputSystem.InputActionMap$$GetEnumerator
+  0x180CCFC34  mov     qword ptr [rsp + 0x60], rax               
+  0x180CCFC39  xor     r15d, r15d                                
+  0x180CCFC3C  mov     qword ptr [rsp + 0x28], r15               
+  0x180CCFC41  lea     rbx, [rsp + 0x60]                         
+  0x180CCFC46  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CCFC4B  nop     dword ptr [rax + rax]                     
+
+180CCFC50:
+  0x180CCFC50  mov     r8, qword ptr [rsp + 0x60]                
+  0x180CCFC55  test    r8, r8                                    
+  0x180CCFC58  je      0x180ccfe28                               
+  0x180CCFC5E  xor     ecx, ecx                                  
+  0x180CCFC60  mov     rdx, qword ptr [rip + 0x2181fb9]             ; TYPE System.Collections.IEnumerator_TypeInfo
+  0x180CCFC67  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CCFC6C  test    al, al                                    
+  0x180CCFC6E  je      0x180ccfdca                               
+  0x180CCFC74  mov     rdi, qword ptr [rsp + 0x60]               
+  0x180CCFC79  test    rdi, rdi                                  
+  0x180CCFC7C  je      0x180ccfe23                               
+  0x180CCFC82  mov     r9, qword ptr [rip + 0x21977b7]              ; TYPE System.Collections.Generic.IEnumerator<InputAction>_TypeInfo
+  0x180CCFC89  mov     r10, qword ptr [rdi]                      
+  0x180CCFC8C  movzx   ecx, r15w                                 
+  0x180CCFC90  movzx   edx, word ptr [r10 + 0x12e]               
+  0x180CCFC98  cmp     r15w, dx                                  
+  0x180CCFC9C  jae     0x180ccfcc8                               
+  0x180CCFC9E  mov     r8, qword ptr [r10 + 0xb0]                
+  0x180CCFCA5  nop     word ptr [rax + rax]                      
+
+180CCFCB0:
+  0x180CCFCB0  movzx   eax, cx                                   
+  0x180CCFCB3  add     rax, rax                                  
+  0x180CCFCB6  cmp     qword ptr [r8 + rax*8], r9                
+  0x180CCFCBA  je      0x180ccfdac                               
+  0x180CCFCC0  inc     cx                                        
+  0x180CCFCC3  cmp     cx, dx                                    
+  0x180CCFCC6  jb      0x180ccfcb0                               
+
+180CCFCC8:
+  0x180CCFCC8  xor     r8d, r8d                                  
+  0x180CCFCCB  mov     rdx, r9                                   
+  0x180CCFCCE  mov     rcx, rdi                                  
+  0x180CCFCD1  call    0x180243a20                                  ; resolve interface method slot
+  0x180CCFCD6  mov     rdx, rax                                  
+
+180CCFCD9:
+  0x180CCFCD9  mov     rax, qword ptr [rdx]                      
+  0x180CCFCDC  mov     rdx, qword ptr [rdx + 8]                  
+  0x180CCFCE0  mov     rcx, rdi                                  
+  0x180CCFCE3  call    rax                                       
+  0x180CCFCE5  mov     rdi, rax                                  
+  0x180CCFCE8  mov     rcx, qword ptr [rip + 0x2189ab1]             ; TYPE System.Action<InputAction.CallbackContext>_TypeInfo
+  0x180CCFCEF  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCFCF4  mov     rsi, rax                                  
+  0x180CCFCF7  xor     r9d, r9d                                  
+  0x180CCFCFA  mov     r8, qword ptr [rip + 0x219774f]              ; METHODINFO Method$GigaCreation.Essentials.Input.InputChecker.LogInputNamePerformed() => GigaCreation.Essentials.Input.InputChecker$$LogInputNamePerformed
+  0x180CCFD01  mov     rdx, r14                                  
+  0x180CCFD04  mov     rcx, rax                                  
+  0x180CCFD07  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CCFD0C  test    rdi, rdi                                  
+  0x180CCFD0F  je      0x180ccfe1d                               
+  0x180CCFD15  cmp     byte ptr [rip + 0x2412a86], 0                ; data_30E27A2
+  0x180CCFD1C  jne     0x180ccfd36                               
+  0x180CCFD1E  lea     rcx, [rip + 0x218fea3]                       ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CCFD25  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFD2A  lock or dword ptr [rsp], 0                        
+  0x180CCFD2F  mov     byte ptr [rip + 0x2412a6c], 1                ; data_30E27A2
+
+180CCFD36:
+  0x180CCFD36  lea     rcx, [rdi + 0x170]                        
+  0x180CCFD3D  mov     r8, qword ptr [rip + 0x218fe84]              ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CCFD44  mov     rdx, rsi                                  
+  0x180CCFD47  call    0x180c1df50                                  ; -> UnityEngine.InputSystem.Utilities.CallbackArray<object>$$AddCallback
+  0x180CCFD4C  mov     rcx, qword ptr [rip + 0x2189a4d]             ; TYPE System.Action<InputAction.CallbackContext>_TypeInfo
+  0x180CCFD53  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CCFD58  mov     rsi, rax                                  
+  0x180CCFD5B  xor     r9d, r9d                                  
+  0x180CCFD5E  mov     r8, qword ptr [rip + 0x21976f3]              ; METHODINFO Method$GigaCreation.Essentials.Input.InputChecker.LogInputNameCanceled() => GigaCreation.Essentials.Input.InputChecker$$LogInputNameCanceled
+  0x180CCFD65  mov     rdx, r14                                  
+  0x180CCFD68  mov     rcx, rax                                  
+  0x180CCFD6B  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CCFD70  cmp     byte ptr [rip + 0x2412a29], 0                ; data_30E27A0
+  0x180CCFD77  jne     0x180ccfd91                               
+  0x180CCFD79  lea     rcx, [rip + 0x218fe48]                       ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CCFD80  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CCFD85  lock or dword ptr [rsp], 0                        
+  0x180CCFD8A  mov     byte ptr [rip + 0x2412a0f], 1                ; data_30E27A0
+
+180CCFD91:
+  0x180CCFD91  lea     rcx, [rdi + 0x120]                        
+  0x180CCFD98  mov     r8, qword ptr [rip + 0x218fe29]              ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CCFD9F  mov     rdx, rsi                                  
+  0x180CCFDA2  call    0x180c1df50                                  ; -> UnityEngine.InputSystem.Utilities.CallbackArray<object>$$AddCallback
+  0x180CCFDA7  jmp     0x180ccfc50                               
+
+180CCFDAC:
+  0x180CCFDAC  movzx   ecx, cx                                   
+  0x180CCFDAF  add     rcx, rcx                                  
+  0x180CCFDB2  movsxd  rdx, dword ptr [r8 + rcx*8 + 8]           
+  0x180CCFDB7  shl     rdx, 4                                    
+  0x180CCFDBB  add     rdx, 0x138                                
+  0x180CCFDC2  add     rdx, r10                                  
+  0x180CCFDC5  jmp     0x180ccfcd9                               
+
+180CCFDCA:
+  0x180CCFDCA  cmp     qword ptr [rbx], 0                        
+  0x180CCFDCE  je      0x180ccfde1                               
+  0x180CCFDD0  xor     ecx, ecx                                  
+  0x180CCFDD2  mov     r8, qword ptr [rbx]                       
+  0x180CCFDD5  mov     rdx, qword ptr [rip + 0x2182374]             ; TYPE System.IDisposable_TypeInfo
+  0x180CCFDDC  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CCFDE1:
+  0x180CCFDE1  jmp     0x180ccfe09                               
+  0x180CCFDE3  mov     r8, qword ptr [rsp + 0x30]                
+  0x180CCFDE8  cmp     qword ptr [r8], 0                         
+  0x180CCFDEC  je      0x180ccfdff                               
+  0x180CCFDEE  xor     ecx, ecx                                  
+  0x180CCFDF0  mov     r8, qword ptr [r8]                        
+  0x180CCFDF3  mov     rdx, qword ptr [rip + 0x2182356]             ; TYPE System.IDisposable_TypeInfo
+  0x180CCFDFA  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180CCFDFF:
+  0x180CCFDFF  mov     rcx, qword ptr [rsp + 0x28]               
+  0x180CCFE04  test    rcx, rcx                                  
+  0x180CCFE07  jne     0x180ccfe2e                               
+
+180CCFE09:
+  0x180CCFE09  mov     rbx, qword ptr [rsp + 0x68]               
+  0x180CCFE0E  mov     rsi, qword ptr [rsp + 0x70]               
+  0x180CCFE13  add     rsp, 0x40                                 
+  0x180CCFE17  pop     r15                                       
+  0x180CCFE19  pop     r14                                       
+  0x180CCFE1B  pop     rdi                                       
+  0x180CCFE1C  ret                                               
+
+180CCFE1D:
+  0x180CCFE1D  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CCFE22  nop                                               
+
+180CCFE23:
+  0x180CCFE23  call    0x180246730                                  ; THROW NullReferenceException
+
+180CCFE28:
+  0x180CCFE28  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CCFE2D  nop                                               
+
+180CCFE2E:
+  0x180CCFE2E  call    0x180246720                                  ; -> sub_246720 (runtime/helper)
+  0x180CCFE33  int3                                              
+
+180CCFE34:
+  0x180CCFE34  call    0x180246730                                  ; THROW NullReferenceException
