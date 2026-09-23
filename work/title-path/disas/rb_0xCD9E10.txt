@@ -1,0 +1,263 @@
+====================================================================================================
+FUNCTION RVA 0xCD9E10  VA 0x180CD9E10  size 0x385 (901 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton$$GetReferences
+  csig   : void GigaCreation_Essentials_Ui_RebuildableButton__GetReferences (GigaCreation_Essentials_Ui_RebuildableButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableButton :: protected virtual void GetReferences()
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD9E10  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CD9E15  push    rdi                                       
+  0x180CD9E16  sub     rsp, 0x20                                 
+  0x180CD9E1A  cmp     byte ptr [rip + 0x240333a], 0                ; data_30DD15B
+  0x180CD9E21  mov     rbx, rcx                                  
+  0x180CD9E24  jne     0x180cd9e93                               
+  0x180CD9E26  lea     rcx, [rip + 0x217ae1b]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Button>()
+  0x180CD9E2D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E32  lock or dword ptr [rsp], 0                        
+  0x180CD9E37  lea     rcx, [rip + 0x218f292]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<RebuildableLabel>()
+  0x180CD9E3E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E43  lock or dword ptr [rsp], 0                        
+  0x180CD9E48  lea     rcx, [rip + 0x218f279]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<AutoLayoutSupporter>()
+  0x180CD9E4F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E54  lock or dword ptr [rsp], 0                        
+  0x180CD9E59  lea     rcx, [rip + 0x218f218]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<ContentSizeFitter>()
+  0x180CD9E60  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E65  lock or dword ptr [rsp], 0                        
+  0x180CD9E6A  lea     rcx, [rip + 0x218f1ff]                       ; METHODINFO Method$UnityEngine.Component.GetComponent<LayoutElement>()
+  0x180CD9E71  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E76  lock or dword ptr [rsp], 0                        
+  0x180CD9E7B  lea     rcx, [rip + 0x217a40e]                       ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180CD9E82  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9E87  lock or dword ptr [rsp], 0                        
+  0x180CD9E8C  mov     byte ptr [rip + 0x24032c8], 1                ; data_30DD15B
+
+180CD9E93:
+  0x180CD9E93  xor     edx, edx                                  
+  0x180CD9E95  mov     rcx, rbx                                  
+  0x180CD9E98  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CD9E9D  cmp     dword ptr [rip + 0x23ff320], 0               ; data_30D91C4
+  0x180CD9EA4  lea     rdi, [rip + 0x24143f5]                       ; data_30EE2A0
+  0x180CD9EAB  mov     qword ptr [rbx + 0x20], rax                  ; rbx->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CD9EAF  je      0x180cd9ef9                               
+  0x180CD9EB1  lea     r8, [rbx + 0x20]                             ; rbx->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CD9EB5  shr     r8, 0xc                                   
+  0x180CD9EB9  and     r8d, 0x1fffff                             
+  0x180CD9EC0  mov     eax, r8d                                  
+  0x180CD9EC3  shr     rax, 6                                    
+  0x180CD9EC7  and     r8d, 0x3f                                 
+  0x180CD9ECB  lea     rdx, [rdi + rax*8]                        
+  0x180CD9ECF  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD9ED6  nop     word ptr [rax + rax]                      
+
+180CD9EE0:
+  0x180CD9EE0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD9EE7  mov     rcx, rax                                  
+  0x180CD9EEA  bts     rcx, r8                                   
+  0x180CD9EEE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD9EF7  jne     0x180cd9ee0                               
+
+180CD9EF9:
+  0x180CD9EF9  xor     edx, edx                                  
+  0x180CD9EFB  mov     rcx, rbx                                  
+  0x180CD9EFE  call    0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+  0x180CD9F03  xor     ecx, ecx                                  
+  0x180CD9F05  mov     rdx, rax                                  
+  0x180CD9F08  test    rax, rax                                  
+  0x180CD9F0B  je      0x180cd9f1b                               
+  0x180CD9F0D  mov     rax, qword ptr [rip + 0x217a37c]             ; TYPE UnityEngine.RectTransform_TypeInfo
+  0x180CD9F14  cmp     qword ptr [rdx], rax                      
+  0x180CD9F17  cmove   rcx, rdx                                  
+
+180CD9F1B:
+  0x180CD9F1B  cmp     dword ptr [rip + 0x23ff2a2], 0               ; data_30D91C4
+  0x180CD9F22  mov     qword ptr [rbx + 0x28], rcx                  ; rbx->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CD9F26  je      0x180cd9f69                               
+  0x180CD9F28  lea     r8, [rbx + 0x28]                             ; rbx->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CD9F2C  shr     r8, 0xc                                   
+  0x180CD9F30  and     r8d, 0x1fffff                             
+  0x180CD9F37  mov     eax, r8d                                  
+  0x180CD9F3A  shr     rax, 6                                    
+  0x180CD9F3E  and     r8d, 0x3f                                 
+  0x180CD9F42  lea     rdx, [rdi + rax*8]                        
+  0x180CD9F46  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD9F4D  nop     dword ptr [rax]                           
+
+180CD9F50:
+  0x180CD9F50  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD9F57  mov     rcx, rax                                  
+  0x180CD9F5A  bts     rcx, r8                                   
+  0x180CD9F5E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD9F67  jne     0x180cd9f50                               
+
+180CD9F69:
+  0x180CD9F69  mov     r8, qword ptr [rip + 0x218f100]              ; METHODINFO Method$UnityEngine.Component.GetComponent<LayoutElement>()
+  0x180CD9F70  lea     rdx, [rsp + 0x30]                         
+  0x180CD9F75  mov     rcx, rbx                                  
+  0x180CD9F78  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CD9F7D  cmp     dword ptr [rip + 0x23ff240], 0               ; data_30D91C4
+  0x180CD9F84  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD9F89  mov     qword ptr [rbx + 0x30], rax                  ; rbx->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CD9F8D  je      0x180cd9fd9                               
+  0x180CD9F8F  lea     r8, [rbx + 0x30]                             ; rbx->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CD9F93  shr     r8, 0xc                                   
+  0x180CD9F97  and     r8d, 0x1fffff                             
+  0x180CD9F9E  mov     eax, r8d                                  
+  0x180CD9FA1  shr     rax, 6                                    
+  0x180CD9FA5  and     r8d, 0x3f                                 
+  0x180CD9FA9  lea     rdx, [rdi + rax*8]                        
+  0x180CD9FAD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CD9FB4  nop     dword ptr [rax]                           
+  0x180CD9FB8  nop     dword ptr [rax + rax]                     
+
+180CD9FC0:
+  0x180CD9FC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CD9FC7  mov     rcx, rax                                  
+  0x180CD9FCA  bts     rcx, r8                                   
+  0x180CD9FCE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CD9FD7  jne     0x180cd9fc0                               
+
+180CD9FD9:
+  0x180CD9FD9  mov     r8, qword ptr [rip + 0x217ac68]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<Button>()
+  0x180CD9FE0  lea     rdx, [rsp + 0x30]                         
+  0x180CD9FE5  mov     rcx, rbx                                  
+  0x180CD9FE8  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CD9FED  cmp     dword ptr [rip + 0x23ff1d0], 0               ; data_30D91C4
+  0x180CD9FF4  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CD9FF9  mov     qword ptr [rbx + 0x38], rax                  ; rbx->RebuildableButton._uiButton
+  0x180CD9FFD  je      0x180cda049                               
+  0x180CD9FFF  lea     r8, [rbx + 0x38]                             ; rbx->RebuildableButton._uiButton
+  0x180CDA003  shr     r8, 0xc                                   
+  0x180CDA007  and     r8d, 0x1fffff                             
+  0x180CDA00E  mov     eax, r8d                                  
+  0x180CDA011  shr     rax, 6                                    
+  0x180CDA015  and     r8d, 0x3f                                 
+  0x180CDA019  lea     rdx, [rdi + rax*8]                        
+  0x180CDA01D  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDA024  nop     dword ptr [rax]                           
+  0x180CDA028  nop     dword ptr [rax + rax]                     
+
+180CDA030:
+  0x180CDA030  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA037  mov     rcx, rax                                  
+  0x180CDA03A  bts     rcx, r8                                   
+  0x180CDA03E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA047  jne     0x180cda030                               
+
+180CDA049:
+  0x180CDA049  mov     r8, qword ptr [rip + 0x218f080]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<RebuildableLabel>()
+  0x180CDA050  lea     rdx, [rsp + 0x30]                         
+  0x180CDA055  mov     rcx, rbx                                  
+  0x180CDA058  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CDA05D  cmp     dword ptr [rip + 0x23ff160], 0               ; data_30D91C4
+  0x180CDA064  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CDA069  mov     qword ptr [rbx + 0x40], rax                  ; rbx->RebuildableButton._label
+  0x180CDA06D  je      0x180cda0b9                               
+  0x180CDA06F  lea     r8, [rbx + 0x40]                             ; rbx->RebuildableButton._label
+  0x180CDA073  shr     r8, 0xc                                   
+  0x180CDA077  and     r8d, 0x1fffff                             
+  0x180CDA07E  mov     eax, r8d                                  
+  0x180CDA081  shr     rax, 6                                    
+  0x180CDA085  and     r8d, 0x3f                                 
+  0x180CDA089  lea     rdx, [rdi + rax*8]                        
+  0x180CDA08D  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDA094  nop     dword ptr [rax]                           
+  0x180CDA098  nop     dword ptr [rax + rax]                     
+
+180CDA0A0:
+  0x180CDA0A0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA0A7  mov     rcx, rax                                  
+  0x180CDA0AA  bts     rcx, r8                                   
+  0x180CDA0AE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA0B7  jne     0x180cda0a0                               
+
+180CDA0B9:
+  0x180CDA0B9  mov     r8, qword ptr [rip + 0x218efb8]              ; METHODINFO Method$UnityEngine.Component.GetComponent<ContentSizeFitter>()
+  0x180CDA0C0  lea     rdx, [rsp + 0x30]                         
+  0x180CDA0C5  mov     rcx, rbx                                  
+  0x180CDA0C8  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CDA0CD  cmp     dword ptr [rip + 0x23ff0f0], 0               ; data_30D91C4
+  0x180CDA0D4  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CDA0D9  mov     qword ptr [rbx + 0x48], rax                  ; rbx->RebuildableButton._contentSizeFitter
+  0x180CDA0DD  je      0x180cda129                               
+  0x180CDA0DF  lea     r8, [rbx + 0x48]                             ; rbx->RebuildableButton._contentSizeFitter
+  0x180CDA0E3  shr     r8, 0xc                                   
+  0x180CDA0E7  and     r8d, 0x1fffff                             
+  0x180CDA0EE  mov     eax, r8d                                  
+  0x180CDA0F1  shr     rax, 6                                    
+  0x180CDA0F5  and     r8d, 0x3f                                 
+  0x180CDA0F9  lea     rdx, [rdi + rax*8]                        
+  0x180CDA0FD  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDA104  nop     dword ptr [rax]                           
+  0x180CDA108  nop     dword ptr [rax + rax]                     
+
+180CDA110:
+  0x180CDA110  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA117  mov     rcx, rax                                  
+  0x180CDA11A  bts     rcx, r8                                   
+  0x180CDA11E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA127  jne     0x180cda110                               
+
+180CDA129:
+  0x180CDA129  mov     r8, qword ptr [rip + 0x218ef98]              ; METHODINFO Method$UnityEngine.Component.GetComponent<AutoLayoutSupporter>()
+  0x180CDA130  lea     rdx, [rsp + 0x30]                         
+  0x180CDA135  mov     rcx, rbx                                  
+  0x180CDA138  call    0x180672d60                                  ; -> UnityEngine.Component$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CDA13D  cmp     dword ptr [rip + 0x23ff080], 0               ; data_30D91C4
+  0x180CDA144  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CDA149  mov     qword ptr [rbx + 0x50], rax                  ; rbx->RebuildableButton._autoLayoutSupporter
+  0x180CDA14D  je      0x180cda18a                               
+  0x180CDA14F  add     rbx, 0x50                                 
+  0x180CDA153  shr     rbx, 0xc                                  
+  0x180CDA157  and     ebx, 0x1fffff                             
+  0x180CDA15D  mov     eax, ebx                                  
+  0x180CDA15F  shr     rax, 6                                    
+  0x180CDA163  and     ebx, 0x3f                                 
+  0x180CDA166  lea     rdx, [rdi + rax*8]                        
+  0x180CDA16A  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CDA171:
+  0x180CDA171  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA178  mov     rcx, rax                                  
+  0x180CDA17B  bts     rcx, rbx                                  
+  0x180CDA17F  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA188  jne     0x180cda171                               
+
+180CDA18A:
+  0x180CDA18A  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CDA18F  add     rsp, 0x20                                 
+  0x180CDA193  pop     rdi                                       
+  0x180CDA194  ret                                               

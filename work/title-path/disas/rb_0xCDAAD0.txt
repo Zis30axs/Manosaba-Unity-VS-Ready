@@ -1,0 +1,55 @@
+====================================================================================================
+FUNCTION RVA 0xCDAAD0  VA 0x180CDAAD0  size 0x26 (38 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton.<>c__DisplayClass19_0$$<SetInternalData>b__0
+  csig   : void GigaCreation_Essentials_Ui_RebuildableButton___c__DisplayClass19_0___SetInternalData_b__0 (GigaCreation_Essentials_Ui_RebuildableButton___c__DisplayClass19_0_o* __this, GigaCreation_Essentials_Ui_RebuildableButton_o* __, const MethodInfo* method);
+  dump.cs: RebuildableButton.<>c__DisplayClass19_0 :: internal void <SetInternalData>b__0(RebuildableButton _)
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDAAD0  sub     rsp, 0x28                                 
+  0x180CDAAD4  mov     rax, qword ptr [rcx + 0x18]                  ; rcx-><>c__DisplayClass19_0.buttonData | <>c__DisplayClass21_0.widthData | <>c__DisplayClass22_0.heightData
+  0x180CDAAD8  test    rax, rax                                  
+  0x180CDAADB  je      0x180cdaaf1                               
+  0x180CDAADD  mov     rcx, qword ptr [rcx + 0x10]                  ; rcx-><>c__DisplayClass19_0.<>4__this | <>c__DisplayClass21_0.<>4__this | <>c__DisplayClass22_0.<>4__this
+  0x180CDAAE1  test    rcx, rcx                                  
+  0x180CDAAE4  je      0x180cdaaf1                               
+  0x180CDAAE6  mov     eax, dword ptr [rax + 0x20]                  ; rax->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CDAAE9  mov     dword ptr [rcx + 0x68], eax                  ; rcx->RebuildableButton._responseKind
+  0x180CDAAEC  add     rsp, 0x28                                 
+  0x180CDAAF0  ret                                               
+
+180CDAAF1:
+  0x180CDAAF1  call    0x180246730                                  ; THROW NullReferenceException

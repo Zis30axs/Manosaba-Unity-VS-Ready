@@ -1,0 +1,51 @@
+====================================================================================================
+FUNCTION RVA 0xCD8150  VA 0x180CD8150  size 0x1D (29 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton$$get_DefaultSize
+  csig   : UnityEngine_Vector2_o GigaCreation_Essentials_Ui_RebuildableButton__get_DefaultSize (GigaCreation_Essentials_Ui_RebuildableButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableButton :: protected virtual Vector2 get_DefaultSize()
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD8150  sub     rsp, 0x28                                 
+  0x180CD8154  mov     rcx, qword ptr [rcx + 0x28]                  ; rcx->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CD8158  test    rcx, rcx                                  
+  0x180CD815B  je      0x180cd8168                               
+  0x180CD815D  xor     edx, edx                                  
+  0x180CD815F  add     rsp, 0x28                                 
+  0x180CD8163  jmp     0x18207ba50                                  ; -> UnityEngine.RectTransform$$get_sizeDelta
+
+180CD8168:
+  0x180CD8168  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,187 @@
+====================================================================================================
+FUNCTION RVA 0xCD8170  VA 0x180CD8170  size 0x1FA (506 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton$$Rebuild
+  csig   : void GigaCreation_Essentials_Ui_RebuildableButton__Rebuild (GigaCreation_Essentials_Ui_RebuildableButton_o* __this, GigaCreation_Essentials_Ui_ButtonData_o* buttonData, bool atRuntime, System_Nullable_bool__o controlsItsOwnSize, System_Nullable_LocaleKind__o locale, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableButton :: public void Rebuild(ButtonData buttonData, bool atRuntime, Nullable<bool> controlsItsOwnSize, Nullable<LocaleKind> locale)
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD8170  push    rbp                                       
+  0x180CD8172  push    rdi                                       
+  0x180CD8173  push    r12                                       
+  0x180CD8175  push    r14                                       
+  0x180CD8177  push    r15                                       
+  0x180CD8179  sub     rsp, 0x40                                 
+  0x180CD817D  lea     rbp, [rsp + 0x30]                         
+  0x180CD8182  cmp     byte ptr [rip + 0x2404fc8], 0                ; data_30DD151
+  0x180CD8189  movzx   r15d, r8b                                 
+  0x180CD818D  mov     qword ptr [rbp + 0x40], rbx                  ; rbp->RebuildableButton._label
+  0x180CD8191  mov     rdi, rcx                                  
+  0x180CD8194  mov     qword ptr [rbp + 0x48], rsi                  ; rbp->RebuildableButton._contentSizeFitter
+  0x180CD8198  movzx   ebx, r9w                                  
+  0x180CD819C  mov     rsi, rdx                                  
+  0x180CD819F  jne     0x180cd81ca                               
+  0x180CD81A1  lea     rcx, [rip + 0x21606f8]                       ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180CD81A8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD81AD  lock or dword ptr [rsp], 0                        
+  0x180CD81B2  lea     rcx, [rip + 0x21606c7]                       ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180CD81B9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD81BE  lock or dword ptr [rsp], 0                        
+  0x180CD81C3  mov     byte ptr [rip + 0x2404f87], 1                ; data_30DD151
+
+180CD81CA:
+  0x180CD81CA  test    rsi, rsi                                  
+  0x180CD81CD  jne     0x180cd81d3                               
+  0x180CD81CF  mov     rsi, qword ptr [rdi + 0x60]                  ; rdi->RebuildableButton._buttonData
+
+180CD81D3:
+  0x180CD81D3  mov     rax, qword ptr [rip + 0x21606a6]             ; METHODINFO Method$System.Nullable<bool>.get_HasValue()
+  0x180CD81DA  mov     word ptr [rbp + 0x50], bx                    ; rbp->RebuildableButton._autoLayoutSupporter
+  0x180CD81DE  mov     rax, qword ptr [rax + 0x20]                  ; rax->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CD81E2  test    byte ptr [rax + 0x135], 1                 
+  0x180CD81E9  jne     0x180cd81f3                               
+  0x180CD81EB  mov     rcx, rax                                  
+  0x180CD81EE  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD81F3:
+  0x180CD81F3  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD81FA  lea     r8, [rbp + 0x50]                             ; rbp->RebuildableButton._autoLayoutSupporter
+  0x180CD81FE  mov     rcx, qword ptr [rax + 8]                  
+  0x180CD8202  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180CD8209  movsxd  rax, dword ptr [rdx + 0x18]                  ; rdx-><>c__DisplayClass19_0.buttonData | <>c__DisplayClass21_0.widthData | <>c__DisplayClass22_0.heightData
+  0x180CD820D  add     r8, rax                                   
+  0x180CD8210  mov     rax, qword ptr [rdx + 0x10]                  ; rdx-><>c__DisplayClass19_0.<>4__this | <>c__DisplayClass21_0.<>4__this | <>c__DisplayClass22_0.<>4__this
+  0x180CD8214  cmp     dword ptr [rax + 0x28], 0                    ; rax->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CD8218  lea     rcx, [r8 - 0x10]                          
+  0x180CD821C  cmovge  rcx, r8                                   
+  0x180CD8220  cmp     byte ptr [rcx], 0                         
+  0x180CD8223  je      0x180cd82dc                               
+  0x180CD8229  mov     rbx, qword ptr [rip + 0x2160670]             ; METHODINFO Method$System.Nullable<bool>.GetValueOrDefault()
+  0x180CD8230  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CD8234  test    byte ptr [rax + 0x135], 1                 
+  0x180CD823B  jne     0x180cd8245                               
+  0x180CD823D  mov     rcx, rax                                  
+  0x180CD8240  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD8245:
+  0x180CD8245  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD824C  mov     rcx, qword ptr [rax]                      
+  0x180CD824F  mov     r14d, dword ptr [rcx + 0xfc]              
+  0x180CD8256  lea     rax, [r14 + 0xf]                          
+  0x180CD825A  cmp     rax, r14                                  
+  0x180CD825D  ja      0x180cd8269                               
+  0x180CD825F  movabs  rax, 0xffffffffffffff0                    
+
+180CD8269:
+  0x180CD8269  and     rax, 0xfffffffffffffff0                   
+  0x180CD826D  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x180CD8272  sub     rsp, rax                                  
+  0x180CD8275  mov     rax, qword ptr [rbx + 0x20]                  ; rbx->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CD8279  test    byte ptr [rax + 0x135], 1                 
+  0x180CD8280  lea     r12, [rsp + 0x30]                         
+  0x180CD8285  jne     0x180cd828f                               
+  0x180CD8287  mov     rcx, rax                                  
+  0x180CD828A  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+180CD828F:
+  0x180CD828F  mov     rax, qword ptr [rax + 0xc0]               
+  0x180CD8296  mov     r8, r14                                   
+  0x180CD8299  mov     rcx, qword ptr [rax + 8]                  
+  0x180CD829D  mov     rdx, qword ptr [rcx + 0x80]               
+  0x180CD82A4  lea     rcx, [rbp + 0x50]                            ; rbp->RebuildableButton._autoLayoutSupporter
+  0x180CD82A8  movsxd  rax, dword ptr [rdx + 0x38]                  ; rdx->RebuildableButton._uiButton
+  0x180CD82AC  add     rcx, rax                                  
+  0x180CD82AF  mov     rax, qword ptr [rdx + 0x30]                  ; rdx->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CD82B3  cmp     dword ptr [rax + 0x28], 0                    ; rax->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CD82B7  lea     rdx, [rcx - 0x10]                         
+  0x180CD82BB  cmovge  rdx, rcx                                  
+  0x180CD82BF  mov     rcx, r12                                  
+  0x180CD82C2  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CD82C7  mov     r8, r14                                   
+  0x180CD82CA  lea     rcx, [rbp + 0x50]                            ; rbp->RebuildableButton._autoLayoutSupporter
+  0x180CD82CE  mov     rdx, r12                                  
+  0x180CD82D1  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x180CD82D6  movzx   ebx, byte ptr [rbp + 0x50]                   ; rbp->RebuildableButton._autoLayoutSupporter
+  0x180CD82DA  jmp     0x180cd82e0                               
+
+180CD82DC:
+  0x180CD82DC  movzx   ebx, byte ptr [rdi + 0x58]                   ; rdi->RebuildableButton._controlsItsOwnSize
+
+180CD82E0:
+  0x180CD82E0  mov     rax, qword ptr [rdi]                      
+  0x180CD82E3  movzx   r9d, bl                                   
+  0x180CD82E7  movzx   r8d, r15b                                 
+  0x180CD82EB  mov     rdx, rsi                                  
+  0x180CD82EE  mov     rcx, rdi                                  
+  0x180CD82F1  mov     r10, qword ptr [rax + 0x188]              
+  0x180CD82F8  mov     rax, qword ptr [rax + 0x190]              
+  0x180CD82FF  mov     qword ptr [rsp + 0x28], rax               
+  0x180CD8304  mov     rax, qword ptr [rbp + 0x60]                  ; rbp->RebuildableButton._buttonData
+  0x180CD8308  mov     qword ptr [rsp + 0x20], rax               
+  0x180CD830D  call    r10                                       
+  0x180CD8310  xor     r15b, 1                                   
+  0x180CD8314  test    bl, r15b                                  
+  0x180CD8317  je      0x180cd8350                               
+  0x180CD8319  mov     rbx, qword ptr [rdi + 0x50]                  ; rdi->RebuildableButton._autoLayoutSupporter
+  0x180CD831D  test    rbx, rbx                                  
+  0x180CD8320  je      0x180cd8365                               
+  0x180CD8322  xor     edx, edx                                  
+  0x180CD8324  mov     rcx, rbx                                  
+  0x180CD8327  call    0x18206a7a0                                  ; -> UnityEngine.MonoBehaviour$$get_destroyCancellationToken
+  0x180CD832C  xor     r9d, r9d                                  
+  0x180CD832F  lea     rcx, [rbp]                                
+  0x180CD8333  mov     r8, rax                                   
+  0x180CD8336  mov     rdx, rbx                                  
+  0x180CD8339  call    0x180d54d80                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$ExecuteRebuildingAsync
+  0x180CD833E  xor     edx, edx                                  
+  0x180CD8340  lea     rcx, [rbp]                                
+  0x180CD8344  movups  xmm0, xmmword ptr [rax]                   
+  0x180CD8347  movaps  xmmword ptr [rbp], xmm0                   
+  0x180CD834B  call    0x18181f300                                  ; -> Cysharp.Threading.Tasks.UniTaskExtensions$$Forget
+
+180CD8350:
+  0x180CD8350  mov     rbx, qword ptr [rbp + 0x40]                  ; rbp->RebuildableButton._label
+  0x180CD8354  mov     rsi, qword ptr [rbp + 0x48]                  ; rbp->RebuildableButton._contentSizeFitter
+  0x180CD8358  lea     rsp, [rbp + 0x10]                            ; rbp-><>c__DisplayClass19_0.<>4__this | <>c__DisplayClass21_0.<>4__this | <>c__DisplayClass22_0.<>4__this
+  0x180CD835C  pop     r15                                       
+  0x180CD835E  pop     r14                                       
+  0x180CD8360  pop     r12                                       
+  0x180CD8362  pop     rdi                                       
+  0x180CD8363  pop     rbp                                       
+  0x180CD8364  ret                                               
+
+180CD8365:
+  0x180CD8365  call    0x180246730                                  ; THROW NullReferenceException

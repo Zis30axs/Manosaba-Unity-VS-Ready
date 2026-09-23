@@ -1,0 +1,29 @@
+====================================================================================================
+FUNCTION RVA 0x6B7E00  VA 0x1806B7E00  size 0x42 (66 bytes)
+  managed: TMPro.TMP_DefaultControls$$AddComponent<object>
+  managed: GigaCreation.Tools.UndoExtensions.GameObjectExtensions$$AddComponentAsUndoable<object>
+  csig   : Il2CppObject* TMPro_TMP_DefaultControls__AddComponent_object_ (UnityEngine_GameObject_o* go, const MethodInfo_6B7E00* method);
+====================================================================================================
+  0x1806B7E00  mov     qword ptr [rsp + 8], rbx                  
+  0x1806B7E05  push    rdi                                       
+  0x1806B7E06  sub     rsp, 0x20                                 
+  0x1806B7E0A  cmp     qword ptr [rdx + 0x38], 0                 
+  0x1806B7E0F  mov     rbx, rdx                                  
+  0x1806B7E12  mov     rdi, rcx                                  
+  0x1806B7E15  jne     0x1806b7e1f                               
+  0x1806B7E17  mov     rcx, rdx                                  
+  0x1806B7E1A  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+1806B7E1F:
+  0x1806B7E1F  test    rdi, rdi                                  
+  0x1806B7E22  je      0x1806b7e3d                               
+  0x1806B7E24  mov     rdx, qword ptr [rbx + 0x38]               
+  0x1806B7E28  mov     rcx, rdi                                  
+  0x1806B7E2B  mov     rdx, qword ptr [rdx]                      
+  0x1806B7E2E  mov     rbx, qword ptr [rsp + 0x30]               
+  0x1806B7E33  add     rsp, 0x20                                 
+  0x1806B7E37  pop     rdi                                       
+  0x1806B7E38  jmp     0x1806b68f0                                  ; -> UnityEngine.GameObject$$AddComponent<object>
+
+1806B7E3D:
+  0x1806B7E3D  call    0x180246730                                  ; THROW NullReferenceException

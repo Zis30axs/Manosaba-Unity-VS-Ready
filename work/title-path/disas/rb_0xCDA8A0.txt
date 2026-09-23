@@ -1,0 +1,88 @@
+====================================================================================================
+FUNCTION RVA 0xCDA8A0  VA 0x180CDA8A0  size 0xAA (170 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton$$<RebuildLayoutController>b__25_0
+  csig   : void GigaCreation_Essentials_Ui_RebuildableButton___RebuildLayoutController_b__25_0 (GigaCreation_Essentials_Ui_RebuildableButton_o* __this, GigaCreation_Essentials_Ui_RebuildableButton_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableButton :: private void <RebuildLayoutController>b__25_0(RebuildableButton _)
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDA8A0  mov     eax, dword ptr [rip + 0x23fe91e]             ; data_30D91C4
+  0x180CDA8A6  lea     r11, [rip + 0x24139f3]                       ; data_30EE2A0
+  0x180CDA8AD  xor     r10d, r10d                                
+  0x180CDA8B0  mov     r9, rcx                                   
+  0x180CDA8B3  mov     qword ptr [rcx + 0x48], r10                  ; rcx->RebuildableButton._contentSizeFitter
+  0x180CDA8B7  test    eax, eax                                  
+  0x180CDA8B9  je      0x180cda8ff                               
+  0x180CDA8BB  lea     r8, [rcx + 0x48]                             ; rcx->RebuildableButton._contentSizeFitter
+  0x180CDA8BF  shr     r8, 0xc                                   
+  0x180CDA8C3  and     r8d, 0x1fffff                             
+  0x180CDA8CA  mov     eax, r8d                                  
+  0x180CDA8CD  shr     rax, 6                                    
+  0x180CDA8D1  and     r8d, 0x3f                                 
+  0x180CDA8D5  lea     rdx, [r11 + rax*8]                        
+  0x180CDA8D9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+180CDA8E0:
+  0x180CDA8E0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA8E7  mov     rcx, rax                                  
+  0x180CDA8EA  bts     rcx, r8                                   
+  0x180CDA8EE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA8F7  jne     0x180cda8e0                               
+  0x180CDA8F9  mov     eax, dword ptr [rip + 0x23fe8c5]             ; data_30D91C4
+
+180CDA8FF:
+  0x180CDA8FF  mov     qword ptr [r9 + 0x50], r10                   ; r9->RebuildableButton._autoLayoutSupporter
+  0x180CDA903  test    eax, eax                                  
+  0x180CDA905  je      0x180cda949                               
+  0x180CDA907  lea     r8, [r9 + 0x50]                              ; r9->RebuildableButton._autoLayoutSupporter
+  0x180CDA90B  shr     r8, 0xc                                   
+  0x180CDA90F  and     r8d, 0x1fffff                             
+  0x180CDA916  mov     eax, r8d                                  
+  0x180CDA919  shr     rax, 6                                    
+  0x180CDA91D  and     r8d, 0x3f                                 
+  0x180CDA921  lea     rdx, [r11 + rax*8]                        
+  0x180CDA925  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDA92C  nop     dword ptr [rax]                           
+
+180CDA930:
+  0x180CDA930  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDA937  mov     rcx, rax                                  
+  0x180CDA93A  bts     rcx, r8                                   
+  0x180CDA93E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDA947  jne     0x180cda930                               
+
+180CDA949:
+  0x180CDA949  ret                                               

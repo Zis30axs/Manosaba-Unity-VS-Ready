@@ -1,0 +1,263 @@
+====================================================================================================
+FUNCTION RVA 0xCDB1A0  VA 0x180CDB1A0  size 0x354 (852 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton.<OnClickAsync>d__27$$MoveNext
+  csig   : void GigaCreation_Essentials_Ui_RebuildableButton__OnClickAsync_d__27__MoveNext (GigaCreation_Essentials_Ui_RebuildableButton__OnClickAsync_d__27_o __this, const MethodInfo* method);
+  dump.cs: RebuildableButton.<OnClickAsync>d__27 :: private void MoveNext()
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CDB1A0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDB1A5  mov     qword ptr [rsp + 0x20], rsi               
+  0x180CDB1AA  mov     qword ptr [rsp + 8], rcx                  
+  0x180CDB1AF  push    rdi                                       
+  0x180CDB1B0  push    r14                                       
+  0x180CDB1B2  push    r15                                       
+  0x180CDB1B4  sub     rsp, 0x70                                 
+  0x180CDB1B8  movaps  xmmword ptr [rsp + 0x60], xmm6            
+  0x180CDB1BD  mov     rdi, rcx                                  
+  0x180CDB1C0  cmp     byte ptr [rip + 0x2401f9c], 0                ; data_30DD163
+  0x180CDB1C7  jne     0x180cdb203                               
+  0x180CDB1C9  lea     rcx, [rip + 0x218ddf0]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.AwaitUnsafeOnCompleted<UniTask.Awaiter, RebuildableButton.<OnClickAsync>d__27>()
+  0x180CDB1D0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB1D5  lock or dword ptr [rsp], 0                        
+  0x180CDB1DA  lea     rcx, [rip + 0x218c107]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetResult()
+  0x180CDB1E1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB1E6  lock or dword ptr [rsp], 0                        
+  0x180CDB1EB  lea     rcx, [rip + 0x2176f16]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CDB1F2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB1F7  lock or dword ptr [rsp], 0                        
+  0x180CDB1FC  mov     byte ptr [rip + 0x2401f60], 1                ; data_30DD163
+
+180CDB203:
+  0x180CDB203  xorps   xmm0, xmm0                                
+  0x180CDB206  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CDB20B  mov     eax, dword ptr [rdi]                      
+  0x180CDB20D  mov     r14, qword ptr [rdi + 0x20]                  ; rdi->RebuildableButton._gameObject | <OnClickAsync>d__27.<>4__this
+  0x180CDB211  test    eax, eax                                  
+  0x180CDB213  jne     0x180cdb232                               
+  0x180CDB215  movups  xmm1, xmmword ptr [rdi + 0x30]               ; rdi->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CDB219  movaps  xmmword ptr [rsp + 0x40], xmm1            
+  0x180CDB21E  movups  xmmword ptr [rdi + 0x30], xmm0               ; rdi->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CDB222  mov     dword ptr [rdi], 0xffffffff               
+  0x180CDB228  movq    r8, xmm1                                  
+  0x180CDB22D  jmp     0x180cdb429                               
+
+180CDB232:
+  0x180CDB232  test    r14, r14                                  
+  0x180CDB235  je      0x180cdb4ef                               
+  0x180CDB23B  mov     rsi, qword ptr [r14 + 0x38]                  ; r14->RebuildableButton._uiButton
+  0x180CDB23F  mov     rbx, qword ptr [rdi + 0x28]                  ; rdi->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CDB243  cmp     byte ptr [rip + 0x2406d34], 0                ; data_30E1F7E
+  0x180CDB24A  jne     0x180cdb264                               
+  0x180CDB24C  lea     rcx, [rip + 0x213271d]                       ; TYPE Cysharp.Threading.Tasks.AsyncUnityEventHandler_TypeInfo
+  0x180CDB253  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB258  lock or dword ptr [rsp], 0                        
+  0x180CDB25D  mov     byte ptr [rip + 0x2406d1a], 1                ; data_30E1F7E
+
+180CDB264:
+  0x180CDB264  test    rsi, rsi                                  
+  0x180CDB267  je      0x180cdb4ea                               
+  0x180CDB26D  mov     r15, qword ptr [rsi + 0x100]              
+  0x180CDB274  mov     rcx, qword ptr [rip + 0x21326f5]             ; TYPE Cysharp.Threading.Tasks.AsyncUnityEventHandler_TypeInfo
+  0x180CDB27B  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CDB280  mov     rsi, rax                                  
+  0x180CDB283  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CDB28C  mov     r9b, 1                                    
+  0x180CDB28F  mov     r8, rbx                                   
+  0x180CDB292  mov     rdx, r15                                  
+  0x180CDB295  mov     rcx, rax                                  
+  0x180CDB298  call    0x18183ba20                                  ; -> Cysharp.Threading.Tasks.AsyncUnityEventHandler$$.ctor
+  0x180CDB29D  test    rsi, rsi                                  
+  0x180CDB2A0  je      0x180cdb4e5                               
+  0x180CDB2A6  xor     r8d, r8d                                  
+  0x180CDB2A9  mov     rdx, rsi                                  
+  0x180CDB2AC  lea     rcx, [rsp + 0x50]                         
+  0x180CDB2B1  call    0x18183bd10                                  ; -> Cysharp.Threading.Tasks.AsyncUnityEventHandler$$OnInvokeAsync
+  0x180CDB2B6  movups  xmm6, xmmword ptr [rax]                   
+  0x180CDB2B9  mov     rcx, qword ptr [rip + 0x2176e48]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CDB2C0  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDB2C7  jne     0x180cdb2ce                               
+  0x180CDB2C9  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDB2CE:
+  0x180CDB2CE  movaps  xmmword ptr [rsp + 0x50], xmm6            
+  0x180CDB2D3  lea     rbx, [rip + 0x2412fc6]                       ; data_30EE2A0
+  0x180CDB2DA  cmp     dword ptr [rip + 0x23fdee3], 0               ; data_30D91C4
+  0x180CDB2E1  je      0x180cdb32e                               
+  0x180CDB2E3  lea     r8, [rsp + 0x50]                          
+  0x180CDB2E8  shr     r8, 0xc                                   
+  0x180CDB2EC  and     r8d, 0x1fffff                             
+  0x180CDB2F3  mov     eax, r8d                                  
+  0x180CDB2F6  shr     rax, 6                                    
+  0x180CDB2FA  lea     rdx, [rbx + rax*8]                        
+  0x180CDB2FE  and     r8d, 0x3f                                 
+  0x180CDB302  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDB309  nop     dword ptr [rax]                           
+
+180CDB310:
+  0x180CDB310  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDB317  mov     rcx, rax                                  
+  0x180CDB31A  bts     rcx, r8                                   
+  0x180CDB31E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDB327  jne     0x180cdb310                               
+  0x180CDB329  movaps  xmm6, xmmword ptr [rsp + 0x50]            
+
+180CDB32E:
+  0x180CDB32E  movdqa  xmmword ptr [rsp + 0x40], xmm6            
+  0x180CDB334  cmp     byte ptr [rip + 0x23fc1e2], 0                ; data_30D751D
+  0x180CDB33B  jne     0x180cdb355                               
+  0x180CDB33D  lea     rcx, [rip + 0x2176dc4]                       ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CDB344  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB349  lock or dword ptr [rsp], 0                        
+  0x180CDB34E  mov     byte ptr [rip + 0x23fc1c8], 1                ; data_30D751D
+
+180CDB355:
+  0x180CDB355  mov     rcx, qword ptr [rip + 0x2176dac]             ; TYPE Cysharp.Threading.Tasks.UniTask_TypeInfo
+  0x180CDB35C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CDB363  jne     0x180cdb36a                               
+  0x180CDB365  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CDB36A:
+  0x180CDB36A  cmp     byte ptr [rip + 0x23fc1a5], 0                ; data_30D7516
+  0x180CDB371  jne     0x180cdb38b                               
+  0x180CDB373  lea     rcx, [rip + 0x2175dee]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CDB37A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB37F  lock or dword ptr [rsp], 0                        
+  0x180CDB384  mov     byte ptr [rip + 0x23fc18b], 1                ; data_30D7516
+
+180CDB38B:
+  0x180CDB38B  mov     r8, qword ptr [rsp + 0x40]                
+  0x180CDB390  test    r8, r8                                    
+  0x180CDB393  je      0x180cdb429                               
+  0x180CDB399  xor     ecx, ecx                                  
+  0x180CDB39B  movzx   r9d, word ptr [rsp + 0x48]                
+  0x180CDB3A1  mov     rdx, qword ptr [rip + 0x2175dc0]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CDB3A8  call    0x180003000                                  ; -> sub_3000 (runtime/helper)
+  0x180CDB3AD  test    eax, eax                                  
+  0x180CDB3AF  jne     0x180cdb424                               
+  0x180CDB3B1  mov     dword ptr [rdi], eax                      
+  0x180CDB3B3  movaps  xmm0, xmmword ptr [rsp + 0x40]            
+  0x180CDB3B8  movups  xmmword ptr [rdi + 0x30], xmm0               ; rdi->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CDB3BC  cmp     dword ptr [rip + 0x23fde02], eax             ; data_30D91C4
+  0x180CDB3C2  je      0x180cdb409                               
+  0x180CDB3C4  lea     r8, [rdi + 0x30]                             ; rdi->RebuildableButton._layoutElement | <OnClickAsync>d__27.<>u__1
+  0x180CDB3C8  shr     r8, 0xc                                   
+  0x180CDB3CC  and     r8d, 0x1fffff                             
+  0x180CDB3D3  mov     eax, r8d                                  
+  0x180CDB3D6  shr     rax, 6                                    
+  0x180CDB3DA  lea     rdx, [rbx + rax*8]                        
+  0x180CDB3DE  and     r8d, 0x3f                                 
+  0x180CDB3E2  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CDB3E9  nop     dword ptr [rax]                           
+
+180CDB3F0:
+  0x180CDB3F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CDB3F7  mov     rcx, rax                                  
+  0x180CDB3FA  bts     rcx, r8                                   
+  0x180CDB3FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CDB407  jne     0x180cdb3f0                               
+
+180CDB409:
+  0x180CDB409  lea     rcx, [rdi + 8]                            
+  0x180CDB40D  mov     r9, qword ptr [rip + 0x218dbac]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.AwaitUnsafeOnCompleted<UniTask.Awaiter, RebuildableButton.<OnClickAsync>d__27>()
+  0x180CDB414  mov     r8, rdi                                   
+  0x180CDB417  lea     rdx, [rsp + 0x40]                         
+  0x180CDB41C  call    0x180356170                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x180CDB421  nop                                               
+  0x180CDB422  jmp     0x180cdb494                               
+
+180CDB424:
+  0x180CDB424  mov     r8, qword ptr [rsp + 0x40]                
+
+180CDB429:
+  0x180CDB429  cmp     byte ptr [rip + 0x23fc0ec], 0                ; data_30D751C
+  0x180CDB430  jne     0x180cdb44f                               
+  0x180CDB432  lea     rcx, [rip + 0x2175d2f]                       ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CDB439  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB43E  lock or dword ptr [rsp], 0                        
+  0x180CDB443  mov     byte ptr [rip + 0x23fc0d2], 1                ; data_30D751C
+  0x180CDB44A  mov     r8, qword ptr [rsp + 0x40]                
+
+180CDB44F:
+  0x180CDB44F  test    r8, r8                                    
+  0x180CDB452  je      0x180cdb466                               
+  0x180CDB454  movzx   r9d, word ptr [rsp + 0x48]                
+  0x180CDB45A  mov     rdx, qword ptr [rip + 0x2175d07]             ; TYPE Cysharp.Threading.Tasks.IUniTaskSource_TypeInfo
+  0x180CDB461  call    0x1800031d0                                  ; -> sub_31D0 (runtime/helper)
+
+180CDB466:
+  0x180CDB466  test    r14, r14                                  
+  0x180CDB469  je      0x180cdb4df                               
+  0x180CDB46B  mov     eax, dword ptr [r14 + 0x68]                  ; r14->RebuildableButton._responseKind
+  0x180CDB46F  mov     dword ptr [rdi], 0xfffffffe               
+  0x180CDB475  mov     dword ptr [rsp + 0x90], eax               
+  0x180CDB47C  lea     rcx, [rdi + 8]                            
+  0x180CDB480  mov     r8, qword ptr [rip + 0x218be61]              ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetResult()
+  0x180CDB487  lea     rdx, [rsp + 0x90]                         
+  0x180CDB48F  call    0x1803564e0                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetResult
+
+180CDB494:
+  0x180CDB494  lea     r11, [rsp + 0x70]                         
+  0x180CDB499  mov     rbx, qword ptr [r11 + 0x28]                  ; r11->RebuildableButton._rectTransform | <OnClickAsync>d__27.ct
+  0x180CDB49D  mov     rsi, qword ptr [r11 + 0x38]                  ; r11->RebuildableButton._uiButton
+  0x180CDB4A1  movaps  xmm6, xmmword ptr [rsp + 0x60]            
+  0x180CDB4A6  mov     rsp, r11                                  
+  0x180CDB4A9  pop     r15                                       
+  0x180CDB4AB  pop     r14                                       
+  0x180CDB4AD  pop     rdi                                       
+  0x180CDB4AE  ret                                               
+  0x180CDB4AF  mov     rbx, qword ptr [rsp + 0x90]               
+  0x180CDB4B7  mov     dword ptr [rbx], 0xfffffffe               
+  0x180CDB4BD  lea     rcx, [rip + 0x218be4c]                       ; METHODINFO Method$Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<ResponseKind>.SetException()
+  0x180CDB4C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDB4C9  lea     rcx, [rbx + 8]                            
+  0x180CDB4CD  mov     r8, rax                                   
+  0x180CDB4D0  mov     rdx, qword ptr [rsp + 0xa0]               
+  0x180CDB4D8  call    0x180356390                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder<__Il2CppFullySharedGenericType>$$SetException
+  0x180CDB4DD  jmp     0x180cdb494                               
+
+180CDB4DF:
+  0x180CDB4DF  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CDB4E4  nop                                               
+
+180CDB4E5:
+  0x180CDB4E5  call    0x180246730                                  ; THROW NullReferenceException
+
+180CDB4EA:
+  0x180CDB4EA  call    0x180246730                                  ; THROW NullReferenceException
+
+180CDB4EF:
+  0x180CDB4EF  call    0x180246730                                  ; THROW NullReferenceException

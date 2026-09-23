@@ -1,0 +1,95 @@
+====================================================================================================
+FUNCTION RVA 0xCD9B30  VA 0x180CD9B30  size 0xE0 (224 bytes)
+  managed: GigaCreation.Essentials.Ui.RebuildableButton$$OnClickAsObservable
+  csig   : System_IObservable_ResponseKind__o* GigaCreation_Essentials_Ui_RebuildableButton__OnClickAsObservable (GigaCreation_Essentials_Ui_RebuildableButton_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.RebuildableButton :: public IObservable<ResponseKind> OnClickAsObservable()
+  fields of GigaCreation.Essentials.Ui.RebuildableButton:
+      +0x20   _gameObject                    GameObject
+      +0x28   _rectTransform                 RectTransform
+      +0x30   _layoutElement                 LayoutElement
+      +0x38   _uiButton                      Button
+      +0x40   _label                         RebuildableLabel
+      +0x48   _contentSizeFitter             ContentSizeFitter
+      +0x50   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x58   _controlsItsOwnSize            bool
+      +0x60   _buttonData                    ButtonData
+      +0x68   _responseKind                  ResponseKind
+  fields of RebuildableButton.<>c:
+      +0x0    <>9                            static readonly RebuildableButton.<>c
+      +0x8    <>9__25_1                      static Action<ContentSizeFitter>
+  fields of RebuildableButton.<>c__DisplayClass19_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   buttonData                     ButtonData
+  fields of RebuildableButton.<>c__DisplayClass21_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   widthData                      SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass22_0:
+      +0x10   <>4__this                      RebuildableButton
+      +0x18   heightData                     SelectableSizeData
+  fields of RebuildableButton.<>c__DisplayClass25_0:
+      +0x10   contentSizeFitter              ContentSizeFitter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<>c__DisplayClass25_1:
+      +0x10   autoLayoutSupporter            AutoLayoutSupporter
+      +0x18   <>4__this                      RebuildableButton
+  fields of RebuildableButton.<OnClickAsync>d__27:
+      +0x0    <>1__state                     int
+      +0x8    <>t__builder                   AsyncUniTaskMethodBuilder<ResponseKind>
+      +0x20   <>4__this                      RebuildableButton
+      +0x28   ct                             CancellationToken
+      +0x30   <>u__1                         UniTask.Awaiter
+====================================================================================================
+  0x180CD9B30  push    rbx                                       
+  0x180CD9B32  sub     rsp, 0x20                                 
+  0x180CD9B36  cmp     byte ptr [rip + 0x240361c], 0                ; data_30DD159
+  0x180CD9B3D  mov     rbx, rcx                                  
+  0x180CD9B40  jne     0x180cd9b8d                               
+  0x180CD9B42  lea     rcx, [rip + 0x218f5c7]                       ; TYPE System.Func<Unit, ResponseKind>_TypeInfo
+  0x180CD9B49  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9B4E  lock or dword ptr [rsp], 0                        
+  0x180CD9B53  lea     rcx, [rip + 0x218f5ae]                       ; METHODINFO Method$UniRx.Observable.Select<Unit, ResponseKind>()
+  0x180CD9B5A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9B5F  lock or dword ptr [rsp], 0                        
+  0x180CD9B64  lea     rcx, [rip + 0x217fd0d]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CD9B6B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9B70  lock or dword ptr [rsp], 0                        
+  0x180CD9B75  lea     rcx, [rip + 0x218f544]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableButton.<OnClickAsObservable>b__26_0() => UnityEngine.UIElements.KeyboardEventBase<object>$$get_modifiers (+13 aliases)
+  0x180CD9B7C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CD9B81  lock or dword ptr [rsp], 0                        
+  0x180CD9B86  mov     byte ptr [rip + 0x24035cc], 1                ; data_30DD159
+
+180CD9B8D:
+  0x180CD9B8D  mov     rcx, qword ptr [rbx + 0x38]                  ; rbx->RebuildableButton._uiButton
+  0x180CD9B91  test    rcx, rcx                                  
+  0x180CD9B94  je      0x180cd9c0b                               
+  0x180CD9B96  mov     rcx, qword ptr [rcx + 0x100]              
+  0x180CD9B9D  xor     edx, edx                                  
+  0x180CD9B9F  mov     qword ptr [rsp + 0x30], rsi               
+  0x180CD9BA4  mov     qword ptr [rsp + 0x38], rdi               
+  0x180CD9BA9  call    0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+  0x180CD9BAE  mov     rcx, qword ptr [rip + 0x218f55b]             ; TYPE System.Func<Unit, ResponseKind>_TypeInfo
+  0x180CD9BB5  mov     rsi, rax                                  
+  0x180CD9BB8  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CD9BBD  mov     r8, qword ptr [rip + 0x218f4fc]              ; METHODINFO Method$GigaCreation.Essentials.Ui.RebuildableButton.<OnClickAsObservable>b__26_0() => UnityEngine.UIElements.KeyboardEventBase<object>$$get_modifiers (+13 aliases)
+  0x180CD9BC4  xor     r9d, r9d                                  
+  0x180CD9BC7  mov     rdx, rbx                                  
+  0x180CD9BCA  mov     rcx, rax                                  
+  0x180CD9BCD  mov     rdi, rax                                  
+  0x180CD9BD0  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180CD9BD5  mov     rcx, qword ptr [rip + 0x217fc9c]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CD9BDC  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CD9BE3  jne     0x180cd9bea                               
+  0x180CD9BE5  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CD9BEA:
+  0x180CD9BEA  mov     r8, qword ptr [rip + 0x218f517]              ; METHODINFO Method$UniRx.Observable.Select<Unit, ResponseKind>()
+  0x180CD9BF1  mov     rdx, rdi                                  
+  0x180CD9BF4  mov     rcx, rsi                                  
+  0x180CD9BF7  mov     rdi, qword ptr [rsp + 0x38]               
+  0x180CD9BFC  mov     rsi, qword ptr [rsp + 0x30]               
+  0x180CD9C01  add     rsp, 0x20                                 
+  0x180CD9C05  pop     rbx                                       
+  0x180CD9C06  jmp     0x18072eea0                                  ; -> UniRx.Observable$$Select<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>
+
+180CD9C0B:
+  0x180CD9C0B  call    0x180246730                                  ; THROW NullReferenceException
