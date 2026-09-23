@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xCE1CA0  VA 0x180CE1CA0  size 0xAA (170 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$get_ParentBlockables
+  csig   : GigaCreation_Essentials_Ui_ICancelEventBlockable_array* GigaCreation_Essentials_Ui_TweeningDropdown__get_ParentBlockables (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: private ICancelEventBlockable[] get_ParentBlockables()
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE1CA0  push    rbx                                       
+  0x180CE1CA2  sub     rsp, 0x20                                 
+  0x180CE1CA6  cmp     byte ptr [rip + 0x23fb4e6], 0                ; data_30DD193
+  0x180CE1CAD  mov     rbx, rcx                                  
+  0x180CE1CB0  jne     0x180ce1cca                               
+  0x180CE1CB2  lea     rcx, [rip + 0x21718cf]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<ICancelEventBlockable>()
+  0x180CE1CB9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1CBE  lock or dword ptr [rsp], 0                        
+  0x180CE1CC3  mov     byte ptr [rip + 0x23fb4c9], 1                ; data_30DD193
+
+180CE1CCA:
+  0x180CE1CCA  mov     rax, qword ptr [rbx + 0x1d0]                 ; rbx->TweeningDropdown._parentBlockables
+  0x180CE1CD1  test    rax, rax                                  
+  0x180CE1CD4  jne     0x180ce1d44                               
+  0x180CE1CD6  mov     rdx, qword ptr [rip + 0x21718ab]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<ICancelEventBlockable>()
+  0x180CE1CDD  mov     rcx, rbx                                  
+  0x180CE1CE0  call    0x180673990                                  ; -> UnityEngine.Component$$GetComponentsInParent<__Il2CppFullySharedGenericType>
+  0x180CE1CE5  cmp     dword ptr [rip + 0x23f74d8], 0               ; data_30D91C4
+  0x180CE1CEC  mov     r9, rax                                   
+  0x180CE1CEF  mov     qword ptr [rbx + 0x1d0], rax                 ; rbx->TweeningDropdown._parentBlockables
+  0x180CE1CF6  je      0x180ce1d41                               
+  0x180CE1CF8  lea     r8, [rbx + 0x1d0]                            ; rbx->TweeningDropdown._parentBlockables
+  0x180CE1CFF  shr     r8, 0xc                                   
+  0x180CE1D03  lea     rcx, [rip + 0x2452876]                       ; data_3134580
+  0x180CE1D0A  and     r8d, 0x1fffff                             
+  0x180CE1D11  mov     eax, r8d                                  
+  0x180CE1D14  shr     rax, 6                                    
+  0x180CE1D18  and     r8d, 0x3f                                 
+  0x180CE1D1C  lea     rdx, [rcx + rax*8]                        
+  0x180CE1D20  prefetchw byte ptr [rdx]                            
+  0x180CE1D23  nop     dword ptr [rax]                           
+  0x180CE1D27  nop     word ptr [rax + rax]                      
+
+180CE1D30:
+  0x180CE1D30  mov     rax, qword ptr [rdx]                      
+  0x180CE1D33  mov     rcx, rax                                  
+  0x180CE1D36  bts     rcx, r8                                   
+  0x180CE1D3A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE1D3F  jne     0x180ce1d30                               
+
+180CE1D41:
+  0x180CE1D41  mov     rax, r9                                   
+
+180CE1D44:
+  0x180CE1D44  add     rsp, 0x20                                 
+  0x180CE1D48  pop     rbx                                       
+  0x180CE1D49  ret                                               

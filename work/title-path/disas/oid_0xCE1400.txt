@@ -1,0 +1,87 @@
+====================================================================================================
+FUNCTION RVA 0xCE1400  VA 0x180CE1400  size 0xEE (238 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$<OnEnable>b__8_0
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown___OnEnable_b__8_0 (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, UniRx_Unit_o __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private void <OnEnable>b__8_0(Unit _)
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE1400  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE1405  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CE140A  push    rdi                                       
+  0x180CE140B  sub     rsp, 0x20                                 
+  0x180CE140F  mov     rsi, qword ptr [rcx + 0x28]                  ; rcx->OptionItemDropdown._autoLayoutSupporter
+  0x180CE1413  test    rsi, rsi                                  
+  0x180CE1416  je      0x180ce14c9                               
+  0x180CE141C  cmp     byte ptr [rip + 0x23fc023], 0                ; data_30DD446
+  0x180CE1423  jne     0x180ce143d                               
+  0x180CE1425  lea     rcx, [rip + 0x2151b8c]                       ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180CE142C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1431  lock or dword ptr [rsp], 0                        
+  0x180CE1436  mov     byte ptr [rip + 0x23fc009], 1                ; data_30DD446
+
+180CE143D:
+  0x180CE143D  mov     rcx, qword ptr [rip + 0x2151b74]             ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180CE1444  mov     edx, 2                                    
+  0x180CE1449  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CE144E  mov     rdi, qword ptr [rsi + 0x20]                  ; rsi->OptionItemDropdown._dropdown
+  0x180CE1452  mov     rbx, rax                                  
+  0x180CE1455  test    rax, rax                                  
+  0x180CE1458  je      0x180ce14c9                               
+  0x180CE145A  test    rdi, rdi                                  
+  0x180CE145D  je      0x180ce1473                               
+  0x180CE145F  mov     rdx, qword ptr [rax]                      
+  0x180CE1462  mov     rcx, rdi                                  
+  0x180CE1465  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CE1469  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CE146E  test    rax, rax                                  
+  0x180CE1471  je      0x180ce14cf                               
+
+180CE1473:
+  0x180CE1473  mov     r8, rdi                                   
+  0x180CE1476  xor     edx, edx                                  
+  0x180CE1478  mov     rcx, rbx                                  
+  0x180CE147B  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CE1480  mov     rdi, qword ptr [rsi + 0x28]                  ; rsi->OptionItemDropdown._autoLayoutSupporter
+  0x180CE1484  test    rdi, rdi                                  
+  0x180CE1487  je      0x180ce149d                               
+  0x180CE1489  mov     rdx, qword ptr [rbx]                      
+  0x180CE148C  mov     rcx, rdi                                  
+  0x180CE148F  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CE1493  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CE1498  test    rax, rax                                  
+  0x180CE149B  je      0x180ce14df                               
+
+180CE149D:
+  0x180CE149D  mov     r8, rdi                                   
+  0x180CE14A0  mov     edx, 1                                    
+  0x180CE14A5  mov     rcx, rbx                                  
+  0x180CE14A8  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CE14AD  xor     r8d, r8d                                  
+  0x180CE14B0  mov     rdx, rbx                                  
+  0x180CE14B3  mov     cl, 1                                     
+  0x180CE14B5  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE14BA  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CE14BF  add     rsp, 0x20                                 
+  0x180CE14C3  pop     rdi                                       
+  0x180CE14C4  jmp     0x180d55270                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$SetComponentsEnabled
+
+180CE14C9:
+  0x180CE14C9  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE14CE  int3                                              
+
+180CE14CF:
+  0x180CE14CF  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CE14D4  mov     rcx, rax                                  
+  0x180CE14D7  xor     edx, edx                                  
+  0x180CE14D9  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180CE14DE  int3                                              
+
+180CE14DF:
+  0x180CE14DF  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CE14E4  mov     rcx, rax                                  
+  0x180CE14E7  xor     edx, edx                                  
+  0x180CE14E9  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

@@ -1,0 +1,27 @@
+====================================================================================================
+FUNCTION RVA 0xCEAF00  VA 0x180CEAF00  size 0x1D (29 bytes)
+  managed: GigaCreation.Essentials.Ui.LabeledSlider$$OnDisable
+  managed: GigaCreation.Essentials.Ui.OptionItemToggle$$OnDisable
+  managed: GigaCreation.Essentials.Ui.OptionItemToggleGroup$$OnDisable
+  csig   : void GigaCreation_Essentials_Ui_LabeledSlider__OnDisable (GigaCreation_Essentials_Ui_LabeledSlider_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.LabeledSlider :: public void OnDisable()
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggle :: private void OnDisable()
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggleGroup :: private void OnDisable()
+  fields of GigaCreation.Essentials.Ui.OptionItemToggleGroup:
+      +0x20   _toggles                       RebuildableToggle[]
+      +0x28   _valueChangedSubject           readonly ISubject<int>
+      +0x30   _disposable                    readonly CompositeDisposable
+  fields of OptionItemToggleGroup.<>c:
+      +0x0    <>9                            static readonly OptionItemToggleGroup.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEAF00  sub     rsp, 0x28                                 
+  0x180CEAF04  mov     rcx, qword ptr [rcx + 0x30]                  ; rcx->OptionItemToggleGroup._disposable
+  0x180CEAF08  test    rcx, rcx                                  
+  0x180CEAF0B  je      0x180ceaf18                               
+  0x180CEAF0D  xor     edx, edx                                  
+  0x180CEAF0F  add     rsp, 0x28                                 
+  0x180CEAF13  jmp     0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+
+180CEAF18:
+  0x180CEAF18  call    0x180246730                                  ; THROW NullReferenceException

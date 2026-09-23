@@ -1,0 +1,21 @@
+====================================================================================================
+FUNCTION RVA 0xCF00B0  VA 0x180CF00B0  size 0x20 (32 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$get_IsActiveSelectableUtil
+  csig   : bool GigaCreation_Essentials_Ui_SlideToggle__get_IsActiveSelectableUtil (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected bool get_IsActiveSelectableUtil()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF00B0  sub     rsp, 0x28                                 
+  0x180CF00B4  mov     rcx, qword ptr [rcx + 0x140]                 ; rcx->SlideToggle._selectableUtil
+  0x180CF00BB  test    rcx, rcx                                  
+  0x180CF00BE  je      0x180cf00cb                               
+  0x180CF00C0  xor     edx, edx                                  
+  0x180CF00C2  add     rsp, 0x28                                 
+  0x180CF00C6  jmp     0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+
+180CF00CB:
+  0x180CF00CB  call    0x180246730                                  ; THROW NullReferenceException

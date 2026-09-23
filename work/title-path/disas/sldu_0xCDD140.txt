@@ -1,0 +1,29 @@
+====================================================================================================
+FUNCTION RVA 0xCDD140  VA 0x180CDD140  size 0x36 (54 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideUtility$$Initialize
+  csig   : void GigaCreation_Essentials_Ui_SlideUtility__Initialize (GigaCreation_Essentials_Ui_SlideUtility_o* __this, UnityEngine_RectTransform_o* rectTransform, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideUtility :: public void Initialize(RectTransform rectTransform)
+  fields of GigaCreation.Essentials.Ui.SlideUtility:
+      +0x10   _moveXOnHighlighted            float
+      +0x14   _tweenDuration                 float
+      +0x18   _motion                        MotionHandle
+      +0x24   _defaultAnchorPositionX        float
+====================================================================================================
+  0x180CDD140  push    rbx                                       
+  0x180CDD142  sub     rsp, 0x20                                 
+  0x180CDD146  mov     rax, rdx                                  
+  0x180CDD149  mov     rbx, rcx                                  
+  0x180CDD14C  test    rdx, rdx                                  
+  0x180CDD14F  je      0x180cdd171                               
+  0x180CDD151  xor     edx, edx                                  
+  0x180CDD153  mov     rcx, rax                                  
+  0x180CDD156  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CDD15B  mov     qword ptr [rsp + 0x38], rax               
+  0x180CDD160  movss   xmm0, dword ptr [rsp + 0x38]              
+  0x180CDD166  movss   dword ptr [rbx + 0x24], xmm0                 ; rbx->SlideUtility._defaultAnchorPositionX
+  0x180CDD16B  add     rsp, 0x20                                 
+  0x180CDD16F  pop     rbx                                       
+  0x180CDD170  ret                                               
+
+180CDD171:
+  0x180CDD171  call    0x180246730                                  ; THROW NullReferenceException

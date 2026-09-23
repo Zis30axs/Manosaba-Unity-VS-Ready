@@ -1,0 +1,52 @@
+====================================================================================================
+FUNCTION RVA 0xCEC6C0  VA 0x180CEC6C0  size 0x87 (135 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggleGroup$$Reset
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggleGroup__Reset (GigaCreation_Essentials_Ui_OptionItemToggleGroup_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggleGroup :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.OptionItemToggleGroup:
+      +0x20   _toggles                       RebuildableToggle[]
+      +0x28   _valueChangedSubject           readonly ISubject<int>
+      +0x30   _disposable                    readonly CompositeDisposable
+  fields of OptionItemToggleGroup.<>c:
+      +0x0    <>9                            static readonly OptionItemToggleGroup.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC6C0  push    rbx                                       
+  0x180CEC6C2  sub     rsp, 0x20                                 
+  0x180CEC6C6  cmp     byte ptr [rip + 0x23f0b20], 0                ; data_30DD1ED
+  0x180CEC6CD  mov     rbx, rcx                                  
+  0x180CEC6D0  jne     0x180cec6ea                               
+  0x180CEC6D2  lea     rcx, [rip + 0x217bb27]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<RebuildableToggle>()
+  0x180CEC6D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC6DE  lock or dword ptr [rsp], 0                        
+  0x180CEC6E3  mov     byte ptr [rip + 0x23f0b03], 1                ; data_30DD1ED
+
+180CEC6EA:
+  0x180CEC6EA  mov     rdx, qword ptr [rip + 0x217bb0f]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInChildren<RebuildableToggle>()
+  0x180CEC6F1  mov     rcx, rbx                                  
+  0x180CEC6F4  call    0x1806737d0                                  ; -> UnityEngine.Component$$GetComponentsInChildren<__Il2CppFullySharedGenericType>
+  0x180CEC6F9  cmp     dword ptr [rip + 0x23ecac4], 0               ; data_30D91C4
+  0x180CEC700  mov     qword ptr [rbx + 0x20], rax                  ; rbx->OptionItemToggleGroup._toggles
+  0x180CEC704  je      0x180cec741                               
+  0x180CEC706  lea     r8, [rbx + 0x20]                             ; rbx->OptionItemToggleGroup._toggles
+  0x180CEC70A  shr     r8, 0xc                                   
+  0x180CEC70E  lea     rcx, [rip + 0x2447e6b]                       ; data_3134580
+  0x180CEC715  and     r8d, 0x1fffff                             
+  0x180CEC71C  mov     eax, r8d                                  
+  0x180CEC71F  shr     rax, 6                                    
+  0x180CEC723  and     r8d, 0x3f                                 
+  0x180CEC727  lea     rdx, [rcx + rax*8]                        
+  0x180CEC72B  prefetchw byte ptr [rdx]                            
+  0x180CEC72E  nop                                               
+
+180CEC730:
+  0x180CEC730  mov     rax, qword ptr [rdx]                      
+  0x180CEC733  mov     rcx, rax                                  
+  0x180CEC736  bts     rcx, r8                                   
+  0x180CEC73A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CEC73F  jne     0x180cec730                               
+
+180CEC741:
+  0x180CEC741  add     rsp, 0x20                                 
+  0x180CEC745  pop     rbx                                       
+  0x180CEC746  ret                                               

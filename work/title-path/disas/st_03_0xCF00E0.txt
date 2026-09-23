@@ -1,0 +1,35 @@
+====================================================================================================
+FUNCTION RVA 0xCF00E0  VA 0x180CF00E0  size 0x53 (83 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$Awake
+  csig   : void GigaCreation_Essentials_Ui_SlideToggle__Awake (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected override void Awake()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF00E0  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CF00E5  push    rdi                                       
+  0x180CF00E6  sub     rsp, 0x20                                 
+  0x180CF00EA  xor     edx, edx                                  
+  0x180CF00EC  mov     rbx, rcx                                  
+  0x180CF00EF  call    0x182498790                                  ; -> UnityEngine.UI.Selectable$$Awake
+  0x180CF00F4  mov     rdi, qword ptr [rbx + 0x130]                 ; rbx->SlideToggle._slideUtil
+  0x180CF00FB  test    rdi, rdi                                  
+  0x180CF00FE  je      0x180cf012e                               
+  0x180CF0100  mov     rcx, qword ptr [rbx + 0x128]                 ; rbx->SlideToggle._rectTransform
+  0x180CF0107  test    rcx, rcx                                  
+  0x180CF010A  je      0x180cf012e                               
+  0x180CF010C  xor     edx, edx                                  
+  0x180CF010E  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CF0113  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180CF0118  mov     qword ptr [rsp + 0x30], rax               
+  0x180CF011D  movss   xmm0, dword ptr [rsp + 0x30]              
+  0x180CF0123  movss   dword ptr [rdi + 0x24], xmm0              
+  0x180CF0128  add     rsp, 0x20                                 
+  0x180CF012C  pop     rdi                                       
+  0x180CF012D  ret                                               
+
+180CF012E:
+  0x180CF012E  call    0x180246730                                  ; THROW NullReferenceException

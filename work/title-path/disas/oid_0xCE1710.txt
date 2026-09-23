@@ -1,0 +1,80 @@
+====================================================================================================
+FUNCTION RVA 0xCE1710  VA 0x180CE1710  size 0xF4 (244 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$<OnEnable>b__8_2
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown___OnEnable_b__8_2 (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private void <OnEnable>b__8_2(PointerEventData _)
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE1710  push    rbx                                       
+  0x180CE1712  sub     rsp, 0x20                                 
+  0x180CE1716  cmp     byte ptr [rip + 0x23fba70], 0                ; data_30DD18D
+  0x180CE171D  mov     rbx, rcx                                  
+  0x180CE1720  jne     0x180ce173a                               
+  0x180CE1722  lea     rcx, [rip + 0x2173a0f]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE1729  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE172E  lock or dword ptr [rsp], 0                        
+  0x180CE1733  mov     byte ptr [rip + 0x23fba53], 1                ; data_30DD18D
+
+180CE173A:
+  0x180CE173A  cmp     byte ptr [rip + 0x23fba46], 0                ; data_30DD187
+  0x180CE1741  jne     0x180ce176c                               
+  0x180CE1743  lea     rcx, [rip + 0x2173abe]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE174A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE174F  lock or dword ptr [rsp], 0                        
+  0x180CE1754  lea     rcx, [rip + 0x2170a0d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE175B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1760  lock or dword ptr [rsp], 0                        
+  0x180CE1765  mov     byte ptr [rip + 0x23fba1b], 1                ; data_30DD187
+
+180CE176C:
+  0x180CE176C  mov     r8, qword ptr [rbx + 0x38]                   ; rbx->OptionItemDropdown._inputManager
+  0x180CE1770  test    r8, r8                                    
+  0x180CE1773  jne     0x180ce17e6                               
+  0x180CE1775  mov     rcx, qword ptr [rip + 0x21709ec]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE177C  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180CE1783  jne     0x180ce178a                               
+  0x180CE1785  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE178A:
+  0x180CE178A  mov     rdx, qword ptr [rip + 0x2173a77]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE1791  mov     cl, 1                                     
+  0x180CE1793  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE1798  cmp     dword ptr [rip + 0x23f7a25], 0               ; data_30D91C4
+  0x180CE179F  mov     r8, rax                                   
+  0x180CE17A2  mov     qword ptr [rbx + 0x38], rax                  ; rbx->OptionItemDropdown._inputManager
+  0x180CE17A6  je      0x180ce17e1                               
+  0x180CE17A8  lea     r9, [rbx + 0x38]                             ; rbx->OptionItemDropdown._inputManager
+  0x180CE17AC  shr     r9, 0xc                                   
+  0x180CE17B0  lea     rcx, [rip + 0x2452dc9]                       ; data_3134580
+  0x180CE17B7  and     r9d, 0x1fffff                             
+  0x180CE17BE  mov     eax, r9d                                  
+  0x180CE17C1  shr     rax, 6                                    
+  0x180CE17C5  and     r9d, 0x3f                                 
+  0x180CE17C9  lea     rdx, [rcx + rax*8]                        
+  0x180CE17CD  prefetchw byte ptr [rdx]                            
+
+180CE17D0:
+  0x180CE17D0  mov     rax, qword ptr [rdx]                      
+  0x180CE17D3  mov     rcx, rax                                  
+  0x180CE17D6  bts     rcx, r9                                   
+  0x180CE17DA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE17DF  jne     0x180ce17d0                               
+
+180CE17E1:
+  0x180CE17E1  test    r8, r8                                    
+  0x180CE17E4  je      0x180ce17ff                               
+
+180CE17E6:
+  0x180CE17E6  mov     rdx, qword ptr [rip + 0x217394b]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE17ED  xor     ecx, ecx                                  
+  0x180CE17EF  mov     r9d, 1                                    
+  0x180CE17F5  add     rsp, 0x20                                 
+  0x180CE17F9  pop     rbx                                       
+  0x180CE17FA  jmp     0x1800036f0                               
+
+180CE17FF:
+  0x180CE17FF  call    0x180246730                                  ; THROW NullReferenceException

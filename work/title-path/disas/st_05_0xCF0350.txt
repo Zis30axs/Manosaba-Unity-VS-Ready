@@ -1,0 +1,31 @@
+====================================================================================================
+FUNCTION RVA 0xCF0350  VA 0x180CF0350  size 0x3D (61 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$OnDisable
+  csig   : void GigaCreation_Essentials_Ui_SlideToggle__OnDisable (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected override void OnDisable()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0350  push    rbx                                       
+  0x180CF0352  sub     rsp, 0x20                                 
+  0x180CF0356  xor     r9d, r9d                                  
+  0x180CF0359  xor     r8d, r8d                                  
+  0x180CF035C  xor     edx, edx                                  
+  0x180CF035E  mov     rbx, rcx                                  
+  0x180CF0361  call    0x1824a23a0                                  ; -> UnityEngine.UI.Toggle$$SetToggleGroup
+  0x180CF0366  xor     edx, edx                                  
+  0x180CF0368  mov     rcx, rbx                                  
+  0x180CF036B  call    0x1824990f0                                  ; -> UnityEngine.UI.Selectable$$OnDisable
+  0x180CF0370  mov     rcx, qword ptr [rbx + 0x138]                 ; rbx->SlideToggle._disposables
+  0x180CF0377  test    rcx, rcx                                  
+  0x180CF037A  je      0x180cf0388                               
+  0x180CF037C  xor     edx, edx                                  
+  0x180CF037E  add     rsp, 0x20                                 
+  0x180CF0382  pop     rbx                                       
+  0x180CF0383  jmp     0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+
+180CF0388:
+  0x180CF0388  call    0x180246730                                  ; THROW NullReferenceException

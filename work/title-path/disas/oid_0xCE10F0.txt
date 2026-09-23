@@ -1,0 +1,52 @@
+====================================================================================================
+FUNCTION RVA 0xCE10F0  VA 0x180CE10F0  size 0x97 (151 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$Reset
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown__Reset (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private void Reset()
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE10F0  push    rbx                                       
+  0x180CE10F2  sub     rsp, 0x20                                 
+  0x180CE10F6  cmp     byte ptr [rip + 0x23fc08c], 0                ; data_30DD189
+  0x180CE10FD  mov     rbx, rcx                                  
+  0x180CE1100  jne     0x180ce111a                               
+  0x180CE1102  lea     rcx, [rip + 0x21877ef]                       ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<TMP_Dropdown>()
+  0x180CE1109  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE110E  lock or dword ptr [rsp], 0                        
+  0x180CE1113  mov     byte ptr [rip + 0x23fc06f], 1                ; data_30DD189
+
+180CE111A:
+  0x180CE111A  mov     r8, qword ptr [rip + 0x21877d7]              ; METHODINFO Method$UnityEngine.Component.GetComponentInChildren<TMP_Dropdown>()
+  0x180CE1121  lea     rdx, [rsp + 0x30]                         
+  0x180CE1126  mov     rcx, rbx                                  
+  0x180CE1129  call    0x180672ff0                                  ; -> UnityEngine.Component$$GetComponentInChildren<__Il2CppFullySharedGenericType>
+  0x180CE112E  cmp     dword ptr [rip + 0x23f808f], 0               ; data_30D91C4
+  0x180CE1135  mov     rax, qword ptr [rsp + 0x30]               
+  0x180CE113A  mov     qword ptr [rbx + 0x20], rax                  ; rbx->OptionItemDropdown._dropdown
+  0x180CE113E  je      0x180ce1181                               
+  0x180CE1140  lea     r8, [rbx + 0x20]                             ; rbx->OptionItemDropdown._dropdown
+  0x180CE1144  shr     r8, 0xc                                   
+  0x180CE1148  lea     rcx, [rip + 0x2453431]                       ; data_3134580
+  0x180CE114F  and     r8d, 0x1fffff                             
+  0x180CE1156  mov     eax, r8d                                  
+  0x180CE1159  shr     rax, 6                                    
+  0x180CE115D  and     r8d, 0x3f                                 
+  0x180CE1161  lea     rdx, [rcx + rax*8]                        
+  0x180CE1165  prefetchw byte ptr [rdx]                            
+  0x180CE1168  nop     dword ptr [rax + rax]                     
+
+180CE1170:
+  0x180CE1170  mov     rax, qword ptr [rdx]                      
+  0x180CE1173  mov     rcx, rax                                  
+  0x180CE1176  bts     rcx, r8                                   
+  0x180CE117A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE117F  jne     0x180ce1170                               
+
+180CE1181:
+  0x180CE1181  add     rsp, 0x20                                 
+  0x180CE1185  pop     rbx                                       
+  0x180CE1186  ret                                               

@@ -1,0 +1,148 @@
+====================================================================================================
+FUNCTION RVA 0xCDD250  VA 0x180CDD250  size 0x24D (589 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideUtility$$MotorSlide
+  csig   : void GigaCreation_Essentials_Ui_SlideUtility__MotorSlide (GigaCreation_Essentials_Ui_SlideUtility_o* __this, UnityEngine_RectTransform_o* rectTransform, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideUtility :: public void MotorSlide(RectTransform rectTransform)
+  fields of GigaCreation.Essentials.Ui.SlideUtility:
+      +0x10   _moveXOnHighlighted            float
+      +0x14   _tweenDuration                 float
+      +0x18   _motion                        MotionHandle
+      +0x24   _defaultAnchorPositionX        float
+====================================================================================================
+  0x180CDD250  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CDD255  mov     qword ptr [rsp + 0x20], rdi               
+  0x180CDD25A  push    rbp                                       
+  0x180CDD25B  lea     rbp, [rsp - 0x57]                         
+  0x180CDD260  sub     rsp, 0x90                                 
+  0x180CDD267  cmp     byte ptr [rip + 0x23fff02], 0                ; data_30DD170
+  0x180CDD26E  mov     rdi, rdx                                  
+  0x180CDD271  movaps  xmmword ptr [rsp + 0x50], xmm9            
+  0x180CDD277  mov     rbx, rcx                                  
+  0x180CDD27A  jne     0x180cdd2c7                               
+  0x180CDD27C  lea     rcx, [rip + 0x218bb15]                       ; METHODINFO Method$LitMotion.Extensions.LitMotionRectTransformExtensions.BindToAnchoredPosition<NoOptions, Vector2MotionAdapter>()
+  0x180CDD283  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD288  lock or dword ptr [rsp], 0                        
+  0x180CDD28D  lea     rcx, [rip + 0x218bb24]                       ; METHODINFO Method$LitMotion.MotionBuilder<Vector2, NoOptions, Vector2MotionAdapter>.WithEase()
+  0x180CDD294  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD299  lock or dword ptr [rsp], 0                        
+  0x180CDD29E  lea     rcx, [rip + 0x218bb0b]                       ; METHODINFO Method$LitMotion.MotionBuilder<Vector2, NoOptions, Vector2MotionAdapter>.WithScheduler()
+  0x180CDD2A5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD2AA  lock or dword ptr [rsp], 0                        
+  0x180CDD2AF  lea     rcx, [rip + 0x21761aa]                       ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CDD2B6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD2BB  lock or dword ptr [rsp], 0                        
+  0x180CDD2C0  mov     byte ptr [rip + 0x23ffea9], 1                ; data_30DD170
+
+180CDD2C7:
+  0x180CDD2C7  movsd   xmm0, qword ptr [rbx + 0x18]                 ; rbx->SlideUtility._motion
+  0x180CDD2CC  lea     rcx, [rbp - 9]                            
+  0x180CDD2D0  mov     eax, dword ptr [rbx + 0x20]               
+  0x180CDD2D3  movsd   qword ptr [rbp - 9], xmm0                 
+  0x180CDD2D8  mov     dword ptr [rbp - 1], eax                  
+  0x180CDD2DB  call    0x180cd57c0                                  ; -> sub_CD57C0 (runtime/helper)
+  0x180CDD2E0  test    al, al                                    
+  0x180CDD2E2  je      0x180cdd2ff                               
+  0x180CDD2E4  movsd   xmm0, qword ptr [rbx + 0x18]                 ; rbx->SlideUtility._motion
+  0x180CDD2E9  lea     rcx, [rbp - 9]                            
+  0x180CDD2ED  mov     eax, dword ptr [rbx + 0x20]               
+  0x180CDD2F0  mov     dl, 1                                     
+  0x180CDD2F2  movsd   qword ptr [rbp - 9], xmm0                 
+  0x180CDD2F7  mov     dword ptr [rbp - 1], eax                  
+  0x180CDD2FA  call    0x180cd58f0                                  ; -> sub_CD58F0 (runtime/helper)
+
+180CDD2FF:
+  0x180CDD2FF  movss   xmm9, dword ptr [rbx + 0x24]                 ; rbx->SlideUtility._defaultAnchorPositionX
+  0x180CDD305  test    rdi, rdi                                  
+  0x180CDD308  je      0x180cdd498                               
+  0x180CDD30E  movaps  xmmword ptr [rsp + 0x80], xmm6            
+  0x180CDD316  xor     edx, edx                                  
+  0x180CDD318  movaps  xmmword ptr [rsp + 0x70], xmm7            
+  0x180CDD31D  mov     rcx, rdi                                  
+  0x180CDD320  movaps  xmmword ptr [rsp + 0x60], xmm8            
+  0x180CDD326  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CDD32B  movss   xmm6, dword ptr [rbx + 0x24]                 ; rbx->SlideUtility._defaultAnchorPositionX
+  0x180CDD330  xor     edx, edx                                  
+  0x180CDD332  movss   xmm7, dword ptr [rbx + 0x10]                 ; rbx->SlideUtility._moveXOnHighlighted
+  0x180CDD337  mov     rcx, rdi                                  
+  0x180CDD33A  mov     qword ptr [rbp + 0x67], rax               
+  0x180CDD33E  movss   xmm8, dword ptr [rbp + 0x6b]              
+  0x180CDD344  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CDD349  cmp     byte ptr [rip + 0x24002dc], 0                ; data_30DD62C
+  0x180CDD350  addss   xmm7, xmm6                                
+  0x180CDD354  movss   xmm6, dword ptr [rbx + 0x14]                 ; rbx->SlideUtility._tweenDuration
+  0x180CDD359  mov     qword ptr [rbp + 0x67], rax               
+  0x180CDD35D  movss   xmm1, dword ptr [rbp + 0x6b]              
+  0x180CDD362  unpcklps xmm9, xmm8                                
+  0x180CDD366  movaps  xmm8, xmmword ptr [rsp + 0x60]            
+  0x180CDD36C  unpcklps xmm7, xmm1                                
+  0x180CDD36F  movsd   qword ptr [rbp + 0x67], xmm7              
+  0x180CDD374  movaps  xmm7, xmmword ptr [rsp + 0x70]            
+  0x180CDD379  movsd   qword ptr [rbp + 0x6f], xmm9              
+  0x180CDD37F  jne     0x180cdd399                               
+  0x180CDD381  lea     rcx, [rip + 0x211e910]                       ; METHODINFO Method$LitMotion.LMotion.Create<Vector2, NoOptions, Vector2MotionAdapter>()
+  0x180CDD388  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CDD38D  lock or dword ptr [rsp], 0                        
+  0x180CDD392  mov     byte ptr [rip + 0x2400293], 1                ; data_30DD62C
+
+180CDD399:
+  0x180CDD399  mov     rax, qword ptr [rip + 0x211e8f8]             ; METHODINFO Method$LitMotion.LMotion.Create<Vector2, NoOptions, Vector2MotionAdapter>()
+  0x180CDD3A0  lea     r8, [rbp + 0x67]                          
+  0x180CDD3A4  movaps  xmm3, xmm6                                
+  0x180CDD3A7  mov     qword ptr [rsp + 0x20], rax               
+  0x180CDD3AC  lea     rdx, [rbp + 0x6f]                         
+  0x180CDD3B0  lea     rcx, [rbp + 7]                            
+  0x180CDD3B4  call    0x1806ea5e0                                  ; -> LitMotion.LMotion$$Create<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>
+  0x180CDD3B9  movaps  xmm0, xmmword ptr [rbp + 7]               
+  0x180CDD3BD  lea     rdx, [rbp + 7]                            
+  0x180CDD3C1  mov     r9, qword ptr [rip + 0x218b9f0]              ; METHODINFO Method$LitMotion.MotionBuilder<Vector2, NoOptions, Vector2MotionAdapter>.WithEase()
+  0x180CDD3C8  lea     rcx, [rbp - 9]                            
+  0x180CDD3CC  mov     r8d, 5                                    
+  0x180CDD3D2  movdqa  xmmword ptr [rbp + 7], xmm0               
+  0x180CDD3D7  call    0x1803567f0                                  ; -> LitMotion.MotionBuilder<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>$$WithEase
+  0x180CDD3DC  mov     r8, qword ptr [rip + 0x217607d]              ; TYPE LitMotion.MotionScheduler_TypeInfo
+  0x180CDD3E3  movaps  xmm0, xmmword ptr [rbp - 9]               
+  0x180CDD3E7  movaps  xmm6, xmmword ptr [rsp + 0x80]            
+  0x180CDD3EF  movdqa  xmmword ptr [rbp + 7], xmm0               
+  0x180CDD3F4  cmp     dword ptr [r8 + 0xe4], 0                  
+  0x180CDD3FC  jne     0x180cdd40d                               
+  0x180CDD3FE  mov     rcx, r8                                   
+  0x180CDD401  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180CDD406  mov     r8, qword ptr [rip + 0x2176053]              ; TYPE LitMotion.MotionScheduler_TypeInfo
+
+180CDD40D:
+  0x180CDD40D  mov     r8, qword ptr [r8 + 0xb8]                 
+  0x180CDD414  lea     rdx, [rbp + 7]                            
+  0x180CDD418  mov     r9, qword ptr [rip + 0x218b991]              ; METHODINFO Method$LitMotion.MotionBuilder<Vector2, NoOptions, Vector2MotionAdapter>.WithScheduler()
+  0x180CDD41F  lea     rcx, [rbp - 9]                            
+  0x180CDD423  mov     r8, qword ptr [r8 + 0x60]                 
+  0x180CDD427  call    0x180356930                                  ; -> LitMotion.MotionBuilder<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType>$$WithScheduler
+  0x180CDD42C  movaps  xmm0, xmmword ptr [rbp - 9]               
+  0x180CDD430  lea     rdx, [rbp + 7]                            
+  0x180CDD434  mov     r9, qword ptr [rip + 0x218b95d]              ; METHODINFO Method$LitMotion.Extensions.LitMotionRectTransformExtensions.BindToAnchoredPosition<NoOptions, Vector2MotionAdapter>()
+  0x180CDD43B  lea     rcx, [rbp - 9]                            
+  0x180CDD43F  mov     r8, rdi                                   
+  0x180CDD442  movdqa  xmmword ptr [rbp + 7], xmm0               
+  0x180CDD447  call    0x1807034f0                                  ; -> LitMotion.Extensions.LitMotionRectTransformExtensions$$BindToAnchoredPosition<__Il2CppFullySharedGenericStructType, __Il2CppFullySharedGenericStructType> (+4 aliases)
+  0x180CDD44C  movsd   xmm0, qword ptr [rbp - 9]                 
+  0x180CDD451  lea     rdx, [rbp + 7]                            
+  0x180CDD455  mov     eax, dword ptr [rbp - 1]                  
+  0x180CDD458  lea     rcx, [rbp - 9]                            
+  0x180CDD45C  xor     r9d, r9d                                  
+  0x180CDD45F  movsd   qword ptr [rbp + 7], xmm0                 
+  0x180CDD464  mov     r8, rdi                                   
+  0x180CDD467  mov     dword ptr [rbp + 0xf], eax                
+  0x180CDD46A  call    0x180da5150                                  ; -> LitMotion.MotionHandleExtensions$$AddTo
+  0x180CDD46F  lea     r11, [rsp + 0x90]                         
+  0x180CDD477  mov     rdi, qword ptr [r11 + 0x28]               
+  0x180CDD47B  movaps  xmm9, xmmword ptr [r11 - 0x40]            
+  0x180CDD480  movsd   xmm0, qword ptr [rax]                     
+  0x180CDD484  mov     ecx, dword ptr [rax + 8]                  
+  0x180CDD487  movsd   qword ptr [rbx + 0x18], xmm0                 ; rbx->SlideUtility._motion
+  0x180CDD48C  mov     dword ptr [rbx + 0x20], ecx               
+  0x180CDD48F  mov     rbx, qword ptr [r11 + 0x20]               
+  0x180CDD493  mov     rsp, r11                                  
+  0x180CDD496  pop     rbp                                       
+  0x180CDD497  ret                                               
+
+180CDD498:
+  0x180CDD498  call    0x180246730                                  ; THROW NullReferenceException

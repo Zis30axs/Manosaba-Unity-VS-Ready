@@ -1,0 +1,38 @@
+====================================================================================================
+FUNCTION RVA 0xCE2290  VA 0x180CE2290  size 0x3D (61 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$OnHighlightingChanged
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown__OnHighlightingChanged (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, bool isHighlighted, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: private void OnHighlightingChanged(bool isHighlighted)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE2290  sub     rsp, 0x28                                 
+  0x180CE2294  cmp     byte ptr [rcx + 0x190], 0                    ; rcx->TweeningDropdown._scaleUpWhenHighlighted
+  0x180CE229B  je      0x180ce22c3                               
+  0x180CE229D  mov     rax, qword ptr [rcx + 0x198]                 ; rcx->TweeningDropdown._scaleUtil
+  0x180CE22A4  test    rax, rax                                  
+  0x180CE22A7  je      0x180ce22c8                               
+  0x180CE22A9  movzx   r8d, dl                                   
+  0x180CE22AD  xor     r9d, r9d                                  
+  0x180CE22B0  mov     rdx, qword ptr [rcx + 0x180]                 ; rcx->TweeningDropdown._transform
+  0x180CE22B7  mov     rcx, rax                                  
+  0x180CE22BA  add     rsp, 0x28                                 
+  0x180CE22BE  jmp     0x180cdcde0                                  ; -> GigaCreation.Essentials.Ui.ScaleUtility$$Scale
+
+180CE22C3:
+  0x180CE22C3  add     rsp, 0x28                                 
+  0x180CE22C7  ret                                               
+
+180CE22C8:
+  0x180CE22C8  call    0x180246730                                  ; THROW NullReferenceException

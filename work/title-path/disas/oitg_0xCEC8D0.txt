@@ -1,0 +1,39 @@
+====================================================================================================
+FUNCTION RVA 0xCEC8D0  VA 0x180CEC8D0  size 0x68 (104 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggleGroup$$OnValueChangedAsObservable
+  csig   : System_IObservable_int__o* GigaCreation_Essentials_Ui_OptionItemToggleGroup__OnValueChangedAsObservable (GigaCreation_Essentials_Ui_OptionItemToggleGroup_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggleGroup :: public IObservable<int> OnValueChangedAsObservable()
+  fields of GigaCreation.Essentials.Ui.OptionItemToggleGroup:
+      +0x20   _toggles                       RebuildableToggle[]
+      +0x28   _valueChangedSubject           readonly ISubject<int>
+      +0x30   _disposable                    readonly CompositeDisposable
+  fields of OptionItemToggleGroup.<>c:
+      +0x0    <>9                            static readonly OptionItemToggleGroup.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC8D0  push    rbx                                       
+  0x180CEC8D2  sub     rsp, 0x20                                 
+  0x180CEC8D6  cmp     byte ptr [rip + 0x23f0912], 0                ; data_30DD1EF
+  0x180CEC8DD  mov     rbx, rcx                                  
+  0x180CEC8E0  jne     0x180cec90b                               
+  0x180CEC8E2  lea     rcx, [rip + 0x217bc27]                       ; METHODINFO Method$UniRx.Observable.AsObservable<int>()
+  0x180CEC8E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC8EE  lock or dword ptr [rsp], 0                        
+  0x180CEC8F3  lea     rcx, [rip + 0x216cf7e]                       ; TYPE UniRx.Observable_TypeInfo
+  0x180CEC8FA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC8FF  lock or dword ptr [rsp], 0                        
+  0x180CEC904  mov     byte ptr [rip + 0x23f08e4], 1                ; data_30DD1EF
+
+180CEC90B:
+  0x180CEC90B  mov     rcx, qword ptr [rip + 0x216cf66]             ; TYPE UniRx.Observable_TypeInfo
+  0x180CEC912  mov     rbx, qword ptr [rbx + 0x28]                  ; rbx->OptionItemToggleGroup._valueChangedSubject
+  0x180CEC916  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEC91D  jne     0x180cec924                               
+  0x180CEC91F  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEC924:
+  0x180CEC924  mov     rdx, qword ptr [rip + 0x217bbe5]             ; METHODINFO Method$UniRx.Observable.AsObservable<int>()
+  0x180CEC92B  mov     rcx, rbx                                  
+  0x180CEC92E  add     rsp, 0x20                                 
+  0x180CEC932  pop     rbx                                       
+  0x180CEC933  jmp     0x1807248e0                                  ; -> UniRx.Observable$$AsObservable<__Il2CppFullySharedGenericType>

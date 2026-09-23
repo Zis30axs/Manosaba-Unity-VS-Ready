@@ -1,0 +1,162 @@
+====================================================================================================
+FUNCTION RVA 0xCE1EF0  VA 0x180CE1EF0  size 0x22E (558 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$OnDisable
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown__OnDisable (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: protected override void OnDisable()
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE1EF0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE1EF5  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CE1EFA  push    rdi                                       
+  0x180CE1EFB  sub     rsp, 0x20                                 
+  0x180CE1EFF  cmp     byte ptr [rip + 0x23fb28e], 0                ; data_30DD194
+  0x180CE1F06  mov     rbx, rcx                                  
+  0x180CE1F09  jne     0x180ce1f23                               
+  0x180CE1F0B  lea     rcx, [rip + 0x217023e]                       ; TYPE System.IDisposable_TypeInfo
+  0x180CE1F12  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1F17  lock or dword ptr [rsp], 0                        
+  0x180CE1F1C  mov     byte ptr [rip + 0x23fb271], 1                ; data_30DD194
+
+180CE1F23:
+  0x180CE1F23  cmp     byte ptr [rip + 0x24024ac], 0                ; data_30E43D6
+  0x180CE1F2A  jne     0x180ce1f44                               
+  0x180CE1F2C  lea     rcx, [rip + 0x217035d]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1F33  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1F38  lock or dword ptr [rsp], 0                        
+  0x180CE1F3D  mov     byte ptr [rip + 0x2402492], 1                ; data_30E43D6
+
+180CE1F44:
+  0x180CE1F44  xor     edx, edx                                  
+  0x180CE1F46  mov     rcx, rbx                                  
+  0x180CE1F49  call    0x181ed6030                                  ; -> TMPro.TMP_Dropdown$$ImmediateDestroyDropdownList
+  0x180CE1F4E  mov     rcx, qword ptr [rip + 0x217033b]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1F55  mov     rdi, qword ptr [rbx + 0x158]              
+  0x180CE1F5C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1F63  jne     0x180ce1f6a                               
+  0x180CE1F65  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE1F6A:
+  0x180CE1F6A  cmp     byte ptr [rip + 0x24068ff], 0                ; data_30E8870
+  0x180CE1F71  jne     0x180ce1f8b                               
+  0x180CE1F73  lea     rcx, [rip + 0x2170316]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1F7A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1F7F  lock or dword ptr [rsp], 0                        
+  0x180CE1F84  mov     byte ptr [rip + 0x24068e5], 1                ; data_30E8870
+
+180CE1F8B:
+  0x180CE1F8B  mov     rcx, qword ptr [rip + 0x21702fe]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1F92  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1F99  jne     0x180ce1fa0                               
+  0x180CE1F9B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE1FA0:
+  0x180CE1FA0  cmp     byte ptr [rip + 0x2406888], 0                ; data_30E882F
+  0x180CE1FA7  jne     0x180ce1fc1                               
+  0x180CE1FA9  lea     rcx, [rip + 0x21702e0]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1FB0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1FB5  lock or dword ptr [rsp], 0                        
+  0x180CE1FBA  mov     byte ptr [rip + 0x240686e], 1                ; data_30E882F
+
+180CE1FC1:
+  0x180CE1FC1  test    rdi, rdi                                  
+  0x180CE1FC4  je      0x180ce1fff                               
+  0x180CE1FC6  mov     rcx, qword ptr [rip + 0x21702c3]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1FCD  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1FD4  jne     0x180ce1fdb                               
+  0x180CE1FD6  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE1FDB:
+  0x180CE1FDB  cmp     qword ptr [rdi + 0x10], 0                 
+  0x180CE1FE0  je      0x180ce1fff                               
+  0x180CE1FE2  mov     r8, qword ptr [rbx]                       
+  0x180CE1FE5  mov     rcx, rbx                                  
+  0x180CE1FE8  mov     rdx, qword ptr [rbx + 0x158]              
+  0x180CE1FEF  mov     rax, qword ptr [r8 + 0x418]               
+  0x180CE1FF6  mov     r8, qword ptr [r8 + 0x420]                
+  0x180CE1FFD  call    rax                                       
+
+180CE1FFF:
+  0x180CE1FFF  xor     edi, edi                                  
+  0x180CE2001  lea     rsi, [rip + 0x240c298]                       ; data_30EE2A0
+  0x180CE2008  cmp     dword ptr [rip + 0x23f71b6], edi             ; data_30D91C4
+  0x180CE200E  mov     qword ptr [rbx + 0x158], rdi              
+  0x180CE2015  je      0x180ce2059                               
+  0x180CE2017  lea     r8, [rbx + 0x158]                         
+  0x180CE201E  shr     r8, 0xc                                   
+  0x180CE2022  and     r8d, 0x1fffff                             
+  0x180CE2029  mov     eax, r8d                                  
+  0x180CE202C  shr     rax, 6                                    
+  0x180CE2030  and     r8d, 0x3f                                 
+  0x180CE2034  lea     rdx, [rsi + rax*8]                        
+  0x180CE2038  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE203F  nop                                               
+
+180CE2040:
+  0x180CE2040  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE2047  mov     rcx, rax                                  
+  0x180CE204A  bts     rcx, r8                                   
+  0x180CE204E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE2057  jne     0x180ce2040                               
+
+180CE2059:
+  0x180CE2059  xor     edx, edx                                  
+  0x180CE205B  mov     rcx, rbx                                  
+  0x180CE205E  call    0x1824990f0                                  ; -> UnityEngine.UI.Selectable$$OnDisable
+  0x180CE2063  mov     rcx, qword ptr [rbx + 0x1b0]                 ; rbx->TweeningDropdown._selectableDisposables
+  0x180CE206A  test    rcx, rcx                                  
+  0x180CE206D  je      0x180ce2119                               
+  0x180CE2073  xor     edx, edx                                  
+  0x180CE2075  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE207A  mov     rcx, qword ptr [rbx + 0x1b8]                 ; rbx->TweeningDropdown._playSfxDisposables
+  0x180CE2081  test    rcx, rcx                                  
+  0x180CE2084  je      0x180ce2119                               
+  0x180CE208A  xor     edx, edx                                  
+  0x180CE208C  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE2091  cmp     qword ptr [rbx + 0x1d8], rdi                 ; rbx->TweeningDropdown._cancelEventBlockerDisposable
+  0x180CE2098  je      0x180ce2109                               
+  0x180CE209A  mov     r8, qword ptr [rbx + 0x1d8]                  ; rbx->TweeningDropdown._cancelEventBlockerDisposable
+  0x180CE20A1  xor     ecx, ecx                                  
+  0x180CE20A3  mov     rdx, qword ptr [rip + 0x21700a6]             ; TYPE System.IDisposable_TypeInfo
+  0x180CE20AA  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+  0x180CE20AF  cmp     dword ptr [rip + 0x23f710f], edi             ; data_30D91C4
+  0x180CE20B5  mov     qword ptr [rbx + 0x1d8], rdi                 ; rbx->TweeningDropdown._cancelEventBlockerDisposable
+  0x180CE20BC  je      0x180ce2109                               
+  0x180CE20BE  add     rbx, 0x1d8                                
+  0x180CE20C5  shr     rbx, 0xc                                  
+  0x180CE20C9  and     ebx, 0x1fffff                             
+  0x180CE20CF  mov     eax, ebx                                  
+  0x180CE20D1  shr     rax, 6                                    
+  0x180CE20D5  and     ebx, 0x3f                                 
+  0x180CE20D8  lea     rdx, [rsi + rax*8]                        
+  0x180CE20DC  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE20E3  nop     dword ptr [rax]                           
+  0x180CE20E7  nop     word ptr [rax + rax]                      
+
+180CE20F0:
+  0x180CE20F0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE20F7  mov     rcx, rax                                  
+  0x180CE20FA  bts     rcx, rbx                                  
+  0x180CE20FE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE2107  jne     0x180ce20f0                               
+
+180CE2109:
+  0x180CE2109  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE210E  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CE2113  add     rsp, 0x20                                 
+  0x180CE2117  pop     rdi                                       
+  0x180CE2118  ret                                               
+
+180CE2119:
+  0x180CE2119  call    0x180246730                                  ; THROW NullReferenceException

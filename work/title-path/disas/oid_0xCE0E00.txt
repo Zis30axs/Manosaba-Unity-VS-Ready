@@ -1,0 +1,66 @@
+====================================================================================================
+FUNCTION RVA 0xCE0E00  VA 0x180CE0E00  size 0xBA (186 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* GigaCreation_Essentials_Ui_OptionItemDropdown__get_InputManager (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private IInputManager get_InputManager()
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE0E00  push    rbx                                       
+  0x180CE0E02  sub     rsp, 0x20                                 
+  0x180CE0E06  cmp     byte ptr [rip + 0x23fc37a], 0                ; data_30DD187
+  0x180CE0E0D  mov     rbx, rcx                                  
+  0x180CE0E10  jne     0x180ce0e3b                               
+  0x180CE0E12  lea     rcx, [rip + 0x21743ef]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE0E19  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE0E1E  lock or dword ptr [rsp], 0                        
+  0x180CE0E23  lea     rcx, [rip + 0x217133e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE0E2A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE0E2F  lock or dword ptr [rsp], 0                        
+  0x180CE0E34  mov     byte ptr [rip + 0x23fc34c], 1                ; data_30DD187
+
+180CE0E3B:
+  0x180CE0E3B  mov     rax, qword ptr [rbx + 0x38]                  ; rbx->OptionItemDropdown._inputManager
+  0x180CE0E3F  test    rax, rax                                  
+  0x180CE0E42  jne     0x180ce0eb4                               
+  0x180CE0E44  mov     rcx, qword ptr [rip + 0x217131d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180CE0E4B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180CE0E51  jne     0x180ce0e58                               
+  0x180CE0E53  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE0E58:
+  0x180CE0E58  mov     rdx, qword ptr [rip + 0x21743a9]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180CE0E5F  mov     cl, 1                                     
+  0x180CE0E61  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180CE0E66  cmp     dword ptr [rip + 0x23f8357], 0               ; data_30D91C4
+  0x180CE0E6D  mov     r9, rax                                   
+  0x180CE0E70  mov     qword ptr [rbx + 0x38], rax                  ; rbx->OptionItemDropdown._inputManager
+  0x180CE0E74  je      0x180ce0eb1                               
+  0x180CE0E76  lea     r8, [rbx + 0x38]                             ; rbx->OptionItemDropdown._inputManager
+  0x180CE0E7A  shr     r8, 0xc                                   
+  0x180CE0E7E  lea     rcx, [rip + 0x24536fb]                       ; data_3134580
+  0x180CE0E85  and     r8d, 0x1fffff                             
+  0x180CE0E8C  mov     eax, r8d                                  
+  0x180CE0E8F  shr     rax, 6                                    
+  0x180CE0E93  and     r8d, 0x3f                                 
+  0x180CE0E97  lea     rdx, [rcx + rax*8]                        
+  0x180CE0E9B  prefetchw byte ptr [rdx]                            
+  0x180CE0E9E  nop                                               
+
+180CE0EA0:
+  0x180CE0EA0  mov     rax, qword ptr [rdx]                      
+  0x180CE0EA3  mov     rcx, rax                                  
+  0x180CE0EA6  bts     rcx, r8                                   
+  0x180CE0EAA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE0EAF  jne     0x180ce0ea0                               
+
+180CE0EB1:
+  0x180CE0EB1  mov     rax, r9                                   
+
+180CE0EB4:
+  0x180CE0EB4  add     rsp, 0x20                                 
+  0x180CE0EB8  pop     rbx                                       
+  0x180CE0EB9  ret                                               

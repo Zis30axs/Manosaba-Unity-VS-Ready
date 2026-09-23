@@ -1,0 +1,53 @@
+====================================================================================================
+FUNCTION RVA 0xCE1A40  VA 0x180CE1A40  size 0xB0 (176 bytes)
+  managed: GigaCreation.Essentials.Ui.TextMeshProDropdownExtensions.<>c$$<OnValueChangedAsObservable>b__0_0
+  csig   : System_IDisposable_o* GigaCreation_Essentials_Ui_TextMeshProDropdownExtensions___c___OnValueChangedAsObservable_b__0_0 (GigaCreation_Essentials_Ui_TextMeshProDropdownExtensions___c_o* __this, TMPro_TMP_Dropdown_o* d, System_IObserver_int__o* observer, const MethodInfo* method);
+  dump.cs: TextMeshProDropdownExtensions.<>c :: internal IDisposable <OnValueChangedAsObservable>b__0_0(TMP_Dropdown d, IObserver<int> observer)
+  fields of TextMeshProDropdownExtensions.<>c:
+      +0x0    <>9                            static readonly TextMeshProDropdownExtensions.<>c
+      +0x8    <>9__0_0                       static Func<TMP_Dropdown, IObserver<int>, IDisposable>
+====================================================================================================
+  0x180CE1A40  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE1A45  push    rdi                                       
+  0x180CE1A46  sub     rsp, 0x20                                 
+  0x180CE1A4A  cmp     byte ptr [rip + 0x23fb73f], 0                ; data_30DD190
+  0x180CE1A51  mov     rbx, r8                                   
+  0x180CE1A54  mov     rdi, rdx                                  
+  0x180CE1A57  jne     0x180ce1a93                               
+  0x180CE1A59  lea     rcx, [rip + 0x2186e28]                       ; TYPE System.IObservable<int>_TypeInfo
+  0x180CE1A60  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1A65  lock or dword ptr [rsp], 0                        
+  0x180CE1A6A  lea     rcx, [rip + 0x2186e0f]                       ; TYPE System.IObserver<int>_TypeInfo
+  0x180CE1A71  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1A76  lock or dword ptr [rsp], 0                        
+  0x180CE1A7B  lea     rcx, [rip + 0x2186dee]                       ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<int>()
+  0x180CE1A82  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1A87  lock or dword ptr [rsp], 0                        
+  0x180CE1A8C  mov     byte ptr [rip + 0x23fb6fd], 1                ; data_30DD190
+
+180CE1A93:
+  0x180CE1A93  test    rdi, rdi                                  
+  0x180CE1A96  je      0x180ce1aeb                               
+  0x180CE1A98  test    rbx, rbx                                  
+  0x180CE1A9B  je      0x180ce1aeb                               
+  0x180CE1A9D  mov     r9d, dword ptr [rdi + 0x130]              
+  0x180CE1AA4  xor     ecx, ecx                                  
+  0x180CE1AA6  mov     rdx, qword ptr [rip + 0x2186dd3]             ; TYPE System.IObserver<int>_TypeInfo
+  0x180CE1AAD  mov     r8, rbx                                   
+  0x180CE1AB0  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180CE1AB5  mov     rdx, qword ptr [rip + 0x2186db4]             ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<int>()
+  0x180CE1ABC  mov     rcx, qword ptr [rdi + 0x140]              
+  0x180CE1AC3  call    0x180798cd0                                  ; -> UniRx.UnityEventExtensions$$AsObservable<__Il2CppFullySharedGenericType> (+3 aliases)
+  0x180CE1AC8  test    rax, rax                                  
+  0x180CE1ACB  je      0x180ce1aeb                               
+  0x180CE1ACD  mov     rdx, qword ptr [rip + 0x2186db4]             ; TYPE System.IObservable<int>_TypeInfo
+  0x180CE1AD4  xor     ecx, ecx                                  
+  0x180CE1AD6  mov     r9, rbx                                   
+  0x180CE1AD9  mov     r8, rax                                   
+  0x180CE1ADC  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE1AE1  add     rsp, 0x20                                 
+  0x180CE1AE5  pop     rdi                                       
+  0x180CE1AE6  jmp     0x180003140                               
+
+180CE1AEB:
+  0x180CE1AEB  call    0x180246730                                  ; THROW NullReferenceException

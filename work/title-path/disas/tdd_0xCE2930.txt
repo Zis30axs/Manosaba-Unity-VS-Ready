@@ -1,0 +1,141 @@
+====================================================================================================
+FUNCTION RVA 0xCE2930  VA 0x180CE2930  size 0x181 (385 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$DoStateTransition
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown__DoStateTransition (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, int32_t state, bool instant, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: protected override void DoStateTransition(Selectable.SelectionState state, bool instant)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE2930  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE2935  push    rdi                                       
+  0x180CE2936  sub     rsp, 0x40                                 
+  0x180CE293A  mov     edi, edx                                  
+  0x180CE293C  mov     rbx, rcx                                  
+  0x180CE293F  xor     edx, edx                                  
+  0x180CE2941  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE2946  test    rax, rax                                  
+  0x180CE2949  je      0x180ce2a37                               
+  0x180CE294F  xor     edx, edx                                  
+  0x180CE2951  mov     rcx, rax                                  
+  0x180CE2954  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CE2959  test    al, al                                    
+  0x180CE295B  je      0x180ce29a0                               
+  0x180CE295D  mov     ecx, edi                                  
+  0x180CE295F  test    edi, edi                                  
+  0x180CE2961  je      0x180ce2a14                               
+  0x180CE2967  sub     ecx, 1                                    
+  0x180CE296A  je      0x180ce29f1                               
+  0x180CE2970  sub     ecx, 1                                    
+  0x180CE2973  je      0x180ce29ce                               
+  0x180CE2975  sub     ecx, 1                                    
+  0x180CE2978  je      0x180ce29ab                               
+  0x180CE297A  cmp     ecx, 1                                    
+  0x180CE297D  jne     0x180ce2a3d                               
+  0x180CE2983  xor     edx, edx                                  
+  0x180CE2985  mov     rcx, rbx                                  
+  0x180CE2988  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE298D  test    rax, rax                                  
+  0x180CE2990  je      0x180ce2a37                               
+  0x180CE2996  xor     edx, edx                                  
+  0x180CE2998  mov     rcx, rax                                  
+  0x180CE299B  call    0x180ceabf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToDisabled
+
+180CE29A0:
+  0x180CE29A0  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE29A5  add     rsp, 0x40                                 
+  0x180CE29A9  pop     rdi                                       
+  0x180CE29AA  ret                                               
+
+180CE29AB:
+  0x180CE29AB  xor     edx, edx                                  
+  0x180CE29AD  mov     rcx, rbx                                  
+  0x180CE29B0  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE29B5  test    rax, rax                                  
+  0x180CE29B8  je      0x180ce2a37                               
+  0x180CE29BA  xor     edx, edx                                  
+  0x180CE29BC  mov     rcx, rax                                  
+  0x180CE29BF  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE29C4  add     rsp, 0x40                                 
+  0x180CE29C8  pop     rdi                                       
+  0x180CE29C9  jmp     0x180ceab70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToSelected
+
+180CE29CE:
+  0x180CE29CE  xor     edx, edx                                  
+  0x180CE29D0  mov     rcx, rbx                                  
+  0x180CE29D3  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE29D8  test    rax, rax                                  
+  0x180CE29DB  je      0x180ce2a37                               
+  0x180CE29DD  xor     edx, edx                                  
+  0x180CE29DF  mov     rcx, rax                                  
+  0x180CE29E2  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE29E7  add     rsp, 0x40                                 
+  0x180CE29EB  pop     rdi                                       
+  0x180CE29EC  jmp     0x180ceaaf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToPressed
+
+180CE29F1:
+  0x180CE29F1  xor     edx, edx                                  
+  0x180CE29F3  mov     rcx, rbx                                  
+  0x180CE29F6  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE29FB  test    rax, rax                                  
+  0x180CE29FE  je      0x180ce2a37                               
+  0x180CE2A00  xor     edx, edx                                  
+  0x180CE2A02  mov     rcx, rax                                  
+  0x180CE2A05  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE2A0A  add     rsp, 0x40                                 
+  0x180CE2A0E  pop     rdi                                       
+  0x180CE2A0F  jmp     0x180ceaa70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToHighlighted
+
+180CE2A14:
+  0x180CE2A14  xor     edx, edx                                  
+  0x180CE2A16  mov     rcx, rbx                                  
+  0x180CE2A19  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE2A1E  test    rax, rax                                  
+  0x180CE2A21  je      0x180ce2a37                               
+  0x180CE2A23  xor     edx, edx                                  
+  0x180CE2A25  mov     rcx, rax                                  
+  0x180CE2A28  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE2A2D  add     rsp, 0x40                                 
+  0x180CE2A31  pop     rdi                                       
+  0x180CE2A32  jmp     0x180cea9f0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToNormal
+
+180CE2A37:
+  0x180CE2A37  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE2A3C  int3                                              
+
+180CE2A3D:
+  0x180CE2A3D  lea     rcx, [rip + 0x21868ec]                       ; TYPE UnityEngine.UI.Selectable.SelectionState_TypeInfo
+  0x180CE2A44  mov     dword ptr [rsp + 0x30], edi               
+  0x180CE2A48  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CE2A4D  mov     rcx, rax                                  
+  0x180CE2A50  lea     rdx, [rsp + 0x30]                         
+  0x180CE2A55  call    0x180246570                                  ; il2cpp_value_box
+  0x180CE2A5A  lea     rcx, [rip + 0x215aea7]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180CE2A61  mov     rbx, rax                                  
+  0x180CE2A64  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CE2A69  mov     rcx, rax                                  
+  0x180CE2A6C  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180CE2A71  lea     rcx, [rip + 0x2139c80]                       ; STR 'state'
+  0x180CE2A78  mov     rdi, rax                                  
+  0x180CE2A7B  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CE2A80  mov     rdx, rax                                  
+  0x180CE2A83  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CE2A8C  xor     r9d, r9d                                  
+  0x180CE2A8F  mov     r8, rbx                                   
+  0x180CE2A92  mov     rcx, rdi                                  
+  0x180CE2A95  call    0x180f749a0                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180CE2A9A  lea     rcx, [rip + 0x2185d17]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.DoStateTransition() => GigaCreation.Essentials.Ui.TweeningDropdown$$DoStateTransition
+  0x180CE2AA1  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CE2AA6  mov     rdx, rax                                  
+  0x180CE2AA9  mov     rcx, rdi                                  
+  0x180CE2AAC  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

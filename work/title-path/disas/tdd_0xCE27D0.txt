@@ -1,0 +1,99 @@
+====================================================================================================
+FUNCTION RVA 0xCE27D0  VA 0x180CE27D0  size 0x154 (340 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$CreateItem
+  csig   : TMPro_TMP_Dropdown_DropdownItem_o* GigaCreation_Essentials_Ui_TweeningDropdown__CreateItem (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, TMPro_TMP_Dropdown_DropdownItem_o* itemTemplate, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: protected override TMP_Dropdown.DropdownItem CreateItem(TMP_Dropdown.DropdownItem itemTemplate)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE27D0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CE27D5  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CE27DA  push    rsi                                       
+  0x180CE27DB  sub     rsp, 0x30                                 
+  0x180CE27DF  cmp     byte ptr [rip + 0x23fa9b2], 0                ; data_30DD198
+  0x180CE27E6  mov     rbx, rdx                                  
+  0x180CE27E9  mov     rbp, rcx                                  
+  0x180CE27EC  jne     0x180ce2839                               
+  0x180CE27EE  lea     rcx, [rip + 0x21711db]                       ; TYPE System.Action<PointerEventData>_TypeInfo
+  0x180CE27F5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE27FA  lock or dword ptr [rsp], 0                        
+  0x180CE27FF  lea     rcx, [rip + 0x216fa62]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE2806  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE280B  lock or dword ptr [rsp], 0                        
+  0x180CE2810  lea     rcx, [rip + 0x2171179]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<PointerEventData>()
+  0x180CE2817  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE281C  lock or dword ptr [rsp], 0                        
+  0x180CE2821  lea     rcx, [rip + 0x2185f98]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.<CreateItem>b__25_0() => GigaCreation.Essentials.Ui.TweeningDropdown$$<CreateItem>b__25_0
+  0x180CE2828  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE282D  lock or dword ptr [rsp], 0                        
+  0x180CE2832  mov     byte ptr [rip + 0x23fa95f], 1                ; data_30DD198
+
+180CE2839:
+  0x180CE2839  cmp     byte ptr [rip + 0x2401ba2], 0                ; data_30E43E2
+  0x180CE2840  jne     0x180ce286b                               
+  0x180CE2842  lea     rcx, [rip + 0x212c837]                       ; METHODINFO Method$UnityEngine.Object.Instantiate<TMP_Dropdown.DropdownItem>()
+  0x180CE2849  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE284E  lock or dword ptr [rsp], 0                        
+  0x180CE2853  lea     rcx, [rip + 0x216fa36]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE285A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE285F  lock or dword ptr [rsp], 0                        
+  0x180CE2864  mov     byte ptr [rip + 0x2401b77], 1                ; data_30E43E2
+
+180CE286B:
+  0x180CE286B  mov     rcx, qword ptr [rip + 0x216fa1e]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE2872  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE2879  jne     0x180ce2880                               
+  0x180CE287B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE2880:
+  0x180CE2880  mov     rdx, qword ptr [rip + 0x212c7f9]             ; METHODINFO Method$UnityEngine.Object.Instantiate<TMP_Dropdown.DropdownItem>()
+  0x180CE2887  mov     rcx, rbx                                  
+  0x180CE288A  call    0x1807211c0                                  ; -> UnityEngine.Object$$Instantiate<object>
+  0x180CE288F  mov     rsi, rax                                  
+  0x180CE2892  test    rax, rax                                  
+  0x180CE2895  je      0x180ce291f                               
+  0x180CE289B  mov     rcx, qword ptr [rax + 0x38]               
+  0x180CE289F  xor     edx, edx                                  
+  0x180CE28A1  mov     qword ptr [rsp + 0x40], rdi               
+  0x180CE28A6  call    0x1817ee1f0                                  ; -> UniRx.Triggers.ObservableTriggerExtensions$$OnPointerClickAsObservable
+  0x180CE28AB  mov     rcx, qword ptr [rip + 0x217111e]             ; TYPE System.Action<PointerEventData>_TypeInfo
+  0x180CE28B2  mov     rdi, rax                                  
+  0x180CE28B5  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE28BA  mov     r8, qword ptr [rip + 0x2185eff]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.<CreateItem>b__25_0() => GigaCreation.Essentials.Ui.TweeningDropdown$$<CreateItem>b__25_0
+  0x180CE28C1  xor     r9d, r9d                                  
+  0x180CE28C4  mov     rdx, rbp                                  
+  0x180CE28C7  mov     rcx, rax                                  
+  0x180CE28CA  mov     rbx, rax                                  
+  0x180CE28CD  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE28D2  mov     r8, qword ptr [rip + 0x21710b7]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<PointerEventData>()
+  0x180CE28D9  mov     rdx, rbx                                  
+  0x180CE28DC  mov     rcx, rdi                                  
+  0x180CE28DF  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE28E4  mov     rcx, qword ptr [rip + 0x216f97d]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE28EB  lea     r9, [rsp + 0x48]                          
+  0x180CE28F0  mov     rdx, qword ptr [rbp + 0x1b8]                 ; rbp->TweeningDropdown._playSfxDisposables
+  0x180CE28F7  mov     r8, rsi                                   
+  0x180CE28FA  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE28FF  mov     rcx, rax                                  
+  0x180CE2902  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE2907  mov     rdi, qword ptr [rsp + 0x40]               
+  0x180CE290C  mov     rax, rsi                                  
+  0x180CE290F  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CE2914  mov     rbp, qword ptr [rsp + 0x58]               
+  0x180CE2919  add     rsp, 0x30                                 
+  0x180CE291D  pop     rsi                                       
+  0x180CE291E  ret                                               
+
+180CE291F:
+  0x180CE291F  call    0x180246730                                  ; THROW NullReferenceException

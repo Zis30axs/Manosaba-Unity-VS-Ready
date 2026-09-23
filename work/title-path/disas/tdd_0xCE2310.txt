@@ -1,0 +1,213 @@
+====================================================================================================
+FUNCTION RVA 0xCE2310  VA 0x180CE2310  size 0x352 (850 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$CreateBlocker
+  csig   : UnityEngine_GameObject_o* GigaCreation_Essentials_Ui_TweeningDropdown__CreateBlocker (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, UnityEngine_Canvas_o* rootCanvas, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: protected override GameObject CreateBlocker(Canvas rootCanvas)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE2310  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CE2315  mov     qword ptr [rsp + 0x18], rbp               
+  0x180CE231A  push    rsi                                       
+  0x180CE231B  push    rdi                                       
+  0x180CE231C  push    r14                                       
+  0x180CE231E  sub     rsp, 0x30                                 
+  0x180CE2322  cmp     byte ptr [rip + 0x23fae6d], 0                ; data_30DD196
+  0x180CE2329  mov     rbp, rdx                                  
+  0x180CE232C  mov     rsi, rcx                                  
+  0x180CE232F  jne     0x180ce23e6                               
+  0x180CE2335  lea     rcx, [rip + 0x2172cc4]                       ; TYPE System.Action<Unit>_TypeInfo
+  0x180CE233C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2341  lock or dword ptr [rsp], 0                        
+  0x180CE2346  lea     rcx, [rip + 0x2177453]                       ; TYPE System.Action<InputAction.CallbackContext>_TypeInfo
+  0x180CE234D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2352  lock or dword ptr [rsp], 0                        
+  0x180CE2357  lea     rcx, [rip + 0x2171222]                       ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker_TypeInfo
+  0x180CE235E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2363  lock or dword ptr [rsp], 0                        
+  0x180CE2368  lea     rcx, [rip + 0x21864b9]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE236F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2374  lock or dword ptr [rsp], 0                        
+  0x180CE2379  lea     rcx, [rip + 0x2186470]                       ; METHODINFO Method$UnityEngine.GameObject.GetComponent<Button>()
+  0x180CE2380  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2385  lock or dword ptr [rsp], 0                        
+  0x180CE238A  lea     rcx, [rip + 0x2172da7]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE2391  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2396  lock or dword ptr [rsp], 0                        
+  0x180CE239B  lea     rcx, [rip + 0x2172bbe]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<Unit>()
+  0x180CE23A2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE23A7  lock or dword ptr [rsp], 0                        
+  0x180CE23AC  lea     rcx, [rip + 0x2186435]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnCancelActionPerformedWhileBlockerShown() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnCancelActionPerformedWhileBlockerShown
+  0x180CE23B3  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE23B8  lock or dword ptr [rsp], 0                        
+  0x180CE23BD  lea     rcx, [rip + 0x218641c]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.<CreateBlocker>b__23_0() => GigaCreation.Essentials.Ui.TweeningDropdown$$<CreateBlocker>b__23_0
+  0x180CE23C4  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE23C9  lock or dword ptr [rsp], 0                        
+  0x180CE23CE  lea     rcx, [rip + 0x216f7f3]                       ; STR 'Cancel'
+  0x180CE23D5  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE23DA  lock or dword ptr [rsp], 0                        
+  0x180CE23DF  mov     byte ptr [rip + 0x23fadb0], 1                ; data_30DD196
+
+180CE23E6:
+  0x180CE23E6  cmp     byte ptr [rip + 0x23fada6], 0                ; data_30DD193
+  0x180CE23ED  jne     0x180ce2407                               
+  0x180CE23EF  lea     rcx, [rip + 0x2171192]                       ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<ICancelEventBlockable>()
+  0x180CE23F6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE23FB  lock or dword ptr [rsp], 0                        
+  0x180CE2400  mov     byte ptr [rip + 0x23fad8c], 1                ; data_30DD193
+
+180CE2407:
+  0x180CE2407  mov     rdi, qword ptr [rsi + 0x1d0]                 ; rsi->TweeningDropdown._parentBlockables
+  0x180CE240E  lea     r14, [rip + 0x240be8b]                       ; data_30EE2A0
+  0x180CE2415  test    rdi, rdi                                  
+  0x180CE2418  jne     0x180ce2489                               
+  0x180CE241A  mov     rdx, qword ptr [rip + 0x2171167]             ; METHODINFO Method$UnityEngine.Component.GetComponentsInParent<ICancelEventBlockable>()
+  0x180CE2421  mov     rcx, rsi                                  
+  0x180CE2424  call    0x180673990                                  ; -> UnityEngine.Component$$GetComponentsInParent<__Il2CppFullySharedGenericType>
+  0x180CE2429  cmp     dword ptr [rip + 0x23f6d94], 0               ; data_30D91C4
+  0x180CE2430  mov     rdi, rax                                  
+  0x180CE2433  mov     qword ptr [rsi + 0x1d0], rax                 ; rsi->TweeningDropdown._parentBlockables
+  0x180CE243A  je      0x180ce2489                               
+  0x180CE243C  lea     r9, [rsi + 0x1d0]                            ; rsi->TweeningDropdown._parentBlockables
+  0x180CE2443  shr     r9, 0xc                                   
+  0x180CE2447  and     r9d, 0x1fffff                             
+  0x180CE244E  mov     eax, r9d                                  
+  0x180CE2451  shr     rax, 6                                    
+  0x180CE2455  and     r9d, 0x3f                                 
+  0x180CE2459  lea     r8, [r14 + rax*8]                         
+  0x180CE245D  prefetchw byte ptr [r8 + 0x462e0]                   
+  0x180CE2465  nop     word ptr [rax + rax]                      
+
+180CE2470:
+  0x180CE2470  mov     rax, qword ptr [r8 + 0x462e0]             
+  0x180CE2477  mov     rcx, rax                                  
+  0x180CE247A  bts     rcx, r9                                   
+  0x180CE247E  lock cmpxchg qword ptr [r8 + 0x462e0], rcx             
+  0x180CE2487  jne     0x180ce2470                               
+
+180CE2489:
+  0x180CE2489  mov     rcx, qword ptr [rip + 0x21710f0]             ; TYPE GigaCreation.Essentials.Ui.CancelEventBlocker_TypeInfo
+  0x180CE2490  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE2495  xor     r8d, r8d                                  
+  0x180CE2498  mov     rdx, rdi                                  
+  0x180CE249B  mov     rcx, rax                                  
+  0x180CE249E  mov     rbx, rax                                  
+  0x180CE24A1  call    0x180cdb6b0                                  ; -> GigaCreation.Essentials.Ui.CancelEventBlocker$$.ctor
+  0x180CE24A6  cmp     dword ptr [rip + 0x23f6d17], 0               ; data_30D91C4
+  0x180CE24AD  mov     qword ptr [rsi + 0x1d8], rbx                 ; rsi->TweeningDropdown._cancelEventBlockerDisposable
+  0x180CE24B4  je      0x180ce24f9                               
+  0x180CE24B6  lea     r8, [rsi + 0x1d8]                            ; rsi->TweeningDropdown._cancelEventBlockerDisposable
+  0x180CE24BD  shr     r8, 0xc                                   
+  0x180CE24C1  and     r8d, 0x1fffff                             
+  0x180CE24C8  mov     eax, r8d                                  
+  0x180CE24CB  shr     rax, 6                                    
+  0x180CE24CF  and     r8d, 0x3f                                 
+  0x180CE24D3  lea     rdx, [r14 + rax*8]                        
+  0x180CE24D7  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180CE24DE  nop                                               
+
+180CE24E0:
+  0x180CE24E0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180CE24E7  mov     rcx, rax                                  
+  0x180CE24EA  bts     rcx, r8                                   
+  0x180CE24EE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180CE24F7  jne     0x180ce24e0                               
+
+180CE24F9:
+  0x180CE24F9  mov     rcx, qword ptr [rsi + 0x188]                 ; rsi->TweeningDropdown._canvasGroup
+  0x180CE2500  test    rcx, rcx                                  
+  0x180CE2503  je      0x180ce265d                               
+  0x180CE2509  xor     r8d, r8d                                  
+  0x180CE250C  xor     edx, edx                                  
+  0x180CE250E  call    0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+  0x180CE2513  xor     r8d, r8d                                  
+  0x180CE2516  mov     rdx, rbp                                  
+  0x180CE2519  mov     rcx, rsi                                  
+  0x180CE251C  call    0x181ed4680                                  ; -> TMPro.TMP_Dropdown$$CreateBlocker
+  0x180CE2521  mov     rbp, rax                                  
+  0x180CE2524  test    rax, rax                                  
+  0x180CE2527  je      0x180ce265d                               
+  0x180CE252D  mov     r8, qword ptr [rip + 0x21862bc]              ; METHODINFO Method$UnityEngine.GameObject.GetComponent<Button>()
+  0x180CE2534  lea     rdx, [rsp + 0x50]                         
+  0x180CE2539  mov     rcx, rax                                  
+  0x180CE253C  call    0x1806b69b0                                  ; -> UnityEngine.GameObject$$GetComponent<__Il2CppFullySharedGenericType>
+  0x180CE2541  mov     rcx, qword ptr [rsp + 0x50]               
+  0x180CE2546  test    rcx, rcx                                  
+  0x180CE2549  je      0x180ce265d                               
+  0x180CE254F  mov     rcx, qword ptr [rcx + 0x100]              
+  0x180CE2556  xor     edx, edx                                  
+  0x180CE2558  call    0x1817deea0                                  ; -> UniRx.UnityEventExtensions$$AsObservable
+  0x180CE255D  mov     rcx, qword ptr [rip + 0x2172a9c]             ; TYPE System.Action<Unit>_TypeInfo
+  0x180CE2564  mov     rdi, rax                                  
+  0x180CE2567  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE256C  mov     r8, qword ptr [rip + 0x218626d]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.<CreateBlocker>b__23_0() => GigaCreation.Essentials.Ui.TweeningDropdown$$<CreateBlocker>b__23_0
+  0x180CE2573  xor     r9d, r9d                                  
+  0x180CE2576  mov     rdx, rsi                                  
+  0x180CE2579  mov     rcx, rax                                  
+  0x180CE257C  mov     rbx, rax                                  
+  0x180CE257F  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE2584  mov     r8, qword ptr [rip + 0x21729d5]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<Unit>()
+  0x180CE258B  mov     rdx, rbx                                  
+  0x180CE258E  mov     rcx, rdi                                  
+  0x180CE2591  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE2596  mov     rcx, qword ptr [rip + 0x218628b]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE259D  lea     r9, [rsp + 0x50]                          
+  0x180CE25A2  mov     rdx, qword ptr [rsi + 0x1b8]                 ; rsi->TweeningDropdown._playSfxDisposables
+  0x180CE25A9  mov     r8, rbp                                   
+  0x180CE25AC  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE25B1  mov     rcx, rax                                  
+  0x180CE25B4  call    0x18067fe60                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE25B9  xor     edx, edx                                  
+  0x180CE25BB  mov     rcx, rsi                                  
+  0x180CE25BE  call    0x180ce1b00                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_InputManager
+  0x180CE25C3  test    rax, rax                                  
+  0x180CE25C6  je      0x180ce265d                               
+  0x180CE25CC  mov     r9, qword ptr [rip + 0x216f5f5]              ; STR 'Cancel'
+  0x180CE25D3  mov     r8, rax                                   
+  0x180CE25D6  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CE25DF  call    0x180006e10                                  ; -> sub_6E10 (runtime/helper)
+  0x180CE25E4  mov     rcx, qword ptr [rip + 0x21771b5]             ; TYPE System.Action<InputAction.CallbackContext>_TypeInfo
+  0x180CE25EB  mov     rbx, rax                                  
+  0x180CE25EE  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE25F3  mov     r8, qword ptr [rip + 0x21861ee]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnCancelActionPerformedWhileBlockerShown() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnCancelActionPerformedWhileBlockerShown
+  0x180CE25FA  xor     r9d, r9d                                  
+  0x180CE25FD  mov     rdx, rsi                                  
+  0x180CE2600  mov     rcx, rax                                  
+  0x180CE2603  mov     rdi, rax                                  
+  0x180CE2606  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE260B  test    rbx, rbx                                  
+  0x180CE260E  je      0x180ce265d                               
+  0x180CE2610  cmp     byte ptr [rip + 0x240018b], 0                ; data_30E27A2
+  0x180CE2617  jne     0x180ce2631                               
+  0x180CE2619  lea     rcx, [rip + 0x217d5a8]                       ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CE2620  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2625  lock or dword ptr [rsp], 0                        
+  0x180CE262A  mov     byte ptr [rip + 0x2400171], 1                ; data_30E27A2
+
+180CE2631:
+  0x180CE2631  mov     r8, qword ptr [rip + 0x217d590]              ; METHODINFO Method$UnityEngine.InputSystem.Utilities.CallbackArray<Action<InputAction.CallbackContext>>.AddCallback()
+  0x180CE2638  lea     rcx, [rbx + 0x170]                        
+  0x180CE263F  mov     rdx, rdi                                  
+  0x180CE2642  call    0x180c1df50                                  ; -> UnityEngine.InputSystem.Utilities.CallbackArray<object>$$AddCallback
+  0x180CE2647  mov     rbx, qword ptr [rsp + 0x58]               
+  0x180CE264C  mov     rax, rbp                                  
+  0x180CE264F  mov     rbp, qword ptr [rsp + 0x60]               
+  0x180CE2654  add     rsp, 0x30                                 
+  0x180CE2658  pop     r14                                       
+  0x180CE265A  pop     rdi                                       
+  0x180CE265B  pop     rsi                                       
+  0x180CE265C  ret                                               
+
+180CE265D:
+  0x180CE265D  call    0x180246730                                  ; THROW NullReferenceException

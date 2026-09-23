@@ -1,0 +1,165 @@
+====================================================================================================
+FUNCTION RVA 0xCE14F0  VA 0x180CE14F0  size 0x215 (533 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$<OnEnable>b__8_1
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown___OnEnable_b__8_1 (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, UniRx_Unit_o __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private void <OnEnable>b__8_1(Unit _)
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE14F0  push    rdi                                       
+  0x180CE14F2  sub     rsp, 0x20                                 
+  0x180CE14F6  cmp     byte ptr [rip + 0x23fbc8f], 0                ; data_30DD18C
+  0x180CE14FD  mov     rdi, rcx                                  
+  0x180CE1500  jne     0x180ce152b                               
+  0x180CE1502  lea     rcx, [rip + 0x215eb37]                       ; TYPE UnityEngine.EventSystems.EventSystem_TypeInfo
+  0x180CE1509  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE150E  lock or dword ptr [rsp], 0                        
+  0x180CE1513  lea     rcx, [rip + 0x2170d76]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE151A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE151F  lock or dword ptr [rsp], 0                        
+  0x180CE1524  mov     byte ptr [rip + 0x23fbc61], 1                ; data_30DD18C
+
+180CE152B:
+  0x180CE152B  mov     rdi, qword ptr [rdi + 0x28]                  ; rdi->OptionItemDropdown._autoLayoutSupporter
+  0x180CE152F  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CE1534  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CE1539  test    rdi, rdi                                  
+  0x180CE153C  je      0x180ce16e0                               
+  0x180CE1542  cmp     byte ptr [rip + 0x23fbefe], 0                ; data_30DD447
+  0x180CE1549  jne     0x180ce1563                               
+  0x180CE154B  lea     rcx, [rip + 0x2151a66]                       ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180CE1552  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1557  lock or dword ptr [rsp], 0                        
+  0x180CE155C  mov     byte ptr [rip + 0x23fbee4], 1                ; data_30DD447
+
+180CE1563:
+  0x180CE1563  mov     rcx, qword ptr [rip + 0x2151a4e]             ; TYPE System.Collections.Generic.IEnumerable<Behaviour>[]_TypeInfo
+  0x180CE156A  mov     edx, 2                                    
+  0x180CE156F  call    0x180297400                                  ; -> sub_297400 (runtime/helper)
+  0x180CE1574  mov     rsi, qword ptr [rdi + 0x20]                  ; rdi->OptionItemDropdown._dropdown
+  0x180CE1578  mov     rbx, rax                                  
+  0x180CE157B  test    rax, rax                                  
+  0x180CE157E  je      0x180ce16e0                               
+  0x180CE1584  test    rsi, rsi                                  
+  0x180CE1587  je      0x180ce15a1                               
+  0x180CE1589  mov     rdx, qword ptr [rax]                      
+  0x180CE158C  mov     rcx, rsi                                  
+  0x180CE158F  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CE1593  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CE1598  test    rax, rax                                  
+  0x180CE159B  je      0x180ce16e6                               
+
+180CE15A1:
+  0x180CE15A1  mov     r8, rsi                                   
+  0x180CE15A4  xor     edx, edx                                  
+  0x180CE15A6  mov     rcx, rbx                                  
+  0x180CE15A9  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CE15AE  mov     rdi, qword ptr [rdi + 0x28]                  ; rdi->OptionItemDropdown._autoLayoutSupporter
+  0x180CE15B2  test    rdi, rdi                                  
+  0x180CE15B5  je      0x180ce15cf                               
+  0x180CE15B7  mov     rdx, qword ptr [rbx]                      
+  0x180CE15BA  mov     rcx, rdi                                  
+  0x180CE15BD  mov     rdx, qword ptr [rdx + 0x40]               
+  0x180CE15C1  call    0x180298020                                  ; -> sub_298020 (runtime/helper)
+  0x180CE15C6  test    rax, rax                                  
+  0x180CE15C9  je      0x180ce16f6                               
+
+180CE15CF:
+  0x180CE15CF  mov     r8, rdi                                   
+  0x180CE15D2  mov     edx, 1                                    
+  0x180CE15D7  mov     rcx, rbx                                  
+  0x180CE15DA  call    0x180002390                                  ; -> sub_2390 (runtime/helper)
+  0x180CE15DF  xor     r8d, r8d                                  
+  0x180CE15E2  mov     rdx, rbx                                  
+  0x180CE15E5  xor     ecx, ecx                                  
+  0x180CE15E7  call    0x180d55270                                  ; -> GigaCreation.Tools.Ui.AutoLayoutSupporter$$SetComponentsEnabled
+  0x180CE15EC  mov     rcx, qword ptr [rip + 0x215ea4d]             ; TYPE UnityEngine.EventSystems.EventSystem_TypeInfo
+  0x180CE15F3  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE15FA  jne     0x180ce1601                               
+  0x180CE15FC  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE1601:
+  0x180CE1601  xor     ecx, ecx                                  
+  0x180CE1603  call    0x1824af130                                  ; -> UnityEngine.EventSystems.EventSystem$$get_current
+  0x180CE1608  test    rax, rax                                  
+  0x180CE160B  je      0x180ce16e0                               
+  0x180CE1611  mov     rcx, qword ptr [rip + 0x2170c78]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1618  mov     rbx, qword ptr [rax + 0x40]               
+  0x180CE161C  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1623  jne     0x180ce162a                               
+  0x180CE1625  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE162A:
+  0x180CE162A  cmp     byte ptr [rip + 0x24071fd], 0                ; data_30E882E
+  0x180CE1631  jne     0x180ce164b                               
+  0x180CE1633  lea     rcx, [rip + 0x2170c56]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE163A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE163F  lock or dword ptr [rsp], 0                        
+  0x180CE1644  mov     byte ptr [rip + 0x24071e3], 1                ; data_30E882E
+
+180CE164B:
+  0x180CE164B  mov     rcx, qword ptr [rip + 0x2170c3e]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1652  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1659  jne     0x180ce1660                               
+  0x180CE165B  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE1660:
+  0x180CE1660  cmp     byte ptr [rip + 0x24071c8], 0                ; data_30E882F
+  0x180CE1667  jne     0x180ce1681                               
+  0x180CE1669  lea     rcx, [rip + 0x2170c20]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE1670  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1675  lock or dword ptr [rsp], 0                        
+  0x180CE167A  mov     byte ptr [rip + 0x24071ae], 1                ; data_30E882F
+
+180CE1681:
+  0x180CE1681  test    rbx, rbx                                  
+  0x180CE1684  je      0x180ce16d0                               
+  0x180CE1686  mov     rcx, qword ptr [rip + 0x2170c03]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180CE168D  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE1694  jne     0x180ce169b                               
+  0x180CE1696  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE169B:
+  0x180CE169B  cmp     qword ptr [rbx + 0x10], 0                 
+  0x180CE16A0  je      0x180ce16d0                               
+  0x180CE16A2  mov     rcx, qword ptr [rip + 0x215e997]             ; TYPE UnityEngine.EventSystems.EventSystem_TypeInfo
+  0x180CE16A9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CE16B0  jne     0x180ce16b7                               
+  0x180CE16B2  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CE16B7:
+  0x180CE16B7  xor     ecx, ecx                                  
+  0x180CE16B9  call    0x1824af130                                  ; -> UnityEngine.EventSystems.EventSystem$$get_current
+  0x180CE16BE  test    rax, rax                                  
+  0x180CE16C1  je      0x180ce16e0                               
+  0x180CE16C3  xor     r8d, r8d                                  
+  0x180CE16C6  xor     edx, edx                                  
+  0x180CE16C8  mov     rcx, rax                                  
+  0x180CE16CB  call    0x1824afad0                                  ; -> UnityEngine.EventSystems.EventSystem$$SetSelectedGameObject
+
+180CE16D0:
+  0x180CE16D0  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180CE16D5  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE16DA  add     rsp, 0x20                                 
+  0x180CE16DE  pop     rdi                                       
+  0x180CE16DF  ret                                               
+
+180CE16E0:
+  0x180CE16E0  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CE16E5  int3                                              
+
+180CE16E6:
+  0x180CE16E6  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CE16EB  mov     rcx, rax                                  
+  0x180CE16EE  xor     edx, edx                                  
+  0x180CE16F0  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)
+  0x180CE16F5  int3                                              
+
+180CE16F6:
+  0x180CE16F6  call    0x180246900                                  ; -> sub_246900 (runtime/helper)
+  0x180CE16FB  mov     rcx, rax                                  
+  0x180CE16FE  xor     edx, edx                                  
+  0x180CE1700  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

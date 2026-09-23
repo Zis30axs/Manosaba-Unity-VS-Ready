@@ -1,0 +1,50 @@
+====================================================================================================
+FUNCTION RVA 0xCE2EB0  VA 0x180CE2EB0  size 0x6D (109 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$<CreateItem>b__25_0
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown___CreateItem_b__25_0 (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, UnityEngine_EventSystems_PointerEventData_o* __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: private void <CreateItem>b__25_0(PointerEventData _)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE2EB0  push    rbx                                       
+  0x180CE2EB2  sub     rsp, 0x20                                 
+  0x180CE2EB6  cmp     byte ptr [rip + 0x23fa2e0], 0                ; data_30DD19D
+  0x180CE2EBD  mov     rbx, rcx                                  
+  0x180CE2EC0  jne     0x180ce2eda                               
+  0x180CE2EC2  lea     rcx, [rip + 0x217226f]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE2EC9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2ECE  lock or dword ptr [rsp], 0                        
+  0x180CE2ED3  mov     byte ptr [rip + 0x23fa2c3], 1                ; data_30DD19D
+
+180CE2EDA:
+  0x180CE2EDA  xor     edx, edx                                  
+  0x180CE2EDC  mov     rcx, rbx                                  
+  0x180CE2EDF  call    0x180ce1b00                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_InputManager
+  0x180CE2EE4  test    rax, rax                                  
+  0x180CE2EE7  je      0x180ce2f18                               
+  0x180CE2EE9  mov     rdx, qword ptr [rip + 0x2172248]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE2EF0  xor     ecx, ecx                                  
+  0x180CE2EF2  mov     r9d, 1                                    
+  0x180CE2EF8  mov     r8, rax                                   
+  0x180CE2EFB  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180CE2F00  mov     rcx, qword ptr [rbx + 0x1b8]                 ; rbx->TweeningDropdown._playSfxDisposables
+  0x180CE2F07  test    rcx, rcx                                  
+  0x180CE2F0A  je      0x180ce2f18                               
+  0x180CE2F0C  xor     edx, edx                                  
+  0x180CE2F0E  add     rsp, 0x20                                 
+  0x180CE2F12  pop     rbx                                       
+  0x180CE2F13  jmp     0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+
+180CE2F18:
+  0x180CE2F18  call    0x180246730                                  ; THROW NullReferenceException

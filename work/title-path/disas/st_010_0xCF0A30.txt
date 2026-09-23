@@ -1,0 +1,27 @@
+====================================================================================================
+FUNCTION RVA 0xCF0A30  VA 0x180CF0A30  size 0x42 (66 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$OnValueChangedAsObservable
+  csig   : System_IObservable_bool__o* GigaCreation_Essentials_Ui_SlideToggle__OnValueChangedAsObservable (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected IObservable<bool> OnValueChangedAsObservable()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0A30  push    rbx                                       
+  0x180CF0A32  sub     rsp, 0x20                                 
+  0x180CF0A36  cmp     byte ptr [rip + 0x23ec7ce], 0                ; data_30DD20B
+  0x180CF0A3D  mov     rbx, rcx                                  
+  0x180CF0A40  jne     0x180cf0a5a                               
+  0x180CF0A42  lea     rcx, [rip + 0x217767f]                       ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<bool>()
+  0x180CF0A49  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0A4E  lock or dword ptr [rsp], 0                        
+  0x180CF0A53  mov     byte ptr [rip + 0x23ec7b1], 1                ; data_30DD20B
+
+180CF0A5A:
+  0x180CF0A5A  mov     rdx, qword ptr [rip + 0x2177667]             ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<bool>()
+  0x180CF0A61  mov     rcx, qword ptr [rbx + 0x118]              
+  0x180CF0A68  add     rsp, 0x20                                 
+  0x180CF0A6C  pop     rbx                                       
+  0x180CF0A6D  jmp     0x180798cd0                                  ; -> UniRx.UnityEventExtensions$$AsObservable<__Il2CppFullySharedGenericType> (+3 aliases)

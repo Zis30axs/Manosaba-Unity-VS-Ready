@@ -1,0 +1,30 @@
+FILE = "UnityProject/Assets/Scripts/Game/GigaCreation.Essentials.UI/GigaCreation.Essentials.Ui/SlideUtility.cs"
+USINGS = ["using LitMotion.Extensions;"]
+EV = "work/title-path/disas/sldu_"
+BODIES = [
+    dict(rva="0xCDD140", signature="public void Initialize(RectTransform rectTransform)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCDD140, 54 B -- _defaultAnchorPositionX (+0x24) = rectTransform.anchoredPosition.x",
+                  "Annotated disassembly: " + EV + "0xCDD140.txt"],
+         body=["_defaultAnchorPositionX = rectTransform.anchoredPosition.x;"]),
+    dict(rva="0xCDD180", signature="public void ForceSlide(RectTransform rectTransform, bool isDefault)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCDD180, 206 B -- an active _motion (+0x18) is cancelled (MotionManager.IsActive",
+                  "  0xCD57C0 / Cancel 0xCD58F0, IMotionStorage slot 4); the target x is _defaultAnchorPositionX, plus",
+                  "  _moveXOnHighlighted (+0x10) unless isDefault; anchoredPosition is set only when its x is not already",
+                  "  Mathf.Approximately the target (0x331670)", "Annotated disassembly: " + EV + "0xCDD180.txt"],
+         body=["if (_motion.IsActive())", "{", "\t_motion.Cancel();", "}",
+               "Vector2 anchoredPosition = rectTransform.anchoredPosition;",
+               "float num = (isDefault ? _defaultAnchorPositionX : (_defaultAnchorPositionX + _moveXOnHighlighted));",
+               "if (!Mathf.Approximately(anchoredPosition.x, num))", "{",
+               "\trectTransform.anchoredPosition = new Vector2(num, anchoredPosition.y);", "}"]),
+    dict(rva="0xCDD250", signature="public void MotorSlide(RectTransform rectTransform)",
+         comment=["RECONSTRUCTED | Confidence: A | RVA: 0xCDD250, 589 B -- an active _motion is cancelled; _motion =",
+                  "  LMotion.Create((_defaultAnchorPositionX, y), (_defaultAnchorPositionX + _moveXOnHighlighted, y), _tweenDuration",
+                  "  (+0x14)).WithEase(Ease 5 = OutQuad).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale (static +0x60))",
+                  "  .BindToAnchoredPosition(rectTransform).AddTo(rectTransform) (y read from anchoredPosition each time)",
+                  "Annotated disassembly: " + EV + "0xCDD250.txt"],
+         body=["if (_motion.IsActive())", "{", "\t_motion.Cancel();", "}",
+               "_motion = LMotion.Create(new Vector2(_defaultAnchorPositionX, rectTransform.anchoredPosition.y), new Vector2(_defaultAnchorPositionX + _moveXOnHighlighted, rectTransform.anchoredPosition.y), _tweenDuration).WithEase(Ease.OutQuad)",
+               "\t.WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)",
+               "\t.BindToAnchoredPosition(rectTransform)",
+               "\t.AddTo(rectTransform);"]),
+]

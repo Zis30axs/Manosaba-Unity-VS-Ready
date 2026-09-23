@@ -1,0 +1,22 @@
+====================================================================================================
+FUNCTION RVA 0xCE1190  VA 0x180CE1190  size 0x21 (33 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$SetValue
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown__SetValue (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, int32_t value, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: public void SetValue(int value)
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE1190  sub     rsp, 0x28                                 
+  0x180CE1194  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->OptionItemDropdown._dropdown
+  0x180CE1198  test    rcx, rcx                                  
+  0x180CE119B  je      0x180ce11ac                               
+  0x180CE119D  xor     r9d, r9d                                  
+  0x180CE11A0  xor     r8d, r8d                                  
+  0x180CE11A3  add     rsp, 0x28                                 
+  0x180CE11A7  jmp     0x181ed0450                                  ; -> TMPro.TMP_Dropdown$$SetValue
+
+180CE11AC:
+  0x180CE11AC  call    0x180246730                                  ; THROW NullReferenceException

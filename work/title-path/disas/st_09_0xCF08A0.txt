@@ -1,0 +1,133 @@
+====================================================================================================
+FUNCTION RVA 0xCF08A0  VA 0x180CF08A0  size 0x181 (385 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$DoStateTransition
+  csig   : void GigaCreation_Essentials_Ui_SlideToggle__DoStateTransition (GigaCreation_Essentials_Ui_SlideToggle_o* __this, int32_t state, bool instant, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected override void DoStateTransition(Selectable.SelectionState state, bool instant)
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF08A0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CF08A5  push    rdi                                       
+  0x180CF08A6  sub     rsp, 0x40                                 
+  0x180CF08AA  mov     edi, edx                                  
+  0x180CF08AC  mov     rbx, rcx                                  
+  0x180CF08AF  xor     edx, edx                                  
+  0x180CF08B1  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF08B6  test    rax, rax                                  
+  0x180CF08B9  je      0x180cf09a7                               
+  0x180CF08BF  xor     edx, edx                                  
+  0x180CF08C1  mov     rcx, rax                                  
+  0x180CF08C4  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CF08C9  test    al, al                                    
+  0x180CF08CB  je      0x180cf0910                               
+  0x180CF08CD  mov     ecx, edi                                  
+  0x180CF08CF  test    edi, edi                                  
+  0x180CF08D1  je      0x180cf0984                               
+  0x180CF08D7  sub     ecx, 1                                    
+  0x180CF08DA  je      0x180cf0961                               
+  0x180CF08E0  sub     ecx, 1                                    
+  0x180CF08E3  je      0x180cf093e                               
+  0x180CF08E5  sub     ecx, 1                                    
+  0x180CF08E8  je      0x180cf091b                               
+  0x180CF08EA  cmp     ecx, 1                                    
+  0x180CF08ED  jne     0x180cf09ad                               
+  0x180CF08F3  xor     edx, edx                                  
+  0x180CF08F5  mov     rcx, rbx                                  
+  0x180CF08F8  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF08FD  test    rax, rax                                  
+  0x180CF0900  je      0x180cf09a7                               
+  0x180CF0906  xor     edx, edx                                  
+  0x180CF0908  mov     rcx, rax                                  
+  0x180CF090B  call    0x180ceabf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToDisabled
+
+180CF0910:
+  0x180CF0910  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF0915  add     rsp, 0x40                                 
+  0x180CF0919  pop     rdi                                       
+  0x180CF091A  ret                                               
+
+180CF091B:
+  0x180CF091B  xor     edx, edx                                  
+  0x180CF091D  mov     rcx, rbx                                  
+  0x180CF0920  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF0925  test    rax, rax                                  
+  0x180CF0928  je      0x180cf09a7                               
+  0x180CF092A  xor     edx, edx                                  
+  0x180CF092C  mov     rcx, rax                                  
+  0x180CF092F  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF0934  add     rsp, 0x40                                 
+  0x180CF0938  pop     rdi                                       
+  0x180CF0939  jmp     0x180ceab70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToSelected
+
+180CF093E:
+  0x180CF093E  xor     edx, edx                                  
+  0x180CF0940  mov     rcx, rbx                                  
+  0x180CF0943  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF0948  test    rax, rax                                  
+  0x180CF094B  je      0x180cf09a7                               
+  0x180CF094D  xor     edx, edx                                  
+  0x180CF094F  mov     rcx, rax                                  
+  0x180CF0952  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF0957  add     rsp, 0x40                                 
+  0x180CF095B  pop     rdi                                       
+  0x180CF095C  jmp     0x180ceaaf0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToPressed
+
+180CF0961:
+  0x180CF0961  xor     edx, edx                                  
+  0x180CF0963  mov     rcx, rbx                                  
+  0x180CF0966  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF096B  test    rax, rax                                  
+  0x180CF096E  je      0x180cf09a7                               
+  0x180CF0970  xor     edx, edx                                  
+  0x180CF0972  mov     rcx, rax                                  
+  0x180CF0975  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF097A  add     rsp, 0x40                                 
+  0x180CF097E  pop     rdi                                       
+  0x180CF097F  jmp     0x180ceaa70                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToHighlighted
+
+180CF0984:
+  0x180CF0984  xor     edx, edx                                  
+  0x180CF0986  mov     rcx, rbx                                  
+  0x180CF0989  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF098E  test    rax, rax                                  
+  0x180CF0991  je      0x180cf09a7                               
+  0x180CF0993  xor     edx, edx                                  
+  0x180CF0995  mov     rcx, rax                                  
+  0x180CF0998  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF099D  add     rsp, 0x40                                 
+  0x180CF09A1  pop     rdi                                       
+  0x180CF09A2  jmp     0x180cea9f0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$OnStateTransitionToNormal
+
+180CF09A7:
+  0x180CF09A7  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CF09AC  int3                                              
+
+180CF09AD:
+  0x180CF09AD  lea     rcx, [rip + 0x217897c]                       ; TYPE UnityEngine.UI.Selectable.SelectionState_TypeInfo
+  0x180CF09B4  mov     dword ptr [rsp + 0x30], edi               
+  0x180CF09B8  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CF09BD  mov     rcx, rax                                  
+  0x180CF09C0  lea     rdx, [rsp + 0x30]                         
+  0x180CF09C5  call    0x180246570                                  ; il2cpp_value_box
+  0x180CF09CA  lea     rcx, [rip + 0x214cf37]                       ; TYPE System.ArgumentOutOfRangeException_TypeInfo
+  0x180CF09D1  mov     rbx, rax                                  
+  0x180CF09D4  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CF09D9  mov     rcx, rax                                  
+  0x180CF09DC  call    0x1802466e0                                  ; il2cpp_codegen_object_new (thunk)
+  0x180CF09E1  lea     rcx, [rip + 0x212bd10]                       ; STR 'state'
+  0x180CF09E8  mov     rdi, rax                                  
+  0x180CF09EB  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CF09F0  mov     rdx, rax                                  
+  0x180CF09F3  mov     qword ptr [rsp + 0x20], 0                 
+  0x180CF09FC  xor     r9d, r9d                                  
+  0x180CF09FF  mov     r8, rbx                                   
+  0x180CF0A02  mov     rcx, rdi                                  
+  0x180CF0A05  call    0x180f749a0                                  ; -> System.ArgumentOutOfRangeException$$.ctor
+  0x180CF0A0A  lea     rcx, [rip + 0x21776af]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.SlideToggle.DoStateTransition() => GigaCreation.Essentials.Ui.SlideToggle$$DoStateTransition
+  0x180CF0A11  call    0x180246350                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata (thunk)
+  0x180CF0A16  mov     rdx, rax                                  
+  0x180CF0A19  mov     rcx, rdi                                  
+  0x180CF0A1C  call    0x1802466f0                                  ; -> sub_2466F0 (runtime/helper)

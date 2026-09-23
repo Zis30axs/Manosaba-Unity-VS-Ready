@@ -1,0 +1,75 @@
+====================================================================================================
+FUNCTION RVA 0xCDD180  VA 0x180CDD180  size 0xCE (206 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideUtility$$ForceSlide
+  csig   : void GigaCreation_Essentials_Ui_SlideUtility__ForceSlide (GigaCreation_Essentials_Ui_SlideUtility_o* __this, UnityEngine_RectTransform_o* rectTransform, bool isDefault, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideUtility :: public void ForceSlide(RectTransform rectTransform, bool isDefault)
+  fields of GigaCreation.Essentials.Ui.SlideUtility:
+      +0x10   _moveXOnHighlighted            float
+      +0x14   _tweenDuration                 float
+      +0x18   _motion                        MotionHandle
+      +0x24   _defaultAnchorPositionX        float
+====================================================================================================
+  0x180CDD180  mov     qword ptr [rsp + 0x10], rbx               
+  0x180CDD185  mov     qword ptr [rsp + 0x18], rsi               
+  0x180CDD18A  push    rdi                                       
+  0x180CDD18B  sub     rsp, 0x40                                 
+  0x180CDD18F  movsd   xmm0, qword ptr [rcx + 0x18]                 ; rcx->SlideUtility._motion
+  0x180CDD194  mov     rbx, rcx                                  
+  0x180CDD197  mov     eax, dword ptr [rcx + 0x20]               
+  0x180CDD19A  movzx   esi, r8b                                  
+  0x180CDD19E  lea     rcx, [rsp + 0x20]                         
+  0x180CDD1A3  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180CDD1A9  mov     rdi, rdx                                  
+  0x180CDD1AC  mov     dword ptr [rsp + 0x28], eax               
+  0x180CDD1B0  call    0x180cd57c0                                  ; -> sub_CD57C0 (runtime/helper)
+  0x180CDD1B5  test    al, al                                    
+  0x180CDD1B7  je      0x180cdd1d7                               
+  0x180CDD1B9  movsd   xmm0, qword ptr [rbx + 0x18]                 ; rbx->SlideUtility._motion
+  0x180CDD1BE  lea     rcx, [rsp + 0x20]                         
+  0x180CDD1C3  mov     eax, dword ptr [rbx + 0x20]               
+  0x180CDD1C6  mov     dl, 1                                     
+  0x180CDD1C8  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180CDD1CE  mov     dword ptr [rsp + 0x28], eax               
+  0x180CDD1D2  call    0x180cd58f0                                  ; -> sub_CD58F0 (runtime/helper)
+
+180CDD1D7:
+  0x180CDD1D7  test    rdi, rdi                                  
+  0x180CDD1DA  je      0x180cdd249                               
+  0x180CDD1DC  xor     edx, edx                                  
+  0x180CDD1DE  movaps  xmmword ptr [rsp + 0x30], xmm6            
+  0x180CDD1E3  mov     rcx, rdi                                  
+  0x180CDD1E6  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CDD1EB  mov     qword ptr [rsp + 0x50], rax               
+  0x180CDD1F0  test    sil, sil                                  
+  0x180CDD1F3  je      0x180cdd1fc                               
+  0x180CDD1F5  movss   xmm6, dword ptr [rbx + 0x24]                 ; rbx->SlideUtility._defaultAnchorPositionX
+  0x180CDD1FA  jmp     0x180cdd206                               
+
+180CDD1FC:
+  0x180CDD1FC  movss   xmm6, dword ptr [rbx + 0x10]                 ; rbx->SlideUtility._moveXOnHighlighted
+  0x180CDD201  addss   xmm6, dword ptr [rbx + 0x24]                 ; rbx->SlideUtility._defaultAnchorPositionX
+
+180CDD206:
+  0x180CDD206  movss   xmm0, dword ptr [rsp + 0x50]              
+  0x180CDD20C  movaps  xmm1, xmm6                                
+  0x180CDD20F  call    0x180331670                                  ; -> sub_331670 (runtime/helper)
+  0x180CDD214  test    al, al                                    
+  0x180CDD216  jne     0x180cdd234                               
+  0x180CDD218  movss   xmm1, dword ptr [rsp + 0x54]              
+  0x180CDD21E  movaps  xmm0, xmm6                                
+  0x180CDD221  unpcklps xmm0, xmm1                                
+  0x180CDD224  xor     r8d, r8d                                  
+  0x180CDD227  movq    rdx, xmm0                                 
+  0x180CDD22C  mov     rcx, rdi                                  
+  0x180CDD22F  call    0x18207b9a0                                  ; -> UnityEngine.RectTransform$$set_anchoredPosition
+
+180CDD234:
+  0x180CDD234  movaps  xmm6, xmmword ptr [rsp + 0x30]            
+  0x180CDD239  mov     rbx, qword ptr [rsp + 0x58]               
+  0x180CDD23E  mov     rsi, qword ptr [rsp + 0x60]               
+  0x180CDD243  add     rsp, 0x40                                 
+  0x180CDD247  pop     rdi                                       
+  0x180CDD248  ret                                               
+
+180CDD249:
+  0x180CDD249  call    0x180246730                                  ; THROW NullReferenceException

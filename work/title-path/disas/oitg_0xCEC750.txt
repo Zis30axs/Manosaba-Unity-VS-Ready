@@ -1,0 +1,117 @@
+====================================================================================================
+FUNCTION RVA 0xCEC750  VA 0x180CEC750  size 0x176 (374 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemToggleGroup$$SetValue
+  csig   : void GigaCreation_Essentials_Ui_OptionItemToggleGroup__SetValue (GigaCreation_Essentials_Ui_OptionItemToggleGroup_o* __this, int32_t index, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemToggleGroup :: public void SetValue(int index)
+  fields of GigaCreation.Essentials.Ui.OptionItemToggleGroup:
+      +0x20   _toggles                       RebuildableToggle[]
+      +0x28   _valueChangedSubject           readonly ISubject<int>
+      +0x30   _disposable                    readonly CompositeDisposable
+  fields of OptionItemToggleGroup.<>c:
+      +0x0    <>9                            static readonly OptionItemToggleGroup.<>c
+      +0x8    <>9__3_0                       static Func<bool, bool>
+====================================================================================================
+  0x180CEC750  mov     qword ptr [rsp + 0x20], rbp               
+  0x180CEC755  push    rsi                                       
+  0x180CEC756  sub     rsp, 0x60                                 
+  0x180CEC75A  cmp     byte ptr [rip + 0x23f0a8d], 0                ; data_30DD1EE
+  0x180CEC761  mov     ebp, edx                                  
+  0x180CEC763  mov     rsi, rcx                                  
+  0x180CEC766  jne     0x180cec791                               
+  0x180CEC768  lea     rcx, [rip + 0x2165b71]                       ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CEC76F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC774  lock or dword ptr [rsp], 0                        
+  0x180CEC779  lea     rcx, [rip + 0x217ba78]                       ; STR 'The specified toggle index is out of range: {0}'
+  0x180CEC780  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEC785  lock or dword ptr [rsp], 0                        
+  0x180CEC78A  mov     byte ptr [rip + 0x23f0a5d], 1                ; data_30DD1EE
+
+180CEC791:
+  0x180CEC791  mov     qword ptr [rsp + 0x70], rbx               
+  0x180CEC796  mov     qword ptr [rsp + 0x80], rdi               
+  0x180CEC79E  test    ebp, ebp                                  
+  0x180CEC7A0  js      0x180cec81f                               
+  0x180CEC7A2  mov     rax, qword ptr [rsi + 0x20]                  ; rsi->OptionItemToggleGroup._toggles
+  0x180CEC7A6  test    rax, rax                                  
+  0x180CEC7A9  je      0x180cec8bb                               
+  0x180CEC7AF  cmp     ebp, dword ptr [rax + 0x18]               
+  0x180CEC7B2  jge     0x180cec81f                               
+  0x180CEC7B4  xor     ebx, ebx                                  
+  0x180CEC7B6  mov     rcx, rax                                  
+  0x180CEC7B9  mov     edx, ebx                                  
+  0x180CEC7BB  mov     edi, 0x20                                 
+
+180CEC7C0:
+  0x180CEC7C0  cmp     edx, dword ptr [rcx + 0x18]               
+  0x180CEC7C3  jge     0x180cec8a0                               
+  0x180CEC7C9  test    rax, rax                                  
+  0x180CEC7CC  je      0x180cec8bb                               
+  0x180CEC7D2  cmp     ebx, dword ptr [rax + 0x18]               
+  0x180CEC7D5  jae     0x180cec8c1                               
+  0x180CEC7DB  mov     rcx, qword ptr [rdi + rax]                
+  0x180CEC7DF  test    rcx, rcx                                  
+  0x180CEC7E2  je      0x180cec8bb                               
+  0x180CEC7E8  mov     rcx, qword ptr [rcx + 0x50]               
+  0x180CEC7EC  test    rcx, rcx                                  
+  0x180CEC7EF  je      0x180cec8bb                               
+  0x180CEC7F5  cmp     ebx, ebp                                  
+  0x180CEC7F7  mov     r8b, 1                                    
+  0x180CEC7FA  sete    dl                                        
+  0x180CEC7FD  xor     r9d, r9d                                  
+  0x180CEC800  call    0x1824a2770                                  ; -> UnityEngine.UI.Toggle$$Set
+  0x180CEC805  mov     rax, qword ptr [rsi + 0x20]                  ; rsi->OptionItemToggleGroup._toggles
+  0x180CEC809  inc     ebx                                       
+  0x180CEC80B  add     rdi, 8                                    
+  0x180CEC80F  mov     edx, ebx                                  
+  0x180CEC811  mov     rcx, rax                                  
+  0x180CEC814  test    rax, rax                                  
+  0x180CEC817  je      0x180cec8bb                               
+  0x180CEC81D  jmp     0x180cec7c0                               
+
+180CEC81F:
+  0x180CEC81F  mov     rcx, qword ptr [rip + 0x23eae72]             ; data_30D7698
+  0x180CEC826  lea     rdx, [rsp + 0x78]                         
+  0x180CEC82B  mov     dword ptr [rsp + 0x78], ebp               
+  0x180CEC82F  call    0x180297d30                                  ; -> sub_297D30 (runtime/helper)
+  0x180CEC834  mov     rbx, qword ptr [rip + 0x217b9bd]             ; STR 'The specified toggle index is out of range: {0}'
+  0x180CEC83B  lea     rcx, [rsp + 0x20]                         
+  0x180CEC840  xorps   xmm0, xmm0                                
+  0x180CEC843  xor     r8d, r8d                                  
+  0x180CEC846  mov     rdx, rax                                  
+  0x180CEC849  movups  xmmword ptr [rsp + 0x20], xmm0            
+  0x180CEC84E  movups  xmmword ptr [rsp + 0x30], xmm0            
+  0x180CEC853  call    0x181031d10                                  ; -> System.ParamsArray$$.ctor
+  0x180CEC858  movups  xmm0, xmmword ptr [rsp + 0x20]            
+  0x180CEC85D  xor     r9d, r9d                                  
+  0x180CEC860  lea     r8, [rsp + 0x40]                          
+  0x180CEC865  movups  xmm1, xmmword ptr [rsp + 0x30]            
+  0x180CEC86A  mov     rdx, rbx                                  
+  0x180CEC86D  xor     ecx, ecx                                  
+  0x180CEC86F  movaps  xmmword ptr [rsp + 0x40], xmm0            
+  0x180CEC874  movaps  xmmword ptr [rsp + 0x50], xmm1            
+  0x180CEC879  call    0x180e27120                                  ; -> System.String$$FormatHelper
+  0x180CEC87E  mov     rcx, qword ptr [rip + 0x2165a5b]             ; TYPE UnityEngine.Debug_TypeInfo
+  0x180CEC885  mov     rbx, rax                                  
+  0x180CEC888  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180CEC88F  jne     0x180cec896                               
+  0x180CEC891  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180CEC896:
+  0x180CEC896  xor     edx, edx                                  
+  0x180CEC898  mov     rcx, rbx                                  
+  0x180CEC89B  call    0x181feea50                                  ; -> UnityEngine.Debug$$LogError
+
+180CEC8A0:
+  0x180CEC8A0  mov     rdi, qword ptr [rsp + 0x80]               
+  0x180CEC8A8  mov     rbx, qword ptr [rsp + 0x70]               
+  0x180CEC8AD  mov     rbp, qword ptr [rsp + 0x88]               
+  0x180CEC8B5  add     rsp, 0x60                                 
+  0x180CEC8B9  pop     rsi                                       
+  0x180CEC8BA  ret                                               
+
+180CEC8BB:
+  0x180CEC8BB  call    0x180246730                                  ; THROW NullReferenceException
+  0x180CEC8C0  int3                                              
+
+180CEC8C1:
+  0x180CEC8C1  call    0x180246740                                  ; -> sub_246740 (runtime/helper)

@@ -1,0 +1,68 @@
+====================================================================================================
+FUNCTION RVA 0xCEFFE0  VA 0x180CEFFE0  size 0xCF (207 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  csig   : GigaCreation_Essentials_Ui_SelectableUtility_o* GigaCreation_Essentials_Ui_SlideToggle__get_SelectableUtil (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: private SelectableUtility get_SelectableUtil()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CEFFE0  push    rdi                                       
+  0x180CEFFE2  sub     rsp, 0x20                                 
+  0x180CEFFE6  cmp     byte ptr [rip + 0x23ed21c], 0                ; data_30DD209
+  0x180CEFFED  mov     rdi, rcx                                  
+  0x180CEFFF0  jne     0x180cf000a                               
+  0x180CEFFF2  lea     rcx, [rip + 0x21793a7]                       ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CEFFF9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CEFFFE  lock or dword ptr [rsp], 0                        
+  0x180CF0003  mov     byte ptr [rip + 0x23ed1ff], 1                ; data_30DD209
+
+180CF000A:
+  0x180CF000A  mov     rax, qword ptr [rdi + 0x140]                 ; rdi->SlideToggle._selectableUtil
+  0x180CF0011  test    rax, rax                                  
+  0x180CF0014  jne     0x180cf00a9                               
+  0x180CF001A  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CF001F  xor     edx, edx                                  
+  0x180CF0021  mov     rcx, rdi                                  
+  0x180CF0024  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CF0029  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CF002E  mov     rcx, qword ptr [rip + 0x217936b]             ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CF0035  mov     rbx, rax                                  
+  0x180CF0038  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF003D  xor     r8d, r8d                                  
+  0x180CF0040  mov     rdx, rbx                                  
+  0x180CF0043  mov     rcx, rax                                  
+  0x180CF0046  mov     rsi, rax                                  
+  0x180CF0049  call    0x180cea820                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$.ctor
+  0x180CF004E  cmp     dword ptr [rip + 0x23e916f], 0               ; data_30D91C4
+  0x180CF0055  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CF005A  mov     qword ptr [rdi + 0x140], rsi                 ; rdi->SlideToggle._selectableUtil
+  0x180CF0061  je      0x180cf00a1                               
+  0x180CF0063  lea     r8, [rdi + 0x140]                            ; rdi->SlideToggle._selectableUtil
+  0x180CF006A  shr     r8, 0xc                                   
+  0x180CF006E  lea     rcx, [rip + 0x244450b]                       ; data_3134580
+  0x180CF0075  and     r8d, 0x1fffff                             
+  0x180CF007C  mov     eax, r8d                                  
+  0x180CF007F  shr     rax, 6                                    
+  0x180CF0083  and     r8d, 0x3f                                 
+  0x180CF0087  lea     rdx, [rcx + rax*8]                        
+  0x180CF008B  prefetchw byte ptr [rdx]                            
+  0x180CF008E  nop                                               
+
+180CF0090:
+  0x180CF0090  mov     rax, qword ptr [rdx]                      
+  0x180CF0093  mov     rcx, rax                                  
+  0x180CF0096  bts     rcx, r8                                   
+  0x180CF009A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CF009F  jne     0x180cf0090                               
+
+180CF00A1:
+  0x180CF00A1  mov     rax, rsi                                  
+  0x180CF00A4  mov     rsi, qword ptr [rsp + 0x38]               
+
+180CF00A9:
+  0x180CF00A9  add     rsp, 0x20                                 
+  0x180CF00AD  pop     rdi                                       
+  0x180CF00AE  ret                                               

@@ -1,0 +1,116 @@
+====================================================================================================
+FUNCTION RVA 0xCE1D50  VA 0x180CE1D50  size 0x194 (404 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$OnEnable
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown__OnEnable (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: protected override void OnEnable()
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE1D50  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE1D55  mov     qword ptr [rsp + 0x10], rsi               
+  0x180CE1D5A  push    rdi                                       
+  0x180CE1D5B  sub     rsp, 0x30                                 
+  0x180CE1D5F  xor     edx, edx                                  
+  0x180CE1D61  mov     rsi, rcx                                  
+  0x180CE1D64  call    0x182498b80                                  ; -> UnityEngine.UI.Selectable$$OnEnable
+  0x180CE1D69  xor     edx, edx                                  
+  0x180CE1D6B  mov     rcx, rsi                                  
+  0x180CE1D6E  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE1D73  test    rax, rax                                  
+  0x180CE1D76  je      0x180ce1edf                               
+  0x180CE1D7C  xor     edx, edx                                  
+  0x180CE1D7E  mov     rcx, rax                                  
+  0x180CE1D81  call    0x180cea6c0                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$get_IsActive
+  0x180CE1D86  test    al, al                                    
+  0x180CE1D88  je      0x180ce1ecf                               
+  0x180CE1D8E  cmp     byte ptr [rip + 0x23fb400], 0                ; data_30DD195
+  0x180CE1D95  jne     0x180ce1df3                               
+  0x180CE1D97  lea     rcx, [rip + 0x21704d2]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180CE1D9E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1DA3  lock or dword ptr [rsp], 0                        
+  0x180CE1DA8  lea     rcx, [rip + 0x21704b9]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE1DAF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1DB4  lock or dword ptr [rsp], 0                        
+  0x180CE1DB9  lea     rcx, [rip + 0x21704a0]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CE1DC0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1DC5  lock or dword ptr [rsp], 0                        
+  0x180CE1DCA  lea     rcx, [rip + 0x2186a47]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnEnablingChanged() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnEnablingChanged
+  0x180CE1DD1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1DD6  lock or dword ptr [rsp], 0                        
+  0x180CE1DDB  lea     rcx, [rip + 0x2186a56]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnHighlightingChanged() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnHighlightingChanged
+  0x180CE1DE2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1DE7  lock or dword ptr [rsp], 0                        
+  0x180CE1DEC  mov     byte ptr [rip + 0x23fb3a2], 1                ; data_30DD195
+
+180CE1DF3:
+  0x180CE1DF3  xor     edx, edx                                  
+  0x180CE1DF5  mov     rcx, rsi                                  
+  0x180CE1DF8  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE1DFD  test    rax, rax                                  
+  0x180CE1E00  je      0x180ce1edf                               
+  0x180CE1E06  mov     rcx, qword ptr [rip + 0x2170463]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CE1E0D  mov     rdi, qword ptr [rax + 0x10]               
+  0x180CE1E11  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE1E16  mov     r8, qword ptr [rip + 0x2186a1b]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnHighlightingChanged() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnHighlightingChanged
+  0x180CE1E1D  xor     r9d, r9d                                  
+  0x180CE1E20  mov     rdx, rsi                                  
+  0x180CE1E23  mov     rcx, rax                                  
+  0x180CE1E26  mov     rbx, rax                                  
+  0x180CE1E29  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE1E2E  mov     r8, qword ptr [rip + 0x217042b]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CE1E35  mov     rdx, rbx                                  
+  0x180CE1E38  mov     rcx, rdi                                  
+  0x180CE1E3B  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE1E40  mov     rcx, qword ptr [rip + 0x2170421]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE1E47  lea     r9, [rsp + 0x50]                          
+  0x180CE1E4C  mov     rdx, qword ptr [rsi + 0x1b0]                 ; rsi->TweeningDropdown._selectableDisposables
+  0x180CE1E53  mov     r8, rsi                                   
+  0x180CE1E56  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE1E5B  mov     rcx, rax                                  
+  0x180CE1E5E  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CE1E63  xor     edx, edx                                  
+  0x180CE1E65  mov     rcx, rsi                                  
+  0x180CE1E68  call    0x180ce1bd0                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  0x180CE1E6D  test    rax, rax                                  
+  0x180CE1E70  je      0x180ce1edf                               
+  0x180CE1E72  mov     rcx, qword ptr [rip + 0x21703f7]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CE1E79  mov     rdi, qword ptr [rax + 0x18]               
+  0x180CE1E7D  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE1E82  mov     r8, qword ptr [rip + 0x218698f]              ; METHODINFO Method$GigaCreation.Essentials.Ui.TweeningDropdown.OnEnablingChanged() => GigaCreation.Essentials.Ui.TweeningDropdown$$OnEnablingChanged
+  0x180CE1E89  xor     r9d, r9d                                  
+  0x180CE1E8C  mov     rdx, rsi                                  
+  0x180CE1E8F  mov     rcx, rax                                  
+  0x180CE1E92  mov     rbx, rax                                  
+  0x180CE1E95  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CE1E9A  mov     r8, qword ptr [rip + 0x21703bf]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CE1EA1  mov     rdx, rbx                                  
+  0x180CE1EA4  mov     rcx, rdi                                  
+  0x180CE1EA7  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CE1EAC  mov     rcx, qword ptr [rip + 0x21703b5]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CE1EB3  lea     r9, [rsp + 0x50]                          
+  0x180CE1EB8  mov     rdx, qword ptr [rsi + 0x1b0]                 ; rsi->TweeningDropdown._selectableDisposables
+  0x180CE1EBF  mov     r8, rsi                                   
+  0x180CE1EC2  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CE1EC7  mov     rcx, rax                                  
+  0x180CE1ECA  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+
+180CE1ECF:
+  0x180CE1ECF  mov     rbx, qword ptr [rsp + 0x40]               
+  0x180CE1ED4  mov     rsi, qword ptr [rsp + 0x48]               
+  0x180CE1ED9  add     rsp, 0x30                                 
+  0x180CE1EDD  pop     rdi                                       
+  0x180CE1EDE  ret                                               
+
+180CE1EDF:
+  0x180CE1EDF  call    0x180246730                                  ; THROW NullReferenceException

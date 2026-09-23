@@ -1,0 +1,22 @@
+====================================================================================================
+FUNCTION RVA 0xCF0A80  VA 0x180CF0A80  size 0x1E (30 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$OnHighlightingChangedAsObservable
+  csig   : System_IObservable_bool__o* GigaCreation_Essentials_Ui_SlideToggle__OnHighlightingChangedAsObservable (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: protected IObservable<bool> OnHighlightingChangedAsObservable()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0A80  sub     rsp, 0x28                                 
+  0x180CF0A84  xor     edx, edx                                  
+  0x180CF0A86  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF0A8B  test    rax, rax                                  
+  0x180CF0A8E  je      0x180cf0a99                               
+  0x180CF0A90  mov     rax, qword ptr [rax + 0x10]               
+  0x180CF0A94  add     rsp, 0x28                                 
+  0x180CF0A98  ret                                               
+
+180CF0A99:
+  0x180CF0A99  call    0x180246730                                  ; THROW NullReferenceException

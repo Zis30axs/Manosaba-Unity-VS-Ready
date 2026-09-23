@@ -1,0 +1,33 @@
+====================================================================================================
+FUNCTION RVA 0xCE11C0  VA 0x180CE11C0  size 0x43 (67 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$SetOptions
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown__SetOptions (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, System_Collections_Generic_List_string__o* options, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: public void SetOptions(List<string> options)
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE11C0  mov     qword ptr [rsp + 8], rbx                  
+  0x180CE11C5  push    rdi                                       
+  0x180CE11C6  sub     rsp, 0x20                                 
+  0x180CE11CA  mov     rbx, rcx                                  
+  0x180CE11CD  mov     rdi, rdx                                  
+  0x180CE11D0  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->OptionItemDropdown._dropdown
+  0x180CE11D4  test    rcx, rcx                                  
+  0x180CE11D7  je      0x180ce11fe                               
+  0x180CE11D9  xor     edx, edx                                  
+  0x180CE11DB  call    0x181ed18b0                                  ; -> TMPro.TMP_Dropdown$$ClearOptions
+  0x180CE11E0  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->OptionItemDropdown._dropdown
+  0x180CE11E4  test    rcx, rcx                                  
+  0x180CE11E7  je      0x180ce11fe                               
+  0x180CE11E9  xor     r8d, r8d                                  
+  0x180CE11EC  mov     rdx, rdi                                  
+  0x180CE11EF  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE11F4  add     rsp, 0x20                                 
+  0x180CE11F8  pop     rdi                                       
+  0x180CE11F9  jmp     0x181ed15d0                                  ; -> TMPro.TMP_Dropdown$$AddOptions
+
+180CE11FE:
+  0x180CE11FE  call    0x180246730                                  ; THROW NullReferenceException

@@ -1,0 +1,106 @@
+====================================================================================================
+FUNCTION RVA 0xCF0390  VA 0x180CF0390  size 0x1B3 (435 bytes)
+  managed: GigaCreation.Essentials.Ui.SlideToggle$$Initialize
+  csig   : void GigaCreation_Essentials_Ui_SlideToggle__Initialize (GigaCreation_Essentials_Ui_SlideToggle_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.SlideToggle :: private void Initialize()
+  fields of GigaCreation.Essentials.Ui.SlideToggle:
+      +0x128  _rectTransform                 RectTransform
+      +0x130  _slideUtil                     SlideUtility
+      +0x138  _disposables                   readonly CompositeDisposable
+      +0x140  _selectableUtil                SelectableUtility
+====================================================================================================
+  0x180CF0390  mov     qword ptr [rsp + 0x18], rbx               
+  0x180CF0395  push    rsi                                       
+  0x180CF0396  sub     rsp, 0x30                                 
+  0x180CF039A  cmp     byte ptr [rip + 0x23ece69], 0                ; data_30DD20A
+  0x180CF03A1  mov     rsi, rcx                                  
+  0x180CF03A4  jne     0x180cf0413                               
+  0x180CF03A6  lea     rcx, [rip + 0x2161ec3]                       ; TYPE System.Action<bool>_TypeInfo
+  0x180CF03AD  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF03B2  lock or dword ptr [rsp], 0                        
+  0x180CF03B7  lea     rcx, [rip + 0x2161eaa]                       ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF03BE  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF03C3  lock or dword ptr [rsp], 0                        
+  0x180CF03C8  lea     rcx, [rip + 0x2161e91]                       ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF03CF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF03D4  lock or dword ptr [rsp], 0                        
+  0x180CF03D9  lea     rcx, [rip + 0x2177cf8]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.SlideToggle.OnHighlightingChanged() => GigaCreation.Essentials.Ui.SlideToggle$$OnHighlightingChanged
+  0x180CF03E0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF03E5  lock or dword ptr [rsp], 0                        
+  0x180CF03EA  lea     rcx, [rip + 0x2177cdf]                       ; METHODINFO Method$GigaCreation.Essentials.Ui.SlideToggle.OnValueChanged() => GigaCreation.Essentials.Ui.SlideToggle$$OnValueChanged
+  0x180CF03F1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF03F6  lock or dword ptr [rsp], 0                        
+  0x180CF03FB  lea     rcx, [rip + 0x2177cc6]                       ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<bool>()
+  0x180CF0402  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CF0407  lock or dword ptr [rsp], 0                        
+  0x180CF040C  mov     byte ptr [rip + 0x23ecdf7], 1                ; data_30DD20A
+
+180CF0413:
+  0x180CF0413  mov     rbx, qword ptr [rsi + 0x130]                 ; rsi->SlideToggle._slideUtil
+  0x180CF041A  test    rbx, rbx                                  
+  0x180CF041D  je      0x180cf053e                               
+  0x180CF0423  mov     rcx, qword ptr [rsi + 0x128]                 ; rsi->SlideToggle._rectTransform
+  0x180CF042A  test    rcx, rcx                                  
+  0x180CF042D  je      0x180cf053e                               
+  0x180CF0433  xor     edx, edx                                  
+  0x180CF0435  call    0x18207b8f0                                  ; -> UnityEngine.RectTransform$$get_anchoredPosition
+  0x180CF043A  mov     qword ptr [rsp + 0x40], rax               
+  0x180CF043F  xor     edx, edx                                  
+  0x180CF0441  movss   xmm0, dword ptr [rsp + 0x40]              
+  0x180CF0447  mov     rcx, rsi                                  
+  0x180CF044A  movss   dword ptr [rbx + 0x24], xmm0              
+  0x180CF044F  call    0x180ceffe0                                  ; -> GigaCreation.Essentials.Ui.SlideToggle$$get_SelectableUtil
+  0x180CF0454  test    rax, rax                                  
+  0x180CF0457  je      0x180cf053e                               
+  0x180CF045D  mov     rcx, qword ptr [rip + 0x2161e0c]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CF0464  mov     qword ptr [rsp + 0x48], rdi               
+  0x180CF0469  mov     rdi, qword ptr [rax + 0x10]               
+  0x180CF046D  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF0472  mov     r8, qword ptr [rip + 0x2177c5f]              ; METHODINFO Method$GigaCreation.Essentials.Ui.SlideToggle.OnHighlightingChanged() => GigaCreation.Essentials.Ui.SlideToggle$$OnHighlightingChanged
+  0x180CF0479  xor     r9d, r9d                                  
+  0x180CF047C  mov     rdx, rsi                                  
+  0x180CF047F  mov     rcx, rax                                  
+  0x180CF0482  mov     rbx, rax                                  
+  0x180CF0485  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF048A  mov     r8, qword ptr [rip + 0x2161dcf]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0491  mov     rdx, rbx                                  
+  0x180CF0494  mov     rcx, rdi                                  
+  0x180CF0497  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CF049C  mov     rcx, qword ptr [rip + 0x2161dc5]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF04A3  lea     r9, [rsp + 0x40]                          
+  0x180CF04A8  mov     rdx, qword ptr [rsi + 0x138]                 ; rsi->SlideToggle._disposables
+  0x180CF04AF  mov     r8, rsi                                   
+  0x180CF04B2  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CF04B7  mov     rcx, rax                                  
+  0x180CF04BA  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CF04BF  mov     rdx, qword ptr [rip + 0x2177c02]             ; METHODINFO Method$UniRx.UnityEventExtensions.AsObservable<bool>()
+  0x180CF04C6  mov     rcx, qword ptr [rsi + 0x118]              
+  0x180CF04CD  call    0x180798cd0                                  ; -> UniRx.UnityEventExtensions$$AsObservable<__Il2CppFullySharedGenericType> (+3 aliases)
+  0x180CF04D2  mov     rcx, qword ptr [rip + 0x2161d97]             ; TYPE System.Action<bool>_TypeInfo
+  0x180CF04D9  mov     rdi, rax                                  
+  0x180CF04DC  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CF04E1  mov     r8, qword ptr [rip + 0x2177be8]              ; METHODINFO Method$GigaCreation.Essentials.Ui.SlideToggle.OnValueChanged() => GigaCreation.Essentials.Ui.SlideToggle$$OnValueChanged
+  0x180CF04E8  xor     r9d, r9d                                  
+  0x180CF04EB  mov     rdx, rsi                                  
+  0x180CF04EE  mov     rcx, rax                                  
+  0x180CF04F1  mov     rbx, rax                                  
+  0x180CF04F4  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180CF04F9  mov     r8, qword ptr [rip + 0x2161d60]              ; METHODINFO Method$UniRx.ObservableExtensions.Subscribe<bool>()
+  0x180CF0500  mov     rdx, rbx                                  
+  0x180CF0503  mov     rcx, rdi                                  
+  0x180CF0506  call    0x180735a00                                  ; -> UniRx.ObservableExtensions$$Subscribe<__Il2CppFullySharedGenericType>
+  0x180CF050B  mov     rcx, qword ptr [rip + 0x2161d56]             ; METHODINFO Method$UniRx.DisposableExtensions.AddTo<IDisposable>()
+  0x180CF0512  lea     r9, [rsp + 0x40]                          
+  0x180CF0517  mov     rdx, qword ptr [rsi + 0x138]                 ; rsi->SlideToggle._disposables
+  0x180CF051E  mov     r8, rsi                                   
+  0x180CF0521  mov     qword ptr [rsp + 0x20], rcx               
+  0x180CF0526  mov     rcx, rax                                  
+  0x180CF0529  call    0x18067fcb0                                  ; -> UniRx.DisposableExtensions$$AddTo<__Il2CppFullySharedGenericType>
+  0x180CF052E  mov     rdi, qword ptr [rsp + 0x48]               
+  0x180CF0533  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180CF0538  add     rsp, 0x30                                 
+  0x180CF053C  pop     rsi                                       
+  0x180CF053D  ret                                               
+
+180CF053E:
+  0x180CF053E  call    0x180246730                                  ; THROW NullReferenceException

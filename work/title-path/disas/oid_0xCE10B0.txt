@@ -1,0 +1,29 @@
+====================================================================================================
+FUNCTION RVA 0xCE10B0  VA 0x180CE10B0  size 0x33 (51 bytes)
+  managed: GigaCreation.Essentials.Ui.OptionItemDropdown$$OnDisable
+  csig   : void GigaCreation_Essentials_Ui_OptionItemDropdown__OnDisable (GigaCreation_Essentials_Ui_OptionItemDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.OptionItemDropdown :: private void OnDisable()
+  fields of GigaCreation.Essentials.Ui.OptionItemDropdown:
+      +0x20   _dropdown                      TMP_Dropdown
+      +0x28   _autoLayoutSupporter           AutoLayoutSupporter
+      +0x30   _disposables                   readonly CompositeDisposable
+      +0x38   _inputManager                  IInputManager
+====================================================================================================
+  0x180CE10B0  push    rbx                                       
+  0x180CE10B2  sub     rsp, 0x20                                 
+  0x180CE10B6  mov     rbx, rcx                                  
+  0x180CE10B9  mov     rcx, qword ptr [rcx + 0x30]                  ; rcx->OptionItemDropdown._disposables
+  0x180CE10BD  test    rcx, rcx                                  
+  0x180CE10C0  je      0x180ce10de                               
+  0x180CE10C2  xor     edx, edx                                  
+  0x180CE10C4  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE10C9  mov     rcx, qword ptr [rbx + 0x20]                  ; rbx->OptionItemDropdown._dropdown
+  0x180CE10CD  test    rcx, rcx                                  
+  0x180CE10D0  je      0x180ce10de                               
+  0x180CE10D2  xor     edx, edx                                  
+  0x180CE10D4  add     rsp, 0x20                                 
+  0x180CE10D8  pop     rbx                                       
+  0x180CE10D9  jmp     0x181ed5b70                                  ; -> TMPro.TMP_Dropdown$$Hide
+
+180CE10DE:
+  0x180CE10DE  call    0x180246730                                  ; THROW NullReferenceException

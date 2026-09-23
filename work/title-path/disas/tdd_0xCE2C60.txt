@@ -1,0 +1,53 @@
+====================================================================================================
+FUNCTION RVA 0xCE2C60  VA 0x180CE2C60  size 0x74 (116 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$OnCancelActionPerformedWhileBlockerShown
+  csig   : void GigaCreation_Essentials_Ui_TweeningDropdown__OnCancelActionPerformedWhileBlockerShown (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, UnityEngine_InputSystem_InputAction_CallbackContext_o __, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: private void OnCancelActionPerformedWhileBlockerShown(InputAction.CallbackContext _)
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE2C60  push    rbx                                       
+  0x180CE2C62  sub     rsp, 0x20                                 
+  0x180CE2C66  cmp     byte ptr [rip + 0x23fa52d], 0                ; data_30DD19A
+  0x180CE2C6D  mov     rbx, rcx                                  
+  0x180CE2C70  jne     0x180ce2c8a                               
+  0x180CE2C72  lea     rcx, [rip + 0x21724bf]                       ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE2C79  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE2C7E  lock or dword ptr [rsp], 0                        
+  0x180CE2C83  mov     byte ptr [rip + 0x23fa510], 1                ; data_30DD19A
+
+180CE2C8A:
+  0x180CE2C8A  xor     edx, edx                                  
+  0x180CE2C8C  mov     rcx, rbx                                  
+  0x180CE2C8F  call    0x180ce1b00                                  ; -> GigaCreation.Essentials.Ui.TweeningDropdown$$get_InputManager
+  0x180CE2C94  test    rax, rax                                  
+  0x180CE2C97  je      0x180ce2ccf                               
+  0x180CE2C99  mov     rdx, qword ptr [rip + 0x2172498]             ; TYPE GigaCreation.Essentials.Input.IInputManager_TypeInfo
+  0x180CE2CA0  xor     ecx, ecx                                  
+  0x180CE2CA2  xor     r9d, r9d                                  
+  0x180CE2CA5  mov     r8, rax                                   
+  0x180CE2CA8  call    0x1800036f0                                  ; -> sub_36F0 (runtime/helper)
+  0x180CE2CAD  mov     rcx, qword ptr [rbx + 0x1b8]                 ; rbx->TweeningDropdown._playSfxDisposables
+  0x180CE2CB4  test    rcx, rcx                                  
+  0x180CE2CB7  je      0x180ce2ccf                               
+  0x180CE2CB9  xor     edx, edx                                  
+  0x180CE2CBB  call    0x1817bd2b0                                  ; -> UniRx.CompositeDisposable$$Clear
+  0x180CE2CC0  xor     edx, edx                                  
+  0x180CE2CC2  mov     rcx, rbx                                  
+  0x180CE2CC5  add     rsp, 0x20                                 
+  0x180CE2CC9  pop     rbx                                       
+  0x180CE2CCA  jmp     0x181ed5b70                                  ; -> TMPro.TMP_Dropdown$$Hide
+
+180CE2CCF:
+  0x180CE2CCF  call    0x180246730                                  ; THROW NullReferenceException

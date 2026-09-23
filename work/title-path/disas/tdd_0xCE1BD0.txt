@@ -1,0 +1,76 @@
+====================================================================================================
+FUNCTION RVA 0xCE1BD0  VA 0x180CE1BD0  size 0xCF (207 bytes)
+  managed: GigaCreation.Essentials.Ui.TweeningDropdown$$get_SelectableUtil
+  csig   : GigaCreation_Essentials_Ui_SelectableUtility_o* GigaCreation_Essentials_Ui_TweeningDropdown__get_SelectableUtil (GigaCreation_Essentials_Ui_TweeningDropdown_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Essentials.Ui.TweeningDropdown :: private SelectableUtility get_SelectableUtil()
+  fields of GigaCreation.Essentials.Ui.TweeningDropdown:
+      +0x180  _transform                     Transform
+      +0x188  _canvasGroup                   CanvasGroup
+      +0x190  _scaleUpWhenHighlighted        bool
+      +0x198  _scaleUtil                     ScaleUtility
+      +0x1A0  _fadeOutWhenDisabled           bool
+      +0x1A8  _fadeUtil                      FadeUtility
+      +0x1B0  _selectableDisposables         readonly CompositeDisposable
+      +0x1B8  _playSfxDisposables            readonly CompositeDisposable
+      +0x1C0  _inputManager                  IInputManager
+      +0x1C8  _selectableUtil                SelectableUtility
+      +0x1D0  _parentBlockables              ICancelEventBlockable[]
+      +0x1D8  _cancelEventBlockerDisposable  IDisposable
+====================================================================================================
+  0x180CE1BD0  push    rdi                                       
+  0x180CE1BD2  sub     rsp, 0x20                                 
+  0x180CE1BD6  cmp     byte ptr [rip + 0x23fb5b5], 0                ; data_30DD192
+  0x180CE1BDD  mov     rdi, rcx                                  
+  0x180CE1BE0  jne     0x180ce1bfa                               
+  0x180CE1BE2  lea     rcx, [rip + 0x21877b7]                       ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CE1BE9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180CE1BEE  lock or dword ptr [rsp], 0                        
+  0x180CE1BF3  mov     byte ptr [rip + 0x23fb598], 1                ; data_30DD192
+
+180CE1BFA:
+  0x180CE1BFA  mov     rax, qword ptr [rdi + 0x1c8]                 ; rdi->TweeningDropdown._selectableUtil
+  0x180CE1C01  test    rax, rax                                  
+  0x180CE1C04  jne     0x180ce1c99                               
+  0x180CE1C0A  mov     qword ptr [rsp + 0x30], rbx               
+  0x180CE1C0F  xor     edx, edx                                  
+  0x180CE1C11  mov     rcx, rdi                                  
+  0x180CE1C14  mov     qword ptr [rsp + 0x38], rsi               
+  0x180CE1C19  call    0x1820617a0                                  ; -> UnityEngine.Component$$get_gameObject
+  0x180CE1C1E  mov     rcx, qword ptr [rip + 0x218777b]             ; TYPE GigaCreation.Essentials.Ui.SelectableUtility_TypeInfo
+  0x180CE1C25  mov     rbx, rax                                  
+  0x180CE1C28  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180CE1C2D  xor     r8d, r8d                                  
+  0x180CE1C30  mov     rdx, rbx                                  
+  0x180CE1C33  mov     rcx, rax                                  
+  0x180CE1C36  mov     rsi, rax                                  
+  0x180CE1C39  call    0x180cea820                                  ; -> GigaCreation.Essentials.Ui.SelectableUtility$$.ctor
+  0x180CE1C3E  cmp     dword ptr [rip + 0x23f757f], 0               ; data_30D91C4
+  0x180CE1C45  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180CE1C4A  mov     qword ptr [rdi + 0x1c8], rsi                 ; rdi->TweeningDropdown._selectableUtil
+  0x180CE1C51  je      0x180ce1c91                               
+  0x180CE1C53  lea     r8, [rdi + 0x1c8]                            ; rdi->TweeningDropdown._selectableUtil
+  0x180CE1C5A  shr     r8, 0xc                                   
+  0x180CE1C5E  lea     rcx, [rip + 0x245291b]                       ; data_3134580
+  0x180CE1C65  and     r8d, 0x1fffff                             
+  0x180CE1C6C  mov     eax, r8d                                  
+  0x180CE1C6F  shr     rax, 6                                    
+  0x180CE1C73  and     r8d, 0x3f                                 
+  0x180CE1C77  lea     rdx, [rcx + rax*8]                        
+  0x180CE1C7B  prefetchw byte ptr [rdx]                            
+  0x180CE1C7E  nop                                               
+
+180CE1C80:
+  0x180CE1C80  mov     rax, qword ptr [rdx]                      
+  0x180CE1C83  mov     rcx, rax                                  
+  0x180CE1C86  bts     rcx, r8                                   
+  0x180CE1C8A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180CE1C8F  jne     0x180ce1c80                               
+
+180CE1C91:
+  0x180CE1C91  mov     rax, rsi                                  
+  0x180CE1C94  mov     rsi, qword ptr [rsp + 0x38]               
+
+180CE1C99:
+  0x180CE1C99  add     rsp, 0x20                                 
+  0x180CE1C9D  pop     rdi                                       
+  0x180CE1C9E  ret                                               
