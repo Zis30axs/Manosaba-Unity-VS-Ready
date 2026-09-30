@@ -57,7 +57,14 @@
 /src/il2cpp/script.json
 /src/il2cpp/il2cpp.h
 /src/il2cpp/stringliteral.json
-/src/il2cpp/DummyDll/
+
+# NOTE: /src/il2cpp/DummyDll/ is deliberately TRACKED (129 DLLs, 24.3 MB).
+# These are the Il2CppDumper reference stubs every .csproj resolves via $(ManosabaRefs)
+# (Directory.Build.props) - 154 reference sites across 42 projects. They are API-surface
+# metadata only, no game implementation code. Without them a fresh clone fails to build
+# with ~1286 CS0246 errors (missing UnityEngine.*, Assembly-CSharp, UniTask, Unity.Burst,
+# Unity.Mathematics), because the only other reference source is the machine-specific
+# BepInEx install under $(GameDir), which does not exist on a clean machine.
 
 # Reference decompilation of Unity/System/third-party libs (not our target)
 /src/decompiled_external/
