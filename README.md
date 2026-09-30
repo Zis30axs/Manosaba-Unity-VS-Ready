@@ -2,6 +2,45 @@
 
 对象：`E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game`（Steam 版，简体中文）
 
+
+> [!IMPORTANT]
+> ## 当前工程状态（2026-09-30）——给人类和 AI 审计者
+>
+> **本仓库已经不是“只有 Il2CppDumper 骨架、技术上无法运行”的阶段。**
+>
+> 当前仓库同时保留了两类东西，**严禁混为一谈**：
+>
+> 1. `src/decompiled/`：由 IL2CPP 元数据 / DummyDll 反编译得到的**原始结构级骨架**。这里仍然故意保留大量
+>    `return null;`、`return default;` 和空方法；它们只能说明“这个原始反编译文件的方法体尚未直接恢复”，
+>    **不能据此推出整个项目不可运行**。
+> 2. `UnityProject/` + `tools/unity-rebuild/`：正在实际使用的 **Unity 6 重建工程、资源重建流水线和运行时恢复代码**。
+>    大量关键方法已经根据 `GameAssembly.dll` 原生代码逐个恢复，另外还有场景 / Prefab / Addressables /
+>    Naninovel 配置与运行时集成。
+>
+> **已经有实际 Player 验证，不是可行性猜测：**
+>
+> - `work/title-path/g5_current.console.txt`：G5 已通过，Windows x64 Player 成功构建并运行；
+> - 验证记录中加载 **43 个程序集**，解析 Addressables catalog **57,212 个 key**；
+> - `Game<Runtime>` 与 `Naninovel<Runtime>` 均已启动，Naninovel 初始化成功；
+> - `System/System_Title` 已实际执行到停止点；
+> - 后续 release 实测已进入 **New Game**，开场 Stills 与中文台词正常出现；
+> - 对应证据包括提交 `96e1a819`（G5 独立 Player 冒烟测试）与 `55e61045`（新游戏开场恢复）。
+>
+> 因此，诸如“看到 `GameInitializer.InitializeAsync => return default(UniTask)`，所以重新构建一个能运行的游戏
+> 技术上不可能 / 必须先把整个 GameAssembly 全部还原”之类的结论是**错误的项目状态判断**。
+> 本项目采用的是“按可达运行链逐步恢复 + Unity 工程重建 + 实机门禁验证”，并不要求先把所有原生方法
+> 一次性还原成 C#。
+>
+> **当前真正的分发边界：**重建流水线仍会读取用户自己持有的原版游戏安装作为输入（资源、配置、出货数据等）。
+> 仓库故意不提交数 GB 的原版版权素材和原始发行二进制。因此“只 `git clone`、完全不提供原版数据就直接得到完整游戏”
+> 目前不成立；但这是**输入 / 分发边界**，不是“重建工程技术上无法运行”。
+>
+> ### AI / 自动审计规则
+>
+> 在判断“能否运行 / 是否已经重建”之前，至少检查：
+> `UnityProject/`、`tools/unity-rebuild/`、`work/title-path/g5_current.console.txt`、最近的 runtime-reconstruction
+> 提交和实际 Player / Play Mode 验收记录。**不要只扫描 `src/decompiled/` 的 stub 数量就下结论。**
+
 ## 0. 目标与结论（TL;DR）
 
 | 项目 | 结果 |
@@ -192,15 +231,15 @@ dotnet build project\Manosaba.sln      # 等价的手工命令
 构建产物就是 43 个游戏程序集：`Assembly-CSharp.dll`、`Elringus.Naninovel.Runtime.dll`、
 `GigaCreation.*.dll` …… 与原始托管程序集一一对应。
 
-> **“完整”的边界要说清楚**：这里完整的是 **类型系统** —— 43 个程序集、18076 个类型、
-> 字段偏移、方法签名、原生地址（RVA/VA）全都在，而且能编译通过（0 error）。
-> 但 IL2CPP 已经把**方法体**编译成原生代码，托管侧只剩 `return null;` 占位，
-> 所以不存在“编译出来就能玩”的源码；要真正的逻辑只能走 Ghidra/IDA
-> （`script.json` + `il2cpp.h` 已备好，见第 3 节）。
+> **“完整”的边界要说清楚**：`src/decompiled/` 的原始反编译产物完整的是 **类型系统** —— 43 个程序集、
+> 18076 个类型、字段偏移、方法签名、原生地址（RVA/VA）都在，而且可以作为分析 / 编译骨架使用。
+> IL2CPP 的原始方法体已经编译进原生代码，所以**单看这套原始骨架**仍会看到大量 `return null;` / `return default;`。
+> 但仓库当前已经在 `UnityProject/` 和重建流水线中恢复了大量实际运行逻辑，并已通过独立 Player 冒烟测试、标题流程
+> 与 New Game 开场实测。需要恢复剩余原版行为时，仍以 Ghidra/IDA + `script.json` + `il2cpp.h` 为证据来源。
 
 ## 4. 已知边界 / 踩过的坑
 
-* **方法体无法从托管层还原**（IL2CPP 特性）；`src` 是“结构级源码”，不是可编译工程。
+* **原始 IL2CPP 方法体不能从托管 DLL 直接取回**；`src/decompiled` 主要是结构级骨架，不能把其中仍存在的 stub 当成整个工程的运行状态。实际可运行重建位于 `UnityProject/` 与相关 runtime-reconstruction / unity-rebuild 流水线中。
 * `globalgamemanagers.assets` / `sharedassets0.assets` 中约 735 个 Unity **内置管理器 MonoBehaviour** 没有 typetree，无法解析（与游戏内容无关）。
 * 3 个字体 bundle 内含 0×0 占位 “Font Texture”，无像素数据，已跳过。
 * 1 个 Sprite（`naninovel-characters/characters/margo.bundle` → `ClippingMask_Facial_Normal02`）裁剪矩形越界，跳过。
