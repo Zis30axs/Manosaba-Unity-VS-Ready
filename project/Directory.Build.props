@@ -7,6 +7,9 @@
     <ManosabaRoot>$(MSBuildThisFileDirectory)..</ManosabaRoot>
     <ManosabaSrc>$(MSBuildThisFileDirectory)..\src\decompiled</ManosabaSrc>
     <ManosabaRefs>$(MSBuildThisFileDirectory)..\src\il2cpp\DummyDll</ManosabaRefs>
+    <!-- BepInEx reference assemblies shipped with the repo; used only when the local
+         game install under $(GameDir) is absent, so a fresh clone builds without it. -->
+    <ManosabaBepInExRefs>$(MSBuildThisFileDirectory)..\src\bepinex\core</ManosabaBepInExRefs>
     <NuGetPackageRoot Condition="'$(NUGET_PACKAGES)' != ''">$(NUGET_PACKAGES)</NuGetPackageRoot>
   </PropertyGroup>
 

@@ -36,7 +36,7 @@
     <Compile Include="Plugin.cs" />
   </ItemGroup>
 
-  <!-- BepInEx 运行时 -->
+  <!-- BepInEx 运行时：优先用本机游戏安装里的版本，保证与游戏实际加载的一致 -->
   <ItemGroup Condition="Exists('$(BepInExCore)\BepInEx.Core.dll')">
     <Reference Include="BepInEx.Core">
       <HintPath>$(BepInExCore)\BepInEx.Core.dll</HintPath>
@@ -56,6 +56,32 @@
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
       <HintPath>$(BepInExCore)\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 兜底：仓库自带的同版本引用程序集（src/bepinex/core）。
+       没有这一组时，干净机器上 $(GameDir) 不存在 -> 引用整组被跳过 ->
+       Plugin.cs 全部类型解析失败，整个解决方案编译不过。 -->
+  <ItemGroup Condition="!Exists('$(BepInExCore)\BepInEx.Core.dll')">
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(ManosabaBepInExRefs)\BepInEx.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>$(ManosabaBepInExRefs)\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx.Unity.Common">
+      <HintPath>$(ManosabaBepInExRefs)\BepInEx.Unity.Common.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(ManosabaBepInExRefs)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(ManosabaBepInExRefs)\Il2CppInterop.Runtime.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
