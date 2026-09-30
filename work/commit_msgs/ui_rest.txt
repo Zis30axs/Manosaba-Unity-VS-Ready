@@ -1,0 +1,12 @@
+复原 Essentials.UI 余下控件：LabeledSlider、TweeningDropdownLocalized、LocalizationDropdown、Quadrilateral 等（39 个成员）
+
+- LabeledSlider（11）：滑动时按 BuildLabelTextFunc 刷新标签（整数模式四舍五入，InvariantCulture），
+  抬起时播放确认音；OnSlideAsObservable().Skip(1)、OnConfirmAsObservable、SetValue / SetMaxValue
+- TweeningDropdownLocalized（4）+ LocalizationDropdown（2）：语言下拉的逐项字体、标题显隐
+- Quadrilateral（4）：四边形网格（四角 UV）、按归一化坐标设角点并 SetAllDirty、Expand
+- GeneralToggle（6）、OptionItemToggle（4）、OptionItemButton（2）、SelectableSizeData.IsFixed / IsFlexible
+- 各自带的越界 / 取值判断保持原样（LogError 字符串取自元数据）
+
+离线 Roslyn 检查 GigaCreation.Essentials.UI：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

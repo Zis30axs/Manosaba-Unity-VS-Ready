@@ -1,0 +1,9 @@
+内嵌 Naninovel 等七个包（Packages）
+
+packages-lock.json 把这七个包标记为 source=embedded，也就是这些目录本身就是包内容，
+无法从 registry 还原，必须入库：
+  com.elringus.naninovel（Naninovel 1.20；本次修好的启动链有相当一部分落在这里，
+    其中 Runtime/Engine/Engine.cs 曾在排查时临时插桩，已按快照还原）
+  com.cysharp.unitask、com.neuecc.unirx、com.le-tai.true-shadow、
+  com.annulusgames.litmotion、com.ff.mpuikit、com.rlabrecque.steamworks.net
+其余依赖是 registry/builtin，由 manifest.json + packages-lock.json 决定，不入库。

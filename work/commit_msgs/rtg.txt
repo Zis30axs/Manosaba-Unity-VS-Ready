@@ -1,0 +1,13 @@
+复原 RebuildableToggle（23 个成员）：选项开关的标签生成、尺寸与引用
+
+- RebuildElements：ContentSizeFitter 按父级布局组增删（父级有布局组则销毁、否则仅在缺失时添加并设为 PreferredSize），
+  RebuildLabel（空文本销毁标签；否则按 _dontRegenerateLabel 重新生成或沿用子级已有标签，再 Rebuild），
+  UpdateWidth / UpdateHeight（Fixed / Flexible，父级控制并强制扩展时为 -1）
+- HoldExistingLabel / GenerateAndHoldLabel / DestroyHoldenLabel、GetContentPreferredWidth/Height（同 RebuildableButton）
+- IsOn、OnValueChangedAsObservable、OnValueChangedAsync（XxxCore）、Get/PurgeReferences(InEditor)、DefaultSize、Reset
+- 骨架里 IsOn / OnValueChangedAsObservable 为空，OptionItemToggleGroup 订阅与设值都会失效
+- 二进制自带的判断（_labelParent、已有标签、已有 fitter）写成显式 if 并注明地址
+
+离线 Roslyn 检查 GigaCreation.Essentials.UI：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

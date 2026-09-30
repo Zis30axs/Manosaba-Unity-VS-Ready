@@ -1,0 +1,1601 @@
+TARGET: E:/Manosaba-VSCodeReady/UnityProject startup source files identified in supplied log.
+Changed symbols:
+- LocalizeImage.OnEnable: bind missing _image before synchronous subscription; missing component reports error.
+- LocalizeImage.OnDisable: guard an unbound _image during teardown.
+- ManosabaBoot.ProbeCatalog: map only Assembly-CSharp to GameInitializer's assembly within try/finally.
+BASELINE: 3 failures; NullReferenceException on unbound Image and early disable, FileNotFoundException in legacy catalog fixture; exit 1.
+MODIFIED: same fixture inputs, 5 checks pass; exit 0.
+ROLLBACK: restores baseline failures, exit 1; both SHA256 hashes match originals.
+REAL COMPILE: full modified files compile with installed Unity and project assemblies, exit 0 (serialized-field warnings remain).
+BOUNDARIES: tests use actual LocalizeImage source with Unity/service doubles and exact ProbeCatalog method with a synthetic catalog implementation. No Unity Play Mode or real shipped binary catalog validation was performed. Original project files remain unchanged; ZIP contains drop-in source copies. No claim that full startup is fixed.
+Unresolved issues in supplied log:
+- TMP font assets for three configured languages must be restored/generated and registered; a raw Font is not TMP_FontAsset.
+- TrueShadow UI shaders referenced by BlendModeExtensions are missing from inspected shader sources; graphics not repaired/tested.
+- DefaultLocalePresenter constructor registers IDefaultLocaleSelector and GameInitializer.InitializeAsyncCore registers another instance; duplicate warning remains.
+- processInput warning not changed.
+Tool errors retained: venv Python process launch exit 101; output encoding exception exit 1 (fixed with explicit UTF-8); prepare.py CRLF assertion exit 1 (normalized only working copy); first modified run exit 1; real compile missing Il2CppDummyDll reference exit 1 (added actual plugin reference). These are not evaluator successes.
+
+HASHES
+{
+  "UnityProject/Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Views/LocalizeImage.cs": {
+    "original": "0bba1e24b73209534e2d01f6bdd7a4b2067a5280279959b978f8cd07a7420b21",
+    "modified": "d551b7781b170b7e113b712dfff5bd3edd549f39c1218a687c79dbbb617eeb03",
+    "rollback": "0bba1e24b73209534e2d01f6bdd7a4b2067a5280279959b978f8cd07a7420b21",
+    "patch_rebuilt": "d551b7781b170b7e113b712dfff5bd3edd549f39c1218a687c79dbbb617eeb03"
+  },
+  "UnityProject/Assets/Scripts/Runtime/ManosabaBoot.cs": {
+    "original": "3b22ebaf7b50e865889849d63a2c0200a17cffaf147f70ede5752d43b379c0c4",
+    "modified": "9459512f9bd4d5678efb558beabeacdc4e62364f8e6125cb4a89d3718dc64f57",
+    "rollback": "3b22ebaf7b50e865889849d63a2c0200a17cffaf147f70ede5752d43b379c0c4",
+    "patch_rebuilt": "9459512f9bd4d5678efb558beabeacdc4e62364f8e6125cb4a89d3718dc64f57"
+  }
+}
+COMMAND ["C:/Program Files/Git/bin/bash.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\ROLLBACK.sh", "E:/Manosaba-VSCodeReady/work/startup-fix-20260918/rollback-copy"]
+STDOUT
+
+STDERR
+
+EXIT 0
+COMMAND ["C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\check.py", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\rollback-copy", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback"]
+STDOUT
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-target:library", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\Unity.Addressables.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\CatalogFixture.cs"]
+STDOUT
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\Unity.Addressables.dll", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\Harness.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\CatalogSubject.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\rollback-copy\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\bin\\mono.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\catalog-fixture.bin"]
+STDOUT
+﻿Test boundary: real LocalizeImage source; Unity/UI/service test doubles. Catalog method uses synthetic legacy-assembly fixture, not Unity Play Mode.
+unbound Image + synchronous locale replay + fallback + disable: NullReferenceException: Object reference not set to an instance of an object
+existing Image binding preserved: PASS
+disable before enable: NullReferenceException: Object reference not set to an instance of an object
+catalog=ABSENT 
+catalog missing path and resolver cleanup: PASS
+catalog=ERROR FileNotFoundException: Could not load the file 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+legacy catalog Assembly-CSharp maps to reconstructed assembly: Exception: assertion failed
+failures=3
+STDERR
+﻿EXIT 1
+
+STDERR
+
+EXIT 1
+COMMAND ["C:/Program Files/Git/bin/git.exe", "-c", "core.autocrlf=false", "apply", "--check", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\DIFF_FILE.patch"]
+STDOUT
+
+STDERR
+
+EXIT 0
+COMMAND ["C:/Program Files/Git/bin/git.exe", "-c", "core.autocrlf=false", "apply", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\DIFF_FILE.patch"]
+STDOUT
+
+STDERR
+E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:7: trailing whitespace, space before tab in indent.
+    		// Reset is editor-only initialization; reconstructed/runtime-created prefabs may
+E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:8: trailing whitespace, space before tab in indent.
+    		// have no serialized Image reference. Resolve it before subscribing (a replaying
+E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:9: trailing whitespace, space before tab in indent.
+    		// observable can call ModifyImageByLocale immediately).
+E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:10: trailing whitespace, space before tab in indent.
+    		if (_image == null) _image = GetComponent<Image>();
+E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:11: trailing whitespace, space before tab in indent.
+    		if (_image == null)
+warning: squelched 5 whitespace errors
+warning: 10 lines add whitespace errors.
+
+EXIT 0
+=== BASELINE.txt ===
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-target:library", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\Unity.Addressables.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\CatalogFixture.cs"]
+STDOUT
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\Unity.Addressables.dll", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\Harness.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\CatalogSubject.cs", "E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\bin\\mono.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\catalog-fixture.bin"]
+STDOUT
+﻿Test boundary: real LocalizeImage source; Unity/UI/service test doubles. Catalog method uses synthetic legacy-assembly fixture, not Unity Play Mode.
+unbound Image + synchronous locale replay + fallback + disable: NullReferenceException: Object reference not set to an instance of an object
+existing Image binding preserved: PASS
+disable before enable: NullReferenceException: Object reference not set to an instance of an object
+catalog=ABSENT 
+catalog missing path and resolver cleanup: PASS
+catalog=ERROR FileNotFoundException: Could not load the file 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+legacy catalog Assembly-CSharp maps to reconstructed assembly: Exception: assertion failed
+failures=3
+STDERR
+﻿EXIT 1
+
+=== MODIFIED.txt ===
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-target:library", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\Unity.Addressables.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\CatalogFixture.cs"]
+STDOUT
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\Unity.Addressables.dll", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\Harness.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\CatalogSubject.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\modified\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\bin\\mono.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-modified\\catalog-fixture.bin"]
+STDOUT
+﻿Test boundary: real LocalizeImage source; Unity/UI/service test doubles. Catalog method uses synthetic legacy-assembly fixture, not Unity Play Mode.
+unbound Image + synchronous locale replay + fallback + disable: PASS
+existing Image binding preserved: PASS
+disable before enable: PASS
+catalog=ABSENT 
+catalog missing path and resolver cleanup: PASS
+catalog=PARSED 
+legacy catalog Assembly-CSharp maps to reconstructed assembly: PASS
+failures=0
+STDERR
+﻿EXIT 0
+
+=== ROLLBACK.txt ===
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-target:library", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\Unity.Addressables.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\CatalogFixture.cs"]
+STDOUT
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\Unity.Addressables.dll", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\Harness.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\CatalogSubject.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\rollback-copy\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\work\startup-fix-20260918\rollback-copy\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\bin\\mono.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-rollback\\catalog-fixture.bin"]
+STDOUT
+﻿Test boundary: real LocalizeImage source; Unity/UI/service test doubles. Catalog method uses synthetic legacy-assembly fixture, not Unity Play Mode.
+unbound Image + synchronous locale replay + fallback + disable: NullReferenceException: Object reference not set to an instance of an object
+existing Image binding preserved: PASS
+disable before enable: NullReferenceException: Object reference not set to an instance of an object
+catalog=ABSENT 
+catalog missing path and resolver cleanup: PASS
+catalog=ERROR FileNotFoundException: Could not load the file 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+legacy catalog Assembly-CSharp maps to reconstructed assembly: Exception: assertion failed
+failures=3
+STDERR
+﻿EXIT 1
+
+STDERR
+
+EXIT 1
+=== REAL_COMPILE.txt ===
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-target:library", "-nostdlib+", "-langversion:9.0", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\real-source-check.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\Unity.Cecil.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\Unity.Cecil.Mdb.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\Unity.Cecil.Pdb.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.AccessibilityModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.AdaptivePerformanceModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.BuildProfileModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.CoreBusinessMetricsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.CoreModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.DeviceSimulatorModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.DiagnosticsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.EditorToolbarModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.EmbreeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.GIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.GraphicsStateCollectionSerializerModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.GraphViewModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.GridAndSnapModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.GridModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.MultiplayerModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.Physics2DModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.PhysicsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.PresetsUIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.PropertiesModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.QuickSearchModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SafeModeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SceneTemplateModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SceneViewModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.ShaderFoundryModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SketchUpModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SpriteMaskModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SpriteShapeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.SubstanceModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TerrainModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TextCoreFontEngineModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TextCoreTextEngineModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TextRenderingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TilemapModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.TreeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UIAutomationModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UIBuilderModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UIElementsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UIElementsSamplesModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UmbraModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.UnityConnectModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.VFXModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.VideoModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEditor.XRModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AccessibilityModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AMDModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AndroidJNIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AnimationModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ARModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AssetBundleModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.AudioModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ClothModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ClusterInputModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ClusterRendererModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ContentLoadModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.CoreModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.CrashReportingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.DirectorModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.DSPGraphModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.GameCenterModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.GIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.GraphicsStateCollectionSerializerModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.GridModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.HierarchyCoreModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.HotReloadModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ImageConversionModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.IMGUIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.InputForUIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.InputLegacyModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.InputModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.JSONSerializeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.LocalizationModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.MarshallingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.MultiplayerModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.NVIDIAModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ParticleSystemModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.PerformanceReportingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.Physics2DModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.PhysicsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.PropertiesModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ScreenCaptureModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.ShaderVariantAnalyticsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.SharedInternalsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.SpriteMaskModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.SpriteShapeModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.StreamingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.SubstanceModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.SubsystemsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TerrainModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TerrainPhysicsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TextCoreFontEngineModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TextCoreTextEngineModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TextRenderingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TilemapModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.TLSModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UIElementsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UIModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UmbraModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityAnalyticsCommonModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityAnalyticsModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityConnectModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityCurlModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityTestProtocolModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityWebRequestAssetBundleModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityWebRequestAudioModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityWebRequestModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityWebRequestTextureModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.UnityWebRequestWWWModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.VehiclesModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.VFXModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.VideoModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.VirtualTexturingModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.VRModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.WindModule.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\Managed\\UnityEngine\\UnityEngine.XRModule.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Assembly-CSharp-Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\com.rlabrecque.steamworks.net.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\com.rlabrecque.steamworks.net.editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\CustomInspector.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\CustomInspector.Helpers.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Elringus.Naninovel.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Elringus.Naninovel.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Elringus.SpriteDicing.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.AddressablesUtils.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Dialogs.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Input.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Localization.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.MasterData.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Overlays.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Platforms.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.SaveLoad.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.Toggleables.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.UniTasks.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Essentials.WebRequestUtils.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Audio.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Cameras.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Common.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Effects.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.ExtendedActors.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.ExtendedSpawn.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Localization.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.Movies.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.ResourceProvider.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.NaninovelExtender.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.BuildTimestampDisplay.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Debugging.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Debugging.General.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Debugging.TextDisplays.BuildTimestamps.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Debugging.TextDisplays.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Debugging.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.General.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Private.PlayableDirectors.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.Service.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.UndoExtensions.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\GigaCreation.Tools.UniTasks.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\LeTai.TrueShadow.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\LitMotion.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\LitMotion.Extensions.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Manosaba.Integration.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\MPUIKit.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\MPUIKit.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\ppt-noise.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\PPv2URPConverters.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\ScriptablePacker.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UniRx.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UniTask.Addressables.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UniTask.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Animation.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Animation.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Common.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Common.Path.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Common.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.IK.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.IK.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.2D.Sprite.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Addressables.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Addressables.DocExampleCode.Editor.Tests.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Addressables.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Bindings.OpenImageIO.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Burst.CodeGen.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Burst.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Burst.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Collections.CodeGen.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Collections.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Collections.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InputSystem.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InputSystem.DocCodeSamples.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InputSystem.ForUI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InputSystem.TestFramework.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InternalAPIEditorBridge.001.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.InternalAPIEngineBridge.001.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Mathematics.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Mathematics.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.PerformanceTesting.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.PerformanceTesting.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Profiling.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Recorder.Base.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Recorder.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Recorder.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Rendering.LightTransport.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Rendering.LightTransport.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipeline.Universal.ShaderLibrary.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Core.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Core.Editor.Shared.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Core.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Core.Runtime.Shared.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Core.ShaderLibrary.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.GPUDriven.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Universal.2D.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Universal.Config.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Universal.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Universal.Runtime.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.RenderPipelines.Universal.Shaders.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.ResourceManager.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Rider.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.ScriptableBuildPipeline.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.ScriptableBuildPipeline.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Searcher.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.ShaderGraph.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.ShaderGraph.Utilities.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.TextMeshPro.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.TextMeshPro.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Timeline.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.Timeline.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\Unity.VisualStudio.Editor.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UnityEditor.TestRunner.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UnityEditor.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UnityEngine.TestRunner.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\UnityEngine.UI.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Library\\ScriptAssemblies\\WitchTrials.Game.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Packages\\com.elringus.naninovel\\Plugins\\Naninovel.Common.dll", "-r:E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Plugins\\Il2CppStubs\\Il2CppDummyDll.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\Facades\\netstandard.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\modified\\UnityProject\\Assets\\Scripts\\Runtime\\ManosabaBoot.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\modified\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+work\startup-fix-20260918\modified\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+
+STDERR
+
+EXIT 0
+
+Additional observed tooling errors: first rollback shell lacked mkdir on PATH (shell exit 127, finalize assertion exit 1); rerun with Git usr/bin on PATH succeeded. First patch reconstruction hash check failed (finalize exit 1) because Git core.autocrlf changed LF to CRLF; rerun with core.autocrlf=false reproduced exact source bytes. No original source was overwritten.
+
+
+
+=== RESOURCE TRANSACTION EXTENSION ===
+Previous C# transaction is archived, NOT applied to the project or included in resource commit.
+Matching on-disk command: BASELINE exit 1 (17 missing contracts); MODIFIED exit 0; ROLLBACK exit 1, identical baseline output and hashes; reapply exit 0. This rollback is a separate copy, NOT a Unity runtime rollback.
+Real Unity evidence: baseline verify 14 failures; modified2 verify / modified verify-built 0 failures; G4b reached System/System_Title; shader null and all three font failures 0. CJK preview visually inspected.
+
+COMMAND EVENTS
+[
+  {
+    "command": [
+      "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\check_runtime_resource_contract.py",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\resource-transaction\\baseline"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady",
+    "stdout": "{\n  \"boundary\": \"on-disk contract only; not runtime acceptance\",\n  \"shader_contracts\": 9,\n  \"missing\": [\n    \"shader:Hidden/TrueShadow/Cutout\",\n    \"shader:Hidden/TrueShadow/Generate\",\n    \"shader:Hidden/TrueShadow/GenerateHQ\",\n    \"shader:Hidden/TrueShadow/ImprintPostProcess\",\n    \"shader:Hidden/TrueShadow/PostProcess\",\n    \"shader:UI/TrueShadow-Additive\",\n    \"shader:UI/TrueShadow-Multiply\",\n    \"shader:UI/TrueShadow-Normal\",\n    \"shader:UI/TrueShadow-Screen\",\n    \"resource:True Shadow Blue Noise.png\",\n    \"resource:True Shadow Project Settings.asset\",\n    \"dynamic-TMP:TsukushiMincho\",\n    \"address:TsukushiMincho\",\n    \"dynamic-TMP:SourceHanSerifSC\",\n    \"address:SourceHanSerifSC\",\n    \"dynamic-TMP:SourceHanSansKR\",\n    \"address:SourceHanSansKR\"\n  ],\n  \"failures\": 17,\n  \"status\": \"FAIL\"\n}\n",
+    "stderr": "",
+    "exit": 1
+  },
+  {
+    "command": [
+      "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\check_runtime_resource_contract.py",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\resource-transaction\\modified"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady",
+    "stdout": "{\n  \"boundary\": \"on-disk contract only; not runtime acceptance\",\n  \"shader_contracts\": 9,\n  \"missing\": [],\n  \"failures\": 0,\n  \"status\": \"PASS\"\n}\n",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "command": [
+      "C:/Program Files/Git/bin/bash.exe",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\ROLLBACK.sh",
+      "E:/Manosaba-VSCodeReady/work/startup-fix-20260918/resource-transaction/rollback-copy"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady",
+    "stdout": "",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "command": [
+      "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\check_runtime_resource_contract.py",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\resource-transaction\\rollback-copy"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady",
+    "stdout": "{\n  \"boundary\": \"on-disk contract only; not runtime acceptance\",\n  \"shader_contracts\": 9,\n  \"missing\": [\n    \"shader:Hidden/TrueShadow/Cutout\",\n    \"shader:Hidden/TrueShadow/Generate\",\n    \"shader:Hidden/TrueShadow/GenerateHQ\",\n    \"shader:Hidden/TrueShadow/ImprintPostProcess\",\n    \"shader:Hidden/TrueShadow/PostProcess\",\n    \"shader:UI/TrueShadow-Additive\",\n    \"shader:UI/TrueShadow-Multiply\",\n    \"shader:UI/TrueShadow-Normal\",\n    \"shader:UI/TrueShadow-Screen\",\n    \"resource:True Shadow Blue Noise.png\",\n    \"resource:True Shadow Project Settings.asset\",\n    \"dynamic-TMP:TsukushiMincho\",\n    \"address:TsukushiMincho\",\n    \"dynamic-TMP:SourceHanSerifSC\",\n    \"address:SourceHanSerifSC\",\n    \"dynamic-TMP:SourceHanSansKR\",\n    \"address:SourceHanSansKR\"\n  ],\n  \"failures\": 17,\n  \"status\": \"FAIL\"\n}\n",
+    "stderr": "",
+    "exit": 1
+  },
+  {
+    "command": [
+      "C:/Program Files/Git/bin/git.exe",
+      "-c",
+      "core.autocrlf=false",
+      "apply",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\DIFF_FILE.patch"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\resource-transaction\\rollback-copy",
+    "stdout": "",
+    "stderr": "E:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:596: trailing whitespace.\n  m_LockedProperties: \nE:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:697: trailing whitespace.\n  m_EditorClassIdentifier: \nE:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:724: trailing whitespace.\n    sourceFontFileName: \nE:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:725: trailing whitespace.\n    sourceFontFileGUID: \nE:/Manosaba-VSCodeReady/work/startup-fix-20260918/DIFF_FILE.patch:735: trailing whitespace.\n    characterSequence: \nwarning: squelched 108 whitespace errors\nwarning: 113 lines add whitespace errors.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\check_runtime_resource_contract.py",
+      "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\resource-transaction\\rollback-copy"
+    ],
+    "cwd": "E:\\Manosaba-VSCodeReady",
+    "stdout": "{\n  \"boundary\": \"on-disk contract only; not runtime acceptance\",\n  \"shader_contracts\": 9,\n  \"missing\": [],\n  \"failures\": 0,\n  \"status\": \"PASS\"\n}\n",
+    "stderr": "",
+    "exit": 0
+  }
+]
+HASHES
+{
+  "UNITY_RUNTIME_INTEGRATION.md": {
+    "baseline": "5b2e7f35c12c583361e7a1b28bed4aad0c7da635fad587666d724f078e0ebbbe",
+    "modified": "9f2b0d03e0edfdf40c54b25d8f40a9f17508d6ba9e9966aba5ec7ccbf148586d",
+    "rollback": "5b2e7f35c12c583361e7a1b28bed4aad0c7da635fad587666d724f078e0ebbbe"
+  },
+  "UnityProject/Assets/AddressableAssetsData/AddressableAssetSettings.asset": {
+    "baseline": "d6f2c31da853f2569a39ac5c91262a8be369aed6ef9f4f770f709416f8f411e3",
+    "modified": "9c5e1ae9ae6b71fb7398395d834d789971b2865a5280593217ec9a3f9e6b48f7",
+    "rollback": "d6f2c31da853f2569a39ac5c91262a8be369aed6ef9f4f770f709416f8f411e3"
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Manosaba.RuntimeFonts.asset": {
+    "baseline": null,
+    "modified": "46012d405539d5dce86e54b5efbf05fdae7de3fab0591ce58d3124a074b81d15",
+    "rollback": null
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Manosaba.RuntimeFonts.asset.meta": {
+    "baseline": null,
+    "modified": "ebfaca1d44f79ebd5357707d296dfd08546dc5bf30e241de1559fbb02b93a364",
+    "rollback": null
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Schemas/Manosaba.RuntimeFonts_BundledAssetGroupSchema.asset": {
+    "baseline": null,
+    "modified": "6896043895ac925225812b4586cb8eeee7eba4d03533a4719b94e74319ea3322",
+    "rollback": null
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Schemas/Manosaba.RuntimeFonts_BundledAssetGroupSchema.asset.meta": {
+    "baseline": null,
+    "modified": "360e296645e13ba5406d66e04d7162c3c5b5ba647cd8a8099d354413bcf4f754",
+    "rollback": null
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Schemas/Manosaba.RuntimeFonts_ContentUpdateGroupSchema.asset": {
+    "baseline": null,
+    "modified": "a5430af9874f4c2e59f4d9d2b94106a9cc4c13d1e234578724704a789a56595d",
+    "rollback": null
+  },
+  "UnityProject/Assets/AddressableAssetsData/AssetGroups/Schemas/Manosaba.RuntimeFonts_ContentUpdateGroupSchema.asset.meta": {
+    "baseline": null,
+    "modified": "ffb5ba9f3742a3779c1d5568315b611ec83686a90ae519c2513434bd5e0d34f8",
+    "rollback": null
+  },
+  "UnityProject/Assets/Editor/RuntimeResourceRepair.cs": {
+    "baseline": null,
+    "modified": "6aabbed989e0f4bfa041ef3be1494492caaf742cfed6694ca782bf4d4f6e1e74",
+    "rollback": null
+  },
+  "UnityProject/Assets/Editor/RuntimeResourceRepair.cs.meta": {
+    "baseline": null,
+    "modified": "34566317878152c163707de084a15b150195d65ed769b0a7576b261bac7d3f4c",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts.meta": {
+    "baseline": null,
+    "modified": "62379ad37c7fb2c2d0ae68bfa17f78e4a64cfcfa6692ea652ec6cc8586cbe56c",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSansKR.meta": {
+    "baseline": null,
+    "modified": "a189da675989f97868247ba29ae8ec6a5e6a8b25aea2f9eb3783ffb58c0e789e",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSansKR/SourceHanSansKR.asset": {
+    "baseline": null,
+    "modified": "b5369aca359f06582958282d2c3f2572e3046493f2c8364102dc4a31c5e3530d",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSansKR/SourceHanSansKR.asset.meta": {
+    "baseline": null,
+    "modified": "c55bbd430cc47935dfddea4480b8451245a50674fc5b515eada595614302b0ac",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC.meta": {
+    "baseline": null,
+    "modified": "57ec679dca774bdb3156dbc2b743ca38e191d017df29548fdab926d590bd3297",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC.asset": {
+    "baseline": null,
+    "modified": "a501db5ed2a8c95ea9273d930502f1691fb9af0dd86fafd2a2041d1fc92bb3a5",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC.asset.meta": {
+    "baseline": null,
+    "modified": "5f238cfe04e40b69729fc8d82fbec8ebcd1e78c9d5330345e371f900cb23eec2",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Outline_Shadow.mat": {
+    "baseline": null,
+    "modified": "da901deee2bf099334cb37a2ca5765127e9d98e10615bf323255150853017d27",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Outline_Shadow.mat.meta": {
+    "baseline": null,
+    "modified": "596a715d58c0407675c1ce87906d7834694c46a1193d09bc7059793ab8a049b3",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow1.mat": {
+    "baseline": null,
+    "modified": "b537245f44f667a71971b04dcbed75792ada1b65f79fed977fb9c690a6a1620f",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow1.mat.meta": {
+    "baseline": null,
+    "modified": "4d29a670767bf566a498c2c54c1afd68992e189003c20b45fd8ab89bb7ac9620",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow2.mat": {
+    "baseline": null,
+    "modified": "3494c4fdf2a138550b950791c6915419e59d4eee3db442a8aa32830fd2e31d65",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow2.mat.meta": {
+    "baseline": null,
+    "modified": "42ccff4ea45474d11bfeec091a859162b6510a29f55b9a6a4b6afe20251992bd",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow3.mat": {
+    "baseline": null,
+    "modified": "4d70d04cbb14f9d08e10f7b5ec41c7034996825d0247fe57d0917d404afd89ac",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow3.mat.meta": {
+    "baseline": null,
+    "modified": "7a79f9f9d10b1f3b894c8e90a5969963e6a82c276c85b025b3de1c892eec8ea5",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow4.mat": {
+    "baseline": null,
+    "modified": "a0023ae77dc6197943a8052068a6bece5a147cbb185dd3273b34cecda7df36d0",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow4.mat.meta": {
+    "baseline": null,
+    "modified": "b0547728cc65e71de67ad815bfa486f22736204bc54396adbb9ca3077ff01bf0",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow5.mat": {
+    "baseline": null,
+    "modified": "5ef9f7288745c9c1c0ee3d167f80c5f9c5d397229de793d554afff52d452d570",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow5.mat.meta": {
+    "baseline": null,
+    "modified": "589257754ca529a5e1f17a84d42206d93d9cfc572eac8e7f0ab35a84535e7578",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow6.mat": {
+    "baseline": null,
+    "modified": "b70e2ea5a2bf4f3af50b0bc84e0da1efea4a4349b66ecf505cca7d23ee5965d7",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/SourceHanSerifSC/SourceHanSerifSC@Shadow6.mat.meta": {
+    "baseline": null,
+    "modified": "906afa8f88ee2f0b17bc439f40c14fb492f1f202d96a278dd3e64cd78787085f",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho.meta": {
+    "baseline": null,
+    "modified": "c8920c1ee9deee4b1b36242d23570a8e7123f8b5c0d9e0bd73aa5b5dd918db4c",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho.asset": {
+    "baseline": null,
+    "modified": "36f3a568a97d227a98ce2ca05b8947fdf65dc18816e708e24f7c8efcc62ed556",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho.asset.meta": {
+    "baseline": null,
+    "modified": "4d0b0450323a640981d427284bf65f5b07a70bda112065f53d2dcf6041498404",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Outline_Shadow.mat": {
+    "baseline": null,
+    "modified": "3c296499ea124237c9be50cfa62bc8b06a1c22570d06f81fd4720fb463ed703d",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Outline_Shadow.mat.meta": {
+    "baseline": null,
+    "modified": "42198a52cac04e985150391b5818bd9829277918aceefdebe4d25c829d2cd981",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow1.mat": {
+    "baseline": null,
+    "modified": "84d6ad2a459849a9438906db678e4ca8a1c9c9adae4d4de1de6987fb327b3518",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow1.mat.meta": {
+    "baseline": null,
+    "modified": "8af5911bd4af295ea39812d933b5935c87328700de4f085c056155431c28a680",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow2.mat": {
+    "baseline": null,
+    "modified": "852d9ecc8978b732ef3424741f3ccde8c559a4b5bb7b26c81ca1c1c6031d5f05",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow2.mat.meta": {
+    "baseline": null,
+    "modified": "4df31c72f58935a0cf87f3c2bd962f7ce21f1bbf177891f4e5b17e270ac2fd14",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow3.mat": {
+    "baseline": null,
+    "modified": "b5ef787f94d495bc9d22fd781fc0b67f97555acacc97cbd685e001a701be1884",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow3.mat.meta": {
+    "baseline": null,
+    "modified": "ddd8a2f706139bbd208b8eacdc9dfab1faecbcec4555fce6841e7e471164cae3",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow4.mat": {
+    "baseline": null,
+    "modified": "12c9c1259f50a9ca1344a47c037958622ac1b5fd95fcc22922deb4ed6dc52be1",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow4.mat.meta": {
+    "baseline": null,
+    "modified": "b6c5675aacdaa5c7ab03865e424701d234b28d710cfcc1f7a5c59fba834d9f29",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow5.mat": {
+    "baseline": null,
+    "modified": "4ec60e42b9a7656b0ea02cc3f85acff381bac5d13b1a638babe9c0e564366cd7",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow5.mat.meta": {
+    "baseline": null,
+    "modified": "a653b283a07e6118957df0fa65e3d1e4feb97ba35c297c3ee382891cd31b325c",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow6.mat": {
+    "baseline": null,
+    "modified": "6792acb811684928e76278b7a5cbe91db45b02e1370aafca4abe85c46f1ea58e",
+    "rollback": null
+  },
+  "UnityProject/Assets/GameContent/RuntimeFonts/TsukushiMincho/TsukushiMincho@Shadow6.mat.meta": {
+    "baseline": null,
+    "modified": "0bc4712568a3ea7ee5bdd99effd2c05bee3a1b669982a6d8efa754a9001c8321",
+    "rollback": null
+  },
+  "UnityProject/Assets/TextMesh Pro/Resources/TMP Settings.asset": {
+    "baseline": "7be438062cdc296835a1258b68bcbeb8e9fdc4b01ea27c05a24a1074260f7424",
+    "modified": "b64d1af0e25163f07f9bec9e736958612ce9081de0af2706a40177183373a9ce",
+    "rollback": "7be438062cdc296835a1258b68bcbeb8e9fdc4b01ea27c05a24a1074260f7424"
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/PROVENANCE.md": {
+    "baseline": "8b113341532f9b754736cb61ba4809eac2a1fba005dc7c51298ddc933bd91fd4",
+    "modified": "56d4adb62dd80c68c756852386d5b65cb474f0bdbace00aa5c98bca8192f65fc",
+    "rollback": "8b113341532f9b754736cb61ba4809eac2a1fba005dc7c51298ddc933bd91fd4"
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources.meta": {
+    "baseline": null,
+    "modified": "526fb95aa0e583044c64f9ac0850d52b7df188b7a87a87299e784b4267f94e81",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/COMPATIBILITY.md": {
+    "baseline": null,
+    "modified": "23a517268d7d87d1ec3d29d141d0eae1524b0a4def276a21015e0a2395d9213f",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/COMPATIBILITY.md.meta": {
+    "baseline": null,
+    "modified": "0398722b418d42348a3d0846fb6b39fa0514d67add7b349e2967b6787c4c8b89",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders.meta": {
+    "baseline": null,
+    "modified": "5053f2a773c0c171c76a7fbf2365ad2411e95bd63f21c56efcbdf746db27f698",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ImprintPostProcess.shader": {
+    "baseline": null,
+    "modified": "14a2c3fa053cb0362d26ef22b53a89f169dd0d925c97a887f38a8175b1aded90",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ImprintPostProcess.shader.meta": {
+    "baseline": null,
+    "modified": "d4d4f65584b3b98a14b5f41dcca9f455d5d5c5151300bd6a0607e2fa80915244",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ManosabaTrueShadowBlit.cginc": {
+    "baseline": null,
+    "modified": "003cc722edf7525072be4ab87368ab2c8c25f23b6981bcb2c8fd4dc3976a55a8",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ManosabaTrueShadowBlit.cginc.meta": {
+    "baseline": null,
+    "modified": "d915c4f982ef801084b5e2d718e88323b84429665bf8c03815e5bae97bf6e2fe",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ManosabaTrueShadowUI.cginc": {
+    "baseline": null,
+    "modified": "74424a8a4dea97485bab0a056b815d56777ff71de6c5e48f6bc139e54f52b705",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ManosabaTrueShadowUI.cginc.meta": {
+    "baseline": null,
+    "modified": "ef1c157dfbfcb31b26e686cd6f4b3fa5bfbaf39214fb9334bd349bb9e2c69d5a",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowCutout.shader": {
+    "baseline": null,
+    "modified": "303fbd91ae50ecd512ac2b1b9b40d010cdf721809a1cfc9849ac1418e14627d6",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowCutout.shader.meta": {
+    "baseline": null,
+    "modified": "e0243c51fbd1727ec27193152caf94746a27ca6ef4ab5ff3dac9af90938a9387",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowGenerate.shader": {
+    "baseline": null,
+    "modified": "bfe3172d77dce0117a87f41e61f824186ad10c432507cb53b667694eac72b928",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowGenerate.shader.meta": {
+    "baseline": null,
+    "modified": "8a51bb1ce5eed4e10f86f273b859c3cd5c843109f1b4e614ac82ab96c9d89937",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowGenerateHQ.shader": {
+    "baseline": null,
+    "modified": "c0c86523e65794a6baff6ba566cc569cb9f9254da1ef2be87f39a8969e9ba858",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowGenerateHQ.shader.meta": {
+    "baseline": null,
+    "modified": "4177e002f31c4471d90bc77542f469610b99465e565bae31223bb283d361f5c8",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowPostProcess.shader": {
+    "baseline": null,
+    "modified": "eddfd576bafe8dd46b7367614e027a43a4bd639a467e9ce4135d74715e3d9324",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/ShadowPostProcess.shader.meta": {
+    "baseline": null,
+    "modified": "17ae9b15ee1d9ba72753e0eb1b9562b335e8413d72fe9152b9d088c284c2a288",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Additive.shader": {
+    "baseline": null,
+    "modified": "6736caba9f35a0c54a332454e8ad11926ac29c5e93614dd3b5d395366eef1268",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Additive.shader.meta": {
+    "baseline": null,
+    "modified": "56bb92c676f46df650ba6d9ed173531ce66234895cfdd49fea338351874abfc8",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Multiply.shader": {
+    "baseline": null,
+    "modified": "6948d3f66aba04780dcc59c38b08af78a414d2ea2d5d5ea8e6c20efb36c860d2",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Multiply.shader.meta": {
+    "baseline": null,
+    "modified": "64310fd1ed3679bfd5e0dee4670717487bbb850762bbaa234e4602fe16694481",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Normal.shader": {
+    "baseline": null,
+    "modified": "96fd1b857b4f60cde582df3f26cca97a151b4adb83612516b889074526a779e8",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Normal.shader.meta": {
+    "baseline": null,
+    "modified": "367c2b78c3bb4de9b58909daa83a2f2bbfe2ef925342805a84de526039a15797",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Screen.shader": {
+    "baseline": null,
+    "modified": "d18537161f127051d04de1c9e889cabb3fddc1a69b2cce3e21bf31bdad9da53a",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/Shaders/TrueShadow-Screen.shader.meta": {
+    "baseline": null,
+    "modified": "d97337113048544ae7bcaec06150e1a538a54bc9f71ba2f5a38f88e02d565ccf",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/True Shadow Blue Noise.png": {
+    "baseline": null,
+    "modified": "4ea619f9751fcb7bb7edaefa3a697c35c798675ef26f88fda8f5228ffc3e123f",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/True Shadow Blue Noise.png.meta": {
+    "baseline": null,
+    "modified": "55a3831e2be91558bf84231eb11d6132877d0436cdba69885d110b035e0856bd",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/True Shadow Project Settings.asset": {
+    "baseline": null,
+    "modified": "ba0158061fe58cfb0e83fecbe838a691375c8f61434fbdcfc02183f788a798b8",
+    "rollback": null
+  },
+  "UnityProject/Packages/com.le-tai.true-shadow/Resources/True Shadow Project Settings.asset.meta": {
+    "baseline": null,
+    "modified": "475f889f50428877e549d180945498cf95d64f2dcf4fcc54178e0f06fe0b5bf1",
+    "rollback": null
+  },
+  "tools/unity-rebuild/check_runtime_resource_contract.py": {
+    "baseline": null,
+    "modified": "33d23adf9452d1feadd839292a4e58ab99c7087d53e41eee7e27aed148031191",
+    "rollback": null
+  },
+  "tools/unity-rebuild/classify_runtime_resource_log.py": {
+    "baseline": null,
+    "modified": "190fb40e6876adc4ce9945f39428d00f8c070be69b6add1d6d7c44a6b90ff74b",
+    "rollback": null
+  },
+  "tools/unity-rebuild/runtime_resources.py": {
+    "baseline": null,
+    "modified": "0dad5d6d785dbb49554b0907eb626c4558d41f11eaecfd306bd268a231a4bfbd",
+    "rollback": null
+  }
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\baseline-verify.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Verify",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\baseline-verify.log",
+    "-nographics"
+  ],
+  "exit": 1,
+  "seconds": 32.46,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\baseline-verify.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\final-idempotent-repair.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Run",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\final-idempotent-repair.log",
+    "-nographics"
+  ],
+  "exit": 0,
+  "seconds": 22.3,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\final-idempotent-repair.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified-build.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.AddressablesBuild.Run",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-build.log",
+    "-nographics"
+  ],
+  "exit": 0,
+  "seconds": 127.17,
+  "report_exists": false,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-build.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified-repair.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Run",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-repair.log",
+    "-nographics"
+  ],
+  "exit": 1,
+  "seconds": 24.15,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-repair.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified-verify-built.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.VerifyBuilt",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-verify-built.log"
+  ],
+  "exit": 0,
+  "seconds": 33.73,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-verify-built.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified-verify.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Verify",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-verify.log"
+  ],
+  "exit": 1,
+  "seconds": 23.64,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified-verify.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified2-repair.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Run",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified2-repair.log",
+    "-nographics"
+  ],
+  "exit": 0,
+  "seconds": 26.27,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified2-repair.json"
+}
+=== E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\runtime-resources\modified2-verify.execution.json ===
+{
+  "command": [
+    "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+    "-batchmode",
+    "-quit",
+    "-projectPath",
+    "E:\\Manosaba-VSCodeReady\\UnityProject",
+    "-executeMethod",
+    "Manosaba.EditorTools.RuntimeResourceRepair.Verify",
+    "-logFile",
+    "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified2-verify.log"
+  ],
+  "exit": 0,
+  "seconds": 29.4,
+  "report_exists": true,
+  "report": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\runtime-resources\\modified2-verify.json"
+}
+=== tools/unity-rebuild/out/runtime-resources/baseline-verify.json ===
+{
+  "generated": "2026-09-18T10:44:26.5556169Z",
+  "built_catalog": false,
+  "checks": [
+    {
+      "check": "UI/TrueShadow-Normal",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "UI/TrueShadow-Additive",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "UI/TrueShadow-Screen",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "UI/TrueShadow-Multiply",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Hidden/TrueShadow/Generate",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Hidden/TrueShadow/GenerateHQ",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Hidden/TrueShadow/Cutout",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Hidden/TrueShadow/ImprintPostProcess",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Hidden/TrueShadow/PostProcess",
+      "status": "FAIL",
+      "error": "System.InvalidOperationException: Shader.Find returned null\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_1.<Audit>b__3 () [0x000d1] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:171 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "True Shadow Blue Noise",
+      "status": "FAIL",
+      "error": "System.Exception: noise missing\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c.<Audit>b__13_1 () [0x0001c] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:172 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "True Shadow Project Settings",
+      "status": "FAIL",
+      "error": "System.Exception: settings missing\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c.<Audit>b__13_2 () [0x0001c] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:173 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Naninovel/Fonts/TsukushiMincho/Assets/TsukushiMincho",
+      "status": "FAIL",
+      "error": "System.Exception: TMP_FontAsset missing\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_2.<Audit>b__6 () [0x0004b] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:184 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSerifSC/Assets/SourceHanSerifSC",
+      "status": "FAIL",
+      "error": "System.Exception: TMP_FontAsset missing\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_2.<Audit>b__6 () [0x0004b] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:184 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSansKR/Assets/SourceHanSansKR",
+      "status": "FAIL",
+      "error": "System.Exception: TMP_FontAsset missing\r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_2.<Audit>b__6 () [0x0004b] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:184 \r\n  at Manosaba.EditorTools.RuntimeResourceRepair+<>c__DisplayClass13_0.<Audit>g__Check|0 (System.String name, System.Action action) [0x00000] in E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Editor\\RuntimeResourceRepair.cs:158 "
+    }
+  ],
+  "failures": 14,
+  "status": "FAIL"
+}
+=== tools/unity-rebuild/out/runtime-resources/modified2-verify.json ===
+{
+  "generated": "2026-09-18T11:39:00.7566968Z",
+  "built_catalog": false,
+  "checks": [
+    {
+      "check": "UI/TrueShadow-Normal",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Additive",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Screen",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Multiply",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/Generate",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/GenerateHQ",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/Cutout",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/ImprintPostProcess",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/PostProcess",
+      "status": "PASS"
+    },
+    {
+      "check": "True Shadow Blue Noise",
+      "status": "PASS"
+    },
+    {
+      "check": "True Shadow Project Settings",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/TsukushiMincho/Assets/TsukushiMincho",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSerifSC/Assets/SourceHanSerifSC",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSansKR/Assets/SourceHanSansKR",
+      "status": "PASS"
+    },
+    {
+      "check": "CJK UI preview",
+      "status": "PASS"
+    }
+  ],
+  "failures": 0,
+  "status": "PASS"
+}
+=== tools/unity-rebuild/out/runtime-resources/modified-verify-built.json ===
+{
+  "generated": "2026-09-18T11:42:11.3213323Z",
+  "built_catalog": true,
+  "checks": [
+    {
+      "check": "UI/TrueShadow-Normal",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Additive",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Screen",
+      "status": "PASS"
+    },
+    {
+      "check": "UI/TrueShadow-Multiply",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/Generate",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/GenerateHQ",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/Cutout",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/ImprintPostProcess",
+      "status": "PASS"
+    },
+    {
+      "check": "Hidden/TrueShadow/PostProcess",
+      "status": "PASS"
+    },
+    {
+      "check": "True Shadow Blue Noise",
+      "status": "PASS"
+    },
+    {
+      "check": "True Shadow Project Settings",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/TsukushiMincho/Assets/TsukushiMincho",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSerifSC/Assets/SourceHanSerifSC",
+      "status": "PASS"
+    },
+    {
+      "check": "Naninovel/Fonts/SourceHanSansKR/Assets/SourceHanSansKR",
+      "status": "PASS"
+    },
+    {
+      "check": "CJK UI preview",
+      "status": "PASS"
+    }
+  ],
+  "failures": 0,
+  "status": "PASS"
+}
+=== tools/unity-rebuild/out/unity/g1_compile.json ===
+{
+  "gate": "G1_project_and_compilation",
+  "generated": "2026-09-18T11:47:03.1346298Z",
+  "unity_exe": "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe",
+  "unity_version": "6000.0.48f1_170d2541580d",
+  "status": "PASS",
+  "blocked_reason": null,
+  "compile": {
+    "command": "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe -batchmode -nographics -quit -projectPath E:\\Manosaba-VSCodeReady\\UnityProject -executeMethod Manosaba.EditorTools.CompileGate.Run -logFile -",
+    "exit_code": 0,
+    "seconds": 22.46,
+    "log": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\logs\\g1_compile.log",
+    "log_bytes": 34669,
+    "cs_errors": 0,
+    "cs_warnings": 0,
+    "import_errors": 0,
+    "missing_script_hits": 0,
+    "assembly_load_errors": 0,
+    "assembly_graph": {
+      "generated": "2026-09-18T11:48:07.071234Z",
+      "unity_version": "6000.0.48f1",
+      "status": "COMPILED_NO_DIAGNOSTICS_COLLECTED",
+      "error": "",
+      "note": "Unity's compiler diagnostics are written to the -logFile. tools/unity-rebuild/g1_compile.ps1 parses that log and merges the counts into this file; this script records the assembly graph and the editor configuration.",
+      "scripting_define_symbols": "",
+      "api_compatibility_level": "NET_Standard_2_0",
+      "player_assembly_count": 82,
+      "assembly_graph_recorded": true,
+      "assemblies": [
+        {
+          "name": "com.rlabrecque.steamworks.net",
+          "source_files": 109,
+          "references": 197,
+          "output_path": "Library/ScriptAssemblies/com.rlabrecque.steamworks.net.dll"
+        },
+        {
+          "name": "CustomInspector",
+          "source_files": 107,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/CustomInspector.dll"
+        },
+        {
+          "name": "CustomInspector.Helpers",
+          "source_files": 5,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/CustomInspector.Helpers.dll"
+        },
+        {
+          "name": "Elringus.Naninovel.Runtime",
+          "source_files": 723,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Elringus.Naninovel.Runtime.dll"
+        },
+        {
+          "name": "Elringus.SpriteDicing.Runtime",
+          "source_files": 2,
+          "references": 206,
+          "output_path": "Library/ScriptAssemblies/Elringus.SpriteDicing.Runtime.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.AddressablesUtils",
+          "source_files": 15,
+          "references": 212,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.AddressablesUtils.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Dialogs",
+          "source_files": 11,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Dialogs.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Input",
+          "source_files": 8,
+          "references": 209,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Input.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Localization",
+          "source_files": 13,
+          "references": 212,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Localization.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.MasterData",
+          "source_files": 4,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.MasterData.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Overlays",
+          "source_files": 6,
+          "references": 211,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Overlays.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Platforms",
+          "source_files": 5,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Platforms.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.SaveLoad",
+          "source_files": 5,
+          "references": 209,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.SaveLoad.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.Toggleables",
+          "source_files": 3,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.Toggleables.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.UI",
+          "source_files": 44,
+          "references": 216,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.UI.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.UniTasks",
+          "source_files": 2,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.UniTasks.dll"
+        },
+        {
+          "name": "GigaCreation.Essentials.WebRequestUtils",
+          "source_files": 6,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Essentials.WebRequestUtils.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Audio",
+          "source_files": 5,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Audio.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Cameras",
+          "source_files": 6,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Cameras.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Common",
+          "source_files": 22,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Common.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Core",
+          "source_files": 5,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Core.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Effects",
+          "source_files": 9,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Effects.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.ExtendedActors",
+          "source_files": 31,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.ExtendedActors.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.ExtendedSpawn",
+          "source_files": 6,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.ExtendedSpawn.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Localization",
+          "source_files": 4,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Localization.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.Movies",
+          "source_files": 3,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.Movies.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.ResourceProvider",
+          "source_files": 2,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.ResourceProvider.dll"
+        },
+        {
+          "name": "GigaCreation.NaninovelExtender.UI",
+          "source_files": 22,
+          "references": 214,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.NaninovelExtender.UI.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.BuildTimestampDisplay",
+          "source_files": 3,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.BuildTimestampDisplay.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Debugging.Core",
+          "source_files": 4,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Debugging.Core.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Debugging.General",
+          "source_files": 5,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Debugging.General.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Debugging.TextDisplays",
+          "source_files": 9,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Debugging.TextDisplays.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Debugging.TextDisplays.BuildTimestamps",
+          "source_files": 2,
+          "references": 209,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Debugging.TextDisplays.BuildTimestamps.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Debugging.UI",
+          "source_files": 6,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Debugging.UI.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.General",
+          "source_files": 9,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.General.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Private.PlayableDirectors",
+          "source_files": 2,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Private.PlayableDirectors.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.Service",
+          "source_files": 3,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.Service.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.UI",
+          "source_files": 9,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.UI.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.UndoExtensions",
+          "source_files": 3,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.UndoExtensions.dll"
+        },
+        {
+          "name": "GigaCreation.Tools.UniTasks",
+          "source_files": 5,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/GigaCreation.Tools.UniTasks.dll"
+        },
+        {
+          "name": "LeTai.TrueShadow",
+          "source_files": 55,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/LeTai.TrueShadow.dll"
+        },
+        {
+          "name": "LitMotion",
+          "source_files": 78,
+          "references": 209,
+          "output_path": "Library/ScriptAssemblies/LitMotion.dll"
+        },
+        {
+          "name": "LitMotion.Extensions",
+          "source_files": 16,
+          "references": 209,
+          "output_path": "Library/ScriptAssemblies/LitMotion.Extensions.dll"
+        },
+        {
+          "name": "Manosaba.Integration",
+          "source_files": 2,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Manosaba.Integration.dll"
+        },
+        {
+          "name": "MPUIKit",
+          "source_files": 17,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/MPUIKit.dll"
+        },
+        {
+          "name": "ppt-noise",
+          "source_files": 3,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/ppt-noise.dll"
+        },
+        {
+          "name": "UniRx",
+          "source_files": 227,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/UniRx.dll"
+        },
+        {
+          "name": "UniTask",
+          "source_files": 76,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/UniTask.dll"
+        },
+        {
+          "name": "UniTask.Addressables",
+          "source_files": 1,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/UniTask.Addressables.dll"
+        },
+        {
+          "name": "Unity.2D.Animation.Runtime",
+          "source_files": 30,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll"
+        },
+        {
+          "name": "Unity.2D.Common.Runtime",
+          "source_files": 10,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll"
+        },
+        {
+          "name": "Unity.2D.IK.Runtime",
+          "source_files": 18,
+          "references": 206,
+          "output_path": "Library/ScriptAssemblies/Unity.2D.IK.Runtime.dll"
+        },
+        {
+          "name": "Unity.Addressables",
+          "source_files": 26,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.Addressables.dll"
+        },
+        {
+          "name": "Unity.Burst",
+          "source_files": 53,
+          "references": 198,
+          "output_path": "Library/ScriptAssemblies/Unity.Burst.dll"
+        },
+        {
+          "name": "Unity.Collections",
+          "source_files": 70,
+          "references": 206,
+          "output_path": "Library/ScriptAssemblies/Unity.Collections.dll"
+        },
+        {
+          "name": "Unity.InputSystem",
+          "source_files": 402,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.InputSystem.dll"
+        },
+        {
+          "name": "Unity.InputSystem.ForUI",
+          "source_files": 3,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.InputSystem.ForUI.dll"
+        },
+        {
+          "name": "Unity.InputSystem.TestFramework",
+          "source_files": 6,
+          "references": 200,
+          "output_path": "Library/ScriptAssemblies/Unity.InputSystem.TestFramework.dll"
+        },
+        {
+          "name": "Unity.InternalAPIEngineBridge.001",
+          "source_files": 3,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll"
+        },
+        {
+          "name": "Unity.Mathematics",
+          "source_files": 91,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.Mathematics.dll"
+        },
+        {
+          "name": "Unity.PerformanceTesting",
+          "source_files": 37,
+          "references": 199,
+          "output_path": "Library/ScriptAssemblies/Unity.PerformanceTesting.dll"
+        },
+        {
+          "name": "Unity.Profiling.Core",
+          "source_files": 8,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.Profiling.Core.dll"
+        },
+        {
+          "name": "Unity.Recorder",
+          "source_files": 2,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.Recorder.dll"
+        },
+        {
+          "name": "Unity.Recorder.Base",
+          "source_files": 1,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.Recorder.Base.dll"
+        },
+        {
+          "name": "Unity.Rendering.LightTransport.Runtime",
+          "source_files": 35,
+          "references": 207,
+          "output_path": "Library/ScriptAssemblies/Unity.Rendering.LightTransport.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipeline.Universal.ShaderLibrary",
+          "source_files": 3,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Core.Runtime",
+          "source_files": 249,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Core.Runtime.Shared",
+          "source_files": 1,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Shared.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Core.ShaderLibrary",
+          "source_files": 1,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.GPUDriven.Runtime",
+          "source_files": 39,
+          "references": 208,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.GPUDriven.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary",
+          "source_files": 1,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Universal.2D.Runtime",
+          "source_files": 55,
+          "references": 210,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Universal.2D.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Universal.Config.Runtime",
+          "source_files": 1,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Universal.Runtime",
+          "source_files": 172,
+          "references": 211,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll"
+        },
+        {
+          "name": "Unity.RenderPipelines.Universal.Shaders",
+          "source_files": 1,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll"
+        },
+        {
+          "name": "Unity.ResourceManager",
+          "source_files": 50,
+          "references": 205,
+          "output_path": "Library/ScriptAssemblies/Unity.ResourceManager.dll"
+        },
+        {
+          "name": "Unity.ScriptableBuildPipeline",
+          "source_files": 2,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll"
+        },
+        {
+          "name": "Unity.TextMeshPro",
+          "source_files": 61,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.TextMeshPro.dll"
+        },
+        {
+          "name": "Unity.Timeline",
+          "source_files": 73,
+          "references": 204,
+          "output_path": "Library/ScriptAssemblies/Unity.Timeline.dll"
+        },
+        {
+          "name": "UnityEngine.TestRunner",
+          "source_files": 137,
+          "references": 197,
+          "output_path": "Library/ScriptAssemblies/UnityEngine.TestRunner.dll"
+        },
+        {
+          "name": "UnityEngine.UI",
+          "source_files": 85,
+          "references": 203,
+          "output_path": "Library/ScriptAssemblies/UnityEngine.UI.dll"
+        },
+        {
+          "name": "WitchTrials.Game",
+          "source_files": 226,
+          "references": 240,
+          "output_path": "Library/ScriptAssemblies/WitchTrials.Game.dll"
+        }
+      ]
+    }
+  },
+  "preflight": {
+    "status": "INPUTS_PRESENT",
+    "missing_required_count": 0,
+    "inputs_checked": 22,
+    "bundle_files": 457,
+    "unity_found": "E:\\Unity\\6000.0.48f1\\Editor\\Unity.exe"
+  }
+}
+
+=== work/startup-fix-20260918/resource-research/modified-log-classification.json ===
+{
+  "log": "E:\\Manosaba-VSCodeReady\\tools\\unity-rebuild\\out\\logs\\game_start.log",
+  "true_shadow_shader_null": 0,
+  "font_load_failures": {
+    "TsukushiMincho": 0,
+    "SourceHanSerifSC": 0,
+    "SourceHanSansKR": 0
+  },
+  "file_not_found": 8,
+  "null_reference": 151,
+  "invalid_key": 0,
+  "duplicate_locale_selector_warning": 4,
+  "game_probe_started": true,
+  "naninovel_progress_seen": false,
+  "note": "Counts are log occurrences, not unique exceptions. Zero counts do not prove UI was exercised."
+}
+
+FONT COMMIT FOLLOW-UP: three original OTF files and generated TMP/material/meta staged on explicit user request. No font byte modification. check_runtime_resource_contract.py .: exit=0, failures=0, status=PASS. Previous BASELINE=17 missing / MODIFIED=0 / ROLLBACK=17 with matching original hashes remain historical results; no new Unity runtime run.

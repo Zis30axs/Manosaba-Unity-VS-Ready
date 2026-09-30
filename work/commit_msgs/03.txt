@@ -1,0 +1,12 @@
+提交重建流水线工具（tools/unity-rebuild）
+
+从出货资源重建 Unity 工程的完整流水线，按阶段编号：
+  a13*                 导入资产、MonoScript 索引、脚本绑定、ScriptableObject/prefab/地址化计划
+  decode_*、read_*     解析 level0 启动场景、MasterData、Naninovel 配置等出货数据
+  g1 ~ g6              六个验收门（编译、导入、内容构建、Play Mode、独立 Player、内容覆盖）
+
+本次新增两个工具：
+  align_asset_guids.py     把工程 asset 的 .meta GUID 对齐到出货 GUID（932 个 / 938 文件 / 1996 处）
+  compare_catalog_keys.py  用运行时解析器 dump 并对比出货与重建 catalog 的 key 表
+
+另附 work/check_data_assets.py 与 work/check_scenario_addressing.py —— 第 41 节引用的两处测量脚本。

@@ -1,0 +1,15 @@
+提交重建的游戏脚本源码（Assets/Scripts）
+
+由 IL2CPP 元数据加原生代码逐成员重建的游戏 C# 源码（1503 个文件），按原程序集分目录
+（GigaCreation.*、WitchTrials.*、Naninovel 扩展等）。每个重建成员都带
+`// RECONSTRUCTED | Confidence: ... | RVA: ...` 标注与证据说明，未重建的仍保留 dumper 桩体。
+
+让引擎真正完成初始化的三处修复就在这批文件里：
+  GigaCreation.Essentials.AddressablesUtils/AddressablesManager.cs
+    补上两个泛型 GetOrLoadAddressableAsset<T> 重载。原先体为 `return default(UniTask<T>)`，
+    其 awaiter 为空，await 得到 default(T)=null，于是每一处 AssetReference 加载都静默返回 null。
+  GigaCreation.Essentials.Localization/LocalizedText.cs
+    补上 Locale / Text / 构造器。Locale 原为桩、恒返回 default(LocaleKind)=Ja，
+    使 AuthorTextBuilder.LoadDataAsync 的 item.Name.ToDictionary(t => t.Locale, ...) 抛
+    "An item with the same key has already been added. Key: Ja"。
+  （第三处是 .meta GUID 对齐，属工程资产，见地址化与场景那一笔提交。）

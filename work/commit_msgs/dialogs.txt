@@ -1,0 +1,15 @@
+复原对话框簇：ProvidableDialog（19 个成员）、DialogManager、DialogPresenter、ManualMotionSkipper、TextInsertData
+
+- ProvidableDialog：进场（RebuildAndPresentAsync：先取消退场、重建后插入文本、OutBack 缩放 0.5→1 + 淡入，
+  ManualMotionSkipper 按重建耗时快进）、退场（DismissAsync：OutQuad 缩放到 0.75 + 淡出）、应答
+  （OnResponseAsync：按钮 / Cancel 键 / 底板点击三路 WhenAny，结束后取消并播放应答音效）、ScaleAsync、
+  InsertTexts、InputManager / SortingOrder / InUse 等；异步方法按 XxxCore 约定，二进制自带的判断都注明地址
+- DialogManager：按 InUse 分组取空闲对话框，不够时经 Subject 请求 DialogPresenter 实例化，排序层 = 在用最大值 + 1
+- DialogPresenter：Awake 建 DialogManager、订阅实例化请求、注册服务；OnDestroy 注销
+- ManualMotionSkipper：StartUpdate 一次性快进 + 每帧驱动 ManualMotionDispatcher；Dispose 取消
+- TextInsertData 收成位置式 record：骨架手写的合成成员全是空桩（LabelId/Texts 读出 null）
+- Dialogs.asmdef 补 Unity.InputSystem（InputAction）与 Unity.ResourceManager（ToUniTask 重载决议需要）
+
+离线 Roslyn 检查 GigaCreation.Essentials.Dialogs：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

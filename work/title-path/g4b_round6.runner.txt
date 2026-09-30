@@ -1,0 +1,52 @@
+﻿[common] repo        = E:\Manosaba-VSCodeReady
+[common] unity       = E:\Unity\6000.0.48f1\Editor\Unity.exe
+[common] unity ver   = 6000.0.48f1_170d2541580d
+[common] game root   = E:/迅雷云盘/manosaba.game-STEAM.CHS/manosaba_game
+[common] out root    = E:\Manosaba-VSCodeReady\tools\unity-rebuild\out
+boot scene: decoded _gamePrefabInstanceName='Game<Runtime>', _gamePrefab GUID 4b3e3f64b73e147df8ec6ed82edf048c -> Asset
+s/#WitchTrials/Prefabs/General/Core/Game.prefab
+wiring: boot prefab guid=4b3e3f64b73e147df8ec6ed82edf048c
+=== bootstrap (Boot scene + build settings) ===
+chain window: 60s -> play-mode budget 300s
+=== warm-up Play Mode (absorb Unity's own mid-session recompilation) ===
+  warm-up exit=0 in 26.5s; compile requests=0, post-compilation reloads=0
+=== Editor Play Mode + game start ===
+G4b PASS: entry=WitchTrials.Views.GameInitializer, WitchTrials.Game resolved=True component=False source=scene manager_
+created=True
+  boot chain stops at: SKIPPED (Unity ran the scene component's Start(), which starts InitializeAsync)
+  log: errors=1 exceptions=0
+  naninovel: initialized=False initializing=True total_commands=0 playing=True played='System/System_Title'
+  engine: services=23 progress_events=0 progress_last=-1.0
+    samples:  0.0:initializing:-1.000 1.0:initializing:-1.000 2.0:initializing:-1.000 3.0:initializing:-1.000 4.0:initi
+alizing:-1.000 5.0:initializing:-1.000 6.0:initializing:-1.000 7.0:initializing:-1.000 8.0:initializing:-1.000 9.0:init
+ializing:-1.000 10.0:initializing:-1.000 11.0:initializing:-1.000 12.0:initializing:-1.000 13.0:initializing:-1.000 14.
+0:initializing:-1.000 15.0:initializing:-1.000 16.0:initializing:-1.000 17.0:initializing:-1.000 18.0:initializing:-1.0
+00 19.0:initializing:-1.000 20.0:initializing:-1.000 21.0:initializing:-1.000 22.0:initializing:-1.000 23.0:initializin
+g:-1.000
+  resources: master_data=WitchTrials.Models.MasterData keys='Naninovel' locations=-1
+  naninovel file IO: path exists=True read='COMPLETED at t=74.89' write='COMPLETED at t=74.90'
+  wiring:
+    - _gamePrefabInstanceName: set to 'Game<Runtime>'
+    - _gamePrefab: created via GetUninitializedObject (no default constructor)
+    - _gamePrefab: AssetReferenceGameObject with m_AssetGUID=4b3e3f64b73e147df8ec6ed82edf048c
+g4b exit=0 log=E:\Manosaba-VSCodeReady\tools\unity-rebuild\out\logs\game_start.log
+log: work\title-path\g4b_round6.log lines: 1922
+  NullReferenceException             2
+  LocalizeImage                      0
+  @processInput warning              0
+  'No parameters were specified'     0
+  Blur can't find actor              0
+  AnimateActor                       0
+  ArgumentNullException              0
+  any '... Exception:' line          10
+distinct exception (type, first frame): 2
+      8  FileNotFoundException  at System.AppDomain.Load (System.String assemblyString, System.Security.Policy.Evidence assemblySecurity, System.Boolean refonly, System.Threading.Sta
+      2  System.NullReferenceException  at WitchTrials.Views.OptionsUi.Initialize () [0x0014b] in E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\
+  evidence status                     STARTED
+  evidence auto_advance               COMPLETED
+  evidence naninovel_played_script    System/System_Title
+  evidence naninovel_playback_spot    System/System_Title #1.0
+  evidence naninovel_total_commands   0
+  evidence naninovel_playing          True
+  evidence auto_advance_transitions   1200
+  evidence log_errors                 1

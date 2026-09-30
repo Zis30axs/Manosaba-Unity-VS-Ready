@@ -1,0 +1,53 @@
+--- a/UnityProject/Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Views/LocalizeImage.cs
++++ b/UnityProject/Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Views/LocalizeImage.cs
+@@ -97,6 +97,15 @@
+     	[Address(RVA = "0x312110", Offset = "0x310B10", VA = "0x180312110")]
+     	private void OnEnable()
+     	{
++    		// Reset is editor-only initialization; reconstructed/runtime-created prefabs may
++    		// have no serialized Image reference. Resolve it before subscribing (a replaying
++    		// observable can call ModifyImageByLocale immediately).
++    		if (_image == null) _image = GetComponent<Image>();
++    		if (_image == null)
++    		{
++    			Debug.LogError("LocalizeImage requires an Image component.", this);
++    			return;
++    		}
+     		_disposable = LocalizationProvider.OnLocaleChangedAsObservable().Subscribe(ModifyImageByLocale).AddTo(this);
+     		ModifyImageByLocale(LocalizationProvider.CurrentLocale);
+     	}
+@@ -106,7 +115,7 @@
+     	[Address(RVA = "0x312290", Offset = "0x310C90", VA = "0x180312290")]
+     	private void OnDisable()
+     	{
+-    		_image.overrideSprite = null;
++    		if (_image != null) _image.overrideSprite = null;
+     		_disposable?.Dispose();
+     	}
+ 
+--- a/UnityProject/Assets/Scripts/Runtime/ManosabaBoot.cs
++++ b/UnityProject/Assets/Scripts/Runtime/ManosabaBoot.cs
+@@ -305,6 +305,12 @@
+         private CatalogProbe ProbeCatalog(string catalogPath)
+         {
+             var probe = new CatalogProbe { path = catalogPath };
++            // Only the shipped reference catalog retains the pre-reconstruction name.
++            // Keep this alias scoped to its synchronous probe, not all runtime loads.
++            ResolveEventHandler resolveLegacyAssembly = (sender, args) =>
++                new AssemblyName(args.Name).Name == "Assembly-CSharp"
++                    ? typeof(WitchTrials.Views.GameInitializer).Assembly : null;
++            AppDomain.CurrentDomain.AssemblyResolve += resolveLegacyAssembly;
+             try
+             {
+                 if (!File.Exists(catalogPath))
+@@ -366,6 +372,10 @@
+                 Exception inner = ex is TargetInvocationException && ex.InnerException != null ? ex.InnerException : ex;
+                 probe.status = "ERROR";
+                 probe.error = inner.GetType().Name + ": " + inner.Message;
++            }
++            finally
++            {
++                AppDomain.CurrentDomain.AssemblyResolve -= resolveLegacyAssembly;
+             }
+             return probe;
+         }

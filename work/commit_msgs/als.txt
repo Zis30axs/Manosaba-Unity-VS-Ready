@@ -1,0 +1,11 @@
+复原 AutoLayoutSupporter（11 个成员）：对话框 / 面板的自动布局重建
+
+- UpdateReferences：收集子节点的 ContentSizeFitter / LayoutGroup，RectTransform 去重后按层级深度降序
+- ExecuteRebuildingAsync → RebuildLayoutAsync：先启用布局组件，逐个 MarkLayoutForRebuild 并等帧末
+  （编辑器下 0.1 秒 Realtime 延迟），再关闭布局组件；销毁中直接跳过（二进制自带的判断，注明地址）
+- SetComponentsEnabled / Enable / Disable / Reset / OnDestroy / UpdateReferencesInChildren / ExecuteRebuilding
+- 骨架里 ExecuteRebuildingAsync 直接返回，RebuildableDialog.RebuildAtRuntimeAsync 等它时布局从未重建
+
+离线 Roslyn 检查 GigaCreation.Tools.UI：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

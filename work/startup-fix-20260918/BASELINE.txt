@@ -1,0 +1,24 @@
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-target:library", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\Unity.Addressables.dll", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\CatalogFixture.cs"]
+STDOUT
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\NetCoreRuntime\\dotnet.exe", "E:\\Unity\\6000.0.48f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll", "-nologo", "-utf8output", "-langversion:9.0", "-nostdlib+", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\mscorlib.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.dll", "-r:E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.8-api\\System.Core.dll", "-r:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\Unity.Addressables.dll", "-out:E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\Harness.cs", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\CatalogSubject.cs", "E:\\Manosaba-VSCodeReady\\UnityProject\\Assets\\Scripts\\Game\\WitchTrials.Game\\WitchTrials.Views\\LocalizeImage.cs"]
+STDOUT
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(27,21): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Sprite”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(45,30): warning CS0649: 从未对字段“LocalizeImage._settings”赋值，字段将一直保持其默认值 null
+E:\Manosaba-VSCodeReady\UnityProject\Assets\Scripts\Game\WitchTrials.Game\WitchTrials.Views\LocalizeImage.cs(23,25): warning CS0649: 从未对字段“LocalizeImage.LocaleContent.Locale”赋值，字段将一直保持其默认值 
+STDERR
+EXIT 0
+COMMAND ["E:\\Unity\\6000.0.48f1\\Editor\\Data\\MonoBleedingEdge\\bin\\mono.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\WitchTrials.Game.exe", "E:\\Manosaba-VSCodeReady\\work\\startup-fix-20260918\\test-baseline\\catalog-fixture.bin"]
+STDOUT
+﻿Test boundary: real LocalizeImage source; Unity/UI/service test doubles. Catalog method uses synthetic legacy-assembly fixture, not Unity Play Mode.
+unbound Image + synchronous locale replay + fallback + disable: NullReferenceException: Object reference not set to an instance of an object
+existing Image binding preserved: PASS
+disable before enable: NullReferenceException: Object reference not set to an instance of an object
+catalog=ABSENT 
+catalog missing path and resolver cleanup: PASS
+catalog=ERROR FileNotFoundException: Could not load the file 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+legacy catalog Assembly-CSharp maps to reconstructed assembly: Exception: assertion failed
+failures=3
+STDERR
+﻿EXIT 1

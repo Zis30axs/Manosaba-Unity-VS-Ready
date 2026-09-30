@@ -1,0 +1,15 @@
+复原选项界面控件：SlideToggle / SlideUtility、TweeningDropdown、OptionItemDropdown、OptionItemToggleGroup、TMP 下拉扩展
+
+- SlideToggle（11）+ SlideUtility（3）：悬停时 OutQuad 横向滑出、离开或切换时复位；
+  DoStateTransition 转交 SelectableUtility
+- TweeningDropdown（14）：展开时建 CancelEventBlocker、屏蔽射线、Cancel 键 / 点底板收起并播放取消音，
+  选项点击播放确认音；DestroyDropdownList / DestroyBlocker 恢复状态；高亮缩放、禁用淡出
+- OptionItemDropdown（7）：随 AutoLayoutSupporter 启停布局、点击播放确认音、SetValueWithoutNotify、
+  OnValueChangedAsObservable().Skip(1)
+- TextMeshProDropdownExtensions.OnValueChangedAsObservable：CreateWithState，先推当前值再转发 onValueChanged
+- OptionItemToggleGroup（5）：各开关打开时推送序号；SetValue 越界 LogError，否则逐个设置 IsOn
+- 二进制自带的判断（_cancelEventBlockerDisposable 空检查等）写成显式 if 并注明地址
+
+离线 Roslyn 检查 GigaCreation.Essentials.UI：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

@@ -1,0 +1,11 @@
+补上忽略规则，并记入集成过程的完整台账
+
+跟踪原则：只跟踪作者产出的东西，可再生的批量产物一律排除。
+新增忽略项：
+  Assets/GameContent/       由 res/ + bundle 经 a13_import_assets.py 再生
+  Assets/StreamingAssets/   apply_shipped_aa.ps1 拷入的出货运行时数据
+  UnityProject/out/         误落在工程根目录的 58.9 MB catalog dump
+  UnityProject/UpgradeLog.htm、.vs/、*.user、*.suo
+
+UNITY_RUNTIME_INTEGRATION.md 记录 G0-G6 各门、每一轮的真因与实测读数；第 41 节是本次
+"引擎终于完成初始化"的完整证据链（三处独立根因 + 各自的原生代码依据 + 门状态）。

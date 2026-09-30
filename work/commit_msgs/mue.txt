@@ -1,0 +1,11 @@
+复原 ManagedUiExtensions.PresentAsync / DismissAsync（标题 Options / Gallery / Load 无反应的原因）及 AutoDelayAdjuster、InputChecker、NaninovelPresenter
+
+- ManagedUiExtensions（4 个异步方法，XxxCore）：带 NaninovelScreen 的 CustomUI 走 NaninovelScreen.Present/DismissAsync
+  （AsyncToken 版本用 CreateLinkedTokenSource 并在 finally 释放），其余 UI 走 Naninovel ChangeVisibility；
+  骨架直接返回 default，标题画面点 Options / Gallery / Load 什么都不会发生（release 包实测）
+- AutoDelayAdjuster（6）：播放新语音时把 MinAutoPlayDelay 缩短为 0.2 倍，否则恢复
+- InputChecker（5）：调试用的输入动作日志；NaninovelPresenter（2）：注册 / 注销 NaninovelManager
+
+离线 Roslyn 检查 NaninovelExtender.UI / NaninovelExtender.Core / Essentials.Input：0 错误。
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
