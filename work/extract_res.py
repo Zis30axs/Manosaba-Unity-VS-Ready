@@ -16,6 +16,14 @@ AA = os.path.join(DATA, r"StreamingAssets\aa\StandaloneWindows64")
 OUT = r"E:\manosaba_re\res"
 WORK = r"E:\manosaba_re\work"
 
+
+def configure(game, output, work):
+    """Portable entry used by content import; legacy research CLI stays available."""
+    global GAME, DATA, AA, OUT, WORK
+    GAME, OUT, WORK = map(os.path.abspath, (game, output, work))
+    DATA = os.path.join(GAME, "manosaba_Data")
+    AA = os.path.join(DATA, "StreamingAssets", "aa", "StandaloneWindows64")
+
 CORE_TYPES = {"Texture2D", "Sprite", "TextAsset", "Font", "VideoClip", "MonoBehaviour", "Material",
               "AnimationClip", "AnimatorController", "AnimatorOverrideController", "PlayableDirector",
               "SpriteAtlas", "Mesh", "RenderTexture", "AudioMixerController", "AudioMixerGroupController",
@@ -28,6 +36,8 @@ SAFE = re.compile(r'[<>:"|?*\x00-\x1f]')
 def safe_relpath(p):
     parts = []
     for seg in p.replace("\\", "/").split("/"):
+        if seg in (".", ".."):
+            raise ValueError("unsafe extracted container path")
         seg = SAFE.sub("_", seg).strip().rstrip(". ")
         if seg:
             parts.append(seg)
@@ -120,6 +130,8 @@ def worker(rel, stage):
     inner = getattr(bundle, "files", None) or {}
     for obj in env.objects:
         tn = obj.type.name
+        if stage == "audio" and tn != "AudioClip":
+            continue
         if obj.type == ClassIDType.AssetBundle:
             continue
         try:
@@ -256,6 +268,8 @@ def worker(rel, stage):
                 dstdir = os.path.join(OUT, "Uncategorized", tn)
                 stem = name or f"pathid_{obj.path_id}"
                 stem = SAFE.sub("_", stem)
+            if tn not in CORE_TYPES and tn not in ("MonoScript", "AudioClip"):
+                dstdir = os.path.join(OUT, "_serialized", os.path.relpath(dstdir, OUT))
             if tag:
                 stem = f"{stem}.{tag}"
             dst = os.path.join(dstdir, stem + ext)
@@ -274,6 +288,39 @@ def worker(rel, stage):
             errs.append(f"export {tn} {name}: {type(e).__name__}: {e}")
     del env
     return rel, entries, errs
+
+
+def extract_portable(game, output, work, workers=1):
+    """Reuse the existing object exporter on readable local resources only.
+
+    Deterministic single-worker traversal keeps duplicate output suffixes stable across
+    reimports. No Player, IL2CPP, Steam or BepInEx files are read.
+    """
+    configure(game, output, work)
+    paths = []
+    if os.path.isdir(AA):
+        for root, dirs, files in os.walk(AA):
+            dirs.sort()
+            paths.extend(os.path.join(root, name) for name in sorted(files) if name.endswith(".bundle"))
+    for name in ("resources.assets", "globalgamemanagers.assets", "sharedassets0.assets"):
+        path = os.path.join(DATA, name)
+        if os.path.isfile(path):
+            paths.append(path)
+    if not paths:
+        raise FileNotFoundError("No readable Addressables bundles or serialized assets in manosaba_Data")
+    os.makedirs(OUT, exist_ok=True)
+    os.makedirs(WORK, exist_ok=True)
+    entries, errors = [], []
+    for i, path in enumerate(sorted(paths), 1):
+        rel = os.path.relpath(path, DATA)
+        for stage in ("core", "audio"):
+            _, exported, failures = worker(rel, stage)
+            entries.extend(exported)
+            errors.extend({"source": rel, "stage": stage, "message": message} for message in failures)
+        print(f"[extract] {i}/{len(paths)} {rel} objects={len(entries)} errors={len(errors)}", flush=True)
+    with open(os.path.join(WORK, "extraction_report.json"), "w", encoding="utf-8") as fh:
+        json.dump({"entries": len(entries), "errors": errors}, fh, ensure_ascii=False, indent=1)
+    return entries, errors
 
 
 def main():

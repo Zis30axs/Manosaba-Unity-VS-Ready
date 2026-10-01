@@ -210,10 +210,10 @@ namespace Manosaba.EditorTools
             {
                 if (existing != null)
                 {
-                    job.warnings.Add("existing asset at " + assetPath + " is " + existing.GetType().FullName +
-                                     ", expected " + type.FullName + "; replaced (GUID not preserved)");
-                    AssetDatabase.DeleteAsset(assetPath);
-                    guidBefore = "";
+                    job.status = "TYPE_MISMATCH";
+                    job.error = "existing asset at " + assetPath + " is " + existing.GetType().FullName +
+                                ", expected " + type.FullName + "; refusing to replace its GUID";
+                    return;
                 }
                 instance = ScriptableObject.CreateInstance(type);
                 created = true;
@@ -272,6 +272,71 @@ namespace Manosaba.EditorTools
         /// instance and applies the data once per use, e.g. a command listed both in `playlist` and in
         /// `lines[].command`), so counting the raw `"hasValue": 1` tokens of the file would undercount those.
         /// </summary>
+        /// <summary>Incremental content editing uses the same converter and applier, with an atomic in-place commit.</summary>
+        public static JobRecord ApplyEditable(string source, string assetPath, string typeName, string assembly,
+                                              bool scenario = false)
+        {
+            var job = new JobRecord { dump = source, target = assetPath, asset_path = assetPath,
+                                      type_name = typeName, assembly = assembly };
+            ScriptableObject staged = null;
+            try
+            {
+                Type type = JsonToSerializedApplier.ResolveType(typeName, assembly);
+                if (type == null || !typeof(ScriptableObject).IsAssignableFrom(type))
+                    throw new InvalidOperationException("unresolved ScriptableObject type: " + typeName);
+                UnityEngine.Object existing = AssetDatabase.LoadMainAssetAtPath(assetPath);
+                string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+                if (existing == null && File.Exists(Path.Combine(projectRoot, assetPath)))
+                    throw new InvalidOperationException("existing target does not load; refusing to overwrite");
+                if (existing != null && existing.GetType() != type)
+                    throw new InvalidOperationException("target type mismatch; GUID will not be replaced");
+                job.guid_before = AssetDatabase.AssetPathToGUID(assetPath);
+                JObject json = JObject.Parse(File.ReadAllText(source));
+                staged = existing == null ? ScriptableObject.CreateInstance(type) : UnityEngine.Object.Instantiate((ScriptableObject)existing);
+                var serialized = new SerializedObject(staged);
+                var report = JsonToSerializedApplier.ApplyAll(serialized, json, new JsonToSerializedApplier.Options
+                {
+                    SafeEditableOnly = true, AllowManagedReferences = scenario,
+                    PreserveUnresolvedPointers = true, ResolvePointer = JsonToSerializedApplier.ResolveStablePointer,
+                });
+                job.fields_applied = report.applied;
+                job.leaves_written = report.leavesWritten;
+                job.warning_count = report.warnings;
+                job.needs_binding = report.pointersUnbound;
+                job.managed_references_total = report.managedTotal;
+                job.managed_references_applied = report.managedApplied;
+                job.managed_references_failed = report.managedFailed;
+                job.warnings.AddRange(report.messages);
+                job.params_with_value_dump = CountExpectedHasValue(json);
+                job.params_with_value_written = report.hasValueTrueWritten;
+                if (report.managedFailed > 0 || (scenario && job.params_with_value_dump != job.params_with_value_written))
+                    throw new InvalidOperationException("managed-reference conversion did not reconcile; original asset retained");
+                job.fields = JsonToSerializedApplier.DescribeEditableFields(new SerializedObject(staged), json, scenario);
+                job.editability = job.fields.Any(f => !f.field.StartsWith("m_", StringComparison.Ordinal) && f.editability != "FULL")
+                    ? "PARTIAL" : "FULL";
+                staged.name = existing != null ? existing.name : (string)json["m_Name"] ?? Path.GetFileNameWithoutExtension(assetPath);
+                if (existing == null)
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(projectRoot, assetPath)));
+                    AssetDatabase.CreateAsset(staged, assetPath);
+                    staged = null; // now owned by the database
+                }
+                else
+                {
+                    EditorUtility.CopySerialized(staged, existing);
+                    EditorUtility.SetDirty(existing);
+                }
+                AssetDatabase.SaveAssets();
+                job.guid_after = AssetDatabase.AssetPathToGUID(assetPath);
+                if (!string.IsNullOrEmpty(job.guid_before) && job.guid_before != job.guid_after)
+                    throw new InvalidOperationException("asset GUID changed during in-place content update");
+                job.status = report.warnings > 0 ? "CONVERTED_PARTIAL" : "CONVERTED";
+            }
+            catch (Exception error) { job.status = "ERROR"; job.error = error.Message; }
+            finally { if (staged != null) UnityEngine.Object.DestroyImmediate(staged); }
+            return job;
+        }
+
         private static int CountExpectedHasValue(JObject json)
         {
             var refTable = new Dictionary<long, JToken>();
@@ -359,6 +424,8 @@ namespace Manosaba.EditorTools
             public string error;
             public string guid_before;
             public string guid_after;
+            public string editability = "READ_ONLY";
+            public List<JsonToSerializedApplier.FieldEditability> fields = new List<JsonToSerializedApplier.FieldEditability>();
             public int fields_applied;
             public int leaves_written;
             public int warning_count;

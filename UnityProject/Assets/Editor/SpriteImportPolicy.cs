@@ -28,6 +28,7 @@ namespace Manosaba.EditorTools
 
         private static Dictionary<string, JObject> plan;
         private static DateTime planStamp;
+        private static bool applyingPlannedSettings;
 
         void OnPreprocessTexture()
         {
@@ -35,6 +36,13 @@ namespace Manosaba.EditorTools
 
             var importer = assetImporter as TextureImporter;
             if (importer == null) return;
+
+            // A pixel edit must keep the existing .meta settings.  Reapplying the shipped plan here
+            // would reset a user's pivot, border, filtering, compression, and other importer edits.
+            // New crops still receive this policy; the explicit menu command can reapply the plan.
+            if (!applyingPlannedSettings && !importer.importSettingsMissing &&
+                importer.textureType == TextureImporterType.Sprite &&
+                importer.spriteImportMode == SpriteImportMode.Single) return;
 
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
@@ -109,6 +117,7 @@ namespace Manosaba.EditorTools
         {
             PlanEntry("");
             int count = 0;
+            applyingPlannedSettings = true;
             AssetDatabase.StartAssetEditing();
             try
             {
@@ -121,7 +130,8 @@ namespace Manosaba.EditorTools
             }
             finally
             {
-                AssetDatabase.StopAssetEditing();
+                try { AssetDatabase.StopAssetEditing(); }
+                finally { applyingPlannedSettings = false; }
             }
             int mismatched = 0;
             foreach (var pair in plan ?? new Dictionary<string, JObject>())

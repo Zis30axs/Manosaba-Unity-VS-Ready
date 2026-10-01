@@ -55,6 +55,10 @@ namespace Manosaba.EditorTools
             /// </summary>
             public bool PreserveUnresolvedPointers = false;
 
+            /// <summary>Content edits preserve fields that cannot safely be mapped back to Unity.</summary>
+            public bool SafeEditableOnly = false;
+            public bool AllowManagedReferences = false;
+
             /// <summary>Maximum number of warnings kept per object (the counters are always complete).</summary>
             public int MaxWarnings = 200;
         }
@@ -97,6 +101,142 @@ namespace Manosaba.EditorTools
             public long rid;
             public bool assigned;
             public JToken entry;
+        }
+
+        [Serializable]
+        public class FieldEditability
+        {
+            public string field;
+            public string editability;
+            public string reason;
+        }
+
+        /// <summary>Describe actual serialized fields; unsupported source nodes are never labelled editable.</summary>
+        public static List<FieldEditability> DescribeEditableFields(SerializedObject serialized, JObject json,
+                                                                    bool allowManagedReferences = false,
+                                                                    bool skipEngineFields = true,
+                                                                    HashSet<string> ignoreKeys = null)
+        {
+            var fields = new List<FieldEditability>();
+            var refs = new Dictionary<long, JToken>();
+            foreach (JToken entry in json["references"]?["RefIds"] as JArray ?? new JArray())
+                if (entry["rid"] != null) refs[entry.Value<long>("rid")] = entry["data"];
+            foreach (JProperty field in json.Properties())
+            {
+                if (field.Name == "references" || (skipEngineFields && field.Name.StartsWith("m_", StringComparison.Ordinal)) ||
+                    (ignoreKeys != null && ignoreKeys.Contains(field.Name)))
+                {
+                    fields.Add(new FieldEditability { field = field.Name, editability = "READ_ONLY",
+                        reason = "source identity / managed-reference type registry" });
+                    continue;
+                }
+                Describe(serialized.FindProperty(field.Name), field.Value, field.Name, refs,
+                         allowManagedReferences, fields, 0);
+            }
+            return fields;
+        }
+
+        private static void Describe(SerializedProperty prop, JToken token, string path, Dictionary<long, JToken> refs,
+                                     bool managed, List<FieldEditability> fields, int depth)
+        {
+            if (depth > 64) throw new InvalidOperationException("editable field graph exceeds 64 levels");
+            if (prop == null)
+            {
+                fields.Add(new FieldEditability { field = path, editability = "READ_ONLY", reason = "no serialized property" });
+                return;
+            }
+            if (prop.propertyType == SerializedPropertyType.ManagedReference)
+            {
+                fields.Add(new FieldEditability { field = path, editability = managed ? "PARTIAL" : "READ_ONLY",
+                    reason = "existing resolved managed type; edit primitive values, keep rid/type registry consistent" });
+                if (!managed) return;
+                if (token is JObject obj && obj["rid"] != null) refs.TryGetValue(obj.Value<long>("rid"), out token);
+                if (token is JObject data)
+                    foreach (JProperty child in data.Properties())
+                        Describe(prop.FindPropertyRelative(child.Name), child.Value, path + "." + child.Name,
+                                 refs, managed, fields, depth + 1);
+                return;
+            }
+            if (prop.propertyType == SerializedPropertyType.String)
+            {
+                fields.Add(new FieldEditability { field = path, editability = "FULL", reason = "string" });
+                return;
+            }
+            if (prop.isArray && token is JArray arr)
+            {
+                var arrayField = new FieldEditability { field = path, editability = "FULL",
+                    reason = "array/list; element support listed below" };
+                fields.Add(arrayField);
+                if (arr.Count != prop.arraySize)
+                {
+                    arrayField.editability = "READ_ONLY";
+                    arrayField.reason = "source resize was rejected; existing array retained";
+                    return;
+                }
+                int firstChild = fields.Count;
+                for (int i = 0; i < arr.Count && i < prop.arraySize; i++)
+                    Describe(prop.GetArrayElementAtIndex(i), arr[i], path + ".Array.data[" + i + "]",
+                             refs, managed, fields, depth + 1);
+                if (fields.Skip(firstChild).Any(f => f.editability != "FULL")) arrayField.editability = "PARTIAL";
+                return;
+            }
+            if (prop.propertyType == SerializedPropertyType.Generic && token is JObject nested)
+            {
+                foreach (JProperty child in nested.Properties())
+                    Describe(prop.FindPropertyRelative(child.Name), child.Value, path + "." + child.Name,
+                             refs, managed, fields, depth + 1);
+                return;
+            }
+            bool pointer = prop.propertyType == SerializedPropertyType.ObjectReference;
+            bool stablePointer = pointer && (token?["m_PathID"]?.Value<long>() == 0 || ResolveStablePointer(token) != null);
+            bool supported = ReadValue(prop) != null && (!pointer || stablePointer);
+            fields.Add(new FieldEditability { field = path, editability = supported ? "FULL" : "READ_ONLY",
+                reason = pointer && !stablePointer ? "non-null dump PPtr has no stable GUID mapping; retained" : prop.propertyType.ToString() });
+        }
+
+        /// <summary>Read primitives for content and built-bundle probes using the same property names as the applier.</summary>
+        public static JToken ReadValue(SerializedProperty prop)
+        {
+            if (prop == null) return null;
+            switch (prop.propertyType)
+            {
+                case SerializedPropertyType.String: return new JValue(prop.stringValue);
+                case SerializedPropertyType.Boolean: return new JValue(prop.boolValue);
+                case SerializedPropertyType.Integer: return new JValue(prop.longValue);
+                case SerializedPropertyType.Enum: case SerializedPropertyType.LayerMask: return new JValue(prop.intValue);
+                case SerializedPropertyType.Float: return new JValue(prop.doubleValue);
+                case SerializedPropertyType.ObjectReference:
+                    if (prop.objectReferenceValue == null) return JValue.CreateNull();
+                    if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(prop.objectReferenceValue, out string guid, out long fileId))
+                        return new JObject { ["guid"] = guid, ["file_id"] = fileId };
+                    return null;
+                case SerializedPropertyType.Vector2: return new JObject { ["x"] = prop.vector2Value.x, ["y"] = prop.vector2Value.y };
+                case SerializedPropertyType.Vector3: return VectorValue(prop.vector3Value);
+                case SerializedPropertyType.Vector4: return new JObject { ["x"] = prop.vector4Value.x, ["y"] = prop.vector4Value.y, ["z"] = prop.vector4Value.z, ["w"] = prop.vector4Value.w };
+                case SerializedPropertyType.Quaternion: return new JObject { ["x"] = prop.quaternionValue.x, ["y"] = prop.quaternionValue.y, ["z"] = prop.quaternionValue.z, ["w"] = prop.quaternionValue.w };
+                case SerializedPropertyType.Color: return new JObject { ["r"] = prop.colorValue.r, ["g"] = prop.colorValue.g, ["b"] = prop.colorValue.b, ["a"] = prop.colorValue.a };
+                case SerializedPropertyType.Rect: return new JObject { ["x"] = prop.rectValue.x, ["y"] = prop.rectValue.y, ["width"] = prop.rectValue.width, ["height"] = prop.rectValue.height };
+                case SerializedPropertyType.Vector2Int: return new JObject { ["x"] = prop.vector2IntValue.x, ["y"] = prop.vector2IntValue.y };
+                case SerializedPropertyType.Vector3Int: return new JObject { ["x"] = prop.vector3IntValue.x, ["y"] = prop.vector3IntValue.y, ["z"] = prop.vector3IntValue.z };
+            }
+            return null;
+        }
+
+        private static JObject VectorValue(Vector3 value) => new JObject { ["x"] = value.x, ["y"] = value.y, ["z"] = value.z };
+
+        /// <summary>Explicit GUID + local file id references are accepted; ambiguous asset subobjects are rejected.</summary>
+        public static UnityEngine.Object ResolveStablePointer(JToken token)
+        {
+            string guid = (string)token?["guid"];
+            if (string.IsNullOrEmpty(guid) || !Regex.IsMatch(guid, "^[0-9a-fA-F]{32}$")) return null;
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            if (string.IsNullOrEmpty(assetPath)) return null;
+            long wanted = token["file_id"]?.Value<long>() ?? 0;
+            if (wanted == 0) return AssetDatabase.LoadMainAssetAtPath(assetPath);
+            foreach (UnityEngine.Object asset in AssetDatabase.LoadAllAssetsAtPath(assetPath))
+                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string _, out long localId) && localId == wanted)
+                    return asset;
+            return null;
         }
 
         /// <summary>Copy every field of a dump JSON onto the serialised object.</summary>
@@ -157,6 +297,13 @@ namespace Manosaba.EditorTools
                                   Dictionary<long, JToken> refTable, List<PendingRef> pending,
                                   Options options, Report report)
         {
+            if (options.SafeEditableOnly && prop.propertyType == SerializedPropertyType.ManagedReference &&
+                !options.AllowManagedReferences)
+            {
+                report.skipped++;
+                report.Warn(path + ": READ_ONLY managed-reference graph");
+                return;
+            }
             if (token == null || token.Type == JTokenType.Null)
             {
                 report.applied++;
@@ -219,6 +366,12 @@ namespace Manosaba.EditorTools
                     return;
                 }
                 var items = (JArray)token;
+                if (options.SafeEditableOnly && items.Count != prop.arraySize && ContainsUnstablePointer(items))
+                {
+                    report.skipped++;
+                    report.Warn(path + ": READ_ONLY array resize includes unmapped references; existing array retained");
+                    return;
+                }
                 prop.arraySize = items.Count;
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -229,10 +382,20 @@ namespace Manosaba.EditorTools
                 return;
             }
 
+            if (options.SafeEditableOnly && prop.propertyType != SerializedPropertyType.Generic &&
+                prop.propertyType != SerializedPropertyType.ObjectReference && ReadValue(prop) == null)
+            {
+                report.skipped++;
+                report.Warn(path + ": READ_ONLY " + prop.propertyType + " has no verified value adapter");
+                return;
+            }
+
             switch (prop.propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    prop.intValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1 : 0) : token.Value<int>();
+                    if (options.SafeEditableOnly)
+                        prop.longValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1L : 0L) : token.Value<long>();
+                    else prop.intValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1 : 0) : token.Value<int>();
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Boolean:
@@ -241,7 +404,8 @@ namespace Manosaba.EditorTools
                     if (prop.boolValue && prop.name == "hasValue") report.hasValueTrueWritten++;
                     break;
                 case SerializedPropertyType.Float:
-                    prop.floatValue = token.Value<float>();
+                    if (options.SafeEditableOnly) prop.doubleValue = token.Value<double>();
+                    else prop.floatValue = token.Value<float>();
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Enum:
@@ -265,7 +429,7 @@ namespace Manosaba.EditorTools
                     break;
                 case SerializedPropertyType.ObjectReference:
                     long pathId = token["m_PathID"] != null ? token.Value<long>("m_PathID") : 0;
-                    if (pathId == 0)
+                    if (pathId == 0 && token["guid"] == null)
                     {
                         prop.objectReferenceValue = null;
                         report.applied++;
@@ -282,7 +446,7 @@ namespace Manosaba.EditorTools
                     }
                     else
                     {
-                        if (!options.PreserveUnresolvedPointers) prop.objectReferenceValue = null;
+                        if (!options.PreserveUnresolvedPointers && !options.SafeEditableOnly) prop.objectReferenceValue = null;
                         report.pointersUnbound++;
                         report.Warn(path + ": unresolved PPtr (m_FileID=" + token["m_FileID"] + ", m_PathID=" + pathId + ")");
                     }
@@ -327,8 +491,7 @@ namespace Manosaba.EditorTools
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Color:
-                    prop.colorValue = new Color(ReadFloat(token, "r"), ReadFloat(token, "g"),
-                                                ReadFloat(token, "b"), ReadFloat(token, "a", 1f));
+                    prop.colorValue = ReadColor(token);
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Rect:
@@ -337,7 +500,7 @@ namespace Manosaba.EditorTools
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.LayerMask:
-                    prop.intValue = token.Type == JTokenType.Integer ? token.Value<int>() : 0;
+                    prop.intValue = ReadLayerMask(token);
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Vector2Int:
@@ -463,6 +626,16 @@ namespace Manosaba.EditorTools
             return _componentTypesByName.TryGetValue(name, out List<Type> found) ? found : new List<Type>();
         }
 
+        private static bool ContainsUnstablePointer(JToken token)
+        {
+            if (token is JObject obj)
+            {
+                if (obj["m_PathID"] != null && obj["m_PathID"].Value<long>() != 0 && obj["guid"] == null) return true;
+                return obj.Properties().Any(p => ContainsUnstablePointer(p.Value));
+            }
+            return token is JArray array && array.Any(ContainsUnstablePointer);
+        }
+
         private static float ReadFloat(JToken token, string key, float fallback = 0f)
         {
             JToken value = token?[key];
@@ -510,6 +683,42 @@ namespace Manosaba.EditorTools
         private static Vector3 ReadVector3(JToken token)
         {
             return new Vector3(ReadFloat(token, "x"), ReadFloat(token, "y"), ReadFloat(token, "z"));
+        }
+
+        /// <summary>Typetrees store LayerMask as unsigned m_Bits; Unity's property exposes the same 32 bits as int.</summary>
+        private static int ReadLayerMask(JToken token)
+        {
+            JToken bits = token is JObject mask ? mask["m_Bits"] : token;
+            return unchecked((int)Read32Bits(bits, "LayerMask"));
+        }
+
+        private static uint Read32Bits(JToken token, string fieldType)
+        {
+            if (token == null || token.Type != JTokenType.Integer)
+                throw new InvalidOperationException(fieldType + " requires a 32-bit integer; existing value retained");
+            long value = token.Value<long>();
+            if (value < int.MinValue || value > uint.MaxValue)
+                throw new InvalidOperationException(fieldType + " is outside the 32-bit range; existing value retained");
+            return unchecked((uint)value);
+        }
+
+        private static Color ReadColor(JToken token)
+        {
+            if (!(token is JObject color))
+                throw new InvalidOperationException("Color requires channel values or packed rgba; existing value retained");
+            if (color["rgba"] != null)
+            {
+                uint rgba = Read32Bits(color["rgba"], "Color32.rgba");
+                return new Color((rgba & 255) / 255f, ((rgba >> 8) & 255) / 255f,
+                                 ((rgba >> 16) & 255) / 255f, ((rgba >> 24) & 255) / 255f);
+            }
+            foreach (string channel in new[] { "r", "g", "b" })
+                if (color[channel] == null || (color[channel].Type != JTokenType.Integer && color[channel].Type != JTokenType.Float))
+                    throw new InvalidOperationException("Color requires numeric r/g/b channels; existing value retained");
+            if (color["a"] != null && color["a"].Type != JTokenType.Integer && color["a"].Type != JTokenType.Float)
+                throw new InvalidOperationException("Color alpha must be numeric; existing value retained");
+            return new Color(ReadFloat(token, "r"), ReadFloat(token, "g"),
+                             ReadFloat(token, "b"), ReadFloat(token, "a", 1f));
         }
 
         /// <summary>Create the concrete instance named by the reference table and assign it.</summary>

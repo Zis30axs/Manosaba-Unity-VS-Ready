@@ -128,6 +128,62 @@ namespace Manosaba.EditorTools
             if (Application.isBatchMode) EditorApplication.Exit(code);
         }
 
+        /// <summary>One-time editable source export. Existing res edits are always preserved.</summary>
+        public static string ExportEditableSource()
+        {
+            string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
+            string path = Path.Combine(repoRoot, "res/Assets/#WitchTrials/Data/MasterData.asset.json");
+            if (File.Exists(path)) return path;
+            var json = new JObject { ["m_Name"] = EngineResourcesKey };
+            string decode = Path.Combine(repoRoot, "res/.manosaba/reconstruction/unity/master_data_decode.json");
+            if (!File.Exists(decode)) decode = Path.Combine(repoRoot, "res/.manosaba/reconstruction/master_data_decode.json");
+            if (!File.Exists(decode)) decode = Path.Combine(repoRoot, "tools/unity-rebuild/out/unity/master_data_decode.json");
+            if (File.Exists(decode))
+            {
+                JObject document = JObject.Parse(File.ReadAllText(decode));
+                JObject values = document["objects"]?.First?["values"] as JObject;
+                if (values == null) throw new InvalidOperationException("MasterData decode has no root values");
+                foreach (JProperty field in values.Properties())
+                    if (field.Name != ManagedReferencesKey) json[field.Name] = EditableValue(field.Value);
+            }
+            else
+            {
+                ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(ResourcesFolder + "/MasterData.asset");
+                if (asset == null) throw new InvalidOperationException("MasterData export needs imported Resources asset or cached decode");
+                var serialized = new SerializedObject(asset);
+                foreach (string field in new[] { "_assetKeyNames", "_additionalCatalogDataList", "_defaultHp", "_skipTimeScaleDuringDebate", "_voicePitchOnSkip" })
+                    json[field] = ExportProperty(serialized.FindProperty(field));
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllText(path, json.ToString(), new UTF8Encoding(false));
+            return path;
+        }
+
+        private static JToken EditableValue(JToken decoded)
+        {
+            if (!(decoded is JObject node)) return decoded?.DeepClone();
+            string kind = (string)node["kind"];
+            if (kind == "array") return new JArray((node["items"] as JArray ?? new JArray()).Select(EditableValue));
+            if (kind == "inline" && node["fields"] is JObject fields)
+                return new JObject(fields.Properties().Select(p => new JProperty(p.Name, EditableValue(p.Value))));
+            if (node["value"] != null) return node["value"].DeepClone();
+            throw new InvalidOperationException("MasterData field is not safe to export: " + kind);
+        }
+
+        private static JToken ExportProperty(SerializedProperty property)
+        {
+            if (property == null) throw new InvalidOperationException("MasterData field missing");
+            if (property.propertyType != SerializedPropertyType.String && property.isArray)
+            {
+                var arr = new JArray();
+                for (int i = 0; i < property.arraySize; i++) arr.Add(ExportProperty(property.GetArrayElementAtIndex(i)));
+                return arr;
+            }
+            JToken value = JsonToSerializedApplier.ReadValue(property);
+            if (value != null) return value;
+            throw new InvalidOperationException("MasterData field cannot safely export " + property.propertyPath);
+        }
+
         public static int Execute ()
         {
             var result = new ImportResult { generated = DateTime.UtcNow.ToString("o") };

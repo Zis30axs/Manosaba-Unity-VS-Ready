@@ -189,6 +189,175 @@ namespace Manosaba.EditorTools
             public JObject script;
         }
 
+        [Serializable]
+        public class EditResult
+        {
+            public string status = "ERROR";
+            public string target;
+            public string error;
+            public string editability = "PARTIAL";
+            public string guid_before;
+            public string guid_after;
+            public int fields_applied;
+            public List<string> warnings = new List<string>();
+            public List<JsonToSerializedApplier.FieldEditability> fields = new List<JsonToSerializedApplier.FieldEditability>();
+            public List<SourceEditResult> source_results = new List<SourceEditResult>();
+        }
+
+        [Serializable]
+        public class SourceEditResult
+        {
+            public string source;
+            public string status = "READ_ONLY";
+            public string editability = "READ_ONLY";
+            public string error;
+            public int fields_applied;
+            public List<string> warnings = new List<string>();
+            public List<JsonToSerializedApplier.FieldEditability> fields = new List<JsonToSerializedApplier.FieldEditability>();
+        }
+
+        private class ReadOnlyMappingException : Exception
+        {
+            public ReadOnlyMappingException(string reason) : base(reason) { }
+        }
+
+        /// <summary>Patch uniquely identified existing components without rebuilding their hierarchy or file ids.</summary>
+        public static EditResult ApplyEditable(string repoRoot, JObject planJob, string changedSource)
+            => ApplyEditable(repoRoot, planJob, new[] { changedSource });
+
+        public static EditResult ApplyEditable(string repoRoot, JObject planJob, IEnumerable<string> changedSources)
+        {
+            string target = (string)planJob["target"];
+            var result = new EditResult { target = target, guid_before = AssetDatabase.AssetPathToGUID(target) };
+            GameObject root = null;
+            try
+            {
+                bool targetExisted = AssetDatabase.LoadMainAssetAtPath(target) != null;
+                if (!targetExisted)
+                {
+                    var initial = new JobRecord { target = target, asset_path = (string)planJob["asset_path"] };
+                    BuildOne(repoRoot, planJob, initial);
+                    if (initial.status != "BUILT" && initial.status != "BUILT_PARTIAL")
+                        throw new InvalidOperationException(initial.error ?? initial.status);
+                    result.warnings.AddRange(initial.warnings);
+                }
+                var nodes = new List<Node>();
+                foreach (JToken obj in planJob["objects"] as JArray ?? new JArray())
+                {
+                    string dump = (string)obj["dump"];
+                    nodes.Add(new Node { pid = (string)obj["pid"], type = (string)obj["type"], dump = dump,
+                        script = obj["script"] as JObject,
+                        json = JObject.Parse(File.ReadAllText(Path.GetFullPath(Path.Combine(repoRoot, dump)))) });
+                }
+                try { root = PrefabUtility.LoadPrefabContents(target); }
+                catch (ArgumentException unsupported) when (targetExisted &&
+                    unsupported.Message.IndexOf("Prefabs should have exactly 1 root GameObject", StringComparison.Ordinal) >= 0)
+                {
+                    // The existing reconstruction is not editable through Unity's prefab contents API.
+                    // Preserve it and expose the limitation; a source sync cannot repair its imported hierarchy.
+                    string reason = "existing target cannot load as one prefab hierarchy; retained: " + unsupported.Message;
+                    result.status = "READ_ONLY_HIERARCHY";
+                    result.editability = "READ_ONLY";
+                    result.guid_after = result.guid_before;
+                    result.warnings.Add(reason);
+                    foreach (string changed in changedSources.Distinct(StringComparer.OrdinalIgnoreCase))
+                    {
+                        var sourceResult = new SourceEditResult { source = changed, status = "READ_ONLY_HIERARCHY" };
+                        sourceResult.warnings.Add(reason);
+                        sourceResult.fields.Add(new JsonToSerializedApplier.FieldEditability
+                            { field = "*", editability = "READ_ONLY", reason = reason });
+                        result.source_results.Add(sourceResult);
+                    }
+                    return result;
+                }
+                var bySource = nodes.ToDictionary(n => Path.GetFullPath(Path.Combine(repoRoot, n.dump)), StringComparer.OrdinalIgnoreCase);
+                var byPid = nodes.ToDictionary(n => n.pid, StringComparer.Ordinal);
+                var transforms = nodes.Where(n => n.type == "Transform" || n.type == "RectTransform")
+                    .GroupBy(n => ReadPid(n.json["m_GameObject"]).ToString()).ToDictionary(g => g.Key, g => g.First());
+                var hierarchy = root.GetComponentsInChildren<Transform>(true).GroupBy(PrefabBreadcrumb)
+                    .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
+                var breadcrumbs = new Dictionary<string, string>(StringComparer.Ordinal);
+                var ignored = new HashSet<string>(BuilderOwnedKeys)
+                {
+                    "m_Component", "m_Father", "m_Children", "m_RootOrder", "m_PrefabInternal", "m_TagString"
+                };
+                foreach (string changed in changedSources.Distinct(StringComparer.OrdinalIgnoreCase))
+                {
+                    var sourceResult = new SourceEditResult { source = changed };
+                    result.source_results.Add(sourceResult);
+                    try
+                    {
+                        if (!bySource.TryGetValue(Path.GetFullPath(changed), out Node selected))
+                            throw new InvalidOperationException("changed object is not in this prefab plan");
+                        Node owner = selected;
+                        if (selected.type != "GameObject" && !byPid.TryGetValue(ReadPid(selected.json["m_GameObject"]).ToString(), out owner))
+                            throw new ReadOnlyMappingException("component has no mapped owner");
+                        string breadcrumb = SourceBreadcrumb(owner, byPid, transforms, breadcrumbs);
+                        if (!hierarchy.TryGetValue(breadcrumb, out Transform[] candidates) || candidates.Length != 1)
+                            throw new ReadOnlyMappingException("ambiguous or changed hierarchy path: " + breadcrumb);
+                        UnityEngine.Object component = candidates[0].gameObject;
+                        if (selected.type != "GameObject")
+                        {
+                            Type type = ResolveComponentType(selected);
+                            Component[] components = type == null || !typeof(Component).IsAssignableFrom(type) ? new Component[0] : candidates[0].GetComponents(type);
+                            if (components.Length != 1) throw new ReadOnlyMappingException("missing or ambiguous component type: " + selected.type);
+                            component = components[0];
+                        }
+                        var report = JsonToSerializedApplier.ApplyAll(new SerializedObject(component), selected.json,
+                            new JsonToSerializedApplier.Options { SkipEngineFields = false, IgnoreKeys = ignored, SafeEditableOnly = true,
+                                PreserveUnresolvedPointers = true, ResolvePointer = JsonToSerializedApplier.ResolveStablePointer });
+                        sourceResult.fields_applied = report.applied;
+                        sourceResult.warnings.AddRange(report.messages);
+                        sourceResult.fields = JsonToSerializedApplier.DescribeEditableFields(new SerializedObject(component), selected.json, false, false, ignored);
+                        sourceResult.status = "UPDATED_PARTIAL";
+                        sourceResult.editability = "PARTIAL";
+                        result.fields_applied += report.applied;
+                    }
+                    catch (ReadOnlyMappingException unsupported)
+                    {
+                        sourceResult.warnings.Add(unsupported.Message);
+                        sourceResult.fields.Add(new JsonToSerializedApplier.FieldEditability { field = "*", editability = "READ_ONLY", reason = unsupported.Message });
+                    }
+                }
+                if (result.fields_applied > 0)
+                {
+                    PrefabUtility.SaveAsPrefabAsset(root, target, out bool saved);
+                    if (!saved) throw new InvalidOperationException("prefab save failed");
+                }
+                result.guid_after = AssetDatabase.AssetPathToGUID(target);
+                if (!string.IsNullOrEmpty(result.guid_before) && result.guid_before != result.guid_after) throw new InvalidOperationException("prefab GUID changed");
+                result.status = "UPDATED_PARTIAL";
+            }
+            catch (Exception error) { result.error = error.Message; result.status = "ERROR"; }
+            finally { if (root != null) PrefabUtility.UnloadPrefabContents(root); }
+            return result;
+        }
+
+        private static string SourceBreadcrumb(Node owner, Dictionary<string, Node> byPid,
+            Dictionary<string, Node> transforms, Dictionary<string, string> cached)
+        {
+            if (cached.TryGetValue(owner.pid, out string known)) return known;
+            var names = new List<string>();
+            var seen = new HashSet<string>();
+            Node cursor = owner;
+            while (cursor != null)
+            {
+                if (!seen.Add(cursor.pid)) throw new InvalidOperationException("cyclic prefab hierarchy");
+                names.Insert(0, (string)cursor.json["m_Name"]);
+                if (!transforms.TryGetValue(cursor.pid, out Node tr) ||
+                    !byPid.TryGetValue(ReadPid(tr.json["m_Father"]).ToString(), out Node father) ||
+                    !byPid.TryGetValue(ReadPid(father.json["m_GameObject"]).ToString(), out cursor)) break;
+            }
+            return cached[owner.pid] = string.Join("/", names);
+        }
+
+        private static string PrefabBreadcrumb(Transform transform)
+        {
+            var names = new List<string>();
+            for (Transform cursor = transform; cursor != null; cursor = cursor.parent) names.Insert(0, cursor.name);
+            return string.Join("/", names);
+        }
+
         private static void BuildOne(string repoRoot, JToken jobToken, JobRecord job)
         {
             string target = ((string)jobToken["target"]).Replace('\\', '/');
