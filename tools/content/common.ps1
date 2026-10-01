@@ -20,7 +20,10 @@ function Invoke-ManosabaContent {
         '-Reextract'='--reextract'; '-OverwriteUserChanges'='--overwrite-user-changes'
         '-Deep'='--deep'; '-NoReport'='--no-report'; '-Player'='--player'
     }
-    $forward = @($ContentArguments | ForEach-Object { if ($aliases.ContainsKey($_)) { $aliases[$_] } else { $_ } })
+    $forward = @(foreach ($argument in $ContentArguments) {
+        if ($null -eq $argument) { continue }
+        if ($aliases.ContainsKey($argument)) { $aliases[$argument] } else { $argument }
+    })
     & $python (Join-Path $PSScriptRoot 'content.py') $Command @forward
     exit $LASTEXITCODE
 }
