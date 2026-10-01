@@ -34,7 +34,7 @@ namespace WitchTrials.Debugging
     		[Address(RVA = "0x3B4940", Offset = "0x3B3340", VA = "0x1803B4940", Slot = "4")]
     		get
     		{
-    			return Engine.Initialized ? NaniScriptPlayer.PlaybackSpot.ToString() : "Naninovel has not been initialized";
+    			return Engine.Initialized ? NaniScriptPlayer.PlaybackSpot.ToString() : "Naninovel 尚未初始化";
     		}
     	}
 

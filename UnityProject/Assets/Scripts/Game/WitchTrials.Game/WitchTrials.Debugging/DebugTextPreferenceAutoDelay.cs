@@ -26,8 +26,8 @@ namespace WitchTrials.Debugging
     		get
     		{
     			return Engine.Initialized
-    				? string.Format("MaxAutoWaitDelay: {0} | MinAutoPlayDelay: {1}", TpConf.MaxAutoWaitDelay, SpConf.MinAutoPlayDelay)
-    				: "Naninovel has not been initialized";
+    				? string.Format("最大自动等待延迟: {0} | 最小自动播放延迟: {1}", TpConf.MaxAutoWaitDelay, SpConf.MinAutoPlayDelay)
+    				: "Naninovel 尚未初始化";
     		}
     	}
 

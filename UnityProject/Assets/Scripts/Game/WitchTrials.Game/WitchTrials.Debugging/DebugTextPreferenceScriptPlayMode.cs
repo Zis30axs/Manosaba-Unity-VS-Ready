@@ -35,8 +35,8 @@ namespace WitchTrials.Debugging
     		get
     		{
     			return Engine.Initialized
-    				? string.Format("Auto: {0} | Skip: {1}", NaniScriptPlayer.AutoPlayActive, NaniScriptPlayer.SkipActive)
-    				: "Naninovel has not been initialized";
+    				? string.Format("自动播放: {0} | 快进: {1}", NaniScriptPlayer.AutoPlayActive, NaniScriptPlayer.SkipActive)
+    				: "Naninovel 尚未初始化";
     		}
     	}
 

@@ -44,7 +44,7 @@ namespace WitchTrials.Debugging
     		[Address(RVA = "0x3B4330", Offset = "0x3B2D30", VA = "0x1803B4330", Slot = "4")]
     		get
     		{
-    			return Engine.Initialized ? BuildText() : "Naninovel has not been initialized";
+    			return Engine.Initialized ? BuildText() : "Naninovel 尚未初始化";
     		}
     	}
 
@@ -58,7 +58,7 @@ namespace WitchTrials.Debugging
     	private string BuildText()
     	{
     		_builder.Length = 0;
-    		_builder.Append("ProcessInput: ");
+    		_builder.Append("处理输入: ");
     		_builder.Append(NaniInputManager.ProcessInput ? "O" : "X");
     		_builder.Append(" |");
     		foreach (string bindingName in _bindingNames)

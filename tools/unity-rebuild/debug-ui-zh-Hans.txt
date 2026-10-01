@@ -1,0 +1,90 @@
+游戏内 Debug UI 汉化清单（提交前）
+共 32 处显示文本，27 组不同的原文/译文。
+下文 \n 表示保留的界面换行。
+
+1. UnityProject/Packages/com.elringus.naninovel/Prefabs/DefaultUI/ScriptNavigatorUI.prefab
+SCRIPT NAVIGATOR → 脚本导航
+Select a script to play → 选择要播放的脚本
+
+2. UnityProject/Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Debugging/
+DebugTextPreferenceActorInfo.cs、DebugTextPreferenceAutoDelay.cs、
+DebugTextPreferenceNaninovelInputState.cs、DebugTextPreferencePlaybackSpot.cs、
+DebugTextPreferenceScriptPlayMode.cs：
+Naninovel has not been initialized → Naninovel 尚未初始化（5 处）
+
+DebugTextPreferenceActorInfo.cs：
+[{0}] Position={1} → [{0}] 位置={1}
+[{角色 ID}] Not exist → [{角色 ID}] 不存在（保留实际角色 ID）
+
+DebugTextPreferenceAutoDelay.cs：
+MaxAutoWaitDelay: {0} | MinAutoPlayDelay: {1}
+→ 最大自动等待延迟: {0} | 最小自动播放延迟: {1}
+
+DebugTextPreferenceNaninovelInputState.cs：
+ProcessInput: → 处理输入:（保留末尾空格）
+
+DebugTextPreferenceScriptPlayMode.cs：
+Auto: {0} | Skip: {1} → 自动播放: {0} | 快进: {1}
+
+DebugReporter.cs：
+デバッグ情報ファイルを生成しました。 → 已生成调试信息文件。
+ファイルをアップロード中…… → 正在上传文件……
+Slack に以下のファイルを投稿しました。 → 已将以下文件发布到 Slack。
+デスクトップに以下のファイルを保存しました。 → 已将以下文件保存到桌面。
+
+3. 被 Git 忽略的导入 prefab（本地已修改，另存可跟踪补丁）
+以下路径相对于 UnityProject/Assets/GameContent/#WitchTrials/Prefabs/。
+
+General/Core/Game.prefab：
+すべてのスチルを\n解放 → 解锁全部\nCG
+デスクトップに保存 → 保存到桌面
+タイムスケール\n-0.2 → 时间倍率\n-0.2
+デバッグスキップ\n切り替え → 切换\n调试快进
+議論テキスト送り\n切り替え → 切换\n辩论文本推进
+キャンセル → 取消
+デバッグホーム画面 → 调试主界面
+Slackに投稿 → 发布到 Slack
+タイムスケール\n+0.2 → 时间倍率\n+0.2
+ポーズ → 暂停
+Label_1 → 调试报告（结果标题组件的文本，不是对象名称）
+Label_2 → 报告详情（结果说明组件的文本，不是对象名称）
+
+General/Debug/DebugLabel.prefab：
+Debug Text → 调试文本
+General/Debug/DebugCommandButton.prefab：
+Debug Command → 调试命令
+Naninovel/UI/ChoiceButtons/ChoiceButton_Debug.prefab、
+Naninovel/UI/ChoiceButtons/ChoiceButton_Debug@Cancel.prefab：
+選択肢 → 选项（2 处）
+
+补丁与恢复
+tools/unity-rebuild/debug-ui-zh-Hans.patch 仅包含上述 5 个导入 prefab 的 m_text 修改。
+在仓库根目录、资源重新导入后执行：
+git apply --check tools/unity-rebuild/debug-ui-zh-Hans.patch
+git apply tools/unity-rebuild/debug-ui-zh-Hans.patch
+
+当前已应用，无须重复执行。检查是否已应用：
+git apply --reverse --check tools/unity-rebuild/debug-ui-zh-Hans.patch
+
+提交时应包含本清单、补丁和上述 7 个已跟踪文件；无需强制加入完整导入资源。
+已重建 Addressables，并在 Unity 编辑器 Play 模式确认调试按钮中文生效。
+
+范围
+已检查指定的两个 GigaCreation UI 源码目录，没有需替换的固定游戏内显示文案。
+Script Navigator 的按钮名称仍由原始脚本路径生成，未修改名称或跳转逻辑。
+类名、字段名、变量名、Addressables key、资源 GUID、对象名称、脚本路径保持原样。
+CSV 导出字段、Slack 报告正文、文件名/目录名、日志及 Inspector 属性未修改。
+动态变量名、输入绑定名、角色 ID、布尔值和脚本定位信息保持原样。
+游戏内验证会正常写入 Naninovel Transient 状态；已有工作区修改不应整体回滚。
+
+验证
+7 个已跟踪文件通过字符串外内容等价检查；格式占位符保持一致。
+补丁通过仅 m_text 修改检查及 git apply --reverse --check。
+git diff --check 报告 C# 原有的空格后接制表符缩进；关闭该检查项后通过。
+TMP Settings 已引用 SourceHanSerifSC 简体中文回退字体，未改动字体资产。
+已在 Unity 6.0 (6000.0.48f1) 的 Boot 场景进入 Play 模式。
+确认左侧按钮中文显示正常，调试主界面章节显示“第1章 第1幕”，场景显示“剧情部分 场景1”，跳转正常。
+Debug_Home 的额外 87 处翻译完整清单：debug-home-zh-Hans-changes.txt。
+第一章第一幕开场测试句：——这里是囚牢。 → ——这里是囚牢。【IDEA 同步测试：新的开场文本已生效】
+测试句已在 Play 模式实际显示。
+真实 bundle 检查通过：12 处核心 Debug 文案及开场、Debug_Home 两个中文 TextAsset。

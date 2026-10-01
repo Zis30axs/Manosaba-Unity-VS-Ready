@@ -1,0 +1,31 @@
+Unity 编辑器多色姓名接口
+
+实现：UnityProject/Assets/Editor/MulticolorAuthorNames.cs
+命名空间：Manosaba.EditorTools
+
+接口不依赖本地剧情测试开关。关闭或注释测试剧情不会删除、停用此接口。
+进入 Play 时 BeforeSceneLoad 自动安装；退出 Play 时恢复标签原本的 spriteAsset。
+所有字形、纹理及材质只存在于编辑器内存；不保存正式资源、不注册 Addressables，
+不修改正式运行时代码。Editor 目录不会进入玩家构建。
+
+默认注册 key：tricolor-b
+默认字形：大写 B，内部从上到下依次为白、蓝、红三条水平色带。
+
+设置姓名：
+  metadata.DisplayName = MulticolorAuthorNames.BuildName("tricolor-b", "Example");
+
+注册另一个字形（色带数组从上到下排列）：
+  MulticolorAuthorNames.RegisterGlyph("teal-a", 'A', new[] {
+      Color.white, Color.cyan, new Color(0f, .3f, .3f)
+  });
+  metadata.DisplayName = MulticolorAuthorNames.BuildName("teal-a", "lex");
+
+RegisterGlyph 返回对应的 BMP 私用单字符；相同 key 更新字形和色带并保留字符。
+RegisterTricolorB() 可恢复默认 B 的颜色。
+BuildName 返回“私用单字符 + 姓名剩余部分”的纯文本，不生成 size/sprite 标签。
+项目 AuthorTextBuilder 会拆分首字符并分别设置首字、正文的字号；纯文本避免把
+富文本标签拆坏、显示在游戏里。只有多色首字使用原有较大的首字字号。
+
+当前字体采用本机 Arial / Liberation Sans / DejaVu Sans，注册字形须为可显示的
+单个 BMP 字符。自定义注册可在编辑器代码中再次声明，编辑器域重载后会重置。
+可在 Play 中检查多个角色姓名与历史记录；关闭本地测试后再次 Play 验证接口仍安装。

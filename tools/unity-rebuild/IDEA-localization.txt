@@ -1,0 +1,72 @@
+IDEA 修改中文剧本 → Unity Play 模式
+
+试玩时运行配置：同步中文剧本并构建 Unity 试玩资源
+位置：.idea/runConfigurations/Sync_Localization_Build.xml
+备用配置：仅同步中文剧本到 Unity（不重建，不能保证 Play 模式读到新文本）
+
+操作
+1. 在 IDEA 修改并保存 res/Assets/#WitchTrials/Localization/zh-Hans/Text 下的 .txt。
+   第一章第一幕开头：Scripts/Act01_Chapter01/Act01_Chapter01_Adv01.txt
+2. 运行“同步中文剧本并构建 Unity 试玩资源”。
+3. Unity 已打开时：切回 Unity，让新 Editor 脚本导入；若正在播放，停止 Play。
+   WAITING_FOR_EDIT_MODE 表示等待停止播放。不会强制停止你正在进行的游戏。
+4. 等待运行窗口显示 [BUILD] OK、进程退出码为 0。
+5. 在 Unity 打开 Assets/Scenes/Boot.unity，进入新的 Play 模式，选择简体中文。
+   从第一章第一幕开头开始；测试句含：
+   【IDEA 同步测试：新的开场文本已生效】
+   从中途存档继续可能跳过这句话。
+
+同步内容与构建
+- 同步整个 zh-Hans/Text 目录，当前 444 个 .txt；保留 Unity 目标 .meta/GUID。
+- 原文注释（以 ; 开头）、文本 ID（以 # 开头）和脚本路径不要改。
+- 这是中文文本编辑入口，不负责新增剧情命令、重建分支或注册新资源。
+- 不依赖 Python 插件或仓库旧虚拟环境；IDEA 使用已安装的 Shell Script 插件运行 PowerShell。
+- 使用 Windows 系统默认 PowerShell 路径；非标准 Windows 安装需要调整 Interpreter。
+- Unity 未打开：使用 common.ps1 查找 Editor，批处理重建当前 Addressables 设置。
+- Unity 已打开：固定的 Library/ManosabaLocalization/request.json 请求由 Editor 脚本处理。
+- 请求只允许固定重建操作，不携带待执行命令或目标路径。
+- 即使 changed=0 也会重建，修复“已经复制，但资源包还旧”的情况。
+- 不会重新导入所有游戏资源或重新套用旧 Addressables 分组计划。
+- 本入口不更新外部游戏 exe。
+
+命令行备用入口（在仓库根目录运行）
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/unity-rebuild/sync_localization_idea.ps1
+仅复制：在上述命令末尾加 -SyncOnly。
+
+故障查看
+批处理日志：tools/unity-rebuild/out/logs/localization_build.log
+构建结果：tools/unity-rebuild/out/unity/addressables_build_result.json
+已打开的 Unity 请求结果：UnityProject/Library/ManosabaLocalization/result.json
+超时/报错不会报告成功；先修复 Unity Console 错误，再运行相同配置。
+首次导入桥接脚本前若未收到请求，切回 Unity 刷新，必要时 Assets > Refresh。
+
+此次 Debug UI 未生效的原因
+修改后的 prefab 尚未构建到 Addressables；旧包内仍是日文。
+另一个独立问题是 Debug_Home 中文菜单内容为空，Naninovel 回退到日文。
+本次填入 87 处菜单翻译，文本 ID 和跳转目标不变；CommonBadNN 脚本名称原样保留。
+完整原文/译文清单：debug-home-zh-Hans-changes.txt
+
+版本控制
+res/ 和 UnityProject/Assets/GameContent/ 都是忽略的导入资源。
+本地修改已经应用，额外保存补丁以便重新提取后恢复：
+- debug-ui-zh-Hans.patch：先前的调试 prefab 中文文本
+- debug-home-zh-Hans.patch：中文调试菜单源文本
+- opening-sync-test.patch：开场第一句测试文本
+资源重新提取后在根目录使用 git apply --check <补丁路径>，通过后 git apply <补丁路径>。
+当前已应用的补丁不要重复执行。
+删除测试标记：手工删掉源文本中的【IDEA 同步测试：新的开场文本已生效】，再运行默认配置。
+
+验证工具
+verify_localization_content.py 使用 UnityPy 检查构建后的真实 bundle：
+- 调试按钮中文文本存在；
+- 开场和 Debug_Home 中文 TextAsset 与 Unity 工程内的文件一致。
+这验证实际打包内容，不替代游戏内的字形、布局和跳转体验检查。
+
+本次验证结果（2026-10-01）
+- 关闭 Unity 的批处理构建：成功。
+- Unity 已打开的编辑器桥接构建：成功，运行入口退出码 0。
+- 播放中发送请求、停止 Play 后自动重建的回归测试：成功（WAITING_FOR_EDIT_MODE → BUILDING → OK）。
+- 已复核真实 bundle 中 12 处核心 Debug 文案及 2 个中文 TextAsset，全部通过。
+- Unity Play 实测：调试按钮、章节/场景菜单中文显示正常，第一幕开场测试句出现，章节到场景跳转正常。
+- 桥接已修正停止播放的过渡期检查，同时等待 isPlaying 和 isPlayingOrWillChangePlaymode 结束。
+- 桥接与批处理入口都检查新构建报告中的 status 和 player_streaming_source_ready，资源未完整生成时报告失败。

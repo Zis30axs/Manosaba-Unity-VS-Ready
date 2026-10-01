@@ -1,0 +1,41 @@
+; 编辑器测试序言。仅供 Unity 编辑器 Play 使用；不导入正式剧情，不参与 Player 构建。
+; 一键关闭由本地测试开关恢复原剧情；也可以在命令行前加 ; 手工注释。
+; BEGIN_LOCAL_BMPT_TEST
+@gosubResetBook System/System_ResetWitchBook isDebugDirectJump:{isDebugDirectJump}
+@gosub System/System_Subroutine.BeginAdv
+@set "g_gameProgress = max(1, g_gameProgress)"
+@set "hasWitchBook = false"
+
+; 黑幕内切换到独立的本地背景；不写入正式 CG 解锁记录。
+@back id:* visible:false time:0 wait:true
+@back SolidColor subId:Overlay tint:#000000 time:0 wait:true
+@wait 0.6
+@back Default id:LocalOpening pos:50,50,95 scale:1 time:0 wait:true
+@wait 0.1
+@back Transparent subId:Overlay tint:#000000 time:0.8 wait:true
+@wait 0.4
+@bgm Ambi_11_1 volume:1 loop:true fade:0
+
+; 先显示全黑立绘；名字与资源由 Editor 内的本地配置提供。
+@char LocalBMPT72.Default tint:#000000 pos:50,36 time:0 wait:true
+@sfx LocalOpening/Reverse volume:0.7 loop:true fade:0
+@print "（-4 km/h 倒车的声音）" author:LocalBMPTUnknown waitInput:false speed:0 wait:true
+@wait 2.2
+@stopSfx LocalOpening/Reverse fade:0 wait:true
+
+@sfx LocalOpening/Autocannon volume:0.75 loop:true fade:0
+@print "（2A42 机炮开火的声音）" author:LocalBMPTUnknown waitInput:false speed:0 wait:true
+@wait 2.18
+@stopSfx LocalOpening/Autocannon fade:0 wait:true
+
+; 测试文本以 plain text 解析，不绑定原剧情配音。
+@print "……谁！" author:Ema wait:true waitInput:true
+@char LocalBMPT72.Default tint:#FFFFFF time:0.4 wait:true
+@print "我理解了你的请求，消灭了霸凌你的人。" author:LocalBMPT72 wait:true waitInput:true
+
+; 黑场切换，复用 Adv02 的“——不对！”及原本的牢房醒来段落。
+@back SolidColor subId:Overlay tint:#000000 time:0.3 wait:true
+@hide LocalBMPT72,LocalOpening time:0 wait:true
+@gosub System/System_Subroutine.EndAdv
+@goto Act01_Chapter01/Act01_Chapter01_Adv02 soft:true
+; END_LOCAL_BMPT_TEST

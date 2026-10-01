@@ -41,7 +41,7 @@ namespace WitchTrials.Debugging
     		[Address(RVA = "0x3B36D0", Offset = "0x3B20D0", VA = "0x1803B36D0", Slot = "4")]
     		get
     		{
-    			return Engine.Initialized ? BuildText() : "Naninovel has not been initialized";
+    			return Engine.Initialized ? BuildText() : "Naninovel 尚未初始化";
     		}
     	}
 
@@ -56,9 +56,9 @@ namespace WitchTrials.Debugging
     	{
     		if (ActorManager != null && ActorManager.ActorExists(_actorId))
     		{
-    			return string.Format("[{0}] Position={1}", _actorId, ActorManager.GetActor(_actorId).Position);
+    			return string.Format("[{0}] 位置={1}", _actorId, ActorManager.GetActor(_actorId).Position);
     		}
-    		return "[" + _actorId + "] Not exist";
+    		return "[" + _actorId + "] 不存在";
     	}
 
     	[Token(Token = "0x60007B2")]

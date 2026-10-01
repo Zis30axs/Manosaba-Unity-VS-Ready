@@ -308,7 +308,7 @@ namespace WitchTrials.Debugging
     		byte[] jpg = await CaptureScreenshotAsJpegAsync(ct);
     		float storedTimeScale = Time.timeScale;
     		Time.timeScale = 0f;
-    		_resultHeadingLabel.SetText("デバッグ情報ファイルを生成しました。");
+    		_resultHeadingLabel.SetText("已生成调试信息文件。");
     		_resultDescriptionLabel.SetText(string.Empty);
     		_resultWindowCanvasGroup.alpha = 1f;
     		_resultWindowCanvasGroup.blocksRaycasts = true;
@@ -317,13 +317,13 @@ namespace WitchTrials.Debugging
     		_resultWindowCanvasGroup.interactable = false;
     		if (resultIndex == 1)
     		{
-    			_resultHeadingLabel.SetText("ファイルをアップロード中……");
+    			_resultHeadingLabel.SetText("正在上传文件……");
     			string postMessage = BuildPostMessage();
     			string[] slackFileIds = new string[2];
     			slackFileIds[0] = await _slackApp.UploadFileAsync(jpg, jpgFileName, ct);
     			slackFileIds[1] = await _slackApp.UploadFileAsync(csv, csvFileName, "csv", ct);
     			await _slackApp.CompleteUploadAsync(slackFileIds, postMessage, ct);
-    			_resultHeadingLabel.SetText("Slack に以下のファイルを投稿しました。");
+    			_resultHeadingLabel.SetText("已将以下文件发布到 Slack。");
     			_resultDescriptionLabel.SetText("- " + jpgFileName + "\n- " + csvFileName);
     			await UniTask.Delay(TimeSpan.FromSeconds(3.0), DelayType.UnscaledDeltaTime, PlayerLoopTiming.Update, ct);
     		}
@@ -337,7 +337,7 @@ namespace WitchTrials.Debugging
     				Directory.CreateDirectory(directory);
     			}
     			await (Cysharp.Threading.Tasks.UniTaskExtensions.AsUniTask(File.WriteAllBytesAsync(screenshotPath, jpg, ct)), Cysharp.Threading.Tasks.UniTaskExtensions.AsUniTask(File.WriteAllTextAsync(logPath, csv, ct)));
-    			_resultHeadingLabel.SetText("デスクトップに以下のファイルを保存しました。");
+    			_resultHeadingLabel.SetText("已将以下文件保存到桌面。");
     			_resultDescriptionLabel.SetText("- " + screenshotPath + "\n- " + logPath);
     			await UniTask.Delay(TimeSpan.FromSeconds(3.0), ignoreTimeScale: true, PlayerLoopTiming.Update, ct);
     		}
