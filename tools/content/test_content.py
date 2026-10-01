@@ -148,10 +148,10 @@ class ContentTests(unittest.TestCase):
             entry = content.read_json(content.STATE)["files"][self.relative]
             self.assertEqual(entry["sync_status"], "PARTIAL")
             self.assertEqual(entry["editability"], "READ_ONLY")
-            self.assertEqual(entry["field_editability"], [reason])
+            self.assertEqual(entry["field_editability"], [{**reason, "occurrences": 1}])
             self.assertEqual(content.sync(self.args()), 0)
             self.assertEqual(convert.call_count, 1)
-            self.assertEqual(content.read_json(content.STATE)["files"][self.relative]["field_editability"], [reason])
+            self.assertEqual(content.read_json(content.STATE)["files"][self.relative]["field_editability"], [{**reason, "occurrences": 1}])
             self.source.write_text("new source edit after limitation")
             self.assertEqual(content.sync(self.args()), 0)
             self.assertEqual(convert.call_count, 2)

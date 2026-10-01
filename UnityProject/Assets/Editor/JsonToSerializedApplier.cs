@@ -109,6 +109,7 @@ namespace Manosaba.EditorTools
             public string field;
             public string editability;
             public string reason;
+            public int occurrences = 1;
         }
 
         /// <summary>Describe actual serialized fields; unsupported source nodes are never labelled editable.</summary>
@@ -133,7 +134,43 @@ namespace Manosaba.EditorTools
                 Describe(serialized.FindProperty(field.Name), field.Value, field.Name, refs,
                          allowManagedReferences, fields, 0);
             }
-            return fields;
+            return CompactEditableFields(fields);
+        }
+
+        private sealed class CompactField
+        {
+            public FieldEditability field;
+            public readonly HashSet<string> reasons = new HashSet<string>(StringComparer.Ordinal);
+            public readonly List<string> orderedReasons = new List<string>();
+        }
+
+        private static List<FieldEditability> CompactEditableFields(IEnumerable<FieldEditability> fields)
+        {
+            var byPattern = new Dictionary<string, CompactField>(StringComparer.Ordinal);
+            var ordered = new List<CompactField>();
+            foreach (FieldEditability source in fields)
+            {
+                string pattern = Regex.Replace(source.field, @"\.Array\.data\[\d+\]", ".Array.data[*]");
+                if (!byPattern.TryGetValue(pattern, out CompactField group))
+                {
+                    group = new CompactField { field = new FieldEditability {
+                        field = pattern, editability = source.editability, occurrences = 0 } };
+                    byPattern.Add(pattern, group);
+                    ordered.Add(group);
+                }
+                else if (!string.Equals(group.field.editability, source.editability, StringComparison.Ordinal))
+                    group.field.editability = "PARTIAL";
+                group.field.occurrences += Math.Max(1, source.occurrences);
+                if (!string.IsNullOrEmpty(source.reason) && group.reasons.Add(source.reason))
+                    group.orderedReasons.Add(source.reason);
+            }
+            var compact = new List<FieldEditability>(ordered.Count);
+            foreach (CompactField group in ordered)
+            {
+                group.field.reason = string.Join("; ", group.orderedReasons);
+                compact.Add(group.field);
+            }
+            return compact;
         }
 
         private static void Describe(SerializedProperty prop, JToken token, string path, Dictionary<long, JToken> refs,
@@ -366,11 +403,19 @@ namespace Manosaba.EditorTools
                     return;
                 }
                 var items = (JArray)token;
-                if (options.SafeEditableOnly && items.Count != prop.arraySize && ContainsUnstablePointer(items))
+                if (options.SafeEditableOnly && items.Count != prop.arraySize)
                 {
-                    report.skipped++;
-                    report.Warn(path + ": READ_ONLY array resize includes unmapped references; existing array retained");
-                    return;
+                    string resizeReason;
+                    if (ContainsUnstablePointer(items))
+                        resizeReason = "array resize includes unmapped references";
+                    else if (CanResizeEditableArray(prop, options, out resizeReason))
+                        resizeReason = null;
+                    if (resizeReason != null)
+                    {
+                        report.skipped++;
+                        report.Warn(path + ": READ_ONLY " + resizeReason + "; existing array retained");
+                        return;
+                    }
                 }
                 prop.arraySize = items.Count;
                 for (int i = 0; i < items.Count; i++)
@@ -626,11 +671,88 @@ namespace Manosaba.EditorTools
             return _componentTypesByName.TryGetValue(name, out List<Type> found) ? found : new List<Type>();
         }
 
+        // Resizing removes or creates whole elements, including fields the leaf applier deliberately retains.
+        // Check the existing serialized shape before touching arraySize. This does not mutate the target.
+        private static bool CanResizeEditableArray(SerializedProperty array, Options options, out string reason)
+        {
+            reason = null;
+            if (array.arraySize == 0 && !IsSupportedEmptyArrayElement(array.arrayElementType))
+            {
+                reason = "empty array element type is not verified: " + array.arrayElementType;
+                return false;
+            }
+            var visitedManagedIds = new HashSet<long>();
+            using (SerializedProperty cursor = array.Copy())
+            using (SerializedProperty end = array.GetEndProperty())
+            {
+                bool enterChildren = true;
+                while (cursor.Next(enterChildren) && !SerializedProperty.EqualContents(cursor, end))
+                {
+                    enterChildren = false;
+                    if (cursor.propertyType == SerializedPropertyType.ArraySize ||
+                        cursor.propertyType == SerializedPropertyType.String) continue;
+                    if (cursor.propertyType == SerializedPropertyType.ManagedReference)
+                    {
+                        if (!options.AllowManagedReferences)
+                        {
+                            reason = "array element includes a retained managed-reference graph";
+                            return false;
+                        }
+                        // Unity can expose shared/cyclic managed children. Enter each serialized managed ID once.
+                        enterChildren = cursor.managedReferenceValue != null &&
+                                        visitedManagedIds.Add(cursor.managedReferenceId);
+                        continue;
+                    }
+                    if (cursor.propertyType == SerializedPropertyType.Generic)
+                    {
+                        if (cursor.isArray && cursor.arraySize == 0 &&
+                            !IsSupportedEmptyArrayElement(cursor.arrayElementType))
+                        {
+                            reason = "array element includes an unverified empty array: " + cursor.propertyPath;
+                            return false;
+                        }
+                        if (!cursor.isArray && !cursor.hasChildren)
+                        {
+                            reason = "array element includes an opaque serialized value: " + cursor.propertyPath;
+                            return false;
+                        }
+                        enterChildren = true;
+                        continue;
+                    }
+                    if (ReadValue(cursor) == null)
+                    {
+                        reason = "array element includes retained " + cursor.propertyType + ": " + cursor.propertyPath;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private static bool IsSupportedEmptyArrayElement(string elementType)
+        {
+            // No temporary element insertion: a rejected edit must preserve the complete old serialized shape.
+            // Unknown structs, PPtrs, enums and managed types require an existing element to inspect.
+            switch (elementType)
+            {
+                case "bool": case "sbyte": case "byte": case "short": case "ushort":
+                case "int": case "uint": case "long": case "ulong": case "float": case "double": case "string":
+                case "SInt8": case "UInt8": case "SInt16": case "UInt16": case "SInt32": case "UInt32":
+                case "SInt64": case "UInt64":
+                case "Vector2": case "Vector2f": case "Vector3": case "Vector3f": case "Vector4": case "Vector4f":
+                case "Quaternion": case "Quaternionf": case "Color": case "ColorRGBA": case "Color32":
+                case "Rect": case "Rectf": case "Vector2Int": case "Vector2i": case "Vector3Int": case "Vector3i":
+                    return true;
+                default: return false;
+            }
+        }
+
         private static bool ContainsUnstablePointer(JToken token)
         {
             if (token is JObject obj)
             {
-                if (obj["m_PathID"] != null && obj["m_PathID"].Value<long>() != 0 && obj["guid"] == null) return true;
+                if (obj["guid"] != null && ResolveStablePointer(obj) == null) return true;
+                if (obj["m_PathID"] != null && obj["m_PathID"].Value<long>() != 0 && ResolveStablePointer(obj) == null) return true;
                 return obj.Properties().Any(p => ContainsUnstablePointer(p.Value));
             }
             return token is JArray array && array.Any(ContainsUnstablePointer);

@@ -17,6 +17,7 @@ import subprocess
 import sys
 import time
 import uuid
+from state_store import compact_fields, read_content_state
 
 REPO = Path(__file__).resolve().parents[2]
 PIPELINE = REPO / "tools/unity-rebuild"
@@ -45,7 +46,8 @@ def read_json(path, default=None):
 def write_json(path, data):
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name(path.name + ".tmp")
-    temp.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+    with temp.open("w", encoding="utf-8") as stream:
+        json.dump(data, stream, ensure_ascii=False, indent=None if path == STATE else 1)
     os.replace(temp, path)
 
 
@@ -396,7 +398,7 @@ def sync(args):
         source_path(normalized)
         if normalized not in records:
             raise ValueError(f"File is not in the resource index or a supported editable tree: {path}")
-    state = read_json(STATE, {"version": 1, "files": {}})
+    state = read_content_state(STATE, {"version": 1, "files": {}})
     files = state["files"]
     changed, unchanged, failed, readonly, pending = Counter(), 0, [], 0, []
     jobs, import_paths = [], []
@@ -519,7 +521,7 @@ def acknowledge_batch(state, files, batch, result):
         rec["sync_status"] = "PARTIAL" if limited or (result.get("status") == "PARTIAL" and rec["jobs"]) else "SYNCED"
         if converted:
             rec["editability"] = "READ_ONLY" if all(j.get("editability") == "READ_ONLY" for j in converted) else ("PARTIAL" if limited else "FULL")
-            rec["field_editability"] = [field for job in converted for field in job.get("fields", [])]
+            rec["field_editability"] = compact_fields(field for job in converted for field in job.get("fields", []))
         for target in rec["targets"]:
             if target not in updated_targets and importer.checked_path(PROJECT, target).is_file():
                 updated_targets[target] = fingerprint(importer.checked_path(PROJECT, target), force=True)
@@ -574,7 +576,7 @@ def import_content(args):
 def doctor(args):
     records = inventory()
     problems = []
-    state = read_json(STATE, {"files": {}})
+    state = read_content_state(STATE, {"files": {}})
     target_stamps, metadata_stamps = {}, {}
     for relative, rec in records.items():
         source = source_path(relative)
