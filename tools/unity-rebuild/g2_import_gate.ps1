@@ -41,8 +41,50 @@ if (-not (Test-Path $pathsFile)) {
     Write-Host "BLOCKED: $($result.blocked_reason)" -ForegroundColor Red
     exit 2
 }
-$requested = (Get-Content $pathsFile | Where-Object { $_.Trim() }).Count
-Write-Host "[g2] requested assets: $requested"
+$requested = @(Get-Content -LiteralPath $pathsFile -Encoding UTF8 | Where-Object { $_.Trim() }).Count
+if ($requested -eq 0) {
+    $result.status = 'BLOCKED'
+    $result.blocked_reason = "empty $pathsFile (run tools/unity-rebuild/a13_import_assets.py first)"
+    Write-Json (Join-Path $script:UnityDataRoot 'g2_import.json') $result
+    Write-Host "BLOCKED: $($result.blocked_reason)" -ForegroundColor Red
+    exit 2
+}
+Write-Host "[g2] leaf input paths: $requested (Native verifier includes composite lists)"
+
+function Test-VerifyReceipt($verify) {
+    $errors = [System.Collections.Generic.List[string]]::new()
+    # The Native verifier de-duplicates its union using ordinal string identity.
+    $map = [System.Collections.Generic.Dictionary[string,string]]::new([System.StringComparer]::Ordinal)
+    if (-not $verify) {
+        $errors.Add('missing Native receipt')
+    } else {
+        $requestedInteger = $verify.requested -is [int] -or $verify.requested -is [long]
+        $foundInteger = $verify.found -is [int] -or $verify.found -is [long]
+        $missingInteger = $verify.missing_count -is [int] -or $verify.missing_count -is [long]
+        if (-not $requestedInteger -or $verify.requested -le 0) { $errors.Add('requested must be a positive integer') }
+        if (-not $foundInteger -or -not $requestedInteger -or $verify.found -ne $verify.requested) { $errors.Add('found must equal requested') }
+        if (-not $missingInteger -or $verify.missing_count -ne 0) { $errors.Add('missing_count must be zero') }
+        $keys = $verify.guid_map.keys
+        $values = $verify.guid_map.values
+        if (-not $requestedInteger -or -not ($keys -is [array]) -or -not ($values -is [array]) -or
+            $keys.Count -ne $values.Count -or $keys.Count -ne $verify.requested) {
+            $errors.Add('GUID map arrays must cover every requested asset')
+        } else {
+            for ($i = 0; $i -lt $keys.Count; $i++) {
+                $key = $keys[$i]
+                $guid = $values[$i]
+                if (-not ($key -is [string]) -or [string]::IsNullOrWhiteSpace($key) -or $map.ContainsKey($key)) {
+                    $errors.Add('GUID map contains an empty or duplicate asset path')
+                } elseif (-not ($guid -is [string]) -or $guid -notmatch '\A[0-9a-fA-F]{32}\z' -or $guid -eq ('0' * 32)) {
+                    $errors.Add('GUID map contains an invalid asset GUID')
+                } else {
+                    $map.Add($key, $guid)
+                }
+            }
+        }
+    }
+    return [ordered]@{ complete = $errors.Count -eq 0; errors = @($errors.ToArray()); map = $map }
+}
 
 function Invoke-VerifyRun([string]$tag) {
     $log = Join-Path $script:LogRoot "import_verify_$tag.log"
@@ -91,18 +133,14 @@ $result.run_b = Invoke-VerifyRun 'b'
 Write-Host "  B: status=$($result.run_b.verify.status) found=$($result.run_b.verify.found)/$($result.run_b.verify.requested) missing=$($result.run_b.verify.missing_count)"
 
 # --- compare GUID maps --------------------------------------------------------------
-$mapA = @{}
-$mapB = @{}
-if ($result.run_a.verify -and $result.run_a.verify.guid_map) {
-    for ($i = 0; $i -lt $result.run_a.verify.guid_map.keys.Count; $i++) {
-        $mapA[$result.run_a.verify.guid_map.keys[$i]] = $result.run_a.verify.guid_map.values[$i]
-    }
-}
-if ($result.run_b.verify -and $result.run_b.verify.guid_map) {
-    for ($i = 0; $i -lt $result.run_b.verify.guid_map.keys.Count; $i++) {
-        $mapB[$result.run_b.verify.guid_map.keys[$i]] = $result.run_b.verify.guid_map.values[$i]
-    }
-}
+$validationA = Test-VerifyReceipt $result.run_a.verify
+$validationB = Test-VerifyReceipt $result.run_b.verify
+$result.run_a.receipt_complete = $validationA.complete
+$result.run_b.receipt_complete = $validationB.complete
+$result.run_a.receipt_errors = $validationA.errors
+$result.run_b.receipt_errors = $validationB.errors
+$mapA = $validationA.map
+$mapB = $validationB.map
 $changed = @()
 foreach ($k in $mapA.Keys) {
     if (-not $mapB.ContainsKey($k)) { $changed += "$k (missing in run B)" }
@@ -116,15 +154,16 @@ $result.guid_stability = [ordered]@{
 }
 
 $okA = $result.run_a.verify -and $result.run_a.verify.status -eq 'OK' -and $result.run_a.artifact_fresh -and
-       $result.run_a.exit_code -eq 0 -and $result.run_a.cs_errors -eq 0 -and -not $result.run_a.aborted
+       $result.run_a.exit_code -eq 0 -and $result.run_a.cs_errors -eq 0 -and -not $result.run_a.aborted -and $validationA.complete
 $okB = $result.run_b.verify -and $result.run_b.verify.status -eq 'OK' -and $result.run_b.artifact_fresh -and
-       $result.run_b.exit_code -eq 0 -and $result.run_b.cs_errors -eq 0 -and -not $result.run_b.aborted
+       $result.run_b.exit_code -eq 0 -and $result.run_b.cs_errors -eq 0 -and -not $result.run_b.aborted -and $validationB.complete
 
 # Both runs must have verified the same input list: if the list changed between them (e.g. a13 was
 # re-run in between), the GUID comparison would be meaningless even though both runs "passed".
-$sameInput = $result.run_a.verify -and $result.run_b.verify -and
+$sameInput = $validationA.complete -and $validationB.complete -and
              $result.run_a.verify.input_sha256 -and
-             ($result.run_a.verify.input_sha256 -eq $result.run_b.verify.input_sha256)
+             ($result.run_a.verify.input_sha256 -eq $result.run_b.verify.input_sha256) -and
+             ($result.run_a.verify.requested -eq $result.run_b.verify.requested)
 $result.input_list = [ordered]@{
     run_a_count = if ($result.run_a.verify) { $result.run_a.verify.requested } else { 0 }
     run_b_count = if ($result.run_b.verify) { $result.run_b.verify.requested } else { 0 }
@@ -141,9 +180,11 @@ if (-not ($okA -and $okB)) {
     foreach ($pair in @(@('A', $result.run_a), @('B', $result.run_b))) {
         $tag = $pair[0]; $r = $pair[1]
         if ($r.cs_errors -gt 0) { $reasons += "run $tag had $($r.cs_errors) compiler errors" }
+        if ($r.exit_code -ne 0) { $reasons += "run $tag exited $($r.exit_code)" }
         if ($r.aborted) { $reasons += "run $tag aborted before executing the verifier" }
         if (-not $r.artifact_fresh) { $reasons += "run $tag produced no fresh verification artifact" }
         elseif ($r.verify.status -ne 'OK') { $reasons += "run $tag verify status=$($r.verify.status)" }
+        if (-not $r.receipt_complete) { $reasons += "run ${tag}: $($r.receipt_errors -join '; ')" }
     }
     $result.blocked_reason = ($reasons -join '; ')
 } elseif (-not $sameInput) {

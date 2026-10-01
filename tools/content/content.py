@@ -63,6 +63,12 @@ def fingerprint(path, old=None, force=False):
     return {"size": stat.st_size, "mtime_ns": stat.st_mtime_ns, "sha256": digest(path)}
 
 
+def valid_fingerprint(value):
+    return (isinstance(value, dict) and type(value.get("size")) is int and value["size"] >= 0
+            and type(value.get("mtime_ns")) is int and isinstance(value.get("sha256"), str)
+            and re.fullmatch(r"[0-9a-f]{64}", value["sha256"]) is not None)
+
+
 def metadata_identity(destination, old=None, force=False):
     path = Path(str(destination) + ".meta")
     if not path.is_file():
@@ -581,6 +587,21 @@ def doctor(args):
     for relative, rec in records.items():
         source = source_path(relative)
         entry = state["files"].get(relative, {})
+        saved_targets = entry.get("target_fingerprints", {})
+        saved_metadata = entry.get("target_metadata", {})
+        saved_targets = saved_targets if isinstance(saved_targets, dict) else {}
+        saved_metadata = saved_metadata if isinstance(saved_metadata, dict) else {}
+        if rec["targets"] and entry:
+            if entry.get("sync_status") not in ("SYNCED", "PARTIAL", "FAILED", "PENDING_IMPORT"):
+                problems.append(f"STATE_INVALID {relative}; run content sync")
+            complete = valid_fingerprint(entry.get("source"))
+            for target in rec["targets"]:
+                baseline = saved_metadata.get(target)
+                complete = complete and valid_fingerprint(saved_targets.get(target)) and valid_fingerprint(baseline)
+                guid = baseline.get("guid") if isinstance(baseline, dict) else None
+                complete = complete and isinstance(guid, str) and re.fullmatch(r"[0-9a-f]{32}", guid) is not None
+            if not complete:
+                problems.append(f"STATE_INCOMPLETE {relative}; run content sync")
         if rec["targets"] and not entry:
             problems.append(f"UNSYNCED {relative}; run content sync")
         elif entry and rec.get("conversion_signature") != entry.get("conversion_signature"):
@@ -599,20 +620,22 @@ def doctor(args):
             else:
                 try:
                     if target not in metadata_stamps:
-                        metadata_stamps[target] = metadata_identity(destination, entry.get("target_metadata", {}).get(target), args.deep)
-                    expected_guid = entry.get("target_metadata", {}).get(target, {}).get("guid")
+                        previous = saved_metadata.get(target)
+                        metadata_stamps[target] = metadata_identity(destination, previous if valid_fingerprint(previous) else None, args.deep)
+                    previous = saved_metadata.get(target)
+                    expected_guid = previous.get("guid") if isinstance(previous, dict) else None
                     if expected_guid and metadata_stamps[target]["guid"] != expected_guid:
                         problems.append(f"META_GUID_CHANGED {target}; restore its original .meta")
                 except (OSError, ValueError) as error:
                     problems.append(str(error))
-            if destination.is_file() and entry.get("target_fingerprints", {}).get(target):
+            if destination.is_file() and valid_fingerprint(saved_targets.get(target)):
                 if target not in target_stamps:
-                    target_stamps[target] = fingerprint(destination, entry["target_fingerprints"][target], args.deep)
-                if target_stamps[target]["sha256"] != entry["target_fingerprints"][target]["sha256"]:
+                    target_stamps[target] = fingerprint(destination, saved_targets[target], args.deep)
+                if target_stamps[target]["sha256"] != saved_targets[target]["sha256"]:
                     problems.append(f"TARGET_CHANGED {target}; run content sync")
         if entry.get("sync_status") in ("FAILED", "PENDING_IMPORT"):
             problems.append(f"{entry['sync_status']} {relative}")
-        if source.is_file() and entry.get("source") and fingerprint(source, entry["source"], args.deep)["sha256"] != entry["source"]["sha256"]:
+        if source.is_file() and valid_fingerprint(entry.get("source")) and fingerprint(source, entry["source"], args.deep)["sha256"] != entry["source"]["sha256"]:
             problems.append(f"SOURCE_CHANGED {relative}; run content sync")
     report = {"profile": "ContentPreflight", "status": "FAIL" if problems else "PASS",
               "resources": len(records), "editability": dict(Counter(state["files"].get(relative, {}).get("editability", rec["editability"]) for relative, rec in records.items())),

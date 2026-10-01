@@ -20,6 +20,7 @@ $script:UnityProject = Join-Path $PSScriptRoot 'UnityProject'
 $script:UnityDataRoot = Join-Path $PSScriptRoot 'out'
 $script:LogRoot = Join-Path $PSScriptRoot 'logs'
 $script:CaseTest = Get-Content (Join-Path $PSScriptRoot 'case.json') -Raw | ConvertFrom-Json
+$script:VerifyRuns = 0
 New-Item -ItemType Directory -Force -Path $script:UnityProject, $script:UnityDataRoot, $script:LogRoot | Out-Null
 
 function Write-Json {
@@ -53,6 +54,19 @@ function Invoke-Logged {
     $method = $Arguments[([Array]::IndexOf($Arguments, '-executeMethod') + 1)]
     $code = 0
     switch -Wildcard ($method) {
+        '*.ImportVerifier.Run' {
+            $script:VerifyRuns++
+            $tag = if ($script:VerifyRuns -eq 1) { 'a' } else { 'b' }
+            $default = @{
+                status = 'OK'; requested = 2; found = 2; missing_count = 0
+                input_sha256 = ('a' * 256)
+                input_files = @('a13_imported_paths.txt', 'prefab_imported_paths_all.txt', 'so_imported_paths_data.txt', 'so_imported_paths_scenarios.txt')
+                guid_map = @{ keys = @('Assets/Fixture/Leaf.png', 'Assets/Fixture/Composite.asset'); values = @(('a' * 32), ('b' * 32)) }
+            }
+            $value = Case-Value "verify_$tag" $default
+            Write-FakeReceipt "verify_$tag" (Join-Path $script:UnityDataRoot 'import_verify.json') $value
+            $code = Case-Value "verify_${tag}_exit" 0
+        }
         '*.ProjectBootstrap.Run' {
             Write-FakeReceipt 'bootstrap' (Join-Path $script:UnityDataRoot 'bootstrap_result.json') @{ status = (Case-Value 'bootstrap_status' 'OK') }
             $code = Case-Value 'bootstrap_exit' 0
@@ -137,6 +151,11 @@ class GateReceiptTests(unittest.TestCase):
         shutil.copy2(REPO / "tools/unity-rebuild" / script.name, script)
         (fixture / "common.ps1").write_text(STUB_COMMON, encoding="utf-8")
         (fixture / "case.json").write_text(json.dumps(configuration), encoding="utf-8")
+        if gate.startswith("g2"):
+            output = fixture / "out"
+            output.mkdir()
+            if not configuration.get("missing_leaf_list"):
+                (output / "a13_imported_paths.txt").write_text(configuration.get("leaf_paths", "Assets/Fixture/Leaf.png\n"))
         if gate.startswith("g3"):
             output = fixture / "out"
             output.mkdir()
@@ -145,7 +164,7 @@ class GateReceiptTests(unittest.TestCase):
         if gate.startswith("g3"):
             command += ["-Group", "all"]
         process = subprocess.run(command, capture_output=True, encoding="utf-8", errors="replace", timeout=25)
-        result_name = {"g3_content_build": "g3_content_build.json", "g4_play_mode": "g4_play_mode_gate.json",
+        result_name = {"g2_import_gate": "g2_import.json", "g3_content_build": "g3_content_build.json", "g4_play_mode": "g4_play_mode_gate.json",
                        "g5_player_smoke": "g5_player_smoke.json"}[gate]
         result_path = fixture / "out" / result_name
         self.assertTrue(result_path.is_file(), process.stdout + process.stderr)
@@ -153,6 +172,78 @@ class GateReceiptTests(unittest.TestCase):
         self.assertEqual(result["status"], expected, process.stdout + process.stderr)
         self.assertEqual(process.returncode == 0, expected == "PASS", process.stdout + process.stderr)
         return result
+
+    @staticmethod
+    def verify_receipt(**overrides):
+        value = {"status": "OK", "requested": 2, "found": 2, "missing_count": 0,
+                 "input_sha256": "a" * 256,
+                 "input_files": ["a13_imported_paths.txt", "prefab_imported_paths_all.txt",
+                                 "so_imported_paths_data.txt", "so_imported_paths_scenarios.txt"],
+                 "guid_map": {"keys": ["Assets/Fixture/Leaf.png", "Assets/Fixture/Composite.asset"],
+                              "values": ["a" * 32, "b" * 32]}}
+        value.update(overrides)
+        return value
+
+    def test_g2_rejects_missing_empty_or_whitespace_leaf_input_before_processes(self):
+        for case in ({"missing_leaf_list": True}, {"leaf_paths": ""}, {"leaf_paths": " \t\r\n\n"}):
+            with self.subTest(case=case):
+                result = self.run_gate("g2_import_gate", case, "BLOCKED")
+                self.assertIsNone(result["run_a"])
+                self.assertIsNone(result["run_b"])
+
+    def test_g2_accepts_complete_native_union_larger_than_the_leaf_list(self):
+        result = self.run_gate("g2_import_gate", {}, "PASS")
+        self.assertEqual(result["run_a"]["verify"]["requested"], 2)
+        self.assertEqual(len(result["run_a"]["verify"]["input_files"]), 4)
+        self.assertTrue(result["run_a"]["receipt_complete"])
+        self.assertEqual(result["guid_stability"]["assets_run_a"], 2)
+        self.assertTrue(result["input_list"]["identical"])
+        single = self.verify_receipt(requested=1, found=1,
+                                     guid_map={"keys": ["Assets/Fixture/Leaf.png"], "values": ["a" * 32]})
+        self.run_gate("g2_import_gate", {"verify_a": single, "verify_b": single}, "PASS")
+        # Native Distinct() and its GUID dictionary use ordinal, case-sensitive keys.
+        aliases = self.verify_receipt(guid_map={"keys": ["Assets/Fixture/Leaf.png", "Assets/Fixture/leaf.png"],
+                                                "values": ["a" * 32, "a" * 32]})
+        self.run_gate("g2_import_gate", {"verify_a": aliases, "verify_b": aliases}, "PASS")
+
+    def test_g2_rejects_zero_mismatched_missing_or_invalid_native_counts(self):
+        for override in ({"requested": 0, "found": 0}, {"found": 1}, {"missing_count": 1},
+                         {"requested": "invalid"}, {"requested": True}, {"requested": 2.0},
+                         {"found": None}, {"missing_count": None}):
+            with self.subTest(override=override):
+                result = self.run_gate("g2_import_gate", {"verify_a": self.verify_receipt(**override)}, "FAIL")
+                self.assertFalse(result["run_a"]["receipt_complete"])
+                self.assertTrue(result["run_a"]["receipt_errors"])
+
+    def test_g2_rejects_incomplete_duplicate_or_invalid_guid_maps(self):
+        valid = self.verify_receipt()["guid_map"]
+        for mapping in ({"keys": [], "values": []}, {"keys": valid["keys"], "values": ["a" * 32]},
+                        {"keys": ["", valid["keys"][1]], "values": valid["values"]},
+                        {"keys": [valid["keys"][0]] * 2, "values": valid["values"]},
+                        {"keys": valid["keys"], "values": ["invalid", "b" * 32]},
+                        {"keys": valid["keys"], "values": ["0" * 32, "b" * 32]},
+                        {"keys": valid["keys"], "values": ["a" * 32 + "\n", "b" * 32]},
+                        {"keys": "Assets/Fixture/Leaf.png", "values": valid["values"]}):
+            with self.subTest(mapping=mapping):
+                result = self.run_gate("g2_import_gate", {"verify_b": self.verify_receipt(guid_map=mapping)}, "FAIL")
+                self.assertFalse(result["run_b"]["receipt_complete"])
+
+    def test_g2_requires_fresh_receipts_and_both_processes_to_succeed(self):
+        for case in ({"stale": ["verify_a"]}, {"stale": ["verify_b"]}, {"missing": ["verify_a"]},
+                     {"missing": ["verify_b"]}, {"verify_a_exit": 1}, {"verify_b_exit": 1}):
+            with self.subTest(case=case):
+                self.run_gate("g2_import_gate", case, "FAIL")
+
+    def test_g2_rejects_reopen_input_count_or_guid_changes(self):
+        extra = self.verify_receipt()
+        extra["requested"] = extra["found"] = 3
+        extra["guid_map"]["keys"].append("Assets/Fixture/Extra.asset")
+        extra["guid_map"]["values"].append("c" * 32)
+        changed = self.verify_receipt()
+        changed["guid_map"]["values"][0] = "c" * 32
+        for receipt in (self.verify_receipt(input_sha256="b" * 256), extra, changed):
+            with self.subTest(receipt=receipt):
+                self.run_gate("g2_import_gate", {"verify_b": receipt}, "FAIL")
 
     def test_g3_current_windows_catalog_and_documented_exclusions_pass(self):
         self.run_gate("g3_content_build", {}, "PASS")

@@ -131,5 +131,29 @@ class MetadataIdentityTests(unittest.TestCase):
             self.assertEqual(content.doctor(self.doctor_args), 0)
 
 
+    def test_doctor_rejects_incomplete_checkpoint_baselines(self):
+        self.synchronize()
+        original = content.read_json(content.STATE)
+        for missing in ("source", "target_fingerprints", "target_metadata"):
+            with self.subTest(missing=missing):
+                state = content.read_json(content.STATE)
+                state = {**original, "files": {self.relative: dict(original["files"][self.relative])}}
+                state["files"][self.relative].pop(missing)
+                content.write_json(content.STATE, state)
+                self.assertEqual(content.doctor(self.doctor_args), 1)
+        content.write_json(content.STATE, original)
+        self.assertEqual(content.doctor(self.doctor_args), 0)
+
+    def test_doctor_rejects_unknown_status_and_invalid_fingerprint_shape(self):
+        self.synchronize()
+        original = content.read_json(content.STATE)
+        for change in ({"sync_status": "UNKNOWN"}, {"source": {"sha256": "a" * 64}},
+                       {"target_fingerprints": {self.target: "invalid"}}, {"target_metadata": {self.target: None}}):
+            with self.subTest(change=change):
+                state = {**original, "files": {self.relative: {**original["files"][self.relative], **change}}}
+                content.write_json(content.STATE, state)
+                self.assertEqual(content.doctor(self.doctor_args), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
