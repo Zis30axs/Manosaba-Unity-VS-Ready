@@ -17,12 +17,38 @@ import subprocess
 import sys
 import time
 
-from imported_source import REPO, cache_root, res_root
+from imported_source import REPO
 from import_source_cache import restore_evidence, snapshot_evidence
 
 PIPELINE = REPO / "tools/unity-rebuild"
 OUT = PIPELINE / "out/unity"
 PROJECT = REPO / "UnityProject"
+RES = REPO / "res"
+
+
+def import_environment() -> dict[str, str]:
+    """Bind all reconstruction tools to this workspace, including audit config.
+
+    Older research shells can contain root/plan overrides. The existing a13
+    planners use repository-local paths, so the audit and cache readers must use
+    those same paths for a first import.
+    """
+    env = dict(os.environ)
+    for key in ("MANOSABA_SO_OUT", "MANOSABA_SO_PLAN", "MANOSABA_PREFAB_OUT", "MANOSABA_PREFAB_PLAN",
+                "MANOSABA_PREFAB_FIELD_DUMP", "MANOSABA_RESOURCE_REPORT", "MANOSABA_MATERIAL_PLAN",
+                "MANOSABA_CATALOG_PATH", "MANOSABA_CATALOG_OUT", "MANOSABA_ADDRESSABLES_PLAN",
+                "MANOSABA_ADDRESSABLES_PRUNE"):
+        env.pop(key, None)
+    data = RES / ".imported-source/manosaba_Data"
+    env.update({"MANOSABA_CONTENT_ONLY": "1", "MANOSABA_GAME_ROOT": str(OUT / "__original_install_unavailable__"),
+                "MANOSABA_REPO_ROOT": str(REPO), "MANOSABA_RES_ROOT": str(RES),
+                "MANOSABA_SOURCE_ROOT": str(REPO / "src"), "MANOSABA_DUMP_ROOT": str(REPO / "work"),
+                "MANOSABA_OUTPUT_ROOT": str(PIPELINE / "out"),
+                "MANOSABA_GAME_DATA_ROOT": str(data), "MANOSABA_AA_ROOT": str(data / "StreamingAssets/aa"),
+                "MANOSABA_PYTHON": sys.executable, "PYTHONUTF8": "1"})
+    packages = REPO / "tools/venv/Lib/site-packages"
+    env["PYTHONPATH"] = str(packages) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    return env
 
 
 def validate_unity_receipt(method: str, value: dict, allow_partial: bool = False) -> str:
@@ -71,20 +97,7 @@ def main() -> int:
     log_dir = PIPELINE / "out/logs/import-bootstrap"
     log_dir.mkdir(parents=True, exist_ok=True)
     report = {"status": "NOT_RUN", "steps": [], "original_game_reads": False}
-    env = dict(os.environ)
-    # Reconstruction probes permit output/plan overrides for research. Import
-    # controls these explicitly so a prior probe cannot redirect its receipts.
-    for key in ("MANOSABA_SO_OUT", "MANOSABA_SO_PLAN", "MANOSABA_PREFAB_OUT", "MANOSABA_PREFAB_PLAN",
-                "MANOSABA_PREFAB_FIELD_DUMP", "MANOSABA_RESOURCE_REPORT", "MANOSABA_MATERIAL_PLAN",
-                "MANOSABA_CATALOG_PATH", "MANOSABA_CATALOG_OUT", "MANOSABA_ADDRESSABLES_PLAN",
-                "MANOSABA_ADDRESSABLES_PRUNE"):
-        env.pop(key, None)
-    env.update({"MANOSABA_CONTENT_ONLY": "1", "MANOSABA_GAME_ROOT": str(OUT / "__original_install_unavailable__"),
-                "MANOSABA_GAME_DATA_ROOT": str(cache_root() / "manosaba_Data"),
-                "MANOSABA_AA_ROOT": str(cache_root() / "manosaba_Data/StreamingAssets/aa"),
-                "MANOSABA_PYTHON": sys.executable, "PYTHONUTF8": "1"})
-    packages = REPO / "tools/venv/Lib/site-packages"
-    env["PYTHONPATH"] = str(packages) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    env = import_environment()
 
     def run(tag, command, allowed_exit_codes=(0,)):
         print("[import] " + tag, flush=True)
@@ -110,9 +123,9 @@ def main() -> int:
             raise RuntimeError(f"{name} produced no required input {artifact}")
 
     try:
-        if not (res_root() / "_index.csv").is_file():
+        if not (RES / "_index.csv").is_file():
             raise RuntimeError("Extract resources with tools/content/import.ps1 before bootstrapping Unity")
-        restore_evidence(res_root())
+        restore_evidence(RES)
         shell = shutil.which("pwsh") or shutil.which("powershell")
         if not shell:
             raise RuntimeError("PowerShell is required to stage imported runtime metadata")
@@ -122,11 +135,11 @@ def main() -> int:
         required = ("bundle_script_map.json", "so_convert_plan_data.json", "so_convert_plan_scenarios.json",
                     "prefab_plan_all.json", "addressables_plan_all.json", "catalog_dump_shipped.json")
         if adopted and all((OUT / name).is_file() for name in required):
-            snapshot_evidence(res_root())
+            snapshot_evidence(RES)
             report["status"] = "ADOPTED_EXISTING_CONTENT"
             print("[import] Existing imported Unity content and plans adopted; user assets preserved.", flush=True)
             return 0
-        data = cache_root() / "manosaba_Data"
+        data = RES / ".imported-source/manosaba_Data"
         if not data.is_dir():
             raise RuntimeError("Imported serialized resource cache is missing")
         editor = args.unity_editor or Path(os.environ.get("MANOSABA_UNITY_EDITOR", ""))
@@ -222,7 +235,7 @@ def main() -> int:
         if not adopted:
             python("align_editor_resources.py", "--apply")
         unity("AddressablesSetup.Run", "addressables_setup_result.json", {"MANOSABA_ADDRESSABLES_PLAN": "addressables_plan_all.json"})
-        snapshot_evidence(res_root())
+        snapshot_evidence(RES)
         report["status"] = "PREPARED"
         return 0
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:

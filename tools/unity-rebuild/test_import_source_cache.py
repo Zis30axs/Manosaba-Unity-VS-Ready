@@ -110,6 +110,28 @@ class SourceCacheTests(unittest.TestCase):
             bootstrap_import.validate_unity_receipt("MaterialImporter.Run", {"status": "PARTIAL", "failed": 1}, True)
         self.assertEqual(bootstrap_import.validate_unity_receipt("MaterialImporter.Run", {"status": "PARTIAL", "failed": 0}, True), "PARTIAL")
 
+    def test_bootstrap_roots_cannot_inherit_another_research_workspace(self):
+        roots = {
+            "MANOSABA_REPO_ROOT": REPO,
+            "MANOSABA_RES_ROOT": REPO / "res",
+            "MANOSABA_SOURCE_ROOT": REPO / "src",
+            "MANOSABA_DUMP_ROOT": REPO / "work",
+            "MANOSABA_OUTPUT_ROOT": REPO / "tools/unity-rebuild/out",
+            "MANOSABA_GAME_DATA_ROOT": REPO / "res/.imported-source/manosaba_Data",
+            "MANOSABA_AA_ROOT": REPO / "res/.imported-source/manosaba_Data/StreamingAssets/aa",
+        }
+        contaminated = {key: str(self.root / "other-research-workspace") for key in roots}
+        contaminated.update({"MANOSABA_GAME_ROOT": str(self.game), "MANOSABA_SO_PLAN": "probe-plan.json"})
+        with patch.dict(os.environ, contaminated):
+            env = bootstrap_import.import_environment()
+            for key, expected in roots.items():
+                self.assertEqual(Path(env[key]), expected)
+                self.assertEqual(os.environ[key], contaminated[key])
+            self.assertEqual(env["MANOSABA_CONTENT_ONLY"], "1")
+            self.assertNotEqual(Path(env["MANOSABA_GAME_ROOT"]), self.game)
+            self.assertNotIn("MANOSABA_SO_PLAN", env)
+            self.assertEqual(os.environ["MANOSABA_SO_PLAN"], "probe-plan.json")
+
     def test_independence_rejects_new_bepinex_access_in_nested_log(self):
         repo = self.root / "repo"
         pipeline = repo / "tools/unity-rebuild"
