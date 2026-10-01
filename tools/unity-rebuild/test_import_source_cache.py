@@ -1,6 +1,8 @@
 """Resource import safety regressions; no game assets or Unity license required."""
 import os
 import json
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -131,6 +133,88 @@ class SourceCacheTests(unittest.TestCase):
             self.assertNotEqual(Path(env["MANOSABA_GAME_ROOT"]), self.game)
             self.assertNotIn("MANOSABA_SO_PLAN", env)
             self.assertEqual(os.environ["MANOSABA_SO_PLAN"], "probe-plan.json")
+
+    def test_independence_environment_poisons_install_and_keeps_workspace_roots(self):
+        repo = self.root / "repo"
+        values = {key: str(self.root / "old-research") for key in
+                  ("MANOSABA_REPO_ROOT", "MANOSABA_RES_ROOT", "MANOSABA_SOURCE_ROOT", "MANOSABA_OUTPUT_ROOT",
+                   "MANOSABA_GAME_ROOT", "MANOSABA_GAME_DATA_ROOT", "MANOSABA_AA_ROOT")}
+        values["MANOSABA_CATALOG_PATH"] = "old-catalog.bin"
+        with patch.object(independence, "REPO", repo), patch.dict(os.environ, values):
+            env = independence.execution_environment()
+            for key, suffix in (("MANOSABA_REPO_ROOT", ""), ("MANOSABA_RES_ROOT", "res"),
+                                ("MANOSABA_SOURCE_ROOT", "src"), ("MANOSABA_OUTPUT_ROOT", "tools/unity-rebuild/out")):
+                self.assertEqual(Path(env[key]), repo / suffix)
+            for key in ("MANOSABA_GAME_ROOT", "MANOSABA_GAME_DATA_ROOT", "MANOSABA_AA_ROOT"):
+                path = Path(env[key])
+                self.assertTrue(path.is_relative_to(repo))
+                self.assertFalse(path.exists())
+                self.assertNotEqual(env[key], values[key])
+            self.assertNotIn("MANOSABA_CATALOG_PATH", env)
+            self.assertEqual(env["MANOSABA_CONTENT_ONLY"], "1")
+
+    def test_independence_sync_requires_a_new_saved_manifest(self):
+        repo = self.root / "repo"
+        script = repo / "tools/content/sync.ps1"
+        script.parent.mkdir(parents=True)
+        script.write_text("# synthetic sync")
+        state = repo / "res/.manosaba-content-state.json"
+        state.parent.mkdir()
+        output = repo / "report"
+        output.mkdir()
+
+        def synthetic_sync(*_args, **_kwargs):
+            state.write_text('{"files":{}}')
+            if not new_manifest:
+                os.utime(state, ns=(1_000_000_000, 1_000_000_000))
+            return SimpleNamespace(stdout="sync completed", stderr="", returncode=0)
+
+        with patch.object(independence, "REPO", repo), patch.object(independence.shutil, "which", return_value="powershell"), \
+                patch.object(independence.subprocess, "run", side_effect=synthetic_sync):
+            for new_manifest in (False, True):
+                with self.subTest(new_manifest=new_manifest):
+                    value = independence.run_stage("sync", {}, output, "all", 10, self.game)
+                    self.assertEqual(value["status"], "PASS" if new_manifest else "FAIL")
+                    self.assertEqual(value["artifact_fresh"], new_manifest)
+                    self.assertEqual(Path(value["artifact"]), state)
+
+    def test_independence_restores_physical_install_after_stage_failure(self):
+        repo = self.root / "repo"
+
+        def failing_stage(*_args, **_kwargs):
+            self.assertFalse(self.game.exists())
+            renamed = list(self.root.glob("game.manosaba-independence-*"))
+            self.assertEqual(len(renamed), 1)
+            self.assertTrue((renamed[0] / "manosaba_Data/StreamingAssets").is_dir())
+            raise ValueError("synthetic stage failed")
+
+        with patch.object(independence, "REPO", repo), patch.object(independence, "static_checks", return_value=[{"ok": True}]), \
+                patch.object(independence, "run_stage", side_effect=failing_stage), \
+                patch.object(independence.sys, "argv", ["independence", "--game-root", str(self.game), "--disconnect-original", "--stages", "compile"]), \
+                redirect_stdout(StringIO()):
+            self.assertEqual(independence.main(), 1)
+        self.assertTrue(self.game.is_dir())
+        self.assertFalse(list(self.root.glob("game.manosaba-independence-*")))
+        result = next((repo / "tools/unity-rebuild/out/content-independence").glob("*/result.json"))
+        value = json.loads(result.read_text())
+        self.assertEqual(value["status"], "BLOCKED")
+        self.assertTrue(value["original_disconnected"])
+        self.assertTrue(value["original_restored"])
+
+    def test_independence_family_build_is_partial_even_when_every_stage_passes(self):
+        repo = self.root / "repo"
+        with patch.object(independence, "REPO", repo), patch.object(independence, "static_checks", return_value=[{"ok": True}]), \
+                patch.object(independence, "run_stage", side_effect=lambda stage, *_args: {"stage": stage, "status": "PASS", "seconds": 0}), \
+                patch.object(independence.sys, "argv", ["independence", "--game-root", str(self.game), "--disconnect-original", "--group", "prefabs"]), \
+                redirect_stdout(StringIO()):
+            self.assertEqual(independence.main(), 0)
+        result = next((repo / "tools/unity-rebuild/out/content-independence").glob("*/result.json"))
+        value = json.loads(result.read_text())
+        self.assertEqual(value["status"], "PARTIAL")
+        self.assertEqual(value["group"], "prefabs")
+        self.assertEqual(len(value["stages"]), len(independence.STAGES))
+        self.assertTrue(value["original_disconnected"])
+        self.assertTrue(value["original_restored"])
 
     def test_independence_rejects_new_bepinex_access_in_nested_log(self):
         repo = self.root / "repo"

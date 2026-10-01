@@ -41,14 +41,25 @@ if (-not $script:UnityExe) {
 # --- 1. bootstrap ------------------------------------------------------------------
 Write-Host "=== bootstrap (Boot scene + build settings) ===" -ForegroundColor Cyan
 $bootLog = Join-Path $script:LogRoot 'bootstrap_g4.log'
+$bootJsonPath = Join-Path $script:UnityDataRoot 'bootstrap_result.json'
+Remove-Item -LiteralPath $bootJsonPath -ErrorAction SilentlyContinue
+$bootStarted = Get-Date
 $boot = Invoke-Logged -FilePath $script:UnityExe -LogPath $bootLog -Arguments @(
     '-batchmode', '-nographics', '-quit',
     '-projectPath', $script:UnityProject,
     '-executeMethod', 'Manosaba.EditorTools.ProjectBootstrap.Run',
     '-logFile', '-'
 )
-$result.bootstrap = [ordered]@{ exit_code = $boot.exit_code; seconds = $boot.seconds; log = $boot.log }
+$bootFresh = (Test-Path -LiteralPath $bootJsonPath) -and (Get-Item -LiteralPath $bootJsonPath).LastWriteTime -ge $bootStarted
+$bootJson = if ($bootFresh) { Get-Content $bootJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$result.bootstrap = [ordered]@{ exit_code = $boot.exit_code; seconds = $boot.seconds; log = $boot.log; fresh = $bootFresh; result = $bootJson }
 Write-Host "  bootstrap exit=$($boot.exit_code)"
+if ($boot.exit_code -ne 0 -or -not $bootFresh -or $bootJson.status -ne 'OK') {
+    $result.status = 'FAIL'
+    $result.blocked_reason = 'Bootstrap failed or produced no fresh successful artifact.'
+    Write-Json (Join-Path $script:UnityDataRoot 'g4_play_mode_gate.json') $result
+    exit 1
+}
 
 # --- 2. Play Mode ------------------------------------------------------------------
 $evidencePath = Join-Path $script:UnityDataRoot 'play_mode_evidence.json'
@@ -96,6 +107,11 @@ $gate = if (Test-Path $toolPath) { Get-Content $toolPath -Raw -Encoding UTF8 | C
 $gateFresh = $gate -and (Get-Item $toolPath).LastWriteTime -ge $started
 $evidence = if (Test-Path $evidencePath) { Get-Content $evidencePath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 $gameStart = if (Test-Path $gameEvidence) { Get-Content $gameEvidence -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$evidenceFresh = $evidence -and (Get-Item -LiteralPath $evidencePath).LastWriteTime -ge $started
+$gameFresh = $gameStart -and (Get-Item -LiteralPath $gameEvidence).LastWriteTime -ge $started
+$contentRecords = @($evidence.content.records)
+$builtContent = $evidence.content.status -eq 'LOADED' -and $contentRecords.Count -gt 0 -and
+    @($contentRecords | Where-Object { $_.status -ne 'Succeeded' -or $_.provider -ne 'UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider' }).Count -eq 0
 
 $result.play_mode = [ordered]@{
     exit_code = $run.exit_code
@@ -103,11 +119,14 @@ $result.play_mode = [ordered]@{
     log       = $log
     artifact  = $toolPath
     fresh     = [bool]$gateFresh
+    evidence_fresh = [bool]$evidenceFresh
+    built_content_verified = [bool]$builtContent
     result    = $gate
 }
 $result.evidence = $evidence
 $result.game_start = [ordered]@{
     evidence_path = $gameEvidence
+    fresh         = [bool]$gameFresh
     result        = $gameStart
 }
 
@@ -126,6 +145,15 @@ switch ($gate.status) {
     'BLOCKED_NO_SCENE'         { $result.status = 'BLOCKED'; $result.blocked_reason = $gate.error }
     'FAIL_TIMEOUT'  { $result.status = 'FAIL'; $result.blocked_reason = $gate.error }
     default         { $result.status = 'FAIL'; $result.blocked_reason = "play mode status $($gate.status)" }
+}
+if ($result.status -eq 'PASS' -and ($run.exit_code -ne 0 -or -not $evidenceFresh -or $evidence.status -ne 'PASS' -or
+    -not $gameFresh -or $gameStart.status -ne 'STARTED')) {
+    $result.status = 'FAIL'
+    $result.blocked_reason = 'Play Mode requires exit 0, fresh successful boot evidence, and fresh STARTED game evidence.'
+}
+if ($result.status -eq 'PASS' -and -not $builtContent) {
+    $result.status = 'FAIL'
+    $result.blocked_reason = 'Play Mode requires successful Addressables records served by BundledAssetProvider.'
 }
 
 Write-Json $gatePath $result

@@ -101,9 +101,10 @@ $result.setup = [ordered]@{
     fresh         = $(if ($setupJson -and (Get-Item $setupJsonPath).LastWriteTime -ge $setupStarted) { $true } else { $false })
     result        = $setupJson
 }
-if (-not $setupJson -or -not $result.setup.fresh -or $setup.exit_code -ne 0 -or $setupJson.status -notlike 'OK*') {
+if (-not $setupJson -or -not $result.setup.fresh -or $setup.exit_code -ne 0 -or $setupJson.status -notlike 'OK*' -or
+    $setupJson.entries_missing_asset -gt 0 -or $setupJson.labels_unregistered -gt 0 -or $setupJson.entries_skipped -gt 0) {
     $result.status = 'FAIL'
-    $result.blocked_reason = "AddressablesSetup did not succeed (exit=$($setup.exit_code), status=$(if ($setupJson) { $setupJson.status } else { 'no artifact' }))"
+    $result.blocked_reason = "AddressablesSetup did not succeed (exit=$($setup.exit_code), status=$(if ($setupJson) { $setupJson.status } else { 'no artifact' }), missing=$($setupJson.entries_missing_asset), labels_unregistered=$($setupJson.labels_unregistered), skipped=$($setupJson.entries_skipped))"
     Write-Json (Join-Path $script:UnityDataRoot 'g3_content_build.json') $result
     Write-Host "FAIL: $($result.blocked_reason); see $setupLog" -ForegroundColor Red
     exit 1
@@ -152,19 +153,30 @@ Write-Host ("  build OK: entries={0} locations={1} bundles={2} ({3} MB) catalogs
 $buildRoot = if ($buildJson.build_root) { $buildJson.build_root } else { 'Library\com.unity.addressables\aa\Windows' }
 if (-not [System.IO.Path]::IsPathRooted($buildRoot)) { $buildRoot = Join-Path $script:UnityProject $buildRoot }
 $buildRoot = [System.IO.Path]::GetFullPath($buildRoot)
+$windowsRoot = [System.IO.Path]::GetFullPath((Join-Path $script:UnityProject 'Library\com.unity.addressables\aa\Windows'))
+$windowsBuild = $buildRoot.TrimEnd('\', '/') -eq $windowsRoot.TrimEnd('\', '/')
 $contentFiles = @()
+$catalogFiles = @()
 $contentCatalog = $false
 if (Test-Path $buildRoot) {
     $contentFiles = @(Get-ChildItem $buildRoot -Recurse -File)
-    $contentCatalog = [bool]($contentFiles | Where-Object { $_.Name -like 'catalog*' })
+    $catalogFiles = @($contentFiles | Where-Object { $_.Name -like 'catalog*' -and $_.Extension -in '.json', '.bin' -and $_.Length -gt 0 })
+    # The fresh native build receipt must identify the same nonempty catalog
+    # that the Windows Player build will read; a hash file alone is insufficient.
+    foreach ($catalog in $catalogFiles) {
+        foreach ($record in @($buildJson.catalogs)) {
+            if (-not $record.path) { continue }
+            $reportedPath = $record.path
+            if (-not [System.IO.Path]::IsPathRooted($reportedPath)) { $reportedPath = Join-Path $script:UnityProject $reportedPath }
+            $reportedPath = [System.IO.Path]::GetFullPath($reportedPath)
+            if ($reportedPath -eq $catalog.FullName -and $record.bytes -eq $catalog.Length) { $contentCatalog = $true }
+        }
+    }
 }
 $contentBytes = ($contentFiles | Measure-Object -Property Length -Sum).Sum
 
-# A run of this gate once reported "empty or has no catalog" while the same run's staging block recorded 15
-# files and a catalog, and the catalog did exist on disk afterwards -- i.e. the check was right about the moment
-# it looked and wrong about the conclusion (a false negative that would have failed a healthy build).  So if the
-# expected folder has no catalog, look for one anywhere under the Addressables build tree before concluding:
-# finding it elsewhere is a *diagnosis* (recorded), not a pass, and only "nowhere" fails.
+# An older or other-platform catalog is useful diagnostic context only. It
+# cannot satisfy the current Windows build's catalog requirement.
 $catalogElsewhere = $null
 if (-not $contentCatalog) {
     $aaRoot = Join-Path $script:UnityProject 'Library\com.unity.addressables'
@@ -172,7 +184,6 @@ if (-not $contentCatalog) {
         $found = Get-ChildItem $aaRoot -Recurse -File -Filter 'catalog*' -ErrorAction SilentlyContinue | Select-Object -First 1
         if ($found) {
             $catalogElsewhere = $found.FullName
-            $contentCatalog = $true
         }
     }
 }
@@ -182,12 +193,16 @@ $result.staging = [ordered]@{
     player_streaming_source_files   = $contentFiles.Count
     player_streaming_source_bytes   = $contentBytes
     player_streaming_source_catalog = [bool]($contentFiles | Where-Object { $_.Name -like 'catalog*' })
+    catalog_matches_build_receipt   = $contentCatalog
+    expected_windows_build_root    = $windowsRoot
+    windows_build_root             = $windowsBuild
     catalog_found_elsewhere         = $catalogElsewhere
     build_reports                   = [ordered]@{ files = $buildJson.staged_files; bytes = $buildJson.staged_bytes }
     leftover_assets_stage           = $(if (Test-Path $leftoverStage) { 'present (redundant copy; the player build adds Library aa itself)' } else { 'absent' })
 }
 
-$ok = $contentFiles.Count -gt 0 -and $contentCatalog -and $buildJson.bundle_count -gt 0 -and $buildJson.location_count -gt 0
+$ok = $windowsBuild -and $contentFiles.Count -gt 0 -and $contentCatalog -and $buildJson.bundle_count -gt 0 -and $buildJson.location_count -gt 0
+if (-not $windowsBuild) { $result.blocked_reason = "content build must target Windows at $windowsRoot; reported $buildRoot" }
 
 # --- 4. guard against silent shrinkage ---------------------------------------------
 # A content build does not fail when an asset's scripting assembly is unavailable: it simply leaves that

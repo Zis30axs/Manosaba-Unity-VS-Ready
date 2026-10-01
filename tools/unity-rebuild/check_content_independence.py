@@ -81,13 +81,35 @@ def checked_disconnect_target(game: Path) -> Path:
     return hidden
 
 
+def execution_environment() -> dict[str, str]:
+    """Test this checkout even when a research shell carries other root/plan overrides."""
+    poison = REPO / "tools/unity-rebuild/out/__original_game_must_not_exist__"
+    if poison.exists():
+        raise ValueError("Poison original-game path unexpectedly exists")
+    env = dict(os.environ)
+    for key in ("MANOSABA_SO_OUT", "MANOSABA_SO_PLAN", "MANOSABA_PREFAB_OUT", "MANOSABA_PREFAB_PLAN",
+                "MANOSABA_PREFAB_FIELD_DUMP", "MANOSABA_RESOURCE_REPORT", "MANOSABA_MATERIAL_PLAN",
+                "MANOSABA_CATALOG_PATH", "MANOSABA_CATALOG_OUT", "MANOSABA_ADDRESSABLES_PLAN",
+                "MANOSABA_ADDRESSABLES_PRUNE"):
+        env.pop(key, None)
+    env.update({"MANOSABA_REPO_ROOT": str(REPO), "MANOSABA_RES_ROOT": str(REPO / "res"),
+                "MANOSABA_SOURCE_ROOT": str(REPO / "src"), "MANOSABA_DUMP_ROOT": str(REPO / "work"),
+                "MANOSABA_OUTPUT_ROOT": str(REPO / "tools/unity-rebuild/out"),
+                "MANOSABA_CONTENT_ONLY": "1", "MANOSABA_PYTHON": sys.executable})
+    for key in ("MANOSABA_GAME_ROOT", "MANOSABA_GAME_DATA_ROOT", "MANOSABA_AA_ROOT"):
+        env[key] = str(poison / key)
+    packages = REPO / "tools/venv/Lib/site-packages"
+    env["PYTHONPATH"] = str(packages) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    return env
+
+
 def run_stage(stage: str, env: dict, output: Path, group: str, timeout: int, forbidden_root: Path | None) -> dict:
     shell = shutil.which("pwsh") or shutil.which("powershell")
     if not shell:
         raise ValueError("PowerShell is required for the existing Unity gates")
     if stage == "sync":
         script = REPO / "tools/content/sync.ps1"
-        artifact = None
+        artifact = REPO / "res/.manosaba-content-state.json"
     else:
         name, result_name = GATES[stage]
         script = REPO / "tools/unity-rebuild" / name
@@ -105,15 +127,17 @@ def run_stage(stage: str, env: dict, output: Path, group: str, timeout: int, for
                                timeout=timeout, encoding="utf-8", errors="replace")
     text = completed.stdout + "\n" + completed.stderr
     (output / f"{stage}.log").write_text(text, encoding="utf-8")
-    fresh = artifact is None or (artifact.is_file() and artifact.stat().st_mtime_ns >= before)
-    evidence = read_json(artifact) if artifact and fresh else None
+    fresh = artifact.is_file() and artifact.stat().st_mtime_ns >= before
+    # The sync manifest can be hundreds of MB. Its successful writer is the sync
+    # process itself; require a new saved checkpoint without loading it again.
+    evidence = read_json(artifact) if stage != "sync" and fresh else None
     violations = []
     historical_references = []
     inspected = [(str(output / f"{stage}.log"), text)]
     for path in log_root.rglob("*.log"):
         if path.stat().st_mtime_ns != old_logs.get(path):
             inspected.append((str(path), path.read_text(encoding="utf-8-sig", errors="replace")))
-    if artifact and fresh:
+    if evidence is not None:
         execution = dict(evidence)
         # G5 embeds a previously decoded scene/catalog record for provenance.
         # Its historical source path describes the one-time import, rather than
@@ -156,7 +180,7 @@ def main() -> int:
     output = REPO / "tools/unity-rebuild/out/content-independence" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
     output.mkdir(parents=True, exist_ok=True)
     result = {"status": "NOT_RUN", "generated": datetime.now(timezone.utc).isoformat(),
-              "static_checks": static_checks(), "stages": [], "original_disconnected": False}
+              "static_checks": static_checks(), "stages": [], "group": args.group, "original_disconnected": False}
     game = args.game_root.resolve() if args.game_root else configured_game()
     hidden = None
     try:
@@ -178,15 +202,7 @@ def main() -> int:
                 result["original_disconnected"] = not game.exists()
             else:
                 result["original_disconnected"] = True
-            poison = REPO / "tools/unity-rebuild/out/__original_game_must_not_exist__"
-            if poison.exists():
-                raise ValueError("Poison original-game path unexpectedly exists")
-            env = dict(os.environ)
-            for key in ("MANOSABA_GAME_ROOT", "MANOSABA_GAME_DATA_ROOT", "MANOSABA_AA_ROOT"):
-                env.pop(key, None)
-                env[key] = str(poison / key)
-            env["MANOSABA_CONTENT_ONLY"] = "1"
-            env["MANOSABA_PYTHON"] = sys.executable
+            env = execution_environment()
             result["environment"] = {k: env[k] for k in ("MANOSABA_GAME_ROOT", "MANOSABA_GAME_DATA_ROOT", "MANOSABA_AA_ROOT", "MANOSABA_CONTENT_ONLY")}
             for stage in STAGES:
                 if stage not in args.stages:
@@ -198,7 +214,7 @@ def main() -> int:
                 if step["status"] != "PASS":
                     break
             passed = len(result["stages"]) == len(set(args.stages)) and all(s["status"] == "PASS" for s in result["stages"])
-            complete = set(args.stages) == set(STAGES)
+            complete = set(args.stages) == set(STAGES) and args.group == "all"
             result["status"] = ("PASS" if complete else "PARTIAL") if passed else "FAIL"
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         result["status"] = "BLOCKED"

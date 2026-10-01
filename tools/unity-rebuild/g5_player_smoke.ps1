@@ -158,22 +158,31 @@ $ErrorActionPreference = $savedEap
 
 $evidenceJson = if (Test-Path $evidence) { Get-Content $evidence -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 $gameJson = if (Test-Path $gameEvidence) { Get-Content $gameEvidence -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$evidenceFresh = $evidenceJson -and (Get-Item -LiteralPath $evidence).LastWriteTime -ge $started
+$gameFresh = $gameJson -and (Get-Item -LiteralPath $gameEvidence).LastWriteTime -ge $started
+$contentRecords = @($evidenceJson.content.records)
+$builtContent = $evidenceJson.content.status -eq 'LOADED' -and $contentRecords.Count -gt 0 -and
+    @($contentRecords | Where-Object { $_.status -ne 'Succeeded' -or $_.provider -ne 'UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider' }).Count -eq 0
 $result.run = [ordered]@{
     exit_code      = $exitCode
     seconds        = $seconds
     log            = $playerLog
     evidence_path  = $evidence
     evidence       = $evidenceJson
+    evidence_fresh = [bool]$evidenceFresh
+    built_content_verified = [bool]$builtContent
 }
 $result.game_start = [ordered]@{
     evidence_path = $gameEvidence
+    fresh         = [bool]$gameFresh
     result        = $gameJson
 }
 
-if ($exitCode -eq 0 -and $evidenceJson -and $evidenceJson.status -eq 'PASS') {
+if ($exitCode -eq 0 -and $evidenceFresh -and $evidenceJson.status -eq 'PASS' -and $gameFresh -and $gameJson.status -eq 'STARTED' -and $builtContent) {
     $result.status = 'PASS'
 } else {
     $result.status = 'FAIL'
+    $result.blocked_reason = 'Player requires exit 0, fresh successful boot and STARTED game evidence, and successful BundledAssetProvider Addressables records.'
 }
 
 $catalog = if ($evidenceJson) { $evidenceJson.catalog } else { $null }
