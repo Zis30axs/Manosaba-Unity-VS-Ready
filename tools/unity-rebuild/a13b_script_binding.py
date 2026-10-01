@@ -21,6 +21,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import gc
 import collections
 import datetime
 import json
@@ -43,12 +44,8 @@ ALIASES = {"Assembly-CSharp": "WitchTrials.Game"}
 
 
 def game_root():
-    cfg = os.path.join(REPO, "tools", "audit", "audit.config.json")
-    with open(cfg, encoding="utf-8-sig") as fh:
-        root = json.load(fh).get("game_root", "")
-    if not root or not os.path.isdir(root):
-        raise SystemExit(f"game_root not usable: {root!r} (see {cfg})")
-    return root
+    from imported_source import game_root as imported_game_root
+    return imported_game_root()
 
 
 def build_cab_index(game):
@@ -229,6 +226,10 @@ def main():
     per_bundle = {}
     for path in targets:
         records, error = resolver.resolve_bundle(path)
+        # Keep the lightweight MonoScript tables, not every decompressed bundle.
+        # A first --from-index --max-bundles 0 run must not accumulate all content.
+        resolver._env_cache.clear()
+        gc.collect()
         stem = os.path.basename(path)
         per_bundle[stem] = {"scripts": len(records), "error": error}
         for r in records:
@@ -309,4 +310,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

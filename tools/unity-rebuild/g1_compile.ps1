@@ -21,9 +21,10 @@ $result = [ordered]@{
 }
 
 # --- G0: inputs ---------------------------------------------------------------
-Write-Host "=== G0 preflight ===" -ForegroundColor Cyan
-$preflightJson = Join-Path $script:OutRoot 'preflight.json'
-& $script:PythonExe (Join-Path $PSScriptRoot 'preflight.py') | Out-Null
+Write-Host "=== G0 build preflight (imported content only) ===" -ForegroundColor Cyan
+$preflightJson = Join-Path $script:OutRoot 'preflight_build.json'
+& $script:PythonExe (Join-Path $PSScriptRoot 'preflight.py') --mode build | Out-Null
+$preflightExit = $LASTEXITCODE
 if (Test-Path $preflightJson) {
     $pf = Get-Content $preflightJson -Raw -Encoding UTF8 | ConvertFrom-Json
     $result.preflight = [ordered]@{
@@ -34,6 +35,13 @@ if (Test-Path $preflightJson) {
         unity_found             = $pf.unity.found
     }
     Write-Host "  preflight status: $($pf.status) (missing required: $($pf.missing_required_count))"
+}
+if ($preflightExit -ne 0) {
+    $result.status = 'BLOCKED'
+    $result.blocked_reason = "Build preflight requires imported editable resources; see $preflightJson"
+    Write-Json (Join-Path $script:UnityDataRoot 'g1_compile.json') $result
+    Write-Host "BLOCKED: $($result.blocked_reason)" -ForegroundColor Red
+    exit 2
 }
 
 # --- editor presence ----------------------------------------------------------
@@ -62,6 +70,9 @@ Write-Host "  licence OK"
 # --- compile gate -------------------------------------------------------------
 Write-Host "=== Unity compile gate ===" -ForegroundColor Cyan
 $log = Join-Path $script:LogRoot 'g1_compile.log'
+$unityResult = Join-Path $script:UnityDataRoot 'compile_result.json'
+Remove-Item -LiteralPath $unityResult -ErrorAction SilentlyContinue
+$compileStarted = Get-Date
 $run = Invoke-Logged -FilePath $script:UnityExe -LogPath $log -Arguments @(
     '-batchmode', '-nographics', '-quit',
     '-projectPath', $script:UnityProject,
@@ -95,13 +106,17 @@ $result.compile = [ordered]@{
     assembly_load_errors = $loadErrors
 }
 
-$unityResult = Join-Path $script:UnityDataRoot 'compile_result.json'
-if (Test-Path $unityResult) {
-    $result.compile.assembly_graph = (Get-Content $unityResult -Raw | ConvertFrom-Json)
+$compileFresh = (Test-Path -LiteralPath $unityResult) -and (Get-Item -LiteralPath $unityResult).LastWriteTime -ge $compileStarted
+$result.compile.artifact_fresh = $compileFresh
+if ($compileFresh) {
+    $result.compile.assembly_graph = (Get-Content $unityResult -Raw -Encoding UTF8 | ConvertFrom-Json)
 }
 
-if ($csErrors -gt 0 -or $loadErrors -gt 0 -or $run.exit_code -ne 0) {
+$compileReceiptOk = $compileFresh -and $result.compile.assembly_graph.status -eq 'COMPILED_NO_DIAGNOSTICS_COLLECTED' -and
+                    $result.compile.assembly_graph.assembly_graph_recorded -and $result.compile.assembly_graph.player_assembly_count -gt 0
+if ($csErrors -gt 0 -or $loadErrors -gt 0 -or $run.exit_code -ne 0 -or -not $compileReceiptOk) {
     $result.status = 'FAIL'
+    if (-not $compileReceiptOk) { $result.blocked_reason = 'CompileGate produced no fresh successful assembly graph.' }
 } else {
     $result.status = 'PASS'
 }

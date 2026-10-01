@@ -1,101 +1,61 @@
-﻿# Copy the shipped Addressables runtime files from the game install into the Unity project so a
-# built Player actually contains them (Unity copies Assets/StreamingAssets verbatim).
-#
-#   pwsh -File tools/unity-rebuild/apply_shipped_aa.ps1 [-WhatIf]
-#
-# Copies ONLY the small runtime files:
-#   shipped-aa/catalog.bin  ~5.5 MB   key/provider/location table the runtime reads
-#   aa/catalog.hash     ~32 B     hash the runtime compares against the remote/cached catalog
-#   aa/settings.json    ~2 KB     Addressables RuntimeData (version, build target, catalog provider)
-#
-# The 457 content bundles (6.4 GB) are deliberately NOT copied: they belong to the content build
-# (G2/G3) and would make the project unreproducible.  Evidence (sizes + sha256) is written to
-# tools/unity-rebuild/out/unity/streamingassets_manifest.json.
-#
-# Also copies every loose file the shipped StreamingAssets holds next to aa/ into
-# Assets/StreamingAssets/ under the same name - today that is config.json
-# ({"available_text_lang":["ja","zh-Hans"],"unavailable_lang_fallback":{...}}), which
-# DefaultLocaleSelector.LoadAsync reads to pick the default locale.  Without it a Player cannot
-# choose zh-Hans and starts in Japanese.
-#
-# Nothing is written into the game directory.
+# Stage imported runtime metadata without consulting the original game install.
+# import_source_cache.py captures these files once. Rebuilt catalog/bundles remain
+# the runtime source in Library/com.unity.addressables; shipped-aa is evidence for
+# the existing standalone catalog smoke probe.
+[CmdletBinding()]
 param([switch]$WhatIf)
 
 . "$PSScriptRoot\common.ps1"
 
 $result = [ordered]@{
-    gate      = 'apply_shipped_streamingassets'
+    gate = 'apply_imported_streamingassets'
     generated = (Get-Date).ToUniversalTime().ToString('o')
-    game_root = $script:GameRoot
-    status    = 'NOT_RUN'
-    reason    = $null
-    files     = @()
+    source_cache = $script:ImportedSourceRoot
+    status = 'NOT_RUN'
+    reason = $null
+    files = @()
 }
-
-if (-not $script:GameRoot) {
+$sourceStreaming = Join-Path $script:ImportedSourceRoot 'manosaba_Data\StreamingAssets'
+$sourceAa = Join-Path $sourceStreaming 'aa'
+$targetStreaming = Join-Path $script:UnityProject 'Assets\StreamingAssets'
+$targetAa = Join-Path $targetStreaming 'shipped-aa'
+$missing = @(@('catalog.bin', 'settings.json') | Where-Object { -not (Test-Path -LiteralPath (Join-Path $sourceAa $_) -PathType Leaf) })
+if ($missing.Count -gt 0) {
     $result.status = 'BLOCKED'
-    $result.reason = 'game root not configured (MANOSABA_GAME_ROOT or game_root in tools/audit/audit.config.json)'
+    $result.reason = "Imported runtime metadata is missing ($($missing -join ', ')). Run tools/content/import.ps1 once."
     Write-Json (Join-Path $script:UnityDataRoot 'streamingassets_manifest.json') $result
     Write-Host "BLOCKED: $($result.reason)" -ForegroundColor Red
     exit 2
 }
 
-$sourceDir = Join-Path $script:GameRoot 'manosaba_Data\StreamingAssets\aa'
-$targetDir = Join-Path $script:UnityProject 'Assets\StreamingAssets\shipped-aa'
-if (-not (Test-Path $sourceDir)) {
-    $result.status = 'BLOCKED'
-    $result.reason = "shipped Addressables folder not found: $sourceDir"
-    Write-Json (Join-Path $script:UnityDataRoot 'streamingassets_manifest.json') $result
-    Write-Host "BLOCKED: $($result.reason)" -ForegroundColor Red
-    exit 2
-}
-
-New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
-
+$sources = @()
 foreach ($name in @('catalog.bin', 'catalog.hash', 'settings.json')) {
-    $src = Join-Path $sourceDir $name
-    $dst = Join-Path $targetDir $name
-    $entry = [ordered]@{ name = $name; source = $src; target = $dst; exists = (Test-Path $src) }
-    if ($entry.exists) {
-        $entry.source_bytes = (Get-Item $src).Length
-        $entry.sha256 = (Get-FileHash $src -Algorithm SHA256).Hash.ToLower()
-        if ($WhatIf) {
-            $entry.action = 'would copy'
-        } else {
-            Copy-Item -Path $src -Destination $dst -Force
-            $entry.action = 'copied'
-            $entry.target_bytes = (Get-Item $dst).Length
-        }
-    } else {
-        $entry.action = 'missing'
+    $source = Join-Path $sourceAa $name
+    if (Test-Path -LiteralPath $source -PathType Leaf) {
+        $sources += [pscustomobject]@{ source = $source; target = Join-Path $targetAa $name; name = "shipped-aa/$name" }
     }
-    $result.files += $entry
 }
-
-# Loose files next to aa/ (config.json): copied verbatim to Assets/StreamingAssets/<name>.
-$looseDir = Join-Path $script:GameRoot 'manosaba_Data\StreamingAssets'
-$looseTarget = Join-Path $script:UnityProject 'Assets\StreamingAssets'
-foreach ($file in Get-ChildItem -Path $looseDir -File) {
-    $dst = Join-Path $looseTarget $file.Name
-    $entry = [ordered]@{ name = $file.Name; source = $file.FullName; target = $dst; exists = $true }
-    $entry.source_bytes = $file.Length
-    $entry.sha256 = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
-    if ($WhatIf) {
-        $entry.action = 'would copy'
-    } else {
-        Copy-Item -Path $file.FullName -Destination $dst -Force
-        $entry.action = 'copied'
-        $entry.target_bytes = (Get-Item $dst).Length
+foreach ($file in Get-ChildItem -LiteralPath $sourceStreaming -File) {
+    if ($file.Extension -in @('.exe', '.dll', '.ps1', '.bat', '.cmd', '.com', '.asi', '.pyd', '.so', '.dylib') -or
+        $file.Name -eq 'global-metadata.dat') { continue }
+    $sources += [pscustomobject]@{ source = $file.FullName; target = Join-Path $targetStreaming $file.Name; name = $file.Name }
+}
+foreach ($file in $sources) {
+    $sha = (Get-FileHash -LiteralPath $file.source -Algorithm SHA256).Hash.ToLowerInvariant()
+    $same = (Test-Path -LiteralPath $file.target -PathType Leaf) -and
+            (Get-FileHash -LiteralPath $file.target -Algorithm SHA256).Hash.ToLowerInvariant() -eq $sha
+    $action = if ($same) { 'unchanged' } elseif ($WhatIf) { 'would copy' } else { 'copied' }
+    if (-not $same -and -not $WhatIf) {
+        New-Item -ItemType Directory -Force -Path (Split-Path $file.target) | Out-Null
+        Copy-Item -LiteralPath $file.source -Destination $file.target -Force
     }
-    $result.files += $entry
+    $result.files += [ordered]@{
+        name = $file.name; source = $file.source; target = $file.target
+        source_bytes = (Get-Item -LiteralPath $file.source).Length; sha256 = $sha; action = $action
+    }
+    Write-Host "  $($file.name): $action"
 }
-
-$result.status = if ($result.files | Where-Object { $_.action -eq 'copied' -or $_.action -eq 'would copy' }) { 'OK' } else { 'NOTHING_COPIED' }
+$result.status = 'OK'
 Write-Json (Join-Path $script:UnityDataRoot 'streamingassets_manifest.json') $result
-
-foreach ($f in $result.files) {
-    Write-Host ("  {0,-16} {1,-12} {2,10} bytes  {3}" -f $f.name, $f.action, $(if ($f.source_bytes) { $f.source_bytes } else { 0 }), $f.target)
-}
-Write-Host "apply_shipped_aa: $($result.status) -> $targetDir"
+Write-Host "apply_shipped_aa: OK (imported cache) -> $targetStreaming"
 exit 0
-

@@ -32,6 +32,7 @@ param(
 )
 
 . "$PSScriptRoot\common.ps1"
+Restore-ContentEvidence
 
 $result = [ordered]@{
     gate           = 'G3_addressables_content_build'

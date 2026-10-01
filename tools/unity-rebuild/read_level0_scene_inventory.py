@@ -36,8 +36,8 @@ except ImportError:
 
 
 def game_root():
-    with io.open(os.path.join(REPO, "tools", "audit", "audit.config.json"), encoding="utf-8") as fh:
-        return json.load(fh)["game_root"]
+    from imported_source import game_root as imported_game_root
+    return imported_game_root()
 
 
 def load_monoscripts():

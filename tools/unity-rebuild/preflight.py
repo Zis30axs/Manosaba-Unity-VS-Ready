@@ -17,6 +17,7 @@ Exit code is non-zero when any REQUIRED input is missing, so a batch build fails
 from __future__ import annotations
 
 import collections
+import argparse
 import csv
 import hashlib
 import json
@@ -163,7 +164,65 @@ def unity_info():
     return out
 
 
+def content_preflight(mode, compute_hash=False):
+    """Content/build input checks are intentionally separate from research inputs.
+
+    No original Player, DLL, IL2CPP metadata, or BepInEx path is enumerated here.
+    Only locally editable resources and this Unity project participate.
+    """
+    from pathlib import Path
+    from imported_source import res_root
+    repo = Path(HERE).parents[1]
+    res = res_root()
+    project = repo / "UnityProject"
+    required = [
+        ("content_index", res / "_index.csv", "indexed editable resource sync"),
+        ("editable_content", res / "Assets", "editable game resources"),
+    ]
+    if mode == "build":
+        required += [
+            ("unity_project", project / "ProjectSettings/ProjectVersion.txt", "Unity project compilation"),
+            ("unity_packages", project / "Packages/manifest.json", "Unity package resolution"),
+            ("imported_content", project / "Assets/GameContent", "Addressables content build"),
+            ("imported_locale", res / ".imported-source/manosaba_Data/StreamingAssets/config.json", "locale selection"),
+        ]
+    rows = []
+    for kind, path, blocks in required:
+        row = {"kind": kind, "path": str(path), "required": True,
+               "blocks": blocks, "exists": path.exists(), "size": None}
+        if path.is_file():
+            row["size"] = path.stat().st_size
+            if compute_hash:
+                row["sha256"] = sha256_file(str(path))[0]
+        rows.append(row)
+    missing = [r for r in rows if not r["exists"]]
+    editor = unity_info() if mode == "build" else {"found": None, "version": None}
+    result = {"mode": mode, "status": "BLOCKED" if missing else "INPUTS_PRESENT",
+              "generated": time.strftime("%Y-%m-%dT%H:%M:%S"), "inputs": rows,
+              "missing_required_count": len(missing), "missing_optional_count": 0,
+              "unity": editor, "bundles": {"bundle_count": 0},
+              "roots": {"res_root": str(res), "unity_project": str(project)},
+              "original_game_inputs_required": False}
+    os.makedirs(OUT, exist_ok=True)
+    with open(os.path.join(OUT, f"preflight_{mode}.json"), "w", encoding="utf-8") as fh:
+        json.dump(result, fh, ensure_ascii=False, indent=2)
+    lines = [f"# {mode.title()} preflight", "", f"Status: **{result['status']}**", "",
+             "Original game executables, IL2CPP binaries and BepInEx are not inputs.", ""]
+    lines += [f"- {'OK' if r['exists'] else 'BLOCKED'} `{r['path']}`: {r['blocks']}" for r in rows]
+    with open(os.path.join(OUT, f"preflight_{mode}.md"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 1 if missing else 0
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--mode", choices=("research", "content", "build"), default="research")
+    parser.add_argument("--force", action="store_true")
+    parser.add_argument("--hash", action="store_true")
+    args = parser.parse_args()
+    if args.mode != "research":
+        return content_preflight(args.mode, args.hash or args.force)
     force = "--force" in sys.argv
     compute_hash = "--hash" in sys.argv or force
     os.makedirs(OUT, exist_ok=True)

@@ -23,7 +23,7 @@ function Get-ConfigValue {
     }
     $cfg = Join-Path $script:RepoRoot 'tools\audit\audit.config.json'
     $local = Join-Path $script:RepoRoot 'tools\audit\audit.config.local.json'
-    foreach ($f in @($cfg, $local)) {
+    foreach ($f in @($local, $cfg)) {
         if (Test-Path $f) {
             try {
                 # -Encoding UTF8 is required: Windows PowerShell 5.1 would otherwise read the
@@ -54,9 +54,26 @@ if ($candidate -and (Test-Path $candidate)) {
     }
 }
 
-$script:GameRoot = Get-ConfigValue -Key 'game_root' -EnvName 'MANOSABA_GAME_ROOT' -Default ''
+$script:ResRoot = Get-ConfigValue -Key 'res_root' -EnvName 'MANOSABA_RES_ROOT' -Default (Join-Path $script:RepoRoot 'res')
+if (-not [IO.Path]::IsPathRooted($script:ResRoot)) { $script:ResRoot = Join-Path $script:RepoRoot $script:ResRoot }
+$script:ImportedSourceRoot = Join-Path $script:ResRoot '.imported-source'
+# Ordinary Unity gates never resolve the original install. Research tools retain
+# their independent tools/audit/config.py game-root configuration.
 $script:PythonExe = Get-ConfigValue -Key 'python_exe' -EnvName 'MANOSABA_PYTHON' `
     -Default (Join-Path $script:RepoRoot 'tools\venv\Scripts\python.exe')
+if (-not (Test-Path -LiteralPath $script:PythonExe -PathType Leaf)) {
+    $pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+    if ($pythonCommand) { $script:PythonExe = $pythonCommand.Source }
+}
+
+function Restore-ContentEvidence {
+    # Only fill absent reconstruction inputs; current plans and ledgers win.
+    $snapshot = Join-Path $script:ResRoot '.manosaba\reconstruction\manifest.json'
+    if (Test-Path -LiteralPath $snapshot -PathType Leaf) {
+        & $script:PythonExe (Join-Path $PSScriptRoot 'import_source_cache.py') --res-root $script:ResRoot --restore-evidence
+        if ($LASTEXITCODE -ne 0) { throw 'Imported reconstruction evidence could not be restored.' }
+    }
+}
 
 function Assert-Unity {
     if (-not $script:UnityExe) {
@@ -201,5 +218,6 @@ function Invoke-TmpEssentials {
 Write-Host "[common] repo        = $script:RepoRoot"
 Write-Host "[common] unity       = $(if ($script:UnityExe) { $script:UnityExe } else { '(not found)' })"
 Write-Host "[common] unity ver   = $(if ($script:UnityExe) { Get-UnityVersion $script:UnityExe } else { 'n/a' })"
-Write-Host "[common] game root   = $script:GameRoot"
+Write-Host "[common] content     = $script:ResRoot"
+Write-Host "[common] source cache= $script:ImportedSourceRoot"
 Write-Host "[common] out root    = $script:OutRoot"

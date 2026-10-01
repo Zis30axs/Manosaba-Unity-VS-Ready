@@ -11,10 +11,10 @@
 #             1 = built but a runtime assertion failed (or the Player crashed)
 #             2 = BLOCKED (no Editor, no scene, build failed)
 #
-# This does NOT claim the game flow runs: the reconstructed entry point
-# (WitchTrials.Views.GameInitializer) still has IL2CPP stub bodies.  What it proves is that the
-# reconstructed assemblies compile into, ship inside, and load in a standalone Player, and that the
-# Player can read the shipped Addressables catalog with the real runtime.
+# Loads the reconstructed assemblies and newly built content in a standalone
+# Player. The shipped catalog is imported resource evidence for a separate parsing
+# probe; gameplay loads the reconstruction's own Addressables build. The existing
+# game-start probe also records boot, Naninovel initialization and auto-advance.
 . "$PSScriptRoot\common.ps1"
 
 $result = [ordered]@{
@@ -43,39 +43,53 @@ $result.tmp_essentials = Invoke-TmpEssentials
 # --- 1b. bootstrap -----------------------------------------------------------------
 Write-Host "=== bootstrap (Boot scene + build settings) ===" -ForegroundColor Cyan
 $bootLog = Join-Path $script:LogRoot 'bootstrap.log'
+$bootJsonPath = Join-Path $script:UnityDataRoot 'bootstrap_result.json'
+Remove-Item -LiteralPath $bootJsonPath -ErrorAction SilentlyContinue
+$bootStarted = Get-Date
 $boot = Invoke-Logged -FilePath $script:UnityExe -LogPath $bootLog -Arguments @(
     '-batchmode', '-nographics', '-quit',
     '-projectPath', $script:UnityProject,
     '-executeMethod', 'Manosaba.EditorTools.ProjectBootstrap.Run',
     '-logFile', '-'
 )
-$bootJsonPath = Join-Path $script:UnityDataRoot 'bootstrap_result.json'
+$bootFresh = (Test-Path -LiteralPath $bootJsonPath) -and (Get-Item -LiteralPath $bootJsonPath).LastWriteTime -ge $bootStarted
 $result.bootstrap = [ordered]@{
     exit_code = $boot.exit_code
     seconds   = $boot.seconds
     log       = $boot.log
-    result    = if (Test-Path $bootJsonPath) { Get-Content $bootJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+    fresh     = $bootFresh
+    result    = if ($bootFresh) { Get-Content $bootJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 }
 Write-Host "  bootstrap exit=$($boot.exit_code)"
+if ($boot.exit_code -ne 0 -or -not $bootFresh -or $result.bootstrap.result.status -ne 'OK') {
+    $result.status = 'FAIL'
+    $result.blocked_reason = 'Bootstrap failed or produced no fresh successful artifact.'
+    Write-Json (Join-Path $script:UnityDataRoot 'g5_player_smoke.json') $result
+    exit 1
+}
 
 # --- 2. build the Player -----------------------------------------------------------
 Write-Host "=== build Windows x64 Player ===" -ForegroundColor Cyan
 $buildLog = Join-Path $script:LogRoot 'build_player.log'
+$buildJsonPath = Join-Path $script:UnityDataRoot 'build_player.json'
+Remove-Item -LiteralPath $buildJsonPath -ErrorAction SilentlyContinue
+$buildStarted = Get-Date
 $build = Invoke-Logged -FilePath $script:UnityExe -LogPath $buildLog -Arguments @(
     '-batchmode', '-nographics', '-quit',
     '-projectPath', $script:UnityProject,
     '-executeMethod', 'Manosaba.EditorTools.BuildPlayer.Run',
     '-logFile', '-'
 )
-$buildJsonPath = Join-Path $script:UnityDataRoot 'build_player.json'
-$buildJson = if (Test-Path $buildJsonPath) { Get-Content $buildJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
+$buildFresh = (Test-Path -LiteralPath $buildJsonPath) -and (Get-Item -LiteralPath $buildJsonPath).LastWriteTime -ge $buildStarted
+$buildJson = if ($buildFresh) { Get-Content $buildJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 $result.build = [ordered]@{
     exit_code = $build.exit_code
     seconds   = $build.seconds
     log       = $build.log
+    fresh     = $buildFresh
     result    = $buildJson
 }
-if (-not $buildJson -or $buildJson.status -ne 'SUCCEEDED') {
+if ($build.exit_code -ne 0 -or -not $buildJson -or $buildJson.status -ne 'SUCCEEDED') {
     $result.status = 'BLOCKED'
     $result.blocked_reason = "Player build did not succeed ($($buildJson.status))"
     Write-Json (Join-Path $script:UnityDataRoot 'g5_player_smoke.json') $result
@@ -125,7 +139,7 @@ $env:MANOSABA_GAMESTART_AUTO_ADVANCE_SECONDS = '12'
 $savedEap = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
 $started = Get-Date
-$proc = Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe) -PassThru -ArgumentList @(
+$proc = Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe) -WindowStyle Hidden -PassThru -ArgumentList @(
     '-batchmode', '-nographics', '-manosabaSmoke', '-manosabaContent', '-manosabaEvidence', $evidence, '-logFile', $playerLog
 )
 $exited = $proc.WaitForExit(240000)
@@ -202,4 +216,3 @@ if ($gameJson) {
 }
 
 if ($result.status -eq 'PASS') { exit 0 } else { exit 1 }
-

@@ -12,6 +12,7 @@
 #             1 = missing assets or unstable GUIDs
 #             2 = BLOCKED (no Editor / no input list)
 . "$PSScriptRoot\common.ps1"
+Restore-ContentEvidence
 
 $result = [ordered]@{
     gate           = 'G2_asset_import'
@@ -115,9 +116,9 @@ $result.guid_stability = [ordered]@{
 }
 
 $okA = $result.run_a.verify -and $result.run_a.verify.status -eq 'OK' -and $result.run_a.artifact_fresh -and
-       $result.run_a.cs_errors -eq 0 -and -not $result.run_a.aborted
+       $result.run_a.exit_code -eq 0 -and $result.run_a.cs_errors -eq 0 -and -not $result.run_a.aborted
 $okB = $result.run_b.verify -and $result.run_b.verify.status -eq 'OK' -and $result.run_b.artifact_fresh -and
-       $result.run_b.cs_errors -eq 0 -and -not $result.run_b.aborted
+       $result.run_b.exit_code -eq 0 -and $result.run_b.cs_errors -eq 0 -and -not $result.run_b.aborted
 
 # Both runs must have verified the same input list: if the list changed between them (e.g. a13 was
 # re-run in between), the GUID comparison would be meaningless even though both runs "passed".

@@ -39,6 +39,8 @@ import os
 import re
 import shutil
 import sys
+from pathlib import Path
+from functools import lru_cache
 from collections import Counter, defaultdict
 
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -103,6 +105,96 @@ STATUS_HEADER = ["type", "category", "status", "reason", "asset_path", "output_f
                  "target_path", "bundle", "path_id", "bytes"]
 
 
+@lru_cache(maxsize=128)
+def canonical_root(root):
+    return Path(root).resolve()
+
+
+def checked_path(root, relative, resolve=True):
+    """Index paths are data: never allow them to escape the declared content tree."""
+    root = Path(root).absolute()
+    rel = Path(str(relative).replace("\\", "/"))
+    if rel.is_absolute() or rel.drive or ".." in rel.parts:
+        raise ValueError(f"unsafe content path: {relative!r}")
+    result = (root / rel).resolve() if resolve else root / rel
+    if not result.is_relative_to(canonical_root(str(root)) if resolve else root):
+        raise ValueError(f"content path escapes {root}: {relative!r}")
+    return result
+
+
+def sprite_pair(value, name, rectangle=False):
+    import math
+    if not isinstance(value, (list, tuple)) or len(value) != 2 or any(
+            isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number) for number in value):
+        raise ValueError(f"Invalid Sprite {name}: two finite numbers are required")
+    if rectangle and any(number <= 0 or int(number) != number for number in value):
+        raise ValueError("Invalid Sprite rect_size: two positive integers are required")
+    return [int(number) if rectangle else float(number) for number in value]
+
+
+def sprite_canvas(source, rect_size, texture_rect_offset):
+    """The existing crop restoration policy, shared with incremental sync."""
+    from PIL import Image
+    rect_w, rect_h = sprite_pair(rect_size, "rect_size", rectangle=True)
+    texture_rect_offset = sprite_pair(texture_rect_offset, "texture_rect_offset")
+    with Image.open(source) as image:
+        if image.size == (rect_w, rect_h):
+            return None, {"status": "UNCHANGED"}
+        original_size = list(image.size)
+        left = int(round(texture_rect_offset[0]))
+        top = rect_h - int(round(texture_rect_offset[1])) - image.size[1]
+        over_x = max(0, -left) + max(0, left + image.size[0] - rect_w)
+        over_y = max(0, -top) + max(0, top + image.size[1] - rect_h)
+        if over_x > 1 or over_y > 1:
+            return None, {"status": "OUT_OF_RECT", "offset": [left, top], "old_size": original_size, "rect": [rect_w, rect_h]}
+        old = image.convert("RGBA")
+    if over_x or over_y:
+        cut_left, cut_top = max(0, -left), max(0, -top)
+        left, top = max(0, left), max(0, top)
+        old = old.crop((cut_left, cut_top, cut_left + min(old.size[0] - cut_left, rect_w - left),
+                        cut_top + min(old.size[1] - cut_top, rect_h - top)))
+    full = Image.new("RGBA", (rect_w, rect_h), (0, 0, 0, 0))
+    full.paste(old, (left, top))
+    return full, {"status": "RESTORED", "offset": [left, top], "old_size": original_size,
+                  "new_size": [rect_w, rect_h], "texture_rect_offset": list(texture_rect_offset)}
+
+
+def leaf_payload(source, sprite_settings=None):
+    """Return transformed PNG bytes only when the shipped crop needs padding."""
+    if not sprite_settings:
+        return None
+    rect_size = sprite_pair(sprite_settings.get("rect_size"), "rect_size", rectangle=True)
+    offset = sprite_settings.get("texture_rect_offset", sprite_settings.get("trimmed", {}).get("texture_rect_offset"))
+    if offset is not None:
+        offset = sprite_pair(offset, "texture_rect_offset")
+    from PIL import Image
+    with Image.open(source) as image:
+        if list(image.size) == rect_size:
+            return None
+    if offset is None:
+        raise ValueError("Trimmed Sprite has no imported textureRectOffset; regenerate its sprite settings plan from the resource cache")
+    image, report = sprite_canvas(source, rect_size, offset)
+    if report["status"] != "RESTORED":
+        raise ValueError("Sprite crop exceeds its planned rectangle: " + str(report))
+    from io import BytesIO
+    output = BytesIO()
+    image.save(output, format="PNG")
+    return output.getvalue()
+
+
+def sync_leaf(source, target, dry_run=False, payload=None):
+    """Shared copy primitive for a13 and content sync; .meta is never replaced."""
+    source, target = Path(source), Path(target)
+    if target.suffix.lower() == ".meta":
+        raise ValueError("Unity metadata is not editable source content")
+    if not dry_run:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if payload is None:
+            shutil.copy2(source, target)
+        else:
+            target.write_bytes(payload)
+
+
 def dest_for(asset_path: str, output_file: str) -> str:
     """Deterministic Unity asset path for one extracted file.
 
@@ -118,7 +210,7 @@ def dest_for(asset_path: str, output_file: str) -> str:
             rel = rel[len(prefix):]
             break
     rel = rel.replace("Assets/#WitchTrials/", "#WitchTrials/")
-    return os.path.join(CONTENT, rel.replace("/", os.sep))
+    return str(checked_path(CONTENT, rel, resolve=False))
 
 
 def dest_for_sprite(asset_path: str, output_file: str, sprite_name: str) -> str:
@@ -139,7 +231,7 @@ def dest_for_sprite(asset_path: str, output_file: str, sprite_name: str) -> str:
     folder = os.path.dirname(owner)
     base = os.path.splitext(os.path.basename(owner))[0] or "sprites"
     safe = re.sub(r"[^A-Za-z0-9._\- ]", "_", sprite_name or base).strip() or base
-    return os.path.join(CONTENT, folder.replace("/", os.sep), base + ".sprites", safe + ".png")
+    return str(checked_path(CONTENT, folder + "/" + base + ".sprites/" + safe + ".png", resolve=False))
 
 
 def main():
@@ -184,9 +276,10 @@ def main():
                 elif not output_file:
                     status, reason = "SOURCE_MISSING", "index row has no output_file"
                 else:
-                    source = os.path.join(RES, output_file.replace("/", os.sep))
+                    source = str(checked_path(RES, output_file))
                     target = (dest_for_sprite(asset_path, output_file, (row.get("name") or "").strip())
                               if category == "sprite" else dest_for(asset_path, output_file))
+                    target = str(checked_path(CONTENT, Path(target).relative_to(CONTENT)))
                     if not os.path.exists(source):
                         status, reason = "SOURCE_MISSING", f"extracted file not found: {source}"
                     elif target in copied_paths:
@@ -197,8 +290,7 @@ def main():
                         size = os.path.getsize(source)
                         copied_paths[target] = output_file
                         if not args.dry_run:
-                            os.makedirs(os.path.dirname(target), exist_ok=True)
-                            shutil.copy2(source, target)
+                            sync_leaf(source, target)
                         status = "WOULD_IMPORT" if args.dry_run else "IMPORTED"
                         per_category_imported[category] += 1
                         per_category_bytes[category] += size

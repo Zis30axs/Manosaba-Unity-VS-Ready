@@ -63,9 +63,8 @@ GRAPH_TYPES = {
 
 
 def game_root():
-    cfg = os.path.join(REPO, "tools", "audit", "audit.config.json")
-    with open(cfg, encoding="utf-8-sig") as fh:
-        return json.load(fh)["game_root"]
+    from imported_source import game_root as imported_game_root
+    return imported_game_root()
 
 
 def dest_for(asset_path: str) -> str:

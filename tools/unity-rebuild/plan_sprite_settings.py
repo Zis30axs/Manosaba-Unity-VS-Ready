@@ -17,8 +17,8 @@ shipped Sprites (UnityPy, the bundles carry their own type trees):
     the wrong place and an Image stretched the trimmed content over the whole rect;
   * the art wider than 2048 (NormalPrinter_Screen 2560x852, ...) was downscaled.
 Every pivot is (0.5, 0.5) and every layered-character layer sprite is 100 PPU with an untrimmed crop, so those are
-unaffected; the diced character sprites (Textures/Naninovel/Characters, rebuilt by DicedSpriteAtlasBuilder) are left
-out.
+unaffected; the diced character sprites (Textures/Naninovel/Characters) keep their cropped pixels and are left out of
+this padding policy. DicedSpriteAtlasBuilder creates atlas reference lists which point to those imported Sprite leaves.
 
 What it does
 ------------
@@ -39,6 +39,7 @@ import argparse
 import collections
 import csv
 import datetime
+import gc
 import io
 import json
 import os
@@ -51,13 +52,13 @@ OUT_DIR = os.path.join(REPO, "tools", "unity-rebuild", "out", "unity")
 LEDGER = os.path.join(OUT_DIR, "a13_import_ledger.csv")
 OUT = os.path.join(OUT_DIR, "sprite_settings_plan.json")
 BACKSLASH = chr(92)
-#: Diced character sprites: DicedSpriteAtlasBuilder rebuilds them from the atlas dumps, their crops are not used.
+#: Diced atlas reference lists use cropped Sprite leaves; full-rect padding would change their tile geometry.
 EXCLUDED = ("/Textures/Naninovel/Characters/",)
 
 
 def game_root():
-    with io.open(os.path.join(REPO, "tools", "audit", "audit.config.json"), encoding="utf-8") as fh:
-        return json.load(fh)["game_root"]
+    from imported_source import game_root as imported_game_root
+    return imported_game_root()
 
 
 def texture_settings(tex):
@@ -84,18 +85,32 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--restore-crops", action="store_true")
+    ap.add_argument("--output", default=OUT, help="optional plan output (does not alter crops without --restore-crops)")
+    ap.add_argument("--targets-list", help="optional newline-separated Unity asset paths for a metadata subset")
     args = ap.parse_args()
+    wanted = None
+    if args.targets_list:
+        with io.open(args.targets_list, encoding="utf-8-sig") as targets:
+            wanted = {line.strip().replace(BACKSLASH, "/").removeprefix("UnityProject/") for line in targets if line.strip()}
     data_dir = os.path.join(game_root(), "manosaba_Data")
     rows = []
     with io.open(LEDGER, encoding="utf-8-sig") as fh:
         for row in csv.DictReader(fh):
             if row["type"] == "Sprite" and row["status"] == "IMPORTED":
+                if wanted is not None and row["target_path"].replace(BACKSLASH, "/").removeprefix("UnityProject/") not in wanted:
+                    continue
                 rows.append(row)
     by_bundle = collections.defaultdict(list)
+    excluded = 0
     for row in rows:
+        if any(part in row["target_path"].replace(BACKSLASH, "/") for part in EXCLUDED):
+            excluded += 1
+            continue
         by_bundle[row["bundle"].replace(BACKSLASH, "/")].append(row)
 
     plan, stats, restored, problems = {}, collections.Counter(), [], []
+    if excluded:
+        stats["excluded (diced characters)"] = excluded
     for bundle, bundle_rows in sorted(by_bundle.items()):
         path = os.path.join(data_dir, bundle)
         if not os.path.exists(path):
@@ -133,9 +148,18 @@ def main():
                 "border": [float(sprite.m_Border.x), float(sprite.m_Border.y), float(sprite.m_Border.z),
                            float(sprite.m_Border.w)],
                 "rect_size": [rect_w, rect_h], "crop_size": list(crop_size),
+                # These offsets remain necessary after an earlier generated crop
+                # was padded. Normal res sync uses them without reopening bundles.
+                "texture_rect": [rd.textureRect.x, rd.textureRect.y, rd.textureRect.width, rd.textureRect.height],
+                "texture_rect_offset": [rd.textureRectOffset.x, rd.textureRectOffset.y],
+                "source_output_file": row["output_file"].replace(BACKSLASH, "/"),
                 "full_rect_mesh": bool((rd.settingsRaw >> 6) & 1), "packed": packed,
                 "texture": texture_settings(tex) if tex is not None else None,
             }
+            source_file = os.path.join(REPO, "res", row["output_file"].replace("/", os.sep).replace(BACKSLASH, os.sep))
+            if os.path.isfile(source_file):
+                with Image.open(source_file) as source_image:
+                    entry["source_crop_size"] = list(source_image.size)
             stats["planned"] += 1
             if abs(entry["pixels_per_unit"] - 100.0) > 1e-3:
                 stats["ppu != 100"] += 1
@@ -151,6 +175,11 @@ def main():
                     entry["trimmed"]["restore"] = result
                     (restored if result["status"] == "RESTORED" else problems).append((asset_path, result))
             plan[asset_path] = entry
+        # UnityPy's environment and ObjectReaders retain each other. Release the
+        # previous decompressed bundle before loading the next large one.
+        del objects
+        obj = sprite = rd = tex = None
+        gc.collect()
 
     doc = {"generated": datetime.datetime.now(datetime.timezone.utc).isoformat(),
            "generated_by": "tools/unity-rebuild/plan_sprite_settings.py", "stats": dict(stats), "sprites": plan}
@@ -161,35 +190,25 @@ def main():
         for asset_path, result in problems[:20]:
             print("  NOT RESTORED", asset_path, result)
     if args.write:
-        with io.open(OUT, "w", encoding="utf-8", newline="\n") as fh:
+        output = os.path.abspath(args.output)
+        os.makedirs(os.path.dirname(output), exist_ok=True)
+        with io.open(output, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(doc, fh, ensure_ascii=False, indent=1)
-        print("wrote " + OUT)
+        print("wrote " + output)
+    # A first import must not continue into Unity with cropped pixels whose
+    # required canvas could not be restored. Keep the plan for investigation.
+    return 1 if args.restore_crops and problems else 0
 
 
 def restore(sprite, packed, tex, crop_file, rect_w, rect_h):
     """Rewrite a trimmed crop as the full sprite rect, the trimmed pixels at textureRectOffset."""
-    rd = sprite.m_RD
-    with Image.open(crop_file) as im:
-        old = im.convert("RGBA")
-    # the trimmed rect inside the full rect, in PIL's top-left coordinates (Unity's offset is from the bottom-left)
-    left = int(round(rd.textureRectOffset.x))
-    top = rect_h - int(round(rd.textureRectOffset.y)) - old.size[1]
-    # The crop is textureRect rounded up, so it can overhang the rect by a pixel; more than that is not rounding.
-    over_x = max(0, -left) + max(0, left + old.size[0] - rect_w)
-    over_y = max(0, -top) + max(0, top + old.size[1] - rect_h)
-    if over_x > 1 or over_y > 1:
-        return {"status": "OUT_OF_RECT", "offset": [left, top], "old_size": list(old.size), "rect": [rect_w, rect_h]}
-    if over_x or over_y:
-        cut_left, cut_top = max(0, -left), max(0, -top)
-        left, top = max(0, left), max(0, top)
-        old = old.crop((cut_left, cut_top, cut_left + min(old.size[0] - cut_left, rect_w - left),
-                        cut_top + min(old.size[1] - cut_top, rect_h - top)))
-    full = Image.new("RGBA", (rect_w, rect_h), (0, 0, 0, 0))
-    full.paste(old, (left, top))
-    full.save(crop_file)
-    return {"status": "RESTORED", "offset": [left, top], "old_size": list(old.size), "new_size": [rect_w, rect_h],
-            "texture_rect_offset": [rd.textureRectOffset.x, rd.textureRectOffset.y]}
+    from a13_import_assets import sprite_canvas
+    offset = [sprite.m_RD.textureRectOffset.x, sprite.m_RD.textureRectOffset.y]
+    full, report = sprite_canvas(crop_file, [rect_w, rect_h], offset)
+    if full is not None:
+        full.save(crop_file)
+    return report
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

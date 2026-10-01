@@ -19,14 +19,8 @@ REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 
 def game_root():
-    """Game root from the shared audit config (never hard-code a machine path in a tool)."""
-    import json
-    cfg = os.path.join(REPO, "tools", "audit", "audit.config.json")
-    with open(cfg, encoding="utf-8-sig") as fh:
-        root = json.load(fh).get("game_root", "")
-    if not root or not os.path.isdir(root):
-        raise SystemExit(f"game_root not usable: {root!r} (see {cfg})")
-    return root
+    from imported_source import game_root as imported_game_root
+    return imported_game_root()
 
 
 GAME = game_root()

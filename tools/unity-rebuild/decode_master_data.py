@@ -75,6 +75,7 @@ REPO = D.REPO
 OUT_DIR = D.OUT_DIR
 OUT_JSON = os.path.join(OUT_DIR, "master_data_decode.json")
 CATALOG_KEYS = os.path.join(OUT_DIR, "catalog_dump.json")
+SHIPPED_CATALOG_KEYS = os.path.join(OUT_DIR, "catalog_dump_shipped.json")
 
 #: `WitchTrials.Models.MasterData` is the game's `IMasterData` + `IAddressablesMasterData` implementation
 #: (dump.cs TypeDefIndex 12239: `class MasterData : MasterDataBase, IMasterData, IAddressablesMasterData,
@@ -94,7 +95,8 @@ RESOURCES_CONTAINER_KEY = "masterdata"
 #: `_skipTimeScaleDuringDebate // 0x2C`, `_voicePitchOnSkip // 0x30`).
 KEY_NAMES_FIELD = "_assetKeyNames"
 
-CATALOG_JOIN_NOTE = ("catalog_dump.json is the shipped catalog's key table.  A key name is joined to it only on "
+CATALOG_JOIN_NOTE = ("catalog_dump_shipped.json is the shipped catalog's key table (legacy research runs may use "
+                     "catalog_dump.json). A key name is joined to it only on "
                      "an exact textual match of the key string; the catalog carries no path_id, so no join to "
                      "resources.assets is attempted or invented.")
 
@@ -104,13 +106,16 @@ MAX_DEPTH = 16
 def load_catalog_keys():
     """The shipped catalog's key table as `key -> {location_count, is_label, sample internal_ids}`.
 
-    Read from `catalog_dump.json`'s `keys` array, which the catalog dumper produced from the shipped
+    Read from `catalog_dump_shipped.json`'s `keys` array, which the catalog dumper produced from the shipped
     `StreamingAssets/aa/catalog.bin`.  The addresses (a location's `internal_id`) are deliberately not indexed
     here: the join this tool needs is key-name -> key entry.
     """
-    if not os.path.exists(CATALOG_KEYS):
-        return {"available": False, "by_key": {}, "key_count": 0, "reason": "not found: " + CATALOG_KEYS}
-    with open(CATALOG_KEYS, encoding="utf-8") as handle:
+    # First-import bootstrap saves the shipped dump under its explicit name;
+    # catalog_dump.json can instead be a later reconstruction content-build dump.
+    path = SHIPPED_CATALOG_KEYS if os.path.exists(SHIPPED_CATALOG_KEYS) else CATALOG_KEYS
+    if not os.path.exists(path):
+        return {"available": False, "by_key": {}, "key_count": 0, "reason": "not found: " + path}
+    with open(path, encoding="utf-8") as handle:
         data = json.load(handle)
     by_key = {}
     for entry in data.get("keys") or []:
