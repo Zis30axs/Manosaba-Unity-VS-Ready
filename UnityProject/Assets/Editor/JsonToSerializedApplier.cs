@@ -313,10 +313,11 @@ namespace Manosaba.EditorTools
             // Materialise the managed-reference graph level by level: assigning managedReferenceValue
             // changes a property's shape, so children only exist after ApplyModifiedProperties.
             int processed = 0;
+            var existingManagedRids = new Dictionary<long, long>();
             while (processed < pending.Count)
             {
                 int levelEnd = pending.Count;
-                for (int i = processed; i < levelEnd; i++) AssignInstance(pending[i], serialized, refTable, options, report);
+                for (int i = processed; i < levelEnd; i++) AssignInstance(pending[i], serialized, refTable, options, report, existingManagedRids);
                 serialized.ApplyModifiedPropertiesWithoutUndo();
                 for (int i = processed; i < levelEnd; i++)
                 {
@@ -845,7 +846,8 @@ namespace Manosaba.EditorTools
 
         /// <summary>Create the concrete instance named by the reference table and assign it.</summary>
         private static void AssignInstance(PendingRef pendingRef, SerializedObject serialized,
-                                           Dictionary<long, JToken> refTable, Options options, Report report)
+                                           Dictionary<long, JToken> refTable, Options options, Report report,
+                                           Dictionary<long, long> existingManagedRids)
         {
             if (!refTable.TryGetValue(pendingRef.rid, out JToken entry))
             {
@@ -878,7 +880,27 @@ namespace Manosaba.EditorTools
 
             try
             {
-                prop.managedReferenceValue = CreateSerializableInstance(concrete);
+                object current = prop.managedReferenceValue;
+                if (options.SafeEditableOnly)
+                {
+                    if (current == null || current.GetType() != concrete)
+                    {
+                        report.Warn(pendingRef.path + ": READ_ONLY managed creation/type replacement; existing graph retained");
+                        report.managedFailed++;
+                        return;
+                    }
+                    // Recreating an existing command empties nested arrays and drops retained native values.
+                    // Edit its current serialized graph so array guards inspect the actual existing elements.
+                    long existingId = prop.managedReferenceId;
+                    if (existingManagedRids.TryGetValue(existingId, out long sourceRid) && sourceRid != pendingRef.rid)
+                    {
+                        report.Warn(pendingRef.path + ": READ_ONLY conflicting source RIDs for a shared existing managed object");
+                        report.managedFailed++;
+                        return;
+                    }
+                    existingManagedRids[existingId] = pendingRef.rid;
+                }
+                else prop.managedReferenceValue = CreateSerializableInstance(concrete);
                 pendingRef.assigned = true;
                 pendingRef.entry = entry;
             }

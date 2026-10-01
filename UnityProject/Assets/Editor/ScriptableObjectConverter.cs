@@ -292,6 +292,8 @@ namespace Manosaba.EditorTools
                     throw new InvalidOperationException("target type mismatch; GUID will not be replaced");
                 job.guid_before = AssetDatabase.AssetPathToGUID(assetPath);
                 JObject json = JObject.Parse(File.ReadAllText(source));
+                // Check source graph depth before the applier materializes pending references.
+                job.params_with_value_dump = CountExpectedHasValue(json);
                 staged = existing == null ? ScriptableObject.CreateInstance(type) : UnityEngine.Object.Instantiate((ScriptableObject)existing);
                 var serialized = new SerializedObject(staged);
                 var report = JsonToSerializedApplier.ApplyAll(serialized, json, new JsonToSerializedApplier.Options
@@ -307,7 +309,6 @@ namespace Manosaba.EditorTools
                 job.managed_references_applied = report.managedApplied;
                 job.managed_references_failed = report.managedFailed;
                 job.warnings.AddRange(report.messages);
-                job.params_with_value_dump = CountExpectedHasValue(json);
                 job.params_with_value_written = report.hasValueTrueWritten;
                 if (report.managedFailed > 0 || (scenario && job.params_with_value_dump != job.params_with_value_written))
                     throw new InvalidOperationException("managed-reference conversion did not reconcile; original asset retained");
