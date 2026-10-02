@@ -2,6 +2,8 @@
 
 输入：用户自己能够正常读取的本地游戏资源（Steam 版，简体中文）。机器路径只放在本地配置或环境变量。
 
+开发入门与维护约定见 [开发指南](DEVELOPMENT.md)，涵盖环境配置、资源修改、代码入口、验证、恢复和排错。
+
 普通资源开发入口见 [tools/content/README.md](tools/content/README.md)：首次 `import.ps1 <game>`，此后编辑 gitignored 的 `res/`，运行 `sync.ps1`、`doctor.ps1`、`build.ps1`。原游戏仅用于首次资源导入和显式研究/对照；正常 Unity 内容构建使用本地导入缓存和重建工程。
 
 实际验证及范围见 [验证记录](tools/content/VERIFICATION.md)。本次接纳现有完整资源树并做全量同步；完全空的 `res`/GameContent/Library 首次导入尚未端到端验证。

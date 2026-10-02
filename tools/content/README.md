@@ -1,5 +1,7 @@
 # 可编辑资源工作流
 
+首次配置环境或维护转换器，请先看仓库根目录的 [开发指南](../../DEVELOPMENT.md)。
+
 `res/` 是用户本地、gitignored 的唯一日常编辑源；`UnityProject/Assets/GameContent/` 是由它生成的 Unity 导入和构建树。不要在重新同步之后依赖手动修改的 GameContent 文件。
 
 需要 Python 3.11+、Unity 6000.0.48f1（已激活许可证）和项目依赖。首次提取使用既有 `work/extract_res.py`，还需要 UnityPy、Pillow、soundfile；当前本地 `tools/venv` 可以继续使用。用 `MANOSABA_PYTHON` 和 `MANOSABA_UNITY_EDITOR` 指定工具位置，机器路径只放在环境变量或 gitignored 的 `tools/audit/audit.config.local.json`。
