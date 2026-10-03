@@ -131,6 +131,8 @@ Unity 路径是示例，请替换为实际安装路径。验证机安装的版�
 
 IDEA/Rider 可直接运行 `.idea/runConfigurations/Sync_Localization_Build.xml`：脚本 `tools/unity-rebuild/sync_localization_idea.ps1` 会把 `res/Assets/#WitchTrials/Localization/zh-Hans/Text` 增量同步到 `UnityProject/Assets/GameContent/.../zh-Hans/Text`，校正 `config.json`，然后在 Unity 已打开时通过 `Library/ManosabaLocalization/request.json` 请求 Editor 构建；Unity 未打开时则使用 batchmode 构建。只想复制文件时运行 `Sync_Localization_Copy.xml`（等价于 `-SyncOnly`）。
 
+IDEA 的 `Run_Unity_Game.xml` 用 `tools/unity-rebuild/run_unity_game_idea.ps1` 直接启动项目要求版本的 `Unity.exe`，不经过 Unity Hub。Unity 已打开时脚本只写入 `Library/ManosabaIdeaLauncher/request.json`，由 `IdeaPlayModeBridge` 让当前 Editor 进入 `Assets/Scenes/Boot.unity` 的 Play Mode；这样不会为同一个项目启动第二个 Editor。脚本默认检查已有的 Packed Addressables 内容，缺少构建时先运行内容构建；明确需要绕过检查时才传 `-SkipContentCheck`。
+
 ```powershell
 # IDEA 外部工具或终端
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/unity-rebuild/sync_localization_idea.ps1
