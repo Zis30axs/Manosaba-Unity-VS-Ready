@@ -70,3 +70,9 @@ verify_localization_content.py 使用 UnityPy 检查构建后的真实 bundle：
 - Unity Play 实测：调试按钮、章节/场景菜单中文显示正常，第一幕开场测试句出现，章节到场景跳转正常。
 - 桥接已修正停止播放的过渡期检查，同时等待 isPlaying 和 isPlayingOrWillChangePlaymode 结束。
 - 桥接与批处理入口都检查新构建报告中的 status 和 player_streaming_source_ready，资源未完整生成时报告失败。
+
+
+[locale-config-sync]
+The IDEA synchronization entry point also writes UnityProject/Assets/StreamingAssets/config.json.
+It forces zh-Hans for the restored Chinese build; otherwise DefaultLocaleSelector can keep its ja default on a Japanese Windows host and the left Debug menu falls back to Japanese even when prefab labels pass static verification.
+Use Sync_Localization_Copy.xml for copy-only and Sync_Localization_Build.xml to rebuild Addressables.

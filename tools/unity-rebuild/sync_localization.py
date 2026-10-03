@@ -35,7 +35,25 @@ from typing import Iterable
 REPO = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = REPO / "res" / "Assets" / "#WitchTrials" / "Localization" / "zh-Hans" / "Text"
 TARGET_ROOT = REPO / "UnityProject" / "Assets" / "GameContent" / "#WitchTrials" / "Localization" / "zh-Hans" / "Text"
+LOCALE_CONFIG = REPO / "UnityProject" / "Assets" / "StreamingAssets" / "config.json"
 G3_SCRIPT = REPO / "tools" / "unity-rebuild" / "g3_content_build.ps1"
+
+# The reconstructed game's DefaultLocaleSelector reads this file before Naninovel starts.  Keeping
+# only zh-Hans available makes the restored Chinese build deterministic on a Japanese Windows host;
+# without it, a fresh checkout silently keeps the selector's Ja default and the Debug menu is Japanese.
+CANONICAL_LOCALE_CONFIG = """{
+  \"available_text_lang\": [\"zh-Hans\"],
+  \"unavailable_lang_fallback\": {
+    \"default\": \"zh-Hans\",
+    \"ja\": \"zh-Hans\",
+    \"zh-Hant\": \"zh-Hans\",
+    \"en-US\": \"zh-Hans\",
+    \"ko\": \"zh-Hans\",
+    \"fr\": \"zh-Hans\",
+    \"es\": \"zh-Hans\"
+  }
+}
+"""
 
 
 def same_bytes(a: Path, b: Path) -> bool:
@@ -75,6 +93,8 @@ def iter_sources(relative_file: str | None) -> Iterable[Path]:
 
 def sync_once(relative_file: str | None, dry_run: bool, quiet_unchanged: bool = False) -> list[Path]:
     changed: list[Path] = []
+    if ensure_locale_config(dry_run):
+        changed.append(LOCALE_CONFIG.relative_to(REPO))
     checked = 0
     for src in iter_sources(relative_file):
         checked += 1
@@ -96,6 +116,19 @@ def sync_once(relative_file: str | None, dry_run: bool, quiet_unchanged: bool = 
         print(f"[localization] up to date: checked={checked}")
 
     return changed
+
+
+def ensure_locale_config(dry_run: bool) -> bool:
+    """Ensure a fresh checkout selects the restored zh-Hans text regardless of OS language."""
+    current = LOCALE_CONFIG.read_text(encoding="utf-8") if LOCALE_CONFIG.is_file() else ""
+    if current.strip() == CANONICAL_LOCALE_CONFIG.strip():
+        return False
+    action = "WOULD_WRITE" if dry_run else "WRITE"
+    print(f"[localization] {action}: {LOCALE_CONFIG.relative_to(REPO)}")
+    if not dry_run:
+        LOCALE_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+        LOCALE_CONFIG.write_text(CANONICAL_LOCALE_CONFIG, encoding="utf-8", newline="\n")
+    return True
 
 
 def rebuild_core() -> int:

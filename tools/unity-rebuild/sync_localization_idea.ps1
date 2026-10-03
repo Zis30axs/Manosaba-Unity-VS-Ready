@@ -9,6 +9,7 @@ $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $project = Join-Path $repo 'UnityProject'
 $source = Join-Path $repo 'res/Assets/#WitchTrials/Localization/zh-Hans/Text'
 $target = Join-Path $project 'Assets/GameContent/#WitchTrials/Localization/zh-Hans/Text'
+$localeConfig = Join-Path $project 'Assets/StreamingAssets/config.json'
 $bridge = Join-Path $project 'Library/ManosabaLocalization'
 $requestPath = Join-Path $bridge 'request.json'
 $resultPath = Join-Path $bridge 'result.json'
@@ -26,9 +27,35 @@ function Test-ProjectOpen {
     } catch [IO.IOException] { return $true }
 }
 
+function Ensure-ChineseLocaleConfig {
+    $canonical = @'
+{
+  "available_text_lang": ["zh-Hans"],
+  "unavailable_lang_fallback": {
+    "default": "zh-Hans",
+    "ja": "zh-Hans",
+    "zh-Hant": "zh-Hans",
+    "en-US": "zh-Hans",
+    "ko": "zh-Hans",
+    "fr": "zh-Hans",
+    "es": "zh-Hans"
+  }
+}
+'@
+    $current = if (Test-Path -LiteralPath $localeConfig -PathType Leaf) {
+        [IO.File]::ReadAllText($localeConfig, [Text.Encoding]::UTF8)
+    } else { '' }
+    if ($current.Trim() -eq $canonical.Trim()) { return $false }
+    [IO.Directory]::CreateDirectory((Split-Path -Parent $localeConfig)) | Out-Null
+    [IO.File]::WriteAllText($localeConfig, $canonical.Trim() + [Environment]::NewLine, (New-Object Text.UTF8Encoding($false)))
+    Write-Host "[SYNC] Assets/StreamingAssets/config.json (force zh-Hans)"
+    return $true
+}
+
 try {
     if (-not (Test-Path -LiteralPath $source -PathType Container)) { throw "Missing localization source: $source" }
     if (-not (Test-Path -LiteralPath $target -PathType Container)) { throw "Import the game assets first: $target" }
+    Ensure-ChineseLocaleConfig | Out-Null
     [IO.Directory]::CreateDirectory($bridge) | Out-Null
     try { $lock = [IO.File]::Open((Join-Path $bridge 'sync.lock'), 'OpenOrCreate', 'ReadWrite', 'None') }
     catch [IO.IOException] { throw 'Another localization sync is already running.' }

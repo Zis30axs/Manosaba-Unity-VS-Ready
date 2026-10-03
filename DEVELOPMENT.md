@@ -123,6 +123,26 @@ Unity 路径是示例，请替换为实际安装路径。验证机安装的版�
 
 选项菜单检查记录：当前 `OptionsUI.prefab` 的 1,219 个源对象与本地原始资源逐项一致，没有可发布的选项界面字段差异。若两个副本的选项菜单不同，先完成上述 import/bootstrap、字体资源修复和 Addressables 重建，再比较运行时配置与自建 catalog；不要用整份原始 prefab 覆盖协作者的对象树。新的选项菜单改动应按同一增量清单方式提交。
 
+#### Debug 菜单回退日语的原因与 IDEA 同步入口
+
+运行时的左侧 Debug 菜单由两部分组成：Addressables 中的 Debug prefab 文本，以及 Naninovel 的 `zh-Hans/Text/Scripts/Debug/Debug_Home.txt`。即使这两部分已经是中文，`DefaultLocaleSelector` 仍会先读取 `UnityProject/Assets/StreamingAssets/config.json`；文件缺失时会保留代码中的 `ja` 默认值，文件把 `ja` 列为可用语言时还会按日文 Windows 的系统语言选择日语。表现就是 Debug 菜单从中文回退成日文，而静态 prefab 检查仍然通过。
+
+恢复版把 `config.json` 固定为只使用 `zh-Hans`，并为 `ja`、`zh-Hant`、系统未支持的语言提供 `zh-Hans` fallback。这个小文件必须进入 Git；`StreamingAssets` 其余内容仍保持忽略，因为 Addressables bundle 可以本地重建。修改后不要只重启 Play，必须让 Unity 重新导入并重建 Addressables。
+
+IDEA/Rider 可直接运行 `.idea/runConfigurations/Sync_Localization_Build.xml`：脚本 `tools/unity-rebuild/sync_localization_idea.ps1` 会把 `res/Assets/#WitchTrials/Localization/zh-Hans/Text` 增量同步到 `UnityProject/Assets/GameContent/.../zh-Hans/Text`，校正 `config.json`，然后在 Unity 已打开时通过 `Library/ManosabaLocalization/request.json` 请求 Editor 构建；Unity 未打开时则使用 batchmode 构建。只想复制文件时运行 `Sync_Localization_Copy.xml`（等价于 `-SyncOnly`）。
+
+```powershell
+# IDEA 外部工具或终端
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/unity-rebuild/sync_localization_idea.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/unity-rebuild/sync_localization_idea.ps1 -SyncOnly
+
+# Python 入口也会校正同一个 locale 配置
+python tools/unity-rebuild/sync_localization.py --dry-run
+python tools/unity-rebuild/sync_localization.py --rebuild
+```
+
+验证时至少检查三层：`verify_debug_ui_translation.py --static-only` 检查 prefab/TextAsset，`addressables_build_result.json` 的时间戳确认内容是新构建，最后用新 Play 会话或新 Player 检查左侧菜单。旧 Player 或旧 `Library/com.unity.addressables/aa` 不代表当前 `res` 已经生效。
+
 | 修改目标 | 编辑位置 | 注意事项 |
 | --- | --- | --- |
 | 中文及其他本地化文本 | `res/Assets/#WitchTrials/Localization/**` | UTF-8；保留现有键和文件身份 |
