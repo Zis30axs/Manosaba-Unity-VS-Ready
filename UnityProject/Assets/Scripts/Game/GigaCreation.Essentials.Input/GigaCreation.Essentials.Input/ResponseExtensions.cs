@@ -47,10 +47,10 @@ namespace GigaCreation.Essentials.Input
 
     	[Token(Token = "0x600001C")]
     	[Address(RVA = "0xCD0A80", Offset = "0xCCF480", VA = "0x180CD0A80")]
-    	[AsyncStateMachine(typeof(_003CToCancel_003Ed__0))]
-    	public static UniTask<ResponseKind> ToCancel(this UniTask task)
-    	{
-    		return default(UniTask<ResponseKind>);
+        public static async UniTask<ResponseKind> ToCancel(this UniTask task)
+        {
+            await task;
+            return ResponseKind.Cancel;
     	}
     }
 }

@@ -55,8 +55,11 @@ namespace Manosaba.EditorTools
             string prefix = Configuration.GetOrDefault<ScriptsConfiguration>().Loader.PathPrefix;
             string fullPath = string.IsNullOrEmpty(prefix) ? OpeningPath : prefix + "/" + OpeningPath;
             localProvider = new LocalOpeningResourceProvider(fullPath, replacement);
+            // Leave CGGalleryUI/SettingsUI to the Addressables UI provider. Their package
+            // EditorResources records would otherwise win over the custom GalleryUI/OptionsUI
+            // addresses and loading an alias here would instantiate the same prefab twice.
             foreach (var record in EditorResources.LoadOrDefault().GetAllRecords())
-                if (!string.IsNullOrEmpty(AssetDatabase.GUIDToAssetPath(record.Value)))
+                if (!ShouldSkipEditorUiRecord(record.Key) && !string.IsNullOrEmpty(AssetDatabase.GUIDToAssetPath(record.Value)))
                     localProvider.AddResourceGuid(record.Key, record.Value);
             RegisterGeneratedScenarioResources(localProvider);
             RegisterGeneratedLocalizationResources(localProvider);
@@ -67,6 +70,21 @@ namespace Manosaba.EditorTools
             RegisterAsset(localProvider, "Backgrounds/LocalOpening/Default", "SchoolCourtyard.png");
             Debug.Log("[LocalOpeningTest] Independent in-memory opening ready; commands=" + replacement.Playlist.Count + ". Original script asset is unchanged.");
             return UniTask.CompletedTask;
+        }
+
+        private static bool ShouldSkipEditorUiRecord(string resourcePath)
+        {
+            if (resourcePath == "UI/CGGalleryUI")
+                return HasAsset("Assets/GameContent/#WitchTrials/Prefabs/Naninovel/UI/CustomUI/GalleryUI.prefab");
+            if (resourcePath == "UI/SettingsUI")
+                return HasAsset("Assets/GameContent/#WitchTrials/Prefabs/Naninovel/UI/CustomUI/OptionsUI.prefab");
+            return false;
+        }
+
+        private static bool HasAsset(string assetPath)
+        {
+            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath))
+                && AssetDatabase.LoadMainAssetAtPath(assetPath) != null;
         }
 
         private static void RegisterGeneratedScenarioResources(LocalOpeningResourceProvider provider)

@@ -141,6 +141,8 @@ IDEA 的 `Run_Unity_Game.xml` 用 `tools/unity-rebuild/run_unity_game_idea.ps1` 
 
 `Default` profile（`40d2c9efc9e57424c8b9e7879ac2fd48`）用于 Editor/Windows 本地资源；`ManosabaAndroidPatch` 只用于已有同版本 extracted 缓存的移动/原版测试。切换 profile 只改变后续构建的路径变量，不会改写已经生成的 catalog；因此第一次导入或内容同步后，必须用 `addressables_plan_all.json` 重新绑定本地 `.meta` GUID，再构建 Addressables。`tools/content/build.ps1` 和 Content Sync bridge 已内置这一步，避免协作者提交的旧 GUID 在另一份生成树中静默丢资源。
 
+IDEA 的 `Use Asset Database` 模式还会启用 `LocalOpeningTest` 的 EditorResourceProvider。Naninovel 的 `EditorResources.asset` 将 `UI/CGGalleryUI` 和 `UI/SettingsUI` 指向包内 DefaultUI；如果直接复制这些记录，它们会优先遮住本地 `GameContent/#WitchTrials/Prefabs/Naninovel/UI/CustomUI/GalleryUI.prefab` 和 `OptionsUI.prefab`，画廊与选项就会看起来像还原版本。`LocalOpeningTest` 现在只跳过这两个默认记录，让 Addressables 的 `Naninovel/UI/GalleryUI` 和 `Naninovel/UI/OptionsUI` 成为唯一加载源；不要把自定义 prefab 再注册到 `CGGalleryUI/SettingsUI` 别名，否则同一 prefab 可能被实例化两次。这只影响 Editor Database 测试，不改变 Naninovel 包或 Addressables profile。
+
 IDEA bridge 的 `PLAYING` 只表示 Unity 已进入 Play Mode，不表示 Naninovel 已完成初始化。若仍有白块，先看 `tools/unity-rebuild/out/logs/idea_unity_editor.log` 中第一条 `RemoteProviderException` 或 `Resource ... failed`，再看组件字段空引用。`PaginationIndicator` 的序列化字段是 `_canvasGroup`，不能改成 `_canvas`；后者会让保存/读档分页 prefab 的 CanvasGroup 引用丢失，并在 `Pagination.ChangeIndicatorStyle` 抛出 `NullReferenceException`。
 
 Unity 6000 的 Editor-only Addressables locator 在第一次扫描 `Naninovel` 全量标签时，可能对少数复杂 CutIn prefab 输出 `Assertion failed on expression: 'pred(*previous, *i)'`；探针确认这些条目仍全部返回，且 packed build 不依赖该 Editor 扫描。只要没有紧随其后的资源加载失败，就把它视为编辑器扫描噪声，不要为消除它删除 Naninovel 标签或本地资源映射。
@@ -160,6 +162,8 @@ python tools/unity-rebuild/sync_localization.py --rebuild
 #### 返回标题页面后立即收起的原因
 
 暂停菜单的标题按钮会先调用 `ControlPanel.Close()`，所以菜单先收起是预期行为。确认后，`ControlPanel` 依赖临时 `NaninovelScriptPlayer` 播放 `@returnToTitle`；还原代码中该组件的 `Awake`、`PlayAsync` 重载和内部播放方法曾全部是空实现，只返回已完成的 `UniTask`，导致脚本没有执行，标题状态也不会切换。修复时必须让它按 `ScriptPlayer` 语义调用 `LoadAndPlay` 或 `PlayTransient`，再重新编译 Unity Player/Addressables。这个故障与 locale 无关。
+
+如果确认框本身一闪就消失，先检查输入扩展是否仍是 stub：`InputSystemExtensions.OnPerformAsync` 和 `ResponseExtensions.ToCancel` 若返回默认完成的 `UniTask`，`_cancelableByAction=1` 的任何 `ProvidableDialog` 都会立即得到 `Cancel`。现在前者等待真实的 `InputAction.performed` 并在取消后解除订阅，后者等待输入任务完成后才返回 `ResponseKind.Cancel`。手机标题按钮还可能把同一个 EventSystem pointer 事件穿透到确认框的全屏 underlay；`ControlPanel.ReturnToTitleAsync` 在开始 `ConfirmAsync` 前等待一帧，确保打开按钮的 pointer-up 已经结束，再注册取消监听。不要通过恢复旧 catalog 或切回远程 profile 规避这个输入时序问题。
 
 | 修改目标 | 编辑位置 | 注意事项 |
 | --- | --- | --- |

@@ -33,9 +33,25 @@ namespace GigaCreation.Essentials.Input
 
     	[Token(Token = "0x6000017")]
     	[Address(RVA = "0xCD0800", Offset = "0xCCF200", VA = "0x180CD0800")]
-    	public static UniTask OnPerformAsync(this InputAction self, [Optional] CancellationToken ct)
-    	{
-    		return default(UniTask);
+        public static async UniTask OnPerformAsync(this InputAction self, [Optional] CancellationToken ct)
+        {
+            if (self == null)
+                return;
+
+            bool performed = false;
+            void OnPerformed(InputAction.CallbackContext _) => performed = true;
+
+            self.performed += OnPerformed;
+            try
+            {
+                // A default(UniTask) is already completed and made every cancelable
+                // ProvidableDialog close immediately. Wait for the actual Input System event.
+                await UniTask.WaitUntil(() => performed, cancellationToken: ct, cancelImmediately: true);
+            }
+            finally
+            {
+                self.performed -= OnPerformed;
+            }
     	}
 
     	[Token(Token = "0x6000018")]

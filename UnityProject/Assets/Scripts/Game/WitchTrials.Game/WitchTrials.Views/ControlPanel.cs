@@ -451,9 +451,12 @@ namespace WitchTrials.Views
     	//   `_returnToTitleScript` (+0x20) PlayAsync(AsyncToken from ct) is awaited (Naninovel awaiter) inside the blocker's `using`.
     	[Token(Token = "0x60001CE")]
     	[Address(RVA = "0x338030", Offset = "0x336A30", VA = "0x180338030")]
-    	[AsyncStateMachine(typeof(_003CReturnToTitleAsync_003Ed__50))]
     	private async Cysharp.Threading.Tasks.UniTask ReturnToTitleAsync([Optional] CancellationToken ct)
     	{
+            // The title button and the dialog underlay share the same EventSystem pointer
+            // event.  Let that event finish before the confirmation starts listening; otherwise
+            // the opening tap is observed as an underlay cancel and the dialog closes instantly.
+            await Cysharp.Threading.Tasks.UniTask.NextFrame(ct);
     		using INaninovelInteractionBlocker blocker = new NaninovelInteractionBlocker();
     		using (ProvidableDialog dialog = DialogProvider.GetOrAddDialog())
     		{
