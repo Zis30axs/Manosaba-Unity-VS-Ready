@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GigaCreation.NaninovelExtender.Common;
@@ -59,6 +59,16 @@ namespace WitchTrials.Views
 
     	[Token(Token = "0x4000096")]
     	private const string CurrentBadEndIdVarName = "currentBadEndId";
+
+    	// NEW IN THE 2026-10-02 GAME UPDATE.  The shipped `badEnd` commands serialise this field (the
+    	// Act01_Chapter01_Bad* scripts pass it), but the pre-update reconstruction declares nothing after
+    	// the constants, so the incremental sync rejected every one of them and retained the old asset.
+    	// TODO(evidence): the updated Execute (RVA 0x319F90 in the new build) consumes it; the body
+    	// reconstructed below still describes the pre-update layout.
+    	[Token(Token = "0x400009B")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+    	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+    	public StringParameter BadEndPartKind;
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x3199B0 (builder stub); MoveNext 0x319AD0, 1421 B, two await states
     	// The bad end number goes to `currentBadEndId`, is recorded as a played flag, then System/System_BadEnd plays

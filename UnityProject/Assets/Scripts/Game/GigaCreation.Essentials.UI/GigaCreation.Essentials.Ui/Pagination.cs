@@ -109,8 +109,10 @@ namespace GigaCreation.Essentials.Ui
     		ChangeIndicatorStyle();
     	}
 
-    	// RECONSTRUCTED | Confidence: A | RVA: 0xCE5D00 -- over _indicators (+0x30): alpha of the indicator's CanvasGroup
-    	//   (+0x18) is 1.0 (data 0x2AE2820) when its style (+0x10) is _indicatorStyle (+0x50), else 0
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xCE5D00 -- over _indicators (+0x30): alpha of the indicator's
+    	//   CanvasGroup (+0x18, serialised as `_canvas`) is 1.0 (data 0x2AE2820) when its style (+0x10) is
+    	//   _indicatorStyle (+0x50), else 0.  The null test at 0x180CE5D5B is the shipped code's own: it throws
+    	//   when the CanvasGroup is unassigned, which is what a lost `_canvas` reference produced before.
     	// Annotated disassembly: work/title-path/disas/pag_03_0xCE5D00.txt
     	[Token(Token = "0x60000F2")]
     	[Address(RVA = "0xCE5D00", Offset = "0xCE4700", VA = "0x180CE5D00")]
@@ -119,7 +121,7 @@ namespace GigaCreation.Essentials.Ui
     		PaginationIndicator[] indicators = _indicators;
     		foreach (PaginationIndicator indicator in indicators)
     		{
-    			indicator.CanvasGroup.alpha = ((indicator.Style == _indicatorStyle) ? 1f : 0f);
+    			indicator.Canvas.alpha = ((indicator.Style == _indicatorStyle) ? 1f : 0f);
     		}
     	}
 

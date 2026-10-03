@@ -10,7 +10,7 @@ dump.cs RVA/Offset pairs via the PE section table.
 import json, os, pickle, re, sys, bisect
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-IL2 = r"E:\Manosaba-VSCodeReady\src\il2cpp"
+IL2 = os.environ.get("MANOSABA_IL2CPP_DUMP") or r"E:\Manosaba-VSCodeReady\src\il2cpp"
 CACHE = os.path.join(HERE, "symdb.pkl")
 
 # RVA of the shared empty-body thunk (verified: `ret 0` at 0x30C000).

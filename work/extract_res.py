@@ -7,7 +7,7 @@ Usage:
   python extract_res.py --stage audio       # AudioClip -> ogg
   python extract_res.py --stage core --workers 4 --files-substr naninovel
 """
-import os, sys, json, io, time, argparse, traceback, re, subprocess, tempfile, shutil
+import os, sys, json, io, time, argparse, traceback, re, subprocess, tempfile, shutil, threading
 import multiprocessing as mp
 
 GAME = r"E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game"
@@ -31,6 +31,47 @@ CORE_TYPES = {"Texture2D", "Sprite", "TextAsset", "Font", "VideoClip", "MonoBeha
               "Shader", "ComputeShader", "Cubemap", "Texture3D", "PrefabInstance"}
 
 SAFE = re.compile(r'[<>:"|?*\x00-\x1f]')
+
+_BIG_STACK_READY = False
+
+
+def ensure_big_stack():
+    """Reserve stack for libsndfile's Vorbis encoder.
+
+    The encoder puts a buffer proportional to the block size on the stack; long tracks
+    (voice/BGM) overflow the default 1 MiB stack on a single big write and kill the
+    process with STATUS_STACK_OVERFLOW (0xC00000FD) without a Python traceback.
+    """
+    global _BIG_STACK_READY
+    if not _BIG_STACK_READY:
+        try:
+            threading.stack_size(64 * 1024 * 1024)
+        except (ValueError, RuntimeError):
+            pass
+        _BIG_STACK_READY = True
+
+
+def write_ogg(path, data, sr):
+    """Chunked Vorbis write from a large-stack thread, matching work/audio_worker.py."""
+    import soundfile as sf
+    ensure_big_stack()
+    errors = []
+
+    def run():
+        try:
+            step = 65536
+            with sf.SoundFile(path, "w", samplerate=sr, channels=data.shape[1],
+                              format="OGG", subtype="VORBIS") as fh:
+                for i in range(0, len(data), step):
+                    fh.write(data[i:i + step])
+        except Exception as e:  # noqa: BLE001
+            errors.append(e)
+
+    thread = threading.Thread(target=run)
+    thread.start()
+    thread.join()
+    if errors:
+        raise errors[0]
 
 
 def safe_relpath(p):
@@ -236,9 +277,13 @@ def worker(rel, stage):
                             i += 1
                         dst = f"{dst[:-4]}~{i}.ogg"
                     try:
-                        sf.write(dst, data, sr, format="OGG", subtype="VORBIS")
+                        write_ogg(dst, data, sr)
                     except Exception as e:
                         errs.append(f"ogg write {dst}: {type(e).__name__}: {e}")
+                        try:
+                            os.remove(dst)
+                        except OSError:
+                            pass
                         continue
                     written += 1
                     entries.append({"src": rel, "path_id": obj.path_id, "type": tn, "container": cont,

@@ -66,7 +66,12 @@ namespace Manosaba.Integration
         {
             "General/Prefabs/Debug/DebugLabel",                  // 3 objects, Unity built-ins only (baseline)
             "Naninovel/Spawn/Blur",                              // Naninovel.FX.Blur (reconstructed)
-            "General/Prefabs/UI/Buttons/SimpleCloseButton",       // GigaCreation.Essentials.Ui.TweeningButton (reconstructed)
+            // Was "General/Prefabs/UI/Buttons/SimpleCloseButton" until the 2026-10-02 game update: the
+            // updated shipped catalog (56,984 keys) still carries six General/Prefabs/UI/Buttons/*
+            // addresses but no longer that one, so the probe could never load it again.  This sibling is
+            // shipped and carries the same reconstructed component (GigaCreation.Essentials.Ui.TweeningButton,
+            // guid dcd6e73a0bf0799408b2d11dd7babd15), so the check keeps its original meaning.
+            "General/Prefabs/UI/Buttons/MovingArrowButton_Left", // GigaCreation.Essentials.Ui.TweeningButton (reconstructed)
         };
 
         /// <summary>Assembly prefixes whose components count as reconstructed game code, not engine code.</summary>
