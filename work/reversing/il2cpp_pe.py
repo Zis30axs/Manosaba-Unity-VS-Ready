@@ -1,7 +1,8 @@
 """Core PE + capstone helpers for the Manosaba GameAssembly.dll analysis."""
 import struct, os
 
-GAME_DLL = r"E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game\GameAssembly.dll"
+GAME_DLL = os.environ.get("MANOSABA_GAME_DLL") or \
+    r"E:\迅雷云盘\manosaba.game-STEAM.CHS\manosaba_game\GameAssembly.dll"
 
 class PE:
     def __init__(self, path=GAME_DLL):

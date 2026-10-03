@@ -36,6 +36,32 @@ namespace WitchTrials.Views
     	[RequiredParameter]
     	public IntegerParameter Index;
 
+    	// NEW IN THE 2026-10-02 GAME UPDATE.  The shipped `gosubCutIn` commands serialise these four
+    	// fields, but this checkout's pre-update reconstruction declares neither, so the incremental sync
+    	// rejected every script that uses them ("VoicePath: no serialised field") and retained the old asset.
+    	// TODO(evidence): the updated build also rebases this type onto `AudioCommand` and adds
+    	// `Command.IPreloadable.PreloadResources()` plus a `HasVoice` property; those are not reconstructed
+    	// here, and the RVAs recorded in this file still belong to the pre-update layout.
+    	[Token(Token = "0x400014F")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+    	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+    	public StringParameter VoicePath;
+
+    	[Token(Token = "0x4000150")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+    	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+    	public DecimalParameter Volume;
+
+    	[Token(Token = "0x4000151")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+    	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+    	public StringParameter GroupPath;
+
+    	[Token(Token = "0x4000152")]
+    	[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+    	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+    	public StringParameter AuthorId;
+
     	// RECONSTRUCTED | Confidence: A (structure), B (Index's exact nullable typing)
     	// RVA: 0x325750
     	//

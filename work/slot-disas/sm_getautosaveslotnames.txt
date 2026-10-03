@@ -1,0 +1,47 @@
+﻿====================================================================================================
+FUNCTION RVA 0xD05D50  VA 0x180D05D50  size 0x8C (140 bytes)
+  managed: GigaCreation.NaninovelExtender.Common.StateManagerExtended$$get_AutoSaveSlotNames
+  csig   : System_Collections_Generic_IReadOnlyList_string__o* GigaCreation_NaninovelExtender_Common_StateManagerExtended__get_AutoSaveSlotNames (GigaCreation_NaninovelExtender_Common_StateManagerExtended_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.NaninovelExtender.Common.StateManagerExtended :: public IReadOnlyList<string> get_AutoSaveSlotNames()
+  fields of GigaCreation.NaninovelExtender.Common.IOGameStateSlotManagerExtended:
+      +0x80   _autoSavePattern               readonly string
+  fields of IOGameStateSlotManagerExtended.<>O:
+      +0x0    <0>__GetFileNameWithoutExtension static Func<string, string>
+      +0x8    <1>__GetFileName               static Func<string, string>
+====================================================================================================
+  0x180D05D50  push    rbx                                       
+  0x180D05D52  sub     rsp, 0x20                                 
+  0x180D05D56  cmp     byte ptr [rip + 0x23e01ff], 0                ; data_30E5F5C
+  0x180D05D5D  mov     rbx, rcx                                  
+  0x180D05D60  jne     0x180d05d8b                               
+  0x180D05D62  lea     rcx, [rip + 0x215c3c7]                       ; METHODINFO Method$System.Array.Empty<string>()
+  0x180D05D69  call    0x180250e40                                  ; -> sub_250E40 (runtime/helper)
+  0x180D05D6E  lock or dword ptr [rsp], 0                        
+  0x180D05D73  lea     rcx, [rip + 0x216ea16]                       ; TYPE GigaCreation.NaninovelExtender.Common.ISaveSlotManagerExtended<GameStateMap>_TypeInfo
+  0x180D05D7A  call    0x180250e40                                  ; -> sub_250E40 (runtime/helper)
+  0x180D05D7F  lock or dword ptr [rsp], 0                        
+  0x180D05D84  mov     byte ptr [rip + 0x23e01d1], 1                ; data_30E5F5C
+
+180D05D8B:
+  0x180D05D8B  mov     rdx, qword ptr [rbx]                      
+  0x180D05D8E  mov     rcx, rbx                                  
+  0x180D05D91  mov     rax, qword ptr [rdx + 0x498]              
+  0x180D05D98  mov     rdx, qword ptr [rdx + 0x4a0]              
+  0x180D05D9F  call    rax                                       
+  0x180D05DA1  mov     rdx, qword ptr [rip + 0x216e9e8]             ; TYPE GigaCreation.NaninovelExtender.Common.ISaveSlotManagerExtended<GameStateMap>_TypeInfo
+  0x180D05DA8  mov     rcx, rax                                  
+  0x180D05DAB  call    0x180297f60                                  ; -> sub_297F60 (runtime/helper)
+  0x180D05DB0  test    rax, rax                                  
+  0x180D05DB3  je      0x180d05dcb                               
+  0x180D05DB5  mov     rdx, qword ptr [rip + 0x216e9d4]             ; TYPE GigaCreation.NaninovelExtender.Common.ISaveSlotManagerExtended<GameStateMap>_TypeInfo
+  0x180D05DBC  xor     ecx, ecx                                  
+  0x180D05DBE  mov     r8, rax                                   
+  0x180D05DC1  add     rsp, 0x20                                 
+  0x180D05DC5  pop     rbx                                       
+  0x180D05DC6  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180D05DCB:
+  0x180D05DCB  mov     rcx, qword ptr [rip + 0x215c35e]             ; METHODINFO Method$System.Array.Empty<string>()
+  0x180D05DD2  add     rsp, 0x20                                 
+  0x180D05DD6  pop     rbx                                       
+  0x180D05DD7  jmp     0x180331f80                                  ; -> System.Array$$Empty<__Il2CppFullySharedGenericType> (+7 aliases)

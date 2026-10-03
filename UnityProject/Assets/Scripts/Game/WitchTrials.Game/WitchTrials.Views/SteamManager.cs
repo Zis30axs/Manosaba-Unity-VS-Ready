@@ -1,8 +1,28 @@
+// PORTABILITY GUARD (not part of the shipped sources): Steamworks.NET
+// (Packages/com.rlabrecque.steamworks.net) ships native libraries only for Windows/macOS/Linux and its
+// Runtime asmdef restricts itself to Editor + those standalone platforms, so any other target (Android,
+// iOS, WebGL...) fails to compile this file with
+//     error CS0246: The type or namespace name 'Steamworks' could not be found
+// and BuildPlayer refuses to start ("Error building Player because scripts have compile errors in the
+// editor" -> "Build completed with a result of 'Unknown' in 0 seconds").
+//
+// Every Steam-touching member is therefore compiled only where the plugin exists.  Elsewhere the class
+// keeps its full shape (the Boot scene's GameInitializer holds a serialized reference to it) but the Steam
+// calls become no-ops, which is also what keeps a non-Steam player from calling into a missing native
+// library: GameInitializer.Start() activates this component whenever DebugOptions.EnableSteamworks is true,
+// and that is the release-build path.
+//
+// The guard is `UNITY_STANDALONE` and NOT `UNITY_EDITOR || UNITY_STANDALONE`: UNITY_EDITOR stays defined
+// while the active build target is Android, so the `|| UNITY_EDITOR` form still compiled the Steam code
+// there and the CS0246 errors survived the first attempt (measured 13:24:39).  UNITY_STANDALONE follows the
+// active build target, which is exactly what the package's includePlatforms list keys off.
 using System.Text;
-using AOT;
 using Il2CppDummyDll;
-using Steamworks;
 using UnityEngine;
+#if UNITY_STANDALONE
+using AOT;
+using Steamworks;
+#endif
 
 namespace WitchTrials.Views
 {
@@ -22,9 +42,11 @@ namespace WitchTrials.Views
     	[FieldOffset(Offset = "0x20")]
     	private bool _bInitialized;
 
+#if UNITY_STANDALONE
     	[Token(Token = "0x400062B")]
     	[FieldOffset(Offset = "0x28")]
     	private SteamAPIWarningMessageHook_t _steamAPIWarningMessageHook;
+#endif
 
     	[Token(Token = "0x170000AB")]
     	private static SteamManager Instance
@@ -50,7 +72,9 @@ namespace WitchTrials.Views
 
     	[Token(Token = "0x6000557")]
     	[Address(RVA = "0x3890E0", Offset = "0x387AE0", VA = "0x1803890E0")]
+#if UNITY_STANDALONE
     	[MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
+#endif
     	private static void SteamAPIDebugTextHook(int nSeverity, StringBuilder pchDebugText)
     	{
     	}
@@ -95,12 +119,14 @@ namespace WitchTrials.Views
     		{
     			s_instance = this;
     		}
+#if UNITY_STANDALONE
     		if (!_bInitialized || _steamAPIWarningMessageHook != null)
     		{
     			return;
     		}
     		_steamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);
     		SteamClient.SetWarningMessageHook(_steamAPIWarningMessageHook);
+#endif
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x389AE0
@@ -132,7 +158,9 @@ namespace WitchTrials.Views
     		{
     			return;
     		}
+#if UNITY_STANDALONE
     		SteamAPI.Shutdown();
+#endif
     	}
 
     	// RECONSTRUCTED | Confidence: B | RVA: 0x389F80
@@ -172,7 +200,9 @@ namespace WitchTrials.Views
     		{
     			return;
     		}
+#if UNITY_STANDALONE
     		SteamAPI.RunCallbacks();
+#endif
     	}
 
     	[Token(Token = "0x600055D")]

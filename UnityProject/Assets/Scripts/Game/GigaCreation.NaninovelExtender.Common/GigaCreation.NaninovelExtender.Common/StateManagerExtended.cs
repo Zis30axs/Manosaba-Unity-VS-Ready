@@ -294,6 +294,26 @@ namespace GigaCreation.NaninovelExtender.Common
     		private set;
     	}
 
+    	// NEW IN THE 2026-10-02 GAME UPDATE.  RECONSTRUCTED | Confidence: A | RVA: 0xD05D50, 140 B | Slot 90
+    	//
+    	// Native evidence (work/slot-disas/sm_getautosaveslotnames.txt): the virtual `GameSlotManager`
+    	// getter (+0x498 in the class vtable), then an interface cast to
+    	// `ISaveSlotManagerExtended<GameStateMap>` (0xD05DAB), the interface's slot 0
+    	// `get_AutoSaveSlotNames` when the cast succeeded (0xD05DC6, into the 0x22E0 thunk), and
+    	// `System.Array.Empty<string>()` when it did not (0xD05DD7).  The pre-update `Naninovel.StateManager`
+    	// declares `public virtual ISaveSlotManager<GameStateMap> GameSlotManager { get; }`, which is why the
+    	// cast is needed at all.
+    	[Token(Token = "0x17000011")]
+    	public IReadOnlyList<string> AutoSaveSlotNames
+    	{
+    		[Token(Token = "0x600006E")]
+    		[Address(RVA = "0xD05D50", Offset = "0xD04550", VA = "0x180D05D50", Slot = "90")]
+    		get
+    		{
+    			return (GameSlotManager as ISaveSlotManagerExtended<GameStateMap>)?.AutoSaveSlotNames ?? Array.Empty<string>();
+    		}
+    	}
+
     	// RECONSTRUCTED | Confidence: A | RVA: 0xCFF280, 8 B
     	// `xor r8d,r8d` (MethodInfo* = null) + `jmp 0x1805DD600` (Naninovel.StateManager$$.ctor,
     	// 2448 B). rcx (__this) and rdx (cfg) are passed through unchanged, so this is a pure
@@ -412,6 +432,59 @@ namespace GigaCreation.NaninovelExtender.Common
     			}
     		}
     		IsSoftResetting = false;
+    	}
+
+    	[StructLayout(3)]
+    	[Token(Token = "0x200002F")]
+    	[CompilerGenerated]
+    	private struct _003CAutoSaveAsync_003Ed__12
+    	{
+    		[Token(Token = "0x4000089")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+    		public int _003C_003E1__state;
+
+    		[Token(Token = "0x400008A")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+    		public AsyncUniTaskMethodBuilder<GameStateMap> _003C_003Et__builder;
+
+    		[Token(Token = "0x400008B")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+    		public StateManagerExtended _003C_003E4__this;
+
+    		[Token(Token = "0x400008C")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+    		private UniTask.Awaiter _003C_003Eu__1;
+
+    		[Token(Token = "0x400008D")]
+    		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+    		private UniTask<GameStateMap>.Awaiter _003C_003Eu__2;
+
+    		[Token(Token = "0x6000081")]
+    		[Address(RVA = "0xD06E40", Offset = "0xD05640", VA = "0x180D06E40", Slot = "4")]
+    		private void MoveNext()
+    		{
+    		}
+
+    		[Token(Token = "0x6000082")]
+    		[Address(RVA = "0xD07690", Offset = "0xD05E90", VA = "0x180D07690", Slot = "5")]
+    		[DebuggerHidden]
+    		private void SetStateMachine(IAsyncStateMachine stateMachine)
+    		{
+    		}
+    	}
+
+    	// NEW IN THE 2026-10-02 GAME UPDATE; signature only, matching the QuickSaveAsync / QuickLoadAsync
+    	// stubs below.  Body still awaits reconstruction.  What the shipped MoveNext (0xD06E40) shows:
+    	// it awaits one plain `UniTask` (<>u__1) and one `UniTask<GameStateMap>` (<>u__2), formats a slot id
+    	// from `System.DateTime` with '{0:yyMMddHHmmssfff}', goes through
+    	// `ISaveSlotManagerExtended<GameStateMap>` and a `UniTaskCompletionSource`, and delegates the actual
+    	// write to `DoSaveAfterSync(string slotId, GameStateMap state)`.
+    	[Token(Token = "0x6000073")]
+    	[Address(RVA = "0xD06410", Offset = "0xD04C10", VA = "0x180D06410", Slot = "93")]
+    	[AsyncStateMachine(typeof(_003CAutoSaveAsync_003Ed__12))]
+    	public UniTask<GameStateMap> AutoSaveAsync()
+    	{
+    		return default(UniTask<GameStateMap>);
     	}
 
     	[Token(Token = "0x600006B")]

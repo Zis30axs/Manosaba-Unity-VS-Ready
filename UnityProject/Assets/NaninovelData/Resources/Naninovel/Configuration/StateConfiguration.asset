@@ -16,16 +16,16 @@ MonoBehaviour:
   DefaultSettingsSlotId: Settings
   DefaultGlobalSlotId: GlobalSave
   SaveSlotMask: GameSave{0:000}
-  QuickSaveSlotMask: GameQuickSave{0:000}
+  QuickSaveSlotMask: GameAutoSave{0}
   SaveSlotLimit: 180
-  QuickSaveSlotLimit: 100
+  QuickSaveSlotLimit: 12
   BinarySaveFiles: 1
   ResetOnGoto: 1
   EnableStateRollback: 1
   StateRollbackSteps: 100
   SavedRollbackSteps: 0
-  GameStateHandler: Naninovel.UniversalGameStateSerializer, Elringus.Naninovel.Runtime,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  GameStateHandler: GigaCreation.NaninovelExtender.Common.UniversalGameStateSerializerExtended,
+    GigaCreation.NaninovelExtender.Common, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   GlobalStateHandler: Naninovel.UniversalGlobalStateSerializer, Elringus.Naninovel.Runtime,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   SettingsStateHandler: Naninovel.UniversalSettingsStateSerializer, Elringus.Naninovel.Runtime,

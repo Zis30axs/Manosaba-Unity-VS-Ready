@@ -12,7 +12,8 @@
 // 1080-pixel screen).  Per plan entry this sets what the shipped object records and nothing else:
 //   no power-of-two rescale (the shipped object keeps its own size); mipmaps = (mip count > 1); sRGB = (colour
 //   space 1); wrap U/V, filter mode, aniso level, mip bias, readability;
-//   max size = the smallest power of two that holds the shipped width and height (never a downscale);
+//   max size = the smallest power of two that holds the shipped width and height (never a downscale,
+//   except where the shipped size exceeds the importer's 8192 maximum: that entry is reported READ_ONLY);
 //   Standalone format = the shipped TextureFormat when TextureImporterFormat has the same member (R8, DXT1, DXT5,
 //   DXT1Crunched, BC7, RGBA32, ...), and uncompressed for the uncompressed formats.
 // After the reimport the imported Texture2D's size is compared with the shipped one; a mismatch is FAILED, not APPLIED.
@@ -33,6 +34,8 @@ namespace Manosaba.EditorTools
         private const string InputRelativePath = "../tools/unity-rebuild/out/unity/texture_settings_plan.json";
         private const string OutputRelativePath = "../tools/unity-rebuild/out/unity/texture_settings_import.json";
         private const string CropMarker = ".sprite";
+        // TextureImporter.maxTextureSize has no value above 8192.
+        private const int MaxImporterTextureSize = 8192;
 
         [MenuItem("Manosaba/Apply Shipped Texture Settings (from plan)")]
         public static void Run()
@@ -119,6 +122,14 @@ namespace Manosaba.EditorTools
             int mipCount = (int)entry["mip_count"], colorSpace = (int)entry["color_space"];
             int formatValue = (int)entry["format_value"];
 
+            // A shipped texture taller or wider than MaxImporterTextureSize (AnAn_Angle01 is 8192x16384,
+            // the only such entry in the plan) has no representable import: writing the plan's next power
+            // of two (16384) makes every import of the asset fail with "Texture has out of range height",
+            // and leaves that out-of-range value in the .meta.  Clamp to the importer's maximum, keep the
+            // remaining shipped settings, and record the deviation on the row instead of failing the gate.
+            int shippedMax = Math.Max(width, height);
+            bool oversize = shippedMax > MaxImporterTextureSize;
+
             importer.npotScale = TextureImporterNPOTScale.None;
             importer.mipmapEnabled = mipCount > 1;
             importer.sRGBTexture = colorSpace == 1;
@@ -129,7 +140,7 @@ namespace Manosaba.EditorTools
             importer.mipMapBias = (float)entry["mip_bias"];
             importer.isReadable = (bool)entry["is_readable"];
             int maxSize = 32;
-            while (maxSize < Math.Max(width, height)) maxSize *= 2;
+            while (maxSize < Math.Max(width, height) && maxSize < MaxImporterTextureSize) maxSize *= 2;
             importer.maxTextureSize = maxSize;
 
             string formatName = Enum.GetName(typeof(TextureFormat), formatValue);
@@ -159,6 +170,15 @@ namespace Manosaba.EditorTools
             row.applied = "mipmaps=" + importer.mipmapEnabled + " sRGB=" + importer.sRGBTexture + " wrap=" +
                           importer.wrapModeU + "/" + importer.wrapModeV + " filter=" + importer.filterMode +
                           " maxSize=" + maxSize + " format=" + (standalone.overridden ? standalone.format.ToString() : "auto");
+            if (oversize)
+            {
+                // Verify() requires the shipped size, which this asset cannot reach; a FAILED row would
+                // block the gate even though the importer now holds the closest supported settings.
+                row.status = "READ_ONLY";
+                row.notes.Add("shipped size " + width + "x" + height + " exceeds Unity's maximum importable " +
+                              "texture dimension (" + MaxImporterTextureSize + "); the importer is clamped to " +
+                              maxSize + " and the asset imports downscaled");
+            }
             return row;
         }
 
