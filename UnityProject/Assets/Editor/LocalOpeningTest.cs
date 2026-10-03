@@ -58,6 +58,8 @@ namespace Manosaba.EditorTools
             foreach (var record in EditorResources.LoadOrDefault().GetAllRecords())
                 if (!string.IsNullOrEmpty(AssetDatabase.GUIDToAssetPath(record.Value)))
                     localProvider.AddResourceGuid(record.Key, record.Value);
+            RegisterGeneratedScenarioResources(localProvider);
+            RegisterGeneratedLocalizationResources(localProvider);
             ResourceProviderConfiguration.EditorProvider = localProvider;
             RegisterAsset(localProvider, "Characters/LocalBMPT72/Default", "BMPT72.png");
             RegisterAsset(localProvider, "Audio/LocalOpening/Reverse", "Reverse.wav");
@@ -65,6 +67,53 @@ namespace Manosaba.EditorTools
             RegisterAsset(localProvider, "Backgrounds/LocalOpening/Default", "SchoolCourtyard.png");
             Debug.Log("[LocalOpeningTest] Independent in-memory opening ready; commands=" + replacement.Playlist.Count + ". Original script asset is unchanged.");
             return UniTask.CompletedTask;
+        }
+
+        private static void RegisterGeneratedScenarioResources(LocalOpeningResourceProvider provider)
+        {
+            string root = Path.Combine(Application.dataPath, "GameContent", "#WitchTrials", "Scenarios");
+            if (!Directory.Exists(root)) return;
+
+            int registered = 0;
+            foreach (string file in Directory.EnumerateFiles(root, "*.asset", SearchOption.AllDirectories))
+            {
+                string assetPath = ToAssetPath(file);
+                string guid = AssetDatabase.AssetPathToGUID(assetPath);
+                if (string.IsNullOrEmpty(guid)) continue;
+                string relative = file.Substring(root.Length + 1).Replace('\\', '/');
+                relative = Path.ChangeExtension(relative, null);
+                provider.AddResourceGuid("Scripts/" + relative, guid);
+                registered++;
+            }
+
+            Debug.Log("[LocalOpeningTest] Registered generated scenario resources: " + registered);
+        }
+
+        private static void RegisterGeneratedLocalizationResources(LocalOpeningResourceProvider provider)
+        {
+            string root = Path.Combine(Application.dataPath, "GameContent", "#WitchTrials", "Localization");
+            if (!Directory.Exists(root)) return;
+
+            int registered = 0;
+            foreach (string file in Directory.EnumerateFiles(root, "*.txt", SearchOption.AllDirectories))
+            {
+                string assetPath = ToAssetPath(file);
+                string guid = AssetDatabase.AssetPathToGUID(assetPath);
+                if (string.IsNullOrEmpty(guid)) continue;
+                string relative = file.Substring(root.Length + 1).Replace('\\', '/');
+                relative = Path.ChangeExtension(relative, null);
+                provider.AddResourceGuid("Localization/" + relative, guid);
+                registered++;
+            }
+
+            Debug.Log("[LocalOpeningTest] Registered generated localization resources: " + registered);
+        }
+
+        private static string ToAssetPath(string absolutePath)
+        {
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string relative = absolutePath.Substring(projectRoot.Length + 1).Replace('\\', '/');
+            return relative.StartsWith("Assets/", StringComparison.Ordinal) ? relative : "Assets/" + relative;
         }
 
         private static UniTask Install()

@@ -4,6 +4,7 @@
 param(
     [string]$ProjectPath = '',
     [switch]$SkipContentCheck,
+    [switch]$UsePackedContent,
     [ValidateRange(30, 3600)][int]$TimeoutSeconds = 180
 )
 
@@ -17,7 +18,9 @@ $requestPath = Join-Path $bridge 'request.json'
 $resultPath = Join-Path $bridge 'result.json'
 $logPath = Join-Path $repo 'tools/unity-rebuild/out/logs/idea_unity_editor.log'
 $reportPath = Join-Path $repo 'tools/unity-rebuild/out/unity/addressables_build_result.json'
+$settingsAssetPath = Join-Path $project 'Assets/AddressableAssetsData/AddressableAssetSettings.asset'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
+$script:contentFailure = $null
 
 function Get-ConfiguredValue {
     param([string]$Key, [string]$EnvironmentName)
@@ -49,8 +52,8 @@ function Get-UnityEditor {
     if ($configured) { $candidates += $configured }
     if ($version) {
         $candidates += @(
-            "E:\AI\$version\Editor\Unity.exe",
             "E:\Unity\$version\Editor\Unity.exe",
+            "E:\AI\$version\Editor\Unity.exe",
             "D:\Unity\$version\Editor\Unity.exe",
             "C:\Program Files\Unity\Hub\Editor\$version\Editor\Unity.exe",
             "E:\Unity\Hub\Editor\$version\Editor\Unity.exe"
@@ -75,25 +78,62 @@ function Test-EditorOpen {
 }
 
 function Test-BuiltContent {
-    if (-not (Test-Path -LiteralPath $reportPath -PathType Leaf)) { return $false }
+    $settings = Join-Path $project 'Library/com.unity.addressables/aa/Windows/settings.json'
+    $buildRoot = Join-Path $project 'Library/com.unity.addressables/aa/Windows'
+    $catalog = Join-Path $buildRoot 'catalog.bin'
+    $bundles = @(Get-ChildItem -LiteralPath $buildRoot -Recurse -File -Filter '*.bundle' -ErrorAction SilentlyContinue)
+    if (-not (Test-Path -LiteralPath $catalog -PathType Leaf) -or $bundles.Count -eq 0) {
+        $script:contentFailure = "Packed Addressables output is incomplete: catalog.bin or bundles are missing under $buildRoot."
+        return $false
+    }
+    if (-not (Test-Path -LiteralPath $settings -PathType Leaf)) {
+        $script:contentFailure = "Packed Addressables settings are missing: $settings"
+        return $false
+    }
+
+    # The Android patch profile embeds this remote load path in the catalog. The Editor cannot
+    # use it unless the original game's extracted bundles have been imported to persistentDataPath.
+    $settingsText = if (Test-Path -LiteralPath $settingsAssetPath -PathType Leaf) {
+        Get-Content -LiteralPath $settingsAssetPath -Raw -Encoding UTF8
+    } else { '' }
+    $remoteCache = Join-Path $env:USERPROFILE 'AppData/LocalLow/acacia/manosaba/extracted/StandaloneWindows64'
+    if ($settingsText -match 'm_ActiveProfileId:\s*b3bd4f06b43524b4db57148bc7fce0fd' -and
+        -not (Test-Path -LiteralPath $remoteCache -PathType Container)) {
+        $script:contentFailure = "Active profile ManosabaAndroidPatch requires extracted bundles at $remoteCache."
+        return $false
+    }
+
+    # A report is useful evidence, but it is not sufficient: it can outlive a failed/cleaned build.
+    if (-not (Test-Path -LiteralPath $reportPath -PathType Leaf)) { return $true }
     try {
         $report = Get-Content -LiteralPath $reportPath -Raw -Encoding UTF8 | ConvertFrom-Json
-        $settings = Join-Path $project 'Library/com.unity.addressables/aa/Windows/settings.json'
-        return $report.status -eq 'OK' -and $report.player_streaming_source_ready -and
-            (Test-Path -LiteralPath $settings -PathType Leaf)
-    } catch { return $false }
+        if ($report.status -ne 'OK' -or -not $report.player_streaming_source_ready) {
+            $script:contentFailure = "The Addressables build receipt is not successful or is not marked ready."
+            return $false
+        }
+        return $true
+    } catch {
+        $script:contentFailure = "Could not read the Addressables build receipt: $($_.Exception.Message)"
+        return $false
+    }
 }
 
 if (-not (Test-Path -LiteralPath $project -PathType Container)) { throw "Unity project not found: $project" }
-if (-not $SkipContentCheck -and -not (Test-BuiltContent)) {
-    throw "Packed Addressables content is missing or stale. Run the content build first, or use -SkipContentCheck for an intentional editor-only launch."
+if ($UsePackedContent -and -not $SkipContentCheck -and -not (Test-BuiltContent)) {
+    $failure = $script:contentFailure
+    if (-not $failure) { $failure = "Packed Addressables content is missing or stale. Run the content build first, or use -SkipContentCheck for an intentional editor-only launch." }
+    throw $failure
 }
 
 $editor = Get-UnityEditor
 [IO.Directory]::CreateDirectory($bridge) | Out-Null
 [IO.Directory]::CreateDirectory((Split-Path -Parent $logPath)) | Out-Null
 $requestId = [Guid]::NewGuid().ToString('N')
-$request = @{ id = $requestId; expiresUtc = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds).ToString('o') }
+$request = @{
+    id = $requestId
+    expiresUtc = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds).ToString('o')
+    useAssetDatabase = (-not $UsePackedContent)
+}
 $temporary = Join-Path $bridge 'request.tmp'
 [IO.File]::WriteAllText($temporary, ($request | ConvertTo-Json), $utf8)
 Move-Item -LiteralPath $temporary -Destination $requestPath -Force

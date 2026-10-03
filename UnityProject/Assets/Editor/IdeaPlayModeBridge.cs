@@ -2,6 +2,9 @@ using System;
 using System.Globalization;
 using System.IO;
 using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Build;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -16,6 +19,7 @@ namespace Manosaba.EditorTools
         private const string RequestName = "request.json";
         private const string ResultName = "result.json";
         private const string PendingIdKey = "Manosaba.IdeaPlayModeBridge.pendingId";
+        private const string PreviousBuilderKey = "Manosaba.IdeaPlayModeBridge.previousBuilder";
         private const string ScenePath = "Assets/Scenes/Boot.unity";
 
         private static readonly string RootPath = Path.GetFullPath(Path.Combine(Application.dataPath, "../" + Root));
@@ -28,6 +32,7 @@ namespace Manosaba.EditorTools
         {
             public string id = string.Empty;
             public string expiresUtc = string.Empty;
+            public bool useAssetDatabase = true;
         }
 
         [Serializable]
@@ -59,6 +64,21 @@ namespace Manosaba.EditorTools
         {
             if (busy || EditorApplication.timeSinceStartup < nextPoll) return;
             nextPoll = EditorApplication.timeSinceStartup + 0.5;
+
+            // EnterPlaymode can force a domain reload before EnteredPlayMode is
+            // delivered to this static class.  In that case the request has
+            // already been consumed and the pending id is the only durable
+            // hand-off left for the newly loaded editor assembly.
+            if (EditorApplication.isPlaying)
+            {
+                string pendingId = SessionState.GetString(PendingIdKey, string.Empty);
+                if (!string.IsNullOrEmpty(pendingId))
+                {
+                    SessionState.EraseString(PendingIdKey);
+                    WriteResult(pendingId, "PLAYING", "Manosaba is running in Unity Play Mode.");
+                }
+                return;
+            }
 
             string requestPath = Path.Combine(RootPath, RequestName);
             if (!File.Exists(requestPath)) return;
@@ -95,6 +115,8 @@ namespace Manosaba.EditorTools
                 if (bootScene == null)
                     throw new InvalidOperationException("Missing Assets/Scenes/Boot.unity. Run the project bootstrap first.");
 
+                ConfigurePlayModeBuilder(request.useAssetDatabase);
+
                 // playModeStartScene changes the scene used by Play Mode without opening or overwriting
                 // the scene currently being edited.
                 EditorSceneManager.playModeStartScene = bootScene;
@@ -120,6 +142,9 @@ namespace Manosaba.EditorTools
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
+            if (state == PlayModeStateChange.EnteredEditMode)
+                RestorePlayModeBuilder();
+
             string id = SessionState.GetString(PendingIdKey, string.Empty);
             if (string.IsNullOrEmpty(id)) return;
 
@@ -132,6 +157,55 @@ namespace Manosaba.EditorTools
             {
                 WriteStatus(id, "ENTERING_PLAY_MODE", "Unity is entering Play Mode.");
             }
+        }
+
+        private static void ConfigurePlayModeBuilder(bool useAssetDatabase)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(false);
+            if (settings == null || settings.DataBuilders == null || settings.DataBuilders.Count == 0)
+                throw new InvalidOperationException("Addressables settings have no Play Mode data builders. Reimport the project before launching from IDEA.");
+
+            int selected = -1;
+            for (int i = 0; i < settings.DataBuilders.Count; i++)
+            {
+                if (!(settings.DataBuilders[i] is IDataBuilder builder)) continue;
+                bool isAssetDatabase = builder.Name.IndexOf("Asset Database", StringComparison.OrdinalIgnoreCase) >= 0;
+                bool isExistingBuild = builder.Name.IndexOf("Existing Build", StringComparison.OrdinalIgnoreCase) >= 0;
+                if ((useAssetDatabase && isAssetDatabase) || (!useAssetDatabase && isExistingBuild))
+                {
+                    selected = i;
+                    break;
+                }
+            }
+
+            if (selected < 0)
+            {
+                string mode = useAssetDatabase ? "Use Asset Database" : "Use Existing Build";
+                throw new InvalidOperationException("Could not find the Addressables Play Mode builder: " + mode + ".");
+            }
+
+            if (!SessionState.GetBool(PreviousBuilderKey + ".set", false))
+            {
+                SessionState.SetInt(PreviousBuilderKey, settings.ActivePlayModeDataBuilderIndex);
+                SessionState.SetBool(PreviousBuilderKey + ".set", true);
+            }
+            settings.ActivePlayModeDataBuilderIndex = selected;
+            Debug.Log("[IdeaPlayModeBridge] Addressables Play Mode builder: " +
+                      (useAssetDatabase ? "Use Asset Database" : "Use Existing Build"));
+        }
+
+        private static void RestorePlayModeBuilder()
+        {
+            if (!SessionState.GetBool(PreviousBuilderKey + ".set", false)) return;
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(false);
+            if (settings != null)
+            {
+                int previous = SessionState.GetInt(PreviousBuilderKey, settings.ActivePlayModeDataBuilderIndex);
+                if (previous >= 0 && previous < settings.DataBuilders.Count)
+                    settings.ActivePlayModeDataBuilderIndex = previous;
+            }
+            SessionState.EraseString(PreviousBuilderKey);
+            SessionState.SetBool(PreviousBuilderKey + ".set", false);
         }
 
         private static void WriteStatus(string id, string status, string message)
@@ -151,8 +225,23 @@ namespace Manosaba.EditorTools
                 status = status,
                 message = message,
             }, true));
-            if (File.Exists(path)) File.Replace(temporary, path, null);
-            else File.Move(temporary, path);
+            IOException lastError = null;
+            for (int attempt = 0; attempt < 20; attempt++)
+            {
+                try
+                {
+                    if (File.Exists(path)) File.Replace(temporary, path, null);
+                    else File.Move(temporary, path);
+                    lastError = null;
+                    break;
+                }
+                catch (IOException error)
+                {
+                    lastError = error;
+                    System.Threading.Thread.Sleep(50);
+                }
+            }
+            if (lastError != null) throw lastError;
             lastStatus = status;
         }
     }

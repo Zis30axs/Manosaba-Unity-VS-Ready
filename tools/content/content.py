@@ -281,12 +281,16 @@ def ps_script(name, *args):
     return [executable, "-NoProfile", "-File", PIPELINE / name, *args]
 
 
-def apply_unity(jobs, import_paths, build=False, export=False, timeout=1800):
+def apply_unity(jobs, import_paths, build=False, export=False, timeout=1800,
+                setup_addressables=False, addressables_plan=""):
     BRIDGE.mkdir(parents=True, exist_ok=True)
     request_id = uuid.uuid4().hex
     request = {"id": request_id, "expiresUtc": (datetime.now(timezone.utc) + timedelta(seconds=timeout)).isoformat(),
                "jobs": jobs, "import_paths": sorted(set(import_paths)), "build_addressables": build,
                "export_master_data": export}
+    if setup_addressables:
+        request["setup_addressables"] = True
+        request["addressables_plan"] = addressables_plan or "addressables_plan_all.json"
     pending = BRIDGE / "request.json"
     if pending.is_file():
         previous = read_json(pending, {})
@@ -654,7 +658,11 @@ def build(args):
     args.force, args.dry_run, args.copy_only, args.verbose = False, False, False, False
     if sync(args):
         return 1
-    apply_unity([], [], build=True, timeout=args.timeout)
+    # Generated GameContent .meta files are local and are intentionally ignored by Git. Rebind every
+    # Addressables entry from the all-plan asset_path before building, otherwise a clone can retain the
+    # collaborator's stale GUIDs and silently drop most resources from the catalog.
+    apply_unity([], [], build=True, timeout=args.timeout, setup_addressables=True,
+                addressables_plan="addressables_plan_all.json")
     if args.player:
         run(ps_script("g5_player_smoke.ps1"))
     return 0

@@ -131,7 +131,19 @@ Unity 路径是示例，请替换为实际安装路径。验证机安装的版�
 
 IDEA/Rider 可直接运行 `.idea/runConfigurations/Sync_Localization_Build.xml`：脚本 `tools/unity-rebuild/sync_localization_idea.ps1` 会把 `res/Assets/#WitchTrials/Localization/zh-Hans/Text` 增量同步到 `UnityProject/Assets/GameContent/.../zh-Hans/Text`，校正 `config.json`，然后在 Unity 已打开时通过 `Library/ManosabaLocalization/request.json` 请求 Editor 构建；Unity 未打开时则使用 batchmode 构建。只想复制文件时运行 `Sync_Localization_Copy.xml`（等价于 `-SyncOnly`）。
 
-IDEA 的 `Run_Unity_Game.xml` 用 `tools/unity-rebuild/run_unity_game_idea.ps1` 直接启动项目要求版本的 `Unity.exe`，不经过 Unity Hub。Unity 已打开时脚本只写入 `Library/ManosabaIdeaLauncher/request.json`，由 `IdeaPlayModeBridge` 让当前 Editor 进入 `Assets/Scenes/Boot.unity` 的 Play Mode；这样不会为同一个项目启动第二个 Editor。脚本默认检查已有的 Packed Addressables 内容，缺少构建时先运行内容构建；明确需要绕过检查时才传 `-SkipContentCheck`。
+IDEA 的 `Run_Unity_Game.xml` 用 `tools/unity-rebuild/run_unity_game_idea.ps1` 直接启动项目要求版本的 `Unity.exe`，不经过 Unity Hub。Unity 已打开时脚本只写入 `Library/ManosabaIdeaLauncher/request.json`，由 `IdeaPlayModeBridge` 让当前 Editor 进入 `Assets/Scenes/Boot.unity` 的 Play Mode；这样不会为同一个项目启动第二个 Editor。IDEA 默认选择 Addressables 的 `Use Asset Database` 播放模式，直接读取当前项目资源，不要求先有 Player Content；需要验证 catalog/bundle 时才传 `-UsePackedContent`，脚本会检查实际 catalog、bundle 和远程缓存，而不是只相信旧回执。`-SkipContentCheck` 只用于有意绕过打包内容检查的实验。
+
+#### IDEA 黑屏、日文 Debug 和白块的排查顺序
+
+`20ba94a2` 同时把 `StateConfiguration.asset` 的 `GameStateHandler` 改成了 `GigaCreation.NaninovelExtender.Common.UniversalGameStateSerializerExtended`，并把 Addressables active profile 切到 `ManosabaAndroidPatch`。前者在没有对应类型时会让 `StateManager` 的 `Type.GetType` 返回空，随后 `Activator.CreateInstance` 抛出 `ArgumentNullException(type)`；`EntrySequence.ResetDebugVariables` 继续读取 `ICustomVariableManager` 时才出现二次错误。现在由 `UniversalGameStateSerializerExtended` 继承 `IOGameStateSlotManagerExtended` 提供该类型。
+
+后者的 `Remote.LoadPath` 是 `file://[Application.persistentDataPath]/extracted/[BuildTarget]`，编辑器会展开到 `C:\Users\Administrator\AppData\LocalLow\acacia\manosaba\extracted\StandaloneWindows64`。该目录不存在或 catalog 与 bundle 不匹配时，最早的真实错误是 bundle 404，接着 `Text/CharacterNames`、`System/System_Title` 加载失败；Game prefab 已经生成，所以画面会留下 Debug UI 而呈黑屏。远程 profile 还会读到旧的日文/资源版本，表现为 Debug 菜单变回日文或标题素材变成白块。仓库当前 active profile 固定为本地 `Default`，IDEA 本地调试也使用 `Use Asset Database`；Android/原版缓存测试仍可选用远程 profile，但必须先导入同一版本的完整 extracted 目录和 catalog。
+
+`Default` profile（`40d2c9efc9e57424c8b9e7879ac2fd48`）用于 Editor/Windows 本地资源；`ManosabaAndroidPatch` 只用于已有同版本 extracted 缓存的移动/原版测试。切换 profile 只改变后续构建的路径变量，不会改写已经生成的 catalog；因此第一次导入或内容同步后，必须用 `addressables_plan_all.json` 重新绑定本地 `.meta` GUID，再构建 Addressables。`tools/content/build.ps1` 和 Content Sync bridge 已内置这一步，避免协作者提交的旧 GUID 在另一份生成树中静默丢资源。
+
+IDEA bridge 的 `PLAYING` 只表示 Unity 已进入 Play Mode，不表示 Naninovel 已完成初始化。若仍有白块，先看 `tools/unity-rebuild/out/logs/idea_unity_editor.log` 中第一条 `RemoteProviderException` 或 `Resource ... failed`，再看组件字段空引用。`PaginationIndicator` 的序列化字段是 `_canvasGroup`，不能改成 `_canvas`；后者会让保存/读档分页 prefab 的 CanvasGroup 引用丢失，并在 `Pagination.ChangeIndicatorStyle` 抛出 `NullReferenceException`。
+
+Unity 6000 的 Editor-only Addressables locator 在第一次扫描 `Naninovel` 全量标签时，可能对少数复杂 CutIn prefab 输出 `Assertion failed on expression: 'pred(*previous, *i)'`；探针确认这些条目仍全部返回，且 packed build 不依赖该 Editor 扫描。只要没有紧随其后的资源加载失败，就把它视为编辑器扫描噪声，不要为消除它删除 Naninovel 标签或本地资源映射。
 
 ```powershell
 # IDEA 外部工具或终端

@@ -75,6 +75,8 @@ namespace Manosaba.EditorTools
         {
             var result = new JObject { ["status"] = "ERROR", ["generated"] = DateTime.UtcNow.ToString("o"),
                 ["jobs"] = new JArray(), ["imports"] = new JArray(), ["verification"] = new JArray() };
+            string previousAddressablesPlan = null;
+            bool addressablesPlanChanged = false;
             try
             {
                 if (busy || EditorApplication.isPlayingOrWillChangePlaymode)
@@ -152,8 +154,19 @@ namespace Manosaba.EditorTools
                     throw new InvalidOperationException("one or more copied assets failed to import; see per-target import results");
                 if (((JArray)result["jobs"]).Any(j => (string)j["status"] == "ERROR"))
                     throw new InvalidOperationException("one or more content converters failed; see per-asset results");
-                if (request.Value<bool?>("setup_addressables") == true && AddressablesSetup.Execute() != 0)
-                    throw new InvalidOperationException("Addressables setup failed");
+                if (request.Value<bool?>("setup_addressables") == true)
+                {
+                    string plan = (string)request["addressables_plan"];
+                    if (string.IsNullOrEmpty(plan)) plan = "addressables_plan_all.json";
+                    if (!string.Equals(Path.GetFileName(plan), plan, StringComparison.Ordinal) ||
+                        !plan.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Addressables plan must be a file name ending in .json.");
+                    previousAddressablesPlan = Environment.GetEnvironmentVariable("MANOSABA_ADDRESSABLES_PLAN");
+                    Environment.SetEnvironmentVariable("MANOSABA_ADDRESSABLES_PLAN", plan);
+                    addressablesPlanChanged = true;
+                    if (AddressablesSetup.Execute() != 0)
+                        throw new InvalidOperationException("Addressables setup failed");
+                }
                 if (request.Value<bool?>("build_addressables") == true)
                 {
                     Write(new JObject { ["id"] = request["id"], ["status"] = "BUILDING" });
@@ -181,7 +194,12 @@ namespace Manosaba.EditorTools
                 Debug.LogError("[ContentSync] " + error);
                 return 1;
             }
-            finally { busy = false; }
+            finally
+            {
+                if (addressablesPlanChanged)
+                    Environment.SetEnvironmentVariable("MANOSABA_ADDRESSABLES_PLAN", previousAddressablesPlan);
+                busy = false;
+            }
         }
 
         private static JObject Verify(JObject expectation)
