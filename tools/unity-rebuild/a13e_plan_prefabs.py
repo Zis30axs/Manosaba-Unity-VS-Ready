@@ -58,7 +58,7 @@ GRAPH_TYPES = {
     # orthographic, culling mask 0 - Naninovel disables them and renders into a texture) and the court stage's
     # lights.  Skipping them left renderCamera unbound and a default camera (Skybox, perspective, all layers)
     # drawing every frame over the main camera in story scenes.
-    "Camera", "Light",
+    "Camera", "Light", "AnimationClip",
 }
 
 
@@ -298,6 +298,13 @@ def main():
     for asset_path in candidates:
         for row in by_asset[asset_path]:
             row_at[(row_bundle(row), (row.get("path_id") or "").strip())] = row
+
+    def row_in_asset(asset_path, pid):
+        """Path IDs are only unique inside a serialized file, not across a whole bundle."""
+        for row in by_asset.get(asset_path, []):
+            if (row.get("path_id") or "").strip() == str(pid):
+                return row
+        return None
     component_cache = {}
 
     def is_component(where):
@@ -326,26 +333,40 @@ def main():
         objects = []
         pid_to_dump = {}
         bundles = Counter()
-        for row in rows:
+        def script_for(row):
+            bundle = os.path.basename((row.get("source_bundle") or "").replace("\\", "/"))
+            return scripts.get(f"{bundle}|{(row.get('path_id') or '').strip()}")
+
+        def standalone_graph_row(row):
+            """Timeline graph objects which Unity stores as prefab sub-assets, not components."""
+            obj_type = (row.get("type") or "").strip()
+            if obj_type == "AnimationClip":
+                return True
+            hit = script_for(row)
+            return obj_type == "MonoBehaviour" and hit is not None and \
+                hit.get("namespace") == "UnityEngine.Timeline"
+
+        def add_record(row, count_bundle=True):
             obj_type = (row.get("type") or "").strip()
             if obj_type not in GRAPH_TYPES:
                 stats["skipped_type:" + obj_type] += 1
-                continue
+                return None
             output_file = (row.get("output_file") or "").strip()
             dump_rel = output_file.replace("\\", "/")
             dump = os.path.join(RES, dump_rel.replace("/", os.sep))
             if not dump_rel or not os.path.exists(dump):
                 stats["skipped_missing_dump"] += 1
-                continue
+                return None
             bundle = os.path.basename((row.get("source_bundle") or "").replace("\\", "/"))
-            bundles[bundle] += 1
+            if count_bundle:
+                bundles[bundle] += 1
             pid = str((row.get("path_id") or "").strip())
             # repo-relative, like the ScriptableObject plan: the Editor resolves plan paths against
             # the repository root, not against res/
             record = {"pid": pid, "type": obj_type, "dump": os.path.relpath(dump, REPO).replace("\\", "/"),
-                      "name": (row.get("name") or "").strip()}
+                      "name": (row.get("name") or "").strip(), "bundle": bundle}
             if obj_type == "MonoBehaviour":
-                hit = scripts.get(f"{bundle}|{pid}")
+                hit = script_for(row)
                 if hit:
                     record["script"] = {"class": hit["class"], "namespace": hit["namespace"],
                                         "assembly": hit["assembly"], "our_guid": hit.get("our_guid", "")}
@@ -355,6 +376,10 @@ def main():
                     record["script"] = None
             objects.append(record)
             pid_to_dump[pid] = os.path.relpath(dump, REPO).replace("\\", "/")
+            return record
+
+        for row in rows:
+            add_record(row)
 
         # ---- resolve external references ------------------------------------------------
         bundle_path = None
@@ -371,7 +396,17 @@ def main():
         resolved_refs = {}
         unresolved = Counter()
         intra_unresolved = Counter()
-        for record in objects:
+        # Some reenactment prefabs reuse the common CurtainOpen/CurtainClose TimelineAssets
+        # embedded in the first chapter's prefab.  They are same-bundle graph objects rather
+        # than components, so the old planner classified them as "not in plan" and left two
+        # PlayableDirector.m_PlayableAsset pointers null.  Copy the reachable TimelineAsset /
+        # Track / AnimationClip sub-assets into the referring prefab plan.  Keeping their source
+        # path IDs also preserves the director's m_SceneBindings keys; the target prefab has the
+        # matching curtain GameObjects under those bindings.
+        graph_scan = 0
+        while graph_scan < len(objects):
+            record = objects[graph_scan]
+            graph_scan += 1
             with open(os.path.join(REPO, record["dump"].replace("/", os.sep)), encoding="utf-8") as fh:
                 try:
                     data = json.load(fh)
@@ -386,7 +421,15 @@ def main():
                 if file_id == 0:
                     stats["ptr_intra"] += 1
                     if str(path_id) not in pid_to_dump:
-                        sidecar = ledger.get((bundle.lower(), str(path_id))) if bundles else None
+                        record_bundle = record["bundle"].lower()
+                        where = (record_bundle, str(path_id))
+                        graph_asset = rehomed.get(where) or pid_to_asset.get(where)
+                        graph_target = row_in_asset(graph_asset, path_id) if graph_asset else None
+                        if graph_target is not None and standalone_graph_row(graph_target):
+                            if add_record(graph_target, count_bundle=False) is not None:
+                                stats["ptr_intra_cross_prefab_graph"] += 1
+                            continue
+                        sidecar = ledger.get((record_bundle, str(path_id))) if bundles else None
                         key = f"{record['pid']}:0:{path_id}"
                         # Another prefab of the same bundle (a template field: DialogPresenter._providableDialogPrefab,
                         # RebuildableToggle._labelPrefab): the reference names that prefab, and the applier takes the
@@ -394,7 +437,6 @@ def main():
                         # only accepted when it is that prefab's single root, the object loading the prefab returns.
                         other = None
                         if not sidecar and bundles:
-                            where = (bundle.lower(), str(path_id))
                             other = rehomed.get(where) or pid_to_asset.get(where)
                             if other == asset_path or other not in candidate_set:
                                 other = None
@@ -412,7 +454,7 @@ def main():
                             stats["ptr_intra_cross_prefab"] += 1
                         else:
                             stats["ptr_intra_not_in_plan"] += 1
-                            target_type = PID_TYPE.get((bundle.lower(), str(path_id)), "?") if bundles else "?"
+                            target_type = PID_TYPE.get((record_bundle, str(path_id)), "?") if bundles else "?"
                             stats["ptr_intra_not_in_plan:" + (target_type or "?")] += 1
                             intra_unresolved[target_type or "?"] += 1
                     continue
@@ -520,4 +562,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

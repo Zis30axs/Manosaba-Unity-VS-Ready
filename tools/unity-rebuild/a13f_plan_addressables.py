@@ -306,15 +306,30 @@ def main():
         with open(DICED_PLAN, encoding="utf-8") as fh:
             atlas_containers = {job["asset_path"] for job in json.load(fh).get("jobs", [])}
 
+    # A reconstructed prefab is also ONE addressable asset.  The extractor keeps the prefab's embedded
+    # textures and sprites as standalone files so the prefab serializer can bind them, but those files are
+    # dependencies of the prefab and were never standalone addressable entries in the shipped catalog.
+    # Adding them here reuses the prefab address for Texture2D/Sprite locations; a typed LoadAssetAsync<GameObject>
+    # then sees several locations for one key (and Unity's AddressableAssetSettingsLocator can assert while
+    # sorting the duplicate object identifiers).  Keep the prefab plan entry below and omit these leaf rows.
+    prefab_containers = set()
+    if os.path.exists(PREFAB_PLAN):
+        with open(PREFAB_PLAN, encoding="utf-8") as fh:
+            prefab_containers = {job["asset_path"] for job in json.load(fh).get("jobs", [])}
+
     # leaf assets + sprites
     with open(LEDGER, encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
             if row["status"] != "IMPORTED":
                 continue
-            if (row["asset_path"] or "").strip() in atlas_containers and row["type"] in ("Sprite", "Texture2D"):
+            container_path = (row["asset_path"] or "").strip()
+            if container_path in prefab_containers:
+                stats["prefab_member_skipped"] += 1
+                continue
+            if container_path in atlas_containers and row["type"] in ("Sprite", "Texture2D"):
                 stats["atlas_member_skipped"] += 1
                 continue
-            add((row["asset_path"] or "").strip(), unity_path((row["target_path"] or "").strip()), "a13")
+            add(container_path, unity_path((row["target_path"] or "").strip()), "a13")
 
     # ScriptableObjects
     for name in sorted(os.listdir(OUT_DIR)):
@@ -460,6 +475,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

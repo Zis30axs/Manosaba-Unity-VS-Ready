@@ -319,3 +319,12 @@ IDEA/Rider 的 `.idea/runConfigurations/` 保留：
 代码贡献应按具体文件暂存并检查差异，只提交代码、配置、测试和文档。`res/`、GameContent、资源缓存、日志、备份和 `dist/` 保持本地；Git 不会保存这些编辑。保留工作区中已有的独立修改，不把 Unity 运行产生的存档、临时服务状态或本机路径混入提交。
 
 更多 CLI 参数和支持范围见 [可编辑资源工作流](tools/content/README.md)。
+
+
+## Trial10 人偶剧 Timeline 重建
+
+第二幕第 6 章辩论 10 通过 SpawnExtended 依次加载 Reenact_Ch02_E06_S01 到 S05。每个人偶 prefab 必须同时包含三个 PlayableDirector 的 m_PlayableAsset、本章 Timeline 的 AnimationTrack/AnimationClip，以及共用的 CurtainOpen/CurtainClose Timeline 图。此前 prefab 只有场景层级，Timeline 子资产没有写入，导致幕布和人偶都无法演出。
+
+a13e_plan_prefabs.py 会把跨 prefab 的 Timeline/Track/Clip 图复制为当前 prefab 的子资产；PrefabBuilder 负责创建这些对象、写入 32 位动画字段并在 AddObjectToAsset 后再次保存。验收时检查 prefab_build_puppet_result.json 的五个 job 没有 Timeline 相关 unresolved，并确认五个 prefab 中 m_PlayableAsset 数量为 3、fileID 0 数量为 0。BUILT_PARTIAL 若只剩 SpriteRenderer 默认材质 PPtr 未映射，不影响人偶时间轴。
+
+Addressables 计划中一个 prefab 只保留一个 prefab 地址；prefab 内嵌的 PNG/Sprite 是依赖，不再作为同地址的重复 location。修改这一规则后需要重新生成 G3 基线，不能把预期删除的内嵌成员当作内容丢失。

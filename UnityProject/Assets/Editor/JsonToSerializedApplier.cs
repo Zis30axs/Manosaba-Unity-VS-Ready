@@ -439,9 +439,13 @@ namespace Manosaba.EditorTools
             switch (prop.propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    if (options.SafeEditableOnly)
-                        prop.longValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1L : 0L) : token.Value<long>();
-                    else prop.intValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1 : 0) : token.Value<int>();
+                    // Unity's SerializedProperty reports both signed and unsigned 32-bit
+                    // typetree fields as Integer.  AnimationClip binding hashes and streamed
+                    // curve data can exceed Int32.MaxValue even though they are only 32 bits;
+                    // token.Value<int>() throws OverflowException before Unity can receive the
+                    // raw bits.  longValue accepts the serialized integer width and preserves
+                    // those values (the same path already used by SafeEditableOnly).
+                    prop.longValue = token.Type == JTokenType.Boolean ? (token.Value<bool>() ? 1L : 0L) : token.Value<long>();
                     report.leavesWritten++;
                     break;
                 case SerializedPropertyType.Boolean:

@@ -183,6 +183,10 @@ namespace Manosaba.EditorTools
             public JObject json;
             public GameObject gameObject;
             public UnityEngine.Object component;   // for non-GameObject nodes
+            // Standalone ScriptableObjects which were sub-assets of the shipped prefab (TimelineAsset,
+            // AnimationTrack and AnimationClip).  They are kept in this same map so intra-prefab PPtrs can
+            // bind before the prefab is saved.
+            public UnityEngine.Object asset;
             public bool isTransform;
             public RectTransform rectTransform;
             public string transform_origin = "";   // how the transform came to be (diagnostics)
@@ -409,6 +413,7 @@ namespace Manosaba.EditorTools
             }
 
             var temp = new List<GameObject>();
+            var tempAssets = new List<UnityEngine.Object>();
             // Component nodes whose `AddComponent` was refused on the first pass; retried once every GameObject
             // has its other components (see the deferred pass below).
             var deferred = new List<DeferredComponent>();
@@ -510,6 +515,26 @@ namespace Manosaba.EditorTools
                     GameObject host = ResolveOwner(node, nodes);
                     if (host == null)
                     {
+                        // Timeline data is serialized as MonoBehaviour rows with m_GameObject = 0 in the
+                        // shipped prefab.  It is a ScriptableObject graph, not a component to attach to a
+                        // GameObject.  Recreate it in memory and attach it as a prefab sub-asset below; this
+                        // also gives PlayableDirector.m_PlayableAsset a real target instead of fileID 0.
+                        if (typeof(ScriptableObject).IsAssignableFrom(type) || type == typeof(AnimationClip))
+                        {
+                            // AnimationClip derives from Motion/UnityEngine.Object rather than
+                            // ScriptableObject, but Timeline AnimationTracks hold it as their
+                            // m_InfiniteClip pointer.  Keep it in the same local object map and
+                            // persist it as a sub-asset alongside the TimelineAsset/track nodes.
+                            UnityEngine.Object asset = type == typeof(AnimationClip)
+                                ? new AnimationClip()
+                                : (UnityEngine.Object)ScriptableObject.CreateInstance(type);
+                            asset.name = (string)node.json["m_Name"] ?? node.type;
+                            node.asset = asset;
+                            node.component = asset;
+                            tempAssets.Add(asset);
+                            job.objects_created++;
+                            continue;
+                        }
                         job.warnings.Add(node.pid + ": component without owner GameObject");
                         job.warning_count++;
                         FieldDump(job, node, type, "NO_OWNER");
@@ -832,6 +857,30 @@ namespace Manosaba.EditorTools
                 if (AssetDatabase.LoadMainAssetAtPath(target) != null) AssetDatabase.DeleteAsset(target);
                 GameObject savedRoot = PrefabUtility.SaveAsPrefabAsset(root, target);
 
+                // Persist the standalone timeline graph inside the prefab.  AddObjectToAsset must happen after
+                // SaveAsPrefabAsset created the main asset; the component fields already point at these objects,
+                // and Unity will serialize the references with their generated local file IDs on the save above.
+                foreach (UnityEngine.Object asset in tempAssets)
+                {
+                    if (asset == null) continue;
+                    asset.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(asset, target);
+                }
+                if (tempAssets.Count > 0)
+                {
+                    // The first save creates the prefab file, while AddObjectToAsset attaches the
+                    // Timeline graph immediately afterwards.  Reapply graph fields now that every
+                    // local target is a persistent sub-asset; otherwise Unity can retain the live
+                    // object references only in memory and serialize PlayableDirector.m_PlayableAsset
+                    // or AnimationTrack.m_InfiniteClip as fileID 0.
+                    foreach (Node node in nodes)
+                        if (node.component is ScriptableObject || node.component is AnimationClip || node.type == "PlayableDirector")
+                            ApplyFields(node, extraRootObjects);
+                    PrefabUtility.SaveAsPrefabAsset(root, target);
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.ImportAsset(target, ImportAssetOptions.ForceUpdate);
+                }
+
                 // ---- verify what was actually written ------------------------------------------
                 // Reporting "objects created" is not evidence that the prefab *file* holds them: round 9
                 // found 58 prefabs where the builder created every planned object and the saved asset
@@ -910,6 +959,8 @@ namespace Manosaba.EditorTools
             finally
             {
                 foreach (GameObject go in temp) UnityEngine.Object.DestroyImmediate(go);
+                foreach (UnityEngine.Object asset in tempAssets)
+                    if (asset != null && !EditorUtility.IsPersistent(asset)) UnityEngine.Object.DestroyImmediate(asset);
                 // Every ledger-bound pointer loads a texture into the Editor, and a batch session never unloads on
                 // its own: the 2026-09-21 full build (2,191 such pointers) died with a native crash inside
                 // LoadAssetAtPath on job 137 of 156 after 55 identical Reenact_* jobs had loaded fine.
