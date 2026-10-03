@@ -59,15 +59,30 @@ Naninovel/UI/ChoiceButtons/ChoiceButton_Debug@Cancel.prefab：
 
 补丁与恢复
 tools/unity-rebuild/debug-ui-zh-Hans.patch 仅包含上述 5 个导入 prefab 的 m_text 修改。
-在仓库根目录、资源重新导入后执行：
+旧补丁记录了译文；若当前字体引用与补丁上下文不同，git apply --check 会失败，
+此时应只恢复对应 m_text，保留当前字体、GUID 和其余字段。
+对于上下文仍匹配的资源，在仓库根目录执行：
 git apply --check tools/unity-rebuild/debug-ui-zh-Hans.patch
 git apply tools/unity-rebuild/debug-ui-zh-Hans.patch
 
-当前已应用，无须重复执行。检查是否已应用：
+检查补丁是否已应用（字体上下文不同也会导致此检查失败）：
 git apply --reverse --check tools/unity-rebuild/debug-ui-zh-Hans.patch
 
 提交时应包含本清单、补丁和上述 7 个已跟踪文件；无需强制加入完整导入资源。
 已重建 Addressables，并在 Unity 编辑器 Play 模式确认调试按钮中文生效。
+
+持久保存译文
+GameContent 是生成树，仅修改 prefab 会在后续内容同步时被 res 中的原文覆盖。
+上述 16 处文案还应保存到对应的 res 组件 JSON 的 m_text，再同步并构建。
+源路径相对于 res/Assets/#WitchTrials/Prefabs/：
+General/Core/Game~{101,104,16,25,40,46,62,69,81,83,89,94}.asset.json（Game 的 12 处）；
+General/Core/Game~31.asset.json（DebugLabel 的 TMP 文本组件）；
+General/Debug/DebugCommandButton~2.asset.json；
+Naninovel/UI/ChoiceButtons/ChoiceButton_Debug~3.asset.json；
+Naninovel/UI/ChoiceButtons/ChoiceButton_Debug@Cancel~2.asset.json。
+res 也被 Git 忽略，需保留本地资源备份。
+新 Play 会话使用 Use Existing Build 时，必须先重建当前 Addressables 内容；
+从旧 Player 复制缓存不能证明 Debug UI 包含这些译文。
 
 范围
 已检查指定的两个 GigaCreation UI 源码目录，没有需替换的固定游戏内显示文案。
@@ -88,3 +103,15 @@ Debug_Home 的额外 87 处翻译完整清单：debug-home-zh-Hans-changes.txt�
 第一章第一幕开场测试句：——这里是囚牢。 → ——这里是囚牢。【IDEA 同步测试：新的开场文本已生效】
 测试句已在 Play 模式实际显示。
 真实 bundle 检查通过：12 处核心 Debug 文案及开场、Debug_Home 两个中文 TextAsset。
+
+2026-10-03 恢复检查
+已恢复五个 prefab 和对应十六个 res 组件中的 m_text，并重建 333 个 Addressables 包。
+verify_localization_content.py 检查 12 个核心按钮和两个中文 TextAsset；
+verify_debug_ui_translation.py 对本次恢复记录、备份、16 个源组件、5 个 prefab
+及两个实际 bundle 中的唯一层级/文本组件进行一致性检查。后者需要本次恢复记录和备份；
+默认只读核对源、prefab 和 bundle，不需要本次恢复记录或备份；
+传入 --restoration-receipt 时才额外核对本次恢复记录和备份。
+可用 --static-only 暂时跳过 bundle 部分。
+本次检查结果在 .3d-model/preview/debug-translation-verification.json。
+Boot 的新打包内容 Play 检查加载 4 个资源及 3 个预制体通过，包含 DebugLabel；
+此检查未模拟按钮点击或核验界面截图。

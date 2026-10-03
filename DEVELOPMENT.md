@@ -97,6 +97,32 @@ Unity 路径是示例，请替换为实际安装路径。验证机安装的版�
 
 `build` 会先同步选中的源资源并构建全部已配置 Addressables；`--player` 额外执行 G5，不等同于运行全部 G1–G5。Sprite、剧情 Script 和普通数据需要重建内容才能进入已有构建模式；MasterData 则保持现有 `Resources.Load("MasterData")` 入口。生成的开发 Player 位于 `dist/player/manosaba-rebuild.exe`。
 
+### 在不同副本之间共享资源修改
+
+`res/`、`Assets/GameContent/` 和 Unity 的 `Library/` 都是本地数据，默认不会进入 Git。仅提交生成的 prefab、catalog 或完整资源树，协作者重新导入时仍会得到原始内容，也会丢失对象身份映射。要共享已经审阅过的资源字段，使用 `content-overrides/` 中的增量清单：它只记录资源相对路径、对象身份、字段的原值和新值；当前工具只允许 `MonoBehaviour.m_text` 和 UTF-8 文本，保留 GUID、`.meta`、PPtr 引用及协作者的其他字段。
+
+本仓库当前提供 Debug 中文清单，包含左侧 Debug 菜单 16 个文本组件和 `Debug_Home.txt`：
+
+```powershell
+# 先准备本机可读取的资源树并完成一次 import/bootstrap
+.\tools\content\import.ps1 "D:\games\manosaba_game"
+& $env:MANOSABA_PYTHON tools/unity-rebuild/bootstrap_import.py --unity-editor $env:MANOSABA_UNITY_EDITOR --timeout 7200
+
+# 预览；确认没有冲突后才写入 res
+.\tools\content\overrides.ps1 apply content-overrides/current-debug-zh-Hans.json --source-root res
+.\tools\content\overrides.ps1 apply content-overrides/current-debug-zh-Hans.json --source-root res --apply
+
+# 将 res 的增量同步到生成树，再重建 Addressables
+.\tools\content\sync.ps1 --category "PREFAB,TEXT"
+.\tools\content\build.ps1
+```
+
+清单应用会先检查所有条目；任一条目已经被协作者改成第三种内容时，整批停止且不写入任何文件。重复应用是幂等的。`overrides.py export` 需要显式提供未修改的 `--base-root`，不会从 `base-hashes.json` 的空基线猜测差异，也不会导出 `.meta`、二进制、完整 prefab 或原始游戏文件。工具不自动启动 Unity、导入资源或构建内容。
+
+本地复现还原工程时，第一次导入后需要运行 `bootstrap_import.py`。它会重新生成 Naninovel 配置、TMP 字体资源、prefab 和 Addressables 映射；`RuntimeResourceRepair.cs`、`NaninovelConfigBuilder.cs` 和 `AddressablesSetup.cs` 是可追踪的重建入口。不要把生成的 `GameContent` 或 `Library` 复制到 Git 中。
+
+选项菜单检查记录：当前 `OptionsUI.prefab` 的 1,219 个源对象与本地原始资源逐项一致，没有可发布的选项界面字段差异。若两个副本的选项菜单不同，先完成上述 import/bootstrap、字体资源修复和 Addressables 重建，再比较运行时配置与自建 catalog；不要用整份原始 prefab 覆盖协作者的对象树。新的选项菜单改动应按同一增量清单方式提交。
+
 | 修改目标 | 编辑位置 | 注意事项 |
 | --- | --- | --- |
 | 中文及其他本地化文本 | `res/Assets/#WitchTrials/Localization/**` | UTF-8；保留现有键和文件身份 |
