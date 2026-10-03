@@ -14,6 +14,23 @@
                                    Unity Play / Windows Player
 ```
 
+## Portable resource identity map
+
+`res/` and `UnityProject/Assets/GameContent/` stay local and are regenerated from each collaborator's readable dump. The tracked `tools/content/resource-map.csv` is an identity comparison table, not a copy of the dump: it contains object type, source bundle, path ID, logical asset path, and the generated source filename. It contains no absolute paths, Unity `.meta` files, GUIDs, bundles, or generated prefabs.
+
+Every collaborator must import the same game build and verify the table before syncing. A `~N` filename may be reassigned during extraction; the verifier follows the stable object identity and fails closed for recovered objects whose identity cannot be proven.
+
+```powershell
+# Import the collaborator's own dump, verify the table, rebuild local GameContent and Addressables.
+.\tools\content\setup_from_dump.ps1 "D:\games\manosaba_game"
+
+# Or import first, inspect the comparison result, and build later.
+.\tools\content\setup_from_dump.ps1 "D:\games\manosaba_game" -SkipBuild
+python tools/content/resource_map.py verify --check-files
+```
+
+The table does not carry edited bytes. Script/scenario text continues through the TEXT/SCENARIO sync path; character sprites and CGs continue through the TEXTURE/SPRITE path; `content.py build` rebinds Addressables to the current checkout's local metadata. Shared text changes use `content-overrides/`. A changed PNG or an unsupported prefab hierarchy must be added as a reviewed payload/override or implemented in the converter; a table alone cannot recreate those bytes.
+
 `res/` 是资源编辑源；GameContent 是生成树。首次导入后，普通同步、内容构建和 Player 构建使用本地缓存。原安装目录只用于首次导入或显式研究、对照操作。
 
 ## 1. 准备环境

@@ -28,6 +28,7 @@ if packages.is_dir():
     sys.path.append(str(packages))
 import a13_import_assets as importer
 import a13f_plan_addressables as addressables
+import resource_map
 
 RES = REPO / "res"
 PROJECT = REPO / "UnityProject"
@@ -402,6 +403,13 @@ def conversion_batches(pending, files, asset_limit=24, job_limit=2000):
 
 
 def sync(args):
+    if (not getattr(args, "allow_resource_map_mismatch", False)
+            and resource_map.DEFAULT_MAP.is_file() and (RES / "_index.csv").is_file()):
+        report = resource_map.verify(RES / "_index.csv", resource_map.DEFAULT_MAP,
+                                     resource_map.DEFAULT_META, check_files=False)
+        if report["status"] != "PASS":
+            raise RuntimeError("Resource identity map mismatch; run resource_map.py verify and import the matching dump "
+                               "(or explicitly regenerate the reviewed map before using --allow-resource-map-mismatch)")
     records = inventory()
     for path in args.file:
         normalized = path.replace("\\", "/").removeprefix("res/")
@@ -675,6 +683,8 @@ def main(argv=None):
     imp.add_argument("game")
     imp.add_argument("--reextract", action="store_true")
     imp.add_argument("--overwrite-user-changes", action="store_true")
+    imp.add_argument("--allow-resource-map-mismatch", action="store_true",
+                     help="bypass the tracked dump identity check; regenerate and review the map afterward")
     sync_parser = commands.add_parser("sync", help="incrementally apply res edits to generated Unity assets")
     sync_parser.add_argument("--dry-run", action="store_true")
     sync_parser.add_argument("--force", action="store_true")
@@ -682,6 +692,8 @@ def main(argv=None):
     sync_parser.add_argument("--file", action="append", default=[])
     sync_parser.add_argument("--copy-only", action="store_true", help="stage changes without Unity, leaving an explicit retry set")
     sync_parser.add_argument("--verbose", action="store_true")
+    sync_parser.add_argument("--allow-resource-map-mismatch", action="store_true",
+                             help="bypass the tracked dump identity check")
     doc = commands.add_parser("doctor")
     doc.add_argument("--deep", action="store_true", help="rehash sources instead of trusting unchanged size/mtime")
     doc.add_argument("--no-report", action="store_true")
@@ -689,6 +701,8 @@ def main(argv=None):
     bld.add_argument("--player", action="store_true", help="also build and run the G5 Player smoke gate")
     bld.add_argument("--category", default="")
     bld.add_argument("--file", action="append", default=[], help="limit the pre-build sync; all configured Addressables still build")
+    bld.add_argument("--allow-resource-map-mismatch", action="store_true",
+                     help="bypass the tracked dump identity check")
     for command in (imp, sync_parser, bld):
         command.add_argument("--timeout", type=int, default=7200 if command is imp else 1800)
     args = parser.parse_args(argv)
