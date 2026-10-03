@@ -295,6 +295,9 @@ namespace GigaCreation.NaninovelExtender.Common
     	[Address(RVA = "0xCFD2B0", Offset = "0xCFBCB0", VA = "0x180CFD2B0")]
     	private void Awake()
     	{
+    		_scriptPathExists = !string.IsNullOrEmpty(_scriptPath);
+    		if (_playOnAwake)
+    			PlayAsync().Forget();
     	}
 
     	[Token(Token = "0x600004A")]
@@ -302,7 +305,7 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__6))]
     	public UniTask PlayAsync([Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsync(null, asyncToken);
     	}
 
     	[Token(Token = "0x600004B")]
@@ -310,7 +313,7 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__7))]
     	public UniTask PlayAsync(string argument, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsync(argument, asyncToken);
     	}
 
     	[Token(Token = "0x600004C")]
@@ -318,7 +321,7 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__8))]
     	public UniTask PlayAsync(float argument, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsync(argument.ToString(System.Globalization.CultureInfo.InvariantCulture), asyncToken);
     	}
 
     	[Token(Token = "0x600004D")]
@@ -326,7 +329,7 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__9))]
     	public UniTask PlayAsync(int argument, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsync(argument.ToString(System.Globalization.CultureInfo.InvariantCulture), asyncToken);
     	}
 
     	[Token(Token = "0x600004E")]
@@ -334,7 +337,7 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__10))]
     	public UniTask PlayAsync(bool argument, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsync(argument.ToString(System.Globalization.CultureInfo.InvariantCulture).ToLowerInvariant(), asyncToken);
     	}
 
     	[Token(Token = "0x600004F")]
@@ -342,7 +345,26 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CPlayScriptAsync_003Ed__11))]
     	private UniTask PlayScriptAsync(string argument, [Optional] AsyncToken asyncToken)
     	{
-    		return default(UniTask);
+    		return PlayScriptAsyncCore(argument, asyncToken);
+    	}
+
+    	private async UniTask PlayScriptAsyncCore(string argument, AsyncToken asyncToken)
+    	{
+    		IScriptPlayer player = Engine.GetServiceOrErr<IScriptPlayer>();
+    		if (_scriptPathExists)
+    		{
+    			await player.LoadAndPlay(_scriptPath);
+    			return;
+    		}
+
+    		if (_disableWaitInput)
+    			player.SetWaitingForInputEnabled(false);
+
+    		if (string.IsNullOrWhiteSpace(_scriptText))
+    			return;
+
+    		string text = string.IsNullOrEmpty(argument) ? _scriptText : _scriptText.Replace("{arg}", argument);
+    		await player.PlayTransient($"'{name}' generated script", text, asyncToken);
     	}
 
     	[Token(Token = "0x6000050")]

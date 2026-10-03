@@ -143,6 +143,10 @@ python tools/unity-rebuild/sync_localization.py --rebuild
 
 验证时至少检查三层：`verify_debug_ui_translation.py --static-only` 检查 prefab/TextAsset，`addressables_build_result.json` 的时间戳确认内容是新构建，最后用新 Play 会话或新 Player 检查左侧菜单。旧 Player 或旧 `Library/com.unity.addressables/aa` 不代表当前 `res` 已经生效。
 
+#### 返回标题页面后立即收起的原因
+
+暂停菜单的标题按钮会先调用 `ControlPanel.Close()`，所以菜单先收起是预期行为。确认后，`ControlPanel` 依赖临时 `NaninovelScriptPlayer` 播放 `@returnToTitle`；还原代码中该组件的 `Awake`、`PlayAsync` 重载和内部播放方法曾全部是空实现，只返回已完成的 `UniTask`，导致脚本没有执行，标题状态也不会切换。修复时必须让它按 `ScriptPlayer` 语义调用 `LoadAndPlay` 或 `PlayTransient`，再重新编译 Unity Player/Addressables。这个故障与 locale 无关。
+
 | 修改目标 | 编辑位置 | 注意事项 |
 | --- | --- | --- |
 | 中文及其他本地化文本 | `res/Assets/#WitchTrials/Localization/**` | UTF-8；保留现有键和文件身份 |
