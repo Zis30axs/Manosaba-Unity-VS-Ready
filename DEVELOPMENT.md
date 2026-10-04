@@ -328,3 +328,13 @@ IDEA/Rider 的 `.idea/runConfigurations/` 保留：
 a13e_plan_prefabs.py 会把跨 prefab 的 Timeline/Track/Clip 图复制为当前 prefab 的子资产；PrefabBuilder 负责创建这些对象、写入 32 位动画字段并在 AddObjectToAsset 后再次保存。验收时检查 prefab_build_puppet_result.json 的五个 job 没有 Timeline 相关 unresolved，并确认五个 prefab 中 m_PlayableAsset 数量为 3、fileID 0 数量为 0。BUILT_PARTIAL 若只剩 SpriteRenderer 默认材质 PPtr 未映射，不影响人偶时间轴。
 
 Addressables 计划中一个 prefab 只保留一个 prefab 地址；prefab 内嵌的 PNG/Sprite 是依赖，不再作为同地址的重复 location。修改这一规则后需要重新生成 G3 基线，不能把预期删除的内嵌成员当作内容丢失。
+
+
+
+## Trial10 当前修复与验收
+
+`PrefabBuilder` 现在会解码原始 `m_MuscleClip.m_Clip` 中的 packed generic 曲线，并按 Animator 绑定根解析 CRC32 路径后写回普通 `AnimationClip` 曲线。路径解析必须同时索引完整层级的每个后缀；例如 prefab 中的 `BackgroundBlack/black_R` 对应 Timeline 的 `black_R`，幕布则从 `CurtainRoot/...` 开始。只创建非空 `AnimationClip` 对象而不恢复曲线，会让 Timeline 看似有资源但实际没有任何动作。
+
+`PlayableDirectorExtensions` 原先的 `PlayAsync`、`ResumeAsync`、`IsFinished` 和 `WaitForFinishAsync` 都是反编译留下的默认实现，导致人偶 Timeline 从未真正播放。现在会调用 `PlayableDirector.Play/Resume`，等待 PlayableGraph 根节点完成，并在取消时停止 director；UnityProject 源码和 `src/decompiled` canonical 源码保持同步。
+
+验收工具为 `Manosaba.EditorTools.ReenactmentProbe`，运行后写入 `tools/unity-rebuild/out/unity/reenactment_probe.json`。当前第二幕第六章辩论 10 的 S01-S05 全部加载成功；每个 prefab 的 Story、CurtainOpen、CurtainClose 曲线均非空，且对 CurtainOpen/CurtainClose 做 director 演算时能观察到 CurtainRoot 骨骼变换和 `black`/`black_L`/`black_R` 的 SpriteRenderer alpha 变化。重新生成内容后要重新运行该探针，不能只看旧的 prefab 或 Addressables 结果文件。

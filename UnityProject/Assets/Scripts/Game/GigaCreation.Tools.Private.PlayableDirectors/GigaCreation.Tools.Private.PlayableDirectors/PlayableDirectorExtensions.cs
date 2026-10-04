@@ -173,32 +173,82 @@ namespace GigaCreation.Tools.Private.PlayableDirectors
     	[Token(Token = "0x6000003")]
     	[Address(RVA = "0xD517C0", Offset = "0xD501C0", VA = "0x180D517C0")]
     	[AsyncStateMachine(typeof(_003CPlayAsync_003Ed__0))]
-    	public static UniTask PlayAsync(this PlayableDirector self, [Optional] CancellationToken token)
-    	{
-    		return default(UniTask);
+	public static UniTask PlayAsync(this PlayableDirector self, [Optional] CancellationToken token)
+	{
+		return PlayCoreAsync(self, token);
     	}
 
     	[Token(Token = "0x6000004")]
     	[Address(RVA = "0xD51960", Offset = "0xD50360", VA = "0x180D51960")]
     	[AsyncStateMachine(typeof(_003CResumeAsync_003Ed__1))]
-    	public static UniTask ResumeAsync(this PlayableDirector self, [Optional] CancellationToken token)
-    	{
-    		return default(UniTask);
+	public static UniTask ResumeAsync(this PlayableDirector self, [Optional] CancellationToken token)
+	{
+		return ResumeCoreAsync(self, token);
     	}
 
     	[Token(Token = "0x6000005")]
     	[Address(RVA = "0xD51B00", Offset = "0xD50500", VA = "0x180D51B00")]
-    	public static bool IsFinished(this PlayableDirector self)
-    	{
-    		return default(bool);
+	public static bool IsFinished(this PlayableDirector self)
+	{
+		if (self == null || self.playableAsset == null)
+			return true;
+
+		var graph = self.playableGraph;
+		if (!graph.IsValid())
+			return true;
+
+		int rootCount = graph.GetRootPlayableCount();
+		if (rootCount == 0)
+			return true;
+
+		for (int index = 0; index < rootCount; index++)
+		{
+			if (!graph.GetRootPlayable(index).IsDone())
+				return false;
+		}
+
+		return true;
     	}
 
     	[Token(Token = "0x6000006")]
     	[Address(RVA = "0xD51D70", Offset = "0xD50770", VA = "0x180D51D70")]
     	[AsyncStateMachine(typeof(_003CWaitForFinishAsync_003Ed__3))]
-    	private static UniTask WaitForFinishAsync(this PlayableDirector self, [Optional] CancellationToken token)
-    	{
-    		return default(UniTask);
-    	}
-    }
+	private static UniTask WaitForFinishAsync(this PlayableDirector self, [Optional] CancellationToken token)
+	{
+		return WaitForFinishCoreAsync(self, token);
+	}
+
+	private static async UniTask PlayCoreAsync(PlayableDirector self, CancellationToken token)
+	{
+		if (self == null)
+			return;
+
+		self.Play();
+		await WaitForFinishCoreAsync(self, token);
+	}
+
+	private static async UniTask ResumeCoreAsync(PlayableDirector self, CancellationToken token)
+	{
+		if (self == null)
+			return;
+
+		self.Resume();
+		await WaitForFinishCoreAsync(self, token);
+	}
+
+	private static async UniTask WaitForFinishCoreAsync(PlayableDirector self, CancellationToken token)
+	{
+		// Cancelling a command must stop the graph as well as release the awaiter;
+		// otherwise a destroyed reenactment can keep driving its director after the
+		// spawned object has been removed.
+		using (token.Register(() =>
+		{
+			if (self != null)
+				self.Stop();
+		}))
+		{
+			await UniTask.WaitUntil(() => IsFinished(self), PlayerLoopTiming.Update, token);
+		}
+	}
+}
 }

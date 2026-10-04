@@ -876,6 +876,16 @@ namespace Manosaba.EditorTools
                     foreach (Node node in nodes)
                         if (node.component is ScriptableObject || node.component is AnimationClip || node.type == "PlayableDirector")
                             ApplyFields(node, extraRootObjects);
+
+                    // AnimationClip's generic (humanoid) representation stores its actual curves in
+                    // m_MuscleClip.  That field is intentionally not exposed by Unity's
+                    // SerializedObject API, so the generic JSON applier cannot copy it.  Rebuild the
+                    // stream/constant curves through the supported AnimationUtility API before the
+                    // final prefab save.  Leaving the AnimationClip subasset non-null but empty makes
+                    // Timeline appear valid while every puppet remains frozen/invisible.
+                    foreach (Node node in nodes)
+                        if (node.component is AnimationClip clip)
+                            RebuildPackedAnimationClip(node, clip, nodes, job);
                     PrefabUtility.SaveAsPrefabAsset(root, target);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.ImportAsset(target, ImportAssetOptions.ForceUpdate);
@@ -1158,6 +1168,269 @@ namespace Manosaba.EditorTools
                 if (hit != null) return hit;
             }
             return JsonToSerializedApplier.ResolveType(shortName, null);
+        }
+
+        // Unity's serialized AnimationClip has two representations.  Clips imported from the
+        // original game use the packed generic representation (m_MuscleClip.m_Clip), whose
+        // stream is not a SerializedProperty in the current Unity editor.  This decoder mirrors
+        // Unity's packed stream layout and writes normal editor curves, which Unity serializes
+        // back into the clip binding/curve tables used by PlayableDirector.
+        private sealed class PackedKey
+        {
+            public int index;
+            public float time;
+            public float value;
+            public float outSlope;
+            public float inSlope;
+            public float c1;
+            public float c2;
+        }
+
+        private sealed class PackedFrame
+        {
+            public float time;
+            public List<PackedKey> keys = new List<PackedKey>();
+        }
+
+        private static void RebuildPackedAnimationClip(Node node, AnimationClip clip, List<Node> nodes, JobRecord job)
+        {
+            JObject muscle = node.json["m_MuscleClip"] as JObject;
+            JObject packed = muscle?["m_Clip"]?["data"] as JObject;
+            if (packed == null) return;
+            JObject streamed = packed["m_StreamedClip"] as JObject;
+            JObject dense = packed["m_DenseClip"] as JObject;
+            JObject constant = packed["m_ConstantClip"] as JObject;
+            JArray bindings = node.json["m_ClipBindingConstant"]?["genericBindings"] as JArray;
+            if (bindings == null || bindings.Count == 0) return;
+
+            var pathByHash = new Dictionary<uint, string>();
+            foreach (Node transform in nodes.Where(n => n.isTransform && n.gameObject != null))
+            {
+                string path = AnimationPath(transform, nodes);
+                // AnimationClip generic-binding hashes are relative to the Animator
+                // bound to the Timeline track, rather than the prefab root.  A
+                // prefab can therefore contain a binding such as `black_R` while
+                // the full hierarchy path is `BackgroundBlack/black_R`, or
+                // `CurtainRoot/Curtain/bone_2` while the prefab path also has the
+                // outer `Curtain` object.  Index every suffix so the serialized
+                // hash resolves to the same path Unity expects at runtime.
+                string[] segments = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int start = 0; start < segments.Length; start++)
+                {
+                    string suffix = string.Join("/", segments.Skip(start));
+                    uint hash = Crc32(suffix);
+                    if (!pathByHash.ContainsKey(hash)) pathByHash[hash] = suffix;
+                }
+            }
+
+            var curves = new Dictionary<int, AnimationCurve>();
+            var curveBindings = new Dictionary<int, EditorCurveBinding>();
+            int curveIndex = 0;
+            foreach (JObject binding in bindings.OfType<JObject>())
+            {
+                uint pathHash = ReadUInt32(binding["path"]);
+                uint attribute = ReadUInt32(binding["attribute"]);
+                int typeId = binding["typeID"]?.Value<int>() ?? 0;
+                string path = pathByHash.TryGetValue(pathHash, out string known) ? known : "";
+                if (pathHash != 0 && path.Length == 0)
+                {
+                    job.warnings.Add(node.pid + ".m_ClipBindingConstant.genericBindings: path hash " + pathHash + " not found in prefab hierarchy");
+                    job.warning_count++;
+                }
+                int componentCount = BindingComponentCount(typeId, attribute);
+                for (int component = 0; component < componentCount; component++)
+                {
+                    int index = curveIndex++;
+                    if (!TryMakeCurveBinding(typeId, attribute, path, component, out EditorCurveBinding editorBinding))
+                    {
+                        job.warnings.Add(node.pid + ".m_ClipBindingConstant.genericBindings: unsupported typeID=" +
+                                         typeId + " attribute=" + attribute + " pathHash=" + pathHash);
+                        job.warning_count++;
+                        continue;
+                    }
+                    curveBindings[index] = editorBinding;
+                    curves[index] = new AnimationCurve();
+                }
+            }
+
+            List<PackedFrame> frames = ReadStreamedFrames(streamed?["data"] as JArray);
+            int streamedCount = streamed?["curveCount"]?.Value<int>() ?? 0;
+            foreach (PackedFrame frame in frames)
+            {
+                foreach (PackedKey key in frame.keys)
+                {
+                    if (!curves.TryGetValue(key.index, out AnimationCurve curve)) continue;
+                    curve.AddKey(new Keyframe(frame.time, key.value, key.inSlope, key.outSlope));
+                }
+            }
+
+            int denseCount = dense?["m_CurveCount"]?.Value<int>() ?? 0;
+            int denseFrames = dense?["m_FrameCount"]?.Value<int>() ?? 0;
+            float denseRate = dense?["m_SampleRate"]?.Value<float>() ?? 0f;
+            float denseBegin = dense?["m_BeginTime"]?.Value<float>() ?? 0f;
+            JArray denseValues = dense?["m_SampleArray"] as JArray;
+            if (denseCount > 0 && denseFrames > 0 && denseRate > 0f && denseValues != null)
+            {
+                for (int frame = 0; frame < denseFrames; frame++)
+                    for (int component = 0; component < denseCount; component++)
+                    {
+                        int index = streamedCount + component;
+                        if (!curves.TryGetValue(index, out AnimationCurve curve)) continue;
+                        int offset = frame * denseCount + component;
+                        if (offset < denseValues.Count)
+                            curve.AddKey(new Keyframe(denseBegin + frame / denseRate,
+                                                      denseValues[offset].Value<float>()));
+                    }
+            }
+
+            JArray constantValues = constant?["data"] as JArray;
+            float stop = muscle["m_StopTime"]?.Value<float>() ?? 0f;
+            for (int i = 0; constantValues != null && i < constantValues.Count; i++)
+            {
+                int index = streamedCount + denseCount + i;
+                if (!curves.TryGetValue(index, out AnimationCurve curve)) continue;
+                float value = constantValues[i].Value<float>();
+                curve.AddKey(new Keyframe(0f, value));
+                if (stop > 0f) curve.AddKey(new Keyframe(stop, value));
+            }
+
+            var written = new List<EditorCurveBinding>();
+            foreach (KeyValuePair<int, EditorCurveBinding> pair in curveBindings)
+            {
+                AnimationCurve curve = curves[pair.Key];
+                if (curve.length == 0) continue;
+                AnimationUtility.SetEditorCurve(clip, pair.Value, curve);
+                written.Add(pair.Value);
+            }
+            if (written.Count > 0)
+            {
+                clip.frameRate = node.json["m_SampleRate"]?.Value<float>() ?? 60f;
+                // Timeline uses the AnimationClip's settings as the playable range.  Without
+                // copying these bounds, clips such as CurtainOpen (1.5 seconds) are truncated
+                // at the newly-created clip's default one-second stop time.
+                AnimationClipSettings settings = AnimationUtility.GetAnimationClipSettings(clip);
+                settings.startTime = muscle["m_StartTime"]?.Value<float>() ?? 0f;
+                settings.stopTime = stop;
+                settings.loopTime = muscle["m_LoopTime"]?.Value<bool>() ?? false;
+                AnimationUtility.SetAnimationClipSettings(clip, settings);
+                EditorUtility.SetDirty(clip);
+                job.messages.Add(node.pid + ": rebuilt packed AnimationClip curves=" + written.Count);
+            }
+        }
+
+        private static List<PackedFrame> ReadStreamedFrames(JArray words)
+        {
+            var frames = new List<PackedFrame>();
+            if (words == null || words.Count == 0) return frames;
+            byte[] bytes = new byte[words.Count * 4];
+            for (int i = 0; i < words.Count; i++)
+                Array.Copy(BitConverter.GetBytes(ReadUInt32(words[i])), 0, bytes, i * 4, 4);
+            using (var reader = new BinaryReader(new MemoryStream(bytes)))
+            {
+                while (reader.BaseStream.Position + 8 <= reader.BaseStream.Length)
+                {
+                    float time = reader.ReadSingle();
+                    int count = reader.ReadInt32();
+                    if (count < 0 || count > 10000 || reader.BaseStream.Position + count * 20L > reader.BaseStream.Length)
+                        break;
+                    var frame = new PackedFrame { time = time };
+                    for (int i = 0; i < count; i++)
+                    {
+                        var key = new PackedKey { index = reader.ReadInt32() };
+                        key.c1 = reader.ReadSingle();
+                        key.c2 = reader.ReadSingle();
+                        key.outSlope = reader.ReadSingle();
+                        key.value = reader.ReadSingle();
+                        key.inSlope = key.c2;
+                        frame.keys.Add(key);
+                    }
+                    frames.Add(frame);
+                }
+            }
+            // The packed stream starts with a sentinel frame and ends with an infinity frame;
+            // neither is an animation sample.  Unity's own importer uses the same interior range.
+            if (frames.Count > 2)
+            {
+                List<PackedFrame> interior = frames.GetRange(1, frames.Count - 2);
+                var previous = new Dictionary<int, PackedKey>();
+                foreach (PackedFrame frame in interior)
+                {
+                    foreach (PackedKey key in frame.keys)
+                    {
+                        if (previous.TryGetValue(key.index, out PackedKey prior))
+                        {
+                            float dx = Mathf.Max(frame.time - prior.time, 0.0001f);
+                            float dy = key.value - prior.value;
+                            if (key.c1 == 0f && key.c2 == 0f && key.outSlope == 0f)
+                                key.inSlope = float.PositiveInfinity;
+                            else
+                                key.inSlope = (3f * dy - 2f * key.outSlope * dx - key.c2 / (dx * dx)) / dx;
+                        }
+                        else key.inSlope = 0f;
+                        previous[key.index] = key;
+                    }
+                }
+                return interior;
+            }
+            return new List<PackedFrame>();
+        }
+
+        private static string AnimationPath(Node node, List<Node> nodes)
+        {
+            var names = new List<string>();
+            Node cursor = node;
+            var seen = new HashSet<string>();
+            while (cursor != null && seen.Add(cursor.pid))
+            {
+                names.Insert(0, cursor.gameObject.name);
+                long father = ReadPid(cursor.json["m_Father"]);
+                cursor = father == 0 ? null : nodes.FirstOrDefault(n => n.pid == father.ToString() && n.isTransform);
+            }
+            if (names.Count > 1) names.RemoveAt(0); // animation paths omit the prefab root
+            return string.Join("/", names);
+        }
+
+        private static uint Crc32(string text)
+        {
+            uint crc = 0xFFFFFFFFu;
+            byte[] bytes = Encoding.UTF8.GetBytes(text ?? "");
+            foreach (byte value in bytes)
+            {
+                crc ^= value;
+                for (int bit = 0; bit < 8; bit++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)-(int)(crc & 1));
+            }
+            return ~crc;
+        }
+
+        private static uint ReadUInt32(JToken token) => unchecked((uint)(token?.Value<long>() ?? 0L));
+
+        private static int BindingComponentCount(int typeId, uint attribute)
+        {
+            if (typeId == 4 && (attribute == 1 || attribute == 3 || attribute == 4)) return 3;
+            if (typeId == 4 && attribute == 2) return 4;
+            return 1;
+        }
+
+        private static bool TryMakeCurveBinding(int typeId, uint attribute, string path, int component,
+                                                out EditorCurveBinding binding)
+        {
+            binding = default(EditorCurveBinding);
+            string suffix = component == 0 ? ".x" : component == 1 ? ".y" : component == 2 ? ".z" : ".w";
+            if (typeId == 4)
+            {
+                string property = attribute == 1 ? "m_LocalPosition" :
+                                  attribute == 3 ? "m_LocalScale" :
+                                  attribute == 4 ? "localEulerAnglesRaw" : null;
+                if (property == null) return false;
+                binding = EditorCurveBinding.FloatCurve(path, typeof(Transform), property + suffix);
+                return true;
+            }
+            if (typeId == 212 && attribute == 304273561u && component == 0)
+            {
+                binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "m_Color.a");
+                return true;
+            }
+            return false;
         }
 
         private static void ApplyTransform(Node node, JobRecord job)
