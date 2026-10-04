@@ -162,7 +162,13 @@ IDEA 的 `Use Asset Database` 模式还会启用 `LocalOpeningTest` 的 EditorRe
 
 IDEA bridge 的 `PLAYING` 只表示 Unity 已进入 Play Mode，不表示 Naninovel 已完成初始化。若仍有白块，先看 `tools/unity-rebuild/out/logs/idea_unity_editor.log` 中第一条 `RemoteProviderException` 或 `Resource ... failed`，再看组件字段空引用。`PaginationIndicator` 的序列化字段是 `_canvasGroup`，不能改成 `_canvas`；后者会让保存/读档分页 prefab 的 CanvasGroup 引用丢失，并在 `Pagination.ChangeIndicatorStyle` 抛出 `NullReferenceException`。
 
+启动最前面的两个品牌 Logo 另有一个容易混淆的情况：`UnityProject/Assets/Scenes/Boot.unity` 中 `BrandLogo`、`CompanyLogo` 的 `Image.m_Sprite` 必须分别指向 `GameContent/Uncategorized/Sprite/BrandLogo_Acacia.sprite.sprites/BrandLogo_Acacia.png.meta` 和 `CompanyLogo_ReAER.sprite.sprites/CompanyLogo_ReAER.png.meta` 的 GUID。若场景仍保存旧 GUID，Unity 会把 Sprite 解析为 `None`，但 Image 的白色背景仍会显示，于是看起来像两个白块。遇到这个现象先按 GUID 检查并让 Unity 重新导入场景，不要替换 Logo 图片或修改 SplashScreen 逻辑。
+
 Unity 6000 的 Editor-only Addressables locator 在第一次扫描 `Naninovel` 全量标签时，可能对少数复杂 CutIn prefab 输出 `Assertion failed on expression: 'pred(*previous, *i)'`；探针确认这些条目仍全部返回，且 packed build 不依赖该 Editor 扫描。只要没有紧随其后的资源加载失败，就把它视为编辑器扫描噪声，不要为消除它删除 Naninovel 标签或本地资源映射。
+
+2026-10-04 的 IDEA 启动复核进一步确认：`IdeaPlayModeBridge` 已选择 `Use Asset Database`，本地生成的 440 个剧本资源、444 个本地化资源和 Trial10 的 S01-S05 prefab 都已在当前项目中被导入；这次不能归因于“修复没有同步”。旧的运行时证据还显示 Naninovel 初始化完成、TitleUI 可见并能推进剧本，因此上述 locator 断言本身不是人偶或黑屏的根因。
+
+如果 IDEA 配置只显示 `PLAYING` 后 Unity 窗口消失，先看 `tools/unity-rebuild/out/logs/idea_unity_editor.log` 的末尾。`No valid Unity Editor license found`、`No ULF license found` 或 `Unable to update licenses` 不一定表示许可证过期：2026-10-04 本机仍有有效的 Unity Personal entitlement，但直接启动的旧 Licensing Client 读不到 Hub 的登录会话。现在 `run_unity_game_idea.ps1` 默认先唤醒 Unity Hub 授权 broker，动态发现 `Unity-LicenseClient-*` 管道，再把临时的 `-useHub -hubIPC -licensingIpc LicenseClient-*` 参数交给 IDEA 直启的 Editor；管道名、Hub access token 和 refresh token 都不写入仓库。首次使用或协作者换电脑时运行 `.idea/runConfigurations/Setup_Unity_License.xml`，点击“获取授权 / 登录 Unity”在 Hub 完成自己的 Unity 账号登录，再点“启动 Unity 游戏”。窗口也支持可选的 Editor access token 输入，使用当前 Windows 用户 DPAPI 加密保存到 `%LOCALAPPDATA%\ManosabaUnity`，不会显示或提交；Personal 用户通常不需要填写。需要强制测试完全独立的 Editor 授权时才传 `-NoHubLicense`。脚本会清理旧的 `result.json`，并在认证失败时立即给出明确错误，不再把旧的 `PLAYING` 回执当成新会话。认证问题未解决前不要为了排除黑屏去改 Addressables 标签或删除人偶资源。
 
 ```powershell
 # IDEA 外部工具或终端

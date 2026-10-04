@@ -5,6 +5,7 @@ param(
     [string]$ProjectPath = '',
     [switch]$SkipContentCheck,
     [switch]$UsePackedContent,
+    [switch]$NoHubLicense,
     [ValidateRange(30, 3600)][int]$TimeoutSeconds = 180
 )
 
@@ -19,8 +20,13 @@ $resultPath = Join-Path $bridge 'result.json'
 $logPath = Join-Path $repo 'tools/unity-rebuild/out/logs/idea_unity_editor.log'
 $reportPath = Join-Path $repo 'tools/unity-rebuild/out/unity/addressables_build_result.json'
 $settingsAssetPath = Join-Path $project 'Assets/AddressableAssetsData/AddressableAssetSettings.asset'
+$licenseHelpersPath = Join-Path $repo 'tools/unity-rebuild/unity_license_helpers.ps1'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $script:contentFailure = $null
+
+if (Test-Path -LiteralPath $licenseHelpersPath -PathType Leaf) {
+    . $licenseHelpersPath
+}
 
 function Get-ConfiguredValue {
     param([string]$Key, [string]$EnvironmentName)
@@ -52,8 +58,8 @@ function Get-UnityEditor {
     if ($configured) { $candidates += $configured }
     if ($version) {
         $candidates += @(
-            "E:\Unity\$version\Editor\Unity.exe",
             "E:\AI\$version\Editor\Unity.exe",
+            "E:\Unity\$version\Editor\Unity.exe",
             "D:\Unity\$version\Editor\Unity.exe",
             "C:\Program Files\Unity\Hub\Editor\$version\Editor\Unity.exe",
             "E:\Unity\Hub\Editor\$version\Editor\Unity.exe"
@@ -134,16 +140,60 @@ $request = @{
     expiresUtc = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds).ToString('o')
     useAssetDatabase = (-not $UsePackedContent)
 }
+# Do not let a previous PLAYING/ERROR result make a failed launch look like an
+# old successful one while troubleshooting. The bridge always writes a result
+# with the new request id, so removing this file is safe even when an Editor is
+# already open.
+if (Test-Path -LiteralPath $resultPath) {
+    Remove-Item -LiteralPath $resultPath -Force -ErrorAction SilentlyContinue
+}
 $temporary = Join-Path $bridge 'request.tmp'
 [IO.File]::WriteAllText($temporary, ($request | ConvertTo-Json), $utf8)
 Move-Item -LiteralPath $temporary -Destination $requestPath -Force
 
+$unityProcess = $null
 if (-not (Test-EditorOpen)) {
     Write-Host "[Unity] Starting $editor"
-    Start-Process -FilePath $editor -WorkingDirectory (Split-Path -Parent $editor) -ArgumentList @(
+    # A fresh Editor owns this log, so truncate it before launch. This makes a
+    # license/startup failure from the new process distinguishable from a
+    # previous session's diagnostics.
+    if (Test-Path -LiteralPath $logPath) {
+        Clear-Content -LiteralPath $logPath -ErrorAction SilentlyContinue
+    }
+    $unityArguments = @(
         '-projectPath', $project,
         '-logFile', $logPath
-    ) | Out-Null
+    )
+
+    # Unity Personal is an entitlement held by Hub's licensing client rather
+    # than a portable .ulf file. Keep the Editor process direct for IDEA, but
+    # let the already logged-in Hub broker authorize it through its ephemeral
+    # named pipe. The pipe name and optional access token never enter the repo.
+    $licensePipe = $null
+    if (-not $NoHubLicense -and (Get-Command Start-UnityHubForLicense -ErrorAction SilentlyContinue)) {
+        $licensePipe = Start-UnityHubForLicense
+        if ($licensePipe) {
+            Write-Host "[Unity] Using Hub license broker ($licensePipe)"
+            $unityArguments += @(
+                '-useHub',
+                '-hubIPC',
+                '-cloudEnvironment', 'production',
+                '-licensingIpc', $licensePipe
+            )
+        } else {
+            Write-Host '[Unity] Hub license broker was not found; trying the Editor direct license client.'
+        }
+    }
+
+    # A collaborator may optionally enter an Editor access token in the setup
+    # window. It is DPAPI-protected for the current Windows user and only
+    # materialized in this process for the Editor launch.
+    if (Get-Command Get-UnityAccessToken -ErrorAction SilentlyContinue) {
+        $accessToken = Get-UnityAccessToken
+        if ($accessToken) { $unityArguments += @('-accessToken', $accessToken) }
+    }
+
+    $unityProcess = Start-Process -FilePath $editor -WorkingDirectory (Split-Path -Parent $editor) -ArgumentList $unityArguments -PassThru
 } else {
     Write-Host '[Unity] Existing Editor detected; using it instead of starting a second instance.'
 }
@@ -161,6 +211,22 @@ try {
                 }
                 if ($result.status -in @('PLAYING', 'ALREADY_PLAYING')) { exit 0 }
                 if ($result.status -eq 'ERROR') { throw $result.message }
+            }
+        }
+        if ($unityProcess -and $unityProcess.HasExited) {
+            $tail = ''
+            if (Test-Path -LiteralPath $logPath) {
+                $tail = (Get-Content -LiteralPath $logPath -Tail 80 -ErrorAction SilentlyContinue) -join [Environment]::NewLine
+            }
+            if ($tail -match 'No valid Unity Editor license found|Unable to update licenses|No ULF license found') {
+                throw "Unity exited before Play Mode because the Editor could not authenticate its license. Click Setup Unity License in IDEA, sign in to Unity Hub with the collaborator's account, then retry. If the Hub broker is intentionally unavailable, configure a standalone Editor activation instead."
+            }
+            throw "Unity exited before entering Play Mode (process exit code $($unityProcess.ExitCode)). Check $logPath."
+        }
+        if ($unityProcess -and (Test-Path -LiteralPath $logPath)) {
+            $tail = (Get-Content -LiteralPath $logPath -Tail 80 -ErrorAction SilentlyContinue) -join [Environment]::NewLine
+            if ($tail -match 'No valid Unity Editor license found|Unable to update licenses|No ULF license found') {
+                throw "Unity cannot enter Play Mode because the Editor could not authenticate its license. Click Setup Unity License in IDEA, sign in to Unity Hub with the collaborator's account, then retry. If the Hub broker is intentionally unavailable, configure a standalone Editor activation instead."
             }
         }
         Start-Sleep -Milliseconds 500
