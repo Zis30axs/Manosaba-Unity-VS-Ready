@@ -1,0 +1,72 @@
+====================================================================================================
+FUNCTION RVA 0xB4D500  VA 0x180B4D500  size 0x10E (270 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$Awake
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___Awake (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D500* method);
+====================================================================================================
+  0x180B4D500  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4D505  mov     qword ptr [rsp + 0x10], rbp               
+  0x180B4D50A  mov     qword ptr [rsp + 0x18], rsi               
+  0x180B4D50F  push    rdi                                       
+  0x180B4D510  sub     rsp, 0x20                                 
+  0x180B4D514  cmp     byte ptr [rip + 0x258f852], 0                ; data_30DCD6D
+  0x180B4D51B  mov     rdi, rdx                                  
+  0x180B4D51E  mov     rbx, rcx                                  
+  0x180B4D521  jne     0x180b4d55d                               
+  0x180B4D523  lea     rcx, [rip + 0x22fd86e]                       ; TYPE System.Action<GameStateMap>_TypeInfo
+  0x180B4D52A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D52F  lock or dword ptr [rsp], 0                        
+  0x180B4D534  lea     rcx, [rip + 0x22f6895]                       ; TYPE System.Func<GameStateMap, UniTask>_TypeInfo
+  0x180B4D53B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D540  lock or dword ptr [rsp], 0                        
+  0x180B4D545  lea     rcx, [rip + 0x2304464]                       ; TYPE Naninovel.IStateManager_TypeInfo
+  0x180B4D54C  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D551  lock or dword ptr [rsp], 0                        
+  0x180B4D556  mov     byte ptr [rip + 0x258f810], 1                ; data_30DCD6D
+
+180B4D55D:
+  0x180B4D55D  mov     rcx, rbx                                  
+  0x180B4D560  call    0x180066eb0                                  ; -> sub_66EB0 (runtime/helper)
+  0x180B4D565  mov     rcx, qword ptr [rip + 0x22fd82c]             ; TYPE System.Action<GameStateMap>_TypeInfo
+  0x180B4D56C  mov     rsi, rax                                  
+  0x180B4D56F  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180B4D574  mov     rcx, qword ptr [rdi + 0x20]               
+  0x180B4D578  xor     r9d, r9d                                  
+  0x180B4D57B  mov     rdx, rbx                                  
+  0x180B4D57E  mov     rbp, rax                                  
+  0x180B4D581  mov     r8, qword ptr [rcx + 0xc0]                
+  0x180B4D588  mov     rcx, rax                                  
+  0x180B4D58B  mov     r8, qword ptr [r8 + 0x18]                 
+  0x180B4D58F  call    0x180974bb0                                  ; -> System.Action<__Il2CppFullySharedGenericType>$$.ctor (+3 aliases)
+  0x180B4D594  test    rsi, rsi                                  
+  0x180B4D597  je      0x180b4d609                               
+  0x180B4D599  mov     ecx, 0x18                                 
+  0x180B4D59E  mov     r9, rbp                                   
+  0x180B4D5A1  mov     r8, rsi                                   
+  0x180B4D5A4  call    0x1800292f0                                  ; -> sub_292F0 (runtime/helper)
+  0x180B4D5A9  mov     rcx, rbx                                  
+  0x180B4D5AC  call    0x180066eb0                                  ; -> sub_66EB0 (runtime/helper)
+  0x180B4D5B1  mov     rcx, qword ptr [rip + 0x22f6818]             ; TYPE System.Func<GameStateMap, UniTask>_TypeInfo
+  0x180B4D5B8  mov     rsi, rax                                  
+  0x180B4D5BB  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180B4D5C0  mov     rcx, qword ptr [rdi + 0x20]               
+  0x180B4D5C4  xor     r9d, r9d                                  
+  0x180B4D5C7  mov     rdx, rbx                                  
+  0x180B4D5CA  mov     rbp, rax                                  
+  0x180B4D5CD  mov     r8, qword ptr [rcx + 0xc0]                
+  0x180B4D5D4  mov     rcx, rax                                  
+  0x180B4D5D7  mov     r8, qword ptr [r8 + 0x20]                 
+  0x180B4D5DB  call    0x18080e880                                  ; -> System.Func<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$.ctor (+4 aliases)
+  0x180B4D5E0  test    rsi, rsi                                  
+  0x180B4D5E3  je      0x180b4d609                               
+  0x180B4D5E5  mov     ecx, 0x1a                                 
+  0x180B4D5EA  mov     r9, rbp                                   
+  0x180B4D5ED  mov     r8, rsi                                   
+  0x180B4D5F0  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4D5F5  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180B4D5FA  mov     rsi, qword ptr [rsp + 0x40]               
+  0x180B4D5FF  add     rsp, 0x20                                 
+  0x180B4D603  pop     rdi                                       
+  0x180B4D604  jmp     0x1800292f0                               
+
+180B4D609:
+  0x180B4D609  call    0x180246730                                  ; THROW NullReferenceException

@@ -4,6 +4,8 @@
 
 `res/` 是用户本地、gitignored 的唯一日常编辑源；`UnityProject/Assets/GameContent/` 是由它生成的 Unity 导入和构建树。不要在重新同步之后依赖手动修改的 GameContent 文件。
 
+幕布 SpriteSkin 也遵循这条规则：`UnityProject/Assets/Editor/OriginalCurtainSpriteData.json` 是版本库中的唯一配方，`RestoreOriginalCurtainSkin.cs` 会在内容同步、Addressables/Player 构建和 Play Mode 门禁前自动应用并逐项读回校验。六个生成的 `.png.meta` 不提交；协作者拉取配方和脚本后，运行普通 `sync.ps1`、`build.ps1`、Player 构建或新的 Play 会话即可触发这项检查。`doctor.ps1`、`sync.ps1 --dry-run` 和 `--copy-only` 只做各自的静态/暂存工作，不会执行 Unity SpriteSkin 恢复。缺失或不匹配会使实际入口失败而不会生成一个看似可运行的旧状态。详见 [开发指南的协作章节](../../DEVELOPMENT.md#github-协作与生成资源修复)。
+
 需要 Python 3.11+、Unity 6000.0.48f1（已激活许可证）和项目依赖。首次提取使用既有 `work/extract_res.py`，还需要 UnityPy、Pillow、soundfile；当前本地 `tools/venv` 可以继续使用。用 `MANOSABA_PYTHON` 和 `MANOSABA_UNITY_EDITOR` 指定工具位置，机器路径只放在环境变量或 gitignored 的 `tools/audit/audit.config.local.json`。
 
 ```powershell

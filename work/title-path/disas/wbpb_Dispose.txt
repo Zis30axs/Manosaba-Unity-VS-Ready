@@ -1,0 +1,79 @@
+====================================================================================================
+FUNCTION RVA 0xB4D720  VA 0x180B4D720  size 0x124 (292 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$Dispose
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___Dispose (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D720* method);
+====================================================================================================
+  0x180B4D720  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4D725  push    rsi                                       
+  0x180B4D726  sub     rsp, 0x20                                 
+  0x180B4D72A  cmp     byte ptr [rip + 0x258f63e], 0                ; data_30DCD6F
+  0x180B4D731  mov     rbx, rcx                                  
+  0x180B4D734  jne     0x180b4d74e                               
+  0x180B4D736  lea     rcx, [rip + 0x2304a13]                       ; TYPE System.IDisposable_TypeInfo
+  0x180B4D73D  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D742  lock or dword ptr [rsp], 0                        
+  0x180B4D747  mov     byte ptr [rip + 0x258f621], 1                ; data_30DCD6F
+
+180B4D74E:
+  0x180B4D74E  mov     r8, qword ptr [rbx + 0xa8]                
+  0x180B4D755  test    r8, r8                                    
+  0x180B4D758  je      0x180b4d768                               
+  0x180B4D75A  mov     rdx, qword ptr [rip + 0x23049ef]             ; TYPE System.IDisposable_TypeInfo
+  0x180B4D761  xor     ecx, ecx                                  
+  0x180B4D763  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180B4D768:
+  0x180B4D768  cmp     dword ptr [rip + 0x258ba55], 0               ; data_30D91C4
+  0x180B4D76F  lea     rsi, [rip + 0x25a0b2a]                       ; data_30EE2A0
+  0x180B4D776  mov     qword ptr [rbx + 0xa8], 0                 
+  0x180B4D781  je      0x180b4d7c9                               
+  0x180B4D783  lea     r8, [rbx + 0xa8]                          
+  0x180B4D78A  shr     r8, 0xc                                   
+  0x180B4D78E  and     r8d, 0x1fffff                             
+  0x180B4D795  mov     eax, r8d                                  
+  0x180B4D798  shr     rax, 6                                    
+  0x180B4D79C  and     r8d, 0x3f                                 
+  0x180B4D7A0  lea     rdx, [rsi + rax*8]                        
+  0x180B4D7A4  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180B4D7AB  nop     dword ptr [rax + rax]                     
+
+180B4D7B0:
+  0x180B4D7B0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180B4D7B7  mov     rcx, rax                                  
+  0x180B4D7BA  bts     rcx, r8                                   
+  0x180B4D7BE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180B4D7C7  jne     0x180b4d7b0                               
+
+180B4D7C9:
+  0x180B4D7C9  mov     rcx, qword ptr [rbx + 0xb0]               
+  0x180B4D7D0  test    rcx, rcx                                  
+  0x180B4D7D3  je      0x180b4d7dc                               
+  0x180B4D7D5  xor     edx, edx                                  
+  0x180B4D7D7  call    0x1817bd0d0                                  ; -> UniRx.CompositeDisposable$$Dispose
+
+180B4D7DC:
+  0x180B4D7DC  cmp     dword ptr [rip + 0x258b9e1], 0               ; data_30D91C4
+  0x180B4D7E3  mov     qword ptr [rbx + 0xb0], 0                 
+  0x180B4D7EE  je      0x180b4d839                               
+  0x180B4D7F0  lea     r8, [rbx + 0xb0]                          
+  0x180B4D7F7  shr     r8, 0xc                                   
+  0x180B4D7FB  and     r8d, 0x1fffff                             
+  0x180B4D802  mov     eax, r8d                                  
+  0x180B4D805  shr     rax, 6                                    
+  0x180B4D809  and     r8d, 0x3f                                 
+  0x180B4D80D  lea     rdx, [rsi + rax*8]                        
+  0x180B4D811  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180B4D818  nop     dword ptr [rax + rax]                     
+
+180B4D820:
+  0x180B4D820  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180B4D827  mov     rcx, rax                                  
+  0x180B4D82A  bts     rcx, r8                                   
+  0x180B4D82E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180B4D837  jne     0x180b4d820                               
+
+180B4D839:
+  0x180B4D839  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4D83E  add     rsp, 0x20                                 
+  0x180B4D842  pop     rsi                                       
+  0x180B4D843  ret                                               

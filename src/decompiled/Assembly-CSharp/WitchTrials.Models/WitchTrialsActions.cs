@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace WitchTrials.Models;
 
 [Token(Token = "0x2000166")]
-public class WitchTrialsActions
+public class WitchTrialsActions : IInputActionCollection2, IInputActionCollection, IEnumerable<InputAction>, IEnumerable, IDisposable
 {
 	// RECONSTRUCTED | Confidence: B | offset 0x10
 	// This class is Unity Input System's generated wrapper for a .inputactions
@@ -680,9 +680,10 @@ public class WitchTrialsActions
 	{
 		[Token(Token = "0x60005D5")]
 		[Address(RVA = "0x390CE0", Offset = "0x38F6E0", VA = "0x180390CE0", Slot = "11")]
+		// RECONSTRUCTED | Confidence: A | generated wrapper: asset.controlSchemes; folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code)
 		get
 		{
-			return default(ReadOnlyArray<InputControlScheme>);
+			return asset.controlSchemes;
 		}
 	}
 
@@ -691,9 +692,10 @@ public class WitchTrialsActions
 	{
 		[Token(Token = "0x60005DB")]
 		[Address(RVA = "0x390DA0", Offset = "0x38F7A0", VA = "0x180390DA0", Slot = "4")]
+		// RECONSTRUCTED | Confidence: A | generated wrapper: asset.bindings; folded with UnityEngine.InputSystem.DefaultInputActions (same generated wrapper code)
 		get
 		{
-			return null;
+			return asset.bindings;
 		}
 	}
 
@@ -2063,40 +2065,42 @@ public class WitchTrialsActions
 	[Address(RVA = "0x390D20", Offset = "0x38F720", VA = "0x180390D20", Slot = "12")]
 	public bool Contains(InputAction action)
 	{
-		return default(bool);
+		return asset.Contains(action);
 	}
 
 	[Token(Token = "0x60005D7")]
 	[Address(RVA = "0x390D40", Offset = "0x38F740", VA = "0x180390D40", Slot = "15")]
 	public IEnumerator<InputAction> GetEnumerator()
 	{
-		return null;
+		return asset.GetEnumerator();
 	}
 
 	[Token(Token = "0x60005D8")]
 	[Address(RVA = "0x390D40", Offset = "0x38F740", VA = "0x180390D40", Slot = "16")]
-	private IEnumerator System_002ECollections_002EIEnumerable_002EGetEnumerator()
+	IEnumerator IEnumerable.GetEnumerator()
 	{
-		return null;
+		return GetEnumerator();
 	}
 
 	[Token(Token = "0x60005D9")]
 	[Address(RVA = "0x390D60", Offset = "0x38F760", VA = "0x180390D60", Slot = "13")]
 	public void Enable()
 	{
+		asset.Enable();
 	}
 
 	[Token(Token = "0x60005DA")]
 	[Address(RVA = "0x390D80", Offset = "0x38F780", VA = "0x180390D80", Slot = "14")]
 	public void Disable()
 	{
+		asset.Disable();
 	}
 
 	[Token(Token = "0x60005DC")]
 	[Address(RVA = "0x390DC0", Offset = "0x38F7C0", VA = "0x180390DC0", Slot = "5")]
 	public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
 	{
-		return null;
+		return asset.FindAction(actionNameOrId, throwIfNotFound);
 	}
 
 	// RECONSTRUCTED | Confidence: A | RVA: 0x390DE0, 93 B

@@ -1,0 +1,59 @@
+====================================================================================================
+FUNCTION RVA 0xB4D440  VA 0x180B4D440  size 0xBA (186 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$get_NaniStateManager
+  csig   : Naninovel_IStateManager_o* WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___get_NaniStateManager (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D440* method);
+====================================================================================================
+  0x180B4D440  push    rbx                                       
+  0x180B4D442  sub     rsp, 0x20                                 
+  0x180B4D446  cmp     byte ptr [rip + 0x258f91f], 0                ; data_30DCD6C
+  0x180B4D44D  mov     rbx, rcx                                  
+  0x180B4D450  jne     0x180b4d47b                               
+  0x180B4D452  lea     rcx, [rip + 0x2304577]                       ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IStateManager>()
+  0x180B4D459  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D45E  lock or dword ptr [rsp], 0                        
+  0x180B4D463  lea     rcx, [rip + 0x2304ac6]                       ; TYPE Naninovel.Engine_TypeInfo
+  0x180B4D46A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D46F  lock or dword ptr [rsp], 0                        
+  0x180B4D474  mov     byte ptr [rip + 0x258f8f1], 1                ; data_30DCD6C
+
+180B4D47B:
+  0x180B4D47B  mov     rax, qword ptr [rbx + 0x68]               
+  0x180B4D47F  test    rax, rax                                  
+  0x180B4D482  jne     0x180b4d4f4                               
+  0x180B4D484  mov     rcx, qword ptr [rip + 0x2304aa5]             ; TYPE Naninovel.Engine_TypeInfo
+  0x180B4D48B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180B4D491  jne     0x180b4d498                               
+  0x180B4D493  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4D498:
+  0x180B4D498  mov     rcx, qword ptr [rip + 0x2304531]             ; METHODINFO Method$Naninovel.Engine.GetServiceOrErr<IStateManager>()
+  0x180B4D49F  call    0x180682840                                  ; -> Naninovel.Engine$$GetServiceOrErr<object>
+  0x180B4D4A4  cmp     dword ptr [rip + 0x258bd19], 0               ; data_30D91C4
+  0x180B4D4AB  mov     r9, rax                                   
+  0x180B4D4AE  mov     qword ptr [rbx + 0x68], rax               
+  0x180B4D4B2  je      0x180b4d4f1                               
+  0x180B4D4B4  lea     r8, [rbx + 0x68]                          
+  0x180B4D4B8  shr     r8, 0xc                                   
+  0x180B4D4BC  lea     rcx, [rip + 0x25e70bd]                       ; data_3134580
+  0x180B4D4C3  and     r8d, 0x1fffff                             
+  0x180B4D4CA  mov     eax, r8d                                  
+  0x180B4D4CD  shr     rax, 6                                    
+  0x180B4D4D1  and     r8d, 0x3f                                 
+  0x180B4D4D5  lea     rdx, [rcx + rax*8]                        
+  0x180B4D4D9  prefetchw byte ptr [rdx]                            
+  0x180B4D4DC  nop     dword ptr [rax]                           
+
+180B4D4E0:
+  0x180B4D4E0  mov     rax, qword ptr [rdx]                      
+  0x180B4D4E3  mov     rcx, rax                                  
+  0x180B4D4E6  bts     rcx, r8                                   
+  0x180B4D4EA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4D4EF  jne     0x180b4d4e0                               
+
+180B4D4F1:
+  0x180B4D4F1  mov     rax, r9                                   
+
+180B4D4F4:
+  0x180B4D4F4  add     rsp, 0x20                                 
+  0x180B4D4F8  pop     rbx                                       
+  0x180B4D4F9  ret                                               

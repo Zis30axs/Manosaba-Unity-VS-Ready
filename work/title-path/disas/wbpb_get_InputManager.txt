@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xB4D2C0  VA 0x180B4D2C0  size 0xBA (186 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$get_InputManager
+  csig   : GigaCreation_Essentials_Input_IInputManager_o* WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___get_InputManager (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D2C0* method);
+====================================================================================================
+  0x180B4D2C0  push    rbx                                       
+  0x180B4D2C2  sub     rsp, 0x20                                 
+  0x180B4D2C6  cmp     byte ptr [rip + 0x258fa9d], 0                ; data_30DCD6A
+  0x180B4D2CD  mov     rbx, rcx                                  
+  0x180B4D2D0  jne     0x180b4d2fb                               
+  0x180B4D2D2  lea     rcx, [rip + 0x2307f2f]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180B4D2D9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D2DE  lock or dword ptr [rsp], 0                        
+  0x180B4D2E3  lea     rcx, [rip + 0x2304e7e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D2EA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D2EF  lock or dword ptr [rsp], 0                        
+  0x180B4D2F4  mov     byte ptr [rip + 0x258fa6f], 1                ; data_30DCD6A
+
+180B4D2FB:
+  0x180B4D2FB  mov     rax, qword ptr [rbx + 0x58]               
+  0x180B4D2FF  test    rax, rax                                  
+  0x180B4D302  jne     0x180b4d374                               
+  0x180B4D304  mov     rcx, qword ptr [rip + 0x2304e5d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D30B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180B4D311  jne     0x180b4d318                               
+  0x180B4D313  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4D318:
+  0x180B4D318  mov     rdx, qword ptr [rip + 0x2307ee9]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IInputManager>()
+  0x180B4D31F  mov     cl, 1                                     
+  0x180B4D321  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180B4D326  cmp     dword ptr [rip + 0x258be97], 0               ; data_30D91C4
+  0x180B4D32D  mov     r9, rax                                   
+  0x180B4D330  mov     qword ptr [rbx + 0x58], rax               
+  0x180B4D334  je      0x180b4d371                               
+  0x180B4D336  lea     r8, [rbx + 0x58]                          
+  0x180B4D33A  shr     r8, 0xc                                   
+  0x180B4D33E  lea     rcx, [rip + 0x25e723b]                       ; data_3134580
+  0x180B4D345  and     r8d, 0x1fffff                             
+  0x180B4D34C  mov     eax, r8d                                  
+  0x180B4D34F  shr     rax, 6                                    
+  0x180B4D353  and     r8d, 0x3f                                 
+  0x180B4D357  lea     rdx, [rcx + rax*8]                        
+  0x180B4D35B  prefetchw byte ptr [rdx]                            
+  0x180B4D35E  nop                                               
+
+180B4D360:
+  0x180B4D360  mov     rax, qword ptr [rdx]                      
+  0x180B4D363  mov     rcx, rax                                  
+  0x180B4D366  bts     rcx, r8                                   
+  0x180B4D36A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4D36F  jne     0x180b4d360                               
+
+180B4D371:
+  0x180B4D371  mov     rax, r9                                   
+
+180B4D374:
+  0x180B4D374  add     rsp, 0x20                                 
+  0x180B4D378  pop     rbx                                       
+  0x180B4D379  ret                                               

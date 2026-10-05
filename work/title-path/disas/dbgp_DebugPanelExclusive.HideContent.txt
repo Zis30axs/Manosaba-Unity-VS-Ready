@@ -1,0 +1,115 @@
+====================================================================================================
+FUNCTION RVA 0xD485F0  VA 0x180D485F0  size 0x152 (338 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive$$HideContent
+  csig   : void GigaCreation_Tools_Debugging_Ui_DebugPanelExclusive__HideContent (GigaCreation_Tools_Debugging_Ui_DebugPanelExclusive_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive :: public override void HideContent()
+  fields of GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive:
+      +0x48   _otherDebugPanels              Transform[]
+      +0x50   _isQuitting                    bool
+  fields of DebugPanelExclusive.<>c:
+      +0x0    <>9                            static readonly DebugPanelExclusive.<>c
+      +0x8    <>9__3_1                       static Func<DebugPanelExclusive, Transform>
+====================================================================================================
+  0x180D485F0  mov     qword ptr [rsp + 0x18], rbx               
+  0x180D485F5  mov     qword ptr [rsp + 0x20], rbp               
+  0x180D485FA  push    rsi                                       
+  0x180D485FB  sub     rsp, 0x30                                 
+  0x180D485FF  xor     edx, edx                                  
+  0x180D48601  mov     rbx, rcx                                  
+  0x180D48604  call    0x180d47bb0                                  ; -> GigaCreation.Tools.Debugging.Ui.DebugPanel$$HideContent
+  0x180D48609  xor     edx, edx                                  
+  0x180D4860B  mov     rcx, rbx                                  
+  0x180D4860E  call    0x180d47ff0                                  ; -> GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive$$get_OtherDebugPanels
+  0x180D48613  xor     esi, esi                                  
+  0x180D48615  mov     rbp, rax                                  
+  0x180D48618  mov     ecx, esi                                  
+  0x180D4861A  test    rax, rax                                  
+  0x180D4861D  je      0x180d4873d                               
+  0x180D48623  mov     qword ptr [rsp + 0x48], r14               
+  0x180D48628  lea     r14, [rax + 0x20]                         
+  0x180D4862C  mov     qword ptr [rsp + 0x40], rdi               
+
+180D48631:
+  0x180D48631  cmp     ecx, dword ptr [rbp + 0x18]               
+  0x180D48634  jge     0x180d486f5                               
+  0x180D4863A  cmp     esi, dword ptr [rbp + 0x18]               
+  0x180D4863D  jae     0x180d48737                               
+  0x180D48643  cmp     byte ptr [rip + 0x238eee4], 0                ; data_30D752E
+  0x180D4864A  mov     rbx, qword ptr [r14]                      
+  0x180D4864D  jne     0x180d48667                               
+  0x180D4864F  lea     rcx, [rip + 0x2113a0a]                       ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180D48656  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D4865B  lock or dword ptr [rsp], 0                        
+  0x180D48660  mov     byte ptr [rip + 0x238eec7], 1                ; data_30D752E
+
+180D48667:
+  0x180D48667  mov     rax, qword ptr [rip + 0x21139f2]             ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180D4866E  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D48675  test    rbx, rbx                                  
+  0x180D48678  je      0x180d48731                               
+  0x180D4867E  cmp     byte ptr [rip + 0x23a06b9], 0                ; data_30E8D3E
+  0x180D48685  movsd   xmm0, qword ptr [rax + 0xc]               
+  0x180D4868A  mov     eax, dword ptr [rax + 0x14]               
+  0x180D4868D  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D48693  mov     dword ptr [rsp + 0x28], eax               
+  0x180D48697  jne     0x180d486b1                               
+  0x180D48699  lea     rcx, [rip + 0x2123140]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D486A0  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D486A5  lock or dword ptr [rsp], 0                        
+  0x180D486AA  mov     byte ptr [rip + 0x23a068d], 1                ; data_30E8D3E
+
+180D486B1:
+  0x180D486B1  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D486B5  test    rdi, rdi                                  
+  0x180D486B8  je      0x180d48726                               
+  0x180D486BA  mov     rax, qword ptr [rip + 0x23a072f]             ; data_30E8DF0
+  0x180D486C1  test    rax, rax                                  
+  0x180D486C4  jne     0x180d486de                               
+  0x180D486C6  lea     rcx, [rip + 0x18c1693]                       ; data_2609D60
+  0x180D486CD  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D486D2  test    rax, rax                                  
+  0x180D486D5  je      0x180d4870f                               
+  0x180D486D7  mov     qword ptr [rip + 0x23a0712], rax             ; data_30E8DF0
+
+180D486DE:
+  0x180D486DE  lea     rdx, [rsp + 0x20]                         
+  0x180D486E3  mov     rcx, rdi                                  
+  0x180D486E6  call    rax                                       
+  0x180D486E8  inc     esi                                       
+  0x180D486EA  add     r14, 8                                    
+  0x180D486EE  mov     ecx, esi                                  
+  0x180D486F0  jmp     0x180d48631                               
+
+180D486F5:
+  0x180D486F5  mov     rdi, qword ptr [rsp + 0x40]               
+  0x180D486FA  mov     r14, qword ptr [rsp + 0x48]               
+  0x180D486FF  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180D48704  mov     rbp, qword ptr [rsp + 0x58]               
+  0x180D48709  add     rsp, 0x30                                 
+  0x180D4870D  pop     rsi                                       
+  0x180D4870E  ret                                               
+
+180D4870F:
+  0x180D4870F  lea     rcx, [rip + 0x18c164a]                       ; data_2609D60
+  0x180D48716  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D4871B  mov     rcx, rax                                  
+  0x180D4871E  xor     edx, edx                                  
+  0x180D48720  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D48725  int3                                              
+
+180D48726:
+  0x180D48726  xor     edx, edx                                  
+  0x180D48728  mov     rcx, rbx                                  
+  0x180D4872B  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D48730  int3                                              
+
+180D48731:
+  0x180D48731  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D48736  int3                                              
+
+180D48737:
+  0x180D48737  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D4873C  int3                                              
+
+180D4873D:
+  0x180D4873D  call    0x180246730                                  ; THROW NullReferenceException

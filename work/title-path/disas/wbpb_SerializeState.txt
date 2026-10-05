@@ -1,0 +1,88 @@
+====================================================================================================
+FUNCTION RVA 0xB4E910  VA 0x180B4E910  size 0x13F (319 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$SerializeState
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___SerializeState (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, Naninovel_GameStateMap_o* stateMap, const MethodInfo_B4E910* method);
+====================================================================================================
+  0x180B4E910  mov     qword ptr [rsp + 0x10], rbx               
+  0x180B4E915  mov     qword ptr [rsp + 0x18], rbp               
+  0x180B4E91A  push    rsi                                       
+  0x180B4E91B  sub     rsp, 0x20                                 
+  0x180B4E91F  cmp     byte ptr [rip + 0x258e44d], 0                ; data_30DCD73
+  0x180B4E926  mov     rbp, r8                                   
+  0x180B4E929  mov     rsi, rdx                                  
+  0x180B4E92C  mov     rbx, rcx                                  
+  0x180B4E92F  jne     0x180b4e949                               
+  0x180B4E931  lea     rcx, [rip + 0x2303048]                       ; METHODINFO Method$Naninovel.StateMap.SetState<VersionedState>()
+  0x180B4E938  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4E93D  lock or dword ptr [rsp], 0                        
+  0x180B4E942  mov     byte ptr [rip + 0x258e42a], 1                ; data_30DCD73
+
+180B4E949:
+  0x180B4E949  mov     rbx, qword ptr [rbx + 0x48]               
+  0x180B4E94D  mov     qword ptr [rsp + 0x30], rdi               
+  0x180B4E952  test    rbx, rbx                                  
+  0x180B4E955  je      0x180b4ea4a                               
+  0x180B4E95B  cmp     byte ptr [rip + 0x258abf9], 0                ; data_30D955B
+  0x180B4E962  jne     0x180b4e97c                               
+  0x180B4E964  lea     rcx, [rip + 0x230c2e5]                       ; TYPE WitchTrials.Models.VersionedState_TypeInfo
+  0x180B4E96B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4E970  lock or dword ptr [rsp], 0                        
+  0x180B4E975  mov     byte ptr [rip + 0x258abdf], 1                ; data_30D955B
+
+180B4E97C:
+  0x180B4E97C  mov     rcx, qword ptr [rip + 0x230c2cd]             ; TYPE WitchTrials.Models.VersionedState_TypeInfo
+  0x180B4E983  call    0x1802980e0                                  ; il2cpp_codegen_object_new
+  0x180B4E988  xor     edx, edx                                  
+  0x180B4E98A  mov     rcx, rax                                  
+  0x180B4E98D  mov     rdi, rax                                  
+  0x180B4E990  call    0x1803a2ab0                                  ; -> WitchTrials.Models.VersionedState$$.ctor
+  0x180B4E995  test    rdi, rdi                                  
+  0x180B4E998  je      0x180b4ea4a                               
+  0x180B4E99E  xor     r8d, r8d                                  
+  0x180B4E9A1  mov     rdx, rbx                                  
+  0x180B4E9A4  mov     rcx, rdi                                  
+  0x180B4E9A7  call    0x1803a25b0                                  ; -> WitchTrials.Models.VersionedState$$Copy
+  0x180B4E9AC  mov     rcx, qword ptr [rbp + 0x20]               
+  0x180B4E9B0  mov     rbx, qword ptr [rcx + 0xc0]               
+  0x180B4E9B7  mov     rcx, qword ptr [rip + 0x2588d72]             ; data_30D7730
+  0x180B4E9BE  mov     rbx, qword ptr [rbx + 0x128]              
+  0x180B4E9C5  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180B4E9CC  jne     0x180b4e9da                               
+  0x180B4E9CE  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+  0x180B4E9D3  mov     rcx, qword ptr [rip + 0x2588d56]             ; data_30D7730
+
+180B4E9DA:
+  0x180B4E9DA  test    rbx, rbx                                  
+  0x180B4E9DD  je      0x180b4ea4a                               
+  0x180B4E9DF  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180B4E9E6  jne     0x180b4e9ed                               
+  0x180B4E9E8  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4E9ED:
+  0x180B4E9ED  mov     dl, 1                                     
+  0x180B4E9EF  mov     rcx, rbx                                  
+  0x180B4E9F2  call    0x18029f650                                  ; -> sub_29F650 (runtime/helper)
+  0x180B4E9F7  lea     rcx, [rax + 0x20]                         
+  0x180B4E9FB  call    0x180299d20                                  ; -> sub_299D20 (runtime/helper)
+  0x180B4EA00  test    rax, rax                                  
+  0x180B4EA03  je      0x180b4ea4a                               
+  0x180B4EA05  mov     rdx, qword ptr [rax]                      
+  0x180B4EA08  mov     rcx, rax                                  
+  0x180B4EA0B  mov     r8, qword ptr [rdx + 0x1b8]               
+  0x180B4EA12  mov     rdx, qword ptr [rdx + 0x1c0]              
+  0x180B4EA19  call    r8                                        
+  0x180B4EA1C  test    rsi, rsi                                  
+  0x180B4EA1F  je      0x180b4ea4a                               
+  0x180B4EA21  mov     r9, qword ptr [rip + 0x2302f58]              ; METHODINFO Method$Naninovel.StateMap.SetState<VersionedState>()
+  0x180B4EA28  mov     r8, rax                                   
+  0x180B4EA2B  mov     rdx, rdi                                  
+  0x180B4EA2E  mov     rcx, rsi                                  
+  0x180B4EA31  mov     rdi, qword ptr [rsp + 0x30]               
+  0x180B4EA36  mov     rbx, qword ptr [rsp + 0x38]               
+  0x180B4EA3B  mov     rbp, qword ptr [rsp + 0x40]               
+  0x180B4EA40  add     rsp, 0x20                                 
+  0x180B4EA44  pop     rsi                                       
+  0x180B4EA45  jmp     0x1807587f0                                  ; -> Naninovel.StateMap$$SetState<object>
+
+180B4EA4A:
+  0x180B4EA4A  call    0x180246730                                  ; THROW NullReferenceException

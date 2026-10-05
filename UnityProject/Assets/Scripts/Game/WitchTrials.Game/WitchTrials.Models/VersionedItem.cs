@@ -29,38 +29,46 @@ namespace WitchTrials.Models
     	private IdVersionPair _idVersionPair;
 
     	[Token(Token = "0x170000D5")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x891400 (shared instantiation) -- returns `_id` through the RGCTX field offset.
     	public string Id
     	{
     		[Token(Token = "0x60005C3")]
     		get
     		{
-    			return null;
+    			return _id;
     		}
     	}
 
     	[Token(Token = "0x170000D6")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x83AC30 -- copies `_item` (size from the RGCTX type).
     	public TItem Item
     	{
     		[Token(Token = "0x60005C4")]
     		get
     		{
-    			return default(TItem);
+    			return _item;
     		}
     	}
 
     	[Token(Token = "0x170000D7")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x9D81F0 -- lazily `_idVersionPair = new IdVersionPair(_id, _version)`
+    	//   (ctor inlined as two field stores), then returned.
     	public IdVersionPair IdVersionPair
     	{
     		[Token(Token = "0x60005C5")]
     		get
     		{
-    			return null;
+    			return _idVersionPair ??= new IdVersionPair(_id, _version);
     		}
     	}
 
     	[Token(Token = "0x60005C6")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0x9D83C0 -- stores id, version and item.
     	public VersionedItem(string id, int version, TItem item)
     	{
+    		_id = id;
+    		_version = version;
+    		_item = item;
     	}
     }
 }

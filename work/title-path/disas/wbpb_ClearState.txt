@@ -1,0 +1,27 @@
+====================================================================================================
+FUNCTION RVA 0xB4E2B0  VA 0x180B4E2B0  size 0x48 (72 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$ClearState
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___ClearState (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4E2B0* method);
+====================================================================================================
+  0x180B4E2B0  push    rbx                                       
+  0x180B4E2B2  sub     rsp, 0x20                                 
+  0x180B4E2B6  mov     rbx, qword ptr [rcx + 0x48]               
+  0x180B4E2BA  test    rbx, rbx                                  
+  0x180B4E2BD  je      0x180b4e2f3                               
+  0x180B4E2BF  cmp     byte ptr [rip + 0x258b296], 0                ; data_30D955C
+  0x180B4E2C6  jne     0x180b4e2e0                               
+  0x180B4E2C8  lea     rcx, [rip + 0x230c979]                       ; METHODINFO Method$System.Collections.Generic.List<IdVersionPair>.Clear()
+  0x180B4E2CF  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4E2D4  lock or dword ptr [rsp], 0                        
+  0x180B4E2D9  mov     byte ptr [rip + 0x258b27c], 1                ; data_30D955C
+
+180B4E2E0:
+  0x180B4E2E0  mov     rcx, qword ptr [rbx + 0x10]               
+  0x180B4E2E4  test    rcx, rcx                                  
+  0x180B4E2E7  je      0x180b4e2f3                               
+  0x180B4E2E9  add     rsp, 0x20                                 
+  0x180B4E2ED  pop     rbx                                       
+  0x180B4E2EE  jmp     0x180007390                               
+
+180B4E2F3:
+  0x180B4E2F3  call    0x180246730                                  ; THROW NullReferenceException

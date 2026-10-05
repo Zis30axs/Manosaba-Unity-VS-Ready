@@ -337,6 +337,37 @@ namespace Manosaba.EditorTools
             return result;
         }
 
+        /// <summary>
+        /// A field patch cannot change generated sub-assets: Timeline graphs and the curves decoded from
+        /// packed AnimationClips.  Prefabs carrying them are rebuilt when the conversion recipe changes.
+        /// Every such prefab is addressed only by GUID (no other asset points at its internal file ids),
+        /// so delete + save is safe for them; callers must rerun Addressables setup afterwards because
+        /// deleting the asset drops its group entry.
+        /// </summary>
+        public static bool RebuildsOnRecipeChange(JObject planJob) =>
+            (planJob["objects"] as JArray ?? new JArray()).Any(o => (string)o["type"] == "AnimationClip");
+
+        public static EditResult RebuildEditable(string repoRoot, JObject planJob, IEnumerable<string> changedSources)
+        {
+            var job = new JobRecord { target = (string)planJob["target"], asset_path = (string)planJob["asset_path"] };
+            var result = new EditResult { target = job.target, guid_before = AssetDatabase.AssetPathToGUID(job.target) };
+            try
+            {
+                BuildOne(repoRoot, planJob, job);
+                if (job.status != "BUILT" && job.status != "BUILT_PARTIAL")
+                    throw new InvalidOperationException(job.error ?? job.status);
+                result.guid_after = AssetDatabase.AssetPathToGUID(job.target);
+                if (!string.IsNullOrEmpty(result.guid_before) && result.guid_before != result.guid_after)
+                    throw new InvalidOperationException("prefab GUID changed");
+                result.warnings.AddRange(job.warnings);
+                result.status = "REBUILT";
+                foreach (string changed in changedSources.Distinct(StringComparer.OrdinalIgnoreCase))
+                    result.source_results.Add(new SourceEditResult { source = changed, status = "REBUILT", editability = "PARTIAL" });
+            }
+            catch (Exception error) { result.error = error.Message; result.status = "ERROR"; }
+            return result;
+        }
+
         private static string SourceBreadcrumb(Node owner, Dictionary<string, Node> byPid,
             Dictionary<string, Node> transforms, Dictionary<string, string> cached)
         {
@@ -1232,12 +1263,17 @@ namespace Manosaba.EditorTools
                 uint attribute = ReadUInt32(binding["attribute"]);
                 int typeId = binding["typeID"]?.Value<int>() ?? 0;
                 string path = pathByHash.TryGetValue(pathHash, out string known) ? known : "";
+                int componentCount = BindingComponentCount(typeId, attribute);
                 if (pathHash != 0 && path.Length == 0)
                 {
                     job.warnings.Add(node.pid + ".m_ClipBindingConstant.genericBindings: path hash " + pathHash + " not found in prefab hierarchy");
                     job.warning_count++;
+                    // Unity leaves an unbound curve unused.  Writing it to "" would retarget a
+                    // bone rotation (e.g. a shared Leia clip in a Leia-less prefab) onto the
+                    // Animator root, colliding with the clip's real root curves.
+                    curveIndex += componentCount;
+                    continue;
                 }
-                int componentCount = BindingComponentCount(typeId, attribute);
                 for (int component = 0; component < componentCount; component++)
                 {
                     int index = curveIndex++;
@@ -1336,7 +1372,10 @@ namespace Manosaba.EditorTools
                     var frame = new PackedFrame { time = time };
                     for (int i = 0; i < count; i++)
                     {
-                        var key = new PackedKey { index = reader.ReadInt32() };
+                        // The tangent below needs the segment length (frame.time - prior.time);
+                        // left at 0, every segment after a curve's first was treated as starting
+                        // at t=0 (16,483 deg/s on the curtain instead of -27.9).
+                        var key = new PackedKey { index = reader.ReadInt32(), time = time };
                         key.c1 = reader.ReadSingle();
                         key.c2 = reader.ReadSingle();
                         key.outSlope = reader.ReadSingle();
@@ -1359,12 +1398,23 @@ namespace Manosaba.EditorTools
                     {
                         if (previous.TryGetValue(key.index, out PackedKey prior))
                         {
+                            // c1/c2/outSlope belong to the cubic segment that starts at
+                            // the *previous* key.  The incoming tangent at this key is the
+                            // derivative of that polynomial at its right endpoint.  Using
+                            // the current key's coefficients here treats the next segment
+                            // as if it were the previous one and produces absurd slopes
+                            // (the curtain clip reached ~16,000 degrees/sec between two
+                            // ordinary 20-degree keys).
+                            // A segment whose cubic terms are all zero holds prior.value until
+                            // this key, even when the value jumps (ObjectionCutIn 0/1 toggles).
+                            // Mark it stepped; a zero tangent would turn the jump into a ramp.
                             float dx = Mathf.Max(frame.time - prior.time, 0.0001f);
-                            float dy = key.value - prior.value;
-                            if (key.c1 == 0f && key.c2 == 0f && key.outSlope == 0f)
+                            if (prior.c1 == 0f && prior.c2 == 0f && prior.outSlope == 0f)
                                 key.inSlope = float.PositiveInfinity;
                             else
-                                key.inSlope = (3f * dy - 2f * key.outSlope * dx - key.c2 / (dx * dx)) / dx;
+                                key.inSlope = 3f * prior.c1 * dx * dx
+                                            + 2f * prior.c2 * dx
+                                            + prior.outSlope;
                         }
                         else key.inSlope = 0f;
                         previous[key.index] = key;

@@ -114,6 +114,105 @@ Unity 路径是示例，请替换为实际安装路径。验证机安装的版�
 
 `build` 会先同步选中的源资源并构建全部已配置 Addressables；`--player` 额外执行 G5，不等同于运行全部 G1–G5。Sprite、剧情 Script 和普通数据需要重建内容才能进入已有构建模式；MasterData 则保持现有 `Resources.Load("MasterData")` 入口。生成的开发 Player 位于 `dist/player/manosaba-rebuild.exe`。
 
+### GitHub 协作与生成资源修复
+
+统一约定：**共享修复的源码、配方和验证入口进入 Git；每位协作者在自己的资源树上生成结果。** 只在本机修改被忽略的 `res/`、`GameContent/` 或 `Library/`，不能算作已交付给协作者。资源文字改动使用下一节的 `content-overrides/`；导入元数据、骨骼和转换行为修复应进入可追踪的转换器或配方，并接入现有同步、构建流程。
+
+已有可运行副本在拉取后，先结束当前 Play 会话，再从仓库根目录运行以下命令；任一步失败应停止并修正原因：
+
+```powershell
+git pull --ff-only
+.\tools\content\sync.ps1
+.\tools\content\doctor.ps1
+.\tools\content\build.ps1
+```
+
+`build.ps1` 自带同步和 Addressables 本地 GUID 重绑；单独列出 sync/doctor 便于定位故障。构建成功后启动新的 Play 会话。需要独立程序时关闭占用该工程的 Editor，再运行 `.\tools\content\build.ps1 --player` 并使用新生成的 Player。全新 clone 仍需先按首次导入流程准备同版本资源；Git 拉取不会提供被忽略的 PNG、bundle 或本地缓存。
+
+#### 幕布 SpriteSkin 的共享修复
+
+此前幕布 PNG 虽然存在，但生成的 `.meta` 缺少骨骼、网格和权重，导致原始 Timeline 无法使幕布变形。正式输入为 [OriginalCurtainSpriteData.json](UnityProject/Assets/Editor/OriginalCurtainSpriteData.json)，恢复入口为 [RestoreOriginalCurtainSkin.cs](UnityProject/Assets/Editor/RestoreOriginalCurtainSkin.cs) 的 `Manosaba.EditorTools.RestoreOriginalCurtainSkin.EnsureApplied()`。这两个文件及各自的 Unity `.meta` 必须随修复一同提交；恢复器不从 `work/tmp` 读取输入。
+
+| 入口 | 当前行为 |
+| --- | --- |
+| `tools/content/import.ps1`、普通 `sync.ps1` | 通过 `ContentSyncBridge` 在导入/转换后应用并读回幕布数据；普通 sync 即使没有源资源变化也执行此检查 |
+| `AddressablesBuild.Execute` | 构建 bundle 前应用并验证，失败则构建失败 |
+| `BuildPlayer.Execute`、`PlayModeGate.Run` | 在各自入口校验，失败则停止该入口 |
+| Unity 直接按 Play | `ExitingEditMode` 回调检查，失败取消进入 Play |
+| `sync --dry-run`、`sync --copy-only`、`doctor` | 不执行这项 Unity SpriteSkin 修复；doctor 的 GUID/状态检查不能代替实际骨骼和权重读回 |
+
+恢复器逐项比较骨骼名称/身份、父子关系、变换、顶点坐标、索引及实际 BoneWeight 的权重和 boneIndex。已有数据一致时不重写网格；不一致时更新该 Sprite 的生成数据，再次读回，不删除或替换协作者的资产 `.meta`。六张生成幕布的 `.png.meta` 继续保持忽略，不用 `git add -f` 单独发布它们。
+
+本地报告为 `work/tmp/curtain_skin_import.report.json`，包含 `data_version`、JSON 的 `data_sha256`、各 Sprite 数量和 `repaired`。验收须结合本次调用结果、日志及新鲜报告；`repaired: false` 表示本次比较已一致。报告中的版本/hash用于标识输入，入口仍检查实际数据，不只相信历史成功回执。
+
+**修复 AssetDatabase 不会更新旧 bundle、catalog 或 Player。** `Use Asset Database` 可读取修复后的本地资产；`Use Existing Build` 和 Player 必须先重建 Addressables。不要把启动时的自动检查、`doctor`、dotnet 编译成功或旧报告当作最新打包内容已经验证。当前这项门禁针对六张幕布；它不是覆盖全部资源的自动迁移系统。
+
+2026-10-04 已在现有完整资源树上验证 Unity 实际编译、六张幕布逐项读回，以及重复执行时六项均为 `repaired: false`。这不等于已完成全新 clone 的冷导入、所有运行入口的端到端测试或画面验收；后续交付需明确实际覆盖范围。
+
+#### 流式 AnimationClip 曲线切线
+
+幕布开合的 `AnimationClip` 使用 Unity 的 packed streamed cubic 数据。解码时，当前 key 的 `inSlope` 必须是**前一个 key 的多项式在区间末端的导数**：
+
+```text
+dt = current.time - previous.time
+inSlope = 3 * previous.c1 * dt^2 + 2 * previous.c2 * dt + previous.outSlope
+# previous.c1 == previous.c2 == previous.outSlope == 0 时为阶跃段：inSlope = +Infinity
+```
+
+阶跃段在下一个 key 之前保持 `previous.value`，即使数值跳变（ObjectionCutIn 等的 0/1 开关）；写成 0 切线会把跳变变成缓动。按上式解码，`prefab_plan_all.json` 中 193 个 packed clip 以 120 Hz 取样与原始 cubic 的最大误差约 `1e-4`。
+
+不能拿当前 key 的 `c1/c2/outSlope` 反推入切线。后者会把普通的几十度变化写成约 `±12,000–16,000°/s`，Hermite 插值在两个采样点之间就会产生多圈旋转和 SpriteSkin 爆炸形变。实现位于 [PrefabBuilder.cs](UnityProject/Assets/Editor/PrefabBuilder.cs) 的 `ReadStreamedFrames()`；修改后必须重新运行 PrefabBuilder/内容构建，不能只改被忽略的 `GameContent` prefab 或旧 bundle。
+
+`dt` 是区间长度：读帧时必须把帧时间写入 `PackedKey.time`。此前它从未赋值（恒为 0），上式在每条曲线第二段起都用绝对时间代替区间长度，幕布在 `t=0.75` 得到 `16,483°/s` 而不是 `-27.9°/s`，关键帧之间偏离原曲线最多数百度——公式正确但切线仍然爆炸的原因就在这里。另外，路径哈希在当前 prefab 层级中解析不到的绑定（例如 S01 共享的 Leia clip 出现在没有 Leia 的 prefab 中）会被跳过，与 Unity 忽略未绑定曲线的行为一致，不再写到 Animator 根节点。
+
+`PrefabBuilder.cs`、`ContentSyncBridge.cs` 的哈希属于每个 PREFAB 转换签名。sync 对 prefab 默认只做字段补丁（`ApplyEditable`），补丁不会重建 Timeline 或重新解码 AnimationClip，所以单靠签名变化无法把解码修复送到已有副本。现在 `content.py` 在配方变化时给任务加 `rebuild` 标记（中断后保留到确认为止）；`ContentSyncBridge` 对计划中含 AnimationClip 的 prefab 改用完整 `BuildOne` 重建（`PrefabBuilder.RebuildEditable`），在空场景中构建并恢复原场景（当前场景有未保存修改时拒绝执行），之后自动运行 Addressables setup——`BuildOne` 先删除再保存资产，会使 Addressables 删掉该条目，GUID 保持不变。这 68 个 prefab（56 个 Reenact 及 ObjectionCutIn、Map、DebateText、TimeIsUp）只通过 GUID/地址被引用；其余 88 个 prefab 中的 ChoiceButton、DialogMessageLabel 等被其他 prefab 以内部 fileID 引用（2026-10-05 扫描到 29 处），删除重存会使这些引用失效，所以仍只打补丁。
+
+Editor 打开时，`ContentSyncBridge` 发现 `Assets/Editor` 源码新于已加载程序集，会先返回 `WAITING_FOR_COMPILE` 并刷新编译，域重载后再转换；编译失败时请求以 ERROR 结束。此前 batch 重建因包编译错误和许可证失败从未生效，而在同一调用里 Refresh 后转换会运行旧代码。
+
+验收至少要在关键帧之间取样（例如 `t=0.30`、`t=0.50`、`t=0.5833333`），并检查生成的 `m_Curve` 和运行时 `AnimationClip` 均不再出现五位数切线；只取 `t=0.75` 这类回到原角度的关键帧会漏掉过冲。应同时检查位置曲线（骨骼 y 值不应从约 `-13` 插到 `-77` 或从约 `13` 插到 `71`）和幕布 SpriteSkin 的有效顶点包围盒。
+
+#### 分层立绘重叠（渲染管线差异）
+
+原版游戏使用 URP（`globalgamemanagers` 的 `GraphicsSettings.m_CustomRenderPipeline` 指向管线资产），本工程 `GraphicsSettings` 未设置管线，按内置管线渲染。分层角色（Ema、Hiro 等）以相机模式渲染到 `RenderTexture.GetTemporary` 的临时纹理；`LayeredActor` 每次换表情都取新的临时纹理并释放旧的，同尺寸角色之间会互相复用。原版 prefab 的渲染相机是 `CameraClearFlags.Nothing`，内置管线按字面不清屏，结果后画的角色叠在前一个角色残留的图像上（双立绘错位重叠）。修复在内嵌包 `Packages/com.elringus.naninovel/Runtime/Actor/Layered/LayeredDrawer.cs` 的 `DrawWithCamera()`：渲染前把目标纹理清为透明，与同包 `DicedSpriteActor` 的做法一致；不要改 prefab 的 clear flags（sync 会按原版数据写回）。整体切换到 URP 属于另一项工作，见审计文档的 URP/Shader 缺口。
+
+#### Naninovel 输入（Ctrl 快进）与泛型类桩
+
+原版 `InputConfiguration.InputActions` 指向 `globalgamemanagers.assets` 的 path_id 3144，即游戏自己的 `WitchTrialsActions` 输入资产。它的第一个 map 是 `Naninovel`，其中 Skip 绑定 `<Keyboard>/ctrl`。本工程原来该字段为空，而原版 `ProcessLegacyBindings = 0`，因此所有 Naninovel InputSampler（Ctrl 快进、键盘继续、右键跳过影片等）都不会触发；`InputSampler.InitializeInputAction` 遇到空资产会直接返回。
+
+修复内容：
+
+- 新增可追踪的 `Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Models/WitchTrialsActions.inputactions`，内容来自重建的 `WitchTrialsActions.cs` 内嵌 JSON。与原版对象相比，107 个 action/binding id 完全一致。
+- 它的 `.meta` 固定 GUID，并设置 `generateWrapperCode: 0`，避免 Unity 覆盖重建的包装类。
+- 已跟踪的 `InputConfiguration.asset` 引用该资产。
+- `NaninovelConfigBuilder.BindInputActions` 在重新 bootstrap 时写回同一绑定。
+
+快进仍受 `GetSkipAllowed` 约束，默认只跳过已读文本。验收时应在已读内容上按住 Ctrl，或把跳过模式设为全部。
+
+`stub_census` 看不到泛型类，因此不能据此认为没有空桩。已发现的泛型桩如下：
+
+- `WitchBookPageBase<TItem,TState>`、`VersionedItem<T>`：已重建。魔女图鉴的 `ArgumentNullException (source)` 来自前者返回 null 的 `GetDisplayableIdVersionPairs`。
+- `GigaCreation.Essentials.Input.InputManager<TControls>`：已重建（`GetAction`/`TryGetAction` 经 `BuildActionNameOrId` 取 `map/action` 键，缓存未命中时走控制器的 `FindAction`）。Cancel、Point、Submit 的查找依赖它。同时补全了生成包装类 `WitchTrialsActions` 的接口声明和 `Enable`/`Disable`/`FindAction`/`Contains`/`GetEnumerator`/`controlSchemes`/`bindings`。其中 `GetAction` 未命中时是否抛异常、`Dispose` 的具体调用是推断（Confidence B）。
+
+#### 新增共享修复的交付要求
+
+1. 明确每项改动的可追踪输入、生成目标和执行入口。临时修改生成树可用于定位问题，最终修复必须能由仓库源码/配方重现。
+2. 复用现有 import/sync/build 入口；覆盖已有副本拉取后没有 `res` 变化的情况。验证失败应传递给调用者，不能仅写日志后返回成功。
+3. 保留本地 GUID 和引用身份，只更新修复拥有的字段；重复执行应无额外资源改动。新增修复按需接入入口并验证，不假设它会被幕布恢复器自动处理。
+4. 对新增输入运行 `git status --short --untracked-files=all`、`git check-ignore -v -- <文件>`，确认配方、脚本及 Unity 源资产的 `.meta` 已包含在提交清单中。未被忽略不等于已经提交；未 commit/push 不能称为 GitHub 协作者已收到。
+5. 检查差异、运行相关验证，并报告本次退出结果、读回结果及尚未覆盖的场景。仅“本机运行正常”不足以证明另一份 clone 可以复现。
+
+#### 可复制给 AI 的任务提示
+
+仓库 AI 约束见根目录 [AGENTS.md](AGENTS.md)。给新会话或其他 AI 的提示可直接使用：
+
+```text
+请先阅读 AGENTS.md 和 DEVELOPMENT.md 的“GitHub 协作与生成资源修复”。
+本次修复必须能让 GitHub 协作者在自己的已导入资源树上复现。不要只修改被忽略的 res、GameContent 或 Library；把共享输入保存为可追踪的转换器、配方或 content-overrides，并接入现有同步/构建入口。保留本地 GUID 和无关修改，覆盖“拉取后 res 未变化”的情况，失败须阻止对应流程继续。
+如果涉及 Unity packed streamed AnimationClip，先核对 ReadStreamedFrames 的 cubic 区间方向：inSlope 必须由 previous.c1/previous.c2/previous.outSlope 在 current.time 处求导，不能使用当前 key 的系数；在关键帧之间采样并检查切线上限，避免把 Hermite 过冲误判为 SpriteSkin 或骨骼绑定错误。修复后重新生成 prefab、Addressables 和 Player（若使用），不要把手工改写被忽略的 prefab 当作共享交付。
+检查新增文件及 Unity .meta 是否被忽略或漏入提交清单。验证实际生成数据和重复执行；涉及打包内容时重建 Addressables，再验证新 Play/Player。不要用旧回执、doctor 或 dotnet 编译替代 Unity/运行验证。
+交付时列出可追踪输入、协作者命令、实际验证结果、未覆盖范围，以及是否已提交/推送。提交与推送按用户授权执行。
+```
+
 ### 在不同副本之间共享资源修改
 
 `res/`、`Assets/GameContent/` 和 Unity 的 `Library/` 都是本地数据，默认不会进入 Git。仅提交生成的 prefab、catalog 或完整资源树，协作者重新导入时仍会得到原始内容，也会丢失对象身份映射。要共享已经审阅过的资源字段，使用 `content-overrides/` 中的增量清单：它只记录资源相对路径、对象身份、字段的原值和新值；当前工具只允许 `MonoBehaviour.m_text` 和 UTF-8 文本，保留 GUID、`.meta`、PPtr 引用及协作者的其他字段。
@@ -210,7 +309,7 @@ python tools/unity-rebuild/sync_localization.py --rebuild
 .\tools\content\doctor.ps1 --deep
 ```
 
-PowerShell 5.1 下的逗号类别列表需要加引号。`-DryRun`、`-Category`、`-File` 等别名也可使用。无变更同步不会重写资源或调用转换器；工具或计划变化会使相关转换失效并重跑。`--force` 会强制处理选中资源，首次同步和 force 使用有上限的 Unity 批次。
+PowerShell 5.1 下的逗号类别列表需要加引号。`-DryRun`、`-Category`、`-File` 等别名也可使用。无变更时跳过普通资源复制/转换，但普通 sync 仍调用 Unity 幕布 SpriteSkin 校验；工具或计划变化会使相关转换失效并重跑。`--force` 会强制处理选中资源，首次同步和 force 使用有上限的 Unity 批次。
 
 打开 Editor 时先停止 Play，sync 通过 `ContentSyncBridge` 处理；Editor 未打开时使用 batchmode。完整 G gates、`build.ps1 --player` 和 round-trip 会启动独立 batch 验证，应先关闭占用该工程的 Editor，并按顺序运行。
 

@@ -1,0 +1,18 @@
+====================================================================================================
+FUNCTION RVA 0xD48480  VA 0x180D48480  size 0x5 (5 bytes)
+  managed: UnityEngine.Rendering.DebugManager$$RefreshEditor
+  managed: UnityEngine.Rendering.Universal.PostProcessPass$$OnCameraSetup
+  managed: GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive$$OnApplicationQuit
+  csig   : void UnityEngine_Rendering_DebugManager__RefreshEditor (UnityEngine_Rendering_DebugManager_o* __this, const MethodInfo* method);
+  dump.cs: UnityEngine.Rendering.DebugManager :: public void RefreshEditor()
+  dump.cs: UnityEngine.Rendering.Universal.PostProcessPass :: public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive :: private void OnApplicationQuit()
+  fields of GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive:
+      +0x48   _otherDebugPanels              Transform[]
+      +0x50   _isQuitting                    bool
+  fields of DebugPanelExclusive.<>c:
+      +0x0    <>9                            static readonly DebugPanelExclusive.<>c
+      +0x8    <>9__3_1                       static Func<DebugPanelExclusive, Transform>
+====================================================================================================
+  0x180D48480  mov     byte ptr [rcx + 0x50], 1                     ; rcx->DebugPanelExclusive._isQuitting
+  0x180D48484  ret                                               

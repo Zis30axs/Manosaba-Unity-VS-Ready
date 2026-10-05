@@ -20,6 +20,12 @@ namespace Manosaba.EditorTools
         private static bool busy;
         private static double nextPoll;
         private static string waitingId;
+        private static string refreshedId;
+        private static double refreshedAt;
+        // Build time of the editor assembly loaded into this domain.  A converter edited
+        // after it (a pull while the Editor is open) is not running yet.
+        private static readonly DateTime LoadedAssemblyUtc =
+            File.GetLastWriteTimeUtc(typeof(ContentSyncBridge).Assembly.Location);
 
         static ContentSyncBridge() { EditorApplication.update += Poll; }
 
@@ -43,6 +49,32 @@ namespace Manosaba.EditorTools
                     }
                     return;
                 }
+                // Execute() refreshes and converts in one call, so an edited PrefabBuilder would
+                // only be queued for compilation while the old one writes the prefabs, and sync
+                // would then record the new recipe as applied.  Compile first; the domain reload
+                // re-enters Poll with the current converters.
+                if (ConvertersNewerThanLoadedAssembly())
+                {
+                    if (refreshedId != id)
+                    {
+                        refreshedId = id;
+                        refreshedAt = EditorApplication.timeSinceStartup;
+                        Write(new JObject { ["id"] = id, ["status"] = "WAITING_FOR_COMPILE",
+                            ["message"] = "Compiling changed editor converters before content sync." });
+                        AssetDatabase.Refresh();
+                        return;
+                    }
+                    if (EditorUtility.scriptCompilationFailed)
+                    {
+                        const string failure = "editor scripts have compile errors; content converters were not run";
+                        File.Delete(Path.Combine(Root, "request.json"));
+                        Write(new JObject { ["id"] = id, ["status"] = "ERROR", ["error"] = failure, ["message"] = failure });
+                        Debug.LogError("[ContentSync] " + failure);
+                        return;
+                    }
+                    // Touched but unchanged sources do not recompile; then the loaded code is current.
+                    if (EditorApplication.timeSinceStartup - refreshedAt < 5) return;
+                }
                 Execute();
             }
             catch (Exception error)
@@ -53,6 +85,10 @@ namespace Manosaba.EditorTools
                 Debug.LogException(error);
             }
         }
+
+        private static bool ConvertersNewerThanLoadedAssembly() =>
+            Directory.EnumerateFiles(Path.Combine(Application.dataPath, "Editor"), "*.cs", SearchOption.AllDirectories)
+                .Any(path => File.GetLastWriteTimeUtc(path) > LoadedAssemblyUtc);
 
         /// <summary>Batch entry point: -executeMethod Manosaba.EditorTools.ContentSyncBridge.Apply.</summary>
         public static void Apply()
@@ -77,6 +113,8 @@ namespace Manosaba.EditorTools
                 ["jobs"] = new JArray(), ["imports"] = new JArray(), ["verification"] = new JArray() };
             string previousAddressablesPlan = null;
             bool addressablesPlanChanged = false;
+            string sceneToRestore = null;
+            bool rebuiltPrefabs = false;
             try
             {
                 if (busy || EditorApplication.isPlayingOrWillChangePlaymode)
@@ -124,7 +162,16 @@ namespace Manosaba.EditorTools
                         // No original absolute dump paths or targets may escape the editable workspace.
                         foreach (JToken obj in match["objects"] as JArray ?? new JArray()) Source((string)obj["dump"]);
                         match["target"] = target;
-                        var converted = PrefabBuilder.ApplyEditable(Repo, match, selectedJobs.Select(j => Source((string)j["source"])));
+                        // A changed converter must reach existing copies even when res is unchanged.
+                        // Field patches cannot regenerate Timeline/AnimationClip sub-assets, so those
+                        // prefabs are rebuilt by the full builder instead.
+                        bool rebuild = selectedJobs.Any(j => j.Value<bool?>("rebuild") == true) &&
+                                       PrefabBuilder.RebuildsOnRecipeChange(match);
+                        if (rebuild && sceneToRestore == null) sceneToRestore = LeaveSceneForRebuild();
+                        rebuiltPrefabs |= rebuild;
+                        var converted = rebuild
+                            ? PrefabBuilder.RebuildEditable(Repo, match, selectedJobs.Select(j => Source((string)j["source"])))
+                            : PrefabBuilder.ApplyEditable(Repo, match, selectedJobs.Select(j => Source((string)j["source"])));
                         foreach (JObject selected in selectedJobs)
                         {
                             string selectedSource = Source((string)selected["source"]);
@@ -154,7 +201,12 @@ namespace Manosaba.EditorTools
                     throw new InvalidOperationException("one or more copied assets failed to import; see per-target import results");
                 if (((JArray)result["jobs"]).Any(j => (string)j["status"] == "ERROR"))
                     throw new InvalidOperationException("one or more content converters failed; see per-asset results");
-                if (request.Value<bool?>("setup_addressables") == true)
+                // Run after leaf imports and prefab conversion: a copied curtain PNG must not
+                // be allowed to erase the generated SpriteSkin before the request completes.
+                if (request.Value<bool?>("ensure_curtain_skin") == true)
+                    result["curtain_skin"] = RestoreOriginalCurtainSkin.EnsureApplied();
+                // A rebuild deletes and re-saves the prefab, which drops its Addressables entry.
+                if (request.Value<bool?>("setup_addressables") == true || rebuiltPrefabs)
                 {
                     string plan = (string)request["addressables_plan"];
                     if (string.IsNullOrEmpty(plan)) plan = "addressables_plan_all.json";
@@ -198,8 +250,23 @@ namespace Manosaba.EditorTools
             {
                 if (addressablesPlanChanged)
                     Environment.SetEnvironmentVariable("MANOSABA_ADDRESSABLES_PLAN", previousAddressablesPlan);
+                if (!string.IsNullOrEmpty(sceneToRestore))
+                    UnityEditor.SceneManagement.EditorSceneManager.OpenScene(sceneToRestore);
                 busy = false;
             }
+        }
+
+        // PrefabBuilder assembles in the active scene.  Build in an empty one so the user's open
+        // scene is neither modified nor left dirty, and refuse rather than discard unsaved edits.
+        private static string LeaveSceneForRebuild()
+        {
+            var active = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (active.isDirty)
+                throw new InvalidOperationException("save or revert " + (active.path.Length > 0 ? active.path : "the open scene") +
+                                                    " before syncing; generated prefabs are rebuilt outside it");
+            UnityEditor.SceneManagement.EditorSceneManager.NewScene(
+                UnityEditor.SceneManagement.NewSceneSetup.EmptyScene, UnityEditor.SceneManagement.NewSceneMode.Single);
+            return active.path;
         }
 
         private static JObject Verify(JObject expectation)

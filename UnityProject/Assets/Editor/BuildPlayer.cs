@@ -62,6 +62,9 @@ namespace Manosaba.EditorTools
 
             try
             {
+                // Keep generated GameContent deterministic across collaborators before
+                // collecting scenes or invoking the player build pipeline.
+                RestoreOriginalCurtainSkin.EnsureApplied();
                 string[] scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
                 result.scenes = scenes.ToList();
                 if (scenes.Length == 0)

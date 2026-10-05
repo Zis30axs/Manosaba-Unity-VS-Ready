@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xB4D200  VA 0x180B4D200  size 0xBA (186 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$get_AddressableAssetLoader
+  csig   : GigaCreation_Essentials_AddressablesUtils_IAddressableAssetLoader_o* WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___get_AddressableAssetLoader (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D200* method);
+====================================================================================================
+  0x180B4D200  push    rbx                                       
+  0x180B4D202  sub     rsp, 0x20                                 
+  0x180B4D206  cmp     byte ptr [rip + 0x258fb5c], 0                ; data_30DCD69
+  0x180B4D20D  mov     rbx, rcx                                  
+  0x180B4D210  jne     0x180b4d23b                               
+  0x180B4D212  lea     rcx, [rip + 0x2304067]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x180B4D219  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D21E  lock or dword ptr [rsp], 0                        
+  0x180B4D223  lea     rcx, [rip + 0x2304f3e]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D22A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D22F  lock or dword ptr [rsp], 0                        
+  0x180B4D234  mov     byte ptr [rip + 0x258fb2e], 1                ; data_30DCD69
+
+180B4D23B:
+  0x180B4D23B  mov     rax, qword ptr [rbx + 0x50]               
+  0x180B4D23F  test    rax, rax                                  
+  0x180B4D242  jne     0x180b4d2b4                               
+  0x180B4D244  mov     rcx, qword ptr [rip + 0x2304f1d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D24B  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180B4D251  jne     0x180b4d258                               
+  0x180B4D253  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4D258:
+  0x180B4D258  mov     rdx, qword ptr [rip + 0x2304021]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<IAddressablesManager>()
+  0x180B4D25F  mov     cl, 1                                     
+  0x180B4D261  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180B4D266  cmp     dword ptr [rip + 0x258bf57], 0               ; data_30D91C4
+  0x180B4D26D  mov     r9, rax                                   
+  0x180B4D270  mov     qword ptr [rbx + 0x50], rax               
+  0x180B4D274  je      0x180b4d2b1                               
+  0x180B4D276  lea     r8, [rbx + 0x50]                          
+  0x180B4D27A  shr     r8, 0xc                                   
+  0x180B4D27E  lea     rcx, [rip + 0x25e72fb]                       ; data_3134580
+  0x180B4D285  and     r8d, 0x1fffff                             
+  0x180B4D28C  mov     eax, r8d                                  
+  0x180B4D28F  shr     rax, 6                                    
+  0x180B4D293  and     r8d, 0x3f                                 
+  0x180B4D297  lea     rdx, [rcx + rax*8]                        
+  0x180B4D29B  prefetchw byte ptr [rdx]                            
+  0x180B4D29E  nop                                               
+
+180B4D2A0:
+  0x180B4D2A0  mov     rax, qword ptr [rdx]                      
+  0x180B4D2A3  mov     rcx, rax                                  
+  0x180B4D2A6  bts     rcx, r8                                   
+  0x180B4D2AA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4D2AF  jne     0x180b4d2a0                               
+
+180B4D2B1:
+  0x180B4D2B1  mov     rax, r9                                   
+
+180B4D2B4:
+  0x180B4D2B4  add     rsp, 0x20                                 
+  0x180B4D2B8  pop     rbx                                       
+  0x180B4D2B9  ret                                               

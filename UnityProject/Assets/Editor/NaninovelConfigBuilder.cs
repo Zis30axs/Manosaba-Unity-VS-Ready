@@ -107,6 +107,21 @@ namespace Manosaba.EditorTools
         private const string DefaultCompilerTypeName = "Naninovel.CompilerLocalization";
         private const string DefaultCompilerObjectName = "DefaultCompiler";
 
+        // InputConfiguration.InputActions.  The shipped PPtr is (m_FileID 1, m_PathID 3144): object 3144 of
+        // globalgamemanagers.assets, the game's project-wide actions asset - an InputActionAsset named
+        // "WitchTrialsActions" whose first map is "Naninovel".  Its 107 action/binding ids are exactly the ids in the
+        // JSON embedded in the reconstructed wrapper class WitchTrialsActions.cs (the Input System generates that
+        // wrapper from the asset), so the tracked asset below - that JSON, imported without wrapper generation - is
+        // the same object, not a look-alike.  Without it every Naninovel InputSampler stays inert
+        // (InputSampler.InitializeInputAction returns on a null asset), which is why Ctrl skip never fired.
+        private const string InputActionsFieldPath = "InputActions";
+        private const long InputActionsShippedFileId = 1;
+        private const long InputActionsShippedPathId = 3144;
+        private const string InputActionsAssetPath =
+            "Assets/Scripts/Game/WitchTrials.Game/WitchTrials.Models/WitchTrialsActions.inputactions";
+        private const string InputActionsTypeName = "UnityEngine.InputSystem.InputActionAsset";
+        private const string InputActionsObjectName = "WitchTrialsActions";
+
         private const int MaxMessagesPerRow = 200;
         private const int MaxScalarSummary = 40;
         private const int MaxCandidatePaths = 5;
@@ -889,6 +904,10 @@ namespace Manosaba.EditorTools
         /// </summary>
         private static UnityEngine.Object BindVerifiedReference (ReferenceRecord record)
         {
+            if (record.field == InputActionsFieldPath && record.target_file_id == InputActionsShippedFileId &&
+                record.target_path_id == InputActionsShippedPathId)
+                return BindInputActions(record);
+
             if (record.target_file_id != 0)
             {
                 record.reason = "the shipped reference lives in another serialized file (m_FileID " +
@@ -926,6 +945,34 @@ namespace Manosaba.EditorTools
             record.reason = DescribeUnbound(record);
             FindCandidates(record);
             return null;
+        }
+
+        /// <summary>
+        /// The tracked WitchTrialsActions.inputactions (see InputActionsAssetPath).  Bound only when it loads as an
+        /// InputActionAsset named WitchTrialsActions with a "Naninovel" map; anything else is reported, not bound.
+        /// </summary>
+        private static UnityEngine.Object BindInputActions (ReferenceRecord record)
+        {
+            UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(InputActionsAssetPath);
+            if (asset == null || asset.GetType().FullName != InputActionsTypeName || asset.name != InputActionsObjectName)
+            {
+                record.reason = InputActionsAssetPath + " is missing or does not import as an " + InputActionsTypeName +
+                                " named " + InputActionsObjectName + " (" + (asset == null ? "null" : asset.GetType().FullName +
+                                " '" + asset.name + "'") + "); not bound";
+                return null;
+            }
+            JObject json = JObject.Parse(File.ReadAllText(InputActionsAssetPath));
+            if (json["maps"] == null || !json["maps"].Any(map => (string)map["name"] == "Naninovel"))
+            {
+                record.reason = InputActionsAssetPath + " has no \"Naninovel\" action map, which InputSampler looks up; not bound";
+                return null;
+            }
+            record.binding = InputActionsAssetPath;
+            record.reason = "bound: the tracked WitchTrialsActions input actions asset";
+            record.evidence = "shipped target is globalgamemanagers.assets path_id 3144, an InputActionAsset named " +
+                              "WitchTrialsActions (first map Naninovel); its 107 action/binding ids equal the ids in the " +
+                              "JSON embedded in WitchTrialsActions.cs, which is the asset's content";
+            return asset;
         }
 
         private static string DescribeUnbound (ReferenceRecord record)
@@ -1385,10 +1432,11 @@ namespace Manosaba.EditorTools
                             "initialises with a working default in both cases, but audio routing (the shipped game " +
                             "used the 'WitchTrials' mixer with Master/Bgm/Sfx/Voice group paths) and the game's own " +
                             "initialization UI (WitchTrials.Views.EngineInitializationUiModified) are not reproduced. " +
-                            "InputConfiguration.InputActions is null as well and its target lives in another " +
-                            "serialized file (m_FileID 1), so no mapping inside resources.assets can ever recover it; " +
-                            "combined with the shipped ProcessLegacyBindings = false this leaves input inert until the " +
-                            "game's .inputactions asset is supplied. Actor metadata " +
+                            "InputConfiguration.InputActions targets another serialized file (m_FileID 1, path_id 3144 = " +
+                            "the WitchTrialsActions asset in globalgamemanagers.assets); it is bound to the tracked " +
+                            InputActionsAssetPath + " (see BindInputActions), without which the shipped " +
+                            "ProcessLegacyBindings = false would leave every Naninovel input (Ctrl skip, keyboard " +
+                            "continue, ...) inert. Actor metadata " +
                             "(Metadata.metas[*].CustomSpriteMaterial, 34 references in all) points at the materials " +
                             "'MaskableTransparent' / 'MaskableTransparentToned_1', which do not exist anywhere in " +
                             "this project (the tool re-checks at run time and records the candidates it finds), so " +

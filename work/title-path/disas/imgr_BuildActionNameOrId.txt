@@ -1,0 +1,74 @@
+====================================================================================================
+FUNCTION RVA 0x832780  VA 0x180832780  size 0xCA (202 bytes)
+  managed: GigaCreation.Essentials.Input.InputManager<__Il2CppFullySharedGenericType>$$BuildActionNameOrId
+  csig   : System_String_o* GigaCreation_Essentials_Input_InputManager___Il2CppFullySharedGenericType___BuildActionNameOrId (GigaCreation_Essentials_Input_InputManager_TControls__o* __this, System_String_o* actionName, System_String_o* actionMapName, const MethodInfo_832780* method);
+====================================================================================================
+  0x180832780  mov     qword ptr [rsp + 0x20], rsi               
+  0x180832785  push    r14                                       
+  0x180832787  sub     rsp, 0x20                                 
+  0x18083278B  cmp     byte ptr [rip + 0x28aa113], 0                ; data_30DC8A5
+  0x180832792  mov     rsi, r8                                   
+  0x180832795  mov     r14, rdx                                  
+  0x180832798  jne     0x1808327b2                               
+  0x18083279A  lea     rcx, [rip + 0x2638bdf]                       ; STR '/'
+  0x1808327A1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1808327A6  lock or dword ptr [rsp], 0                        
+  0x1808327AB  mov     byte ptr [rip + 0x28aa0f3], 1                ; data_30DC8A5
+
+1808327B2:
+  0x1808327B2  mov     qword ptr [rsp + 0x30], rbx               
+  0x1808327B7  mov     qword ptr [rsp + 0x38], rbp               
+  0x1808327BC  mov     qword ptr [rsp + 0x40], rdi               
+  0x1808327C1  test    rsi, rsi                                  
+  0x1808327C4  je      0x180832825                               
+  0x1808327C6  xor     ebx, ebx                                  
+  0x1808327C8  lea     rdi, [rsi + 0x14]                         
+
+1808327CC:
+  0x1808327CC  mov     eax, ebx                                  
+  0x1808327CE  nop                                               
+  0x1808327D0  cmp     ebx, dword ptr [rsi + 0x10]               
+  0x1808327D3  jge     0x180832825                               
+  0x1808327D5  movsxd  rcx, dword ptr [rsi + 0x10]               
+  0x1808327D9  mov     eax, ebx                                  
+  0x1808327DB  cmp     rax, rcx                                  
+  0x1808327DE  jge     0x180832843                               
+  0x1808327E0  mov     rcx, qword ptr [rip + 0x28a4ef1]             ; data_30D76D8
+  0x1808327E7  movzx   ebp, word ptr [rdi]                       
+  0x1808327EA  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x1808327F1  jne     0x1808327f8                               
+  0x1808327F3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+1808327F8:
+  0x1808327F8  xor     edx, edx                                  
+  0x1808327FA  movzx   ecx, bp                                   
+  0x1808327FD  call    0x180f78a10                                  ; -> System.Char$$IsWhiteSpace
+  0x180832802  test    al, al                                    
+  0x180832804  je      0x18083280e                               
+  0x180832806  inc     ebx                                       
+  0x180832808  add     rdi, 2                                    
+  0x18083280C  jmp     0x1808327cc                               
+
+18083280E:
+  0x18083280E  mov     rdx, qword ptr [rip + 0x2638b6b]             ; STR '/'
+  0x180832815  xor     r9d, r9d                                  
+  0x180832818  mov     r8, r14                                   
+  0x18083281B  mov     rcx, rsi                                  
+  0x18083281E  call    0x180e267a0                                  ; -> System.String$$Concat
+  0x180832823  jmp     0x180832828                               
+
+180832825:
+  0x180832825  mov     rax, r14                                  
+
+180832828:
+  0x180832828  mov     rdi, qword ptr [rsp + 0x40]               
+  0x18083282D  mov     rbp, qword ptr [rsp + 0x38]               
+  0x180832832  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180832837  mov     rsi, qword ptr [rsp + 0x48]               
+  0x18083283C  add     rsp, 0x20                                 
+  0x180832840  pop     r14                                       
+  0x180832842  ret                                               
+
+180832843:
+  0x180832843  xor     ecx, ecx                                  
+  0x180832845  call    0x181046970                                  ; -> System.ThrowHelper$$ThrowIndexOutOfRangeException

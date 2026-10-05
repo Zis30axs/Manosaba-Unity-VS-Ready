@@ -111,6 +111,53 @@ def evidence(name):
     return cached if cached.is_file() else OUT / name
 
 
+# Import keeps a plan once it exists, so a fix in its tracked planner never reached an existing
+# copy (the cached prefab plan predated Timeline/AnimationClip sub-assets in 68 prefabs).
+# Regenerate a cached plan whenever its planner changes; the plan's hash then changes every
+# dependent conversion signature.
+PLANNERS = {"prefab_plan_all.json": ("a13e_plan_prefabs.py", "--group", "all")}
+
+
+def refresh_plans():
+    for name, (script, *parameters) in PLANNERS.items():
+        planner = PIPELINE / script
+        cached = CACHE / "unity" / name
+        recorded = cached.with_name(name + ".planner.sha256")
+        current = digest(planner)
+        if cached.is_file() and recorded.is_file() and recorded.read_text(encoding="utf-8").strip() == current:
+            continue
+        restore_evidence()
+        run([sys.executable, planner, *parameters])
+        if not (OUT / name).is_file():
+            raise RuntimeError(f"{script} produced no {name}")
+        cached.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(OUT / name, cached)
+        recorded.write_text(current, encoding="utf-8")
+
+
+_REBUILT_ASSETS = {}
+
+
+def assert_rebuilt(batch_jobs, result):
+    """An Editor still running a pre-pull bridge patches instead of rebuilding and reports OK;
+    acknowledging that would mark Timeline/AnimationClip prefabs converted while they are stale."""
+    expected = []
+    for job in batch_jobs:
+        if job.get("category") != "PREFAB" or not job.get("rebuild"):
+            continue
+        plan = job["plan"]
+        if plan not in _REBUILT_ASSETS:
+            _REBUILT_ASSETS[plan] = {j["asset_path"] for j in read_json(REPO / plan, {}).get("jobs", [])
+                                     if any(o.get("type") == "AnimationClip" for o in j.get("objects", []))}
+        if job["asset_path"] in _REBUILT_ASSETS[plan]:
+            expected.append(job["source"])
+    statuses = {j.get("source"): j.get("status") for j in result.get("jobs", [])}
+    missing = [source for source in expected if statuses.get(source) != "REBUILT"]
+    if missing:
+        raise RuntimeError(f"Unity patched instead of rebuilding {len(missing)} Timeline/AnimationClip prefab sources "
+                           f"(first: {missing[0]}); let the Editor finish compiling the pulled converters, then rerun sync")
+
+
 def restore_evidence():
     source_root = CACHE / "unity" if (CACHE / "unity").is_dir() else CACHE
     if source_root.is_dir():
@@ -283,12 +330,12 @@ def ps_script(name, *args):
 
 
 def apply_unity(jobs, import_paths, build=False, export=False, timeout=1800,
-                setup_addressables=False, addressables_plan=""):
+                setup_addressables=False, addressables_plan="", ensure_curtain_skin=False):
     BRIDGE.mkdir(parents=True, exist_ok=True)
     request_id = uuid.uuid4().hex
     request = {"id": request_id, "expiresUtc": (datetime.now(timezone.utc) + timedelta(seconds=timeout)).isoformat(),
                "jobs": jobs, "import_paths": sorted(set(import_paths)), "build_addressables": build,
-               "export_master_data": export}
+               "export_master_data": export, "ensure_curtain_skin": ensure_curtain_skin}
     if setup_addressables:
         request["setup_addressables"] = True
         request["addressables_plan"] = addressables_plan or "addressables_plan_all.json"
@@ -410,6 +457,8 @@ def sync(args):
         if report["status"] != "PASS":
             raise RuntimeError("Resource identity map mismatch; run resource_map.py verify and import the matching dump "
                                "(or explicitly regenerate the reviewed map before using --allow-resource-map-mismatch)")
+    if not args.dry_run:
+        refresh_plans()
     records = inventory()
     for path in args.file:
         normalized = path.replace("\\", "/").removeprefix("res/")
@@ -499,7 +548,10 @@ def sync(args):
                     import_paths.append(target)
             jobs.extend(rec["jobs"])
             files[relative] = {**rec, "source": stamp, "target_fingerprints": targets, "target_metadata": metadata,
-                               "import_sha256": expected_sha256, "sync_status": "PENDING_IMPORT"}
+                               "import_sha256": expected_sha256, "sync_status": "PENDING_IMPORT",
+                               # A changed converter must regenerate, not just patch, its output; kept
+                               # until acknowledged so an interrupted sync still rebuilds on retry.
+                               "rebuild": recipe_changed or bool(old.get("rebuild"))}
             pending.append(relative)
         except (OSError, ValueError) as error:
             failed.append({"source": relative, "reason": str(error)})
@@ -512,12 +564,19 @@ def sync(args):
             batches = conversion_batches(pending, files)
             for number, batch in enumerate(batches, 1):
                 print(f"[batch] {number}/{len(batches)}: {len(batch)} source objects", flush=True)
-                batch_jobs = [job for relative in batch for job in files[relative]["jobs"]]
+                batch_jobs = [{**job, "rebuild": True} if files[relative].get("rebuild") else job
+                              for relative in batch for job in files[relative]["jobs"]]
                 batch_paths = sorted({target for relative in batch if not files[relative]["jobs"] for target in files[relative]["targets"]})
-                result = apply_unity(batch_jobs, batch_paths, timeout=args.timeout)
+                result = apply_unity(batch_jobs, batch_paths, timeout=args.timeout, ensure_curtain_skin=True)
+                assert_rebuilt(batch_jobs, result)
                 acknowledge_batch(state, files, batch, result)
                 # Only successful batches advance; a later crash retries the remaining sources.
                 write_json(STATE, {**state, "files": files, "generated": datetime.now(timezone.utc).isoformat()})
+        # A pull can change the tracked recipe while every res source remains unchanged. Run the
+        # same Unity gate once even when there was no pending source conversion, so generated
+        # GameContent cannot silently retain a collaborator's stale SpriteSkin metadata.
+        if not args.dry_run and not args.copy_only and not pending:
+            apply_unity([], [], timeout=args.timeout, ensure_curtain_skin=True)
     for category in CATEGORIES:
         if category != "OTHER":
             print(f"{category:<10} changed {changed[category]:6}")
@@ -534,6 +593,7 @@ def acknowledge_batch(state, files, batch, result):
     updated_targets, updated_metadata = {}, {}
     for relative in batch:
         rec = files[relative]
+        rec.pop("rebuild", None)
         converted = results_by_source[relative]
         limited = any(j.get("editability") != "FULL" or "PARTIAL" in j.get("status", "") for j in converted)
         rec["sync_status"] = "PARTIAL" if limited or (result.get("status") == "PARTIAL" and rec["jobs"]) else "SYNCED"
@@ -579,7 +639,7 @@ def import_content(args):
     bootstrap = PIPELINE / "bootstrap_import.py"
     if bootstrap.is_file():
         run([sys.executable, bootstrap, "--timeout", str(args.timeout)])
-    apply_unity([], [], export=True, timeout=args.timeout)
+    apply_unity([], [], export=True, timeout=args.timeout, ensure_curtain_skin=True)
     # Establish hashes only for original files we can prove; unknown baseline remains protected.
     baseline = read_json(BASELINE, {"version": 1, "files": {}})
     for relative, rec in inventory().items():
@@ -670,7 +730,7 @@ def build(args):
     # Addressables entry from the all-plan asset_path before building, otherwise a clone can retain the
     # collaborator's stale GUIDs and silently drop most resources from the catalog.
     apply_unity([], [], build=True, timeout=args.timeout, setup_addressables=True,
-                addressables_plan="addressables_plan_all.json")
+                addressables_plan="addressables_plan_all.json", ensure_curtain_skin=True)
     if args.player:
         run(ps_script("g5_player_smoke.ps1"))
     return 0

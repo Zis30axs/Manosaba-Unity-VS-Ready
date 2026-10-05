@@ -1,0 +1,23 @@
+====================================================================================================
+FUNCTION RVA 0xD48930  VA 0x180D48930  size 0x1F (31 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive.<>c$$<get_OtherDebugPanels>b__3_1
+  csig   : UnityEngine_Transform_o* GigaCreation_Tools_Debugging_Ui_DebugPanelExclusive___c___get_OtherDebugPanels_b__3_1 (GigaCreation_Tools_Debugging_Ui_DebugPanelExclusive___c_o* __this, GigaCreation_Tools_Debugging_Ui_DebugPanelExclusive_o* panel, const MethodInfo* method);
+  dump.cs: DebugPanelExclusive.<>c :: internal Transform <get_OtherDebugPanels>b__3_1(DebugPanelExclusive panel)
+  fields of GigaCreation.Tools.Debugging.Ui.DebugPanelExclusive:
+      +0x48   _otherDebugPanels              Transform[]
+      +0x50   _isQuitting                    bool
+  fields of DebugPanelExclusive.<>c:
+      +0x0    <>9                            static readonly DebugPanelExclusive.<>c
+      +0x8    <>9__3_1                       static Func<DebugPanelExclusive, Transform>
+====================================================================================================
+  0x180D48930  sub     rsp, 0x28                                 
+  0x180D48934  mov     rax, rdx                                  
+  0x180D48937  test    rdx, rdx                                  
+  0x180D4893A  je      0x180d4894a                               
+  0x180D4893C  xor     edx, edx                                  
+  0x180D4893E  mov     rcx, rax                                  
+  0x180D48941  add     rsp, 0x28                                 
+  0x180D48945  jmp     0x1820616e0                                  ; -> UnityEngine.Component$$get_transform
+
+180D4894A:
+  0x180D4894A  call    0x180246730                                  ; THROW NullReferenceException

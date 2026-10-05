@@ -1,0 +1,32 @@
+====================================================================================================
+FUNCTION RVA 0xB4EC20  VA 0x180B4EC20  size 0x5E (94 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$ValidateAs
+  csig   : bool WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___ValidateAs (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, WitchTrials_Models_IdVersionPair_o* pair, const MethodInfo_B4EC20* method);
+====================================================================================================
+  0x180B4EC20  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4EC25  push    rdi                                       
+  0x180B4EC26  sub     rsp, 0x20                                 
+  0x180B4EC2A  mov     rbx, qword ptr [rcx + 0x48]               
+  0x180B4EC2E  mov     rdi, rdx                                  
+  0x180B4EC31  test    rbx, rbx                                  
+  0x180B4EC34  je      0x180b4ec79                               
+  0x180B4EC36  cmp     byte ptr [rip + 0x258a922], 0                ; data_30D955F
+  0x180B4EC3D  jne     0x180b4ec57                               
+  0x180B4EC3F  lea     rcx, [rip + 0x230bfaa]                       ; METHODINFO Method$System.Collections.Generic.List<IdVersionPair>.Contains()
+  0x180B4EC46  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4EC4B  lock or dword ptr [rsp], 0                        
+  0x180B4EC50  mov     byte ptr [rip + 0x258a908], 1                ; data_30D955F
+
+180B4EC57:
+  0x180B4EC57  mov     rcx, qword ptr [rbx + 0x10]               
+  0x180B4EC5B  test    rcx, rcx                                  
+  0x180B4EC5E  je      0x180b4ec79                               
+  0x180B4EC60  mov     r8, qword ptr [rip + 0x230bf89]              ; METHODINFO Method$System.Collections.Generic.List<IdVersionPair>.Contains()
+  0x180B4EC67  mov     rdx, rdi                                  
+  0x180B4EC6A  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4EC6F  add     rsp, 0x20                                 
+  0x180B4EC73  pop     rdi                                       
+  0x180B4EC74  jmp     0x180859110                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Contains
+
+180B4EC79:
+  0x180B4EC79  call    0x180246730                                  ; THROW NullReferenceException

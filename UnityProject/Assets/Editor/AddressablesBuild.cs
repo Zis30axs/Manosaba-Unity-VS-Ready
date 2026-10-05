@@ -41,6 +41,10 @@ namespace Manosaba.EditorTools
 
             try
             {
+                // GameContent is generated and ignored by Git. Reapply the tracked curtain
+                // recipe before reading Addressables entries so a fresh collaborator clone
+                // cannot build with an empty SpriteSkin.
+                RestoreOriginalCurtainSkin.EnsureApplied();
                 AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
                 if (settings == null)
                 {

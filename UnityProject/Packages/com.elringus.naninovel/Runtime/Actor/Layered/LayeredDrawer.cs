@@ -119,6 +119,16 @@ namespace Naninovel
                 ? EvaluateDrawDimensions(pixelsPerUnit)
                 : new(camera.pixelWidth, camera.pixelHeight);
             camera.targetTexture = PrepareRenderTexture(renderTexture, dimensions);
+            // Manosaba: render textures are pooled temporaries that LayeredActor trades between
+            // actors on every appearance change, and the shipped render cameras use
+            // CameraClearFlags.Nothing.  The original game renders them through URP; this project
+            // uses the built-in pipeline, which honours "don't clear" literally, so a character was
+            // drawn over the image another character left in the same texture (two portraits
+            // overlapping).  Start from transparent, as DicedSpriteActor does before it draws.
+            var previous = RenderTexture.active;
+            RenderTexture.active = camera.targetTexture;
+            GL.Clear(true, true, Color.clear);
+            RenderTexture.active = previous;
             camera.Render();
             return camera.targetTexture;
         }

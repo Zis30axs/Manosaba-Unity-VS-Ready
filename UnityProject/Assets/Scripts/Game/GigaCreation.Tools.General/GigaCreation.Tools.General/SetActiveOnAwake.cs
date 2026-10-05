@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Il2CppDummyDll;
 using UnityEngine;
 
@@ -52,10 +54,41 @@ namespace GigaCreation.Tools.General
     	[SerializeField]
     	private Target[] _selections;
 
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD4AA40, 1035 B; lambdas <Awake>b__3_0 0xD4AEA0 and b__3_1 0xD4AF70 are both
+    	//   `x => new Target { GameObject = x.gameObject, Active = _active }`.
+    	// - AllChildren: gameObject.GetComponentsInChildren<Transform>(true) (includes this object); ChildrenOneLevelDown:
+    	//   transform.Cast<Transform>(); Selections: _selections as is; any other kind returns.
+    	// - foreach target: Unity-null test on Target.GameObject (+0x10), then GameObject.SetActive(Target.Active (+0x18)).
+    	// OptionsUI's "Pages" uses ChildrenOneLevelDown/true: the 图形/声音 pages are authored inactive and only this Awake
+    	// activates them; OptionsUi.PageCanvas.SetActive then switches pages by Canvas.enabled alone.
     	[Token(Token = "0x6000012")]
     	[Address(RVA = "0xD4AA40", Offset = "0xD49440", VA = "0x180D4AA40")]
     	private void Awake()
     	{
+    		IEnumerable<Target> targets;
+    		switch (_targetKind)
+    		{
+    			case TargetKind.AllChildren:
+    				targets = gameObject.GetComponentsInChildren<Transform>(true)
+    					.Select(x => new Target { GameObject = x.gameObject, Active = _active });
+    				break;
+    			case TargetKind.ChildrenOneLevelDown:
+    				targets = transform.Cast<Transform>()
+    					.Select(x => new Target { GameObject = x.gameObject, Active = _active });
+    				break;
+    			case TargetKind.Selections:
+    				targets = _selections;
+    				break;
+    			default:
+    				return;
+    		}
+    		foreach (Target target in targets)
+    		{
+    			if (target.GameObject)
+    			{
+    				target.GameObject.SetActive(target.Active);
+    			}
+    		}
     	}
 
     	[Token(Token = "0x6000013")]

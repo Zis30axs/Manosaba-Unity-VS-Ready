@@ -1,0 +1,60 @@
+====================================================================================================
+FUNCTION RVA 0xB4D380  VA 0x180B4D380  size 0xBA (186 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$get_LocalizationProvider
+  csig   : GigaCreation_Essentials_Localization_ILocalizationProvider_o* WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___get_LocalizationProvider (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D380* method);
+====================================================================================================
+  0x180B4D380  push    rbx                                       
+  0x180B4D382  sub     rsp, 0x20                                 
+  0x180B4D386  cmp     byte ptr [rip + 0x258f9de], 0                ; data_30DCD6B
+  0x180B4D38D  mov     rbx, rcx                                  
+  0x180B4D390  jne     0x180b4d3bb                               
+  0x180B4D392  lea     rcx, [rip + 0x2304d27]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180B4D399  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D39E  lock or dword ptr [rsp], 0                        
+  0x180B4D3A3  lea     rcx, [rip + 0x2304dbe]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D3AA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D3AF  lock or dword ptr [rsp], 0                        
+  0x180B4D3B4  mov     byte ptr [rip + 0x258f9b0], 1                ; data_30DCD6B
+
+180B4D3BB:
+  0x180B4D3BB  mov     rax, qword ptr [rbx + 0x60]               
+  0x180B4D3BF  test    rax, rax                                  
+  0x180B4D3C2  jne     0x180b4d434                               
+  0x180B4D3C4  mov     rcx, qword ptr [rip + 0x2304d9d]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D3CB  cmp     dword ptr [rcx + 0xe4], eax               
+  0x180B4D3D1  jne     0x180b4d3d8                               
+  0x180B4D3D3  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4D3D8:
+  0x180B4D3D8  mov     rdx, qword ptr [rip + 0x2304ce1]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180B4D3DF  mov     cl, 1                                     
+  0x180B4D3E1  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180B4D3E6  cmp     dword ptr [rip + 0x258bdd7], 0               ; data_30D91C4
+  0x180B4D3ED  mov     r9, rax                                   
+  0x180B4D3F0  mov     qword ptr [rbx + 0x60], rax               
+  0x180B4D3F4  je      0x180b4d431                               
+  0x180B4D3F6  lea     r8, [rbx + 0x60]                          
+  0x180B4D3FA  shr     r8, 0xc                                   
+  0x180B4D3FE  lea     rcx, [rip + 0x25e717b]                       ; data_3134580
+  0x180B4D405  and     r8d, 0x1fffff                             
+  0x180B4D40C  mov     eax, r8d                                  
+  0x180B4D40F  shr     rax, 6                                    
+  0x180B4D413  and     r8d, 0x3f                                 
+  0x180B4D417  lea     rdx, [rcx + rax*8]                        
+  0x180B4D41B  prefetchw byte ptr [rdx]                            
+  0x180B4D41E  nop                                               
+
+180B4D420:
+  0x180B4D420  mov     rax, qword ptr [rdx]                      
+  0x180B4D423  mov     rcx, rax                                  
+  0x180B4D426  bts     rcx, r8                                   
+  0x180B4D42A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4D42F  jne     0x180b4d420                               
+
+180B4D431:
+  0x180B4D431  mov     rax, r9                                   
+
+180B4D434:
+  0x180B4D434  add     rsp, 0x20                                 
+  0x180B4D438  pop     rbx                                       
+  0x180B4D439  ret                                               

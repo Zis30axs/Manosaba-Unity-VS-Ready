@@ -1,0 +1,47 @@
+====================================================================================================
+FUNCTION RVA 0xD48CF0  VA 0x180D48CF0  size 0x69 (105 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DisableDebugModeButton$$<Start>b__3_1
+  csig   : void GigaCreation_Tools_Debugging_Ui_DisableDebugModeButton___Start_b__3_1 (GigaCreation_Tools_Debugging_Ui_DisableDebugModeButton_o* __this, bool x, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DisableDebugModeButton :: private void <Start>b__3_1(bool x)
+  fields of GigaCreation.Tools.Debugging.Ui.DisableDebugModeButton:
+      +0x20   _canvasGroup                   CanvasGroup
+      +0x28   _button                        Button
+      +0x30   _debugManager                  IDebugManager
+====================================================================================================
+  0x180D48CF0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D48CF5  push    rdi                                       
+  0x180D48CF6  sub     rsp, 0x20                                 
+  0x180D48CFA  movzx   ebx, dl                                   
+  0x180D48CFD  mov     rdi, rcx                                  
+  0x180D48D00  test    dl, dl                                    
+  0x180D48D02  je      0x180d48d0e                               
+  0x180D48D04  movss   xmm1, dword ptr [rip + 0x1d99b14]            ; data_2AE2820
+  0x180D48D0C  jmp     0x180d48d11                               
+
+180D48D0E:
+  0x180D48D0E  xorps   xmm1, xmm1                                
+
+180D48D11:
+  0x180D48D11  mov     rcx, qword ptr [rcx + 0x20]                  ; rcx->DisableDebugModeButton._canvasGroup
+  0x180D48D15  test    rcx, rcx                                  
+  0x180D48D18  je      0x180d48d54                               
+  0x180D48D1A  xor     r8d, r8d                                  
+  0x180D48D1D  call    0x1824644c0                                  ; -> UnityEngine.CanvasGroup$$set_alpha
+  0x180D48D22  mov     rcx, qword ptr [rdi + 0x20]                  ; rdi->DisableDebugModeButton._canvasGroup
+  0x180D48D26  test    rcx, rcx                                  
+  0x180D48D29  je      0x180d48d54                               
+  0x180D48D2B  xor     r8d, r8d                                  
+  0x180D48D2E  movzx   edx, bl                                   
+  0x180D48D31  call    0x182464610                                  ; -> UnityEngine.CanvasGroup$$set_interactable
+  0x180D48D36  mov     rcx, qword ptr [rdi + 0x20]                  ; rdi->DisableDebugModeButton._canvasGroup
+  0x180D48D3A  test    rcx, rcx                                  
+  0x180D48D3D  je      0x180d48d54                               
+  0x180D48D3F  xor     r8d, r8d                                  
+  0x180D48D42  movzx   edx, bl                                   
+  0x180D48D45  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180D48D4A  add     rsp, 0x20                                 
+  0x180D48D4E  pop     rdi                                       
+  0x180D48D4F  jmp     0x182464760                                  ; -> UnityEngine.CanvasGroup$$set_blocksRaycasts
+
+180D48D54:
+  0x180D48D54  call    0x180246730                                  ; THROW NullReferenceException

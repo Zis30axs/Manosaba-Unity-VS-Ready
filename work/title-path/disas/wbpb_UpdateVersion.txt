@@ -1,0 +1,43 @@
+====================================================================================================
+FUNCTION RVA 0xB4E230  VA 0x180B4E230  size 0x7F (127 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$UpdateVersion
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___UpdateVersion (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, System_String_o* id, int32_t version, const MethodInfo_B4E230* method);
+====================================================================================================
+  0x180B4E230  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4E235  mov     qword ptr [rsp + 0x10], rsi               
+  0x180B4E23A  push    rdi                                       
+  0x180B4E23B  sub     rsp, 0x20                                 
+  0x180B4E23F  cmp     byte ptr [rip + 0x258eb2e], 0                ; data_30DCD74
+  0x180B4E246  mov     esi, r8d                                  
+  0x180B4E249  mov     rdi, rdx                                  
+  0x180B4E24C  mov     rbx, rcx                                  
+  0x180B4E24F  jne     0x180b4e269                               
+  0x180B4E251  lea     rcx, [rip + 0x2303928]                       ; METHODINFO Method$System.Linq.Enumerable.Contains<string>()
+  0x180B4E258  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4E25D  lock or dword ptr [rsp], 0                        
+  0x180B4E262  mov     byte ptr [rip + 0x258eb0b], 1                ; data_30DCD74
+
+180B4E269:
+  0x180B4E269  mov     r8, qword ptr [rip + 0x2303910]              ; METHODINFO Method$System.Linq.Enumerable.Contains<string>()
+  0x180B4E270  mov     rdx, rdi                                  
+  0x180B4E273  mov     rcx, qword ptr [rbx + 0x98]               
+  0x180B4E27A  call    0x180684c60                                  ; -> System.Linq.Enumerable$$Contains<__Il2CppFullySharedGenericType>
+  0x180B4E27F  test    al, al                                    
+  0x180B4E281  je      0x180b4e29a                               
+  0x180B4E283  mov     rcx, qword ptr [rbx + 0x48]               
+  0x180B4E287  test    rcx, rcx                                  
+  0x180B4E28A  je      0x180b4e2aa                               
+  0x180B4E28C  xor     r9d, r9d                                  
+  0x180B4E28F  mov     r8d, esi                                  
+  0x180B4E292  mov     rdx, rdi                                  
+  0x180B4E295  call    0x1803a2820                                  ; -> WitchTrials.Models.VersionedState$$SetVersion
+
+180B4E29A:
+  0x180B4E29A  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4E29F  mov     rsi, qword ptr [rsp + 0x38]               
+  0x180B4E2A4  add     rsp, 0x20                                 
+  0x180B4E2A8  pop     rdi                                       
+  0x180B4E2A9  ret                                               
+
+180B4E2AA:
+  0x180B4E2AA  call    0x180246730                                  ; THROW NullReferenceException

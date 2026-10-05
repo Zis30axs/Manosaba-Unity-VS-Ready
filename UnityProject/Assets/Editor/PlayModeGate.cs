@@ -68,6 +68,20 @@ namespace Manosaba.EditorTools
             }
             if (File.Exists(evidence)) File.Delete(evidence);
 
+            try
+            {
+                // Play Mode can be entered without a content sync request. Validate the
+                // generated SpriteSkin at this final boundary as well.
+                RestoreOriginalCurtainSkin.EnsureApplied();
+            }
+            catch (Exception error)
+            {
+                Write(outPath, result, "FAIL_CURTAIN_SKIN", error.ToString());
+                Debug.LogError("[PlayModeGate] curtain SpriteSkin verification failed: " + error);
+                EditorApplication.Exit(1);
+                return;
+            }
+
             // ---- play mode data source ---------------------------------------------------------
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(false);
             if (settings == null)

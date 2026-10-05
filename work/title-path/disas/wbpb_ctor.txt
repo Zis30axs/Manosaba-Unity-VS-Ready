@@ -1,0 +1,55 @@
+====================================================================================================
+FUNCTION RVA 0xB4F930  VA 0x180B4F930  size 0xB2 (178 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$.ctor
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object____ctor (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4F930* method);
+====================================================================================================
+  0x180B4F930  push    rbx                                       
+  0x180B4F932  sub     rsp, 0x20                                 
+  0x180B4F936  mov     rax, qword ptr [rdx + 0x20]               
+  0x180B4F93A  mov     rbx, rcx                                  
+  0x180B4F93D  lea     rcx, [rsp + 0x30]                         
+  0x180B4F942  mov     rdx, qword ptr [rax + 0xc0]               
+  0x180B4F949  mov     rdx, qword ptr [rdx + 0x180]              
+  0x180B4F950  call    0x18064bf60                                  ; -> System.Activator$$CreateInstance<__Il2CppFullySharedGenericType>
+  0x180B4F955  cmp     dword ptr [rip + 0x2589868], 0               ; data_30D91C4
+  0x180B4F95C  mov     rax, qword ptr [rsp + 0x30]               
+  0x180B4F961  mov     qword ptr [rbx + 0x48], rax               
+  0x180B4F965  je      0x180b4f9a1                               
+  0x180B4F967  lea     r8, [rbx + 0x48]                          
+  0x180B4F96B  shr     r8, 0xc                                   
+  0x180B4F96F  lea     rcx, [rip + 0x25e4c0a]                       ; data_3134580
+  0x180B4F976  and     r8d, 0x1fffff                             
+  0x180B4F97D  mov     eax, r8d                                  
+  0x180B4F980  shr     rax, 6                                    
+  0x180B4F984  and     r8d, 0x3f                                 
+  0x180B4F988  lea     rdx, [rcx + rax*8]                        
+  0x180B4F98C  prefetchw byte ptr [rdx]                            
+  0x180B4F98F  nop                                               
+
+180B4F990:
+  0x180B4F990  mov     rax, qword ptr [rdx]                      
+  0x180B4F993  mov     rcx, rax                                  
+  0x180B4F996  bts     rcx, r8                                   
+  0x180B4F99A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4F99F  jne     0x180b4f990                               
+
+180B4F9A1:
+  0x180B4F9A1  cmp     byte ptr [rip + 0x2598b45], 0                ; data_30E84ED
+  0x180B4F9A8  jne     0x180b4f9c2                               
+  0x180B4F9AA  lea     rcx, [rip + 0x23028df]                       ; TYPE UnityEngine.Object_TypeInfo
+  0x180B4F9B1  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F9B6  lock or dword ptr [rsp], 0                        
+  0x180B4F9BB  mov     byte ptr [rip + 0x2598b2b], 1                ; data_30E84ED
+
+180B4F9C2:
+  0x180B4F9C2  mov     rcx, qword ptr [rip + 0x23028c7]             ; TYPE UnityEngine.Object_TypeInfo
+  0x180B4F9C9  cmp     dword ptr [rcx + 0xe4], 0                 
+  0x180B4F9D0  jne     0x180b4f9dc                               
+  0x180B4F9D2  add     rsp, 0x20                                 
+  0x180B4F9D6  pop     rbx                                       
+  0x180B4F9D7  jmp     0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4F9DC:
+  0x180B4F9DC  add     rsp, 0x20                                 
+  0x180B4F9E0  pop     rbx                                       
+  0x180B4F9E1  ret                                               

@@ -1,0 +1,278 @@
+====================================================================================================
+FUNCTION RVA 0xD47BB0  VA 0x180D47BB0  size 0x37A (890 bytes)
+  managed: GigaCreation.Tools.Debugging.Ui.DebugPanel$$HideContent
+  csig   : void GigaCreation_Tools_Debugging_Ui_DebugPanel__HideContent (GigaCreation_Tools_Debugging_Ui_DebugPanel_o* __this, const MethodInfo* method);
+  dump.cs: GigaCreation.Tools.Debugging.Ui.DebugPanel :: public virtual void HideContent()
+  fields of GigaCreation.Tools.Debugging.Ui.DebugPanel:
+      +0x20   _contents                      Transform[]
+      +0x28   _showButtonCanvasGroup         CanvasGroup
+      +0x30   _showButton                    Button
+      +0x38   _hideButtonCanvasGroup         CanvasGroup
+      +0x40   _hideButton                    Button
+  fields of DebugPanel.<>c:
+      +0x0    <>9                            static readonly DebugPanel.<>c
+      +0x8    <>9__5_2                       static Func<bool, bool>
+====================================================================================================
+  0x180D47BB0  mov     qword ptr [rsp + 8], rbx                  
+  0x180D47BB5  mov     qword ptr [rsp + 0x10], rbp               
+  0x180D47BBA  mov     qword ptr [rsp + 0x18], rsi               
+  0x180D47BBF  push    rdi                                       
+  0x180D47BC0  push    r14                                       
+  0x180D47BC2  push    r15                                       
+  0x180D47BC4  sub     rsp, 0x30                                 
+  0x180D47BC8  mov     rbp, qword ptr [rcx + 0x20]                  ; rcx->DebugPanel._contents
+  0x180D47BCC  xor     esi, esi                                  
+  0x180D47BCE  mov     r15, rcx                                  
+  0x180D47BD1  mov     eax, esi                                  
+  0x180D47BD3  test    rbp, rbp                                  
+  0x180D47BD6  je      0x180d47e6f                               
+  0x180D47BDC  lea     r14, [rbp + 0x20]                            ; rbp->DebugPanel._contents
+
+180D47BE0:
+  0x180D47BE0  cmp     eax, dword ptr [rbp + 0x18]               
+  0x180D47BE3  jge     0x180d47cab                               
+  0x180D47BE9  cmp     esi, dword ptr [rbp + 0x18]               
+  0x180D47BEC  jae     0x180d47e9d                               
+  0x180D47BF2  cmp     byte ptr [rip + 0x238f937], 0                ; data_30D7530
+  0x180D47BF9  mov     rbx, qword ptr [r14]                      
+  0x180D47BFC  jne     0x180d47c16                               
+  0x180D47BFE  lea     rcx, [rip + 0x211445b]                       ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180D47C05  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47C0A  lock or dword ptr [rsp], 0                        
+  0x180D47C0F  mov     byte ptr [rip + 0x238f91a], 1                ; data_30D7530
+
+180D47C16:
+  0x180D47C16  mov     rax, qword ptr [rip + 0x2114443]             ; TYPE UnityEngine.Vector3_TypeInfo
+  0x180D47C1D  mov     rax, qword ptr [rax + 0xb8]               
+  0x180D47C24  test    rbx, rbx                                  
+  0x180D47C27  je      0x180d47e97                               
+  0x180D47C2D  cmp     byte ptr [rip + 0x23a110a], 0                ; data_30E8D3E
+  0x180D47C34  movsd   xmm0, qword ptr [rax]                     
+  0x180D47C38  mov     eax, dword ptr [rax + 8]                  
+  0x180D47C3B  movsd   qword ptr [rsp + 0x20], xmm0              
+  0x180D47C41  mov     dword ptr [rsp + 0x28], eax               
+  0x180D47C45  jne     0x180d47c5f                               
+  0x180D47C47  lea     rcx, [rip + 0x2123b92]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180D47C4E  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47C53  lock or dword ptr [rsp], 0                        
+  0x180D47C58  mov     byte ptr [rip + 0x23a10df], 1                ; data_30E8D3E
+
+180D47C5F:
+  0x180D47C5F  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D47C63  test    rdi, rdi                                  
+  0x180D47C66  je      0x180d47e8c                               
+  0x180D47C6C  mov     rax, qword ptr [rip + 0x23a117d]             ; data_30E8DF0
+  0x180D47C73  test    rax, rax                                  
+  0x180D47C76  jne     0x180d47c94                               
+  0x180D47C78  lea     rcx, [rip + 0x18c20e1]                       ; data_2609D60
+  0x180D47C7F  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D47C84  test    rax, rax                                  
+  0x180D47C87  je      0x180d47e75                               
+  0x180D47C8D  mov     qword ptr [rip + 0x23a115c], rax             ; data_30E8DF0
+
+180D47C94:
+  0x180D47C94  lea     rdx, [rsp + 0x20]                         
+  0x180D47C99  mov     rcx, rdi                                  
+  0x180D47C9C  call    rax                                       
+  0x180D47C9E  inc     esi                                       
+  0x180D47CA0  add     r14, 8                                    
+  0x180D47CA4  mov     eax, esi                                  
+  0x180D47CA6  jmp     0x180d47be0                               
+
+180D47CAB:
+  0x180D47CAB  mov     rbx, qword ptr [r15 + 0x28]                  ; r15->DebugPanel._showButtonCanvasGroup
+  0x180D47CAF  test    rbx, rbx                                  
+  0x180D47CB2  je      0x180d47e6f                               
+  0x180D47CB8  cmp     byte ptr [rip + 0x23a5231], 0                ; data_30ECEF0
+  0x180D47CBF  jne     0x180d47cd9                               
+  0x180D47CC1  lea     rcx, [rip + 0x20abc88]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<CanvasGroup>()
+  0x180D47CC8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47CCD  lock or dword ptr [rsp], 0                        
+  0x180D47CD2  mov     byte ptr [rip + 0x23a5217], 1                ; data_30ECEF0
+
+180D47CD9:
+  0x180D47CD9  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D47CDD  test    rdi, rdi                                  
+  0x180D47CE0  je      0x180d47f20                               
+  0x180D47CE6  mov     rax, qword ptr [rip + 0x23a5213]             ; data_30ECF00
+  0x180D47CED  test    rax, rax                                  
+  0x180D47CF0  jne     0x180d47d0e                               
+  0x180D47CF2  lea     rcx, [rip + 0x18e0167]                       ; data_2627E60
+  0x180D47CF9  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D47CFE  test    rax, rax                                  
+  0x180D47D01  je      0x180d47ea3                               
+  0x180D47D07  mov     qword ptr [rip + 0x23a51f2], rax             ; data_30ECF00
+
+180D47D0E:
+  0x180D47D0E  movss   xmm1, dword ptr [rip + 0x1d9ab0a]            ; data_2AE2820
+  0x180D47D16  mov     rcx, rdi                                  
+  0x180D47D19  call    rax                                       
+  0x180D47D1B  mov     rbx, qword ptr [r15 + 0x28]                  ; r15->DebugPanel._showButtonCanvasGroup
+  0x180D47D1F  test    rbx, rbx                                  
+  0x180D47D22  je      0x180d47e6f                               
+  0x180D47D28  cmp     byte ptr [rip + 0x23a51c5], 0                ; data_30ECEF4
+  0x180D47D2F  jne     0x180d47d49                               
+  0x180D47D31  lea     rcx, [rip + 0x20abc18]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<CanvasGroup>()
+  0x180D47D38  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47D3D  lock or dword ptr [rsp], 0                        
+  0x180D47D42  mov     byte ptr [rip + 0x23a51ab], 1                ; data_30ECEF4
+
+180D47D49:
+  0x180D47D49  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D47D4D  test    rdi, rdi                                  
+  0x180D47D50  je      0x180d47f15                               
+  0x180D47D56  mov     rax, qword ptr [rip + 0x23a51c3]             ; data_30ECF20
+  0x180D47D5D  test    rax, rax                                  
+  0x180D47D60  jne     0x180d47d7e                               
+  0x180D47D62  lea     rcx, [rip + 0x18e0567]                       ; data_26282D0
+  0x180D47D69  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D47D6E  test    rax, rax                                  
+  0x180D47D71  je      0x180d47eba                               
+  0x180D47D77  mov     qword ptr [rip + 0x23a51a2], rax             ; data_30ECF20
+
+180D47D7E:
+  0x180D47D7E  mov     dl, 1                                     
+  0x180D47D80  mov     rcx, rdi                                  
+  0x180D47D83  call    rax                                       
+  0x180D47D85  mov     rbx, qword ptr [r15 + 0x38]                  ; r15->DebugPanel._hideButtonCanvasGroup
+  0x180D47D89  test    rbx, rbx                                  
+  0x180D47D8C  je      0x180d47e6f                               
+  0x180D47D92  cmp     byte ptr [rip + 0x23a5157], 0                ; data_30ECEF0
+  0x180D47D99  jne     0x180d47db3                               
+  0x180D47D9B  lea     rcx, [rip + 0x20abbae]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<CanvasGroup>()
+  0x180D47DA2  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47DA7  lock or dword ptr [rsp], 0                        
+  0x180D47DAC  mov     byte ptr [rip + 0x23a513d], 1                ; data_30ECEF0
+
+180D47DB3:
+  0x180D47DB3  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D47DB7  test    rdi, rdi                                  
+  0x180D47DBA  je      0x180d47f0a                               
+  0x180D47DC0  mov     rax, qword ptr [rip + 0x23a5139]             ; data_30ECF00
+  0x180D47DC7  test    rax, rax                                  
+  0x180D47DCA  jne     0x180d47de8                               
+  0x180D47DCC  lea     rcx, [rip + 0x18e008d]                       ; data_2627E60
+  0x180D47DD3  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D47DD8  test    rax, rax                                  
+  0x180D47DDB  je      0x180d47ed1                               
+  0x180D47DE1  mov     qword ptr [rip + 0x23a5118], rax             ; data_30ECF00
+
+180D47DE8:
+  0x180D47DE8  xorps   xmm1, xmm1                                
+  0x180D47DEB  mov     rcx, rdi                                  
+  0x180D47DEE  call    rax                                       
+  0x180D47DF0  mov     rbx, qword ptr [r15 + 0x38]                  ; r15->DebugPanel._hideButtonCanvasGroup
+  0x180D47DF4  test    rbx, rbx                                  
+  0x180D47DF7  je      0x180d47e6f                               
+  0x180D47DF9  cmp     byte ptr [rip + 0x23a50f4], 0                ; data_30ECEF4
+  0x180D47E00  jne     0x180d47e1a                               
+  0x180D47E02  lea     rcx, [rip + 0x20abb47]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<CanvasGroup>()
+  0x180D47E09  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180D47E0E  lock or dword ptr [rsp], 0                        
+  0x180D47E13  mov     byte ptr [rip + 0x23a50da], 1                ; data_30ECEF4
+
+180D47E1A:
+  0x180D47E1A  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180D47E1E  test    rdi, rdi                                  
+  0x180D47E21  je      0x180d47eff                               
+  0x180D47E27  mov     rax, qword ptr [rip + 0x23a50f2]             ; data_30ECF20
+  0x180D47E2E  test    rax, rax                                  
+  0x180D47E31  jne     0x180d47e4f                               
+  0x180D47E33  lea     rcx, [rip + 0x18e0496]                       ; data_26282D0
+  0x180D47E3A  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180D47E3F  test    rax, rax                                  
+  0x180D47E42  je      0x180d47ee8                               
+  0x180D47E48  mov     qword ptr [rip + 0x23a50d1], rax             ; data_30ECF20
+
+180D47E4F:
+  0x180D47E4F  xor     edx, edx                                  
+  0x180D47E51  mov     rcx, rdi                                  
+  0x180D47E54  mov     rbx, qword ptr [rsp + 0x50]               
+  0x180D47E59  mov     rbp, qword ptr [rsp + 0x58]               
+  0x180D47E5E  mov     rsi, qword ptr [rsp + 0x60]               
+  0x180D47E63  add     rsp, 0x30                                 
+  0x180D47E67  pop     r15                                       
+  0x180D47E69  pop     r14                                       
+  0x180D47E6B  pop     rdi                                       
+  0x180D47E6C  jmp     rax                                       
+
+180D47E6F:
+  0x180D47E6F  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D47E74  int3                                              
+
+180D47E75:
+  0x180D47E75  lea     rcx, [rip + 0x18c1ee4]                       ; data_2609D60
+  0x180D47E7C  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D47E81  mov     rcx, rax                                  
+  0x180D47E84  xor     edx, edx                                  
+  0x180D47E86  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D47E8B  int3                                              
+
+180D47E8C:
+  0x180D47E8C  xor     edx, edx                                  
+  0x180D47E8E  mov     rcx, rbx                                  
+  0x180D47E91  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D47E96  int3                                              
+
+180D47E97:
+  0x180D47E97  call    0x180246730                                  ; THROW NullReferenceException
+  0x180D47E9C  int3                                              
+
+180D47E9D:
+  0x180D47E9D  call    0x180246740                                  ; -> sub_246740 (runtime/helper)
+  0x180D47EA2  int3                                              
+
+180D47EA3:
+  0x180D47EA3  lea     rcx, [rip + 0x18dffb6]                       ; data_2627E60
+  0x180D47EAA  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D47EAF  mov     rcx, rax                                  
+  0x180D47EB2  xor     edx, edx                                  
+  0x180D47EB4  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D47EB9  int3                                              
+
+180D47EBA:
+  0x180D47EBA  lea     rcx, [rip + 0x18e040f]                       ; data_26282D0
+  0x180D47EC1  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D47EC6  mov     rcx, rax                                  
+  0x180D47EC9  xor     edx, edx                                  
+  0x180D47ECB  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D47ED0  int3                                              
+
+180D47ED1:
+  0x180D47ED1  lea     rcx, [rip + 0x18dff88]                       ; data_2627E60
+  0x180D47ED8  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D47EDD  mov     rcx, rax                                  
+  0x180D47EE0  xor     edx, edx                                  
+  0x180D47EE2  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D47EE7  int3                                              
+
+180D47EE8:
+  0x180D47EE8  lea     rcx, [rip + 0x18e03e1]                       ; data_26282D0
+  0x180D47EEF  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180D47EF4  mov     rcx, rax                                  
+  0x180D47EF7  xor     edx, edx                                  
+  0x180D47EF9  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+  0x180D47EFE  int3                                              
+
+180D47EFF:
+  0x180D47EFF  xor     edx, edx                                  
+  0x180D47F01  mov     rcx, rbx                                  
+  0x180D47F04  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D47F09  int3                                              
+
+180D47F0A:
+  0x180D47F0A  xor     edx, edx                                  
+  0x180D47F0C  mov     rcx, rbx                                  
+  0x180D47F0F  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D47F14  int3                                              
+
+180D47F15:
+  0x180D47F15  xor     edx, edx                                  
+  0x180D47F17  mov     rcx, rbx                                  
+  0x180D47F1A  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+  0x180D47F1F  int3                                              
+
+180D47F20:
+  0x180D47F20  xor     edx, edx                                  
+  0x180D47F22  mov     rcx, rbx                                  
+  0x180D47F25  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException

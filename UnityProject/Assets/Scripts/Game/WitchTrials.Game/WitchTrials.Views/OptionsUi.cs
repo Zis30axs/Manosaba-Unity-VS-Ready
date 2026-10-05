@@ -58,8 +58,13 @@ namespace WitchTrials.Views
 
     		[Token(Token = "0x60002FA")]
     		[Address(RVA = "0x356FD0", Offset = "0x3559D0", VA = "0x180356FD0")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0x356FD0, 71 B -- Behaviour.set_enabled on _canvas (+0x18), then a tail jump
+    		//   to Toggle.Set(active, sendCallback: true) on _toggle (+0x10), which is the isOn setter.  While this was a stub
+    		//   the 文字/图形/声音 tabs only changed their highlight: every page canvas kept its prefab state.
     		public void SetActive(bool active)
     		{
+    			_canvas.enabled = active;
+    			_toggle.isOn = active;
     		}
 
     		[Token(Token = "0x60002FB")]

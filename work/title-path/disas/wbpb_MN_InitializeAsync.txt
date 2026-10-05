@@ -1,0 +1,309 @@
+====================================================================================================
+FUNCTION RVA 0x9F4BC0  VA 0x1809F4BC0  size 0x46B (1131 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase.<InitializeAsync>d__31<__Il2CppFullySharedGenericType, object>$$MoveNext
+  csig   : void WitchTrials_Views_WitchBookPageBase__InitializeAsync_d__31___Il2CppFullySharedGenericType__object___MoveNext (WitchTrials_Views_WitchBookPageBase__InitializeAsync_d__31_TItem__TState__o __this, const MethodInfo_9F4BC0* method);
+====================================================================================================
+  0x1809F4BC0  mov     qword ptr [rsp + 8], rcx                  
+  0x1809F4BC5  push    rbp                                       
+  0x1809F4BC6  push    rsi                                       
+  0x1809F4BC7  push    rdi                                       
+  0x1809F4BC8  push    r12                                       
+  0x1809F4BCA  push    r13                                       
+  0x1809F4BCC  push    r14                                       
+  0x1809F4BCE  push    r15                                       
+  0x1809F4BD0  sub     rsp, 0x80                                 
+  0x1809F4BD7  lea     rbp, [rsp + 0x20]                         
+  0x1809F4BDC  mov     qword ptr [rbp + 0xa8], rbx               
+  0x1809F4BE3  mov     r13, rdx                                  
+  0x1809F4BE6  mov     rbx, rcx                                  
+  0x1809F4BE9  xorps   xmm0, xmm0                                
+  0x1809F4BEC  xor     eax, eax                                  
+  0x1809F4BEE  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809F4BF2  mov     qword ptr [rbp + 0x20], rax               
+  0x1809F4BF6  mov     eax, dword ptr [rcx]                      
+  0x1809F4BF8  mov     rdi, qword ptr [rcx + 0x18]               
+  0x1809F4BFC  test    eax, eax                                  
+  0x1809F4BFE  jne     0x1809f4c31                               
+  0x1809F4C00  movups  xmm0, xmmword ptr [rcx + 0x38]            
+  0x1809F4C04  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809F4C08  movsd   xmm1, qword ptr [rcx + 0x48]              
+  0x1809F4C0D  movsd   qword ptr [rbp + 0x20], xmm1              
+  0x1809F4C12  xorps   xmm0, xmm0                                
+  0x1809F4C15  xor     eax, eax                                  
+  0x1809F4C17  movups  xmmword ptr [rcx + 0x38], xmm0            
+  0x1809F4C1B  mov     qword ptr [rcx + 0x48], rax               
+  0x1809F4C1F  mov     dword ptr [rcx], 0xffffffff               
+  0x1809F4C25  lea     r12, [rip + 0x26f9674]                       ; data_30EE2A0
+  0x1809F4C2C  jmp     0x1809f4e6e                               
+
+1809F4C31:
+  0x1809F4C31  mov     rax, qword ptr [rcx + 0x20]               
+  0x1809F4C35  test    rdi, rdi                                  
+  0x1809F4C38  je      0x1809f5026                               
+  0x1809F4C3E  mov     qword ptr [rdi + 0x70], rax               
+  0x1809F4C42  mov     ecx, dword ptr [rip + 0x26e457c]             ; data_30D91C4
+  0x1809F4C48  lea     r12, [rip + 0x26f9651]                       ; data_30EE2A0
+  0x1809F4C4F  test    ecx, ecx                                  
+  0x1809F4C51  je      0x1809f4c9f                               
+  0x1809F4C53  lea     r8, [rdi + 0x70]                          
+  0x1809F4C57  shr     r8, 0xc                                   
+  0x1809F4C5B  and     r8d, 0x1fffff                             
+  0x1809F4C62  mov     eax, r8d                                  
+  0x1809F4C65  shr     rax, 6                                    
+  0x1809F4C69  lea     rdx, [r12 + rax*8]                        
+  0x1809F4C6D  and     r8d, 0x3f                                 
+  0x1809F4C71  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809F4C78  nop     dword ptr [rax + rax]                     
+
+1809F4C80:
+  0x1809F4C80  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809F4C87  mov     rcx, rax                                  
+  0x1809F4C8A  bts     rcx, r8                                   
+  0x1809F4C8E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809F4C97  jne     0x1809f4c80                               
+  0x1809F4C99  mov     ecx, dword ptr [rip + 0x26e4525]             ; data_30D91C4
+
+1809F4C9F:
+  0x1809F4C9F  mov     rax, qword ptr [rbx + 0x28]               
+  0x1809F4CA3  mov     qword ptr [rdi + 0x78], rax               
+  0x1809F4CA7  test    ecx, ecx                                  
+  0x1809F4CA9  je      0x1809f4ce9                               
+  0x1809F4CAB  lea     r8, [rdi + 0x78]                          
+  0x1809F4CAF  shr     r8, 0xc                                   
+  0x1809F4CB3  and     r8d, 0x1fffff                             
+  0x1809F4CBA  mov     eax, r8d                                  
+  0x1809F4CBD  shr     rax, 6                                    
+  0x1809F4CC1  lea     rdx, [r12 + rax*8]                        
+  0x1809F4CC5  and     r8d, 0x3f                                 
+  0x1809F4CC9  prefetchw byte ptr [rdx + 0x462e0]                  
+
+1809F4CD0:
+  0x1809F4CD0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809F4CD7  mov     rcx, rax                                  
+  0x1809F4CDA  bts     rcx, r8                                   
+  0x1809F4CDE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809F4CE7  jne     0x1809f4cd0                               
+
+1809F4CE9:
+  0x1809F4CE9  mov     r9, qword ptr [rdi]                       
+  0x1809F4CEC  mov     rax, qword ptr [r9 + 0x238]               
+  0x1809F4CF3  mov     r9, qword ptr [r9 + 0x240]                
+  0x1809F4CFA  mov     r8, qword ptr [rbx + 0x30]                
+  0x1809F4CFE  mov     rdx, rdi                                  
+  0x1809F4D01  lea     rcx, [rbp + 0x40]                         
+  0x1809F4D05  call    rax                                       
+  0x1809F4D07  movups  xmm0, xmmword ptr [rax]                   
+  0x1809F4D0A  movups  xmmword ptr [rbp + 0x28], xmm0            
+  0x1809F4D0E  movsd   xmm1, qword ptr [rax + 0x10]              
+  0x1809F4D13  movsd   qword ptr [rbp + 0x38], xmm1              
+  0x1809F4D18  mov     rax, qword ptr [r13 + 0x20]               
+  0x1809F4D1C  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4D23  jne     0x1809f4d2d                               
+  0x1809F4D25  mov     rcx, rax                                  
+  0x1809F4D28  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4D2D:
+  0x1809F4D2D  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809F4D34  mov     r15, qword ptr [rax + 0x20]               
+  0x1809F4D38  mov     rax, qword ptr [r15 + 0x20]               
+  0x1809F4D3C  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4D43  jne     0x1809f4d4d                               
+  0x1809F4D45  mov     rcx, rax                                  
+  0x1809F4D48  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4D4D:
+  0x1809F4D4D  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809F4D54  mov     rcx, qword ptr [rax + 0x20]               
+  0x1809F4D58  mov     esi, dword ptr [rcx + 0xfc]               
+  0x1809F4D5E  lea     rax, [rsi + 0xf]                          
+  0x1809F4D62  cmp     rax, rsi                                  
+  0x1809F4D65  ja      0x1809f4d71                               
+  0x1809F4D67  movabs  rax, 0xffffffffffffff0                    
+
+1809F4D71:
+  0x1809F4D71  and     rax, 0xfffffffffffffff0                   
+  0x1809F4D75  call    0x1802d3060                                  ; -> sub_2D3060 (runtime/helper)
+  0x1809F4D7A  sub     rsp, rax                                  
+  0x1809F4D7D  lea     r14, [rsp + 0x20]                         
+  0x1809F4D82  mov     r8, rsi                                   
+  0x1809F4D85  xor     edx, edx                                  
+  0x1809F4D87  mov     rcx, r14                                  
+  0x1809F4D8A  call    0x180306bb0                                  ; -> sub_306BB0 (runtime/helper)
+  0x1809F4D8F  mov     rax, qword ptr [r15 + 0x20]               
+  0x1809F4D93  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4D9A  jne     0x1809f4da4                               
+  0x1809F4D9C  mov     rcx, rax                                  
+  0x1809F4D9F  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4DA4:
+  0x1809F4DA4  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809F4DAB  mov     r8, qword ptr [r8 + 0x28]                 
+  0x1809F4DAF  lea     rdx, [rbp + 0x28]                         
+  0x1809F4DB3  mov     rcx, r14                                  
+  0x1809F4DB6  call    0x180002850                                  ; -> sub_2850 (runtime/helper)
+  0x1809F4DBB  mov     r8, rsi                                   
+  0x1809F4DBE  mov     rdx, r14                                  
+  0x1809F4DC1  lea     rcx, [rbp + 0x28]                         
+  0x1809F4DC5  call    0x180306510                                  ; -> sub_306510 (runtime/helper)
+  0x1809F4DCA  movups  xmm0, xmmword ptr [rbp + 0x28]            
+  0x1809F4DCE  movups  xmmword ptr [rbp + 0x10], xmm0            
+  0x1809F4DD2  movsd   xmm1, qword ptr [rbp + 0x38]              
+  0x1809F4DD7  movsd   qword ptr [rbp + 0x20], xmm1              
+  0x1809F4DDC  mov     rax, qword ptr [r13 + 0x20]               
+  0x1809F4DE0  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4DE7  jne     0x1809f4df1                               
+  0x1809F4DE9  mov     rcx, rax                                  
+  0x1809F4DEC  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4DF1:
+  0x1809F4DF1  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809F4DF8  mov     rsi, qword ptr [rax + 0x38]               
+  0x1809F4DFC  mov     rax, qword ptr [rsi + 0x20]               
+  0x1809F4E00  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4E07  jne     0x1809f4e11                               
+  0x1809F4E09  mov     rcx, rax                                  
+  0x1809F4E0C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4E11:
+  0x1809F4E11  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809F4E18  mov     r14, qword ptr [rax + 0x18]               
+  0x1809F4E1C  mov     rax, qword ptr [rsi + 0x20]               
+  0x1809F4E20  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4E27  jne     0x1809f4e31                               
+  0x1809F4E29  mov     rcx, rax                                  
+  0x1809F4E2C  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4E31:
+  0x1809F4E31  mov     rax, qword ptr [rax + 0xc0]               
+  0x1809F4E38  mov     rcx, qword ptr [rax + 0x10]               
+  0x1809F4E3C  mov     r8, qword ptr [rcx + 0x80]                
+  0x1809F4E43  movsxd  rax, dword ptr [r8 + 0x18]                
+  0x1809F4E47  lea     r9, [rbp + 0x10]                          
+  0x1809F4E4B  add     r9, rax                                   
+  0x1809F4E4E  mov     rax, qword ptr [r8 + 0x10]                
+  0x1809F4E52  lea     rcx, [r9 - 0x10]                          
+  0x1809F4E56  cmp     dword ptr [rax + 0x28], 0                 
+  0x1809F4E5A  cmovge  rcx, r9                                   
+  0x1809F4E5E  mov     rdx, r14                                  
+  0x1809F4E61  call    0x180002920                                  ; -> sub_2920 (runtime/helper)
+  0x1809F4E66  test    eax, eax                                  
+  0x1809F4E68  je      0x1809f4f63                               
+
+1809F4E6E:
+  0x1809F4E6E  mov     rax, qword ptr [r13 + 0x20]               
+  0x1809F4E72  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4E79  jne     0x1809f4e83                               
+  0x1809F4E7B  mov     rcx, rax                                  
+  0x1809F4E7E  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4E83:
+  0x1809F4E83  mov     r8, qword ptr [rax + 0xc0]                
+  0x1809F4E8A  mov     r8, qword ptr [r8 + 0x60]                 
+  0x1809F4E8E  lea     rdx, [rbp + 0xb0]                         
+  0x1809F4E95  lea     rcx, [rbp + 0x10]                         
+  0x1809F4E99  call    0x180331bf0                                  ; -> Cysharp.Threading.Tasks.UniTask.Awaiter<__Il2CppFullySharedGenericType>$$GetResult
+  0x1809F4E9E  test    rdi, rdi                                  
+  0x1809F4EA1  je      0x1809f5021                               
+  0x1809F4EA7  mov     rax, qword ptr [rbp + 0xb0]               
+  0x1809F4EAE  mov     qword ptr [rdi + 0x88], rax               
+  0x1809F4EB5  cmp     dword ptr [rip + 0x26e4308], 0               ; data_30D91C4
+  0x1809F4EBC  je      0x1809f4f09                               
+  0x1809F4EBE  lea     r8, [rdi + 0x88]                          
+  0x1809F4EC5  shr     r8, 0xc                                   
+  0x1809F4EC9  and     r8d, 0x1fffff                             
+  0x1809F4ED0  mov     eax, r8d                                  
+  0x1809F4ED3  shr     rax, 6                                    
+  0x1809F4ED7  lea     rdx, [r12 + rax*8]                        
+  0x1809F4EDB  and     r8d, 0x3f                                 
+  0x1809F4EDF  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809F4EE6  nop     word ptr [rax + rax]                      
+
+1809F4EF0:
+  0x1809F4EF0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809F4EF7  mov     rcx, rax                                  
+  0x1809F4EFA  bts     rcx, r8                                   
+  0x1809F4EFE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809F4F07  jne     0x1809f4ef0                               
+
+1809F4F09:
+  0x1809F4F09  mov     dword ptr [rbx], 0xfffffffe               
+  0x1809F4F0F  cmp     byte ptr [rip + 0x26e2604], 0                ; data_30D751A
+  0x1809F4F16  jne     0x1809f4f30                               
+  0x1809F4F18  lea     rcx, [rip + 0x245c251]                       ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x1809F4F1F  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x1809F4F24  lock or dword ptr [rsp], 0                        
+  0x1809F4F29  mov     byte ptr [rip + 0x26e25ea], 1                ; data_30D751A
+
+1809F4F30:
+  0x1809F4F30  cmp     qword ptr [rbx + 8], 0                    
+  0x1809F4F35  je      0x1809f4f4c                               
+  0x1809F4F37  mov     ecx, 2                                    
+  0x1809F4F3C  mov     r8, qword ptr [rbx + 8]                   
+  0x1809F4F40  mov     rdx, qword ptr [rip + 0x245c229]             ; TYPE Cysharp.Threading.Tasks.CompilerServices.IStateMachineRunnerPromise_TypeInfo
+  0x1809F4F47  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+1809F4F4C:
+  0x1809F4F4C  mov     rbx, qword ptr [rbp + 0xa8]               
+  0x1809F4F53  lea     rsp, [rbp + 0x60]                         
+  0x1809F4F57  pop     r15                                       
+  0x1809F4F59  pop     r14                                       
+  0x1809F4F5B  pop     r13                                       
+  0x1809F4F5D  pop     r12                                       
+  0x1809F4F5F  pop     rdi                                       
+  0x1809F4F60  pop     rsi                                       
+  0x1809F4F61  pop     rbp                                       
+  0x1809F4F62  ret                                               
+
+1809F4F63:
+  0x1809F4F63  mov     dword ptr [rbx], 0                        
+  0x1809F4F69  movups  xmm0, xmmword ptr [rbp + 0x10]            
+  0x1809F4F6D  movups  xmmword ptr [rbx + 0x38], xmm0            
+  0x1809F4F71  movsd   xmm1, qword ptr [rbp + 0x20]              
+  0x1809F4F76  movsd   qword ptr [rbx + 0x48], xmm1              
+  0x1809F4F7B  cmp     dword ptr [rip + 0x26e4242], 0               ; data_30D91C4
+  0x1809F4F82  je      0x1809f4fc9                               
+  0x1809F4F84  lea     r8, [rbx + 0x38]                          
+  0x1809F4F88  shr     r8, 0xc                                   
+  0x1809F4F8C  and     r8d, 0x1fffff                             
+  0x1809F4F93  mov     eax, r8d                                  
+  0x1809F4F96  shr     rax, 6                                    
+  0x1809F4F9A  lea     rdx, [r12 + rax*8]                        
+  0x1809F4F9E  and     r8d, 0x3f                                 
+  0x1809F4FA2  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x1809F4FA9  nop     dword ptr [rax]                           
+
+1809F4FB0:
+  0x1809F4FB0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x1809F4FB7  mov     rcx, rax                                  
+  0x1809F4FBA  bts     rcx, r8                                   
+  0x1809F4FBE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x1809F4FC7  jne     0x1809f4fb0                               
+
+1809F4FC9:
+  0x1809F4FC9  mov     rax, qword ptr [r13 + 0x20]               
+  0x1809F4FCD  test    byte ptr [rax + 0x135], 1                 
+  0x1809F4FD4  jne     0x1809f4fde                               
+  0x1809F4FD6  mov     rcx, rax                                  
+  0x1809F4FD9  call    0x180243570                                  ; -> sub_243570 (runtime/helper)
+
+1809F4FDE:
+  0x1809F4FDE  mov     r9, qword ptr [rax + 0xc0]                
+  0x1809F4FE5  mov     r9, qword ptr [r9 + 0x48]                 
+  0x1809F4FE9  mov     r8, rbx                                   
+  0x1809F4FEC  lea     rdx, [rbp + 0x10]                         
+  0x1809F4FF0  lea     rcx, [rbx + 8]                            
+  0x1809F4FF4  call    0x180331940                                  ; -> Cysharp.Threading.Tasks.CompilerServices.AsyncUniTaskMethodBuilder$$AwaitOnCompleted<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType> (+1 aliases)
+  0x1809F4FF9  nop                                               
+  0x1809F4FFA  jmp     0x1809f4f4c                               
+  0x1809F4FFF  mov     rcx, qword ptr [rbp + 0xa0]               
+  0x1809F5006  mov     dword ptr [rcx], 0xfffffffe               
+  0x1809F500C  add     rcx, 8                                    
+  0x1809F5010  mov     rdx, qword ptr [rbp + 0xb0]               
+  0x1809F5017  call    0x180331550                                  ; -> sub_331550 (runtime/helper)
+  0x1809F501C  jmp     0x1809f4f4c                               
+
+1809F5021:
+  0x1809F5021  call    0x180246730                                  ; THROW NullReferenceException
+
+1809F5026:
+  0x1809F5026  call    0x180246730                                  ; THROW NullReferenceException

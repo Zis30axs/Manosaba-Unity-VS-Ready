@@ -1,0 +1,73 @@
+====================================================================================================
+FUNCTION RVA 0xB4D100  VA 0x180B4D100  size 0xF1 (241 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$get_CurrentLocale
+  csig   : int32_t WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___get_CurrentLocale (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4D100* method);
+====================================================================================================
+  0x180B4D100  push    rbx                                       
+  0x180B4D102  sub     rsp, 0x20                                 
+  0x180B4D106  cmp     byte ptr [rip + 0x258fc5b], 0                ; data_30DCD68
+  0x180B4D10D  mov     rbx, rcx                                  
+  0x180B4D110  jne     0x180b4d12a                               
+  0x180B4D112  lea     rcx, [rip + 0x2304f77]                       ; TYPE GigaCreation.Essentials.Localization.ILocalizationProvider_TypeInfo
+  0x180B4D119  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D11E  lock or dword ptr [rsp], 0                        
+  0x180B4D123  mov     byte ptr [rip + 0x258fc3e], 1                ; data_30DCD68
+
+180B4D12A:
+  0x180B4D12A  cmp     byte ptr [rip + 0x258fc3a], 0                ; data_30DCD6B
+  0x180B4D131  jne     0x180b4d15c                               
+  0x180B4D133  lea     rcx, [rip + 0x2304f86]                       ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180B4D13A  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D13F  lock or dword ptr [rsp], 0                        
+  0x180B4D144  lea     rcx, [rip + 0x230501d]                       ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D14B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4D150  lock or dword ptr [rsp], 0                        
+  0x180B4D155  mov     byte ptr [rip + 0x258fc0f], 1                ; data_30DCD6B
+
+180B4D15C:
+  0x180B4D15C  mov     r8, qword ptr [rbx + 0x60]                
+  0x180B4D160  test    r8, r8                                    
+  0x180B4D163  jne     0x180b4d1d6                               
+  0x180B4D165  mov     rcx, qword ptr [rip + 0x2304ffc]             ; TYPE GigaCreation.Tools.Service.ServiceLocator_TypeInfo
+  0x180B4D16C  cmp     dword ptr [rcx + 0xe4], r8d               
+  0x180B4D173  jne     0x180b4d17a                               
+  0x180B4D175  call    0x18024ce60                                  ; interface/virtual dispatch resolve
+
+180B4D17A:
+  0x180B4D17A  mov     rdx, qword ptr [rip + 0x2304f3f]             ; METHODINFO Method$GigaCreation.Tools.Service.ServiceLocator.Get<ILocalizationManager>()
+  0x180B4D181  mov     cl, 1                                     
+  0x180B4D183  call    0x180751910                                  ; -> GigaCreation.Tools.Service.ServiceLocator$$Get<object>
+  0x180B4D188  cmp     dword ptr [rip + 0x258c035], 0               ; data_30D91C4
+  0x180B4D18F  mov     r8, rax                                   
+  0x180B4D192  mov     qword ptr [rbx + 0x60], rax               
+  0x180B4D196  je      0x180b4d1d1                               
+  0x180B4D198  lea     r9, [rbx + 0x60]                          
+  0x180B4D19C  shr     r9, 0xc                                   
+  0x180B4D1A0  lea     rcx, [rip + 0x25e73d9]                       ; data_3134580
+  0x180B4D1A7  and     r9d, 0x1fffff                             
+  0x180B4D1AE  mov     eax, r9d                                  
+  0x180B4D1B1  shr     rax, 6                                    
+  0x180B4D1B5  and     r9d, 0x3f                                 
+  0x180B4D1B9  lea     rdx, [rcx + rax*8]                        
+  0x180B4D1BD  prefetchw byte ptr [rdx]                            
+
+180B4D1C0:
+  0x180B4D1C0  mov     rax, qword ptr [rdx]                      
+  0x180B4D1C3  mov     rcx, rax                                  
+  0x180B4D1C6  bts     rcx, r9                                   
+  0x180B4D1CA  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4D1CF  jne     0x180b4d1c0                               
+
+180B4D1D1:
+  0x180B4D1D1  test    r8, r8                                    
+  0x180B4D1D4  je      0x180b4d1ec                               
+
+180B4D1D6:
+  0x180B4D1D6  mov     rdx, qword ptr [rip + 0x2304eb3]             ; TYPE GigaCreation.Essentials.Localization.ILocalizationProvider_TypeInfo
+  0x180B4D1DD  mov     ecx, 1                                    
+  0x180B4D1E2  add     rsp, 0x20                                 
+  0x180B4D1E6  pop     rbx                                       
+  0x180B4D1E7  jmp     0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180B4D1EC:
+  0x180B4D1EC  call    0x180246730                                  ; THROW NullReferenceException

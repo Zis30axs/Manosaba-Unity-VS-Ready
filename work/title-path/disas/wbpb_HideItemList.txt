@@ -1,0 +1,232 @@
+====================================================================================================
+FUNCTION RVA 0xB4F490  VA 0x180B4F490  size 0x352 (850 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$HideItemList
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___HideItemList (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4F490* method);
+====================================================================================================
+  0x180B4F490  mov     qword ptr [rsp + 0x10], rbx               
+  0x180B4F495  mov     qword ptr [rsp + 0x20], rsi               
+  0x180B4F49A  push    rdi                                       
+  0x180B4F49B  push    r14                                       
+  0x180B4F49D  push    r15                                       
+  0x180B4F49F  sub     rsp, 0x60                                 
+  0x180B4F4A3  mov     r15, rcx                                  
+  0x180B4F4A6  cmp     byte ptr [rip + 0x258d8ca], 0                ; data_30DCD77
+  0x180B4F4AD  jne     0x180b4f50b                               
+  0x180B4F4AF  lea     rcx, [rip + 0x23024da]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<WitchBookItemButton>.Dispose()
+  0x180B4F4B6  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F4BB  lock or dword ptr [rsp], 0                        
+  0x180B4F4C0  lea     rcx, [rip + 0x2302499]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<WitchBookItemButton>.MoveNext()
+  0x180B4F4C7  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F4CC  lock or dword ptr [rsp], 0                        
+  0x180B4F4D1  lea     rcx, [rip + 0x2302480]                       ; METHODINFO Method$System.Collections.Generic.List.Enumerator<WitchBookItemButton>.get_Current()
+  0x180B4F4D8  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F4DD  lock or dword ptr [rsp], 0                        
+  0x180B4F4E2  lea     rcx, [rip + 0x2302c67]                       ; TYPE System.IDisposable_TypeInfo
+  0x180B4F4E9  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F4EE  lock or dword ptr [rsp], 0                        
+  0x180B4F4F3  lea     rcx, [rip + 0x230247e]                       ; METHODINFO Method$System.Collections.Generic.List<WitchBookItemButton>.GetEnumerator()
+  0x180B4F4FA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F4FF  lock or dword ptr [rsp], 0                        
+  0x180B4F504  mov     byte ptr [rip + 0x258d86c], 1                ; data_30DCD77
+
+180B4F50B:
+  0x180B4F50B  mov     r8, qword ptr [r15 + 0xa8]                
+  0x180B4F512  test    r8, r8                                    
+  0x180B4F515  je      0x180b4f525                               
+  0x180B4F517  xor     ecx, ecx                                  
+  0x180B4F519  mov     rdx, qword ptr [rip + 0x2302c30]             ; TYPE System.IDisposable_TypeInfo
+  0x180B4F520  call    0x1800022e0                                  ; interface call thunk (get_Count sites)
+
+180B4F525:
+  0x180B4F525  mov     qword ptr [r15 + 0xa8], 0                 
+  0x180B4F530  cmp     dword ptr [rip + 0x2589c8d], 0               ; data_30D91C4
+  0x180B4F537  je      0x180b4f581                               
+  0x180B4F539  lea     r8, [r15 + 0xa8]                          
+  0x180B4F540  shr     r8, 0xc                                   
+  0x180B4F544  and     r8d, 0x1fffff                             
+  0x180B4F54B  mov     eax, r8d                                  
+  0x180B4F54E  shr     rax, 6                                    
+  0x180B4F552  lea     rcx, [rip + 0x25e5027]                       ; data_3134580
+  0x180B4F559  lea     rdx, [rcx + rax*8]                        
+  0x180B4F55D  and     r8d, 0x3f                                 
+  0x180B4F561  prefetchw byte ptr [rdx]                            
+  0x180B4F564  nop     dword ptr [rax]                           
+  0x180B4F568  nop     dword ptr [rax + rax]                     
+
+180B4F570:
+  0x180B4F570  mov     rax, qword ptr [rdx]                      
+  0x180B4F573  mov     rcx, rax                                  
+  0x180B4F576  bts     rcx, r8                                   
+  0x180B4F57A  lock cmpxchg qword ptr [rdx], rcx                      
+  0x180B4F57F  jne     0x180b4f570                               
+
+180B4F581:
+  0x180B4F581  cmp     qword ptr [r15 + 0x80], 0                 
+  0x180B4F589  je      0x180b4f777                               
+  0x180B4F58F  mov     r8, qword ptr [rip + 0x23023e2]              ; METHODINFO Method$System.Collections.Generic.List<WitchBookItemButton>.GetEnumerator()
+  0x180B4F596  lea     rdx, [rsp + 0x28]                         
+  0x180B4F59B  mov     rcx, qword ptr [r15 + 0x80]               
+  0x180B4F5A2  call    0x18085a010                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$GetEnumerator
+  0x180B4F5A7  movups  xmm0, xmmword ptr [rsp + 0x28]            
+  0x180B4F5AC  movups  xmmword ptr [rsp + 0x40], xmm0            
+  0x180B4F5B1  movsd   xmm1, qword ptr [rsp + 0x38]              
+  0x180B4F5B7  movsd   qword ptr [rsp + 0x50], xmm1              
+  0x180B4F5BD  mov     qword ptr [rsp + 0x28], 0                 
+  0x180B4F5C6  lea     rax, [rsp + 0x40]                         
+  0x180B4F5CB  mov     qword ptr [rsp + 0x30], rax               
+
+180B4F5D0:
+  0x180B4F5D0  mov     rdx, qword ptr [rip + 0x2302389]             ; METHODINFO Method$System.Collections.Generic.List.Enumerator<WitchBookItemButton>.MoveNext()
+  0x180B4F5D7  lea     rcx, [rsp + 0x40]                         
+  0x180B4F5DC  call    0x180c83a60                                  ; -> System.Collections.Generic.List.Enumerator<__Il2CppFullySharedGenericType>$$MoveNext
+  0x180B4F5E1  test    al, al                                    
+  0x180B4F5E3  je      0x180b4f76b                               
+  0x180B4F5E9  mov     r8, qword ptr [rip + 0x2302368]              ; METHODINFO Method$System.Collections.Generic.List.Enumerator<WitchBookItemButton>.get_Current()
+  0x180B4F5F0  lea     rdx, [rsp + 0x80]                         
+  0x180B4F5F8  lea     rcx, [rsp + 0x40]                         
+  0x180B4F5FD  call    0x180331e60                                  ; -> System.Collections.Generic.Dictionary.Enumerator<__Il2CppFullySharedGenericType, __Il2CppFullySharedGenericType>$$get_Current (+4 aliases)
+  0x180B4F602  mov     rdi, qword ptr [rsp + 0x80]               
+  0x180B4F60A  test    rdi, rdi                                  
+  0x180B4F60D  je      0x180b4f7d7                               
+  0x180B4F613  mov     rbx, qword ptr [rdi + 0x20]               
+  0x180B4F617  mov     rsi, qword ptr [r15 + 0x38]               
+  0x180B4F61B  test    rbx, rbx                                  
+  0x180B4F61E  je      0x180b4f7d2                               
+  0x180B4F624  cmp     byte ptr [rip + 0x2599716], 0                ; data_30E8D41
+  0x180B4F62B  jne     0x180b4f656                               
+  0x180B4F62D  lea     rcx, [rip + 0x231c1ac]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<Transform>()
+  0x180B4F634  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F639  lock or dword ptr [rsp], 0                        
+  0x180B4F63E  lea     rcx, [rip + 0x2309463]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.Marshal<Transform>()
+  0x180B4F645  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F64A  lock or dword ptr [rsp], 0                        
+  0x180B4F64F  mov     byte ptr [rip + 0x25996eb], 1                ; data_30E8D41
+
+180B4F656:
+  0x180B4F656  mov     r14, qword ptr [rbx + 0x10]               
+  0x180B4F65A  test    r14, r14                                  
+  0x180B4F65D  je      0x180b4f7c8                               
+  0x180B4F663  mov     rcx, qword ptr [rip + 0x230943e]             ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.Marshal<Transform>()
+  0x180B4F66A  cmp     qword ptr [rcx + 0x38], 0                 
+  0x180B4F66F  jne     0x180b4f676                               
+  0x180B4F671  call    0x1802435f0                                  ; -> sub_2435F0 (runtime/helper)
+
+180B4F676:
+  0x180B4F676  test    rsi, rsi                                  
+  0x180B4F679  je      0x180b4f681                               
+  0x180B4F67B  mov     rbx, qword ptr [rsi + 0x10]               
+  0x180B4F67F  jmp     0x180b4f683                               
+
+180B4F681:
+  0x180B4F681  xor     ebx, ebx                                  
+
+180B4F683:
+  0x180B4F683  mov     rax, qword ptr [rip + 0x2599776]             ; data_30E8E00
+  0x180B4F68A  test    rax, rax                                  
+  0x180B4F68D  jne     0x180b4f6ab                               
+  0x180B4F68F  lea     rcx, [rip + 0x1aba76a]                       ; data_2609E00
+  0x180B4F696  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180B4F69B  test    rax, rax                                  
+  0x180B4F69E  je      0x180b4f78d                               
+  0x180B4F6A4  mov     qword ptr [rip + 0x2599755], rax             ; data_30E8E00
+
+180B4F6AB:
+  0x180B4F6AB  xor     r8d, r8d                                  
+  0x180B4F6AE  mov     rdx, rbx                                  
+  0x180B4F6B1  mov     rcx, r14                                  
+  0x180B4F6B4  call    rax                                       
+  0x180B4F6B6  mov     rbx, qword ptr [rdi + 0x20]               
+  0x180B4F6BA  cmp     byte ptr [rip + 0x2587e67], 0                ; data_30D7528
+  0x180B4F6C1  jne     0x180b4f6db                               
+  0x180B4F6C3  lea     rcx, [rip + 0x2303c3e]                       ; TYPE UnityEngine.Vector2_TypeInfo
+  0x180B4F6CA  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F6CF  lock or dword ptr [rsp], 0                        
+  0x180B4F6D4  mov     byte ptr [rip + 0x2587e4d], 1                ; data_30D7528
+
+180B4F6DB:
+  0x180B4F6DB  mov     rax, qword ptr [rip + 0x2303c26]             ; TYPE UnityEngine.Vector2_TypeInfo
+  0x180B4F6E2  mov     rcx, qword ptr [rax + 0xb8]               
+  0x180B4F6E9  movss   xmm1, dword ptr [rcx + 4]                 
+  0x180B4F6EE  test    rbx, rbx                                  
+  0x180B4F6F1  je      0x180b4f7c3                               
+  0x180B4F6F7  movss   xmm0, dword ptr [rcx]                     
+  0x180B4F6FB  unpcklps xmm0, xmm1                                
+  0x180B4F6FE  movsd   qword ptr [rsp + 0x90], xmm0              
+  0x180B4F707  cmp     byte ptr [rip + 0x2599592], 0                ; data_30E8CA0
+  0x180B4F70E  jne     0x180b4f728                               
+  0x180B4F710  lea     rcx, [rip + 0x231bc11]                       ; METHODINFO Method$UnityEngine.Object.MarshalledUnityObject.MarshalNotNull<RectTransform>()
+  0x180B4F717  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4F71C  lock or dword ptr [rsp], 0                        
+  0x180B4F721  mov     byte ptr [rip + 0x2599578], 1                ; data_30E8CA0
+
+180B4F728:
+  0x180B4F728  mov     rdi, qword ptr [rbx + 0x10]               
+  0x180B4F72C  test    rdi, rdi                                  
+  0x180B4F72F  je      0x180b4f7b9                               
+  0x180B4F735  mov     rax, qword ptr [rip + 0x25995a4]             ; data_30E8CE0
+  0x180B4F73C  test    rax, rax                                  
+  0x180B4F73F  jne     0x180b4f759                               
+  0x180B4F741  lea     rcx, [rip + 0x1aba328]                       ; data_2609A70
+  0x180B4F748  call    0x18025e5a0                                  ; -> sub_25E5A0 (runtime/helper)
+  0x180B4F74D  test    rax, rax                                  
+  0x180B4F750  je      0x180b4f7a3                               
+  0x180B4F752  mov     qword ptr [rip + 0x2599587], rax             ; data_30E8CE0
+
+180B4F759:
+  0x180B4F759  lea     rdx, [rsp + 0x90]                         
+  0x180B4F761  mov     rcx, rdi                                  
+  0x180B4F764  call    rax                                       
+  0x180B4F766  jmp     0x180b4f5d0                               
+
+180B4F76B:
+  0x180B4F76B  jmp     0x180b4f777                               
+  0x180B4F76D  mov     rcx, qword ptr [rsp + 0x28]               
+  0x180B4F772  test    rcx, rcx                                  
+  0x180B4F775  jne     0x180b4f7dd                               
+
+180B4F777:
+  0x180B4F777  lea     r11, [rsp + 0x60]                         
+  0x180B4F77C  mov     rbx, qword ptr [r11 + 0x28]               
+  0x180B4F780  mov     rsi, qword ptr [r11 + 0x38]               
+  0x180B4F784  mov     rsp, r11                                  
+  0x180B4F787  pop     r15                                       
+  0x180B4F789  pop     r14                                       
+  0x180B4F78B  pop     rdi                                       
+  0x180B4F78C  ret                                               
+
+180B4F78D:
+  0x180B4F78D  lea     rcx, [rip + 0x1aba66c]                       ; data_2609E00
+  0x180B4F794  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180B4F799  xor     edx, edx                                  
+  0x180B4F79B  mov     rcx, rax                                  
+  0x180B4F79E  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+
+180B4F7A3:
+  0x180B4F7A3  lea     rcx, [rip + 0x1aba2c6]                       ; data_2609A70
+  0x180B4F7AA  call    0x18025e240                                  ; -> sub_25E240 (runtime/helper)
+  0x180B4F7AF  xor     edx, edx                                  
+  0x180B4F7B1  mov     rcx, rax                                  
+  0x180B4F7B4  call    0x18025bfd0                                  ; -> sub_25BFD0 (runtime/helper)
+
+180B4F7B9:
+  0x180B4F7B9  xor     edx, edx                                  
+  0x180B4F7BB  mov     rcx, rbx                                  
+  0x180B4F7BE  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+
+180B4F7C3:
+  0x180B4F7C3  call    0x180246730                                  ; THROW NullReferenceException
+
+180B4F7C8:
+  0x180B4F7C8  xor     edx, edx                                  
+  0x180B4F7CA  mov     rcx, rbx                                  
+  0x180B4F7CD  call    0x18208dec0                                  ; -> UnityEngine.Bindings.ThrowHelper$$ThrowNullReferenceException
+
+180B4F7D2:
+  0x180B4F7D2  call    0x180246730                                  ; THROW NullReferenceException
+
+180B4F7D7:
+  0x180B4F7D7  call    0x180246730                                  ; THROW NullReferenceException
+  0x180B4F7DC  nop                                               
+
+180B4F7DD:
+  0x180B4F7DD  call    0x180246720                                  ; -> sub_246720 (runtime/helper)

@@ -21,6 +21,7 @@ The runner should have:
 - Unity 6000.0.48f1 with Windows/IL2CPP support and a valid license.
 - Python available as `python`.
 - PowerShell 7.
+- The checkout's tracked content recipes; Unity gates reapply and verify generated SpriteSkin data before building or entering Play Mode.
 - The ignored reconstruction payload seeded in the runner workspace. Checkout uses `clean: false`
   so GitHub Actions will not delete it between runs.
 

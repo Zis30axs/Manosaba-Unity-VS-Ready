@@ -1,0 +1,15 @@
+====================================================================================================
+FUNCTION RVA 0xB4E500  VA 0x180B4E500  size 0x1D (29 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$GetActiveEvidences
+  csig   : System_Collections_Generic_IReadOnlyCollection_IdVersionPair__o* WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___GetActiveEvidences (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4E500* method);
+====================================================================================================
+  0x180B4E500  sub     rsp, 0x28                                 
+  0x180B4E504  mov     rcx, qword ptr [rcx + 0x48]               
+  0x180B4E508  test    rcx, rcx                                  
+  0x180B4E50B  je      0x180b4e518                               
+  0x180B4E50D  xor     edx, edx                                  
+  0x180B4E50F  add     rsp, 0x28                                 
+  0x180B4E513  jmp     0x1803a2300                                  ; -> WitchTrials.Models.VersionedState$$get_ActiveItems
+
+180B4E518:
+  0x180B4E518  call    0x180246730                                  ; THROW NullReferenceException

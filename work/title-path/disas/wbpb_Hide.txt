@@ -1,0 +1,35 @@
+====================================================================================================
+FUNCTION RVA 0xB4E1C0  VA 0x180B4E1C0  size 0x64 (100 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$Hide
+  csig   : void WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___Hide (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, const MethodInfo_B4E1C0* method);
+====================================================================================================
+  0x180B4E1C0  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4E1C5  push    rdi                                       
+  0x180B4E1C6  sub     rsp, 0x20                                 
+  0x180B4E1CA  mov     rdi, rdx                                  
+  0x180B4E1CD  mov     rbx, rcx                                  
+  0x180B4E1D0  test    rcx, rcx                                  
+  0x180B4E1D3  je      0x180b4e21f                               
+  0x180B4E1D5  mov     rcx, qword ptr [rcx + 0x20]               
+  0x180B4E1D9  test    rcx, rcx                                  
+  0x180B4E1DC  je      0x180b4e21f                               
+  0x180B4E1DE  xor     r8d, r8d                                  
+  0x180B4E1E1  xor     edx, edx                                  
+  0x180B4E1E3  call    0x182060c20                                  ; -> UnityEngine.Behaviour$$set_enabled
+  0x180B4E1E8  mov     rcx, qword ptr [rbx + 0x28]               
+  0x180B4E1EC  test    rcx, rcx                                  
+  0x180B4E1EF  je      0x180b4e21f                               
+  0x180B4E1F1  xor     r8d, r8d                                  
+  0x180B4E1F4  xor     edx, edx                                  
+  0x180B4E1F6  call    0x182060c20                                  ; -> UnityEngine.Behaviour$$set_enabled
+  0x180B4E1FB  mov     rax, qword ptr [rdi + 0x20]               
+  0x180B4E1FF  mov     rcx, rbx                                  
+  0x180B4E202  mov     rdx, qword ptr [rax + 0xc0]               
+  0x180B4E209  mov     rdx, qword ptr [rdx + 0xa8]               
+  0x180B4E210  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4E215  add     rsp, 0x20                                 
+  0x180B4E219  pop     rdi                                       
+  0x180B4E21A  jmp     0x180b4f490                                  ; -> WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$HideItemList
+
+180B4E21F:
+  0x180B4E21F  call    0x180246730                                  ; THROW NullReferenceException

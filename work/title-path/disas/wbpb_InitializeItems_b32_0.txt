@@ -1,0 +1,41 @@
+====================================================================================================
+FUNCTION RVA 0xB4F9F0  VA 0x180B4F9F0  size 0x83 (131 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$<InitializeItems>b__32_0
+  csig   : bool WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object____InitializeItems_b__32_0 (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, WitchTrials_Models_VersionedItem_TItem__o* versioned, const MethodInfo_B4F9F0* method);
+====================================================================================================
+  0x180B4F9F0  mov     qword ptr [rsp + 8], rbx                  
+  0x180B4F9F5  push    rdi                                       
+  0x180B4F9F6  sub     rsp, 0x20                                 
+  0x180B4F9FA  mov     r9, rdx                                   
+  0x180B4F9FD  mov     rbx, rcx                                  
+  0x180B4FA00  test    rdx, rdx                                  
+  0x180B4FA03  je      0x180b4fa6e                               
+  0x180B4FA05  mov     rax, qword ptr [r8 + 0x20]                
+  0x180B4FA09  mov     rcx, r9                                   
+  0x180B4FA0C  mov     rdx, qword ptr [rax + 0xc0]               
+  0x180B4FA13  mov     rdx, qword ptr [rdx + 0x188]              
+  0x180B4FA1A  call    0x1809d81f0                                  ; -> WitchTrials.Models.VersionedItem<__Il2CppFullySharedGenericType>$$get_IdVersionPair
+  0x180B4FA1F  mov     rbx, qword ptr [rbx + 0x48]               
+  0x180B4FA23  mov     rdi, rax                                  
+  0x180B4FA26  test    rbx, rbx                                  
+  0x180B4FA29  je      0x180b4fa6e                               
+  0x180B4FA2B  cmp     byte ptr [rip + 0x2589b2d], 0                ; data_30D955F
+  0x180B4FA32  jne     0x180b4fa4c                               
+  0x180B4FA34  lea     rcx, [rip + 0x230b1b5]                       ; METHODINFO Method$System.Collections.Generic.List<IdVersionPair>.Contains()
+  0x180B4FA3B  call    0x180250fb0                                  ; [boilerplate] il2cpp_codegen_initialize_runtime_metadata
+  0x180B4FA40  lock or dword ptr [rsp], 0                        
+  0x180B4FA45  mov     byte ptr [rip + 0x2589b13], 1                ; data_30D955F
+
+180B4FA4C:
+  0x180B4FA4C  mov     rcx, qword ptr [rbx + 0x10]               
+  0x180B4FA50  test    rcx, rcx                                  
+  0x180B4FA53  je      0x180b4fa6e                               
+  0x180B4FA55  mov     r8, qword ptr [rip + 0x230b194]              ; METHODINFO Method$System.Collections.Generic.List<IdVersionPair>.Contains()
+  0x180B4FA5C  mov     rdx, rdi                                  
+  0x180B4FA5F  mov     rbx, qword ptr [rsp + 0x30]               
+  0x180B4FA64  add     rsp, 0x20                                 
+  0x180B4FA68  pop     rdi                                       
+  0x180B4FA69  jmp     0x180859110                                  ; -> System.Collections.Generic.List<__Il2CppFullySharedGenericType>$$Contains
+
+180B4FA6E:
+  0x180B4FA6E  call    0x180246730                                  ; THROW NullReferenceException

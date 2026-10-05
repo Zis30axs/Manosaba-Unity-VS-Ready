@@ -1,0 +1,95 @@
+====================================================================================================
+FUNCTION RVA 0xB4EA50  VA 0x180B4EA50  size 0x164 (356 bytes)
+  managed: WitchTrials.Views.WitchBookPageBase<__Il2CppFullySharedGenericType, object>$$DeserializeState
+  csig   : Naninovel_UniTask_o WitchTrials_Views_WitchBookPageBase___Il2CppFullySharedGenericType__object___DeserializeState (WitchTrials_Views_WitchBookPageBase_TItem__TState__o* __this, Naninovel_GameStateMap_o* stateMap, const MethodInfo_B4EA50* method);
+====================================================================================================
+  0x180B4EA50  push    rbx                                       
+  0x180B4EA52  sub     rsp, 0x60                                 
+  0x180B4EA56  mov     eax, dword ptr [rip + 0x258a768]             ; data_30D91C4
+  0x180B4EA5C  lea     rbx, [rip + 0x259f83d]                       ; data_30EE2A0
+  0x180B4EA63  mov     qword ptr [rsp + 0x20], 0                 
+  0x180B4EA6C  xorps   xmm0, xmm0                                
+  0x180B4EA6F  xorps   xmm1, xmm1                                
+  0x180B4EA72  mov     r11, r8                                   
+  0x180B4EA75  mov     r10, rdx                                  
+  0x180B4EA78  mov     r9, rcx                                   
+  0x180B4EA7B  movdqu  xmmword ptr [rsp + 0x38], xmm0            
+  0x180B4EA81  movdqu  xmmword ptr [rsp + 0x48], xmm1            
+  0x180B4EA87  movups  xmmword ptr [rsp + 0x28], xmm0            
+  0x180B4EA8C  test    eax, eax                                  
+  0x180B4EA8E  je      0x180b4eadf                               
+  0x180B4EA90  lea     r8, [rsp + 0x28]                          
+  0x180B4EA95  shr     r8, 0xc                                   
+  0x180B4EA99  and     r8d, 0x1fffff                             
+  0x180B4EAA0  mov     eax, r8d                                  
+  0x180B4EAA3  shr     rax, 6                                    
+  0x180B4EAA7  and     r8d, 0x3f                                 
+  0x180B4EAAB  lea     rdx, [rbx + rax*8]                        
+  0x180B4EAAF  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180B4EAB6  nop     word ptr [rax + rax]                      
+
+180B4EAC0:
+  0x180B4EAC0  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180B4EAC7  mov     rcx, rax                                  
+  0x180B4EACA  bts     rcx, r8                                   
+  0x180B4EACE  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180B4EAD7  jne     0x180b4eac0                               
+  0x180B4EAD9  mov     eax, dword ptr [rip + 0x258a6e5]             ; data_30D91C4
+
+180B4EADF:
+  0x180B4EADF  mov     qword ptr [rsp + 0x40], r9                
+  0x180B4EAE4  test    eax, eax                                  
+  0x180B4EAE6  je      0x180b4eb2f                               
+  0x180B4EAE8  lea     r8, [rsp + 0x40]                          
+  0x180B4EAED  shr     r8, 0xc                                   
+  0x180B4EAF1  and     r8d, 0x1fffff                             
+  0x180B4EAF8  mov     eax, r8d                                  
+  0x180B4EAFB  shr     rax, 6                                    
+  0x180B4EAFF  and     r8d, 0x3f                                 
+  0x180B4EB03  lea     rdx, [rbx + rax*8]                        
+  0x180B4EB07  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180B4EB0E  nop                                               
+
+180B4EB10:
+  0x180B4EB10  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180B4EB17  mov     rcx, rax                                  
+  0x180B4EB1A  bts     rcx, r8                                   
+  0x180B4EB1E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180B4EB27  jne     0x180b4eb10                               
+  0x180B4EB29  mov     eax, dword ptr [rip + 0x258a695]             ; data_30D91C4
+
+180B4EB2F:
+  0x180B4EB2F  mov     qword ptr [rsp + 0x38], r10               
+  0x180B4EB34  test    eax, eax                                  
+  0x180B4EB36  je      0x180b4eb79                               
+  0x180B4EB38  lea     r8, [rsp + 0x38]                          
+  0x180B4EB3D  shr     r8, 0xc                                   
+  0x180B4EB41  and     r8d, 0x1fffff                             
+  0x180B4EB48  mov     eax, r8d                                  
+  0x180B4EB4B  shr     rax, 6                                    
+  0x180B4EB4F  and     r8d, 0x3f                                 
+  0x180B4EB53  lea     rdx, [rbx + rax*8]                        
+  0x180B4EB57  prefetchw byte ptr [rdx + 0x462e0]                  
+  0x180B4EB5E  nop                                               
+
+180B4EB60:
+  0x180B4EB60  mov     rax, qword ptr [rdx + 0x462e0]            
+  0x180B4EB67  mov     rcx, rax                                  
+  0x180B4EB6A  bts     rcx, r8                                   
+  0x180B4EB6E  lock cmpxchg qword ptr [rdx + 0x462e0], rcx            
+  0x180B4EB77  jne     0x180b4eb60                               
+
+180B4EB79:
+  0x180B4EB79  mov     rax, qword ptr [r11 + 0x20]               
+  0x180B4EB7D  lea     rdx, [rsp + 0x20]                         
+  0x180B4EB82  mov     dword ptr [rsp + 0x20], 0xffffffff        
+  0x180B4EB8A  lea     rcx, [rsp + 0x28]                         
+  0x180B4EB8F  mov     r8, qword ptr [rax + 0xc0]                
+  0x180B4EB96  mov     r8, qword ptr [r8 + 0x138]                
+  0x180B4EB9D  call    0x180331870                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$Start<__Il2CppFullySharedGenericType> (+5 aliases)
+  0x180B4EBA2  xor     edx, edx                                  
+  0x180B4EBA4  lea     rcx, [rsp + 0x28]                         
+  0x180B4EBA9  call    0x1804d1540                                  ; -> Naninovel.Async.CompilerServices.AsyncUniTaskMethodBuilder$$get_Task
+  0x180B4EBAE  add     rsp, 0x60                                 
+  0x180B4EBB2  pop     rbx                                       
+  0x180B4EBB3  ret                                               
