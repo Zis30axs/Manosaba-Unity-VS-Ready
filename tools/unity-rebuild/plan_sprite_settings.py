@@ -23,7 +23,8 @@ this padding policy. DicedSpriteAtlasBuilder creates atlas reference lists which
 What it does
 ------------
 For each IMPORTED Sprite of the import ledger whose crop exists: pixels per unit, pivot, border (L, B, R, T), rect size,
-mesh type (m_RD.settingsRaw bit 6: 1 = Full Rect), and the settings of the texture the pixels live in (the sprite's own
+mesh type (m_RD.settingsRaw bit 6; the key "full_rect_mesh" holds that bit, and bit 6 = 1 is Tight, 0 is FullRect: shipped
+sprites with 0 all have 4 vertices), and the settings of the texture the pixels live in (the sprite's own
 texture, or its SpriteAtlas page when packed): format, filter, wrap, mip count, colour space.  Written to
 out/unity/sprite_settings_plan.json, keyed by asset path, which Assets/Editor/SpriteImportPolicy.cs applies.
 

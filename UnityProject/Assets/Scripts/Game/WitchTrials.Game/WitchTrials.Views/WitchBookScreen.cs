@@ -402,6 +402,9 @@ namespace WitchTrials.Views
     	[Il2CppDummyDll.FieldOffset(Offset = "0xE8")]
     	private IDisposable _cancelEventBlocker;
 
+    	// Not part of the shipped class: while the book is open every AudioSource is paused (see WitchBookAudioPause).
+    	private IDisposable _audioPause;
+
     	[Token(Token = "0x400056B")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0xF0")]
     	private CompositeDisposable _disposables;
@@ -578,6 +581,8 @@ namespace WitchTrials.Views
     		}
     		_currentPage = (RestrictionCategories != null && RestrictionCategories.Count != 0) ? RestrictionCategories[0] : WitchBookCategory.Clue;
     		InitializePages();
+    		_audioPause?.Dispose();
+    		_audioPause = WitchBookAudioPause.Acquire();
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x37A670
@@ -815,6 +820,8 @@ namespace WitchTrials.Views
     	[Address(RVA = "0x37B8E0", Offset = "0x37A2E0", VA = "0x18037B8E0")]
     	private void Dispose()
     	{
+    		_audioPause?.Dispose();
+    		_audioPause = null;
     		_cancelEventBlocker?.Dispose();
     		_cancelEventBlocker = null;
     		if (_disposables != null)

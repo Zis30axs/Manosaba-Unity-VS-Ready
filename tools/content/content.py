@@ -8,6 +8,7 @@ from contextlib import contextmanager
 import csv
 from datetime import datetime, timedelta, timezone
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -133,28 +134,41 @@ def refresh_plans():
         cached.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(OUT / name, cached)
         recorded.write_text(current, encoding="utf-8")
+        # The evidence manifest records each snapshot file's hash and restore_evidence() rejects a mismatch, so the
+        # regenerated plan must be re-recorded or every later gate stops with "evidence hash mismatch".
+        run([sys.executable, PIPELINE / "import_source_cache.py", "--res-root", RES, "--snapshot-only"])
 
 
 _REBUILT_ASSETS = {}
+# TMP assets the importer defers and PrefabBuilder regenerates; a prefab whose labels reference one is rebuilt, not patched.
+DEFERRED_TMP_ASSETS = {
+    "Assets/#WitchTrials/Fonts/Common/TrialsClockFont.asset",
+    "Assets/#WitchTrials/Fonts/Common/DebatePrinterStyleSheet.asset",
+}
 
 
 def assert_rebuilt(batch_jobs, result):
-    """An Editor still running a pre-pull bridge patches instead of rebuilding and reports OK;
-    acknowledging that would mark Timeline/AnimationClip prefabs converted while they are stale."""
+    """Reject a stale Editor that patched a prefab whose recipe requires generated sub-assets."""
     expected = []
     for job in batch_jobs:
         if job.get("category") != "PREFAB" or not job.get("rebuild"):
             continue
         plan = job["plan"]
         if plan not in _REBUILT_ASSETS:
-            _REBUILT_ASSETS[plan] = {j["asset_path"] for j in read_json(REPO / plan, {}).get("jobs", [])
-                                     if any(o.get("type") == "AnimationClip" for o in j.get("objects", []))}
+            _REBUILT_ASSETS[plan] = {
+                j["asset_path"] for j in read_json(REPO / plan, {}).get("jobs", [])
+                if any(o.get("type") == "AnimationClip" for o in j.get("objects", [])) or
+                   j.get("asset_path", "").replace("\\", "/").endswith(
+                       ("/Prefabs/General/PerspectiveStage/Court.prefab",
+                        "/Prefabs/General/PerspectiveStage/Court_Final.prefab")) or
+                   any(str(v).replace("\\", "/") in DEFERRED_TMP_ASSETS for v in j.get("references", {}).values())
+            }
         if job["asset_path"] in _REBUILT_ASSETS[plan]:
             expected.append(job["source"])
     statuses = {j.get("source"): j.get("status") for j in result.get("jobs", [])}
     missing = [source for source in expected if statuses.get(source) != "REBUILT"]
     if missing:
-        raise RuntimeError(f"Unity patched instead of rebuilding {len(missing)} Timeline/AnimationClip prefab sources "
+        raise RuntimeError(f"Unity patched instead of rebuilding {len(missing)} generated-subasset prefab sources "
                            f"(first: {missing[0]}); let the Editor finish compiling the pulled converters, then rerun sync")
 
 
@@ -329,8 +343,55 @@ def ps_script(name, *args):
     return [executable, "-NoProfile", "-File", PIPELINE / name, *args]
 
 
+# The ObjectionCutIn Timelines play two glass sounds, but the shared dump lacks both: Crack_01 has no row in
+# res/_index.csv or the resource map, and Crack_02 is SOURCE_MISSING in older imports.  They are extracted by
+# identity (bundle + path id) straight from the cached bundle; PrefabBuilder binds them by the same path ids.
+CUTIN_AUDIO_BUNDLE = "naninovel-spawn_assets_all.bundle"
+CUTIN_AUDIO_FOLDER = "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/Spawn/CutIn"
+CUTIN_AUDIO = {4370497403900473225: "Crack_01", -3434779548957938459: "Crack_02"}
+
+
+def ensure_cutin_audio():
+    """Write the cut-in glass sounds into GameContent when absent; return their project paths (all of them)."""
+    targets = {path_id: f"{CUTIN_AUDIO_FOLDER}/ObjectionCutIn_{name}.ogg" for path_id, name in CUTIN_AUDIO.items()}
+    missing = {path_id: path for path_id, path in targets.items() if not (PROJECT / path).is_file()}
+    if missing:
+        bundle = RES / ".imported-source/manosaba_Data/StreamingAssets/aa/StandaloneWindows64" / CUTIN_AUDIO_BUNDLE
+        if not bundle.is_file():
+            raise FileNotFoundError(f"cached bundle {bundle} is missing; run the content import first")
+        import io
+        import soundfile
+        import UnityPy
+        # The existing extractor owns the Vorbis writer (it needs a large-stack thread on Windows).
+        spec = importlib.util.spec_from_file_location("manosaba_existing_extractor", REPO / "work/extract_res.py")
+        extractor = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(extractor)
+        written = set()
+        for obj in UnityPy.load(str(bundle)).objects:
+            if obj.type.name != "AudioClip" or obj.path_id not in missing:
+                continue
+            clip = obj.read()
+            if clip.m_Name != CUTIN_AUDIO[obj.path_id]:
+                raise RuntimeError(f"{bundle.name}: path id {obj.path_id} is {clip.m_Name!r}, expected {CUTIN_AUDIO[obj.path_id]!r}")
+            samples = clip.samples
+            if len(samples) != 1:
+                raise RuntimeError(f"{clip.m_Name}: expected one decoded sample, got {len(samples)}")
+            data, rate = soundfile.read(io.BytesIO(next(iter(samples.values()))), dtype="float32", always_2d=True)
+            destination = PROJECT / missing[obj.path_id]
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            partial = destination.with_name(destination.name + ".partial")
+            extractor.write_ogg(str(partial), data, rate)
+            partial.replace(destination)
+            written.add(obj.path_id)
+        if written != set(missing):
+            raise RuntimeError(f"{bundle.name}: cut-in audio not found for path ids {sorted(set(missing) - written)}")
+    return sorted(targets.values())
+
+
 def apply_unity(jobs, import_paths, build=False, export=False, timeout=1800,
                 setup_addressables=False, addressables_plan="", ensure_curtain_skin=False):
+    # Every Unity run (sync, build, setup) sees the cut-in sounds and imports them with the other leaf assets.
+    import_paths = [*import_paths, *ensure_cutin_audio()]
     BRIDGE.mkdir(parents=True, exist_ok=True)
     request_id = uuid.uuid4().hex
     request = {"id": request_id, "expiresUtc": (datetime.now(timezone.utc) + timedelta(seconds=timeout)).isoformat(),

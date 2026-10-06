@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
@@ -239,16 +240,24 @@ namespace GigaCreation.NaninovelExtender.Effects
     	{
     		[Token(Token = "0x6000049")]
     		[Address(RVA = "0xD0E4D0", Offset = "0xD0CED0", VA = "0x180D0E4D0")]
+    		// RECONSTRUCTED | Confidence: A | RVA: 0xD0E4D0 -- lazily caches the Naninovel camera (_camera +0x68).
     		get
     		{
-    			return null;
+    			if (_camera == null)
+    			{
+    				_camera = Engine.GetServiceOrErr<ICameraManager>().Camera;
+    			}
+    			return _camera;
     		}
     	}
 
     	[Token(Token = "0x600004A")]
     	[Address(RVA = "0xD0E5C0", Offset = "0xD0CFC0", VA = "0x180D0E5C0")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD0E5C0 -- `_contentCanvasGroup.alpha = 0` (tail jump to CanvasGroup.set_alpha): the text starts
+    	// invisible and AwaitSpawn fades it in.  The generated prefab stores alpha 1, which is why BAD END used to appear at once.
     	private void Awake()
     	{
+    		_contentCanvasGroup.alpha = 0f;
     	}
 
     	[Token(Token = "0x600004B")]
@@ -259,8 +268,29 @@ namespace GigaCreation.NaninovelExtender.Effects
 
     	[Token(Token = "0x600004C")]
     	[Address(RVA = "0xD0E7A0", Offset = "0xD0D1A0", VA = "0x180D0E7A0", Slot = "4")]
+    	// RECONSTRUCTED | Confidence: B | RVA: 0xD0E7A0 (2800 B).  Parameters of `@spawn <prefab> params:"text",fontSize,x,y,z,duration`:
+    	//  0  text (a surrounding pair of double quotes is removed)
+    	//  1  font size                    default _defaultFontSize
+    	//  2  x, 3  y                      percent of the canvas, default 50 (= centre); the constants in the native code are 50 and 100
+    	//  4  z                            default _defaultPositionZ
+    	//  5  fade-in duration, seconds    default _defaultDuration (0 when the spawn is `asap`)
+    	// The position is stored as the offset from the canvas centre, in canvas units.  Which rectangle the percentages scale is the
+    	// one thing the optimised code does not state outright; the canvas rectangle matches the two constants and the centre default.
     	public void SetSpawnParameters(IReadOnlyList<string> parameters, bool asap)
     	{
+    		string content = parameters?.ElementAtOrDefault(0) ?? string.Empty;
+    		if (content.Length >= 2 && content.StartsWith("\"") && content.EndsWith("\""))
+    		{
+    			content = content.Substring(1, content.Length - 2);
+    		}
+    		_text = content;
+    		_fontSize = parameters?.ElementAtOrDefault(1).AsInvariantFloat() ?? _defaultFontSize;
+    		float xPercent = parameters?.ElementAtOrDefault(2).AsInvariantFloat() ?? 50f;
+    		float yPercent = parameters?.ElementAtOrDefault(3).AsInvariantFloat() ?? 50f;
+    		Rect canvasRect = _rectTransform.rect;
+    		_position = new Vector3((xPercent - 50f) / 100f * canvasRect.width, (yPercent - 50f) / 100f * canvasRect.height,
+    			parameters?.ElementAtOrDefault(4).AsInvariantFloat() ?? _defaultPositionZ);
+    		_duration = asap ? 0f : Mathf.Abs(parameters?.ElementAtOrDefault(5).AsInvariantFloat() ?? _defaultDuration);
     	}
 
     	[Token(Token = "0x600004D")]
@@ -268,13 +298,36 @@ namespace GigaCreation.NaninovelExtender.Effects
     	[AsyncStateMachine(typeof(_003CAwaitSpawn_003Ed__22))]
     	public virtual Naninovel.UniTask AwaitSpawn([Optional] AsyncToken asyncToken)
     	{
-    		return default(Naninovel.UniTask);
+    		return AwaitSpawnCore(asyncToken);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A (flow), B (position maths) | RVA: 0xD0FE10 (<AwaitSpawn>d__22.MoveNext, body in the Core method).
+    	// Puts the canvas in front of the Naninovel camera, places and fills the label, waits for the auto layout, then fades in.  The
+    	// layout wait counts against the fade: the fade starts at the fraction already elapsed and lasts the rest of _duration.
+    	private async Naninovel.UniTask AwaitSpawnCore(AsyncToken asyncToken)
+    	{
+    		CompleteTweenerIfRunning();
+    		_canvas.worldCamera = Camera;
+    		_canvas.planeDistance = _position.z - Camera.transform.position.z;
+    		_contentRectTransform.anchoredPosition = new Vector2(_position.x, _position.y);
+    		_label.SetText(_text);
+    		_label.fontSize = _fontSize;
+    		float timeRequestedToPresent = Time.time;
+    		await _autoLayoutSupporter.ExecuteRebuildingAsync(asyncToken.CancellationToken);
+    		float elapsed = Time.time - timeRequestedToPresent;
+    		if (!asyncToken.Completed && elapsed < _duration)
+    		{
+    			await FadeAsync(elapsed / _duration, 1f, _duration - elapsed, asyncToken);
+    		}
+    		_contentCanvasGroup.alpha = 1f;
     	}
 
     	[Token(Token = "0x600004E")]
     	[Address(RVA = "0xD0F430", Offset = "0xD0DE30", VA = "0x180D0F430", Slot = "6")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD0F430 -- `@destroySpawned <prefab> params:duration`: fade-out time, default _defaultDuration.
     	public void SetDestroyParameters(IReadOnlyList<string> parameters)
     	{
+    		_stopDuration = parameters?.ElementAtOrDefault(0).AsInvariantFloat() ?? _defaultDuration;
     	}
 
     	[Token(Token = "0x600004F")]
@@ -282,13 +335,31 @@ namespace GigaCreation.NaninovelExtender.Effects
     	[AsyncStateMachine(typeof(_003CAwaitDestroy_003Ed__24))]
     	public Naninovel.UniTask AwaitDestroy([Optional] AsyncToken asyncToken)
     	{
-    		return default(Naninovel.UniTask);
+    		return AwaitDestroyCore(asyncToken);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD0FB00 (<AwaitDestroy>d__24.MoveNext, body in the Core method).  Fades out unless the
+    	// token is already completed or the duration is zero, then makes sure the text is invisible.
+    	private async Naninovel.UniTask AwaitDestroyCore(AsyncToken asyncToken)
+    	{
+    		CompleteTweenerIfRunning();
+    		float stopDuration = asyncToken.Completed ? 0f : _stopDuration;
+    		if (!Mathf.Approximately(stopDuration, 0f))
+    		{
+    			await FadeAsync(1f, 0f, stopDuration, asyncToken);
+    		}
+    		_contentCanvasGroup.alpha = 0f;
     	}
 
     	[Token(Token = "0x6000050")]
     	[Address(RVA = "0xD0F780", Offset = "0xD0E180", VA = "0x180D0F780")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD0F780
     	protected void CompleteTweenerIfRunning()
     	{
+    		if (_tweener.Running)
+    		{
+    			_tweener.CompleteInstantly();
+    		}
     	}
 
     	[Token(Token = "0x6000051")]
@@ -296,13 +367,23 @@ namespace GigaCreation.NaninovelExtender.Effects
     	[AsyncStateMachine(typeof(_003CFadeAsync_003Ed__26))]
     	protected Naninovel.UniTask FadeAsync(float from, float to, float time, [Optional] AsyncToken asyncToken)
     	{
-    		return default(Naninovel.UniTask);
+    		return FadeAsyncCore(from, to, time, asyncToken);
+    	}
+
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD104F0 (<FadeAsync>d__26.MoveNext, body in the Core method): a FloatTween of the content
+    	// canvas group's alpha with the prefab's easing, run on _tweener with `this` as the target.
+    	private async Naninovel.UniTask FadeAsyncCore(float from, float to, float time, AsyncToken asyncToken)
+    	{
+    		var tween = new FloatTween(from, to, new Tween(time, _easingType), SetAlpha);
+    		await _tweener.RunAwaitable(tween, asyncToken, this);
     	}
 
     	[Token(Token = "0x6000052")]
     	[Address(RVA = "0xD0FA00", Offset = "0xD0E400", VA = "0x180D0FA00")]
+    	// RECONSTRUCTED | Confidence: A | RVA: 0xD0FA00
     	protected void SetAlpha(float a)
     	{
+    		_contentCanvasGroup.alpha = a;
     	}
 
     	[Token(Token = "0x6000053")]

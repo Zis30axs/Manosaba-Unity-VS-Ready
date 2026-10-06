@@ -70,7 +70,9 @@ namespace Manosaba.EditorTools
             settings.spritePivot = pivot;
             settings.spriteBorder = new Vector4((float)entry["border"][0], (float)entry["border"][1],
                 (float)entry["border"][2], (float)entry["border"][3]);
-            settings.spriteMeshType = (bool)entry["full_rect_mesh"] ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
+            settings.spriteMeshType = IsCutInCrop(assetPath)
+                ? ShippedMeshType(entry)
+                : (bool)entry["full_rect_mesh"] ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
             importer.SetTextureSettings(settings);
 
             int rectW = (int)entry["rect_size"][0], rectH = (int)entry["rect_size"][1];
@@ -152,6 +154,30 @@ namespace Manosaba.EditorTools
             Debug.Log("[SpriteImportPolicy] reimported " + count + " planned crops; " + mismatched +
                       " differ from the shipped pixels-per-unit / rect size");
             if (Application.isBatchMode) EditorApplication.Exit(mismatched == 0 ? 0 : 1);
+        }
+
+        /// <summary>
+        /// The refutation cut-ins draw their sprites with Shader Graph materials whose alpha comes from procedural noise,
+        /// not from the texture, so the sprite *mesh* is what cuts the character/glass shape out of its rectangle.
+        /// </summary>
+        public static bool IsCutInCrop(string assetPath) =>
+            (assetPath ?? "").Replace('\\', '/').Contains("/Prefabs/Naninovel/Spawn/CutIn/ObjectionCutIn_");
+
+        /// <summary>
+        /// The mesh type the shipped Sprite had.  The plan key "full_rect_mesh" holds m_RD.settingsRaw bit 6, which Unity
+        /// defines as SpriteMeshType (0 = FullRect, 1 = Tight): every shipped sprite with bit 6 = 0 has exactly 4 vertices
+        /// and the ones with bit 6 = 1 have 26..258, so the key's name is inverted.  Only the cut-in crops read it
+        /// correctly so far; the general mapping above still reads it as written.
+        /// </summary>
+        public static SpriteMeshType ShippedMeshType(JObject entry) =>
+            (bool)entry["full_rect_mesh"] ? SpriteMeshType.Tight : SpriteMeshType.FullRect;
+
+        /// <summary>The shipped mesh type of the crop at a path; throws when the plan has no row for it.</summary>
+        public static SpriteMeshType ShippedMeshType(string assetPath)
+        {
+            JObject entry = PlanEntry(assetPath);
+            if (entry == null) throw new InvalidDataException("No shipped sprite settings for " + assetPath);
+            return ShippedMeshType(entry);
         }
 
         /// <summary>The plan row for a crop, reloading the plan when the file changed.</summary>

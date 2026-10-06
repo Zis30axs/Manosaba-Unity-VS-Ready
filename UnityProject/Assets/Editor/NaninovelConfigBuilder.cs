@@ -122,6 +122,21 @@ namespace Manosaba.EditorTools
         private const string InputActionsTypeName = "UnityEngine.InputSystem.InputActionAsset";
         private const string InputActionsObjectName = "WitchTrialsActions";
 
+        // AudioConfiguration.CustomAudioMixer points at the shipped "WitchTrials" AudioMixerController (resources.assets
+        // path_id 53).  Mixer graphs have no asset writer here, so the tracked Assets/NaninovelData/Audio/WitchTrials.mixer
+        // stands in: Naninovel's own DefaultMixer (identical groups Master/BGM/SFX/Voice, volume/pitch indices and
+        // snapshot as the shipped dump) plus the one parameter the dump adds, "Voice Pitch" (crc32 2342152549, parameter
+        // index 7 = the Voice group's pitch).  The game drives it: debate skip sets it to MasterData.VoicePitchOnSkip and
+        // pausing the trial sets it to 0.  Without it SetFloat("Voice Pitch") silently returns false.  "BGM Pitch" and
+        // "SFX Pitch" are not in the shipped graph: WitchBookAudioPause freezes those groups the same way while the
+        // witch book is open.
+        private const string MixerFieldPath = "CustomAudioMixer";
+        private const long MixerShippedPathId = 53;
+        private const string MixerTypeName = "AudioMixerController";
+        private const string MixerObjectName = "WitchTrials";
+        private const string MixerAssetPath = "Assets/NaninovelData/Audio/WitchTrials.mixer";
+        private static readonly string[] MixerExposedPitches = { "Voice Pitch", "BGM Pitch", "SFX Pitch" };
+
         private const int MaxMessagesPerRow = 200;
         private const int MaxScalarSummary = 40;
         private const int MaxCandidatePaths = 5;
@@ -908,6 +923,10 @@ namespace Manosaba.EditorTools
                 record.target_path_id == InputActionsShippedPathId)
                 return BindInputActions(record);
 
+            if (record.field == MixerFieldPath && record.target_file_id == 0 && record.target_path_id == MixerShippedPathId &&
+                record.target_class == MixerTypeName && record.target_name == MixerObjectName)
+                return BindWitchTrialsMixer(record);
+
             if (record.target_file_id != 0)
             {
                 record.reason = "the shipped reference lives in another serialized file (m_FileID " +
@@ -945,6 +964,32 @@ namespace Manosaba.EditorTools
             record.reason = DescribeUnbound(record);
             FindCandidates(record);
             return null;
+        }
+
+        /// <summary>
+        /// The tracked WitchTrials.mixer (see MixerAssetPath).  Bound only when it loads as an AudioMixer named
+        /// WitchTrials that exposes "Voice Pitch"; anything else is reported, not bound.
+        /// </summary>
+        private static UnityEngine.Object BindWitchTrialsMixer (ReferenceRecord record)
+        {
+            var mixer = AssetDatabase.LoadMainAssetAtPath(MixerAssetPath) as UnityEngine.Audio.AudioMixer;
+            if (mixer == null || mixer.name != MixerObjectName)
+            {
+                record.reason = MixerAssetPath + " is missing or does not import as an AudioMixer named " + MixerObjectName + "; not bound";
+                return null;
+            }
+            foreach (string parameter in MixerExposedPitches)
+            {
+                if (mixer.GetFloat(parameter, out _)) continue;
+                record.reason = MixerAssetPath + " does not expose \"" + parameter + "\", which the game drives; not bound";
+                return null;
+            }
+            record.binding = MixerAssetPath;
+            record.reason = "bound: the tracked WitchTrials mixer";
+            record.evidence = "shipped target is resources.assets path_id 53, an AudioMixerController named WitchTrials; its " +
+                              "groups, indices and snapshot equal Naninovel's DefaultMixer, with one more exposed parameter, " +
+                              "crc32(\"Voice Pitch\") = 2342152549 at parameter index 7 (the Voice group's pitch)";
+            return mixer;
         }
 
         /// <summary>
@@ -1425,13 +1470,12 @@ namespace Manosaba.EditorTools
                             "invented, and each needs_binding record carries the target class, name, path_id and (for " +
                             "information only, never auto-bound) whether this project holds same-named same-typed assets.");
             limitations.Add("CONSEQUENCE OF THE UNBOUND REFERENCES: EngineConfiguration.CustomInitializationUI and " +
-                            "AudioConfiguration.CustomAudioMixer are left null, which makes the engine fall back to " +
+                            "AudioConfiguration.CustomAudioMixer are left null unless bound (the mixer is, see BindWitchTrialsMixer), which makes the engine fall back to " +
                             "the package's own resources - Engine.LoadInternalResource<ScriptableUIBehaviour>" +
                             "(\"EngineInitializationUI\") (RuntimeInitializer.cs:47-49) and " +
                             "Engine.LoadInternalResource<AudioMixer>(\"DefaultMixer\") (AudioManager.cs:91). The engine " +
-                            "initialises with a working default in both cases, but audio routing (the shipped game " +
-                            "used the 'WitchTrials' mixer with Master/Bgm/Sfx/Voice group paths) and the game's own " +
-                            "initialization UI (WitchTrials.Views.EngineInitializationUiModified) are not reproduced. " +
+                            "initialises with a working default in both cases, but the game's own initialization UI " +
+                            "(WitchTrials.Views.EngineInitializationUiModified) is not reproduced. " +
                             "InputConfiguration.InputActions targets another serialized file (m_FileID 1, path_id 3144 = " +
                             "the WitchTrialsActions asset in globalgamemanagers.assets); it is bound to the tracked " +
                             InputActionsAssetPath + " (see BindInputActions), without which the shipped " +

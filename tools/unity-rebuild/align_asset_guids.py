@@ -86,6 +86,16 @@ def load_meta_guids(root):
     return found
 
 
+# Assets the shipped catalog does not key by GUID but that tracked scenes reference by GUID.  Boot.unity's stage cameras
+# (m_TargetTexture) and the stage screens' RawImages (m_Texture) point at these two; if the local .meta carries another
+# GUID the stage cameras fall back to rendering to the screen and wipe the Naninovel camera (UI and backgrounds vanish).
+# RenderTexture_1 is CameraContainer_1's target and RenderTexture_2 CameraContainer_2's (level0 scene inventory).
+PINNED_GUIDS = {
+    "UnityProject/Assets/GameContent/Uncategorized/RenderTexture/RenderTexture_1.renderTexture": "cfa00beb14e04ea4f87bce799fa5342d",
+    "UnityProject/Assets/GameContent/Uncategorized/RenderTexture/RenderTexture_2.renderTexture": "1bef13cc267314e49b18cc6c0fab726a",
+}
+
+
 def load_shipped_guid_locations():
     """shipped guid -> shipped asset path, from the shipped catalog's guid-keyed entries."""
     with open(SHIPPED_CATALOG, "r", encoding="utf-8") as fh:
@@ -231,6 +241,10 @@ def main():
             same += 1
             continue
         remap[current] = guid
+
+    for path, guid in PINNED_GUIDS.items():
+        if path in project and project[path] != guid:
+            remap[project[path]] = guid
 
     log("")
     log("  already aligned            : %d" % same)

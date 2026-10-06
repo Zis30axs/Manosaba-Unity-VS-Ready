@@ -233,6 +233,10 @@ namespace WitchTrials.Views
     	[SerializeField]
     	private OptionItemToggleGroup _criticalChoiceHintToggleGroup;
 
+    	// Added after the shipped layout: the "refutation portraits" row is cloned from the critical-choice-hint row at runtime
+    	// (see EnsureCutInPortraitRow), so the generated OptionsUI prefab does not need a new control.
+    	private OptionItemToggleGroup _cutInPortraitToggleGroup;
+
     	[Token(Token = "0x4000382")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x108")]
     	[SerializeField]
@@ -555,6 +559,7 @@ namespace WitchTrials.Views
     			return;
     		}
     		_disposables = new CompositeDisposable();
+    		EnsureCutInPortraitRow();
     		ApplyOptionValuesToUi();
     		_messageSpeedSlider.OnSlideAsObservable().Subscribe(x => NaniPrinterManager.BaseRevealSpeed = x / 10f).AddTo(_disposables, this);
     		_messageSpeedSlider.OnConfirmAsObservable().Subscribe(_ => InputManager.PlayResponseSfx(ResponseKind.Submit)).AddTo(_disposables, this);
@@ -571,6 +576,14 @@ namespace WitchTrials.Views
     			InputManager.PlayResponseSfx(ResponseKind.Submit);
     			WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled = idx == 1;
     		}).AddTo(_disposables, this);
+    		if (_cutInPortraitToggleGroup != null)
+    		{
+    			_cutInPortraitToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
+    			{
+    				InputManager.PlayResponseSfx(ResponseKind.Submit);
+    				CutInPortraitSetting.UseAll = idx == 1;
+    			}).AddTo(_disposables, this);
+    		}
     		_languageDropdown.OnValueChangedAsObservable().Subscribe(idx =>
     		{
     			InputManager.PlayResponseSfx(ResponseKind.Submit);
@@ -583,6 +596,7 @@ namespace WitchTrials.Views
     			NaniPrinterManager.BaseAutoDelay = NaniPrinterManager.Configuration.DefaultBaseAutoDelay;
     			NaniScriptPlayer.SkipMode = NaniScriptPlayer.Configuration.DefaultSkipMode;
     			WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled = WitchTrialsChoiceHandlerManager.Configuration.DefaultCriticalChoiceHintEnabled;
+    			CutInPortraitSetting.UseAll = false;
     			ApplyOptionValuesToUi();
     		}).AddTo(_disposables, this);
     		_screenModeToggleGroup.OnValueChangedAsObservable().Subscribe(idx =>
@@ -672,6 +686,10 @@ namespace WitchTrials.Views
     		_autoDelaySlider.SetValue(Mathf.RoundToInt(NaniPrinterManager.BaseAutoDelay * 10f));
     		_skipModeToggleGroup.SetValue(NaniScriptPlayer.SkipMode != PlayerSkipMode.Everything ? 1 : 0);
     		_criticalChoiceHintToggleGroup.SetValue(WitchTrialsChoiceHandlerManager.CriticalChoiceHintEnabled ? 1 : 0);
+    		if (_cutInPortraitToggleGroup != null)
+    		{
+    			_cutInPortraitToggleGroup.SetValue(CutInPortraitSetting.UseAll ? 1 : 0);
+    		}
     		_languageDropdown.SetValue(_availableLocales.IndexOf(NaniLocalizationManager.SelectedLocale));
     		_screenModeToggleGroup.SetValue(NaniCameraManager.FullScreen ? 1 : 0);
     		_resolutionDropdown.SetValue(NaniCameraManager.ResolutionLevel - _unavailableResolutionOptionCount);
@@ -681,6 +699,91 @@ namespace WitchTrials.Views
     		_sfxVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.SfxVolume * 10f));
     		_voiceVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.VoiceVolume * 10f));
     		_postProcessingToggleGroup.SetValue(NaniCameraManager.IsPostProcessingEnabled ? 1 : 0);
+    	}
+
+    	// Clones the critical-choice-hint row (heading + two toggles) as the "refutation portraits" option and gives it its own
+    	// texts.  Done once, before the values are applied and the subscriptions are made.
+    	private void EnsureCutInPortraitRow()
+    	{
+    		if (_cutInPortraitToggleGroup != null || _criticalChoiceHintToggleGroup == null)
+    		{
+    			return;
+    		}
+    		GameObject source = _criticalChoiceHintToggleGroup.gameObject;
+    		GameObject row = Instantiate(source, source.transform.parent, false);
+    		row.name = "CutInPortraits";
+    		row.transform.SetSiblingIndex(source.transform.GetSiblingIndex() + 1);
+    		PlaceBelowLastRow(source.transform, row.transform);
+    		// The clone's labels would be rebuilt from the original row's label ids on a locale change; drop the rebuilders so
+    		// the texts set here stay.
+    		foreach (RebuildableLabel label in row.GetComponentsInChildren<RebuildableLabel>(true))
+    		{
+    			Destroy(label);
+    		}
+    		_cutInPortraitToggleGroup = row.GetComponent<OptionItemToggleGroup>();
+    		ApplyCutInPortraitTexts();
+    	}
+
+    	// The option rows are positioned by hand (no layout group), so a clone would sit exactly on the row it was copied from.
+    	// Put it one row spacing under the language row, the last row of the page; the spacing is the distance between the
+    	// critical-choice-hint row and the language row.
+    	private void PlaceBelowLastRow(Transform source, Transform clone)
+    	{
+    		var sourceRect = source as RectTransform;
+    		var cloneRect = clone as RectTransform;
+    		if (sourceRect == null || cloneRect == null)
+    		{
+    			return;
+    		}
+    		Transform languageRow = _languageDropdown != null ? _languageDropdown.transform : null;
+    		while (languageRow != null && languageRow.parent != source.parent)
+    		{
+    			languageRow = languageRow.parent;
+    		}
+    		var languageRect = languageRow as RectTransform;
+    		float spacing = languageRect != null ? Mathf.Abs(sourceRect.anchoredPosition.y - languageRect.anchoredPosition.y) : 0f;
+    		if (spacing < 1f)
+    		{
+    			spacing = sourceRect.rect.height * 3f;
+    		}
+    		float lastRowY = languageRect != null ? languageRect.anchoredPosition.y : sourceRect.anchoredPosition.y - spacing;
+    		cloneRect.anchoredPosition = new Vector2(sourceRect.anchoredPosition.x, lastRowY - spacing);
+    	}
+
+    	// Heading and the two toggles (OptionItemToggle_1 = index 0 = shipped portrait, OptionItemToggle_2 = index 1 = all).
+    	private void ApplyCutInPortraitTexts()
+    	{
+    		if (_cutInPortraitToggleGroup == null)
+    		{
+    			return;
+    		}
+    		string locale;
+    		try
+    		{
+    			locale = NaniLocalizationManager?.SelectedLocale ?? "";
+    		}
+    		catch (Exception)
+    		{
+    			// The Naninovel services are not up yet (or are gone): fall back to the English texts.
+    			locale = "";
+    		}
+    		foreach (TMPro.TextMeshProUGUI text in _cutInPortraitToggleGroup.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+    		{
+    			string parent = text.transform.parent != null ? text.transform.parent.name : "";
+    			if (text.gameObject.name == "Heading") text.text = CutInPortraitText(locale, 0);
+    			else if (parent == "OptionItemToggle_1") text.text = CutInPortraitText(locale, 1);
+    			else if (parent == "OptionItemToggle_2") text.text = CutInPortraitText(locale, 2);
+    		}
+    	}
+
+    	private static string CutInPortraitText(string locale, int part)
+    	{
+    		string[] zh = { "论破立绘", "使用原版（实机）", "启用全部立绘" };
+    		string[] ja = { "論破の立ち絵", "オリジナル（実機）", "すべての立ち絵" };
+    		string[] ko = { "논파 일러스트", "원본(실기)", "모든 일러스트" };
+    		string[] en = { "Refutation portraits", "Original (shipped)", "All portraits" };
+    		string[] texts = locale.StartsWith("zh") ? zh : locale.StartsWith("ja") ? ja : locale.StartsWith("ko") ? ko : en;
+    		return texts[part];
     	}
 
     	// RECONSTRUCTED | Confidence: A (SelectLocale overload: B) | RVA: 0x354590 (stub), MoveNext 0x357330, 1517 B
@@ -696,6 +799,7 @@ namespace WitchTrials.Views
     		{
     			_languageDropdown.ChangeCaptionVisibility(false);
     			await NaniLocalizationManager.SelectLocale(locale);
+    			ApplyCutInPortraitTexts();
     			_languageDropdown.ChangeCaptionVisibility(true);
     		}
     	}

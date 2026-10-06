@@ -159,9 +159,30 @@ namespace WitchTrials.Views
     	// spelling is Confidence B.
     	[Token(Token = "0x6000172")]
     	[Address(RVA = "0x32CCC0", Offset = "0x32B6C0", VA = "0x18032CCC0", Slot = "4")]
+    	// EMA ONLY (the other cut-ins keep the line above exactly): her cut-in holds three portraits,
+    	// `RefuteCutIn_Ema_001` .. `_003`, and the shipped game shows the third.  The default therefore pins the third;
+    	// with CutInPortraitSetting.UseAll any of the three is picked at random.
+    	private const string EmaPortraitPrefix = "RefuteCutIn_Ema_";
+    	private const int EmaShippedPortraitIndex = 2;
+
+    	private bool IsEmaCutIn
+    	{
+    		get
+    		{
+    			GameObject[] first = _objectLibrary != null && _objectLibrary.Length > 0 ? _objectLibrary[0]?.Objects : null;
+    			return first != null && first.Length > 0 && first[0] != null && first[0].name.StartsWith(EmaPortraitPrefix);
+    		}
+    	}
+
     	public void SetSpawnParameters(IReadOnlyList<string> parameters, bool asap)
     	{
     		_currentIndex = (parameters?.ElementAtOrDefault(0)?.AsInvariantInt()).GetValueOrDefault();
+    		if (IsEmaCutIn)
+    		{
+    			_currentIndex = CutInPortraitSetting.UseAll
+    				? UnityEngine.Random.Range(0, _objectLibrary.Length)
+    				: Mathf.Min(EmaShippedPortraitIndex, _objectLibrary.Length - 1);
+    		}
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x32CE10, 386 B (entry) + MoveNext 0x32D490

@@ -163,8 +163,8 @@ namespace Manosaba.EditorTools
                         foreach (JToken obj in match["objects"] as JArray ?? new JArray()) Source((string)obj["dump"]);
                         match["target"] = target;
                         // A changed converter must reach existing copies even when res is unchanged.
-                        // Field patches cannot regenerate Timeline/AnimationClip sub-assets, so those
-                        // prefabs are rebuilt by the full builder instead.
+                        // Field patches cannot regenerate Timeline/AnimationClip or Court mesh/material
+                        // sub-assets, so those prefabs are rebuilt by the full builder instead.
                         bool rebuild = selectedJobs.Any(j => j.Value<bool?>("rebuild") == true) &&
                                        PrefabBuilder.RebuildsOnRecipeChange(match);
                         if (rebuild && sceneToRestore == null) sceneToRestore = LeaveSceneForRebuild();

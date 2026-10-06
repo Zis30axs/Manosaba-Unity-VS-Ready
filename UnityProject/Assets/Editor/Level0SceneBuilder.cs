@@ -207,6 +207,13 @@ namespace Manosaba.EditorTools
                     // --- 4b. decoded component values (the shipped scene's serialized fields) -----------------
                     ApplyDecodedValues(created, ownerOf, projectRoot, result);
 
+                    // The shipped InputSystemUIInputModule points at InputActionReference sub-assets from
+                    // globalgamemanagers/sharedassets. Those external references cannot be resolved by the
+                    // generic name-based decoder (and are intentionally reported as ambiguous). Bind the
+                    // tracked Naninovel DefaultControls asset by package path so a future level0 rebuild does
+                    // not restore the stale/missing action GUID that used to leave touch input inert.
+                    RepairEventSystemInputActions(created, result);
+
                     // Built-in references the inventory decodes: a canvas's m_Camera and plane distance (all four
                     // shipped canvases are Screen Space - Camera on MainCamera), and a camera's m_TargetTexture (the two
                     // stage cameras render into RenderTexture_1/_2, which the stage screens' RawImages show).
@@ -512,6 +519,81 @@ namespace Manosaba.EditorTools
                 }
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
+        }
+
+        private static void RepairEventSystemInputActions(Dictionary<long, GameObject> created, BuildResult result)
+        {
+            GameObject eventSystem = created.Values.FirstOrDefault(go => go.name == "EventSystem");
+            if (eventSystem == null)
+            {
+                result.deviations.Add("EventSystem input actions: scene object missing");
+                return;
+            }
+
+            Type moduleType = FindType("UnityEngine.InputSystem.UI.InputSystemUIInputModule");
+            Component module = moduleType == null ? null : eventSystem.GetComponent(moduleType);
+            if (module == null)
+            {
+                result.deviations.Add("EventSystem input actions: InputSystemUIInputModule missing");
+                return;
+            }
+
+            const string controlsPath = "Packages/com.elringus.naninovel/Prefabs/Input/DefaultControls.inputactions";
+            UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(controlsPath);
+            if (assets == null || assets.Length == 0)
+            {
+                result.deviations.Add("EventSystem input actions: tracked asset missing at " + controlsPath);
+                return;
+            }
+
+            var byName = assets.Where(asset => asset != null)
+                .GroupBy(asset => asset.name, StringComparer.Ordinal)
+                .ToDictionary(group => group.Key, group => group.ToList(), StringComparer.Ordinal);
+            var serialized = new SerializedObject(module);
+            bool ok = BindInputProperty(serialized, "m_ActionsAsset", byName, "DefaultControls", result);
+            ok &= BindInputProperty(serialized, "m_PointAction", byName, "UI/Point", result);
+            ok &= BindInputProperty(serialized, "m_MoveAction", byName, "UI/Navigate", result);
+            ok &= BindInputProperty(serialized, "m_SubmitAction", byName, "UI/Submit", result);
+            ok &= BindInputProperty(serialized, "m_CancelAction", byName, "UI/Cancel", result);
+            ok &= BindInputProperty(serialized, "m_LeftClickAction", byName, "UI/Click", result);
+            ok &= BindInputProperty(serialized, "m_MiddleClickAction", byName, "UI/MiddleClick", result);
+            ok &= BindInputProperty(serialized, "m_RightClickAction", byName, "UI/RightClick", result);
+            ok &= BindInputProperty(serialized, "m_ScrollWheelAction", byName, "UI/ScrollWheel", result);
+            if (ok)
+            {
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                result.deviations.Add("EventSystem input actions: bound tracked DefaultControls asset and UI references");
+            }
+        }
+
+        private static bool BindInputProperty(SerializedObject serialized, string propertyName,
+                                               Dictionary<string, List<UnityEngine.Object>> assets, string assetName,
+                                               BuildResult result)
+        {
+            SerializedProperty property = serialized.FindProperty(propertyName);
+            if (property == null)
+            {
+                result.deviations.Add("EventSystem input actions: property " + propertyName + " missing");
+                return false;
+            }
+            UnityEngine.Object asset = null;
+            if (assets.TryGetValue(assetName, out var exactMatches) && exactMatches.Count == 1)
+                asset = exactMatches[0];
+            if (asset == null)
+            {
+                // InputActionImporter versions differ on whether reference sub-assets are named
+                // "UI/Point" or just "Point". Accept the basename only when it is unambiguous.
+                string shortName = assetName.LastIndexOf('/') >= 0 ? assetName.Substring(assetName.LastIndexOf('/') + 1) : assetName;
+                if (assets.TryGetValue(shortName, out var shortMatches) && shortMatches.Count == 1)
+                    asset = shortMatches[0];
+            }
+            if (asset == null)
+            {
+                result.deviations.Add("EventSystem input actions: sub-asset '" + assetName + "' missing");
+                return false;
+            }
+            property.objectReferenceValue = asset;
+            return true;
         }
 
         /// <summary>

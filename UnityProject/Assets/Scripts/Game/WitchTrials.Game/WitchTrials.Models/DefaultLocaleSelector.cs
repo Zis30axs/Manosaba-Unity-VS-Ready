@@ -14,6 +14,7 @@ using GigaCreation.Essentials.Localization;
 using GigaCreation.Tools.Service;
 using Il2CppDummyDll;
 using Newtonsoft.Json;
+using UnityEngine.Networking;
 
 namespace WitchTrials.Models
 {
@@ -144,7 +145,8 @@ namespace WitchTrials.Models
     	//   inlined (0 -> 22 Japanese, 1 -> 10 English, 2 -> 40 ChineseSimplified, 3 -> 41 ChineseTraditional, 4 -> 23 Korean),
     	//   b__9_1 (0x398290) tail-jumps to ToTagName.  key (<key>5__2, +0x28) = GetValueOrDefault(map, Application.systemLanguage)
     	//   with '' when absent (cmovne at 0x180398723); jsonPath (+0x30) = Path.Combine(streamingAssetsPath, "config.json");
-    	//   await File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct) through TaskAwaiter<string> (<>u__1, +0x38).
+    //   desktop reads File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct); Android reads the same URL through
+    //   UnityWebRequest because StreamingAssets is packaged in the APK.
     	//   Text null -> LogError("Failed to load config.json: " + jsonPath).  Otherwise ConfigJson from JsonConvert;
     	//   AvailableTextLanguages (+0x18) = AvailableTextLang; ICollection<string>.Contains(key) (slot 4) -> DefaultLocale (+0x10)
     	//   = key.ToLocaleKind(); else UnavailableLangFallback.TryGetValue(key) then TryGetValue("default") (IDictionary slot 7);
@@ -165,8 +167,23 @@ namespace WitchTrials.Models
     	{
     		Dictionary<SystemLanguage, string> tagsBySystemLanguage = FastEnum.GetValues<LocaleKind>().ToDictionary((LocaleKind locale) => locale.ToSystemLanguage(), (LocaleKind locale) => locale.ToTagName());
     		string key = tagsBySystemLanguage.GetValueOrDefault(Application.systemLanguage) ?? "";
-    		string jsonPath = Path.Combine(Application.streamingAssetsPath, "config.json");
-    		string json = await File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct);
+		string jsonPath = Path.Combine(Application.streamingAssetsPath, "config.json");
+		string json;
+#if UNITY_ANDROID && !UNITY_EDITOR
+		// Android packages StreamingAssets inside the APK.  The resulting jar:file:// URL
+		// cannot be opened through System.IO, so use UnityWebRequest for the player build.
+		using (UnityWebRequest request = UnityWebRequest.Get(jsonPath))
+		{
+			await request.SendWebRequest().WithCancellation(ct);
+			if (request.result != UnityWebRequest.Result.Success)
+			{
+				throw new IOException("Failed to load config.json: " + jsonPath + " (" + request.error + ")");
+			}
+			json = request.downloadHandler.text;
+		}
+#else
+		json = await File.ReadAllTextAsync(jsonPath, Encoding.UTF8, ct);
+#endif
     		// 0x1803988C2: the shipped binary tests the file text before parsing it
     		if (json != null)
     		{

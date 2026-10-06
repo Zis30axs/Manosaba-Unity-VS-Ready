@@ -150,8 +150,8 @@ namespace WitchTrials.Views
     	// RECONSTRUCTED | Confidence: A | RVA: 0x30FB70
     	//
     	// Native evidence:
-    	//   0x30FB80  rcx = _steamManager; null -> NullReferenceException
-    	//   0x30FB8F  rbx = _steamManager.gameObject   (Component.get_gameObject)
+	//   0x30FB80  rcx = _steamManager; null -> NullReferenceException (standalone native path)
+	//   0x30FB8F  rbx = _steamManager.gameObject   (Component.get_gameObject)
     	//   0x30FBBA  al  = DebugOptionsBase.get_IsDebugMode()
     	//   0x30FBC1  jne -> if IsDebugMode: dl = *(bool*)DebugOptions's static
     	//             storage at offset 0, i.e. DebugOptions.EnableSteamworks's
@@ -172,7 +172,17 @@ namespace WitchTrials.Views
     	[Address(RVA = "0x30FB70", Offset = "0x30E570", VA = "0x18030FB70")]
     	private void Start()
     	{
-    		_steamManager.gameObject.SetActive(!DebugOptions.IsDebugMode || DebugOptions.EnableSteamworks);
+		// Steamworks is compiled only for standalone targets.  Android keeps the serialized
+		// reference for scene compatibility but must never activate or dereference it; a
+		// missing scene reference must also not prevent the rest of the boot sequence.
+		if (_steamManager != null)
+		{
+#if UNITY_ANDROID
+			_steamManager.gameObject.SetActive(false);
+#else
+			_steamManager.gameObject.SetActive(!DebugOptions.IsDebugMode || DebugOptions.EnableSteamworks);
+#endif
+		}
     		InitializeAsync(destroyCancellationToken).Forget();
     	}
 

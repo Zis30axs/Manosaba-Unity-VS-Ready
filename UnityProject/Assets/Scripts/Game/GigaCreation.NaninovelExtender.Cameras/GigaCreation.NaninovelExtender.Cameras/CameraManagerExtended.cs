@@ -547,7 +547,11 @@ namespace GigaCreation.NaninovelExtender.Cameras
     		Vector2Int size;
     		if (platform == PlatformKind.Ios || platform == PlatformKind.Android)
     		{
-    			float coefficient = Configuration.ResolutionCoefficientsForMobile[level];
+    			// Android port: the shipped configuration has no mobile coefficients (ResolutionCoefficientsForMobile is empty,
+    			// the game only ever ran on PC), so indexing it threw IndexOutOfRangeException, the engine's start-up task
+    			// faulted unobserved and the player sat on a black screen.  Without coefficients run at the native resolution.
+    			float[] coefficients = Configuration.ResolutionCoefficientsForMobile;
+    			float coefficient = coefficients != null && coefficients.Length > 0 ? coefficients[Math.Clamp(level, 0, coefficients.Length - 1)] : 1f;
     			size = new Vector2Int((int)(_nativeResolution.width * coefficient), (int)(_nativeResolution.height * coefficient));
     		}
     		else

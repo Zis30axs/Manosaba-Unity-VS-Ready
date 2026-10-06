@@ -484,7 +484,38 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CAutoSaveAsync_003Ed__12))]
     	public UniTask<GameStateMap> AutoSaveAsync()
     	{
-    		return default(UniTask<GameStateMap>);
+    		return AutoSaveAsyncCore();
+    	}
+
+    	// RECONSTRUCTED | Confidence: B (behaviour from the shipped call sites and the slot manager; the native body was not
+    	// disassembled).  Saves the running game into a new slot whose id is the mask with the '{0:yyMMddHHmmssfff}'
+    	// timestamp, which is what IOGameStateSlotManagerExtended.AutoSaveSlotNames lists.  Only the timestamped slots are
+    	// ever trimmed (QuickSaveSlotLimit of them are kept): the quick-save slots share the "GameAutoSave" prefix and sort
+    	// before them, so trimming "the oldest file by name" would eat the quick save a BAD END returns to.
+    	private async UniTask<GameStateMap> AutoSaveAsyncCore()
+    	{
+    		string[] timestamped = TimestampedAutoSaveSlots();
+    		for (int i = 0; i <= timestamped.Length - Configuration.QuickSaveSlotLimit; i++)
+    		{
+    			GameSlotManager.DeleteSaveSlot(timestamped[i]);
+    		}
+    		string slotId = string.Format(Configuration.QuickSaveSlotMask, DateTime.Now.ToString("yyMMddHHmmssfff"));
+    		var state = new GameStateMap();
+    		await DoSaveAfterSync(slotId, state);
+    		return state;
+    	}
+
+    	private bool IsTimestampedAutoSaveSlot(string slotId)
+    	{
+    		string prefix = Configuration.QuickSaveSlotMask.Substring(0, Math.Max(0, Configuration.QuickSaveSlotMask.IndexOf('{')));
+    		if (!slotId.StartsWith(prefix, StringComparison.Ordinal) || slotId.Length != prefix.Length + 15) return false;
+    		return slotId.Skip(prefix.Length).All(char.IsDigit);
+    	}
+
+    	// Oldest first (the ids are timestamps).
+    	private string[] TimestampedAutoSaveSlots()
+    	{
+    		return AutoSaveSlotNames.Where(IsTimestampedAutoSaveSlot).OrderBy(name => name, StringComparer.Ordinal).ToArray();
     	}
 
     	[Token(Token = "0x600006B")]
@@ -492,7 +523,18 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CQuickSaveAsync_003Ed__9))]
     	public UniTask<GameStateMap> QuickSaveAsync(int slotNumber)
     	{
-    		return default(UniTask<GameStateMap>);
+    		return QuickSaveAsyncCore(slotNumber);
+    	}
+
+    	// RECONSTRUCTED | Confidence: B.  `@quickSave N` marks a branch point: the state goes into slot "GameAutoSave<N>"
+    	// (QuickSaveSlotMask).  It is written directly, not through StateManager.SaveGame: that waits for the script player to
+    	// finish every playing command (ScriptPlayer.Complete), and the QuickSave command is itself one of them, so the wait
+    	// would never end.
+    	private async UniTask<GameStateMap> QuickSaveAsyncCore(int slotNumber)
+    	{
+    		var state = new GameStateMap();
+    		await DoSaveAfterSync(Configuration.IndexToQuickSaveSlotId(slotNumber), state);
+    		return state;
     	}
 
     	[Token(Token = "0x600006C")]
@@ -500,7 +542,27 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CQuickLoadAsync_003Ed__10))]
     	public UniTask<GameStateMap> QuickLoadAsync(int slotNumber)
     	{
-    		return default(UniTask<GameStateMap>);
+    		return QuickLoadAsyncCore(slotNumber);
+    	}
+
+    	// RECONSTRUCTED | Confidence: B.  The BAD END screen's "return to the previous branch" (`@quickLoad`): loads the slot the
+    	// last `@quickSave` wrote.  StateManager.LoadGame resets the engine, which ends the script that issued the command, so
+    	// the choice block around it never "returns" (without this the stub let the old script run on and Naninovel reported
+    	// "Choice callback has nowhere to return").  When that slot does not exist (a game saved before quick saves worked, or
+    	// started from the debug menu) the newest auto save is used instead.
+    	private async UniTask<GameStateMap> QuickLoadAsyncCore(int slotNumber)
+    	{
+    		string slotId = Configuration.IndexToQuickSaveSlotId(slotNumber);
+    		if (!GameSlotManager.SaveSlotExists(slotId))
+    		{
+    			slotId = TimestampedAutoSaveSlots().LastOrDefault(GameSlotManager.SaveSlotExists);
+    			if (slotId == null)
+    			{
+    				UnityEngine.Debug.LogWarning("QuickLoad: no quick save in slot " + slotNumber + " and no auto save to fall back to.");
+    				return null;
+    			}
+    		}
+    		return await LoadGame(slotId);
     	}
 
     	[Token(Token = "0x600006D")]
@@ -508,7 +570,26 @@ namespace GigaCreation.NaninovelExtender.Common
     	[AsyncStateMachine(typeof(_003CDoSaveAfterSync_003Ed__11))]
     	private UniTask DoSaveAfterSync(string slotId, GameStateMap state)
     	{
-    		return default(UniTask);
+    		return DoSaveAfterSyncCore(slotId, state);
+    	}
+
+    	// RECONSTRUCTED | Confidence: B.  The body of the local function inside StateManager.SaveGame, which cannot be reused
+    	// from a derived class (it needs the base's private scriptPlayer / cameraManager fields).
+    	private async UniTask DoSaveAfterSyncCore(string slotId, GameStateMap state)
+    	{
+    		PeekRollbackStack()?.ForceSerialize();
+
+    		state.SaveDateTime = DateTime.Now;
+    		state.Thumbnail = Engine.GetServiceOrErr<ICameraManager>().CaptureThumbnail();
+
+    		SaveAllServicesToState<IStatefulService<GameStateMap>, GameStateMap>(state);
+    		PerformOnGameSerializeTasks(state);
+    		state.RollbackStackJson = SerializeRollbackStack();
+
+    		await GameSlotManager.Save(slotId, state);
+
+    		// Like every game save, also store the global state.
+    		await SaveGlobal();
     	}
     }
 }

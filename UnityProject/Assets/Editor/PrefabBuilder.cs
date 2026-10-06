@@ -20,12 +20,14 @@
 // types, unreadable dumps) -- a partial prefab is reported as PARTIAL, never as done.
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Manosaba.EditorTools
 {
@@ -37,6 +39,61 @@ namespace Manosaba.EditorTools
         private const string OutputRelativePath = "../tools/unity-rebuild/out/unity/prefab_build_result.json";
         private const string OutputEnv = "MANOSABA_PREFAB_OUT";
         private const string FieldDumpEnv = "MANOSABA_PREFAB_FIELD_DUMP";
+
+        // Court/Court_Final are the only shipped prefabs whose Mesh and Material objects are embedded in the
+        // prefab bundle but intentionally omitted from the generic prefab plan.  Keep this small recipe in the
+        // converter so a collaborator can regenerate the assets from the normal res workspace; generated .asset
+        // and .mat files remain under the ignored GameContent tree.
+        private const long CourtMesh52PathId = -3954970830415787521L;
+        private const long CourtMesh171PathId = 5831335090265640653L;
+        private const string CourtPrefabBundle = "general-prefabs_assets_all.bundle";
+        private const string CourtGeneratedFolder =
+            "Assets/GameContent/#WitchTrials/Prefabs/General/PerspectiveStage/Generated";
+        private const string CourtMeshFolder = CourtGeneratedFolder + "/Meshes";
+        private const string CourtMaterialFolder = CourtGeneratedFolder + "/Materials";
+
+        private sealed class CourtMaterialRecipe
+        {
+            public string bundle;
+            public long pathId;
+            public string name;
+        }
+
+        private static readonly Dictionary<long, CourtMaterialRecipe> CourtMaterials =
+            new Dictionary<long, CourtMaterialRecipe>
+            {
+                { -8477907749381902243L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = -8477907749381902243L, name = "Court_Floor" } },
+                { 1275342495298109738L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = 1275342495298109738L, name = "Fire" } },
+                { 1847911709981235371L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = 1847911709981235371L, name = "Court_Wall@Flip" } },
+                { -7375473515524017034L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = -7375473515524017034L, name = "Court_Stand" } },
+                { -2186335138721067432L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = -2186335138721067432L, name = "Court_Wall" } },
+                { -1479458066123357679L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = -1479458066123357679L, name = "Court_Step" } },
+                { 4935044996147944358L, new CourtMaterialRecipe { bundle = CourtPrefabBundle, pathId = 4935044996147944358L, name = "Court_Wall@7" } },
+            };
+
+        private sealed class CourtTextureRecipe
+        {
+            public string bundle;
+            public long pathId;
+        }
+
+        private static readonly Dictionary<long, CourtTextureRecipe> CourtTextures =
+            new Dictionary<long, CourtTextureRecipe>
+            {
+                { 6313933559636115173L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 6313933559636115173L } },
+                { 188620688936377846L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 188620688936377846L } },
+                { -3720777132935737500L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = -3720777132935737500L } },
+                { 83921366182283349L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 83921366182283349L } },
+                { -1208622118293267194L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = -1208622118293267194L } },
+                { -4374219984011537508L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = -4374219984011537508L } },
+                { 8694104602785124754L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 8694104602785124754L } },
+                { -7895505446595129764L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = -7895505446595129764L } },
+                { 5166769313130036686L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 5166769313130036686L } },
+                { 2137707876492198678L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = 2137707876492198678L } },
+                { -469680402320609555L, new CourtTextureRecipe { bundle = CourtPrefabBundle, pathId = -469680402320609555L } },
+                { -3494541382177401206L, new CourtTextureRecipe { bundle = "general-sprites_assets_all.bundle", pathId = -3494541382177401206L } },
+                { 8906857723818035118L, new CourtTextureRecipe { bundle = "general-sprites_assets_all.bundle", pathId = 8906857723818035118L } },
+            };
 
         /// <summary>
         /// Object-header keys of a component dump that the builder creates or sets itself, so the applier must not
@@ -307,12 +364,15 @@ namespace Manosaba.EditorTools
                             if (components.Length != 1) throw new ReadOnlyMappingException("missing or ambiguous component type: " + selected.type);
                             component = components[0];
                         }
+                        // A converted Court light intensity is owned by the recipe; the res value must not undo it.
+                        HashSet<string> sourceIgnored = IsCourtCandelaLight(planJob, component, selected.json)
+                            ? new HashSet<string>(ignored) { "m_Intensity" } : ignored;
                         var report = JsonToSerializedApplier.ApplyAll(new SerializedObject(component), selected.json,
-                            new JsonToSerializedApplier.Options { SkipEngineFields = false, IgnoreKeys = ignored, SafeEditableOnly = true,
+                            new JsonToSerializedApplier.Options { SkipEngineFields = false, IgnoreKeys = sourceIgnored, SafeEditableOnly = true,
                                 PreserveUnresolvedPointers = true, ResolvePointer = JsonToSerializedApplier.ResolveStablePointer });
                         sourceResult.fields_applied = report.applied;
                         sourceResult.warnings.AddRange(report.messages);
-                        sourceResult.fields = JsonToSerializedApplier.DescribeEditableFields(new SerializedObject(component), selected.json, false, false, ignored);
+                        sourceResult.fields = JsonToSerializedApplier.DescribeEditableFields(new SerializedObject(component), selected.json, false, false, sourceIgnored);
                         sourceResult.status = "UPDATED_PARTIAL";
                         sourceResult.editability = "PARTIAL";
                         result.fields_applied += report.applied;
@@ -338,14 +398,19 @@ namespace Manosaba.EditorTools
         }
 
         /// <summary>
-        /// A field patch cannot change generated sub-assets: Timeline graphs and the curves decoded from
-        /// packed AnimationClips.  Prefabs carrying them are rebuilt when the conversion recipe changes.
+        /// A field patch cannot change generated sub-assets: Timeline graphs, decoded packed AnimationClips,
+        /// the Court meshes/materials reconstructed from embedded bundle objects, or a deferred TMP asset that labels reference.
+        /// Prefabs carrying them are rebuilt when the conversion recipe changes.
         /// Every such prefab is addressed only by GUID (no other asset points at its internal file ids),
         /// so delete + save is safe for them; callers must rerun Addressables setup afterwards because
         /// deleting the asset drops its group entry.
         /// </summary>
-        public static bool RebuildsOnRecipeChange(JObject planJob) =>
-            (planJob["objects"] as JArray ?? new JArray()).Any(o => (string)o["type"] == "AnimationClip");
+        public static bool RebuildsOnRecipeChange(JObject planJob)
+        {
+            string assetPath = ((string)planJob["asset_path"] ?? "").Replace('\\', '/');
+            return (planJob["objects"] as JArray ?? new JArray()).Any(o => (string)o["type"] == "AnimationClip") ||
+                   IsCourtPrefab(assetPath) || ReferencesDeferredTmpAsset(planJob);
+        }
 
         public static EditResult RebuildEditable(string repoRoot, JObject planJob, IEnumerable<string> changedSources)
         {
@@ -778,7 +843,7 @@ namespace Manosaba.EditorTools
                         // left each UI prefab structurally complete and visually empty.  Only the object header the
                         // builder owns is skipped.
                         SkipEngineFields = false,
-                        IgnoreKeys = BuilderOwnedKeys,
+                        IgnoreKeys = CourtPointerKeys(node, job) ?? BuilderOwnedKeys,
                         // An engine field whose default is an object (SpriteRenderer.m_Materials[0]) must survive a
                         // pointer that cannot be resolved (built-in resources are not in the plan).
                         PreserveUnresolvedPointers = true,
@@ -805,6 +870,9 @@ namespace Manosaba.EditorTools
                               " skipped=" + report.skipped + " warnings=" + report.warnings +
                               " managedApplied=" + report.managedApplied + " managedFailed=" + report.managedFailed);
                 }
+
+                // Label pointers (m_spriteAsset, m_StyleSheet) resolve by file existence, so the assets must exist first.
+                EnsureDeferredTmpAssets(repoRoot, references, job);
 
                 // Stage A: the extra roots' own fields, then their assets, then Stage B: everything else.
                 if (extras.Count > 0)
@@ -834,6 +902,13 @@ namespace Manosaba.EditorTools
 
                 foreach (Node node in nodes)
                     if (!extraRootNodes.Contains(node)) ApplyFields(node, extraRootObjects);
+
+                // Mesh/Material objects embedded in the Court bundle are not represented by prefab-plan nodes.
+                // Bind them after the generic field pass, while the live components still exist, so the same
+                // BuildOne path can persist the assignments into the prefab.  This is deliberately before the
+                // delete/save below: the generated mesh/material assets are external and survive a prefab rebuild.
+                if (IsCourtPrefab(job.asset_path))
+                    ApplyCourtBindings(repoRoot, nodes, job);
 
                 // ---- save --------------------------------------------------------------------
                 // (root/rootNode were resolved before the field-application loop so the tree can be
@@ -945,6 +1020,7 @@ namespace Manosaba.EditorTools
                     job.warning_count++;
                     return;
                 }
+                if (IsCutInPrefab(job.asset_path)) EnsureCutInSpriteMeshTypes(saved);
                 job.saved_transforms = saved.GetComponentsInChildren<Transform>(true).Length;
                 job.saved_components = saved.GetComponentsInChildren<Component>(true).Length;
                 job.objects_written = job.saved_transforms + job.saved_components;   // a transform counts in both
@@ -1199,6 +1275,973 @@ namespace Manosaba.EditorTools
                 if (hit != null) return hit;
             }
             return JsonToSerializedApplier.ResolveType(shortName, null);
+        }
+
+        // Timeline AudioClips of the ObjectionCutIn prefabs (bundle naninovel-spawn_assets_all): path id -> generated asset.
+        // tools/content/content.py ensure_cutin_audio writes the files; keep both tables in step.
+        private static readonly Dictionary<long, string> CutInAudio = new Dictionary<long, string>
+        {
+            { 4370497403900473225L, "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/Spawn/CutIn/ObjectionCutIn_Crack_01.ogg" },
+            { -3434779548957938459L, "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/Spawn/CutIn/ObjectionCutIn_Crack_02.ogg" },
+        };
+
+        // The refutation cut-ins' sprites use Shader Graph materials (Background_0Fix, Glasses_0Fix, Iuminescence_*,
+        // Shadow_Fix) that are in no ledger row and whose shaders ship only as compiled programs.  Without them every
+        // sprite gets the default material: an opaque white square and opaque luminance maps cover the scene in solid
+        // black or white.  Assets/Shaders/ManosabaCutIn/*.shader are translations of those compiled programs
+        // (tools/unity-rebuild/port_cutin_shaders.py) with the shipped property names, so the original Timeline curves
+        // (material._Float / _Tick / _Fader / _Fader2) drive them.  The values below are the materials' saved
+        // properties in naninovel-spawn_assets_all.bundle; the keys are the material objects' path ids.  Ema, Hiro and
+        // CreatureHiro are covered (CreatureHiro uses Hiro's materials plus Ema's silhouette for its `Hiro_C_Effect`).
+        private sealed class CutInMaterialRecipe
+        {
+            public string name;
+            public string shader;
+            public readonly Dictionary<string, Color> colors = new Dictionary<string, Color>();
+            public readonly Dictionary<string, float> floats = new Dictionary<string, float>();
+            public readonly Dictionary<string, long> textures = new Dictionary<string, long>();   // property -> Texture2D path id
+        }
+
+        private const string CutInMaterialShaderRoot = "Manosaba/CutIn/";
+        private const string CutInSpawnBundle = "naninovel-spawn_assets_all.bundle";
+
+        private static readonly CutInMaterialRecipe CutInShadow = new CutInMaterialRecipe
+        {
+            name = "CutIn_Shadow", shader = CutInMaterialShaderRoot + "Shadow",
+            colors = { { "_Color", new Color(0.451f, 0.49f, 0.6f, 1f) } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInEmaBackground = new CutInMaterialRecipe
+        {
+            name = "CutIn_Ema_Background", shader = CutInMaterialShaderRoot + "Background",
+            colors = { { "_BackgroundA", new Color(1f, 0f, 0.688f, 0f) }, { "_BackgroundB", new Color(0f, 0f, 0f, 0f) } },
+            floats = { { "_Float", 0.3f } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInEmaDissolve = new CutInMaterialRecipe
+        {
+            name = "CutIn_Ema_LuminescenceDissolve", shader = CutInMaterialShaderRoot + "LuminescenceDissolve",
+            colors = { { "_Color", new Color(1f, 0.871f, 1f, 1f) } }, floats = { { "_Tick", 0f } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInEmaSilhouette = new CutInMaterialRecipe
+        {
+            name = "CutIn_Ema_LuminescenceSilhouette", shader = CutInMaterialShaderRoot + "LuminescenceSilhouette",
+            colors = { { "_Color", new Color(1f, 0.871f, 1f, 1f) } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInEmaGlasses = new CutInMaterialRecipe
+        {
+            name = "CutIn_Ema_Glasses", shader = CutInMaterialShaderRoot + "Glasses",
+            colors = { { "_EclipseFlame", new Color(1f, 0f, 0.94f, 0f) } },
+            floats = { { "_Fader", 1f }, { "_Fader2", 1f }, { "_Speed", 3f }, { "_Tick", 1f }, { "_EdgeSize", 0.02f } },
+            textures = { { "_kirakira", -3830398693511988194L }, { "_kirakira2", 506248237000484121L } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInHiroBackground = new CutInMaterialRecipe
+        {
+            name = "CutIn_Hiro_Background", shader = CutInMaterialShaderRoot + "Background",
+            colors = { { "_BackgroundA", new Color(1f, 0.236f, 0.269f, 0f) }, { "_BackgroundB", new Color(0f, 0f, 0f, 0f) } },
+            floats = { { "_Float", 0.3f } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInHiroDissolve = new CutInMaterialRecipe
+        {
+            name = "CutIn_Hiro_LuminescenceDissolve", shader = CutInMaterialShaderRoot + "LuminescenceDissolve",
+            colors = { { "_Color", new Color(0.992f, 0.647f, 0.643f, 1f) } }, floats = { { "_Tick", 0.952f } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInHiroSilhouette = new CutInMaterialRecipe
+        {
+            name = "CutIn_Hiro_LuminescenceSilhouette", shader = CutInMaterialShaderRoot + "LuminescenceSilhouette",
+            colors = { { "_Color", new Color(0.992f, 0.647f, 0.643f, 1f) } },
+        };
+
+        private static readonly CutInMaterialRecipe CutInHiroGlasses = new CutInMaterialRecipe
+        {
+            name = "CutIn_Hiro_Glasses", shader = CutInMaterialShaderRoot + "Glasses",
+            colors = { { "_EclipseFlame", new Color(1f, 0f, 0.042f, 0f) } },
+            floats = { { "_Fader", 1f }, { "_Fader2", 1f }, { "_Speed", 3f }, { "_Tick", 1f }, { "_EdgeSize", 0.02f } },
+            textures = { { "_kirakira", 1391563002887383734L }, { "_kirakira2", -5678023905743583822L } },
+        };
+
+        private static readonly Dictionary<string, Dictionary<long, CutInMaterialRecipe>> CutInMaterials =
+            new Dictionary<string, Dictionary<long, CutInMaterialRecipe>>
+            {
+                {
+                    "ObjectionCutIn_Ema", new Dictionary<long, CutInMaterialRecipe>
+                    {
+                        { 7796377464895998716L, CutInShadow },
+                        { -2611326965432545055L, CutInEmaBackground },
+                        { 978521274601713976L, CutInEmaDissolve },
+                        { -8014026575719811303L, CutInEmaSilhouette },
+                        { -5183371573251200786L, CutInEmaGlasses },
+                    }
+                },
+                {
+                    "ObjectionCutIn_Hiro", new Dictionary<long, CutInMaterialRecipe>
+                    {
+                        { 7796377464895998716L, CutInShadow },
+                        { 904597682965511602L, CutInHiroBackground },
+                        { 6986961580769073850L, CutInHiroDissolve },
+                        { -1981712515745401374L, CutInHiroSilhouette },
+                        { -4345803368799099511L, CutInHiroGlasses },
+                    }
+                },
+                {
+                    "ObjectionCutIn_CreatureHiro", new Dictionary<long, CutInMaterialRecipe>
+                    {
+                        { 7796377464895998716L, CutInShadow },
+                        { 904597682965511602L, CutInHiroBackground },
+                        { 6986961580769073850L, CutInHiroDissolve },
+                        { -1981712515745401374L, CutInHiroSilhouette },
+                        { -4345803368799099511L, CutInHiroGlasses },
+                        { -8014026575719811303L, CutInEmaSilhouette },
+                    }
+                },
+            };
+
+        private const string CutInMaterialFolder = "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/Spawn/CutIn/Generated/Materials";
+
+        private static Material ResolveCutInMaterial(string repoRoot, JobRecord job, long pathId)
+        {
+            string prefab = Path.GetFileNameWithoutExtension((job.asset_path ?? "").Replace('\\', '/'));
+            if (!CutInMaterials.TryGetValue(prefab, out Dictionary<long, CutInMaterialRecipe> recipes) ||
+                !recipes.TryGetValue(pathId, out CutInMaterialRecipe recipe))
+                return null;
+            Shader shader = Shader.Find(recipe.shader);
+            if (shader == null) throw new InvalidOperationException("Cut-in shader is unavailable: " + recipe.shader);
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string assetPath = CutInMaterialFolder + "/" + recipe.name + ".mat";
+            EnsureAssetFolder(projectRoot, CutInMaterialFolder);
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
+            if (material == null)
+            {
+                if (File.Exists(Path.Combine(projectRoot, assetPath.Replace('/', Path.DirectorySeparatorChar))))
+                    throw new InvalidDataException("Cut-in material exists but is not a Material: " + assetPath);
+                material = new Material(shader);
+                AssetDatabase.CreateAsset(material, assetPath);
+            }
+            material.shader = shader;
+            material.name = recipe.name;
+            foreach (KeyValuePair<string, Color> color in recipe.colors) material.SetColor(color.Key, color.Value);
+            foreach (KeyValuePair<string, float> number in recipe.floats) material.SetFloat(number.Key, number.Value);
+            foreach (KeyValuePair<string, long> entry in recipe.textures)
+            {
+                string texturePath = FindCourtTextureTarget(repoRoot, new CourtTextureRecipe { bundle = CutInSpawnBundle, pathId = entry.Value });
+                Texture texture = AssetDatabase.LoadAssetAtPath<Texture>(texturePath);
+                if (texture == null) throw new InvalidDataException("Cut-in texture is not imported: " + texturePath);
+                material.SetTexture(entry.Key, texture);
+            }
+            EditorUtility.SetDirty(material);
+            AssetDatabase.SaveAssets();
+            return material;
+        }
+
+        /// <summary>
+        /// The shader-graph cut-in layers take their shape from the sprite mesh (their alpha ignores the texture), and the
+        /// shipped sprites are Tight.  Importing them FullRect draws the shader over the whole rectangle, which shows as a
+        /// black fill around the glass and the portrait.  Sprites already imported keep their .meta, so correct them here;
+        /// the importer policy covers new imports.  Reimporting a single-mode crop keeps its GUID and sprite fileID.
+        /// </summary>
+        private static void EnsureCutInSpriteMeshTypes(GameObject prefab)
+        {
+            var wanted = new Dictionary<string, SpriteMeshType>(StringComparer.Ordinal);
+            foreach (SpriteRenderer renderer in prefab.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                Material material = renderer.sharedMaterial;
+                if (renderer.sprite == null || material == null ||
+                    !(AssetDatabase.GetAssetPath(material) ?? "").StartsWith(CutInMaterialFolder, StringComparison.Ordinal)) continue;
+                string spritePath = AssetDatabase.GetAssetPath(renderer.sprite);
+                if (!SpriteImportPolicy.IsCutInCrop(spritePath)) continue;
+                wanted[spritePath] = SpriteImportPolicy.ShippedMeshType(spritePath);
+            }
+            foreach (KeyValuePair<string, SpriteMeshType> item in wanted)
+            {
+                var importer = AssetImporter.GetAtPath(item.Key) as TextureImporter;
+                if (importer == null) throw new InvalidDataException("Cut-in sprite is not a texture importer asset: " + item.Key);
+                var settings = new TextureImporterSettings();
+                importer.ReadTextureSettings(settings);
+                if (settings.spriteMeshType == item.Value) continue;
+                settings.spriteMeshType = item.Value;
+                importer.SetTextureSettings(settings);
+                importer.SaveAndReimport();
+            }
+        }
+
+        private static bool IsCutInPrefab(string assetPath) =>
+            (assetPath ?? "").Replace('\\', '/').Contains("/Prefabs/Naninovel/Spawn/CutIn/ObjectionCutIn_");
+
+        private static bool IsCourtPrefab(string assetPath)
+        {
+            string path = (assetPath ?? "").Replace('\\', '/');
+            return path.EndsWith("/Prefabs/General/PerspectiveStage/Court.prefab", StringComparison.Ordinal) ||
+                   path.EndsWith("/Prefabs/General/PerspectiveStage/Court_Final.prefab", StringComparison.Ordinal);
+        }
+
+        private static HashSet<string> CourtPointerKeys(Node node, JobRecord job)
+        {
+            if (!IsCourtPrefab(job.asset_path)) return null;
+            if (!(node.component is MeshFilter) && !(node.component is MeshCollider) && !(node.component is Renderer))
+                return null;
+            var ignored = new HashSet<string>(BuilderOwnedKeys);
+            if (node.component is MeshFilter || node.component is MeshCollider) ignored.Add("m_Mesh");
+            if (node.component is Renderer) ignored.Add("m_Materials");
+            return ignored;
+        }
+
+        /// <summary>
+        /// The generic planner deliberately leaves embedded Court Mesh/Material PPtrs out of its reference table.
+        /// Resolve those pointers from the original JSON while the generated prefab hierarchy is still live.
+        /// Every pointer is checked: a new path ID must be added to this recipe rather than silently becoming null.
+        /// </summary>
+        private static void ApplyCourtBindings(string repoRoot, List<Node> nodes, JobRecord job)
+        {
+            // The index and ledger are parsed once per prefab and then released: a static cache would outlive
+            // a pull that changes res in an Editor that stays open.
+            try { ApplyCourtBindingsCore(repoRoot, nodes, job); }
+            finally { ClearCourtCaches(); }
+        }
+
+        private static void ApplyCourtBindingsCore(string repoRoot, List<Node> nodes, JobRecord job)
+        {
+            var meshes = new Dictionary<long, Mesh>();
+            var materials = new Dictionary<long, Material>();
+            int meshBindings = 0;
+            int materialBindings = 0;
+            foreach (Node node in nodes)
+            {
+                MeshFilter meshFilter = node.component as MeshFilter;
+                MeshCollider meshCollider = node.component as MeshCollider;
+                if (meshFilter != null || meshCollider != null)
+                {
+                    JToken pointer = node.json["m_Mesh"];
+                    if (pointer != null)
+                    {
+                        long fileId = pointer.Value<long?>("m_FileID") ?? 0L;
+                        long pathId = pointer.Value<long?>("m_PathID") ?? 0L;
+                        Mesh mesh = ResolveCourtMesh(repoRoot, fileId, pathId, meshes);
+                        if (mesh == null) throw new InvalidDataException("Court mesh pointer resolved to null: " + fileId + ":" + pathId);
+                        if (meshFilter != null) meshFilter.sharedMesh = mesh;
+                        if (meshCollider != null) meshCollider.sharedMesh = mesh;
+                        meshBindings++;
+                    }
+                }
+
+                if (node.component is Renderer renderer && node.json["m_Materials"] is JArray materialPointers)
+                {
+                    var assigned = new Material[materialPointers.Count];
+                    for (int i = 0; i < materialPointers.Count; i++)
+                    {
+                        JToken pointer = materialPointers[i];
+                        long fileId = pointer.Value<long?>("m_FileID") ?? 0L;
+                        long pathId = pointer.Value<long?>("m_PathID") ?? 0L;
+                        assigned[i] = ResolveCourtMaterial(repoRoot, fileId, pathId, materials);
+                        if (assigned[i] == null) throw new InvalidDataException("Court material pointer resolved to null: " + fileId + ":" + pathId);
+                    }
+                    renderer.sharedMaterials = assigned;
+                    materialBindings += assigned.Length;
+                }
+            }
+            if (meshBindings == 0 || materialBindings == 0)
+                throw new InvalidOperationException(job.asset_path + ": Court recipe found no Mesh/Material bindings");
+            foreach (Node node in nodes)
+                if (node.component is Light light) ConvertCourtLightIntensity(light, node.json, job);
+            AssetDatabase.SaveAssets();
+            job.messages.Add("Court bindings: meshes=" + meshBindings + " materials=" + materialBindings);
+        }
+
+        /// <summary>
+        /// The original URP light stores a spot/point intensity in candela (m_LightUnit 1: Court's spot is 2000 at
+        /// 30 m) and falls off with the inverse square of the distance.  The built-in pipeline reads a unitless
+        /// multiplier with a range-based falloff, so the raw 2000 renders every surface pure white.  Use the lux the
+        /// original delivered at the stage origin (candela / distance^2).  Rendered in Unity this reads well with the
+        /// built-in falloff, but it is a visual approximation, not a unit-exact conversion.
+        /// </summary>
+        private static void ConvertCourtLightIntensity(Light light, JObject json, JobRecord job)
+        {
+            if (!IsCandelaLight(light, json)) return;
+            float candela = json["m_Intensity"]?.Value<float?>() ?? light.intensity;
+            float distance = (light.transform.position - light.transform.root.position).magnitude;
+            if (distance < 1f)
+                throw new InvalidDataException(job.asset_path + ": Court light is " + distance + " m from the stage origin");
+            light.intensity = candela / (distance * distance);
+            job.messages.Add("Court light: " + candela + " cd / " + distance + " m^2 = " + light.intensity);
+        }
+
+        private static bool IsCandelaLight(Light light, JObject json) =>
+            light.type != LightType.Directional && (json["m_LightUnit"]?.Value<int?>() ?? 0) == 1;
+
+        private static bool IsCourtCandelaLight(JObject planJob, UnityEngine.Object component, JObject json) =>
+            IsCourtPrefab((string)planJob["asset_path"]) && component is Light light && IsCandelaLight(light, json);
+
+        // The DebateUI timer draws its digits as <sprite name="N"> tags from TrialsClockFont, a TMP_SpriteAsset the
+        // importer defers (its MonoScript type has no mapping and its shader is not recoverable).  Without it TMP finds
+        // no sprite and prints "?" for every digit.  Rebuild the asset from the dump at the first path
+        // MapShippedAssetPath tries, so the label's m_spriteAsset pointer resolves through the normal reference table.
+        private const string ClockBundle = "general-fonts-common_assets_all.bundle";
+        private const long ClockSpriteAssetPathId = 8008108086768730382L;
+        private const long ClockSpriteSheetPathId = -188070706469636662L;
+        private const long ClockMaterialPathId = -3180311218604113650L;
+        private const string ClockFolder = "Assets/GameContent/#WitchTrials/Fonts/Common";
+        private const string ClockSpriteAssetPath = ClockFolder + "/TrialsClockFont.asset";
+
+        // TMP assets the importer defers (their MonoScript type has no mapping) and that prefab labels point at by
+        // reference.  Each is rebuilt from its dump when a prefab that references it is built, and such a prefab is
+        // rebuilt, not patched, when the recipe changes (a field patch cannot bind a newly generated asset).
+        // LogMessageStyleSheet is not listed: LogUI's generated hierarchy has no label that carries it yet.
+        private const string DeferredTmpFolder = "Assets/#WitchTrials/Fonts/Common/";
+        private const long DebatePrinterStyleSheetPathId = 8401695592146518297L;
+        private static readonly string[] DeferredTmpAssets = { "TrialsClockFont.asset", "DebatePrinterStyleSheet.asset" };
+
+        private static IEnumerable<string> DeferredTmpReferences(IEnumerable<string> shippedPaths) =>
+            shippedPaths.Select(p => (p ?? "").Replace('\\', '/'))
+                .Where(p => p.StartsWith(DeferredTmpFolder, StringComparison.Ordinal) &&
+                            DeferredTmpAssets.Contains(p.Substring(DeferredTmpFolder.Length)))
+                .Distinct();
+
+        private static bool ReferencesDeferredTmpAsset(JObject planJob) =>
+            DeferredTmpReferences((planJob["references"] as JObject)?.Properties().Select(p => (string)p.Value) ??
+                                  Enumerable.Empty<string>()).Any();
+
+        private static void EnsureDeferredTmpAssets(string repoRoot, Dictionary<string, string> references, JobRecord job)
+        {
+            foreach (string shipped in DeferredTmpReferences(references.Values))
+            {
+                string name = shipped.Substring(DeferredTmpFolder.Length);
+                if (name == "TrialsClockFont.asset") EnsureClockSpriteAsset(repoRoot, job);
+                else if (name == "DebatePrinterStyleSheet.asset") EnsureStyleSheet(repoRoot, name, DebatePrinterStyleSheetPathId, job);
+            }
+        }
+
+        private static void EnsureClockSpriteAsset(string repoRoot, JobRecord job)
+        {
+            try
+            {
+                JObject json = JObject.Parse(File.ReadAllText(Path.GetFullPath(
+                    FindCourtDump(repoRoot, "MonoBehaviour", ClockBundle, ClockSpriteAssetPathId))));
+                JObject materialJson = JObject.Parse(File.ReadAllText(Path.GetFullPath(
+                    FindCourtDump(repoRoot, "Material", ClockBundle, ClockMaterialPathId))));
+                JArray characters = json["m_SpriteCharacterTable"] as JArray;
+                JArray glyphs = json["m_GlyphTable"] as JArray;
+                if (characters == null || glyphs == null || characters.Count == 0 || characters.Count != glyphs.Count)
+                    throw new InvalidDataException("TrialsClockFont: empty or inconsistent sprite tables");
+                string atlasPath = FindCourtTextureTarget(repoRoot,
+                    new CourtTextureRecipe { bundle = ClockBundle, pathId = ClockSpriteSheetPathId });
+                Texture atlas = AssetDatabase.LoadAssetAtPath<Texture>(atlasPath);
+                if (atlas == null) throw new InvalidDataException("TrialsClockFont atlas is not imported: " + atlasPath);
+                Shader shader = Shader.Find("TextMeshPro/Sprite");
+                if (shader == null) throw new InvalidOperationException("TextMeshPro/Sprite shader is unavailable");
+
+                string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+                EnsureAssetFolder(projectRoot, ClockFolder);
+                TMPro.TMP_SpriteAsset asset = AssetDatabase.LoadAssetAtPath<TMPro.TMP_SpriteAsset>(ClockSpriteAssetPath);
+                if (asset == null)
+                {
+                    if (File.Exists(Path.Combine(projectRoot, ClockSpriteAssetPath.Replace('/', Path.DirectorySeparatorChar))))
+                        throw new InvalidDataException("TrialsClockFont asset exists but is not a TMP_SpriteAsset");
+                    asset = ScriptableObject.CreateInstance<TMPro.TMP_SpriteAsset>();
+                    AssetDatabase.CreateAsset(asset, ClockSpriteAssetPath);
+                }
+                // Reuse the sub-asset on reruns: adding a new one each time would pile up materials.
+                Material material = AssetDatabase.LoadAllAssetsAtPath(ClockSpriteAssetPath).OfType<Material>().FirstOrDefault();
+                if (material == null)
+                {
+                    material = new Material(shader);
+                    AssetDatabase.AddObjectToAsset(material, asset);
+                }
+                material.shader = shader;
+                material.name = "TrialsClockFont Material";
+                JObject properties = materialJson["m_SavedProperties"] as JObject;
+                ApplyCourtColors(material, properties?["m_Colors"] as JArray);
+                ApplyCourtFloats(material, properties?["m_Floats"] as JArray);
+                material.SetTexture("_MainTex", atlas);
+                EditorUtility.SetDirty(material);
+
+                // The glyph `sprite` pointers are editor-only previews; they stay unresolved.  m_Version must be
+                // written before the asset is used: TMP rebuilds the tables from the empty legacy list otherwise.
+                var options = new JsonToSerializedApplier.Options
+                {
+                    SkipEngineFields = false,
+                    IgnoreKeys = new HashSet<string>(BuilderOwnedKeys) { "m_Enabled" },
+                    PreserveUnresolvedPointers = true,
+                    ResolvePointer = token =>
+                    {
+                        long id = token.Value<long?>("m_PathID") ?? 0L;
+                        return id == ClockSpriteSheetPathId ? (UnityEngine.Object)atlas
+                             : id == ClockMaterialPathId ? material : null;
+                    },
+                };
+                JsonToSerializedApplier.ApplyAll(new SerializedObject(asset), json, options);
+                EditorUtility.SetDirty(asset);
+                AssetDatabase.SaveAssets();
+
+                // A serialized-field mismatch only warns in the applier, so verify the result itself.
+                asset.UpdateLookupTables();
+                if (asset.spriteSheet != atlas || asset.material != material ||
+                    asset.spriteCharacterTable.Count != characters.Count || asset.spriteGlyphTable.Count != glyphs.Count)
+                    throw new InvalidDataException("TrialsClockFont: tables or references were not applied");
+                foreach (JToken character in characters)
+                {
+                    string name = (string)character["m_Name"];
+                    if (asset.GetSpriteIndexFromName(name) < 0)
+                        throw new InvalidDataException("TrialsClockFont has no sprite named '" + name + "'");
+                }
+                job.messages.Add("TrialsClockFont sprites=" + characters.Count);
+            }
+            finally { ClearCourtCaches(); }
+        }
+
+        // A TMP_StyleSheet carries the <style="Objection"> definitions the debate text uses; without it the tag is
+        // printed literally.
+        private static void EnsureStyleSheet(string repoRoot, string name, long pathId, JobRecord job)
+        {
+            try
+            {
+                JObject json = JObject.Parse(File.ReadAllText(Path.GetFullPath(
+                    FindCourtDump(repoRoot, "MonoBehaviour", ClockBundle, pathId))));
+                JArray styles = json["m_StyleList"] as JArray;
+                if (styles == null || styles.Count == 0)
+                    throw new InvalidDataException(name + ": empty style list");
+                string assetPath = ClockFolder + "/" + name;
+                string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+                EnsureAssetFolder(projectRoot, ClockFolder);
+                TMPro.TMP_StyleSheet sheet = AssetDatabase.LoadAssetAtPath<TMPro.TMP_StyleSheet>(assetPath);
+                if (sheet == null)
+                {
+                    if (File.Exists(Path.Combine(projectRoot, assetPath.Replace('/', Path.DirectorySeparatorChar))))
+                        throw new InvalidDataException(name + " exists but is not a TMP_StyleSheet");
+                    sheet = ScriptableObject.CreateInstance<TMPro.TMP_StyleSheet>();
+                    AssetDatabase.CreateAsset(sheet, assetPath);
+                }
+                var options = new JsonToSerializedApplier.Options
+                {
+                    SkipEngineFields = false,
+                    IgnoreKeys = new HashSet<string>(BuilderOwnedKeys) { "m_Enabled" },
+                    PreserveUnresolvedPointers = true,
+                    ResolvePointer = token => null,
+                };
+                JsonToSerializedApplier.ApplyAll(new SerializedObject(sheet), json, options);
+                EditorUtility.SetDirty(sheet);
+                AssetDatabase.SaveAssets();
+
+                // A serialized-field mismatch only warns in the applier, so verify the result itself.
+                sheet.RefreshStyles();
+                foreach (JToken style in styles)
+                {
+                    TMPro.TMP_Style found = sheet.GetStyle((string)style["m_Name"]);
+                    if (found == null || found.styleOpeningDefinition != (string)style["m_OpeningDefinition"] ||
+                        found.styleClosingDefinition != (string)style["m_ClosingDefinition"])
+                        throw new InvalidDataException(name + ": style '" + (string)style["m_Name"] + "' was not applied");
+                }
+                job.messages.Add(name + " styles=" + styles.Count);
+            }
+            finally { ClearCourtCaches(); }
+        }
+
+        private static void ClearCourtCaches()
+        {
+            CourtDumpCache.Clear();
+            CourtTextureTargetCache.Clear();
+            CourtCsvCache.Clear();
+        }
+
+        private static Mesh ResolveCourtMesh(string repoRoot, long fileId, long pathId,
+                                             Dictionary<long, Mesh> cache)
+        {
+            if (pathId == 0) return null;
+            if (fileId == 2)
+            {
+                string builtinName;
+                switch (pathId)
+                {
+                    case 10202: builtinName = "Cube.fbx"; break;
+                    case 10206: builtinName = "Cylinder.fbx"; break;
+                    case 10207: builtinName = "Sphere.fbx"; break;
+                    case 10208: builtinName = "Capsule.fbx"; break;
+                    case 10209: builtinName = "Plane.fbx"; break;
+                    case 10210: builtinName = "Quad.fbx"; break;
+                    default: throw new InvalidDataException("Court mesh has unknown Unity builtin path ID " + pathId);
+                }
+                Mesh builtin = Resources.GetBuiltinResource<Mesh>(builtinName);
+                if (builtin == null) throw new InvalidDataException("Unity builtin mesh did not load: " + builtinName);
+                return builtin;
+            }
+            if (fileId != 0)
+                throw new InvalidDataException("Court mesh has unsupported file ID " + fileId + ":" + pathId);
+            if (pathId != CourtMesh52PathId && pathId != CourtMesh171PathId)
+                throw new InvalidDataException("Court mesh path ID is not in the tracked recipe: " + pathId);
+            if (cache.TryGetValue(pathId, out Mesh known)) return known;
+            Mesh mesh = LoadOrBuildCourtMesh(repoRoot, pathId);
+            cache[pathId] = mesh;
+            return mesh;
+        }
+
+        private static Mesh LoadOrBuildCourtMesh(string repoRoot, long pathId)
+        {
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string assetPath = CourtMeshFolder + "/CourtMesh_" + (pathId < 0 ? "N" + (-pathId) : pathId.ToString()) + ".asset";
+            string source = FindCourtDump(repoRoot, "Mesh", CourtPrefabBundle, pathId);
+            string sourcePath = Path.GetFullPath(source);
+            if (!File.Exists(sourcePath)) throw new FileNotFoundException("Court mesh source is missing", sourcePath);
+            JObject json = JObject.Parse(File.ReadAllText(sourcePath));
+            int vertexCount = json["m_VertexData"]?["m_VertexCount"]?.Value<int>() ?? 0;
+            if (vertexCount <= 0) throw new InvalidDataException(source + ": m_VertexData.m_VertexCount is empty");
+            JArray channels = json["m_VertexData"]?["m_Channels"] as JArray;
+            byte[] vertexBytes = DecodePythonBytes((string)json["m_VertexData"]?["m_DataSize"]);
+            if (channels == null || vertexBytes.Length == 0) throw new InvalidDataException(source + ": vertex data is empty");
+            int stride = 0;
+            foreach (JObject channel in channels.OfType<JObject>())
+            {
+                int dimension = channel.Value<int?>("dimension") ?? 0;
+                int format = channel.Value<int?>("format") ?? 0;
+                int offset = channel.Value<int?>("offset") ?? 0;
+                if (dimension > 0 && format != 0)
+                    throw new InvalidDataException(source + ": compressed vertex channel format " + format + " is unsupported");
+                stride = Math.Max(stride, offset + dimension * 4);
+            }
+            if (stride <= 0 || vertexBytes.Length != vertexCount * stride)
+                throw new InvalidDataException(source + ": vertex byte count " + vertexBytes.Length + " does not match " +
+                                                vertexCount + "*" + stride);
+            var vertices = new Vector3[vertexCount];
+            var normals = new Vector3[vertexCount];
+            var tangents = new Vector4[vertexCount];
+            var uvs = new Vector2[vertexCount];
+            int positionOffset = ChannelOffset(channels, 0, 3, source);
+            int normalOffset = ChannelOffset(channels, 1, 3, source);
+            int tangentOffset = ChannelOffset(channels, 2, 4, source);
+            int uvOffset = ChannelOffset(channels, 4, 2, source);
+            for (int i = 0; i < vertexCount; i++)
+            {
+                int at = i * stride;
+                vertices[i] = new Vector3(ReadFloat(vertexBytes, at + positionOffset),
+                                          ReadFloat(vertexBytes, at + positionOffset + 4),
+                                          ReadFloat(vertexBytes, at + positionOffset + 8));
+                normals[i] = new Vector3(ReadFloat(vertexBytes, at + normalOffset),
+                                         ReadFloat(vertexBytes, at + normalOffset + 4),
+                                         ReadFloat(vertexBytes, at + normalOffset + 8));
+                tangents[i] = new Vector4(ReadFloat(vertexBytes, at + tangentOffset),
+                                          ReadFloat(vertexBytes, at + tangentOffset + 4),
+                                          ReadFloat(vertexBytes, at + tangentOffset + 8),
+                                          ReadFloat(vertexBytes, at + tangentOffset + 12));
+                uvs[i] = new Vector2(ReadFloat(vertexBytes, at + uvOffset),
+                                     ReadFloat(vertexBytes, at + uvOffset + 4));
+            }
+
+            JArray indexBytes = json["m_IndexBuffer"] as JArray;
+            if (indexBytes == null || indexBytes.Count % 2 != 0)
+                throw new InvalidDataException(source + ": invalid m_IndexBuffer");
+            var indices = new int[indexBytes.Count / 2];
+            for (int i = 0; i < indices.Length; i++)
+                indices[i] = (indexBytes[i * 2].Value<int>() & 0xff) | ((indexBytes[i * 2 + 1].Value<int>() & 0xff) << 8);
+            JArray subMeshes = json["m_SubMeshes"] as JArray;
+            if (subMeshes == null || subMeshes.Count == 0)
+                throw new InvalidDataException(source + ": no submeshes");
+            int expectedIndices = subMeshes.Sum(s => s.Value<int>("indexCount"));
+            if (expectedIndices != indices.Length)
+                throw new InvalidDataException(source + ": submesh index count " + expectedIndices + " != " + indices.Length);
+
+            EnsureAssetFolder(projectRoot, CourtMeshFolder);
+            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
+            if (mesh == null)
+            {
+                if (File.Exists(Path.Combine(projectRoot, assetPath.Replace('/', Path.DirectorySeparatorChar))))
+                    throw new InvalidDataException("Court mesh asset exists but is not a Mesh: " + assetPath);
+                mesh = new Mesh();
+                AssetDatabase.CreateAsset(mesh, assetPath);
+            }
+            // Keep the object name equal to the file name so a reimport does not rename the asset.
+            mesh.name = Path.GetFileNameWithoutExtension(assetPath);
+            mesh.Clear();
+            mesh.indexFormat = IndexFormat.UInt16;
+            mesh.vertices = vertices;
+            mesh.normals = normals;
+            mesh.tangents = tangents;
+            mesh.uv = uvs;
+            int indexOffset = 0;
+            for (int sub = 0; sub < subMeshes.Count; sub++)
+            {
+                int count = subMeshes[sub].Value<int>("indexCount");
+                var part = new int[count];
+                Array.Copy(indices, indexOffset, part, 0, count);
+                mesh.SetIndices(part, MeshTopology.Triangles, sub, false, subMeshes[sub].Value<int?>("baseVertex") ?? 0);
+                indexOffset += count;
+            }
+            mesh.RecalculateBounds();
+            JObject aabb = json["m_LocalAABB"] as JObject;
+            if (aabb != null)
+            {
+                Vector3 expectedCenter = ReadVector3(aabb["m_Center"]);
+                Vector3 expectedExtent = ReadVector3(aabb["m_Extent"]);
+                Bounds bounds = mesh.bounds;
+                if ((bounds.center - expectedCenter).sqrMagnitude > 0.00001f ||
+                    (bounds.extents - expectedExtent).sqrMagnitude > 0.00001f)
+                    throw new InvalidDataException(source + ": decoded bounds " + bounds + " differ from m_LocalAABB");
+            }
+            EditorUtility.SetDirty(mesh);
+            return mesh;
+        }
+
+        private static int ChannelOffset(JArray channels, int index, int dimension, string source)
+        {
+            JObject channel = channels.Count > index ? channels[index] as JObject : null;
+            if (channel == null || (channel.Value<int?>("dimension") ?? 0) != dimension)
+                throw new InvalidDataException(source + ": missing vertex channel " + index);
+            return channel.Value<int?>("offset") ?? 0;
+        }
+
+        private static float ReadFloat(byte[] data, int offset) => BitConverter.ToSingle(data, offset);
+
+        private static Vector3 ReadVector3(JToken token) =>
+            new Vector3(token?.Value<float?>("x") ?? 0f, token?.Value<float?>("y") ?? 0f, token?.Value<float?>("z") ?? 0f);
+
+        private static byte[] DecodePythonBytes(string text)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length < 3 || text[0] != 'b' || text[1] != '\'' || text[text.Length - 1] != '\'')
+                throw new InvalidDataException("vertex m_DataSize is not a Python bytes literal");
+            var bytes = new List<byte>();
+            for (int i = 2; i < text.Length - 1; i++)
+            {
+                char c = text[i];
+                if (c != '\\') { bytes.Add((byte)c); continue; }
+                if (++i >= text.Length - 1) throw new InvalidDataException("truncated Python bytes escape");
+                char escape = text[i];
+                if (escape == 'x')
+                {
+                    if (i + 2 >= text.Length - 1) throw new InvalidDataException("truncated Python hex escape");
+                    bytes.Add(Convert.ToByte(text.Substring(i + 1, 2), 16));
+                    i += 2;
+                }
+                else
+                {
+                    switch (escape)
+                    {
+                        case 'n': bytes.Add(10); break;
+                        case 'r': bytes.Add(13); break;
+                        case 't': bytes.Add(9); break;
+                        case 'b': bytes.Add(8); break;
+                        case 'f': bytes.Add(12); break;
+                        case 'v': bytes.Add(11); break;
+                        case '\\': bytes.Add((byte)'\\'); break;
+                        case '\'': bytes.Add((byte)'\''); break;
+                        default: bytes.Add((byte)escape); break;
+                    }
+                }
+            }
+            return bytes.ToArray();
+        }
+
+        private static Material ResolveCourtMaterial(string repoRoot, long fileId, long pathId,
+                                                     Dictionary<long, Material> cache)
+        {
+            if (pathId == 0) return null;
+            if (fileId != 0 || !CourtMaterials.TryGetValue(pathId, out CourtMaterialRecipe recipe))
+                throw new InvalidDataException("Court material pointer is not in the tracked recipe: " + fileId + ":" + pathId);
+            if (cache.TryGetValue(pathId, out Material known)) return known;
+            string sourcePath = Path.GetFullPath(FindCourtDump(repoRoot, "Material", recipe.bundle, recipe.pathId));
+            if (!File.Exists(sourcePath)) throw new FileNotFoundException("Court material source is missing", sourcePath);
+            JObject source = JObject.Parse(File.ReadAllText(sourcePath));
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string assetName = SanitizeAssetName(recipe.name);
+            string assetPath = CourtMaterialFolder + "/" + assetName + ".mat";
+            EnsureAssetFolder(projectRoot, CourtMaterialFolder);
+            // Fire is an HDRP-style graph with no built-in equivalent.  Its flame mask on a built-in additive
+            // particle shader keeps the 12 play-on-awake flame quads from rendering as opaque white squares.
+            bool fire = recipe.name == "Fire";
+            Shader shader = (fire ? Shader.Find("Legacy Shaders/Particles/Additive") : null) ??
+                            Shader.Find("Standard") ?? Shader.Find("Unlit/Texture");
+            if (shader == null) throw new InvalidOperationException("Court material fallback shader is unavailable");
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
+            if (material == null)
+            {
+                if (File.Exists(Path.Combine(projectRoot, assetPath.Replace('/', Path.DirectorySeparatorChar))))
+                    throw new InvalidDataException("Court material asset exists but is not a Material: " + assetPath);
+                material = new Material(shader);
+                AssetDatabase.CreateAsset(material, assetPath);
+            }
+            material.shader = shader;
+            // Keep the object name equal to the file name so a reimport does not rename the asset.
+            material.name = assetName;
+            JObject properties = source["m_SavedProperties"] as JObject;
+            ApplyCourtTextures(repoRoot, material, properties?["m_TexEnvs"] as JArray);
+            ApplyCourtColors(material, properties?["m_Colors"] as JArray);
+            ApplyCourtFloats(material, properties?["m_Floats"] as JArray);
+            if (fire && material.HasProperty("_TintColor")) material.SetColor("_TintColor", new Color(1f, 0.55f, 0.2f, 0.6f));
+            JArray keywords = source["m_ValidKeywords"] as JArray;
+            if (keywords != null)
+                foreach (string keyword in keywords.Values<string>())
+                    // URP spells the metallic/gloss-map keyword differently from the Standard shader.
+                    if (!string.IsNullOrEmpty(keyword))
+                        material.EnableKeyword(keyword == "_METALLICSPECGLOSSMAP" ? "_METALLICGLOSSMAP" : keyword);
+            bool alphaClip = keywords != null && keywords.Values<string>().Contains("_ALPHATEST_ON");
+            bool transparent = keywords != null && keywords.Values<string>().Contains("_SURFACE_TYPE_TRANSPARENT");
+            if ((FindCourtFloat(properties?["m_Floats"] as JArray, "_Surface") ?? 0f) > 0.5f) transparent = true;
+            if (alphaClip)
+            {
+                material.EnableKeyword("_ALPHATEST_ON");
+                SetMaterialFloat(material, "_Mode", 1f);
+                SetMaterialFloat(material, "_Cutoff", FindCourtFloat(properties?["m_Floats"] as JArray, "_Cutoff") ?? 0.5f);
+            }
+            if (transparent)
+            {
+                material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                SetMaterialFloat(material, "_Mode", 3f);
+                SetMaterialFloat(material, "_SrcBlend", 1f);
+                SetMaterialFloat(material, "_DstBlend", 10f);
+                SetMaterialFloat(material, "_ZWrite", 0f);
+            }
+            int renderQueue = source.Value<int?>("m_CustomRenderQueue") ?? -1;
+            material.renderQueue = renderQueue;
+            EditorUtility.SetDirty(material);
+            cache[pathId] = material;
+            return material;
+        }
+
+        private static void ApplyCourtTextures(string repoRoot, Material material, JArray entries)
+        {
+            if (entries == null) return;
+            foreach (JArray pair in entries.OfType<JArray>())
+            {
+                string property = (string)pair[0];
+                JObject value = pair.Count > 1 ? pair[1] as JObject : null;
+                JToken texturePointer = value?["m_Texture"];
+                long pathId = texturePointer?.Value<long?>("m_PathID") ?? 0L;
+                string target = CourtTextureProperty(material, property);
+                if (pathId != 0)
+                {
+                    if (!CourtTextures.TryGetValue(pathId, out CourtTextureRecipe textureRecipe))
+                        throw new InvalidDataException("Court material texture path ID is not in the tracked recipe: " + pathId);
+                    string generated = FindCourtTextureTarget(repoRoot, textureRecipe);
+                    Texture texture = generated == null ? null : AssetDatabase.LoadAssetAtPath<Texture>(generated);
+                    if (texture == null) throw new InvalidDataException("Court material texture is missing for " +
+                                                                         textureRecipe.bundle + ":" + pathId);
+                    if (!string.IsNullOrEmpty(target)) material.SetTexture(target, texture);
+                }
+                if (value != null && !string.IsNullOrEmpty(target) && material.HasProperty(target))
+                {
+                    JObject scale = value["m_Scale"] as JObject;
+                    JObject offset = value["m_Offset"] as JObject;
+                    if (scale != null) material.SetTextureScale(target, new Vector2(scale.Value<float?>("x") ?? 1f, scale.Value<float?>("y") ?? 1f));
+                    if (offset != null) material.SetTextureOffset(target, new Vector2(offset.Value<float?>("x") ?? 0f, offset.Value<float?>("y") ?? 0f));
+                }
+            }
+        }
+
+        private static string CourtTextureProperty(Material material, string property)
+        {
+            if (material.HasProperty(property)) return property;
+            if (property == "_BaseMap" && material.HasProperty("_MainTex")) return "_MainTex";
+            // The flame silhouette is the only Fire texture the built-in particle shader can use.
+            if (property == "_Mask_Texture" && material.HasProperty("_MainTex")) return "_MainTex";
+            return null;
+        }
+
+        private static void ApplyCourtColors(Material material, JArray entries)
+        {
+            if (entries == null) return;
+            foreach (JArray pair in entries.OfType<JArray>())
+            {
+                string property = (string)pair[0];
+                JObject color = pair.Count > 1 ? pair[1] as JObject : null;
+                if (color == null) continue;
+                Color value = new Color(color.Value<float?>("r") ?? 0f, color.Value<float?>("g") ?? 0f,
+                                        color.Value<float?>("b") ?? 0f, color.Value<float?>("a") ?? 1f);
+                if (material.HasProperty(property)) material.SetColor(property, value);
+                if (property == "_BaseColor" && material.HasProperty("_Color")) material.SetColor("_Color", value);
+            }
+        }
+
+        private static void ApplyCourtFloats(Material material, JArray entries)
+        {
+            if (entries == null) return;
+            foreach (JArray pair in entries.OfType<JArray>())
+            {
+                string property = (string)pair[0];
+                float value = pair.Count > 1 ? pair[1].Value<float>() : 0f;
+                // URP stores smoothness as _Smoothness; Standard reads _Glossiness, or _GlossMapScale with a
+                // metallic/gloss map.  The json also carries stale Standard values for both, so URP's wins.
+                if (property == "_Glossiness" || property == "_GlossMapScale") continue;
+                if (property == "_Smoothness")
+                {
+                    SetMaterialFloat(material, "_Glossiness", value);
+                    SetMaterialFloat(material, "_GlossMapScale", value);
+                    continue;
+                }
+                SetMaterialFloat(material, property, value);
+            }
+        }
+
+        private static float? FindCourtFloat(JArray entries, string property)
+        {
+            if (entries == null) return null;
+            foreach (JArray pair in entries.OfType<JArray>())
+                if ((string)pair[0] == property) return pair.Count > 1 ? pair[1].Value<float>() : 0f;
+            return null;
+        }
+
+        private static void SetMaterialFloat(Material material, string property, float value)
+        {
+            if (material.HasProperty(property)) material.SetFloat(property, value);
+        }
+
+        // The extraction may assign a different ~N filename in another readable copy.  The index's
+        // (type, bundle basename, path ID) identity is stable, while output_file is only a local filename.
+        private static readonly Dictionary<string, string> CourtDumpCache =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, string> CourtTextureTargetCache =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        private static string FindCourtDump(string repoRoot, string type, string bundle, long pathId)
+        {
+            string key = type + "|" + bundle.ToLowerInvariant() + "|" + pathId;
+            if (CourtDumpCache.TryGetValue(key, out string known)) return known;
+            string indexPath = Path.Combine(repoRoot, "res", "_index.csv");
+            if (!File.Exists(indexPath)) throw new FileNotFoundException("resource index is missing", indexPath);
+            string wantedBundle = Path.GetFileName((bundle ?? "").Replace('\\', '/')).ToLowerInvariant();
+            string found = null;
+            foreach (Dictionary<string, string> row in ReadCourtCsv(indexPath))
+            {
+                if (!string.Equals(row.TryGetValue("type", out string actualType) ? actualType : "", type,
+                                   StringComparison.Ordinal) ||
+                    !string.Equals(Path.GetFileName((row.TryGetValue("source_bundle", out string actualBundle)
+                                                     ? actualBundle : "").Replace('\\', '/')).ToLowerInvariant(),
+                                   wantedBundle, StringComparison.Ordinal) ||
+                    !long.TryParse(row.TryGetValue("path_id", out string actualId) ? actualId : "", out long parsedId) ||
+                    parsedId != pathId) continue;
+                string output = row.TryGetValue("output_file", out string value) ? value.Replace('\\', '/') : "";
+                if (string.IsNullOrEmpty(output)) continue;
+                string[] candidates = { Path.Combine(repoRoot, "res", output),
+                                        Path.Combine(repoRoot, "res", "_serialized", output) };
+                foreach (string candidate in candidates)
+                {
+                    string full = Path.GetFullPath(candidate);
+                    string resRoot = Path.GetFullPath(Path.Combine(repoRoot, "res")) + Path.DirectorySeparatorChar;
+                    if (full.StartsWith(resRoot, StringComparison.OrdinalIgnoreCase) && File.Exists(full))
+                    {
+                        if (found != null && !string.Equals(found, full, StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidDataException("resource identity is ambiguous: " + key);
+                        found = full;
+                    }
+                }
+            }
+            if (found == null) throw new FileNotFoundException("resource identity is missing: " + key, indexPath);
+            CourtDumpCache[key] = found;
+            return found;
+        }
+
+        private static string FindCourtTextureTarget(string repoRoot, CourtTextureRecipe recipe)
+        {
+            string key = recipe.bundle.ToLowerInvariant() + "|" + recipe.pathId;
+            if (CourtTextureTargetCache.TryGetValue(key, out string known)) return known;
+            // Verify the source identity in the local extraction before trusting the imported target ledger.
+            // The ledger records where this copy was written; _index.csv proves which shipped object it was.
+            FindCourtDump(repoRoot, "Texture2D", recipe.bundle, recipe.pathId);
+            string ledgerPath = Path.Combine(repoRoot, "res", ".manosaba", "reconstruction", "unity",
+                                              "a13_import_ledger.csv");
+            if (!File.Exists(ledgerPath)) throw new FileNotFoundException("content import ledger is missing", ledgerPath);
+            string wantedBundle = Path.GetFileName(recipe.bundle.Replace('\\', '/')).ToLowerInvariant();
+            string target = null;
+            foreach (Dictionary<string, string> row in ReadCourtCsv(ledgerPath))
+            {
+                string type = row.TryGetValue("type", out string actualType) ? actualType : "";
+                string status = row.TryGetValue("status", out string actualStatus) ? actualStatus : "";
+                string sourceBundle = row.TryGetValue("bundle", out string actualBundle) ? actualBundle : "";
+                string path = row.TryGetValue("path_id", out string actualId) ? actualId : "";
+                if (type != "Texture2D" || status != "IMPORTED" ||
+                    Path.GetFileName(sourceBundle.Replace('\\', '/')).ToLowerInvariant() != wantedBundle ||
+                    path != recipe.pathId.ToString(CultureInfo.InvariantCulture)) continue;
+                string candidate = NormalizeCourtAssetTarget(repoRoot,
+                    row.TryGetValue("target_path", out string value) ? value : "");
+                if (candidate == null) continue;
+                if (target != null && !string.Equals(target, candidate, StringComparison.Ordinal))
+                    throw new InvalidDataException("texture identity is ambiguous: " + key);
+                target = candidate;
+            }
+            if (target == null) throw new FileNotFoundException("imported texture identity is missing: " + key, ledgerPath);
+            CourtTextureTargetCache[key] = target;
+            return target;
+        }
+
+        private static string NormalizeCourtAssetTarget(string repoRoot, string target)
+        {
+            string value = (target ?? "").Replace('\\', '/');
+            int marker = value.IndexOf("/UnityProject/Assets/", StringComparison.OrdinalIgnoreCase);
+            if (marker >= 0) value = "Assets/" + value.Substring(marker + "/UnityProject/Assets/".Length);
+            else if (value.StartsWith("UnityProject/", StringComparison.OrdinalIgnoreCase)) value = value.Substring("UnityProject/".Length);
+            if (!value.StartsWith("Assets/", StringComparison.Ordinal)) return null;
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string full = Path.GetFullPath(Path.Combine(projectRoot, value.Replace('/', Path.DirectorySeparatorChar)));
+            string allowed = Path.GetFullPath(Path.Combine(projectRoot, "Assets/GameContent")) + Path.DirectorySeparatorChar;
+            if (!full.StartsWith(allowed, StringComparison.OrdinalIgnoreCase) || !File.Exists(full)) return null;
+            return value;
+        }
+
+        private static readonly Dictionary<string, List<Dictionary<string, string>>> CourtCsvCache =
+            new Dictionary<string, List<Dictionary<string, string>>>(StringComparer.OrdinalIgnoreCase);
+
+        private static List<Dictionary<string, string>> ReadCourtCsv(string path)
+        {
+            string key = Path.GetFullPath(path);
+            if (CourtCsvCache.TryGetValue(key, out List<Dictionary<string, string>> cached)) return cached;
+            List<Dictionary<string, string>> rows = ParseCourtCsv(path);
+            CourtCsvCache[key] = rows;
+            return rows;
+        }
+
+        private static List<Dictionary<string, string>> ParseCourtCsv(string path)
+        {
+            string text = File.ReadAllText(path, Encoding.UTF8);
+            if (text.Length > 0 && text[0] == '\ufeff') text = text.Substring(1);
+            var records = new List<List<string>>();
+            var record = new List<string>();
+            var field = new StringBuilder();
+            bool quoted = false;
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (quoted)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < text.Length && text[i + 1] == '"') { field.Append('"'); i++; }
+                        else quoted = false;
+                    }
+                    else field.Append(c);
+                }
+                else if (c == '"') quoted = true;
+                else if (c == ',') { record.Add(field.ToString()); field.Clear(); }
+                else if (c == '\n' || c == '\r')
+                {
+                    if (c == '\r' && i + 1 < text.Length && text[i + 1] == '\n') i++;
+                    record.Add(field.ToString()); field.Clear();
+                    if (record.Count > 1 || record[0].Length > 0) records.Add(record);
+                    record = new List<string>();
+                }
+                else field.Append(c);
+            }
+            if (field.Length > 0 || record.Count > 0) { record.Add(field.ToString()); records.Add(record); }
+            if (records.Count == 0) throw new InvalidDataException("empty CSV: " + path);
+            var rows = new List<Dictionary<string, string>>();
+            foreach (List<string> values in records.Skip(1))
+            {
+                var row = new Dictionary<string, string>(StringComparer.Ordinal);
+                for (int i = 0; i < records[0].Count; i++) row[records[0][i]] = i < values.Count ? values[i] : "";
+                rows.Add(row);
+            }
+            return rows;
+        }
+
+        private static string SanitizeAssetName(string value)
+        {
+            var result = new StringBuilder();
+            foreach (char c in value ?? "CourtMaterial")
+                result.Append(char.IsLetterOrDigit(c) || c == '_' || c == '-' ? c : '_');
+            return result.ToString();
+        }
+
+        private static void EnsureAssetFolder(string projectRoot, string assetFolder)
+        {
+            Directory.CreateDirectory(Path.Combine(projectRoot, assetFolder.Replace('/', Path.DirectorySeparatorChar)));
         }
 
         // Unity's serialized AnimationClip has two representations.  Clips imported from the
@@ -1480,8 +2523,25 @@ namespace Manosaba.EditorTools
                 binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "m_Color.a");
                 return true;
             }
+            // A float property of the renderer's material (binding custom type 22).  Its hash is the property
+            // name's CRC32 with the top nibble replaced by 8: the cut-in Timelines drive the Shader Graph
+            // properties _Float, _Tick, _Fader and _Fader2 this way.  Only the names listed below are known.
+            if (typeId == 212 && (attribute & 0x80000000u) != 0 && component == 0 &&
+                AnimatedMaterialProperties.Value.TryGetValue(attribute, out string materialProperty))
+            {
+                binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "material." + materialProperty);
+                return true;
+            }
             return false;
         }
+
+        private static readonly Lazy<Dictionary<uint, string>> AnimatedMaterialProperties = new Lazy<Dictionary<uint, string>>(() =>
+        {
+            var map = new Dictionary<uint, string>();
+            foreach (string name in new[] { "_Float", "_Tick", "_Fader", "_Fader2", "_Speed", "_EdgeSize" })
+                map[(Crc32(name) & 0x0FFFFFFFu) | 0x80000000u] = name;
+            return map;
+        });
 
         private static void ApplyTransform(Node node, JobRecord job)
         {
@@ -1603,6 +2663,27 @@ namespace Manosaba.EditorTools
                         if (sidecarAsset != null) job.pointers_sidecar++;
                         else job.unresolved_asset_missing++;
                         return sidecarAsset;
+                    }
+                    // The cut-ins' materials are Shader Graphs the shipped build only carries as compiled programs.
+                    Material cutInMaterial = ResolveCutInMaterial(repoRoot, job, pathId);
+                    if (cutInMaterial != null)
+                    {
+                        job.pointers_sidecar++;
+                        return cutInMaterial;
+                    }
+                    // The ObjectionCutIn Timelines' glass sounds are in no ledger row; content.py extracts them by
+                    // identity (ensure_cutin_audio) and they are bound here by the same path ids.
+                    if (CutInAudio.TryGetValue(pathId, out string cutInAudioPath) && IsCutInPrefab(job.asset_path))
+                    {
+                        AudioClip cutInClip = AssetDatabase.LoadAssetAtPath<AudioClip>(cutInAudioPath);
+                        if (cutInClip != null) job.pointers_sidecar++;
+                        else
+                        {
+                            job.unresolved_asset_missing++;
+                            if (job.missing_asset_paths.Count < 20 && !job.missing_asset_paths.Contains(cutInAudioPath))
+                                job.missing_asset_paths.Add(cutInAudioPath);
+                        }
+                        return cutInClip;
                     }
                     job.unresolved_target_not_in_plan++;
                     return null;

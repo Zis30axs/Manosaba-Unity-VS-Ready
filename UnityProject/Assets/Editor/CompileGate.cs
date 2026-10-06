@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.Compilation;
 using UnityEngine;
 
@@ -31,14 +32,17 @@ namespace Manosaba.EditorTools
 
         public static int Execute()
         {
+            BuildTarget activeTarget = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup activeGroup = BuildPipeline.GetBuildTargetGroup(activeTarget);
+            NamedBuildTarget namedTarget = NamedBuildTarget.FromBuildTargetGroup(activeGroup);
             var result = new CompileResult
             {
                 generated = DateTime.UtcNow.ToString("o"),
                 unity_version = Application.unityVersion,
-                scripting_define_symbols = PlayerSettings.GetScriptingDefineSymbols(
-                    UnityEditor.Build.NamedBuildTarget.Standalone),
-                api_compatibility_level = PlayerSettings.GetApiCompatibilityLevel(
-                    UnityEditor.Build.NamedBuildTarget.Standalone).ToString(),
+                active_build_target = activeTarget.ToString(),
+                build_target_group = activeGroup.ToString(),
+                scripting_define_symbols = PlayerSettings.GetScriptingDefineSymbols(namedTarget),
+                api_compatibility_level = PlayerSettings.GetApiCompatibilityLevel(namedTarget).ToString(),
             };
 
             string projectRoot = Directory.GetParent(Application.dataPath).FullName;
@@ -91,6 +95,8 @@ namespace Manosaba.EditorTools
         {
             public string generated;
             public string unity_version;
+            public string active_build_target;
+            public string build_target_group;
             public string status = "NOT_RUN";
             public string error;
             public string note;
