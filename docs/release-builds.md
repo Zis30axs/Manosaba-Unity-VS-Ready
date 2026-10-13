@@ -35,6 +35,8 @@ pwsh -NoProfile -File tools/unity-rebuild/g3_android_content_build.ps1 -Group al
 
 新入口生成 `dist/player-android-release/manosaba-rebuild.apk` 和 `build_android_player_release.json`，保留原 Debug 构建入口。Release 不启用 Development / AllowDebugging，构建结束后恢复两个 Editor development 标志。当前仍使用本机 Unity debug keystore，供私有预发布侧载，不是生产发行签名。
 
+G3 的 PowerShell 7 回执可能把字节数写成带 `.0` 的 JSON 数值。Android Player 入口使用 Newtonsoft 按 64 位计数读取并验证，避免 Unity JsonUtility 将超过 4 GiB 的该类数值截断。可用 `Manosaba.EditorTools.BuildAndroidPlayer.VerifyAndroidContentReceiptJson` 执行解析边界与本次 G3 目录对照检查；报告为 `android_content_receipt_json_check.json`。该检查不构建 Player，Story 版本仍由随后的正常构建门禁验证。
+
 Android 内容超过 OBB 限制时沿用已有外置资源方案：APK 内包含内容清单，ZIP 按清单打包，首次启动通过文件选择器导入所有 ZIP。APK 和 ZIP 必须来自同一次匹配内容构建，不混用旧资源。签名、包名、最低系统要求、CPU 架构以及是否 debuggable 应从新 APK 读回；有设备再运行真机门禁，不能沿用旧真机报告。
 
 ## GitHub Releases

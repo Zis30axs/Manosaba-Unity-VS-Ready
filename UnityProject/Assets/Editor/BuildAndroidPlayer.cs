@@ -17,6 +17,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
@@ -34,6 +36,7 @@ namespace Manosaba.EditorTools
         private const string ReleaseOutputRelativePath = "../tools/unity-rebuild/out/unity/build_android_player_release.json";
         private const string ReleasePlayerRelativePath = "../dist/player-android-release/manosaba-rebuild.apk";
         private const string AndroidContentReceiptRelativePath = "../tools/unity-rebuild/out/unity/g3_android_content_build.json";
+        private const string ReceiptJsonCheckRelativePath = "../tools/unity-rebuild/out/unity/android_content_receipt_json_check.json";
         private const string AndroidContentRelativePath = "Library/com.unity.addressables/aa/Android";
         private const string PackageIdentifier = "com.acacia.manosaba";
         private const string BootScenePath = "Assets/Scenes/Boot.unity";
@@ -365,7 +368,7 @@ namespace Manosaba.EditorTools
 
             try
             {
-                AndroidContentReceipt receipt = JsonUtility.FromJson<AndroidContentReceipt>(File.ReadAllText(receiptPath));
+                AndroidContentReceipt receipt = ReadAndroidContentReceipt(File.ReadAllText(receiptPath), out JObject receiptDocument);
                 result.android_content_status = receipt == null ? null : receipt.status;
                 result.android_content_group = receipt == null ? null : receipt.group;
                 result.android_content_staging = receipt == null ? null : receipt.staging;
@@ -383,7 +386,7 @@ namespace Manosaba.EditorTools
 
                 if (result.switch_story_status == "OK")
                 {
-                    var built = Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(receiptPath))["build"]?["result"];
+                    var built = receiptDocument["build"]?["result"];
                     if ((string)built?["switch_story_status"] != "OK" ||
                         (string)built?["switch_story_signature"] != result.switch_story_signature ||
                         (string)built?["switch_story_output_fingerprint"] != result.switch_story_output_fingerprint)
@@ -429,6 +432,130 @@ namespace Manosaba.EditorTools
                 result.error = "Unable to validate the Android G3 receipt/content: " + ex;
                 return false;
             }
+        }
+
+        // PowerShell 7 can emit Measure-Object totals as decimal JSON tokens (for example 4444884778.0).
+        // JsonUtility truncates these to 32 bits even for long fields; read this local G3 receipt with Newtonsoft.
+        private static AndroidContentReceipt ReadAndroidContentReceipt(string json, out JObject document)
+        {
+            using (var textReader = new StringReader(json))
+            using (var reader = new JsonTextReader(textReader)
+            {
+                FloatParseHandling = FloatParseHandling.Decimal,
+                DateParseHandling = DateParseHandling.None
+            })
+            {
+                document = JObject.Load(reader, new JsonLoadSettings
+                {
+                    DuplicatePropertyNameHandling = DuplicatePropertyNameHandling.Error
+                });
+                if (reader.Read()) throw new InvalidDataException("Unexpected data after the Android G3 receipt.");
+            }
+
+            var staging = document["staging"] as JObject;
+            if (staging == null) throw new InvalidDataException("Android G3 receipt requires a staging object.");
+            ValidateReceiptCount(staging, "files", int.MaxValue);
+            ValidateReceiptCount(staging, "catalogs", int.MaxValue);
+            ValidateReceiptCount(staging, "bundles", int.MaxValue);
+            ValidateReceiptCount(staging, "bytes", long.MaxValue);
+            ValidateReceiptCount(staging, "bundle_bytes", long.MaxValue);
+            return document.ToObject<AndroidContentReceipt>(JsonSerializer.Create(new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.None
+            }));
+        }
+
+        private static void ValidateReceiptCount(JObject staging, string name, decimal maximum)
+        {
+            JToken token = staging[name];
+            if (token == null || (token.Type != JTokenType.Integer && token.Type != JTokenType.Float))
+                throw new InvalidDataException("Android G3 staging." + name + " must be a numeric integer.");
+            decimal value = token.Value<decimal>();
+            if (value < 0 || value > maximum || value != decimal.Truncate(value))
+                throw new InvalidDataException("Android G3 staging." + name + " is outside its non-negative integer range.");
+        }
+
+        [MenuItem("Manosaba/Verify Android content receipt JSON")]
+        public static void VerifyAndroidContentReceiptJson()
+        {
+            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+            string output = Path.GetFullPath(Path.Combine(projectRoot, ReceiptJsonCheckRelativePath));
+            var cases = new JArray();
+            var report = new JObject
+            {
+                ["generated"] = DateTime.UtcNow.ToString("o"),
+                ["unity_version"] = Application.unityVersion,
+                ["status"] = "FAIL",
+                ["scope"] = "Local G3 numeric decoding and receipt-to-disk gate; no player build or Story freshness test.",
+                ["cases"] = cases
+            };
+            bool passed = true;
+            try
+            {
+                void Check(string name, string json, bool reject, long expectedBytes = 4444884778L,
+                    long expectedBundleBytes = 4439250123L, int expectedFiles = 342)
+                {
+                    AndroidContentReceipt receipt = null;
+                    Exception error = null;
+                    try { receipt = ReadAndroidContentReceipt(json, out _); }
+                    catch (Exception ex) { error = ex; }
+                    bool ok = reject
+                        ? error is InvalidDataException || error is JsonException || error is OverflowException
+                        : error == null && receipt.staging.files == expectedFiles && receipt.staging.catalogs == 1 &&
+                          receipt.staging.bundles == 338 && receipt.staging.bytes == expectedBytes &&
+                          receipt.staging.bundle_bytes == expectedBundleBytes;
+                    cases.Add(new JObject
+                    {
+                        ["name"] = name,
+                        ["passed"] = ok,
+                        ["expected_rejection"] = reject,
+                        ["files"] = receipt?.staging?.files,
+                        ["bytes"] = receipt?.staging?.bytes,
+                        ["bundle_bytes"] = receipt?.staging?.bundle_bytes,
+                        ["error"] = error == null ? null : error.GetType().Name + ": " + error.Message
+                    });
+                    passed &= ok;
+                }
+
+                string Fixture(string bytes, string bundleBytes = "4439250123.0", string files = "342") =>
+                    "{\"status\":\"PASS\",\"group\":\"all\",\"staging\":{\"files\":" + files +
+                    ",\"catalogs\":1,\"bundles\":338,\"bytes\":" + bytes + ",\"bundle_bytes\":" + bundleBytes + "}}";
+                Check("small_integer_counts", Fixture("123", "100"), false, 123, 100);
+                Check("powershell7_actual_decimal_totals", Fixture("4444884778.0"), false);
+                Check("int_and_long_max_decimal", Fixture("9223372036854775807.0", "9223372036854775807.0", "2147483647.0"),
+                    false, long.MaxValue, long.MaxValue, int.MaxValue);
+                Check("zero_decimal_bytes", Fixture("0.0", "0.0"), false, 0, 0);
+                Check("fractional_bytes", Fixture("4444884778.5"), true);
+                Check("fractional_file_count", Fixture("4444884778.0", files: "342.5"), true);
+                Check("negative_bytes", Fixture("-1"), true);
+                Check("long_overflow", Fixture("9223372036854775808.0"), true);
+                Check("int_overflow", Fixture("4444884778.0", files: "2147483648"), true);
+                Check("numeric_string", Fixture("\"4444884778\""), true);
+                Check("null_bytes", Fixture("null"), true);
+                Check("boolean_bytes", Fixture("true"), true);
+                Check("missing_bytes", Fixture("4444884778.0").Replace("\"bytes\":4444884778.0,", ""), true);
+                Check("duplicate_bytes", Fixture("4444884778.0").Replace("\"bytes\":", "\"bytes\":1,\"bytes\":"), true);
+                Check("additional_root", Fixture("4444884778.0") + " {}", true);
+
+                var gate = new AndroidBuildResult();
+                bool diskGate = RequireAndroidContent(projectRoot, gate);
+                passed &= diskGate;
+                report["receipt_to_disk_gate"] = new JObject
+                {
+                    ["passed"] = diskGate,
+                    ["result"] = JObject.FromObject(gate)
+                };
+                report["status"] = passed ? "PASS" : "FAIL";
+            }
+            catch (Exception ex)
+            {
+                passed = false;
+                report["error"] = ex.ToString();
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(output));
+            File.WriteAllText(output, report.ToString(Formatting.Indented), new UTF8Encoding(false));
+            Debug.Log("[BuildAndroidPlayer] receipt JSON check " + report["status"] + " report=" + output);
+            if (Application.isBatchMode) EditorApplication.Exit(passed ? 0 : 1);
         }
 
         /// <summary>
