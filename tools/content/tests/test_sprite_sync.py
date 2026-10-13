@@ -61,6 +61,7 @@ class SpriteSyncTests(unittest.TestCase):
     def run_sync(self, record=None):
         with patch.object(content, "RES", self.res), patch.object(content, "PROJECT", self.project), \
                 patch.object(content, "STATE", self.state), \
+                patch.object(content, "refresh_plans"), \
                 patch.object(content, "inventory", return_value={self.relative: record or self.record()}), \
                 redirect_stdout(StringIO()), redirect_stderr(StringIO()):
             return content.sync(self.args)
@@ -131,7 +132,8 @@ class SpriteSyncTests(unittest.TestCase):
             previous = (self.destination.read_bytes(), self.destination.stat().st_mtime_ns)
 
             self.assertEqual(self.run_sync(), 0)
-            self.assertEqual(unity.call_count, 1)
+            self.assertEqual(unity.call_count, 2)
+            unity.assert_called_with([], [], timeout=30, ensure_curtain_skin=True)
             self.assertEqual(copy.call_count, 1)
             self.assertEqual((self.destination.read_bytes(), self.destination.stat().st_mtime_ns), previous)
             self.assertEqual(self.source.read_bytes(), original_source)
@@ -143,7 +145,7 @@ class SpriteSyncTests(unittest.TestCase):
             edited.save(self.source)
             os.utime(self.source, ns=(old_stamp + 1_000_000, old_stamp + 1_000_000))
             self.assertEqual(self.run_sync(), 0)
-            self.assertEqual(unity.call_count, 2)
+            self.assertEqual(unity.call_count, 3)
             self.assertEqual(copy.call_count, 2)
             with Image.open(self.destination) as image:
                 self.assertEqual(image.size, (7, 6))
@@ -167,7 +169,8 @@ class SpriteSyncTests(unittest.TestCase):
                 self.assertEqual(image.getpixel((1, 2)), (210, 90, 30, 80))
                 self.assertEqual(image.getpixel((4, 4)), (0, 0, 0, 0))
             self.assertEqual(self.run_sync(changed), 0)
-            self.assertEqual(unity.call_count, 2)
+            self.assertEqual(unity.call_count, 3)
+            unity.assert_called_with([], [], timeout=30, ensure_curtain_skin=True)
         self.assertEqual(self.source.read_bytes(), source_before)
         self.assertEqual(self.meta.read_bytes(), self.meta_bytes)
 
@@ -190,7 +193,8 @@ class SpriteSyncTests(unittest.TestCase):
                     self.assertEqual(self.destination.read_bytes(), expected)
                     self.assertEqual(self.meta.read_bytes(), self.meta_bytes)
                     self.assertEqual(self.run_sync(), 0)
-                    self.assertEqual(unity.call_count, previous_imports + 1)
+                    self.assertEqual(unity.call_count, previous_imports + 2)
+                    unity.assert_called_with([], [], timeout=30, ensure_curtain_skin=True)
                     self.assertEqual(copy.call_count, previous_copies + 1)
 
     def test_invalid_crop_metadata_fails_without_target_or_meta_changes(self):
@@ -198,7 +202,7 @@ class SpriteSyncTests(unittest.TestCase):
         original = self.destination.read_bytes()
         cases = [({"rect_size": [7, 6]}, "no imported textureRectOffset"),
                  ({"rect_size": [1, 6], "texture_rect_offset": [0, 1]}, "OUT_OF_RECT")]
-        with patch.object(content, "apply_unity", side_effect=AssertionError("Unity must not run for invalid metadata")):
+        with patch.object(content, "apply_unity", side_effect=self.assert_gate_only):
             for settings, reason in cases:
                 with self.subTest(reason=reason):
                     self.assertEqual(self.run_sync(self.record(settings)), 1)
@@ -211,7 +215,7 @@ class SpriteSyncTests(unittest.TestCase):
     def test_malformed_offset_is_a_file_failure_and_retains_target_and_meta(self):
         Image.new("RGBA", (7, 6), (11, 22, 33, 44)).save(self.destination)
         original = self.destination.read_bytes()
-        with patch.object(content, "apply_unity", side_effect=AssertionError("Unity must not run for invalid metadata")):
+        with patch.object(content, "apply_unity", side_effect=self.assert_gate_only):
             for offset in ([2], ["2", 1], [2, None], [float("inf"), 1]):
                 with self.subTest(offset=offset):
                     self.assertEqual(self.run_sync(self.record({"rect_size": [7, 6], "texture_rect_offset": offset})), 1)
@@ -220,6 +224,13 @@ class SpriteSyncTests(unittest.TestCase):
                     self.assertTrue(state["reason"])
                     self.assertEqual(self.destination.read_bytes(), original)
                     self.assertEqual(self.meta.read_bytes(), self.meta_bytes)
+
+    def assert_gate_only(self, jobs, paths, **kwargs):
+        # Failed leaves must never reach Unity import; the shared-content gate
+        # still executes even if there are no successfully queued resources.
+        self.assertEqual((jobs, paths), ([], []))
+        self.assertEqual(kwargs, {"timeout": 30, "ensure_curtain_skin": True})
+        return {"status": "OK", "jobs": []}
 
     def test_full_rectangle_source_keeps_its_original_png_bytes(self):
         self.write_crop((7, 6))

@@ -97,6 +97,7 @@ namespace WitchTrials.Views
     	[AsyncStateMachine(typeof(_003CDoQuickSaveAsync_003Ed__4))]
     	private async UniTask DoQuickSaveAsync(AsyncToken token)
     	{
+            if (FireworksEpilogueSession.Active) return;
     		Engine.GetServiceOrErr<ICustomVariableManager>().TrySetVariableValue(LastQuickSaveSlotNumberVarName, (int)(Naninovel.Nullable<int>)SlotNumber);
     		using (GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(GigaCreation.NaninovelExtender.Common.LoadingMode.Subtle, false))
     		{

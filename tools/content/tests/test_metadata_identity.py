@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import content
@@ -37,6 +37,7 @@ class MetadataIdentityTests(unittest.TestCase):
                   "jobs": [], "dependencies": [], "editability": "FULL"}
         self.record = record
         stack.enter_context(patch.object(content, "inventory", return_value={self.relative: record}))
+        stack.enter_context(patch.object(content, "refresh_plans"))
         stack.enter_context(redirect_stdout(StringIO()))
         stack.enter_context(redirect_stderr(StringIO()))
         self.args = argparse.Namespace(category="", file=[], force=False, dry_run=False,
@@ -56,7 +57,7 @@ class MetadataIdentityTests(unittest.TestCase):
             for _ in range(2):
                 self.assertEqual(content.doctor(self.doctor_args), 1)
                 self.assertEqual(content.sync(self.args), 1)
-            unity.assert_not_called()
+            self.assertEqual(unity.call_args_list, [call([], [], timeout=30, ensure_curtain_skin=True)] * 2)
         self.assertEqual(self.destination.read_bytes(), before)
         saved = content.read_json(content.STATE)["files"][self.relative]
         self.assertEqual(saved["target_metadata"][self.target]["guid"], "a" * 32)
@@ -70,7 +71,7 @@ class MetadataIdentityTests(unittest.TestCase):
         self.assertEqual(content.doctor(self.doctor_args), 0)
         with patch.object(content, "apply_unity") as unity:
             self.assertEqual(content.sync(self.args), 0)
-            unity.assert_not_called()
+            unity.assert_called_once_with([], [], timeout=30, ensure_curtain_skin=True)
         self.assertIn("filterMode: 0", self.meta.read_text())
 
     def test_deleting_known_metadata_cannot_generate_a_new_guid(self):
@@ -81,7 +82,7 @@ class MetadataIdentityTests(unittest.TestCase):
         with patch.object(content, "apply_unity") as unity:
             self.assertEqual(content.sync(self.args), 1)
             self.assertEqual(content.sync(self.args), 1)
-            unity.assert_not_called()
+            self.assertEqual(unity.call_args_list, [call([], [], timeout=30, ensure_curtain_skin=True)] * 2)
         self.assertEqual(self.destination.read_bytes(), before)
         saved = content.read_json(content.STATE)["files"][self.relative]
         self.assertEqual(saved["target_metadata"][self.target]["guid"], "a" * 32)
@@ -103,7 +104,7 @@ class MetadataIdentityTests(unittest.TestCase):
         self.meta.write_text("guid: invalid\n")
         with patch.object(content, "apply_unity") as unity:
             self.assertEqual(content.sync(self.args), 1)
-            unity.assert_not_called()
+            unity.assert_called_once_with([], [], timeout=30, ensure_curtain_skin=True)
         self.assertEqual(self.destination.read_text(), "original")
 
     def test_missing_metadata_requires_import_even_when_leaf_bytes_match(self):
@@ -123,11 +124,12 @@ class MetadataIdentityTests(unittest.TestCase):
         with patch.object(content, "apply_unity", return_value=result) as unity:
             self.assertEqual(content.sync(self.args), 0)
             self.assertEqual(content.sync(self.args), 0)
-            self.assertEqual(unity.call_count, 1)
+            self.assertEqual(unity.call_count, 2)
+            self.assertEqual(unity.call_args_list[1], call([], [], timeout=30, ensure_curtain_skin=True))
             self.record["conversion_signature"] = "recipe-two"
             self.assertEqual(content.doctor(self.doctor_args), 1)
             self.assertEqual(content.sync(self.args), 0)
-            self.assertEqual(unity.call_count, 2)
+            self.assertEqual(unity.call_count, 3)
             self.assertEqual(content.doctor(self.doctor_args), 0)
 
 

@@ -574,6 +574,12 @@ namespace Manosaba.EditorTools
                     prop.gradientValue = ReadGradient(token);
                     report.leavesWritten++;
                     break;
+                case SerializedPropertyType.AnimationCurve:
+                    // ParticleSystem modules expose their min/max curves as this leaf type, not
+                    // Generic children. Never replace a malformed curve with an empty default.
+                    prop.animationCurveValue = ReadAnimationCurve(token);
+                    report.leavesWritten++;
+                    break;
                 case SerializedPropertyType.ArraySize:
                     report.Warn(path + ": ArraySize property is set through its array");
                     return;
@@ -775,10 +781,121 @@ namespace Manosaba.EditorTools
             return value == null ? 0 : value.Value<int>();
         }
 
+        /// <summary>Reconstruct scalar particle curves, retaining explicit tangents and weights.</summary>
+        private static AnimationCurve ReadAnimationCurve(JToken token)
+        {
+            if (!(token?["m_Curve"] is JArray source) || source.Count > 100000)
+                throw new InvalidOperationException("AnimationCurve requires a bounded m_Curve array");
+            var keys = new Keyframe[source.Count];
+            float previous = float.NegativeInfinity;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                JToken key = source[i];
+                float time = CurveNumber(key, "time"), value = CurveNumber(key, "value");
+                if (time < previous) throw new InvalidOperationException("AnimationCurve keys are not time ordered");
+                previous = time;
+                int mode = key["weightedMode"]?.Value<int>() ?? 0;
+                if (mode < 0 || mode > 3) throw new InvalidOperationException("AnimationCurve weightedMode outside 0..3");
+                keys[i] = new Keyframe(time, value, CurveNumber(key, "inSlope", true),
+                    CurveNumber(key, "outSlope", true), CurveNumber(key, "inWeight", false, 1f / 3f),
+                    CurveNumber(key, "outWeight", false, 1f / 3f)) { weightedMode = (WeightedMode)mode };
+            }
+            return new AnimationCurve(keys)
+            {
+                preWrapMode = CurveWrap(token["m_PreInfinity"]),
+                postWrapMode = CurveWrap(token["m_PostInfinity"]),
+            };
+        }
+
+        private static float CurveNumber(JToken token, string key, bool allowInfinity = false, float? fallback = null)
+        {
+            if (token?[key] == null && !fallback.HasValue)
+                throw new InvalidOperationException("AnimationCurve is missing " + key);
+            float value = token?[key]?.Value<float>() ?? fallback.Value;
+            if (float.IsNaN(value) || (!allowInfinity && float.IsInfinity(value)))
+                throw new InvalidOperationException("AnimationCurve has invalid " + key);
+            return value;
+        }
+
+        private static WrapMode CurveWrap(JToken token)
+        {
+            // Serialized InfinityType differs from the public WrapMode enum: 2 means
+            // constant/clamp, NOT public WrapMode.Loop. Title particle dumps use 2.
+            switch (token?.Value<int>() ?? 2)
+            {
+                case 2: return WrapMode.ClampForever;
+                case 3: return WrapMode.Loop;
+                case 4: return WrapMode.PingPong;
+                default: throw new InvalidOperationException("Unsupported serialized AnimationCurve infinity mode " + token);
+            }
+        }
+
+        /// <summary>Validate actual Unity values after applying a ParticleSystem dump.</summary>
+        public static int VerifyAnimationCurves(SerializedObject serialized, JObject json)
+        {
+            serialized.Update();
+            int checkedCurves = 0;
+            void Check(SerializedProperty property, JToken value, JObject parentSource = null)
+            {
+                if (property == null || value == null) return;
+                if (property.propertyType == SerializedPropertyType.AnimationCurve)
+                {
+                    AnimationCurve expected = ReadAnimationCurve(value), actual = property.animationCurveValue;
+                    bool normalizedEmptyDelay = IsNormalizedEmptyStartDelay(serialized, property, parentSource, expected, actual);
+                    if (actual == null || (actual.length != expected.length && !normalizedEmptyDelay) ||
+                        actual.preWrapMode != expected.preWrapMode || actual.postWrapMode != expected.postWrapMode)
+                        throw new InvalidOperationException("AnimationCurve readback mismatch: " + property.propertyPath +
+                            " expected keys=" + expected.length + " wrap=" + expected.preWrapMode + "/" + expected.postWrapMode +
+                            " actual keys=" + (actual == null ? -1 : actual.length) + " wrap=" +
+                            (actual == null ? "null" : actual.preWrapMode + "/" + actual.postWrapMode));
+                    Keyframe[] a = actual.keys, e = expected.keys;
+                    for (int i = 0; i < e.Length; i++)
+                        if (a[i].time != e[i].time || a[i].value != e[i].value ||
+                            a[i].inTangent != e[i].inTangent || a[i].outTangent != e[i].outTangent ||
+                            a[i].weightedMode != e[i].weightedMode ||
+                            (e[i].weightedMode != WeightedMode.None &&
+                             (a[i].inWeight != e[i].inWeight || a[i].outWeight != e[i].outWeight)))
+                            throw new InvalidOperationException("AnimationCurve key readback mismatch: " + property.propertyPath + "[" + i +
+                                "] expected " + CurveKeySummary(e[i]) + " actual " + CurveKeySummary(a[i]));
+                    checkedCurves++;
+                }
+                else if (property.isArray && value is JArray array)
+                    for (int i = 0; i < Math.Min(array.Count, property.arraySize); i++) Check(property.GetArrayElementAtIndex(i), array[i]);
+                else if (property.propertyType == SerializedPropertyType.Generic && value is JObject obj)
+                    foreach (JProperty child in obj.Properties()) Check(property.FindPropertyRelative(child.Name), child.Value, obj);
+            }
+            foreach (JProperty field in json.Properties()) Check(serialized.FindProperty(field.Name), field.Value);
+            return checkedCurves;
+        }
+
+        private static bool IsNormalizedEmptyStartDelay(SerializedObject serialized, SerializedProperty property,
+            JObject source, AnimationCurve expected, AnimationCurve actual)
+        {
+            // Measured Unity 6000.0.48f1 normalization after prefab save: constant zero startDelay
+            // changes its unused empty min/max curves to two zero keys at t=0/1. No other curves
+            // receive this exception; active and nonempty curves must still match every source key.
+            if ((property.propertyPath != "startDelay.maxCurve" && property.propertyPath != "startDelay.minCurve") ||
+                source?["minMaxState"]?.Value<int>() != 0 || expected.length != 0 || actual == null || actual.length != 2 ||
+                ReadFloat(source, "scalar") != 0f || ReadFloat(source, "minScalar") != 0f)
+                return false;
+            SerializedProperty mode = serialized.FindProperty("startDelay.minMaxState");
+            SerializedProperty scalar = serialized.FindProperty("startDelay.scalar");
+            SerializedProperty minimum = serialized.FindProperty("startDelay.minScalar");
+            if (mode == null || scalar == null || minimum == null || mode.intValue != 0 ||
+                scalar.floatValue != 0f || minimum.floatValue != 0f) return false;
+            Keyframe[] keys = actual.keys;
+            return keys[0].time == 0f && keys[1].time == 1f && keys.All(key =>
+                key.value == 0f && key.inTangent == 0f && key.outTangent == 0f && key.weightedMode == WeightedMode.None);
+        }
+
+        private static string CurveKeySummary(Keyframe key) =>
+            "time=" + key.time + " value=" + key.value + " slopes=" + key.inTangent + "/" + key.outTangent +
+            " weightedMode=" + key.weightedMode + " weights=" + key.inWeight + "/" + key.outWeight;
+
         /// <summary>
         /// A serialized Gradient is eight colour slots `key0..key7` (RGBA), eight `ctime0..7` and `atime0..7`
-        /// (ushort, 0..65535) and the two counts.  Colour key i is the RGB of key_i at ctime_i, alpha key j is the A of
-        /// key_j at atime_j -- the same slot array carries both, which is how Unity stores it.
+        /// (ushort, 0..65535) and the two counts. Colour key i is the RGB of key_i at ctime_i; alpha key j
+        /// is the A of key_j at atime_j. The same slot array carries both.
         /// </summary>
         private static Gradient ReadGradient(JToken token)
         {

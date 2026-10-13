@@ -66,6 +66,11 @@ namespace Manosaba.EditorTools
                 // collecting scenes or invoking the player build pipeline.
                 RestoreOriginalCurtainSkin.EnsureApplied();
                 string[] scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
+                // Addressables clears the build-list flag for its Boot scene entry. Match the
+                // Android entry point: include the existing startup scene without rewriting it.
+                const string bootScene = "Assets/Scenes/Boot.unity";
+                if (scenes.Length == 0 && File.Exists(Path.Combine(projectRoot, bootScene)))
+                    scenes = new[] { bootScene };
                 result.scenes = scenes.ToList();
                 if (scenes.Length == 0)
                 {
@@ -106,7 +111,19 @@ namespace Manosaba.EditorTools
                 result.stripping_level_applied = ManagedStrippingLevel.Disabled.ToString();
                 PlayerSettings.SetManagedStrippingLevel(namedTarget, ManagedStrippingLevel.Disabled);
 
-                BuildReport report = BuildPipeline.BuildPlayer(options);
+                // The normal content workflow already built and verified Addressables before this
+                // entry point. Do not run that several-GB content build again for a runtime-only edit.
+                var addressables = UnityEditor.AddressableAssets.AddressableAssetSettingsDefaultObject.Settings;
+                var previousContentBuild = addressables == null ? default : addressables.BuildAddressablesWithPlayerBuild;
+                if (addressables != null)
+                    addressables.BuildAddressablesWithPlayerBuild = UnityEditor.AddressableAssets.Settings.AddressableAssetSettings.PlayerBuildOption.DoNotBuildWithPlayer;
+                BuildReport report;
+                try { report = BuildPipeline.BuildPlayer(options); }
+                finally
+                {
+                    PlayerSettings.SetManagedStrippingLevel(namedTarget, previousStripping);
+                    if (addressables != null) addressables.BuildAddressablesWithPlayerBuild = previousContentBuild;
+                }
                 result.result = report.summary.result.ToString();
                 result.total_size_bytes = (long)report.summary.totalSize;
                 result.total_time_seconds = Math.Round(report.summary.totalTime.TotalSeconds, 2);

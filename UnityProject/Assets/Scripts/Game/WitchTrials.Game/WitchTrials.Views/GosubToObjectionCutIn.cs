@@ -9,7 +9,7 @@ namespace WitchTrials.Views
     [Token(Token = "0x2000060")]
     [UsedImplicitly(ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature)]
     [CommandAlias("gosubCutIn")]
-    public class GosubToObjectionCutIn : Command
+    public class GosubToObjectionCutIn : AudioCommand, Command.IPreloadable
     {
     	[Token(Token = "0x400013D")]
     	private const string SubroutineScriptPath = "System/System_Subroutine";
@@ -36,21 +36,23 @@ namespace WitchTrials.Views
     	[RequiredParameter]
     	public IntegerParameter Index;
 
-    	// NEW IN THE 2026-10-02 GAME UPDATE.  The shipped `gosubCutIn` commands serialise these four
-    	// fields, but this checkout's pre-update reconstruction declares neither, so the incremental sync
-    	// rejected every script that uses them ("VoicePath: no serialised field") and retained the old asset.
-    	// TODO(evidence): the updated build also rebases this type onto `AudioCommand` and adds
-    	// `Command.IPreloadable.PreloadResources()` plus a `HasVoice` property; those are not reconstructed
-    	// here, and the RVAs recorded in this file still belong to the pre-update layout.
+        // The updated command data includes optional voice parameters. NS Trial09 assigns them
+        // directly on the single-character cut-ins, while its double cut-in leaves VoicePath unset
+        // and plays two preceding @voice commands. Start an assigned voice at this command boundary,
+        // before navigating into EndDebate-CutIn; PlayVoice awaits loading/start, not clip completion.
+        // This is a reconstruction from the script data and Naninovel's PlayVoice contract; the
+        // native Execute RVA below documents only the older, voice-less navigation implementation.
     	[Token(Token = "0x400014F")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
     	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
+        [ResourceContext(AudioConfiguration.DefaultVoicePathPrefix)]
     	public StringParameter VoicePath;
 
     	[Token(Token = "0x4000150")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
     	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
-    	public DecimalParameter Volume;
+        [ParameterDefaultValue("1")]
+        public DecimalParameter Volume = 1f;
 
     	[Token(Token = "0x4000151")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
@@ -61,6 +63,20 @@ namespace WitchTrials.Views
     	[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
     	[UsedImplicitly(ImplicitUseKindFlags.Assign)]
     	public StringParameter AuthorId;
+
+        private bool HasVoice => Assigned(VoicePath) && !string.IsNullOrWhiteSpace(VoicePath.Value);
+
+        public async UniTask PreloadResources()
+        {
+            if (!Assigned(VoicePath) || VoicePath.DynamicValue || !HasVoice) return;
+            await AudioManager.VoiceLoader.Load(VoicePath, this);
+        }
+
+        public void ReleaseResources()
+        {
+            if (!Assigned(VoicePath) || VoicePath.DynamicValue || !HasVoice) return;
+            Engine.GetService<IAudioManager>()?.VoiceLoader?.Release(VoicePath, this);
+        }
 
     	// RECONSTRUCTED | Confidence: A (structure), B (Index's exact nullable typing)
     	// RVA: 0x325750
@@ -86,6 +102,21 @@ namespace WitchTrials.Views
     	[Token(Token = "0x6000139")]
     	[Address(RVA = "0x325750", Offset = "0x324150", VA = "0x180325750", Slot = "5")]
     	public override UniTask Execute([Optional] AsyncToken token)
+        {
+            // Preserve the old no-voice path, including its immediate navigation behavior.
+            return HasVoice ? PlayVoiceAndNavigate(token) : NavigateToCutIn();
+        }
+
+        private async UniTask PlayVoiceAndNavigate(AsyncToken token)
+        {
+            token.ThrowIfCanceled();
+            await AudioManager.PlayVoice(VoicePath, Assigned(Volume) ? Volume.Value : 1f,
+                GroupPath, AuthorId, token);
+            token.ThrowIfCanceled();
+            await NavigateToCutIn();
+        }
+
+        private UniTask NavigateToCutIn()
     	{
     		ICustomVariableManager customVariableManager = Engine.GetServiceOrErr<ICustomVariableManager>();
     		customVariableManager.TrySetVariableValue(ObjectionSpawnPathVarName, string.Format("ObjectionCutIn_{0}", CutInKind));

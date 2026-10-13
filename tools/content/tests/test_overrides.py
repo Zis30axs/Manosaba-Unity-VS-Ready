@@ -39,7 +39,8 @@ class OverrideTests(unittest.TestCase):
     def write_source(self, root, path, data):
         destination = root / path
         destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(json.dumps(data), encoding="utf-8")
+        # Match the resource exporter's line-oriented JSON token layout.
+        destination.write_text(json.dumps(data, indent=2), encoding="utf-8")
         root.mkdir(parents=True, exist_ok=True)
         with (root / "_index.csv").open("w", encoding="utf-8", newline="") as stream:
             writer = csv.DictWriter(stream, fieldnames=["type", "source_bundle", "path_id", "output_file"])

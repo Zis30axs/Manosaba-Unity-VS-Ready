@@ -56,6 +56,13 @@ namespace Manosaba.EditorTools
                     return 2;
                 }
 
+                var title = SwitchTitleContentBuilder.EnsureApplied();
+                result.switch_title_status = (string)title["status"];
+                result.switch_title_rebuilt = (bool?)title["rebuilt"] ?? false;
+                RecordStory(result, SwitchStoryContentBuilder.EnsureApplied());
+                RecordEpilogue(result, FireworksEpilogueContentBuilder.EnsureApplied());
+                RecordCorrectedPortraits(result, CorrectedCutInPortraitContentBuilder.EnsureApplied());
+                result.options_ui_resource = NaninovelConfigBuilder.EnsureOptionsUiResource();
                 result.settings_path = AssetDatabase.GetAssetPath(settings);
                 result.groups = settings.groups.Where(g => g != null)
                     .OrderBy(g => g.Name, StringComparer.Ordinal)
@@ -209,6 +216,15 @@ namespace Manosaba.EditorTools
                     }
                     else
                     {
+                        // Add the optional title group before collecting temporary Android
+                        // schema overrides, so it is built and restored with the other groups.
+                        var title = SwitchTitleContentBuilder.EnsureApplied();
+                        result.switch_title_status = (string)title["status"];
+                        result.switch_title_rebuilt = (bool?)title["rebuilt"] ?? false;
+                        RecordStory(result, SwitchStoryContentBuilder.EnsureApplied());
+                        RecordEpilogue(result, FireworksEpilogueContentBuilder.EnsureApplied());
+                        RecordCorrectedPortraits(result, CorrectedCutInPortraitContentBuilder.EnsureApplied());
+                        result.options_ui_resource = NaninovelConfigBuilder.EnsureOptionsUiResource();
                         result.settings_path = AssetDatabase.GetAssetPath(settings);
                         originalProfileId = settings.activeProfileId;
                         originalBuildRemoteCatalog = settings.BuildRemoteCatalog;
@@ -404,14 +420,53 @@ namespace Manosaba.EditorTools
             public long bytes;
         }
 
+        private static void RecordStory(BuildResult result, Newtonsoft.Json.Linq.JObject story)
+        {
+            result.switch_story_status = (string)story["status"];
+            result.switch_story_rebuilt = (bool?)story["rebuilt"] ?? false;
+            result.switch_story_signature = (string)story["signature"];
+            result.switch_story_output_fingerprint = (string)story["output_fingerprint"];
+        }
+
+        private static void RecordEpilogue(BuildResult result, Newtonsoft.Json.Linq.JObject epilogue)
+        {
+            result.fireworks_epilogue_status = (string)epilogue["status"];
+            result.fireworks_epilogue_rebuilt = (bool?)epilogue["rebuilt"] ?? false;
+            result.fireworks_epilogue_signature = (string)epilogue["signature"];
+            result.fireworks_epilogue_output_fingerprint = (string)epilogue["output_fingerprint"];
+        }
+
+        private static void RecordCorrectedPortraits(BuildResult result, Newtonsoft.Json.Linq.JObject portraits)
+        {
+            result.corrected_cutin_portraits_status = (string)portraits["status"];
+            result.corrected_cutin_portraits_rebuilt = (bool?)portraits["rebuilt"] ?? false;
+            result.corrected_cutin_portraits_signature = (string)portraits["signature"];
+            result.corrected_cutin_portraits_count = (portraits["portraits"] as Newtonsoft.Json.Linq.JArray)?.Count ?? 0;
+        }
+
         [Serializable]
         public class BuildResult
         {
+            public NaninovelConfigBuilder.OptionsUiResourceResult options_ui_resource;
             public string status = "NOT_RUN";
             public string generated;
             public string settings_path;
             public string error;
             public string inspection_error;
+            public string switch_title_status;
+            public bool switch_title_rebuilt;
+            public string switch_story_status;
+            public bool switch_story_rebuilt;
+            public string switch_story_signature;
+            public string switch_story_output_fingerprint;
+            public string fireworks_epilogue_status;
+            public bool fireworks_epilogue_rebuilt;
+            public string fireworks_epilogue_signature;
+            public string fireworks_epilogue_output_fingerprint;
+            public string corrected_cutin_portraits_status;
+            public bool corrected_cutin_portraits_rebuilt;
+            public string corrected_cutin_portraits_signature;
+            public int corrected_cutin_portraits_count;
             public string output_path;
             public string build_root;
             public int entry_count;

@@ -43,7 +43,7 @@ namespace Naninovel.UI
             {
                 var loader = loaderConfig.CreateLocalizableFor<Texture2D>(resources, l10n);
                 var resourcePaths = await loader.Locate();
-                var pathsBySlots = resourcePaths.OrderBy(p => p).GroupBy(CGPathToSlotId);
+                var pathsBySlots = resourcePaths.Where(p => IncludeCGPath(loaderConfig, p)).OrderBy(p => p).GroupBy(CGPathToSlotId);
                 foreach (var pathsBySlot in pathsBySlots)
                     AddSlotData(pathsBySlot, loader);
             }
@@ -65,6 +65,9 @@ namespace Naninovel.UI
                 slotData.Add(data);
             }
         }
+
+        /// <summary>Allows a game-specific gallery to omit auxiliary art before grouping or creating slots.</summary>
+        protected virtual bool IncludeCGPath (ResourceLoaderConfiguration source, string path) => true;
 
         protected override void Awake ()
         {

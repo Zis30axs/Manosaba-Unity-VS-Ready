@@ -135,6 +135,9 @@ namespace Manosaba.EditorTools
                     .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
                 var planCache = new Dictionary<string, JObject>(StringComparer.OrdinalIgnoreCase);
                 var appliedPrefabs = new HashSet<string>(StringComparer.Ordinal);
+                var deferredTitleScenarios = new List<JObject>();
+                var deferredStoryScenarios = new List<JObject>();
+                var deferredEpilogueScenarios = new List<JObject>();
                 foreach (JObject job in requestJobs)
                 {
                     string category = (string)job["category"];
@@ -143,9 +146,35 @@ namespace Manosaba.EditorTools
                     JObject record;
                     if (category == "DATA" || category == "SCENARIO")
                     {
-                        var converted = ScriptableObjectConverter.ApplyEditable(source, target,
-                            (string)job["type"], (string)job["assembly"], category == "SCENARIO");
-                        record = JObject.FromObject(converted);
+                        if (category == "SCENARIO" && SwitchTitleContentBuilder.HandlesScenario(source, target,
+                            (string)job["type"], (string)job["assembly"]))
+                        {
+                            // The merged title owns the generated graph. Applying the smaller PC
+                            // graph first would fail SafeEditableOnly's structural array guards.
+                            record = new JObject { ["status"] = "DEFERRED_SWITCH_TITLE", ["target"] = target,
+                                ["guid_before"] = AssetDatabase.AssetPathToGUID(target) };
+                            deferredTitleScenarios.Add(record);
+                        }
+                        else if (category == "SCENARIO" && SwitchStoryContentBuilder.HandlesScenario(source, target,
+                            (string)job["type"], (string)job["assembly"]))
+                        {
+                            record = new JObject { ["status"] = "DEFERRED_SWITCH_STORY", ["target"] = target,
+                                ["guid_before"] = AssetDatabase.AssetPathToGUID(target) };
+                            deferredStoryScenarios.Add(record);
+                        }
+                        else if (category == "SCENARIO" && FireworksEpilogueContentBuilder.HandlesScenario(source, target,
+                            (string)job["type"], (string)job["assembly"]))
+                        {
+                            record = new JObject { ["status"] = "DEFERRED_FIREWORKS_EPILOGUE", ["target"] = target,
+                                ["guid_before"] = AssetDatabase.AssetPathToGUID(target) };
+                            deferredEpilogueScenarios.Add(record);
+                        }
+                        else
+                        {
+                            var converted = ScriptableObjectConverter.ApplyEditable(source, target,
+                                (string)job["type"], (string)job["assembly"], category == "SCENARIO");
+                            record = JObject.FromObject(converted);
+                        }
                     }
                     else if (category == "PREFAB")
                     {
@@ -219,6 +248,33 @@ namespace Manosaba.EditorTools
                     if (AddressablesSetup.Execute() != 0)
                         throw new InvalidOperationException("Addressables setup failed");
                 }
+                // Finish our own temporary-scene work before the optional title recipe checks
+                // for unsaved user scenes. Never treat this converter-owned dirty scene as one.
+                if (rebuiltPrefabs)
+                {
+                    if (!string.IsNullOrEmpty(sceneToRestore))
+                        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(sceneToRestore);
+                    else
+                        UnityEditor.SceneManagement.EditorSceneManager.NewScene(
+                            UnityEditor.SceneManagement.NewSceneSetup.EmptyScene,
+                            UnityEditor.SceneManagement.NewSceneMode.Single);
+                    sceneToRestore = null;
+                }
+                // Apply after the generic converters/setup, including requests with no source
+                // changes: their rebuilt assets or address moves must not erase this extension.
+                JObject titleResult = SwitchTitleContentBuilder.EnsureApplied();
+                result["switch_title"] = titleResult;
+                CompleteDeferredScenarios(deferredTitleScenarios, titleResult, "SwitchTitleContentBuilder", "title_signature");
+                JObject storyResult = SwitchStoryContentBuilder.EnsureApplied();
+                result["switch_story"] = storyResult;
+                CompleteDeferredScenarios(deferredStoryScenarios, storyResult, "SwitchStoryContentBuilder", "story_signature");
+                JObject epilogueResult = FireworksEpilogueContentBuilder.EnsureApplied();
+                result["fireworks_epilogue"] = epilogueResult;
+                CompleteDeferredScenarios(deferredEpilogueScenarios, epilogueResult, "FireworksEpilogueContentBuilder", "epilogue_signature");
+                // Independent portrait sprites must also reach existing copies when no res source changed.
+                // Run after generic Addressables setup so it cannot remove the optional group.
+                result["corrected_cutin_portraits"] = CorrectedCutInPortraitContentBuilder.EnsureApplied();
+                result["options_ui_resource"] = JObject.FromObject(NaninovelConfigBuilder.EnsureOptionsUiResource());
                 if (request.Value<bool?>("build_addressables") == true)
                 {
                     Write(new JObject { ["id"] = request["id"], ["status"] = "BUILDING" });
@@ -253,6 +309,34 @@ namespace Manosaba.EditorTools
                 if (!string.IsNullOrEmpty(sceneToRestore))
                     UnityEditor.SceneManagement.EditorSceneManager.OpenScene(sceneToRestore);
                 busy = false;
+            }
+        }
+
+        private static void CompleteDeferredScenarios(IEnumerable<JObject> deferredJobs, JObject recipe,
+            string appliedBy, string signatureField)
+        {
+            var conversions = recipe["scenarios"] as JArray ?? new JArray();
+            if (recipe["scenario"] is JObject single) conversions = new JArray(single);
+            foreach (JObject deferred in deferredJobs)
+            {
+                JObject converted = conversions.OfType<JObject>().SingleOrDefault(row => (string)row["target"] == (string)deferred["target"]);
+                if ((string)recipe["status"] != "OK" || converted == null ||
+                    ((string)converted["status"] != "CONVERTED" && (string)converted["status"] != "CONVERTED_PARTIAL"))
+                    throw new InvalidOperationException(appliedBy + " did not complete its delegated scenario job");
+                string before = (string)deferred["guid_before"];
+                JToken source = deferred["source"]?.DeepClone(), category = deferred["category"]?.DeepClone();
+                string after = AssetDatabase.AssetPathToGUID((string)deferred["target"]);
+                if (string.IsNullOrEmpty(after) || (!string.IsNullOrEmpty(before) && before != after))
+                    throw new InvalidOperationException("Delegated scenario GUID changed: " + deferred["target"]);
+                // Acknowledge the user's PC source hash and its merged target, including cache hits.
+                foreach (JProperty property in converted.Properties()) deferred[property.Name] = property.Value.DeepClone();
+                deferred["source"] = source;
+                deferred["category"] = category;
+                deferred["guid_before"] = before;
+                deferred["guid_after"] = after;
+                deferred["applied_by"] = appliedBy;
+                deferred["conversion_diagnostics_cached"] = recipe.Value<bool?>("rebuilt") != true;
+                deferred[signatureField] = recipe["signature"]?.DeepClone();
             }
         }
 

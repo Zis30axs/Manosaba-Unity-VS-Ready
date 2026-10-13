@@ -109,6 +109,13 @@ namespace GigaCreation.NaninovelExtender.Audio
     	[Address(RVA = "0xCF4980", Offset = "0xCF3380", VA = "0x180CF4980", Slot = "98")]
     	public void PlayResponseSfx(ResponseKind responseKind)
     	{
+            // RECONSTRUCTED | Confidence: A | RVA: 0xCF4980
+            // Resolve the configured response clip, then invoke AudioManager.PlaySfx (slot 81).
+            // The original uses volume 1, no fade/loop/group and forgets the returned UniTask.
+            if (_defaultSfxPaths.TryGetValue(responseKind, out var path))
+                PlaySfx(path, 1f, 0f, false, null, default).Forget();
+            else
+                UnityEngine.Debug.LogWarning($"No response sound is configured for {responseKind}.");
     	}
 
     	[Token(Token = "0x6000008")]

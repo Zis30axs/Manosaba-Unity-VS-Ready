@@ -34,6 +34,20 @@ namespace Naninovel
             public AudioSource Source;
         }
 
+        private sealed class VoiceGroup
+        {
+            public readonly LocalizableResourceLoader<AudioClip> Loader;
+            public readonly List<VoiceGroupTrack> Tracks = new();
+            public bool Released;
+            public VoiceGroup(LocalizableResourceLoader<AudioClip> loader) => Loader = loader;
+        }
+
+        private sealed class VoiceGroupTrack
+        {
+            public string Path;
+            public IAudioTrack Track;
+        }
+
         public virtual AudioConfiguration Configuration { get; }
         public virtual AudioMixer AudioMixer { get; }
         public virtual float MasterVolume { get => GetMixerVolume(Configuration.MasterVolumeHandleName); set => SetMixerVolume(Configuration.MasterVolumeHandleName, value); }
@@ -80,6 +94,9 @@ namespace Naninovel
         private LocalizableResourceLoader<AudioClip> audioLoader, voiceLoader;
         private IAudioPlayer audioPlayer;
         private AudioClipState? voiceClip;
+        private VoiceGroup activeVoiceGroup;
+        private int voiceRequestVersion, voiceStopVersion;
+        private readonly System.Threading.SemaphoreSlim voiceLoadGate = new(1, 1);
 
         public AudioManager (AudioConfiguration config, IResourceProviderManager resources,
             ILocalizationManager l10n, ICharacterManager chars)
@@ -111,6 +128,7 @@ namespace Naninovel
 
         public virtual void ResetService ()
         {
+            StopVoice();
             audioPlayer.StopAll();
             bgmMap.Clear();
             sfxMap.Clear();
@@ -122,6 +140,7 @@ namespace Naninovel
 
         public virtual void DestroyService ()
         {
+            StopVoice();
             if (audioPlayer is IDisposable disposable)
                 disposable.Dispose();
             audioLoader?.ReleaseAll(this);
@@ -228,6 +247,8 @@ namespace Naninovel
 
         public virtual string GetPlayedVoice ()
         {
+            if (activeVoiceGroup != null)
+                return activeVoiceGroup.Tracks.FirstOrDefault(v => IsCurrentVoiceTrack(v.Track))?.Path;
             return IsVoicePlaying(voiceClip?.Path) ? voiceClip?.Path : null;
         }
 
@@ -338,23 +359,162 @@ namespace Naninovel
 
         public virtual async UniTask PlayVoice (string path, float volume = 1f, string group = default, string authorId = default, AsyncToken token = default)
         {
-            var clipResource = await voiceLoader.LoadOrErr(path, this);
             token.ThrowIfCanceled();
-
-            if (Configuration.VoiceOverlapPolicy == VoiceOverlapPolicy.PreventOverlap)
-                StopVoice();
-
-            if (!string.IsNullOrEmpty(authorId))
+            var request = ++voiceRequestVersion;
+            var stopVersion = voiceStopVersion;
+            var loader = voiceLoader;
+            // A separate loading holder protects a same-path replacement from StopVoice releasing
+            // its predecessor's manager holder. It also gives canceled loads independent cleanup.
+            var loadingHolder = new object();
+            try
             {
-                var authorVolume = GetAuthorVolume(authorId);
-                if (!Mathf.Approximately(authorVolume, -1))
-                    volume *= authorVolume;
+                var clipResource = await LoadVoiceForPlayback(loader, path, loadingHolder, token);
+                CheckVoiceRequest(request, stopVersion, token,
+                    Configuration.VoiceOverlapPolicy == VoiceOverlapPolicy.PreventOverlap);
+                var audioSource = !string.IsNullOrEmpty(authorId) ? await GetOrInstantiateAuthorSource(authorId) : null;
+                CheckVoiceRequest(request, stopVersion, token,
+                    Configuration.VoiceOverlapPolicy == VoiceOverlapPolicy.PreventOverlap);
+
+                if (activeVoiceGroup != null || Configuration.VoiceOverlapPolicy == VoiceOverlapPolicy.PreventOverlap)
+                {
+                    ++voiceStopVersion;
+                    StopVoicePlayback();
+                }
+
+                volume = ApplyAuthorVolume(volume, authorId);
+                loader.Hold(path, this);
+                voiceClip = new AudioClipState(path, volume, false);
+                audioPlayer.Play(clipResource, audioSource, volume, false, FindAudioGroupOrDefault(group, voiceGroup));
             }
+            finally { loader.ReleaseAll(loadingHolder); }
+        }
 
-            voiceClip = new AudioClipState(path, volume, false);
+        public virtual async UniTask PlayVoiceGroup (IReadOnlyList<VoicePlayback> voices, AsyncToken token = default)
+        {
+            if (voices is null || voices.Count == 0) throw new ArgumentException("A voice group cannot be empty.", nameof(voices));
+            var entries = voices.ToArray();
+            var paths = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var entry in entries)
+                if (string.IsNullOrWhiteSpace(entry.Path) || !paths.Add(entry.Path))
+                    throw new ArgumentException("Voice group paths must be non-empty and distinct.", nameof(voices));
 
-            var audioSource = !string.IsNullOrEmpty(authorId) ? await GetOrInstantiateAuthorSource(authorId) : null;
-            audioPlayer.Play(clipResource, audioSource, volume, false, FindAudioGroupOrDefault(group, voiceGroup));
+            token.ThrowIfCanceled();
+            var request = ++voiceRequestVersion;
+            var stopVersion = voiceStopVersion;
+            var owner = new VoiceGroup(voiceLoader);
+            var clips = new AudioClip[entries.Length];
+            var sources = new AudioSource[entries.Length];
+            var groups = new AudioMixerGroup[entries.Length];
+            var clipIdentities = new HashSet<AudioClip>();
+            var sourceIdentities = new HashSet<AudioSource>();
+            var committed = false;
+            try
+            {
+                for (var i = 0; i < entries.Length; i++)
+                {
+                    clips[i] = await LoadVoiceForPlayback(owner.Loader, entries[i].Path, owner, token);
+                    CheckVoiceRequest(request, stopVersion, token);
+                    if (!clipIdentities.Add(clips[i]))
+                        throw new ArgumentException("Voice group paths must identify distinct clips.", nameof(voices));
+                    if (!string.IsNullOrEmpty(entries[i].AuthorId))
+                        sources[i] = await GetOrInstantiateAuthorSource(entries[i].AuthorId);
+                    CheckVoiceRequest(request, stopVersion, token);
+                    // Two entries must not overwrite the same character AudioSource.
+                    if (sources[i] && !sourceIdentities.Add(sources[i])) sources[i] = null;
+                    groups[i] = FindAudioGroupOrDefault(entries[i].Group, voiceGroup);
+                }
+
+                ++voiceStopVersion;
+                StopVoicePlayback();
+                activeVoiceGroup = owner;
+                // There are no awaits in this loop: every prepared clip starts in the same frame.
+                for (var i = 0; i < entries.Length; i++)
+                {
+                    audioPlayer.Play(clips[i], sources[i], ApplyAuthorVolume(entries[i].Volume, entries[i].AuthorId),
+                        false, groups[i]);
+                    var track = audioPlayer.GetTracks(clips[i])?.LastOrDefault();
+                    if (track is null) throw new Error($"Voice player did not create a track for '{entries[i].Path}'.");
+                    var item = new VoiceGroupTrack { Path = entries[i].Path, Track = track };
+                    owner.Tracks.Add(item);
+                }
+                committed = true;
+                foreach (var item in owner.Tracks.ToArray()) ReleaseWhenVoiceEnds(owner, item).Forget();
+            }
+            finally
+            {
+                if (!committed) ReleaseVoiceGroup(owner, true);
+            }
+        }
+
+        private async UniTask<Resource<AudioClip>> LoadVoiceForPlayback(LocalizableResourceLoader<AudioClip> loader,
+            string path, object holder, AsyncToken token)
+        {
+            // ResourceLoader does not coalesce cold same-path loads. Serialize playback acquisitions
+            // so a late provider result cannot replace a newer request's holder registry.
+            try { await voiceLoadGate.WaitAsync(token.CancellationToken); }
+            catch (OperationCanceledException) when (token.Canceled)
+            {
+                token.ThrowIfCanceled();
+                throw;
+            }
+            try
+            {
+                token.ThrowIfCanceled();
+                return await loader.LoadOrErr(path, holder);
+            }
+            finally { voiceLoadGate.Release(); }
+        }
+
+        private void CheckVoiceRequest(int request, int stopVersion, AsyncToken token, bool requireLatest = true)
+        {
+            token.ThrowIfCanceled();
+            if (stopVersion != voiceStopVersion || requireLatest && request != voiceRequestVersion)
+                throw new AsyncOperationCanceledException(new AsyncToken(new System.Threading.CancellationToken(true)));
+        }
+
+        private float ApplyAuthorVolume(float volume, string authorId)
+        {
+            if (string.IsNullOrEmpty(authorId)) return volume;
+            var authorLevel = GetAuthorVolume(authorId);
+            return Mathf.Approximately(authorLevel, -1) ? volume : volume * authorLevel;
+        }
+
+        private static bool IsCurrentVoiceTrack(IAudioTrack track)
+        {
+            if (track is AudioTrack concrete && (!concrete.Source || concrete.Source.clip != concrete.Clip)) return false;
+            return track?.Playing == true;
+        }
+
+        private async UniTask ReleaseWhenVoiceEnds(VoiceGroup owner, VoiceGroupTrack item)
+        {
+            // AudioTrack's OnStop timer uses game time, while AudioSource playback uses DSP time.
+            // Fast-forward must not release a still-playing clip merely because that timer elapsed.
+            while (!owner.Released && IsCurrentVoiceTrack(item.Track)) await UniTask.Yield();
+            if (!owner.Released) ReleaseVoiceGroupTrack(owner, item);
+        }
+
+        private void ReleaseVoiceGroupTrack(VoiceGroup owner, VoiceGroupTrack item)
+        {
+            if (owner.Released || !owner.Tracks.Remove(item)) return;
+            owner.Loader.Release(item.Path, owner);
+            if (owner.Tracks.Count == 0)
+            {
+                owner.Released = true;
+                if (ReferenceEquals(activeVoiceGroup, owner)) activeVoiceGroup = null;
+            }
+        }
+
+        private void ReleaseVoiceGroup(VoiceGroup owner, bool stop)
+        {
+            if (owner is null || owner.Released) return;
+            owner.Released = true;
+            if (ReferenceEquals(activeVoiceGroup, owner)) activeVoiceGroup = null;
+            foreach (var item in owner.Tracks)
+            {
+                if (stop && IsCurrentVoiceTrack(item.Track)) item.Track.Stop();
+            }
+            owner.Tracks.Clear();
+            owner.Loader.ReleaseAll(owner);
         }
 
         public virtual bool IsBgmPlaying (string path)
@@ -371,17 +531,28 @@ namespace Naninovel
 
         public virtual bool IsVoicePlaying (string path)
         {
+            if (activeVoiceGroup != null)
+                return activeVoiceGroup.Tracks.Any(v => v.Path == path && IsCurrentVoiceTrack(v.Track));
             if (!voiceClip.HasValue || voiceClip.Value.Path != path) return false;
             return voiceLoader.TryGetLoaded(path, out var clip) && audioPlayer.IsPlaying(clip);
         }
 
         public virtual void StopVoice ()
         {
+            ++voiceRequestVersion;
+            ++voiceStopVersion;
+            StopVoicePlayback();
+        }
+
+        private void StopVoicePlayback()
+        {
+            ReleaseVoiceGroup(activeVoiceGroup, true);
             if (!voiceClip.HasValue) return;
-            var clipResource = voiceLoader.GetLoaded(voiceClip.Value.Path);
-            audioPlayer.Stop(clipResource);
-            voiceLoader.Release(voiceClip.Value.Path, this);
+            var path = voiceClip.Value.Path;
             voiceClip = null;
+            var clipResource = voiceLoader.GetLoaded(path);
+            if (clipResource != null && clipResource.Valid) audioPlayer.Stop(clipResource);
+            voiceLoader.Release(path, this);
         }
 
         public virtual IAudioTrack GetAudioTrack (string path)
@@ -393,6 +564,8 @@ namespace Naninovel
 
         public virtual IAudioTrack GetVoiceTrack (string path)
         {
+            if (activeVoiceGroup != null)
+                return activeVoiceGroup.Tracks.FirstOrDefault(v => v.Path == path && IsCurrentVoiceTrack(v.Track))?.Track;
             var clipResource = voiceLoader.GetLoaded(path);
             if (clipResource is null || !clipResource.Valid) return null;
             return audioPlayer.GetTracks(clipResource.Object)?.FirstOrDefault();

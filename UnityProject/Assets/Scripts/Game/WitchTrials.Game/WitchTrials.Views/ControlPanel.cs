@@ -361,6 +361,7 @@ namespace WitchTrials.Views
     		}).AddTo(this);
     		_saveButton.OnClickAsObservable().Subscribe(_ =>
     		{
+                if (FireworksEpilogueSession.Active) return;
     			InputManager.PlayResponseSfx(ResponseKind.Submit);
     			Close();
     			SaveLoadUi.PresentationMode = SaveLoadUIPresentationMode.Save;
@@ -477,6 +478,7 @@ namespace WitchTrials.Views
     	[Address(RVA = "0x3381E0", Offset = "0x336BE0", VA = "0x1803381E0")]
     	private void Open()
     	{
+            _saveButton.interactable = !FireworksEpilogueSession.Active;
     		_isOpened = true;
     		NaniScriptPlayer.SetAutoPlayEnabled(false);
     		NaniScriptPlayer.SetSkipEnabled(false);

@@ -283,6 +283,10 @@ def inventory():
     # A cached source hash alone cannot acknowledge a changed conversion recipe.
     # Hash each shared converter/plan once, then bind it to the selected job.
     dependency_hashes = {}
+    import switch_story
+    story_sources = switch_story.scenario_sources(REPO)
+    import fireworks_epilogue
+    epilogue_sources = fireworks_epilogue.scenario_sources(REPO)
     for rec in records.values():
         if rec["jobs"]:
             paths = [PROJECT / "Assets/Editor/ContentSyncBridge.cs", PROJECT / "Assets/Editor/JsonToSerializedApplier.cs"]
@@ -291,6 +295,16 @@ def inventory():
                 paths += [REPO / job["plan"] for job in rec["jobs"]]
             elif rec["relative_path"] != master:
                 paths.append(evidence("so_convert_plan_" + ("scenarios" if rec["category"] == "SCENARIO" else "data") + ".json"))
+            # The opt-in title graph depends on its merged Switch recipe as well as
+            # the unchanged PC input. Keep its normal sync acknowledgement current
+            # when that recipe changes the generated Script.
+            title_plan = RES / ".manosaba/switch-title/plan.json"
+            if rec["relative_path"] == "Assets/#WitchTrials/Scenarios/System/System_Title.asset.json" and title_plan.is_file():
+                paths.append(title_plan)
+            if rec["relative_path"] in story_sources:
+                paths.append(RES / ".manosaba/switch-story/plan.json")
+            if rec["relative_path"] in epilogue_sources:
+                paths.append(RES / ".manosaba/fireworks-epilogue/plan.json")
             for path in paths:
                 name = path.relative_to(REPO).as_posix()
                 if name not in dependency_hashes:
@@ -511,6 +525,28 @@ def conversion_batches(pending, files, asset_limit=24, job_limit=2000):
 
 
 def sync(args):
+    import switch_title
+    title_source = getattr(args, "switch_title_source", None)
+    title_report = (switch_title.prepare(title_source, dry_run=args.dry_run)
+                    if title_source or (RES / ".imported-source/switch-title/manifest.json").is_file()
+                    else {"status": "DISABLED"})
+    if title_report["status"] != "DISABLED":
+        print("[switch-title] " + json.dumps(title_report, ensure_ascii=False), flush=True)
+    title_enabled = (RES / ".manosaba/switch-title/plan.json").is_file()
+    title_source_relative = "Assets/#WitchTrials/Scenarios/System/System_Title.asset.json"
+    import switch_story
+    story_source = getattr(args, "switch_story_source", None)
+    story_report = (switch_story.prepare(story_source, dry_run=args.dry_run)
+                    if story_source or (RES / ".imported-source/switch-story/manifest.json").is_file()
+                    else {"status": "DISABLED"})
+    if story_report["status"] != "DISABLED":
+        print("[switch-story] " + json.dumps(story_report, ensure_ascii=False), flush=True)
+    story_sources = switch_story.scenario_sources(REPO)
+    import fireworks_epilogue
+    epilogue_report = fireworks_epilogue.prepare(REPO, dry_run=args.dry_run)
+    if epilogue_report["status"] != "DISABLED":
+        print("[fireworks-epilogue] " + json.dumps(epilogue_report, ensure_ascii=False), flush=True)
+    epilogue_sources = fireworks_epilogue.scenario_sources(REPO)
     if (not getattr(args, "allow_resource_map_mismatch", False)
             and resource_map.DEFAULT_MAP.is_file() and (RES / "_index.csv").is_file()):
         report = resource_map.verify(RES / "_index.csv", resource_map.DEFAULT_MAP,
@@ -534,7 +570,10 @@ def sync(args):
     for checked, (relative, rec) in enumerate(sorted(records.items()), 1):
         if checked % 5000 == 0 and not args.file:
             print(f"[scan] {checked}/{len(records)} sources checked; changed={sum(changed.values())}", flush=True)
-        if not selected(rec, args):
+        # The title recipe is applied by every Unity sync gate, even a filtered
+        # one. Include its PC record so that automatic update is acknowledged.
+        owns_title = title_enabled and relative == title_source_relative
+        if not selected(rec, args) and not owns_title and relative not in story_sources and relative not in epilogue_sources:
             continue
         source = source_path(relative)
         old = files.get(relative, {})
@@ -637,7 +676,9 @@ def sync(args):
         # same Unity gate once even when there was no pending source conversion, so generated
         # GameContent cannot silently retain a collaborator's stale SpriteSkin metadata.
         if not args.dry_run and not args.copy_only and not pending:
-            apply_unity([], [], timeout=args.timeout, ensure_curtain_skin=True)
+            result = apply_unity([], [], timeout=args.timeout, ensure_curtain_skin=True)
+            if acknowledge_extension_targets(files, result):
+                write_json(STATE, {**state, "files": files, "generated": datetime.now(timezone.utc).isoformat()})
     for category in CATEGORIES:
         if category != "OTHER":
             print(f"{category:<10} changed {changed[category]:6}")
@@ -648,6 +689,7 @@ def sync(args):
 
 
 def acknowledge_batch(state, files, batch, result):
+    acknowledge_extension_targets(files, result)
     results_by_source = defaultdict(list)
     for job_result in result.get("jobs", []):
         results_by_source[job_result.get("source", "").replace("\\", "/").removeprefix("res/")].append(job_result)
@@ -683,6 +725,60 @@ def acknowledge_batch(state, files, batch, result):
     state["unity_result"]["job_count"] = len(result.get("jobs", []))
 
 
+def acknowledge_extension_targets(files, result):
+    """Confirm only the gallery output of a verified optional story application.
+
+    This records an observed converter output, not proof that nobody previously
+    edited generated GameContent. It never acknowledges a PC source or promotes
+    an unconverted record, and all evidence is checked before mutating the ledger.
+    """
+    if not isinstance(result, dict) or "switch_story" not in result:
+        return 0
+    story = result["switch_story"]
+    if isinstance(story, dict) and story.get("status") == "disabled":
+        return 0
+    if (result.get("status") not in ("OK", "PARTIAL") or not isinstance(story, dict)
+            or story.get("status") != "OK"):
+        raise RuntimeError("Cannot acknowledge unsuccessful Switch story application")
+    gallery = story.get("gallery")
+    if isinstance(gallery, dict) and gallery.get("status") == "not_requested":
+        return 0
+    target = "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/UI/CustomUI/GalleryUI.prefab"
+    plan_relative = "res/.manosaba/switch-story/plan.json"
+    plan_path = importer.checked_path(RES, ".manosaba/switch-story/plan.json")
+    if not plan_path.is_file():
+        raise RuntimeError("Cannot acknowledge Switch story gallery without its current plan")
+    plan_bytes = plan_path.read_bytes()
+    plan = json.loads(plan_bytes.decode("utf-8-sig"))
+    if (not isinstance(plan, dict) or plan.get("version") != 1
+            or not re.fullmatch(r"[0-9a-f]{64}", str(plan.get("signature", "")))
+            or story.get("signature") != plan["signature"]
+            or story.get("plan") != plan_relative
+            or story.get("plan_sha256") != hashlib.sha256(plan_bytes).hexdigest()
+            or not isinstance(plan.get("gallery"), dict) or plan["gallery"].get("target") != target
+            or not isinstance(gallery, dict) or gallery.get("status") != "OK" or gallery.get("target") != target
+            or gallery.get("preserved_existing_order") is not True or gallery.get("saved_unlock_state_changed") is not False):
+        raise RuntimeError("Switch story gallery acknowledgement does not match the current plan")
+    destination = importer.checked_path(PROJECT, target)
+    hashes = story.get("output_sha256", {})
+    if not destination.is_file():
+        raise RuntimeError("Switch story gallery output is missing")
+    stamp = fingerprint(destination, force=True)
+    metadata = metadata_identity(destination, force=True)
+    if (not isinstance(hashes, dict) or hashes.get(target) != stamp["sha256"] or not metadata
+            or hashes.get(target + ".meta") != metadata["sha256"]):
+        raise RuntimeError("Switch story gallery output hash differs from its successful report")
+    associated = [rec for rec in files.values() if target in rec.get("targets", [])]
+    for rec in associated:
+        previous_guid = rec.get("target_metadata", {}).get(target, {}).get("guid")
+        if previous_guid != metadata["guid"]:
+            raise RuntimeError(f"Switch story gallery acknowledgement did not preserve metadata GUID: {target}")
+    for rec in associated:
+        rec.setdefault("target_fingerprints", {})[target] = dict(stamp)
+        rec.setdefault("target_metadata", {})[target] = dict(metadata)
+    return len(associated)
+
+
 def import_content(args):
     game = Path(args.game).resolve()
     if not (game / "manosaba_Data").is_dir():
@@ -700,6 +796,18 @@ def import_content(args):
     bootstrap = PIPELINE / "bootstrap_import.py"
     if bootstrap.is_file():
         run([sys.executable, bootstrap, "--timeout", str(args.timeout)])
+    # Import also invokes the same Unity recipe gate before its final sync.
+    # Refresh optional plans now so retained local PC edits never meet an old plan.
+    for name in ("switch_title", "switch_story"):
+        source = getattr(args, name + "_source", None)
+        if source or (RES / ".imported-source" / name.replace("_", "-") / "manifest.json").is_file():
+            module = __import__(name)
+            print("[" + name.replace("_", "-") + "] " +
+                  json.dumps(module.prepare(source), ensure_ascii=False), flush=True)
+    import fireworks_epilogue
+    epilogue_report = fireworks_epilogue.prepare(REPO)
+    if epilogue_report["status"] != "DISABLED":
+        print("[fireworks-epilogue] " + json.dumps(epilogue_report, ensure_ascii=False), flush=True)
     apply_unity([], [], export=True, timeout=args.timeout, ensure_curtain_skin=True)
     # Establish hashes only for original files we can prove; unknown baseline remains protected.
     baseline = read_json(BASELINE, {"version": 1, "files": {}})
@@ -790,8 +898,11 @@ def build(args):
     # Generated GameContent .meta files are local and are intentionally ignored by Git. Rebind every
     # Addressables entry from the all-plan asset_path before building, otherwise a clone can retain the
     # collaborator's stale GUIDs and silently drop most resources from the catalog.
-    apply_unity([], [], build=True, timeout=args.timeout, setup_addressables=True,
-                addressables_plan="addressables_plan_all.json", ensure_curtain_skin=True)
+    result = apply_unity([], [], build=True, timeout=args.timeout, setup_addressables=True,
+                         addressables_plan="addressables_plan_all.json", ensure_curtain_skin=True)
+    state = read_content_state(STATE, {"version": 1, "files": {}})
+    if acknowledge_extension_targets(state["files"], result):
+        write_json(STATE, {**state, "generated": datetime.now(timezone.utc).isoformat()})
     if args.player:
         run(ps_script("g5_player_smoke.ps1"))
     return 0
@@ -825,6 +936,8 @@ def main(argv=None):
     bld.add_argument("--allow-resource-map-mismatch", action="store_true",
                      help="bypass the tracked dump identity check")
     for command in (imp, sync_parser, bld):
+        command.add_argument("--switch-title-source", help="opt in to title visuals from a locally dumped Switch RomFS/Data directory")
+        command.add_argument("--switch-story-source", help="opt in to additional story CGs and cut-ins from a locally dumped Switch RomFS/Data directory")
         command.add_argument("--timeout", type=int, default=7200 if command is imp else 1800)
     args = parser.parse_args(argv)
     if args.command != "import":

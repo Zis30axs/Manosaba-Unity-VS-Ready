@@ -16,7 +16,7 @@ Shader "Manosaba/CutIn/LuminescenceSilhouette"
         Cull Off
         Lighting Off
         ZWrite Off
-        Blend SrcAlpha OneMinusSrcAlpha
+        Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
 
         Pass
         {

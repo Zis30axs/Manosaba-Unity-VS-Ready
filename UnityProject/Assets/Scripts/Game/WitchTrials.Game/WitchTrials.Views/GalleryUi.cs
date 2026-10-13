@@ -14,6 +14,14 @@ namespace WitchTrials.Views
     [Token(Token = "0x20000C0")]
     public sealed class GalleryUi : CGGalleryPanel, IGalleryUi, IManagedUI
     {
+        protected override bool IncludeCGPath(ResourceLoaderConfiguration source, string path)
+        {
+            // This scene plate is an epilogue transition aid, not an additional collectible CG.
+            string prefix = source.PathPrefix?.TrimEnd('/');
+            return !(path == "EpilogueEmpty" &&
+                (prefix == "Backgrounds/Stills" || prefix == "Naninovel/Backgrounds/Stills"));
+        }
+
     	[StructLayout(3)]
     	[Token(Token = "0x20000C1")]
     	[CompilerGenerated]
@@ -215,7 +223,8 @@ namespace WitchTrials.Views
     	[AsyncStateMachine(typeof(_003CLocateAsync_003Ed__16))]
     	private async UniTask<IReadOnlyCollection<string>> LocateAsync(ResourceLoaderConfiguration config)
     	{
-    		return await config.CreateLocalizableFor<Texture2D>(NaniResourceProviderManager, NaniLocalizationManager).Locate(null);
+            var paths = await config.CreateLocalizableFor<Texture2D>(NaniResourceProviderManager, NaniLocalizationManager).Locate(null);
+            return paths.Where(path => IncludeCGPath(config, path)).ToArray();
     	}
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x350840, 7 B (tail jump to CGGalleryPanel..ctor; no initializers)

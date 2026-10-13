@@ -31,6 +31,8 @@ namespace Manosaba.EditorTools
     {
         private const string OutputRelativePath = "../tools/unity-rebuild/out/unity/build_android_player.json";
         private const string PlayerRelativePath = "../dist/player-android/manosaba-rebuild.apk";
+        private const string ReleaseOutputRelativePath = "../tools/unity-rebuild/out/unity/build_android_player_release.json";
+        private const string ReleasePlayerRelativePath = "../dist/player-android-release/manosaba-rebuild.apk";
         private const string AndroidContentReceiptRelativePath = "../tools/unity-rebuild/out/unity/g3_android_content_build.json";
         private const string AndroidContentRelativePath = "Library/com.unity.addressables/aa/Android";
         private const string PackageIdentifier = "com.acacia.manosaba";
@@ -48,18 +50,34 @@ namespace Manosaba.EditorTools
             if (Application.isBatchMode) EditorApplication.Exit(code);
         }
 
-        public static int Execute()
+        [MenuItem("Manosaba/Build Android Player (release preview, local debug signature)")]
+        public static void RunRelease()
+        {
+            int code = Execute(true);
+            if (Application.isBatchMode) EditorApplication.Exit(code);
+        }
+
+        public static int Execute() => Execute(false);
+
+        public static int Execute(bool release)
         {
             string projectRoot = Directory.GetParent(Application.dataPath).FullName;
-            string receiptPath = Path.GetFullPath(Path.Combine(projectRoot, OutputRelativePath));
+            string receiptPath = Path.GetFullPath(Path.Combine(projectRoot, release ? ReleaseOutputRelativePath : OutputRelativePath));
+            BuildOptions buildOptions = release ? BuildOptions.None : BuildOptions.Development | BuildOptions.AllowDebugging;
+            bool previousDevelopment = EditorUserBuildSettings.development;
+#if UNITY_ANDROID
+            bool previousManifestDevelopment = AndroidDevelopmentManifest.DevelopmentBuild;
+#endif
             var result = new AndroidBuildResult
             {
                 generated = DateTime.UtcNow.ToString("o"),
                 unity_version = Application.unityVersion,
                 requested_target = BuildTarget.Android.ToString(),
                 active_build_target = EditorUserBuildSettings.activeBuildTarget.ToString(),
-                output_path = Path.GetFullPath(Path.Combine(projectRoot, PlayerRelativePath)),
-                build_options = (BuildOptions.Development | BuildOptions.AllowDebugging).ToString(),
+                output_path = Path.GetFullPath(Path.Combine(projectRoot, release ? ReleasePlayerRelativePath : PlayerRelativePath)),
+                build_options = buildOptions.ToString(),
+                release = release,
+                signing_mode = "Unity local debug keystore; preview sideload only, not a production signing identity",
                 package_identifier = PackageIdentifier,
                 obb_limit_bytes = MaxObbBytes,
             };
@@ -95,11 +113,18 @@ namespace Manosaba.EditorTools
                     return Finish(receiptPath, result);
                 }
 
-                ApplySettings();
+                // The manifest callback also reads this Editor flag; apply the actual build mode temporarily.
+                EditorUserBuildSettings.development = !release;
+                ApplySettings(release);
                 result.settings_after = CaptureSettings();
 
                 // A previous run that died mid-build left its bundles in the stash; put them back before validating.
                 RestoreStashedBundles(Path.GetFullPath(Path.Combine(projectRoot, AndroidContentRelativePath)));
+
+                var story = SwitchStoryContentBuilder.EnsureApplied();
+                result.switch_story_status = (string)story["status"];
+                result.switch_story_signature = (string)story["signature"];
+                result.switch_story_output_fingerprint = (string)story["output_fingerprint"];
 
                 if (!RequireAndroidContent(projectRoot, result))
                 {
@@ -139,7 +164,7 @@ namespace Manosaba.EditorTools
                     locationPathName = apk,
                     target = BuildTarget.Android,
                     targetGroup = BuildTargetGroup.Android,
-                    options = BuildOptions.Development | BuildOptions.AllowDebugging,
+                    options = buildOptions,
                 };
 
                 // The content was built and validated against the G3 receipt above.  With the default "preferences"
@@ -173,9 +198,14 @@ namespace Manosaba.EditorTools
                 }
                 else
                 {
+#if UNITY_ANDROID
                     AndroidContentGate.ManifestJson = null;
+#endif
                 }
+#if UNITY_ANDROID
+                // Gradle callbacks are compiled only for Android; keep this Editor menu available on other targets.
                 AndroidDevelopmentManifest.DevelopmentBuild = (options.options & BuildOptions.Development) != 0;
+#endif
                 BuildReport report;
                 try
                 {
@@ -222,10 +252,18 @@ namespace Manosaba.EditorTools
                 Debug.LogError("[BuildAndroidPlayer] " + ex);
             }
 
+            finally
+            {
+                EditorUserBuildSettings.development = previousDevelopment;
+#if UNITY_ANDROID
+                AndroidDevelopmentManifest.DevelopmentBuild = previousManifestDevelopment;
+#endif
+            }
+
             return Finish(receiptPath, result);
         }
 
-        private static void ApplySettings()
+        private static void ApplySettings(bool release)
         {
             NamedBuildTarget android = NamedBuildTarget.FromBuildTargetGroup(BuildTargetGroup.Android);
             PlayerSettings.SetApplicationIdentifier(android, PackageIdentifier);
@@ -243,10 +281,10 @@ namespace Manosaba.EditorTools
             // IL2CPP is required for the ARM64 Android player.  Keep the setting target-scoped.
             PlayerSettings.SetScriptingBackend(android, ScriptingImplementation.IL2CPP);
 
-            // Explicit Gradle Debug configuration plus Development/AllowDebugging BuildOptions
-            // produces a debuggable APK.  buildAppBundle=false keeps this first artifact APK+OBB.
+            // Both modes use the existing local debug signing identity for sideload previews.
+            // Release removes the game's DebugPresenter/UI; it is not a production signing setup.
             EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
-            EditorUserBuildSettings.androidBuildType = AndroidBuildType.Debug;
+            EditorUserBuildSettings.androidBuildType = release ? AndroidBuildType.Release : AndroidBuildType.Debug;
             EditorUserBuildSettings.buildAppBundle = false;
             EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
 
@@ -343,6 +381,19 @@ namespace Manosaba.EditorTools
                     return false;
                 }
 
+                if (result.switch_story_status == "OK")
+                {
+                    var built = Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(receiptPath))["build"]?["result"];
+                    if ((string)built?["switch_story_status"] != "OK" ||
+                        (string)built?["switch_story_signature"] != result.switch_story_signature ||
+                        (string)built?["switch_story_output_fingerprint"] != result.switch_story_output_fingerprint)
+                    {
+                        result.status = "BLOCKED_ANDROID_STORY_CONTENT_STALE";
+                        result.error = "Switch story assets no longer match the full Android G3 build; rebuild Android content before packaging the player.";
+                        return false;
+                    }
+                }
+
                 string[] files = Directory.Exists(expectedRoot)
                     ? Directory.GetFiles(expectedRoot, "*", SearchOption.AllDirectories)
                     : Array.Empty<string>();
@@ -406,7 +457,9 @@ namespace Manosaba.EditorTools
             json.Append("]}");
             Directory.CreateDirectory(Path.GetDirectoryName(manifestPath));
             File.WriteAllText(manifestPath, json.ToString(), new UTF8Encoding(false));
+#if UNITY_ANDROID
             AndroidContentGate.ManifestJson = json.ToString();
+#endif
             return buildId;
         }
 
@@ -555,6 +608,8 @@ namespace Manosaba.EditorTools
             public string report_error;
             public string output_path;
             public string build_options;
+            public bool release;
+            public string signing_mode;
             public string package_identifier;
             public long obb_limit_bytes;
             public bool apk_exists;
@@ -572,6 +627,9 @@ namespace Manosaba.EditorTools
             public int android_content_catalogs;
             public int android_content_bundles;
             public long android_content_bundle_bytes;
+            public string switch_story_status;
+            public string switch_story_signature;
+            public string switch_story_output_fingerprint;
             // AndroidDevelopmentManifest lets Development players run over the lock screen.
             public bool show_when_locked;
             public bool sidecar;

@@ -364,9 +364,11 @@ namespace Manosaba.EditorTools
                             if (components.Length != 1) throw new ReadOnlyMappingException("missing or ambiguous component type: " + selected.type);
                             component = components[0];
                         }
-                        // A converted Court light intensity is owned by the recipe; the res value must not undo it.
+                        // A converted Court light intensity and a cut-in glow's sorting order are owned by the recipe;
+                        // the res value must not undo them.
                         HashSet<string> sourceIgnored = IsCourtCandelaLight(planJob, component, selected.json)
-                            ? new HashSet<string>(ignored) { "m_Intensity" } : ignored;
+                            ? new HashSet<string>(ignored) { "m_Intensity" }
+                            : IsCutInGlowRenderer(planJob, component) ? new HashSet<string>(ignored) { "m_SortingOrder" } : ignored;
                         var report = JsonToSerializedApplier.ApplyAll(new SerializedObject(component), selected.json,
                             new JsonToSerializedApplier.Options { SkipEngineFields = false, IgnoreKeys = sourceIgnored, SafeEditableOnly = true,
                                 PreserveUnresolvedPointers = true, ResolvePointer = JsonToSerializedApplier.ResolveStablePointer });
@@ -425,6 +427,8 @@ namespace Manosaba.EditorTools
                 if (!string.IsNullOrEmpty(result.guid_before) && result.guid_before != result.guid_after)
                     throw new InvalidOperationException("prefab GUID changed");
                 result.warnings.AddRange(job.warnings);
+                if ((string)planJob["adapter"] == "switch-story-cutin-v1")
+                    result.warnings.AddRange(job.messages.Where(message => message.Contains(": source_ignored_binding ")));
                 result.status = "REBUILT";
                 foreach (string changed in changedSources.Distinct(StringComparer.OrdinalIgnoreCase))
                     result.source_results.Add(new SourceEditResult { source = changed, status = "REBUILT", editability = "PARTIAL" });
@@ -470,6 +474,13 @@ namespace Manosaba.EditorTools
                 return;
             }
             job.target = target;
+            // RebuildEditable constructs a fresh JobRecord; only the batch Run caller used to
+            // initialize this count. Keep missing/unreadable dumps in the planned total as well.
+            job.objects_planned = (jobToken["objects"] as JArray)?.Count ?? 0;
+            // Optional, narrowly scoped recipe for the three Switch title effects. Generated assets
+            // stay inside SwitchTitle and ordinary prefab jobs keep the existing resolver unchanged.
+            var titleAssets = SwitchTitleAssets.Prepare(jobToken, target);
+            var storyAssets = SwitchStoryAssets.Prepare(jobToken, target);
 
             var references = new Dictionary<string, string>(StringComparer.Ordinal);
             if (jobToken["references"] is JObject refs)
@@ -532,7 +543,9 @@ namespace Manosaba.EditorTools
                     JToken tag = node.json["m_Tag"];
                     if (tag != null)
                     {
-                        try { go.tag = tag.ToString(); } catch (UnityException) { /* tag not in this project */ }
+                        string tagName = storyAssets != null && tag.Type == JTokenType.Integer && tag.Value<int>() == 0
+                            ? "Untagged" : tag.ToString();
+                        try { go.tag = tagName; } catch (UnityException) { /* tag not in this project */ }
                     }
                 }
 
@@ -836,19 +849,22 @@ namespace Manosaba.EditorTools
 
                     var options = new JsonToSerializedApplier.Options
                     {
-                        ResolvePointer = token => ResolvePointer(token, node, nodes, references, repoRoot, job, extraMap),
+                        ResolvePointer = token => titleAssets?.Resolve(token) ?? storyAssets?.Resolve(token) ??
+                            ResolvePointer(token, node, nodes, references, repoRoot, job, extraMap),
                         PathPrefix = node.pid + ".",
                         // Component data lives under m_* (Image.m_Sprite, Graphic.m_Color, TMP m_fontAsset,
                         // Selectable.m_TargetGraphic, UnityEvent m_PersistentCalls, ...): dropping every m_* key
                         // left each UI prefab structurally complete and visually empty.  Only the object header the
                         // builder owns is skipped.
                         SkipEngineFields = false,
-                        IgnoreKeys = CourtPointerKeys(node, job) ?? BuilderOwnedKeys,
+                        IgnoreKeys = storyAssets != null ? storyAssets.IgnoredKeys(node.component, BuilderOwnedKeys) :
+                            CourtPointerKeys(node, job) ?? BuilderOwnedKeys,
                         // An engine field whose default is an object (SpriteRenderer.m_Materials[0]) must survive a
                         // pointer that cannot be resolved (built-in resources are not in the plan).
                         PreserveUnresolvedPointers = true,
                     };
                     var report = JsonToSerializedApplier.ApplyAll(new SerializedObject(node.component), node.json, options);
+                    storyAssets?.ApplyTypedFields(node.component, node.json, options.ResolvePointer);
                     job.fields_applied += report.applied;
                     job.pointers_bound += report.pointersBound;
                     job.pointers_adapted += report.pointersAdapted;
@@ -919,6 +935,9 @@ namespace Manosaba.EditorTools
                     job.status = "NO_ROOT";
                     return;
                 }
+                if (titleAssets != null)
+                    job.messages.Add("Switch title: bound " + titleAssets.BindParticleTextures(root) + " particle Sprite textures to dedicated materials");
+                storyAssets?.BindParticleTextures(root);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(target)));
                 // The prefab's .meta GUID is the shipped one (align_asset_guids.py writes it) and Boot.unity's
@@ -959,6 +978,7 @@ namespace Manosaba.EditorTools
                                                   + extra.GetComponentsInChildren<Component>(true).Length;
                 }
 
+                if (IsCutInPrefab(job.asset_path)) OrderCutInGlowBehindGlass(root);
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(target)));
                 if (AssetDatabase.LoadMainAssetAtPath(target) != null) AssetDatabase.DeleteAsset(target);
                 GameObject savedRoot = PrefabUtility.SaveAsPrefabAsset(root, target);
@@ -991,7 +1011,17 @@ namespace Manosaba.EditorTools
                     // Timeline appear valid while every puppet remains frozen/invisible.
                     foreach (Node node in nodes)
                         if (node.component is AnimationClip clip)
-                            RebuildPackedAnimationClip(node, clip, nodes, job);
+                            RebuildPackedAnimationClip(node, clip, nodes, job,
+                                storyAssets?.AnimationPaths(clip, root, nodes.Where(n => n.component != null)
+                                    .ToDictionary(n => n.pid, n => n.component, StringComparer.Ordinal)));
+                    if (titleAssets != null)
+                    {
+                        titleAssets.CompleteController(nodes.Where(n => n.component != null)
+                            .ToDictionary(n => n.pid, n => n.component, StringComparer.Ordinal));
+                        job.messages.Add("Switch title: reconstructed simple controller, material compatibility recipe applied");
+                    }
+                    storyAssets?.CompleteControllers(nodes.Where(n => n.component != null)
+                        .ToDictionary(n => n.pid, n => n.component, StringComparer.Ordinal));
                     PrefabUtility.SaveAsPrefabAsset(root, target);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.ImportAsset(target, ImportAssetOptions.ForceUpdate);
@@ -1003,6 +1033,11 @@ namespace Manosaba.EditorTools
                 // kept only the root plus its components (CreditsUI 8/3189, WitchBookUI 9/2065).  So the
                 // saved asset is loaded back and counted, and a shortfall is a status, not a footnote.
                 AssetDatabase.ImportAsset(target, ImportAssetOptions.ForceUpdate);
+                if (titleAssets != null)
+                    titleAssets.RebindSavedClips(target, nodes.Where(n => n.type == "AnimationClip")
+                        .ToDictionary(n => n.pid, n => (string)n.json["m_Name"], StringComparer.Ordinal));
+                storyAssets?.RebindSavedClips(target, nodes.Where(n => n.type == "AnimationClip")
+                    .ToDictionary(n => n.pid, n => (string)n.json["m_Name"], StringComparer.Ordinal));
                 job.guid_before = guidBefore;
                 job.guid_after = AssetDatabase.AssetPathToGUID(target);
                 if (guidBefore.Length > 0 && guidBefore != job.guid_after)
@@ -1021,6 +1056,39 @@ namespace Manosaba.EditorTools
                     return;
                 }
                 if (IsCutInPrefab(job.asset_path)) EnsureCutInSpriteMeshTypes(saved);
+                storyAssets?.Verify(saved);
+                if (storyAssets != null)
+                {
+                    foreach (Node node in nodes.Where(n => n.component is ParticleSystem))
+                    {
+                        string path = AnimationUtility.CalculateTransformPath(((ParticleSystem)node.component).transform, root.transform);
+                        Transform written = path.Length == 0 ? saved.transform : saved.transform.Find(path);
+                        var particle = written != null ? written.GetComponent<ParticleSystem>() : null;
+                        if (particle == null || JsonToSerializedApplier.VerifyAnimationCurves(new SerializedObject(particle), node.json) == 0)
+                            throw new InvalidOperationException("Story particle/curves missing after save: " + path);
+                    }
+                    if (job.warnings.Any(w => w.Contains("genericBindings: unsupported")))
+                        throw new InvalidOperationException("Unsupported Switch story animation binding: " +
+                            string.Join("; ", job.warnings.Where(w => w.Contains("genericBindings: unsupported"))));
+                }
+                if (titleAssets != null)
+                {
+                    titleAssets.VerifyController(saved);
+                    titleAssets.VerifyParticleTextures(saved);
+                    int verifiedCurves = 0;
+                    foreach (Node node in nodes.Where(n => n.component is ParticleSystem))
+                    {
+                        var live = (ParticleSystem)node.component;
+                        string particlePath = AnimationUtility.CalculateTransformPath(live.transform, root.transform);
+                        Transform written = particlePath.Length == 0 ? saved.transform : saved.transform.Find(particlePath);
+                        ParticleSystem particle = written != null ? written.GetComponent<ParticleSystem>() : null;
+                        if (particle == null) throw new InvalidOperationException("Title particle missing after save: " + particlePath);
+                        int particleCurves = JsonToSerializedApplier.VerifyAnimationCurves(new SerializedObject(particle), node.json);
+                        if (particleCurves == 0) throw new InvalidOperationException("No title particle curves could be verified: " + particlePath);
+                        verifiedCurves += particleCurves;
+                    }
+                    job.messages.Add("Switch title: verified " + verifiedCurves + " serialized particle curves after prefab save");
+                }
                 job.saved_transforms = saved.GetComponentsInChildren<Transform>(true).Length;
                 job.saved_components = saved.GetComponentsInChildren<Component>(true).Length;
                 job.objects_written = job.saved_transforms + job.saved_components;   // a transform counts in both
@@ -1067,6 +1135,12 @@ namespace Manosaba.EditorTools
                     job.warning_count++;
                 }
 
+                if (titleAssets != null && (job.pointers_unbound != 0 || job.missing_types != 0 || job.objects_unbuildable != 0))
+                    throw new InvalidOperationException("Switch title prefab has unresolved pointers/types/objects: " +
+                        job.pointers_unbound + "/" + job.missing_types + "/" + job.objects_unbuildable);
+                if (storyAssets != null && (job.pointers_unbound != 0 || job.missing_types != 0 || job.objects_unbuildable != 0))
+                    throw new InvalidOperationException("Switch story prefab has unresolved pointers/types/objects: " +
+                        job.pointers_unbound + "/" + job.missing_types + "/" + job.objects_unbuildable);
                 job.status = job.guid_changed
                     ? "GUID_CHANGED"
                     : (job.warning_count == 0 && job.missing_types == 0 && job.pointers_unbound == 0
@@ -1471,6 +1545,32 @@ namespace Manosaba.EditorTools
 
         private static bool IsCutInPrefab(string assetPath) =>
             (assetPath ?? "").Replace('\\', '/').Contains("/Prefabs/Naninovel/Spawn/CutIn/ObjectionCutIn_");
+
+        /// <summary>
+        /// The band's glow (RefuteCutIn_StainedGlass_luminescence, LuminescenceDissolve) and its stained glass share
+        /// sorting layer and order 200 in the shipped prefab, so which one draws last is left to the pipeline's
+        /// tie-break.  The glow is a backing layer, a little larger than the glass, whose rim frames it (the portrait's
+        /// silhouette glow sits the same way, at -100 behind the portrait at 300).  The built-in pipeline draws it last,
+        /// which covers the glass with a solid pink-white band for most of the cut-in.  Pin the intended layering: a
+        /// dissolve glow that shares its order with a Glasses renderer goes one order below it.
+        /// </summary>
+        private static void OrderCutInGlowBehindGlass(GameObject root)
+        {
+            SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+            var glassOrders = new HashSet<long>(renderers.Where(r => UsesCutInShader(r, "Glasses")).Select(SortKey));
+            foreach (SpriteRenderer renderer in renderers)
+                if (UsesCutInShader(renderer, "LuminescenceDissolve") && glassOrders.Contains(SortKey(renderer)))
+                    renderer.sortingOrder -= 1;
+        }
+
+        private static long SortKey(Renderer renderer) => ((long)renderer.sortingLayerID << 32) | (uint)renderer.sortingOrder;
+
+        private static bool UsesCutInShader(Renderer renderer, string shader) =>
+            renderer.sharedMaterial != null && renderer.sharedMaterial.shader != null &&
+            renderer.sharedMaterial.shader.name == CutInMaterialShaderRoot + shader;
+
+        private static bool IsCutInGlowRenderer(JObject planJob, UnityEngine.Object component) =>
+            IsCutInPrefab((string)planJob["asset_path"]) && component is SpriteRenderer renderer && UsesCutInShader(renderer, "LuminescenceDissolve");
 
         private static bool IsCourtPrefab(string assetPath)
         {
@@ -2266,7 +2366,8 @@ namespace Manosaba.EditorTools
             public List<PackedKey> keys = new List<PackedKey>();
         }
 
-        private static void RebuildPackedAnimationClip(Node node, AnimationClip clip, List<Node> nodes, JobRecord job)
+        private static void RebuildPackedAnimationClip(Node node, AnimationClip clip, List<Node> nodes, JobRecord job,
+                                                       HashSet<string> permittedPaths = null)
         {
             JObject muscle = node.json["m_MuscleClip"] as JObject;
             JObject packed = muscle?["m_Clip"]?["data"] as JObject;
@@ -2296,6 +2397,20 @@ namespace Manosaba.EditorTools
                     if (!pathByHash.ContainsKey(hash)) pathByHash[hash] = suffix;
                 }
             }
+            if (permittedPaths != null)
+            {
+                // A source clip can contain stale curves aimed at a sibling of its
+                // actual Animator. Unity ignores these; a whole-prefab path lookup
+                // must not turn them into effective curves in the rebuilt clip.
+                pathByHash.Clear();
+                foreach (string path in permittedPaths)
+                {
+                    uint hash = Crc32(path);
+                    if (pathByHash.TryGetValue(hash, out string prior) && prior != path)
+                        throw new InvalidOperationException("Ambiguous story animation path CRC");
+                    pathByHash[hash] = path;
+                }
+            }
 
             var curves = new Dictionary<int, AnimationCurve>();
             var curveBindings = new Dictionary<int, EditorCurveBinding>();
@@ -2309,8 +2424,13 @@ namespace Manosaba.EditorTools
                 int componentCount = BindingComponentCount(typeId, attribute);
                 if (pathHash != 0 && path.Length == 0)
                 {
-                    job.warnings.Add(node.pid + ".m_ClipBindingConstant.genericBindings: path hash " + pathHash + " not found in prefab hierarchy");
-                    job.warning_count++;
+                    if (permittedPaths != null)
+                        job.messages.Add(node.pid + ": source_ignored_binding pathHash=" + pathHash + " outside actual Animator hierarchy");
+                    else
+                    {
+                        job.warnings.Add(node.pid + ".m_ClipBindingConstant.genericBindings: path hash " + pathHash + " not found in prefab hierarchy");
+                        job.warning_count++;
+                    }
                     // Unity leaves an unbound curve unused.  Writing it to "" would retarget a
                     // bone rotation (e.g. a shared Leia clip in a Leia-less prefab) onto the
                     // Animator root, colliding with the clip's real root curves.
@@ -2509,6 +2629,15 @@ namespace Manosaba.EditorTools
         {
             binding = default(EditorCurveBinding);
             string suffix = component == 0 ? ".x" : component == 1 ? ".y" : component == 2 ? ".z" : ".w";
+            if (typeId == 1 && attribute == 2086281974u && component == 0)
+            {
+                // Unity's discrete binding is for int/enum properties, not this bool.
+                // The source has isIntCurve=0; its existing stepped keys supply the
+                // discontinuities. DiscreteCurve left all five W glass states unchanged
+                // in the real SampleAnimation A/B, while FloatCurve applied them.
+                binding = EditorCurveBinding.FloatCurve(path, typeof(GameObject), "m_IsActive");
+                return true;
+            }
             if (typeId == 4)
             {
                 string property = attribute == 1 ? "m_LocalPosition" :
@@ -2518,15 +2647,22 @@ namespace Manosaba.EditorTools
                 binding = EditorCurveBinding.FloatCurve(path, typeof(Transform), property + suffix);
                 return true;
             }
-            if (typeId == 212 && attribute == 304273561u && component == 0)
+            if (typeId == 212 && component == 0)
             {
-                binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "m_Color.a");
-                return true;
+                // CRC32 of the exact serialized SpriteRenderer channel names. ED3 animates RGB
+                // as well as alpha; treating RGB hashes as material properties loses its light cycle.
+                string channel = attribute == 2526845255u ? "r" : attribute == 4215373228u ? "g" :
+                                 attribute == 2334886179u ? "b" : attribute == 304273561u ? "a" : null;
+                if (channel != null)
+                {
+                    binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "m_Color." + channel);
+                    return true;
+                }
             }
             // A float property of the renderer's material (binding custom type 22).  Its hash is the property
             // name's CRC32 with the top nibble replaced by 8: the cut-in Timelines drive the Shader Graph
             // properties _Float, _Tick, _Fader and _Fader2 this way.  Only the names listed below are known.
-            if (typeId == 212 && (attribute & 0x80000000u) != 0 && component == 0 &&
+            if (typeId == 212 && component == 0 &&
                 AnimatedMaterialProperties.Value.TryGetValue(attribute, out string materialProperty))
             {
                 binding = EditorCurveBinding.FloatCurve(path, typeof(SpriteRenderer), "material." + materialProperty);
@@ -2538,8 +2674,14 @@ namespace Manosaba.EditorTools
         private static readonly Lazy<Dictionary<uint, string>> AnimatedMaterialProperties = new Lazy<Dictionary<uint, string>>(() =>
         {
             var map = new Dictionary<uint, string>();
-            foreach (string name in new[] { "_Float", "_Tick", "_Fader", "_Fader2", "_Speed", "_EdgeSize" })
+            foreach (string name in new[] { "_Float", "_Tick", "_Fader", "_Fader2", "_Speed", "_EdgeSize", "_FogAmount", "_transparent" })
                 map[(Crc32(name) & 0x0FFFFFFFu) | 0x80000000u] = name;
+            // Packed customType 22 encodes Color channels in nibbles 4/5/6/7,
+            // retaining the lower 28 bits of the property's CRC (not CRC of ".r").
+            // Verified on Switch ObjectionCutIn_w's four animated _Color channels.
+            string[] channels = { ".r", ".g", ".b", ".a" };
+            for (uint i = 0; i < 4; i++)
+                map[(Crc32("_Color") & 0x0FFFFFFFu) | ((4u + i) << 28)] = "_Color" + channels[i];
             return map;
         });
 

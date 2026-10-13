@@ -236,6 +236,9 @@ namespace WitchTrials.Views
     	// Added after the shipped layout: the "refutation portraits" row is cloned from the critical-choice-hint row at runtime
     	// (see EnsureCutInPortraitRow), so the generated OptionsUI prefab does not need a new control.
     	private OptionItemToggleGroup _cutInPortraitToggleGroup;
+        private OptionItemToggleGroup _correctedCutInToggleGroup;
+        private OptionItemToggleGroup _fireworksEpilogueToggleGroup;
+        private bool _applyingEnhancementValues;
 
     	[Token(Token = "0x4000382")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0x108")]
@@ -560,7 +563,23 @@ namespace WitchTrials.Views
     		}
     		_disposables = new CompositeDisposable();
     		EnsureCutInPortraitRow();
+            EnsureEnhancementRows();
     		ApplyOptionValuesToUi();
+            var enhancementSettings = Engine.GetServiceOrErr<EnhancementSettings>();
+            enhancementSettings.Changed += ApplyEnhancementValuesToUi;
+            UniRx.Disposable.Create(() => enhancementSettings.Changed -= ApplyEnhancementValuesToUi).AddTo(_disposables, this);
+            _correctedCutInToggleGroup.OnValueChangedAsObservable().Subscribe(index =>
+            {
+                if (_applyingEnhancementValues) return;
+                InputManager.PlayResponseSfx(ResponseKind.Submit);
+                enhancementSettings.UseCorrectedCutInPortraits = index == 1;
+            }).AddTo(_disposables, this);
+            _fireworksEpilogueToggleGroup.OnValueChangedAsObservable().Subscribe(index =>
+            {
+                if (_applyingEnhancementValues) return;
+                InputManager.PlayResponseSfx(ResponseKind.Submit);
+                enhancementSettings.FireworksEpilogueEnabled = index == 1;
+            }).AddTo(_disposables, this);
     		_messageSpeedSlider.OnSlideAsObservable().Subscribe(x => NaniPrinterManager.BaseRevealSpeed = x / 10f).AddTo(_disposables, this);
     		_messageSpeedSlider.OnConfirmAsObservable().Subscribe(_ => InputManager.PlayResponseSfx(ResponseKind.Submit)).AddTo(_disposables, this);
     		_autoDelaySlider.OnSlideAsObservable().Subscribe(x => NaniPrinterManager.BaseAutoDelay = x / 10f).AddTo(_disposables, this);
@@ -626,6 +645,7 @@ namespace WitchTrials.Views
     			NaniCameraManager.ResolutionLevel = _unavailableResolutionOptionCount;
     			NaniCameraManager.TargetFpsLevel = NaniCameraManager.Configuration.DefaultGraphicsOptions.TargetFpsLevel;
     			NaniCameraManager.IsPostProcessingEnabled = NaniCameraManager.Configuration.DefaultGraphicsOptions.PostProcessingActivity;
+                enhancementSettings.ResetDefaults();
     			ApplyOptionValuesToUi();
     		}).AddTo(_disposables, this);
     		_masterVolumeSlider.OnSlideAsObservable().Subscribe(x => NaniAudioManager.MasterVolume = x / 10f).AddTo(_disposables, this);
@@ -699,7 +719,99 @@ namespace WitchTrials.Views
     		_sfxVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.SfxVolume * 10f));
     		_voiceVolumeSlider.SetValue(Mathf.RoundToInt(NaniAudioManager.VoiceVolume * 10f));
     		_postProcessingToggleGroup.SetValue(NaniCameraManager.IsPostProcessingEnabled ? 1 : 0);
+            ApplyEnhancementValuesToUi();
     	}
+
+        private void EnsureEnhancementRows()
+        {
+            if (_correctedCutInToggleGroup != null && _fireworksEpilogueToggleGroup != null)
+            {
+                ApplyEnhancementTexts();
+                return;
+            }
+            // Reuse the graphic page's own controls. Its hand-positioned rows have room below them;
+            // the existing Ema portrait rotation option remains on the message page, unchanged.
+            var source = (RectTransform)_postProcessingToggleGroup.transform;
+            var rows = source.parent.Cast<Transform>().OfType<RectTransform>()
+                .Where(row => row.gameObject.activeSelf && row.anchorMin == source.anchorMin && row.anchorMax == source.anchorMax)
+                .OrderByDescending(row => row.anchoredPosition.y).ToArray();
+            var lastY = rows.Length > 0 ? rows[rows.Length - 1].anchoredPosition.y : source.anchoredPosition.y;
+            var spacing = rows.Length > 1 ? Mathf.Abs(rows[0].anchoredPosition.y - rows[1].anchoredPosition.y) : source.rect.height * 3f;
+            if (spacing < source.rect.height) spacing = source.rect.height * 3f;
+            _correctedCutInToggleGroup = CreateEnhancementRow(source, "CorrectedCutInPortraits", lastY - spacing);
+            _fireworksEpilogueToggleGroup = CreateEnhancementRow(source, "FireworksEpilogue", lastY - spacing * 2f);
+            ApplyEnhancementTexts();
+        }
+
+        private OptionItemToggleGroup CreateEnhancementRow(RectTransform source, string name, float y)
+        {
+            var row = Instantiate(source.gameObject, source.parent, false);
+            row.name = name;
+            foreach (var label in row.GetComponentsInChildren<RebuildableLabel>(true))
+            {
+                label.enabled = false;
+                Destroy(label);
+            }
+            ((RectTransform)row.transform).anchoredPosition = new Vector2(source.anchoredPosition.x, y);
+            row.SetActive(true);
+            return row.GetComponent<OptionItemToggleGroup>();
+        }
+
+        private void ApplyEnhancementValuesToUi()
+        {
+            var settings = Engine.GetServiceOrErr<EnhancementSettings>();
+            _applyingEnhancementValues = true;
+            try
+            {
+                _correctedCutInToggleGroup?.SetValue(settings.UseCorrectedCutInPortraits ? 1 : 0);
+                _fireworksEpilogueToggleGroup?.SetValue(settings.FireworksEpilogueEnabled ? 1 : 0);
+            }
+            finally { _applyingEnhancementValues = false; }
+        }
+
+        private void ApplyEnhancementTexts()
+        {
+            var locale = LocalizationManager.CurrentLocale;
+            string[] portraits, epilogue;
+            switch (locale)
+            {
+                case LocaleKind.ZhHant:
+                    portraits = new[] { "論破立繪樣式", "原版", "修正" };
+                    epilogue = new[] { "煙花後日談", "關", "開" };
+                    break;
+                case LocaleKind.Ja:
+                    portraits = new[] { "論破イラスト", "オリジナル", "修正版" };
+                    epilogue = new[] { "花火の後日談", "OFF", "ON" };
+                    break;
+                case LocaleKind.Ko:
+                    portraits = new[] { "논파 일러스트", "원본", "수정판" };
+                    epilogue = new[] { "불꽃놀이 후일담", "끄기", "켜기" };
+                    break;
+                case LocaleKind.EnUs:
+                    portraits = new[] { "Refutation artwork", "Original", "Corrected" };
+                    epilogue = new[] { "Fireworks epilogue", "Off", "On" };
+                    break;
+                default:
+                    portraits = new[] { "论破立绘样式", "原版", "修正" };
+                    epilogue = new[] { "烟花后日谈", "关", "开" };
+                    break;
+            }
+            ApplyEnhancementRowTexts(_correctedCutInToggleGroup, portraits);
+            ApplyEnhancementRowTexts(_fireworksEpilogueToggleGroup, epilogue);
+        }
+
+        private void ApplyEnhancementRowTexts(OptionItemToggleGroup row, string[] labels)
+        {
+            if (!row) return;
+            foreach (var text in row.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+            {
+                var parentName = text.transform.parent ? text.transform.parent.name : "";
+                if (text.name == "Heading") text.text = labels[0];
+                else if (parentName == "OptionItemToggle_1") text.text = labels[1];
+                else if (parentName == "OptionItemToggle_2") text.text = labels[2];
+                text.font = LocalizationManager.CurrentFontAsset;
+            }
+        }
 
     	// Clones the critical-choice-hint row (heading + two toggles) as the "refutation portraits" option and gives it its own
     	// texts.  Done once, before the values are applied and the subscriptions are made.
@@ -800,6 +912,7 @@ namespace WitchTrials.Views
     			_languageDropdown.ChangeCaptionVisibility(false);
     			await NaniLocalizationManager.SelectLocale(locale);
     			ApplyCutInPortraitTexts();
+                ApplyEnhancementTexts();
     			_languageDropdown.ChangeCaptionVisibility(true);
     		}
     	}

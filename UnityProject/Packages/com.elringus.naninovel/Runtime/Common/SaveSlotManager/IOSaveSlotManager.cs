@@ -187,7 +187,42 @@ namespace Naninovel
             #if UNITY_EDITOR
             return Application.dataPath;
             #else
-            return Application.persistentDataPath;
+            // Explicit standalone smoke runs may isolate all IO-backed game/global/settings slots.
+            // Ordinary launches and Editor saves retain their original locations.
+            const string rootFlag = "-manosabaSaveRoot";
+            string[] arguments = Environment.GetCommandLineArgs();
+            int rootIndex = -1;
+            bool smoke = false;
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                string argument = arguments[i];
+                if (string.Equals(argument, "-manosabaSmoke", StringComparison.OrdinalIgnoreCase)) smoke = true;
+                if (argument.StartsWith(rootFlag + "=", StringComparison.OrdinalIgnoreCase))
+                    throw new ArgumentException("Use -manosabaSaveRoot followed by one absolute directory path.");
+                if (!string.Equals(argument, rootFlag, StringComparison.OrdinalIgnoreCase)) continue;
+                if (rootIndex >= 0) throw new ArgumentException("-manosabaSaveRoot must appear exactly once.");
+                rootIndex = i;
+            }
+            if (rootIndex < 0) return Application.persistentDataPath;
+            if (!smoke) throw new ArgumentException("-manosabaSaveRoot requires -manosabaSmoke.");
+            if (rootIndex + 1 >= arguments.Length || string.IsNullOrWhiteSpace(arguments[rootIndex + 1]))
+                throw new ArgumentException("-manosabaSaveRoot requires an absolute directory path.");
+            string requested = arguments[rootIndex + 1];
+            if (!Path.IsPathFullyQualified(requested))
+                throw new ArgumentException("-manosabaSaveRoot must be a fully qualified absolute directory path.");
+            string root = Path.GetFullPath(requested);
+            string persistent = Path.GetFullPath(Application.persistentDataPath);
+            string protectedRoot = persistent.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (string.Equals(root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), protectedRoot,
+                    StringComparison.OrdinalIgnoreCase) ||
+                root.StartsWith(protectedRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException("Smoke saves must be outside the real persistent data directory.");
+            if (File.Exists(root)) throw new ArgumentException("Smoke save root is a file, not a directory.");
+            // A junction/symlink outside the protected path could otherwise redirect writes back into it.
+            for (var directory = new DirectoryInfo(root); directory != null; directory = directory.Parent)
+                if (directory.Exists && (directory.Attributes & FileAttributes.ReparsePoint) != 0)
+                    throw new ArgumentException("Smoke save root cannot traverse a junction or symbolic link.");
+            return root;
             #endif
         }
     }

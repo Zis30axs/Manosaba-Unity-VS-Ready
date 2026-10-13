@@ -35,6 +35,14 @@ class ContentTests(unittest.TestCase):
         self.record = {"relative_path": self.relative, "category": "TEXT", "targets": [self.target_rel],
                        "jobs": [], "dependencies": [], "addressables_group": "Manosaba.Text", "editability": "FULL"}
         self.stack.enter_context(patch.object(content, "inventory", return_value={self.relative: self.record}))
+        # These tests supply inventory directly; planner regeneration and the
+        # empty shared-content gate are separate orchestration dependencies.
+        self.stack.enter_context(patch.object(content, "refresh_plans"))
+        def gate_only(jobs, paths, **kwargs):
+            self.assertEqual((jobs, paths), ([], []))
+            self.assertEqual(kwargs, {"timeout": 30, "ensure_curtain_skin": True})
+            return {"status": "OK", "jobs": []}
+        self.stack.enter_context(patch.object(content, "apply_unity", side_effect=gate_only))
 
     def tearDown(self):
         self.stack.close()
@@ -68,7 +76,7 @@ class ContentTests(unittest.TestCase):
         self.assertEqual(content.read_json(content.STATE)["files"][self.relative]["sync_status"], "SYNCED")
         with patch.object(content, "apply_unity") as convert:
             self.assertEqual(content.sync(self.args()), 0)
-            convert.assert_not_called()
+            convert.assert_called_once_with([], [], timeout=30, ensure_curtain_skin=True)
 
     def test_target_drift_is_repaired_without_source_edit(self):
         with patch.object(content, "apply_unity", return_value={"status": "OK", "jobs": []}):
@@ -86,6 +94,8 @@ class ContentTests(unittest.TestCase):
         second = {**first, "relative_path": other_relative, "jobs": [{"source": "res/" + other_relative}]}
         records = {self.relative: first, other_relative: second}
         def converted(jobs, *_args, **_kwargs):
+            if not jobs:
+                return {"status": "OK", "jobs": []}
             self.target.write_text("generated " + self.source.read_text())
             return {"status": "OK", "jobs": [{**job, "status": "UPDATED", "editability": "FULL", "fields": []} for job in jobs]}
         with patch.object(content, "inventory", return_value=records), patch.object(content, "apply_unity", side_effect=converted) as convert:
@@ -93,11 +103,12 @@ class ContentTests(unittest.TestCase):
             self.source.write_text("edited one object")
             content.sync(self.args(file=[self.relative]))
             content.sync(self.args())
-            self.assertEqual(convert.call_count, 2)
+            self.assertEqual(convert.call_count, 3)
+            self.assertEqual(convert.call_args_list[2].args, ([], []))
             self.assertEqual(len(convert.call_args_list[1].args[0]), 1)
             self.target.write_text("accidental generated edit")
             content.sync(self.args())
-            self.assertEqual(convert.call_count, 3)
+            self.assertEqual(convert.call_count, 4)
             self.assertEqual(self.target.read_text(), "generated edited one object")
 
     def test_batches_keep_prefab_source_objects_together(self):
@@ -150,11 +161,12 @@ class ContentTests(unittest.TestCase):
             self.assertEqual(entry["editability"], "READ_ONLY")
             self.assertEqual(entry["field_editability"], [{**reason, "occurrences": 1}])
             self.assertEqual(content.sync(self.args()), 0)
-            self.assertEqual(convert.call_count, 1)
+            self.assertEqual(convert.call_count, 2)
+            self.assertEqual(convert.call_args_list[1].args, ([], []))
             self.assertEqual(content.read_json(content.STATE)["files"][self.relative]["field_editability"], [{**reason, "occurrences": 1}])
             self.source.write_text("new source edit after limitation")
             self.assertEqual(content.sync(self.args()), 0)
-            self.assertEqual(convert.call_count, 2)
+            self.assertEqual(convert.call_count, 3)
             self.assertEqual(self.target.read_text(), "old text")
             self.assertEqual(self.meta.read_bytes(), self.meta_bytes)
 

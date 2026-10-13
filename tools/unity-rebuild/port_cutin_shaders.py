@@ -11,6 +11,7 @@ Requires Windows (d3dcompiler_47.dll), UnityPy and lz4, and res/.imported-source
 """
 import argparse
 import ctypes
+import functools
 import re
 import struct
 import sys
@@ -72,18 +73,45 @@ SHADERS = {
 }
 
 
-def disassemble_pixel_program(shader_name):
+@functools.lru_cache(None)
+def shipped_shaders():
     import UnityPy
+    trees = {}
+    for obj in UnityPy.load(str(BUNDLE)).objects:
+        if obj.type.name == "Shader":
+            tree = obj.read_typetree()
+            trees[(tree.get("m_ParsedForm") or {}).get("m_Name") or ""] = tree
+    return trees
+
+
+# UnityEngine.Rendering.BlendMode
+BLEND_FACTORS = ["Zero", "One", "DstColor", "SrcColor", "OneMinusDstColor", "SrcAlpha", "OneMinusSrcColor", "DstAlpha",
+                 "OneMinusDstAlpha", "SrcAlphaSaturate", "OneMinusSrcAlpha"]
+
+
+def forward_blend(shader_name):
+    """ShaderLab `Blend` line of the shipped `Universal Forward` pass (e.g. Shadow_Fix multiplies: DstColor Zero)."""
+    tree = shipped_shaders()["Shader Graphs/" + shader_name]
+    for subshader in tree["m_ParsedForm"]["m_SubShaders"]:
+        for shader_pass in subshader["m_Passes"]:
+            state = shader_pass["m_State"]
+            if state.get("m_Name") != "Universal Forward":
+                continue
+            blend = state["rtBlend0"]
+            if int(blend["blendOp"]["val"]) != 0 or int(blend["blendOpAlpha"]["val"]) != 0:
+                raise ValueError(shader_name + ": only additive blend ops are supported")
+            factors = [BLEND_FACTORS[int(blend[key]["val"])] for key in ("srcBlend", "destBlend", "srcBlendAlpha", "destBlendAlpha")]
+            return "Blend %s %s, %s %s" % tuple(factors)
+    raise RuntimeError("no Universal Forward pass in " + shader_name)
+
+
+def disassemble_pixel_program(shader_name):
     import lz4.block
     d3d = ctypes.WinDLL("d3dcompiler_47.dll")
     d3d.D3DDisassemble.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_uint, ctypes.c_char_p, ctypes.POINTER(ctypes.c_void_p)]
     d3d.D3DDisassemble.restype = ctypes.c_long
-    env = UnityPy.load(str(BUNDLE))
-    for obj in env.objects:
-        if obj.type.name != "Shader":
-            continue
-        tree = obj.read_typetree()
-        if ((tree.get("m_ParsedForm") or {}).get("m_Name") or "") != "Shader Graphs/" + shader_name:
+    for name, tree in shipped_shaders().items():
+        if name != "Shader Graphs/" + shader_name:
             continue
         platform = tree["platforms"].index(4)  # d3d11
         blob = bytes(tree["compressedBlob"])
@@ -358,7 +386,7 @@ Shader "{name}"
         Cull Off
         Lighting Off
         ZWrite Off
-        Blend SrcAlpha OneMinusSrcAlpha
+        {blend}
 
         Pass
         {{
@@ -414,7 +442,8 @@ def generate(shader_name, config):
         pname, ptype = match.group(1), match.group(2)
         uniforms.append({"2D": "            sampler2D %s;", "Float": "            float %s;", "Color": "            float4 %s;"}[ptype] % pname)
     temps = "\n".join("                uint4 r%d = uint4(0, 0, 0, 0);" % i for i in range(translator.temps))
-    return TEMPLATE.format(source="Shader Graphs/" + shader_name, name=config["name"], properties="\n".join("        " + p for p in config["properties"]),
+    return TEMPLATE.format(source="Shader Graphs/" + shader_name, name=config["name"], blend=forward_blend(shader_name),
+                           properties="\n".join("        " + p for p in config["properties"]),
                            uniforms="\n".join(uniforms), temps=temps, body="\n".join("                " + line for line in body)), text
 
 

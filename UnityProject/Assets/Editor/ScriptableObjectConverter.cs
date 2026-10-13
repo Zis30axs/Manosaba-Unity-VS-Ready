@@ -275,9 +275,22 @@ namespace Manosaba.EditorTools
         /// <summary>Incremental content editing uses the same converter and applier, with an atomic in-place commit.</summary>
         public static JobRecord ApplyEditable(string source, string assetPath, string typeName, string assembly,
                                               bool scenario = false)
+            => ApplyEditableCore(source, assetPath, typeName, assembly, scenario, false);
+
+        /// <summary>
+        /// Explicitly rebuild a complete, already-merged Naninovel scenario graph. Ordinary content
+        /// edits keep their conservative array/type guards; only this entry can replace that structure.
+        /// Conversion and reconciliation run on a temporary object before the existing GUID is updated.
+        /// </summary>
+        public static JobRecord RebuildScenario(string source, string assetPath)
+            => ApplyEditableCore(source, assetPath, "Naninovel.Script", "Elringus.Naninovel.Runtime", true, true);
+
+        private static JobRecord ApplyEditableCore(string source, string assetPath, string typeName, string assembly,
+                                                  bool scenario, bool rebuildScenario)
         {
             var job = new JobRecord { dump = source, target = assetPath, asset_path = assetPath,
-                                      type_name = typeName, assembly = assembly };
+                                      type_name = typeName, assembly = assembly,
+                                      conversion_mode = rebuildScenario ? "FULL_SCENARIO" : "SAFE_EDIT" };
             ScriptableObject staged = null;
             try
             {
@@ -292,13 +305,16 @@ namespace Manosaba.EditorTools
                     throw new InvalidOperationException("target type mismatch; GUID will not be replaced");
                 job.guid_before = AssetDatabase.AssetPathToGUID(assetPath);
                 JObject json = JObject.Parse(File.ReadAllText(source));
+                if (rebuildScenario) ValidateScenarioSource(json, assetPath, type);
                 // Check source graph depth before the applier materializes pending references.
                 job.params_with_value_dump = CountExpectedHasValue(json);
-                staged = existing == null ? ScriptableObject.CreateInstance(type) : UnityEngine.Object.Instantiate((ScriptableObject)existing);
+                if (rebuildScenario) job.managed_references_expected_uses = CountExpectedGraph(json, true);
+                staged = existing == null || rebuildScenario
+                    ? ScriptableObject.CreateInstance(type) : UnityEngine.Object.Instantiate((ScriptableObject)existing);
                 var serialized = new SerializedObject(staged);
                 var report = JsonToSerializedApplier.ApplyAll(serialized, json, new JsonToSerializedApplier.Options
                 {
-                    SafeEditableOnly = true, AllowManagedReferences = scenario,
+                    SafeEditableOnly = !rebuildScenario, AllowManagedReferences = scenario,
                     PreserveUnresolvedPointers = true, ResolvePointer = JsonToSerializedApplier.ResolveStablePointer,
                 });
                 job.fields_applied = report.applied;
@@ -312,6 +328,13 @@ namespace Manosaba.EditorTools
                 job.params_with_value_written = report.hasValueTrueWritten;
                 if (report.managedFailed > 0 || (scenario && job.params_with_value_dump != job.params_with_value_written))
                     throw new InvalidOperationException("managed-reference conversion did not reconcile; original asset retained");
+                if (rebuildScenario)
+                {
+                    if (report.managedApplied != job.managed_references_expected_uses || report.pointersUnbound != 0 || report.warnings != 0)
+                        throw new InvalidOperationException("full scenario conversion is incomplete; original asset retained: managed uses " +
+                            report.managedApplied + "/" + job.managed_references_expected_uses + "; " + string.Join("; ", report.messages.Take(6)));
+                    ValidateScenarioGraph((Naninovel.Script)staged, json);
+                }
                 job.fields = JsonToSerializedApplier.DescribeEditableFields(new SerializedObject(staged), json, scenario);
                 job.editability = job.fields.Any(f => !f.field.StartsWith("m_", StringComparison.Ordinal) && f.editability != "FULL")
                     ? "PARTIAL" : "FULL";
@@ -338,7 +361,36 @@ namespace Manosaba.EditorTools
             return job;
         }
 
+        private static void ValidateScenarioSource(JObject json, string assetPath, Type type)
+        {
+            const string root = "Assets/GameContent/#WitchTrials/Scenarios/";
+            string scriptPath = (string)json["path"];
+            if (type != typeof(Naninovel.Script) || string.IsNullOrWhiteSpace(scriptPath)
+                || scriptPath.Contains("\\") || scriptPath.Split('/').Any(part => part == ".." || part == "." || part.Length == 0)
+                || assetPath != root + scriptPath + ".asset"
+                || !(json["lines"] is JArray lines) || lines.Count == 0
+                || !(json["playlist"]?["commands"] is JArray commands) || commands.Count == 0
+                || !(json["references"]?["RefIds"] is JArray references)
+                || references.Any(entry => entry["rid"] == null)
+                || references.Select(entry => (long)entry["rid"]).Distinct().Count() != references.Count)
+                throw new InvalidOperationException("full scenario rebuild requires a complete Naninovel graph at its matching scenario path");
+        }
+
+        private static void ValidateScenarioGraph(Naninovel.Script script, JObject json)
+        {
+            if (script.Path != (string)json["path"] || script.Lines == null
+                || script.Lines.Count != ((JArray)json["lines"]).Count || script.Lines.Any(line => line == null)
+                || script.Playlist == null || script.Playlist.Count != ((JArray)json["playlist"]["commands"]).Count
+                || script.Playlist.Any(command => command == null))
+                throw new InvalidOperationException("full scenario line/playlist readback did not reconcile; original asset retained");
+        }
+
         private static int CountExpectedHasValue(JObject json)
+            => CountExpectedGraph(json, false);
+
+        // RefIds is a table of unique source objects. The applier materializes each use
+        // separately (e.g. playlist.commands and lines[].command), including nested uses.
+        private static int CountExpectedGraph(JObject json, bool managedUses)
         {
             var refTable = new Dictionary<long, JToken>();
             if (json["references"] is JObject refs)
@@ -352,12 +404,12 @@ namespace Manosaba.EditorTools
             foreach (JProperty field in json.Properties())
             {
                 if (field.Name == "references" || field.Name == "m_Name" || field.Name.StartsWith("m_", StringComparison.Ordinal)) continue;
-                count += CountHasValue(field.Value, refTable, 0);
+                count += CountExpandedGraph(field.Value, refTable, 0, managedUses);
             }
             return count;
         }
 
-        private static int CountHasValue(JToken token, Dictionary<long, JToken> refTable, int depth)
+        private static int CountExpandedGraph(JToken token, Dictionary<long, JToken> refTable, int depth, bool managedUses)
         {
             if (depth > 64) throw new InvalidOperationException("managed-reference nesting deeper than 64 levels while reconciling");
             int count = 0;
@@ -368,21 +420,23 @@ namespace Manosaba.EditorTools
                     if (rid != null && rid.Type == JTokenType.Integer)
                     {
                         if (refTable.TryGetValue(rid.Value<long>(), out JToken entry) && entry["data"] != null)
-                            count += CountHasValue(entry["data"], refTable, depth + 1);
+                            count += (managedUses ? 1 : 0) + CountExpandedGraph(entry["data"], refTable, depth + 1, managedUses);
+                        else if (managedUses)
+                            throw new InvalidOperationException("managed-reference use has no source data: " + rid);
                         break;
                     }
                     foreach (JProperty p in obj.Properties())
                     {
-                        if (p.Name == "hasValue")
+                        if (!managedUses && p.Name == "hasValue")
                         {
                             if (p.Value.Type == JTokenType.Boolean ? p.Value.Value<bool>() : p.Value.Type == JTokenType.Integer && p.Value.Value<int>() != 0)
                                 count++;
                         }
-                        else count += CountHasValue(p.Value, refTable, depth);
+                        else count += CountExpandedGraph(p.Value, refTable, depth, managedUses);
                     }
                     break;
                 case JArray arr:
-                    foreach (JToken item in arr) count += CountHasValue(item, refTable, depth);
+                    foreach (JToken item in arr) count += CountExpandedGraph(item, refTable, depth, managedUses);
                     break;
             }
             return count;
@@ -419,6 +473,7 @@ namespace Manosaba.EditorTools
             public string target;
             public string type_name;
             public string assembly;
+            public string conversion_mode;
             public string dump;
             public string plan_file;
             public string status = "NOT_RUN";
@@ -433,6 +488,7 @@ namespace Manosaba.EditorTools
             public int needs_binding;
             public int managed_references_total;
             public int managed_references_applied;
+            public int managed_references_expected_uses = -1;
             public int managed_references_failed;
             /// <summary>`hasValue: 1` count in the dump = assigned Naninovel parameters (and other nullables).</summary>
             public int params_with_value_dump;

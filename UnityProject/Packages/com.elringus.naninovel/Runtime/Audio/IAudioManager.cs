@@ -118,7 +118,13 @@ namespace Naninovel
         /// <param name="authorId">ID of the author (character actor) of the played voice.</param>
         UniTask PlayVoice (string path, float volume = 1f, string group = default, string authorId = default, AsyncToken token = default);
         /// <summary>
-        /// Stops currently played voice track (if any).
+        /// Prepares all voices, then starts them together without changing the overlap policy.
+        /// Replaces the current voice; StopVoice, reset and the next ordinary voice stop the whole group.
+        /// Completion means playback has started, not that the clips have finished.
+        /// </summary>
+        UniTask PlayVoiceGroup (IReadOnlyList<VoicePlayback> voices, AsyncToken token = default);
+        /// <summary>
+        /// Stops the current voice or all tracks of the current voice group, and invalidates pending starts.
         /// </summary>
         void StopVoice ();
         /// <summary>

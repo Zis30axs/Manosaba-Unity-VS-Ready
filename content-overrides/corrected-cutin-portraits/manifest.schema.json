@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reviewed transparent small cut-in portraits",
+  "description": "Source paths are repository-relative; original_sprite is Unity-project-relative. No existing prefab, animation, material or original texture is replaced. Alignment coordinates use a top-left pixel origin.",
+  "type": "object",
+  "required": ["version", "portraits"],
+  "properties": {
+    "version": {"const": 2},
+    "portraits": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "type": "object",
+        "required": ["character", "source", "sha256", "original_sprite", "original_sha256", "original_rgba_sha256"],
+        "properties": {
+          "character": {"enum": ["Alisa", "AnAn", "Coco", "Ema", "Hanna", "Hiro", "Leia", "Margo", "Meruru", "Miria", "Nanoka", "Noah", "Sherry"]},
+          "source": {"type": "string", "pattern": "^content-overrides/corrected-cutin-portraits/(Alisa|AnAn|Coco|Ema|Hanna|Hiro|Leia|Margo|Meruru|Miria|Nanoka|Noah|Sherry)\\.png$"},
+          "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+          "original_sprite": {"type": "string", "pattern": "^Assets/GameContent/#WitchTrials/SwitchStory/Textures/CutIn_Small_Character_[A-Za-z]+_-?[0-9]+_[a-f0-9]+_sprite\\.png$"},
+          "original_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$", "description": "File SHA-256 of the reviewed PNG encoding; retained as provenance. Original identity is enforced through original_rgba_sha256 plus fixed source canvas and renderer slots."},
+          "original_rgba_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$", "description": "SHA-256 of unmodified decoded RGBA8 bytes in top-left row order, R/G/B/A per pixel. No color conversion, alpha premultiplication or channel changes. The original canvas is independently checked against the reviewed character geometry."},
+          "alignment": {
+            "description": "Optional reviewed head-top anchors. If absent, the builder explicitly records use of each alpha bounding box's top-center. Uniform scale is computed from alpha heights (alpha >= 16); the original Transform is never changed.",
+            "type": "object",
+            "required": ["original_anchor_px", "corrected_anchor_px"],
+            "properties": {
+              "original_anchor_px": {"$ref": "#/$defs/point"},
+              "corrected_anchor_px": {"$ref": "#/$defs/point"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "point": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number", "minimum": 0}}
+  }
+}

@@ -1,0 +1,291 @@
+// Story-only sprite adapter reusing the existing PC LuminescenceDissolve pixel
+// formula. Renderer tint/flip follows StorySprite; the original PC shader is unchanged.
+Shader "Manosaba/SwitchStory/LuminescenceDissolve"
+{
+    Properties
+    {
+        [HideInInspector] _RendererColor ("Renderer tint", Color) = (1,1,1,1)
+        [HideInInspector] _Flip ("Sprite flip", Vector) = (1,1,1,1)
+        [PerRendererData] _MainTex ("Luminance", 2D) = "white" {}
+        _Color ("Color", Color) = (1,0.871,1,1)
+        _Tick ("Tick", Float) = 0
+    }
+
+    SubShader
+    {
+        Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "PreviewType" = "Plane" "CanUseSpriteAtlas" = "True" }
+        Cull Off
+        Lighting Off
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
+
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex StoryVert
+            #pragma multi_compile_instancing
+            #pragma fragment frag
+            #include "StorySprite.cginc"
+
+            sampler2D _MainTex;
+            float4 _Color;
+            float _Tick;
+
+            fixed4 frag(StoryVarying input) : SV_Target
+            {
+                float4 v1 = float4(input.uv, 0, 0);
+                float4 o0 = float4(0, 0, 0, 0);
+                uint4 r0 = uint4(0, 0, 0, 0);
+                uint4 r1 = uint4(0, 0, 0, 0);
+                uint4 r2 = uint4(0, 0, 0, 0);
+                uint4 r3 = uint4(0, 0, 0, 0);
+                r0.x = asuint((v1.x * (55.9000015)));
+                r0.y = asuint((v1.y * (55.9000015)));
+                r0.z = asuint((v1.x * (27.9500008)));
+                r0.w = asuint((v1.y * (27.9500008)));
+                r1.x = asuint(floor(asfloat(r0.x)));
+                r1.y = asuint(floor(asfloat(r0.y)));
+                r1.z = asuint(floor(asfloat(r0.z)));
+                r1.w = asuint(floor(asfloat(r0.w)));
+                r0.x = asuint(frac(asfloat(r0.x)));
+                r0.y = asuint(frac(asfloat(r0.y)));
+                r0.z = asuint(frac(asfloat(r0.z)));
+                r0.w = asuint(frac(asfloat(r0.w)));
+                r2.x = asuint((asfloat(r1.x) + (1.0)));
+                r2.y = asuint((asfloat(r1.y) + (1.0)));
+                r2.z = asuint((asfloat(r1.z) + (1.0)));
+                r2.w = asuint((asfloat(r1.w) + (0.0)));
+                r2.x = (uint)(int)(asfloat(r2.x));
+                r2.y = (uint)(int)(asfloat(r2.y));
+                r2.z = (uint)(int)(asfloat(r2.z));
+                r2.w = (uint)(int)(asfloat(r2.w));
+                r2.y = (r2.y ^ 0x41c64e6du);
+                r2.w = (r2.w ^ 0x41c64e6du);
+                r2.x = (r2.y + r2.x);
+                r2.z = (r2.w + r2.z);
+                r2.x = (r2.y * r2.x);
+                r2.y = (r2.w * r2.z);
+                r2.z = (r2.x >> (0x00000005u & 31u));
+                r2.w = (r2.y >> (0x00000005u & 31u));
+                r2.x = (r2.z ^ r2.x);
+                r2.y = (r2.w ^ r2.y);
+                r2.x = (r2.x * 0x27d4eb2du);
+                r2.y = (r2.y * 0x27d4eb2du);
+                r2.x = (r2.x >> (0x00000008u & 31u));
+                r2.y = (r2.y >> (0x00000008u & 31u));
+                r3.x = (uint)(int)(asfloat(r1.x));
+                r3.y = (uint)(int)(asfloat(r1.y));
+                r3.z = (uint)(int)(asfloat(r1.z));
+                r3.w = (uint)(int)(asfloat(r1.w));
+                r2.z = (r3.y ^ 0x41c64e6du);
+                r2.w = (r3.w ^ 0x41c64e6du);
+                r3.x = (r2.z + r3.x);
+                r3.y = (r2.w + r3.z);
+                r2.z = (r2.z * r3.x);
+                r2.w = (r2.w * r3.y);
+                r3.x = (r2.z >> (0x00000005u & 31u));
+                r3.y = (r2.w >> (0x00000005u & 31u));
+                r2.z = (r2.z ^ r3.x);
+                r2.w = (r2.w ^ r3.y);
+                r2.z = (r2.z * 0x27d4eb2du);
+                r2.w = (r2.w * 0x27d4eb2du);
+                r2.z = (r2.z >> (0x00000008u & 31u));
+                r2.w = (r2.w >> (0x00000008u & 31u));
+                r2.x = asuint(((float)r2.x));
+                r2.y = asuint(((float)r2.y));
+                r2.z = asuint(((float)r2.z));
+                r2.w = asuint(((float)r2.w));
+                r2.z = asuint((asfloat(r2.z) * (5.96046519e-08)));
+                r2.w = asuint((asfloat(r2.w) * (5.96046519e-08)));
+                r2.y = asuint((asfloat(r2.y) * (5.96046519e-08) + (-asfloat(r2.w))));
+                r3.x = asuint((asfloat(r0.x) * asfloat(r0.x)));
+                r3.y = asuint((asfloat(r0.y) * asfloat(r0.y)));
+                r3.z = asuint((asfloat(r0.z) * asfloat(r0.z)));
+                r3.w = asuint((asfloat(r0.w) * asfloat(r0.w)));
+                r0.x = asuint(((-asfloat(r0.x)) * (2.0) + (3.0)));
+                r0.y = asuint(((-asfloat(r0.y)) * (2.0) + (3.0)));
+                r0.z = asuint(((-asfloat(r0.z)) * (2.0) + (3.0)));
+                r0.w = asuint(((-asfloat(r0.w)) * (2.0) + (3.0)));
+                r0.x = asuint((asfloat(r0.x) * asfloat(r3.x)));
+                r0.y = asuint((asfloat(r0.y) * asfloat(r3.y)));
+                r0.z = asuint((asfloat(r0.z) * asfloat(r3.z)));
+                r0.w = asuint((asfloat(r0.w) * asfloat(r3.w)));
+                r2.y = asuint((asfloat(r0.z) * asfloat(r2.y) + asfloat(r2.w)));
+                r3.x = asuint((asfloat(r1.z) + (0.0)));
+                r3.y = asuint((asfloat(r1.w) + (1.0)));
+                r3.z = asuint((asfloat(r1.z) + (1.0)));
+                r3.w = asuint((asfloat(r1.w) + (1.0)));
+                // DXBC add r1.xyzw, r1.xyxy, (1,0,0,1) reads both old components in parallel.
+                uint2 source_r1_xy = r1.xy;
+                r1.x = asuint((asfloat(source_r1_xy.x) + (1.0)));
+                r1.y = asuint((asfloat(source_r1_xy.y) + (0.0)));
+                r1.z = asuint((asfloat(source_r1_xy.x) + (0.0)));
+                r1.w = asuint((asfloat(source_r1_xy.y) + (1.0)));
+                r1.x = (uint)(int)(asfloat(r1.x));
+                r1.y = (uint)(int)(asfloat(r1.y));
+                r1.z = (uint)(int)(asfloat(r1.z));
+                r1.w = (uint)(int)(asfloat(r1.w));
+                r3.x = (uint)(int)(asfloat(r3.x));
+                r3.y = (uint)(int)(asfloat(r3.y));
+                r3.z = (uint)(int)(asfloat(r3.z));
+                r3.w = (uint)(int)(asfloat(r3.w));
+                r3.y = (r3.y ^ 0x41c64e6du);
+                r3.w = (r3.w ^ 0x41c64e6du);
+                r3.x = (r3.y + r3.x);
+                r3.z = (r3.w + r3.z);
+                r3.x = (r3.y * r3.x);
+                r3.y = (r3.w * r3.z);
+                r3.z = (r3.x >> (0x00000005u & 31u));
+                r3.w = (r3.y >> (0x00000005u & 31u));
+                r3.x = (r3.z ^ r3.x);
+                r3.y = (r3.w ^ r3.y);
+                r3.x = (r3.x * 0x27d4eb2du);
+                r3.y = (r3.y * 0x27d4eb2du);
+                r3.x = (r3.x >> (0x00000008u & 31u));
+                r3.y = (r3.y >> (0x00000008u & 31u));
+                r3.x = asuint(((float)r3.x));
+                r3.y = asuint(((float)r3.y));
+                r2.w = asuint((asfloat(r3.x) * (5.96046519e-08)));
+                r3.x = asuint((asfloat(r3.y) * (5.96046519e-08) + (-asfloat(r2.w))));
+                r0.z = asuint((asfloat(r0.z) * asfloat(r3.x) + asfloat(r2.w)));
+                r0.z = asuint(((-asfloat(r2.y)) + asfloat(r0.z)));
+                r0.z = asuint((asfloat(r0.w) * asfloat(r0.z) + asfloat(r2.y)));
+                r0.z = asuint((asfloat(r0.z) * (0.25)));
+                r1.y = (r1.y ^ 0x41c64e6du);
+                r1.w = (r1.w ^ 0x41c64e6du);
+                r1.x = (r1.y + r1.x);
+                r1.z = (r1.w + r1.z);
+                r1.x = (r1.y * r1.x);
+                r1.y = (r1.w * r1.z);
+                r1.z = (r1.x >> (0x00000005u & 31u));
+                r1.w = (r1.y >> (0x00000005u & 31u));
+                r1.x = (r1.z ^ r1.x);
+                r1.y = (r1.w ^ r1.y);
+                r1.x = (r1.x * 0x27d4eb2du);
+                r1.y = (r1.y * 0x27d4eb2du);
+                r1.x = (r1.x >> (0x00000008u & 31u));
+                r1.y = (r1.y >> (0x00000008u & 31u));
+                r1.x = asuint(((float)r1.x));
+                r1.y = asuint(((float)r1.y));
+                r0.w = asuint((asfloat(r1.x) * (5.96046519e-08) + (-asfloat(r2.z))));
+                r1.x = asuint((asfloat(r1.y) * (5.96046519e-08)));
+                r0.w = asuint((asfloat(r0.x) * asfloat(r0.w) + asfloat(r2.z)));
+                r1.y = asuint((asfloat(r2.x) * (5.96046519e-08) + (-asfloat(r1.x))));
+                r0.x = asuint((asfloat(r0.x) * asfloat(r1.y) + asfloat(r1.x)));
+                r0.x = asuint(((-asfloat(r0.w)) + asfloat(r0.x)));
+                r0.x = asuint((asfloat(r0.y) * asfloat(r0.x) + asfloat(r0.w)));
+                r0.x = asuint((asfloat(r0.x) * (0.125) + asfloat(r0.z)));
+                r0.y = asuint((v1.x * (13.9750004)));
+                r0.z = asuint((v1.y * (13.9750004)));
+                r1.x = asuint(floor(asfloat(r0.y)));
+                r1.y = asuint(floor(asfloat(r0.z)));
+                r0.y = asuint(frac(asfloat(r0.y)));
+                r0.z = asuint(frac(asfloat(r0.z)));
+                r1.z = asuint((asfloat(r1.x) + (1.0)));
+                r1.w = asuint((asfloat(r1.y) + (1.0)));
+                r1.z = (uint)(int)(asfloat(r1.z));
+                r1.w = (uint)(int)(asfloat(r1.w));
+                r0.w = (r1.w ^ 0x41c64e6du);
+                r1.z = (r0.w + r1.z);
+                r0.w = (r0.w * r1.z);
+                r1.z = (r0.w >> (0x00000005u & 31u));
+                r0.w = (r0.w ^ r1.z);
+                r0.w = (r0.w * 0x27d4eb2du);
+                r0.w = (r0.w >> (0x00000008u & 31u));
+                r0.w = asuint(((float)r0.w));
+                r2.x = asuint((asfloat(r1.x) + (1.0)));
+                r2.y = asuint((asfloat(r1.y) + (0.0)));
+                r2.z = asuint((asfloat(r1.x) + (0.0)));
+                r2.w = asuint((asfloat(r1.y) + (1.0)));
+                r1.x = (uint)(int)(asfloat(r1.x));
+                r1.y = (uint)(int)(asfloat(r1.y));
+                r2.x = (uint)(int)(asfloat(r2.x));
+                r2.y = (uint)(int)(asfloat(r2.y));
+                r2.z = (uint)(int)(asfloat(r2.z));
+                r2.w = (uint)(int)(asfloat(r2.w));
+                r1.z = (r2.y ^ 0x41c64e6du);
+                r1.w = (r2.w ^ 0x41c64e6du);
+                r2.x = (r1.z + r2.x);
+                r2.y = (r1.w + r2.z);
+                r1.z = (r1.z * r2.x);
+                r1.w = (r1.w * r2.y);
+                r2.x = (r1.z >> (0x00000005u & 31u));
+                r2.y = (r1.w >> (0x00000005u & 31u));
+                r1.z = (r1.z ^ r2.x);
+                r1.w = (r1.w ^ r2.y);
+                r1.z = (r1.z * 0x27d4eb2du);
+                r1.w = (r1.w * 0x27d4eb2du);
+                r1.z = (r1.z >> (0x00000008u & 31u));
+                r1.w = (r1.w >> (0x00000008u & 31u));
+                r1.z = asuint(((float)r1.z));
+                r1.w = asuint(((float)r1.w));
+                r1.w = asuint((asfloat(r1.w) * (5.96046519e-08)));
+                r0.w = asuint((asfloat(r0.w) * (5.96046519e-08) + (-asfloat(r1.w))));
+                r2.x = asuint((asfloat(r0.y) * asfloat(r0.y)));
+                r2.y = asuint((asfloat(r0.z) * asfloat(r0.z)));
+                r0.y = asuint(((-asfloat(r0.y)) * (2.0) + (3.0)));
+                r0.z = asuint(((-asfloat(r0.z)) * (2.0) + (3.0)));
+                r0.y = asuint((asfloat(r0.y) * asfloat(r2.x)));
+                r0.z = asuint((asfloat(r0.z) * asfloat(r2.y)));
+                r0.w = asuint((asfloat(r0.y) * asfloat(r0.w) + asfloat(r1.w)));
+                r1.y = (r1.y ^ 0x41c64e6du);
+                r1.x = (r1.y + r1.x);
+                r1.x = (r1.y * r1.x);
+                r1.y = (r1.x >> (0x00000005u & 31u));
+                r1.x = (r1.y ^ r1.x);
+                r1.x = (r1.x * 0x27d4eb2du);
+                r1.x = (r1.x >> (0x00000008u & 31u));
+                r1.x = asuint(((float)r1.x));
+                r1.x = asuint((asfloat(r1.x) * (5.96046519e-08)));
+                r1.y = asuint((asfloat(r1.z) * (5.96046519e-08) + (-asfloat(r1.x))));
+                r0.y = asuint((asfloat(r0.y) * asfloat(r1.y) + asfloat(r1.x)));
+                r0.w = asuint(((-asfloat(r0.y)) + asfloat(r0.w)));
+                r0.y = asuint((asfloat(r0.z) * asfloat(r0.w) + asfloat(r0.y)));
+                r0.x = asuint((asfloat(r0.y) * (0.5) + asfloat(r0.x)));
+                r0.y = asuint(((-v1.x) + (1.0)));
+                r0.x = asuint((asfloat(r0.y) * asfloat(r0.x)));
+                r0.y = asuint(((_Tick) + (0.00499999989)));
+                r0.x = ((asfloat(r0.y) >= asfloat(r0.x)) ? 0xFFFFFFFFu : 0u);
+                r0.x = (r0.x & 0x3f800000u);
+                { float4 sampled = tex2D(_MainTex, float2(v1.x, v1.y));
+                  r1.x = asuint(sampled.x);
+                  r1.y = asuint(sampled.y);
+                  r1.z = asuint(sampled.z);
+                  r1.w = asuint(sampled.w);
+                }
+                r0.x = asuint((asfloat(r0.x) * asfloat(r1.x)));
+                r0.y = ((asfloat(r0.x) < (0.0)) ? 0xFFFFFFFFu : 0u);
+                if (r0.y != 0u) discard;
+                r0.y = asuint(log2(abs((_Color.x))));
+                r0.z = asuint(log2(abs((_Color.y))));
+                r0.w = asuint(log2(abs((_Color.z))));
+                r0.x = asuint((asfloat(r0.x) * (1.0)));
+                r0.y = asuint((asfloat(r0.y) * (0.416666657)));
+                r0.z = asuint((asfloat(r0.z) * (0.416666657)));
+                r0.w = asuint((asfloat(r0.w) * (0.416666657)));
+                r0.y = asuint(exp2(asfloat(r0.y)));
+                r0.z = asuint(exp2(asfloat(r0.z)));
+                r0.w = asuint(exp2(asfloat(r0.w)));
+                r0.y = asuint((asfloat(r0.y) * (1.05499995) + (-0.0549999997)));
+                r0.z = asuint((asfloat(r0.z) * (1.05499995) + (-0.0549999997)));
+                r0.w = asuint((asfloat(r0.w) * (1.05499995) + (-0.0549999997)));
+                r2.x = (((0.00313080009) >= (_Color.x)) ? 0xFFFFFFFFu : 0u);
+                r2.y = (((0.00313080009) >= (_Color.y)) ? 0xFFFFFFFFu : 0u);
+                r2.z = (((0.00313080009) >= (_Color.z)) ? 0xFFFFFFFFu : 0u);
+                r3.x = asuint(((_Color.x) * (12.9232101)));
+                r3.y = asuint(((_Color.y) * (12.9232101)));
+                r3.z = asuint(((_Color.z) * (12.9232101)));
+                r0.y = asuint(((r2.x != 0u) ? asfloat(r3.x) : asfloat(r0.y)));
+                r0.z = asuint(((r2.y != 0u) ? asfloat(r3.y) : asfloat(r0.z)));
+                r0.w = asuint(((r2.z != 0u) ? asfloat(r3.z) : asfloat(r0.w)));
+                o0.x = (asfloat(r1.x) * asfloat(r0.y));
+                o0.y = (asfloat(r1.y) * asfloat(r0.z));
+                o0.z = (asfloat(r1.z) * asfloat(r0.w));
+                r0.y = (((0.0) != (0.0)) ? 0xFFFFFFFFu : 0u);
+                o0.w = ((r0.y != 0u) ? (1.0) : asfloat(r0.x));
+                return (fixed4)o0 * input.color;
+            }
+            ENDCG
+        }
+    }
+}

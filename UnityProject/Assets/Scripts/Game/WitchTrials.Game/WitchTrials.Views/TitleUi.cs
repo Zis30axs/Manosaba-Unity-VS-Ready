@@ -17,6 +17,8 @@ using Naninovel.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using GigaCreation.Essentials.Localization;
 using WitchTrials.Models;
 
 namespace WitchTrials.Views
@@ -169,6 +171,17 @@ namespace WitchTrials.Views
 
     	[Token(Token = "0x400041B")]
     	private const string NextScenarioVarName = "nextScenario";
+
+        private Button _epilogueButton;
+        private TextMeshProUGUI _epilogueLabel;
+        private bool _epilogueContentChecked;
+        private bool _epilogueContentCheckPending;
+        private bool _epilogueContentAvailable;
+        private EnhancementSettings _enhancementSettings;
+
+        public bool CanReplayFireworksEpilogue =>
+            (Engine.GetService<EnhancementSettings>()?.FireworksEpilogueEnabled ?? true) &&
+            _epilogueContentAvailable && NaniVarManager.TryGetVariableValue<int>(GameProgressVarName, out int progress) && progress >= 12;
 
     	[Token(Token = "0x400041C")]
     	[Il2CppDummyDll.FieldOffset(Offset = "0xE0")]
@@ -530,6 +543,7 @@ namespace WitchTrials.Views
     	public void OnBeginToPresentEvent()
     	{
     		_loadGameButton.interactable = CanLoadGame;
+            RefreshEpilogueButton();
     	}
 
     	// RECONSTRUCTED | Confidence: A (OnClickAsObservable spelling: B) | RVA: 0x3626D0
@@ -546,6 +560,16 @@ namespace WitchTrials.Views
     	[Address(RVA = "0x3626D0", Offset = "0x3610D0", VA = "0x1803626D0")]
     	public void Activate()
     	{
+            RefreshEpilogueButton();
+            _epilogueButton.OnClickAsObservable().Subscribe(_ =>
+            {
+                if (!CanReplayFireworksEpilogue) return;
+                InputManager.PlayResponseSfx(ResponseKind.Submit);
+                _epilogueButton.interactable = false;
+                WitchTrialsNaninovelManager.SetTitleScreenShown(false);
+                NaniVarManager.TrySetVariableValue(NextScenarioVarName, FireworksEpilogueSession.ScriptPath);
+                NaniScriptPlayer.ResumeAtLabel(StartGameLabelName);
+            }).AddTo(_disposables, this);
     		if (CanLoadGame)
     		{
     			_loadGameButton.OnClickAsObservable().Subscribe(_ =>
@@ -616,6 +640,98 @@ namespace WitchTrials.Views
     		NaniVarManager.TrySetVariableValue(NextScenarioVarName, WitchTrialsNaninovelManager.StartGameScenarioName);
     		NaniScriptPlayer.ResumeAtLabel(StartGameLabelName);
     	}
+
+        private void RefreshEpilogueButton()
+        {
+            var settings = Engine.GetService<EnhancementSettings>();
+            if (!ReferenceEquals(settings, _enhancementSettings))
+            {
+                if (_enhancementSettings != null) _enhancementSettings.Changed -= RefreshEpilogueButton;
+                _enhancementSettings = settings;
+                if (_enhancementSettings != null) _enhancementSettings.Changed += RefreshEpilogueButton;
+            }
+            if (!_epilogueButton)
+            {
+                // Runtime UI keeps existing imported title prefab IDs and its localized sprite buttons intact.
+                var go = new GameObject("Button_FireworksEpilogue", typeof(RectTransform), typeof(Image), typeof(Button));
+                go.layer = _galleryButton.gameObject.layer;
+                var rect = (RectTransform)go.transform;
+                rect.SetParent(_galleryButton.transform.parent, false);
+                var reference = (RectTransform)_galleryButton.transform;
+                rect.anchorMin = reference.anchorMin;
+                rect.anchorMax = reference.anchorMax;
+                rect.pivot = new Vector2(.5f, .5f);
+                rect.anchoredPosition = reference.anchoredPosition + new Vector2(140, 125);
+                rect.sizeDelta = new Vector2(260, 70);
+                var panel = go.GetComponent<Image>();
+                panel.color = new Color(.12f, .08f, .19f, .88f);
+                _epilogueButton = go.GetComponent<Button>();
+                _epilogueButton.targetGraphic = panel;
+                var colors = _epilogueButton.colors;
+                colors.highlightedColor = new Color(1f, .85f, 1f);
+                colors.pressedColor = new Color(.75f, .65f, .85f);
+                _epilogueButton.colors = colors;
+                var label = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+                label.layer = go.layer;
+                label.transform.SetParent(rect, false);
+                var labelRect = (RectTransform)label.transform;
+                labelRect.anchorMin = Vector2.zero;
+                labelRect.anchorMax = Vector2.one;
+                labelRect.offsetMin = new Vector2(12, 4);
+                labelRect.offsetMax = new Vector2(-12, -4);
+                _epilogueLabel = label.GetComponent<TextMeshProUGUI>();
+                _epilogueLabel.fontSize = 30;
+                _epilogueLabel.alignment = TextAlignmentOptions.Center;
+                _epilogueLabel.color = new Color(1, .94f, .86f);
+                _epilogueLabel.raycastTarget = false;
+            }
+            var localization = GigaCreation.Tools.Service.ServiceLocator.Get<GigaCreation.Essentials.Localization.ILocalizationManager>(true);
+            _epilogueLabel.font = localization.CurrentFontAsset;
+            _epilogueLabel.text = localization.CurrentLocale switch
+            {
+                LocaleKind.ZhHant => "煙花後日談",
+                LocaleKind.Ja => "花火の後日談",
+                LocaleKind.EnUs => "Fireworks Epilogue",
+                LocaleKind.Ko => "불꽃놀이 후일담",
+                _ => "烟花后日谈"
+            };
+            bool unlocked = CanReplayFireworksEpilogue;
+            _epilogueButton.gameObject.SetActive(unlocked);
+            _epilogueButton.interactable = unlocked;
+            if (!_epilogueContentChecked && !_epilogueContentCheckPending)
+                CheckEpilogueContent().Forget();
+        }
+
+        private async Naninovel.UniTask CheckEpilogueContent()
+        {
+            _epilogueContentCheckPending = true;
+            try
+            {
+                // An older normal installation may have the runtime update without the optional content.
+                // Resolve through the active provider/catalog, rather than assuming a local generated file exists.
+                bool available = await Engine.GetServiceOrErr<IScriptManager>().ScriptLoader.Exists(FireworksEpilogueSession.ScriptPath);
+                if (!this) return;
+                _epilogueContentAvailable = available;
+                _epilogueContentChecked = true;
+                _epilogueButton.gameObject.SetActive(CanReplayFireworksEpilogue);
+                _epilogueButton.interactable = CanReplayFireworksEpilogue;
+            }
+            catch (System.Exception error)
+            {
+                if (!this) return;
+                _epilogueContentAvailable = false;
+                _epilogueContentChecked = true;
+                _epilogueButton.gameObject.SetActive(false);
+                UnityEngine.Debug.LogWarning("Could not locate the optional fireworks epilogue: " + error.Message);
+            }
+            finally { _epilogueContentCheckPending = false; }
+        }
+
+        protected override void OnDestroy()
+        {
+            if (_enhancementSettings != null) _enhancementSettings.Changed -= RefreshEpilogueButton;
+            base.OnDestroy();
+        }
 
     	// RECONSTRUCTED | Confidence: A | RVA: 0x362E30 (stub), MoveNext 0x3646E0, 2264 B
     	// - `<blocker>5__2` (+0x28) = new NaninovelInteractionBlocker(); `<dialog>5__3` (+0x30) = DialogProvider (getter

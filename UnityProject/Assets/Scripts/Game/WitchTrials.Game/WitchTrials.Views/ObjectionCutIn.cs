@@ -222,6 +222,10 @@ namespace WitchTrials.Views
     			_cts = null;
     			return;
     		}
+            // Optional presentation only: keep the original prefab, Timeline and both renderer transforms.
+            var portrait = CorrectedCutInPortraitAdapter.Attach(gameObject);
+            if (portrait) await portrait.ApplyCurrentSetting(asyncToken);
+            asyncToken.ThrowIfCanceled();
     		for (int i = 0; i < _objectLibrary.Length; i++)
     		{
     			_objectLibrary[i].SetActive(i == _currentIndex);

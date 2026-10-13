@@ -153,6 +153,94 @@ namespace Manosaba.EditorTools
             if (Application.isBatchMode) EditorApplication.Exit(code);
         }
 
+        public static OptionsUiResourceResult EnsureOptionsUiResource()
+        {
+            const string optionsPath = "Assets/GameContent/#WitchTrials/Prefabs/Naninovel/UI/CustomUI/OptionsUI.prefab";
+            const string defaultPath = "Packages/com.elringus.naninovel/Prefabs/DefaultUI/SettingsUI.prefab";
+            var result = new OptionsUiResourceResult { status = "disabled", options_prefab = optionsPath };
+            string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+            if (!File.Exists(Path.Combine(project, optionsPath))) return result;
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                throw new InvalidOperationException("Apply options UI resource registration outside Play Mode.");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(optionsPath);
+            var owners = prefab ? prefab.GetComponents<MonoBehaviour>().Where(x => x is Naninovel.UI.ISettingsUI).ToArray() : Array.Empty<MonoBehaviour>();
+            if (owners.Length != 1 || owners[0].GetType().FullName != "WitchTrials.Views.OptionsUi")
+                throw new InvalidDataException("The reviewed OptionsUI prefab must have one WitchTrials.Views.OptionsUi settings owner.");
+            string defaultGuid = File.ReadLines(Path.Combine(project, defaultPath + ".meta"))
+                .Single(line => line.StartsWith("guid:", StringComparison.Ordinal)).Substring(5).Trim();
+            if (defaultGuid.Length != 32 || defaultGuid != AssetDatabase.AssetPathToGUID(defaultPath))
+                throw new InvalidDataException("Package SettingsUI metadata and AssetDatabase identity differ.");
+            result.default_package_guid = defaultGuid;
+            var resources = Naninovel.EditorResources.LoadOrDefault();
+            result.resource_asset = AssetDatabase.GetAssetPath(resources);
+            var before = ReadRawUiResourceRecords(resources);
+            var expected = (JArray)before.DeepClone();
+            foreach (JObject category in expected)
+                foreach (JObject row in ((JArray)category["records"]).OfType<JObject>().ToArray())
+                {
+                    if ((string)row["path_prefix"] != "UI" || (string)row["name"] != "SettingsUI") continue;
+                    if ((string)row["guid"] != defaultGuid)
+                        throw new InvalidDataException("UI/SettingsUI is a user resource override; it was retained.");
+                    result.removed_count++;
+                    row.Remove();
+                }
+            result.records_sha256_before = UiResourceFingerprint(before);
+            if (result.removed_count > 0 && resources.RemoveAllRecordsWithPath("UI", "SettingsUI") != result.removed_count)
+                throw new InvalidOperationException("SettingsUI registration changed during validation.");
+            var after = ReadRawUiResourceRecords(resources);
+            if (!JToken.DeepEquals(expected, after))
+                throw new InvalidOperationException("Removing the package SettingsUI changed another resource record or its order.");
+            result.records_sha256_after = UiResourceFingerprint(after);
+            result.other_records_preserved = true;
+            result.removed = result.removed_count > 0;
+            if (result.removed) { EditorUtility.SetDirty(resources); AssetDatabase.SaveAssetIfDirty(resources); }
+            result.status = "OK";
+            Debug.Log("[NaninovelConfigBuilder] OptionsUI resource registration OK; removed package SettingsUI records=" + result.removed_count +
+                "; records " + result.records_sha256_before + " -> " + result.records_sha256_after);
+            return result;
+        }
+
+        private static JArray ReadRawUiResourceRecords(Naninovel.EditorResources resources)
+        {
+            using var serialized = new SerializedObject(resources);
+            var categories = serialized.FindProperty("resourceCategories");
+            if (categories == null || !categories.isArray) throw new InvalidDataException("Unsupported EditorResources category layout.");
+            var result = new JArray();
+            for (int i = 0; i < categories.arraySize; i++)
+            {
+                var category = categories.GetArrayElementAtIndex(i);
+                var id = category.FindPropertyRelative("Id");
+                var records = category.FindPropertyRelative("Resources");
+                if (id == null || records == null || !records.isArray) throw new InvalidDataException("Unsupported EditorResources record layout.");
+                var rows = new JArray();
+                for (int j = 0; j < records.arraySize; j++)
+                {
+                    var row = records.GetArrayElementAtIndex(j);
+                    var name = row.FindPropertyRelative("name"); var prefix = row.FindPropertyRelative("pathPrefix"); var guid = row.FindPropertyRelative("guid");
+                    if (name == null || prefix == null || guid == null) throw new InvalidDataException("Unsupported EditorResources identity layout.");
+                    rows.Add(new JObject { ["name"] = name.stringValue, ["path_prefix"] = prefix.stringValue, ["guid"] = guid.stringValue });
+                }
+                result.Add(new JObject { ["category"] = id.stringValue, ["records"] = rows });
+            }
+            return result;
+        }
+
+        private static string UiResourceFingerprint(JArray records)
+        {
+            using var hash = System.Security.Cryptography.SHA256.Create();
+            return BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(records.ToString(Newtonsoft.Json.Formatting.None))))
+                .Replace("-", "").ToLowerInvariant();
+        }
+
+        [Serializable]
+        public sealed class OptionsUiResourceResult
+        {
+            public string status, resource_asset, options_prefab, default_package_guid;
+            public bool removed, other_records_preserved;
+            public int removed_count;
+            public string records_sha256_before, records_sha256_after;
+        }
+
         public static int Execute ()
         {
             var result = new ImportResult { generated = DateTime.UtcNow.ToString("o") };
@@ -220,6 +308,7 @@ namespace Manosaba.EditorTools
                             }
                         }
 
+                        result.options_ui_resource = EnsureOptionsUiResource();
                         AssetDatabase.SaveAssets();
                         Tally(result);
                         result.status = result.configuration_failed > 0 || result.status == "PARTIAL" ? "PARTIAL" : "OK";
@@ -1533,6 +1622,7 @@ namespace Manosaba.EditorTools
         [Serializable]
         public class ImportResult
         {
+            public OptionsUiResourceResult options_ui_resource;
             public string status = "NOT_RUN";
             public string generated;
             public string input;

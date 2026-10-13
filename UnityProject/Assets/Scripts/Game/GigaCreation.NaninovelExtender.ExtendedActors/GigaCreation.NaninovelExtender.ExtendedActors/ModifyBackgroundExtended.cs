@@ -353,7 +353,8 @@ namespace GigaCreation.NaninovelExtender.ExtendedActors
 
     	private async UniTask ExecuteCore(AsyncToken token)
     	{
-    		if (AssignedId.EqualsFastIgnoreCase(StillId))
+            // The empty epilogue plate is auxiliary art, and must not create a global CG unlock record.
+    		if (AssignedId.EqualsFastIgnoreCase(StillId) && AssignedAppearance != "EpilogueEmpty")
     		{
     			IUnlockableManager unlockableManager = Engine.GetServiceOrErr<IUnlockableManager>();
     			IStateManager stateManager = Engine.GetServiceOrErr<IStateManager>();

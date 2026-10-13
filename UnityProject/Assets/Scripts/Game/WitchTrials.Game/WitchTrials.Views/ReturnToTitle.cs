@@ -143,6 +143,7 @@ namespace WitchTrials.Views
     	[Address(RVA = "0x31B930", Offset = "0x31A330", VA = "0x18031B930", Slot = "5")]
     	public override Naninovel.UniTask Execute([Optional] AsyncToken token)
     	{
+            FireworksEpilogueSession.Exit();
     		Naninovel.UniTask result = WaitOrForget(ReturnToTitleAsync, Wait, token);
     		base.Execute(token);
     		return result;

@@ -114,10 +114,14 @@ namespace WitchTrials.Views
     	[AsyncStateMachine(typeof(_003CDoAutoSaveAsync_003Ed__3))]
     	private async UniTask DoAutoSaveAsync(AsyncToken token)
     	{
+            if (FireworksEpilogueSession.Active) return;
+            int saveEpoch = FireworksEpilogueSession.SaveEpoch;
     		if (Assigned(DelayDuration) && DelayDuration > 0)
     		{
     			await UniTask.Delay(TimeSpan.FromSeconds(DelayDuration.Value));
     		}
+            // An ending's delayed save must not capture the optional epilogue or the later title screen.
+            if (FireworksEpilogueSession.Active || saveEpoch != FireworksEpilogueSession.SaveEpoch) return;
     		using (GigaCreation.NaninovelExtender.Common.NaninovelLoadingScreen.Show(GigaCreation.NaninovelExtender.Common.LoadingMode.Subtle, false))
     		{
     			Engine.GetServiceOrErr<IUIManager>().GetUI<GigaCreation.NaninovelExtender.Common.IClickThroughPanelExtended>().DontBlockInteractionOnNext();

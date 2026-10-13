@@ -16,7 +16,7 @@ Shader "Manosaba/CutIn/Shadow"
         Cull Off
         Lighting Off
         ZWrite Off
-        Blend SrcAlpha OneMinusSrcAlpha
+        Blend DstColor Zero, Zero One
 
         Pass
         {
