@@ -2,275 +2,238 @@
 
 <img width="1150" height="241" alt="QQ20261024-181441" src="https://github.com/user-attachments/assets/94b2d8b9-6583-4646-822e-d2fa12f91b3b" />
 
-## 逆向破解一个商业作品本身就是违反法律的犯罪行为，注意，是犯罪行为，无论你是否以直接销售为目的，之前已经有过惩罚先例，尤其是你现在还发视频网站列名单的，全是证据，望三思而后行。
+# 为什么不使用 PhantomShield 保护你的游戏工程呢？
 
-为什么不使用PhantomShield保护你的游戏工程呢？
+> 我们反对任何人以任何理由传播、重编译后再分发本项目工程相关内容，也严禁任何人于本仓库 Release 处获得盗版《魔法少女的魔女裁判》游戏本体后倒卖或于视频网站大肆宣传。  
+> 本仓库内一切美术资产、音乐资产、代码资产等归 Re,AER、Acacia 所有。
 
-输入：用户自己能够正常读取的本地游戏资源（Steam 版，简体中文）。机器路径只放在本地配置或环境变量。
+## 介绍
 
-开发入门与维护约定见 [开发指南](DEVELOPMENT.md)，涵盖环境配置、资源修改、代码入口、验证、恢复和排错。
+本项目旨在重建游戏的 Unity 工程结构与运行时，使资源能够重新导入 Unity、场景和剧本能够运行，并为后续的代码分析、汉化与 Mod 开发提供基础。
 
-普通资源开发入口见 [tools/content/README.md](tools/content/README.md)：首次 `import.ps1 <game>`，此后编辑 gitignored 的 `res/`，运行 `sync.ps1`、`doctor.ps1`、`build.ps1`。原游戏仅用于首次资源导入和显式研究/对照；正常 Unity 内容构建使用本地导入缓存和重建工程。
+项目包含 Unity 6 重建工程、资源同步工具、IL2CPP 分析文件、IDE 工程和运行时恢复代码。游戏资源需要从用户自己持有的 Steam 原版导入；仓库本身不提供完整游戏资源或原始发行文件。
 
-实际验证及范围见 [验证记录](tools/content/VERIFICATION.md)。本次接纳现有完整资源树并做全量同步；完全空的 `res`/GameContent/Library 首次导入尚未端到端验证。
+## 项目状态
 
-2026-10-02 已实测：原游戏目录实际断开后，增量 sync、G1/G2/G3/G4/G5 全部通过；TEXT、IMAGE、DATA、SCENARIO 和 MasterData 的修改—同步—运行时验证通过并已恢复测试改动。完整门禁使用无图形模式，具体覆盖范围和残留诊断见验证记录。
+目前，项目已完成完整资源树的接入与全量同步，并通过 Windows x64 Player 构建和运行测试。Unity 场景、Prefab、Addressables、Naninovel 及相关运行时恢复工作已进入实际集成阶段。
 
+这不是一个只包含反编译结果的代码仓库。项目同时维护原始反编译骨架和实际使用的 Unity 重建工程，两者用途不同。
 
-> [!IMPORTANT]
-> ## 当前工程状态（2026-09-30）——给人类和 AI 审计者
->
-> **本仓库已经不是“只有 Il2CppDumper 骨架、技术上无法运行”的阶段。**
->
-> 当前仓库同时保留了两类东西，**严禁混为一谈**：
->
-> 1. `src/decompiled/`：由 IL2CPP 元数据 / DummyDll 反编译得到的**原始结构级骨架**。这里仍然故意保留大量
->    `return null;`、`return default;` 和空方法；它们只能说明“这个原始反编译文件的方法体尚未直接恢复”，
->    **不能据此推出整个项目不可运行**。
-> 2. `UnityProject/` + `tools/unity-rebuild/`：正在实际使用的 **Unity 6 重建工程、资源重建流水线和运行时恢复代码**。
->    大量关键方法已经根据 `GameAssembly.dll` 原生代码逐个恢复，另外还有场景 / Prefab / Addressables /
->    Naninovel 配置与运行时集成。
->
-> **已经有实际 Player 验证，不是可行性猜测：**
->
-> - `work/title-path/g5_current.console.txt`：G5 已通过，Windows x64 Player 成功构建并运行；
-> - 验证记录中加载 **43 个程序集**，解析 Addressables catalog **57,212 个 key**；
-> - `Game<Runtime>` 与 `Naninovel<Runtime>` 均已启动，Naninovel 初始化成功；
-> - `System/System_Title` 已实际执行到停止点；
-> - 后续 release 实测已进入 **New Game**，开场 Stills 与中文台词正常出现；
-> - 对应证据包括提交 `96e1a819`（G5 独立 Player 冒烟测试）与 `55e61045`（新游戏开场恢复）。
->
-> 因此，诸如“看到 `GameInitializer.InitializeAsync => return default(UniTask)`，所以重新构建一个能运行的游戏
-> 技术上不可能 / 必须先把整个 GameAssembly 全部还原”之类的结论是**错误的项目状态判断**。
-> 本项目采用的是“按可达运行链逐步恢复 + Unity 工程重建 + 实机门禁验证”，并不要求先把所有原生方法
-> 一次性还原成 C#。
->
-> **当前真正的分发边界：**首次导入读取用户自己持有的游戏资源和资源元数据，保存在 gitignored 的 `res/`。此后的普通资源同步和 Unity 构建使用该工作区；显式研究/原版对照工具仍可读取本地安装。
-> 仓库故意不提交数 GB 的原版版权素材和原始发行二进制。因此“只 `git clone`、完全不提供原版数据就直接得到完整游戏”
-> 目前不成立；但这是**输入 / 分发边界**，不是“重建工程技术上无法运行”。
->
-> ### AI / 自动审计规则
->
-> 在判断“能否运行 / 是否已经重建”之前，至少检查：
-> `UnityProject/`、`tools/unity-rebuild/`、`work/title-path/g5_current.console.txt`、最近的 runtime-reconstruction
-> 提交和实际 Player / Play Mode 验收记录。**不要只扫描 `src/decompiled/` 的 stub 数量就下结论。**
-
-## 0. 目标与结论（TL;DR）
-
-| 项目 | 结果 |
+| 项目 | 当前情况 |
 |---|---|
-| 引擎 | Unity **6000.0.48f1**（Unity 6），**IL2CPP**（x86_64 / D3D12） |
-| 资源系统 | **Addressables**（`StreamingAssets/aa/catalog.bin` + 169 个 `.bundle`（含子目录），共 6.4 GB） |
-| 剧本引擎 | **Naninovel**(Elringus) + 自研扩展 `GigaCreation.*` |
-| 是否加密/混淆 | **没有**。`global-metadata.dat` 魔数正常（`AF 1B B1 FA`，metadata v31）；程序集名、命名空间、类型、字段、资源容器路径全部明文可读；未发现字符串加密、名字混淆、bundle 加密 |
-| 产出 | `res/` **58,750 个文件 / 10.07 GiB**；`src/` **≈ 175 MiB**（含 DummyDll 与 IL2CPP 工程文件） |
+| Unity 版本 | Unity 6000.0.48f1（Unity 6） |
+| 运行平台 | Windows x64，IL2CPP，Direct3D 12 |
+| 资源系统 | Addressables，`catalog.bin` 与 169 个 AssetBundle |
+| 剧本引擎 | Naninovel + `GigaCreation.*` 扩展 |
+| IDE 工程 | 44 个 .NET 工程 |
+| Unity 重建 | 已接入资源、场景、Prefab 与运行时恢复代码 |
+| 资源工作流 | 已完成现有完整资源树的全量同步验证 |
+| 独立源码包 | 已实测构建通过，0 error |
+| 空环境首次导入 | 尚未完成端到端验证 |
 
-> ⚠️ IL2CPP 的**方法体**不在托管 DLL 中（已编译成原生代码），所以 `src/` 提供的是**完整的类型/字段/属性/方法签名 + 字段偏移 + 原生函数地址（RVA/VA）**；方法体需要配合 IDA/Ghidra 使用 `src/il2cpp/script.json`、`il2cpp.h`（见第 3 节）。
+### 运行验证
 
----
+项目已完成以下阶段性验证：
 
-## 1. 目录结构
+- 成功构建 Windows x64 Player 并启动运行。
+- 加载 43 个游戏程序集，解析 Addressables catalog 中的 57,212 个 key。
+- `Game<Runtime>` 与 `Naninovel<Runtime>` 成功启动，Naninovel 初始化完成。
+- 标题场景 `System/System_Title` 已实际运行至预定停止点。
+- 后续验证已进入 New Game，开场 Stills 与中文台词正常显示。
+- 原版游戏目录断开后，增量资源同步及 G1/G2/G3/G4/G5 验证通过。
 
-```
-E:\manosaba_re\
-├─ res\                         ← 资源状态（按游戏内 Addressables 容器路径还原）
-│  ├─ Assets\#WitchTrials\...
-│  ├─ Assets\TextMesh Pro\...   ├─ Packages\com.elringus.naninovel\...
-│  ├─ Uncategorized\            ← 无容器路径的对象（resources.assets 等）
-│  ├─ _serialized\              ← GameObject/Transform/CanvasRenderer… 结构性对象 typetree JSON
-│  ├─ _index.csv                ← 全部资源索引（58,748 行：类型/资产路径/输出文件/来源 bundle）
-│  ├─ _index_audio.csv          ← 音频专用索引
-│  └─ _monoscripts.csv          ← MonoScript → 类/命名空间/程序集 对照表（2,869 条）
-├─ src\                         ← 源码状态
-│  ├─ il2cpp\                   ← dump.cs / il2cpp.h / script.json / DummyDll / 字符串表 / Ghidra+IDA 脚本
-│  ├─ decompiled\               ← 游戏 + 自研库 + Naninovel：1,694 个 .cs（按类型分文件，含 .csproj）
-│  ├─ decompiled_external\      ← Unity/System/第三方库：8,916 个 .cs（参考用）
-│  ├─ type_index.csv / .md      ← 18,076 个类型的导航索引
-├─ project\                     ← IDE 工程（可直接编译 / 运行）
-│  ├─ Manosaba.sln              ← 44 个工程，一键构建：dotnet build Manosaba.sln
-│  ├─ Directory.Build.props     ← 统一配置（源码/引用路径都在 E:）
-│  ├─ nuget.config              ← NuGet 缓存也放 E:\manosaba_re\tools\nuget
-│  ├─ .vscode\                  ← VS Code：构建任务 + “启动游戏”调试配置
-│  ├─ src\Assembly-CSharp\...   ← 每个游戏程序集一个 csproj（编译反编译源码）
-│  └─ src\Manosaba.Plugin\      ← BepInEx 插件工程（构建后自动部署进游戏）
-├─ tools\                       ← Il2CppDumper、BepInEx 包、venv(E盘 Python)、安装脚本
-├─ work\                        ← 提取脚本、日志、patch 记录
-└─ README.md
-```
+详细的验证范围、测试结果与遗留问题见 [tools/content/VERIFICATION.md](tools/content/VERIFICATION.md) 及 `work/title-path/g5_current.console.txt`。
 
-### IDE 工程怎么用
+需要注意：以上结果不代表所有场景、剧情分支及游戏功能均已恢复，也不代表只克隆仓库就能直接获得完整游戏。
+
+## 快速开始
+
+### 1. 准备环境
+
+根据开发目标准备相应工具：
+
+- Windows x64
+- Unity 6000.0.48f1
+- .NET SDK
+- Git
+- 原版游戏的本地安装文件（资源导入所需）
+
+具体版本要求、环境变量、依赖配置与排错方式以 [DEVELOPMENT.md](DEVELOPMENT.md) 为准。
+
+### 2. 导入游戏资源
+
+首次使用时，需要从本地原版游戏导入资源。
+
+资源开发入口：[tools/content/README.md](tools/content/README.md)
+
+在仓库根目录执行：
 
 ```powershell
-# 打开工程（Rider / Visual Studio / VS Code 均可）
+# 首次导入：<game> 为本地游戏目录
+.\tools\content\import.ps1 <game>
+```
+
+导入完成后，资源保存在被 Git 忽略的 `res/` 目录中。之后的常规开发不需要每次重新提取原版资源。
+
+```powershell
+# 同步资源修改
+.\tools\content\sync.ps1
+
+# 检查资源与工程状态
+.\tools\content\doctor.ps1
+
+# 执行内容构建
+.\tools\content\build.ps1
+```
+
+首次导入的完整流程尚未在完全空的 `res/`、`GameContent/` 与 `Library/` 环境下完成端到端验证。使用前请阅读工作流文档中的前置条件和限制。
+
+### 3. 打开 Unity 工程
+
+使用 Unity Hub 打开仓库中的 `UnityProject/`，并选择 Unity 6000.0.48f1。
+
+导入资源后，即可在重建工程中继续进行场景、Prefab、Addressables、Naninovel 配置及运行时开发。
+
+### 4. 编译 IDE 工程
+
+仓库同时提供用于代码浏览、编译和插件开发的 .NET 解决方案。
+
+默认工作区路径示例：
+
+```powershell
 E:\manosaba_re\project\Manosaba.sln
+```
 
-# 命令行构建（已验证 0 error / 0 warning）
-$env:NUGET_PACKAGES='E:\manosaba_re\tools\nuget'
+设置 NuGet 包缓存并构建：
+
+```powershell
+$env:NUGET_PACKAGES = 'E:\manosaba_re\tools\nuget'
+
 dotnet build E:\manosaba_re\project\Manosaba.sln
+```
 
-# 写插件（BepInEx 6 IL2CPP）→ 构建后自动复制到 <游戏>\BepInEx\plugins\
+也可以使用仓库根目录提供的独立构建脚本：
+
+```powershell
+# 构建全部程序集
+.\build.ps1
+
+# 清理 bin/obj 后重新构建
+.\build.ps1 -Clean
+
+# 打包源码与依赖
+.\build.ps1 -Pack
+```
+
+构建完成后，程序集输出至 `dist/`。独立源码包为 `dist/Manosaba.Sources.zip`，不依赖原开发机器的绝对路径，已实测构建通过。
+
+### 5. 使用 VS Code 调试
+
+仓库提供 BepInEx 插件工程及相应的启动、安装脚本。
+
+```powershell
+# 构建插件
 dotnet build E:\manosaba_re\project\src\Manosaba.Plugin\Manosaba.Plugin.csproj
 
-# 启动游戏（带 BepInEx + 插件）；VS Code 里按 F5 选 “Launch game (BepInEx + plugin)”
-E:\manosaba_re\tools\launch_game.ps1
+# 安装 BepInEx
+.\install_bepinex.ps1
 
-# 卸载 BepInEx（游戏恢复原样）
-E:\manosaba_re\tools\install_bepinex.ps1 -Uninstall
+# 启动游戏与插件
+.\tools\launch_game.ps1
+
+# 卸载 BepInEx
+.\install_bepinex.ps1 -Uninstall
 ```
 
-* 43 个游戏程序集工程：源码直接编译，`dotnet build` 全绿（已跑通），IDE 内可以跳转/查找引用/重构。
-* 反编译产物里有约 20 处“反编译痕迹”会被 C# 编译器拒绝（接口未实现、out 参数未赋值等），
-  已用脚本最小化修正；每一条改动都记录在 `work/patches.json`，原始正文仍在 `src/decompiled\`。
-* `Manosaba.Plugin` 现在引用 Il2CppDumper 的 DummyDll；游戏首次启动后 BepInEx 会生成
-  `BepInEx\Il2CppAssemblies\`，届时改成引用代理程序集即可获得真实运行期类型（csproj 已写好两套引用条件）。
+在 VS Code 中，也可以选择 `Launch game (BepInEx + plugin)` 配置并按 F5 启动调试。
 
----
+以上路径仅为示例。请根据实际克隆目录调整路径，并在启动前确认游戏安装、资源导入及插件部署已完成。
 
-### res 明细
+## 目录结构
 
-| 目录 | 内容 | 规模 |
-|---|---|---|
-| `Assets/#WitchTrials/Textures/` | 背景 / 立绘 / 特效原图（PNG） | 1,407 个 / 5.8 GiB |
-| `Assets/#WitchTrials/Prefabs/` | 分层立绘、UI 预制体（PNG + typetree JSON） | 7,766 个 / 1.75 GiB |
-| `Assets/#WitchTrials/Audio/` | 语音 / BGM / 音效（OGG Vorbis，48 kHz 原声道） | 26,537 个 / 1.46 GiB |
-| `Assets/#WitchTrials/Scenarios/` | **日文原版 Naninovel 剧本**（ScriptableObject → JSON，含指令流） | 440 个 / 399 MiB |
-| `Assets/#WitchTrials/Localization/` | **中文剧本与界面文本**（Naninovel 本地化文档 `.txt`）+ 中文影片 | 446 个 / 318 MiB |
-| `Assets/#WitchTrials/Movies/` | 片头影片 `.m4v` | 2 个 / 312 MiB |
-| `Assets/#WitchTrials/SpriteAtlases/` | 图集定义 | 33 个 / 95 MiB |
-| `Assets/#WitchTrials/Fonts/` | 字体 ttf/otf + 字体图集 | 68 个 / 72 MiB |
-| `Assets/#WitchTrials/Data/` | 主数据表（MapData / CharacterData / ClueData / RuleData / NoteData / ProfileData …） | 8 个 |
-| `Assets/#WitchTrials/ManagedText/` | 托管文本（角色名、UI） | 4 个 |
-| `_serialized/` | 场景/预制体结构 dump（2.18 万个小 JSON） | 12.5 MiB |
-| `Uncategorized/` | Shader / Texture / ComputeShader 等 | 171 个 |
-
-音频示例路径（与游戏内一致）：
-
-```
-res\Assets\#WitchTrials\Audio\Voice\Act01_Chapter01\Act01_Chapter01_Adv31\0101Adv31_Sherry012.ogg
-res\Assets\#WitchTrials\Audio\BGM\Bgm_008_001_Loop.ogg
+```text
+Manosaba-Unity-VS-Ready/
+├── res/                     # 本地资源工作区，不提交至 Git
+├── src/
+│   ├── il2cpp/              # IL2CPP 分析文件、DummyDll 与分析脚本
+│   ├── decompiled/          # 游戏及相关库的反编译结构骨架
+│   ├── decompiled_external/ # Unity、System 与第三方库参考代码
+│   └── type_index.csv       # 类型索引
+├── project/
+│   ├── Manosaba.sln         # .NET 解决方案
+│   └── src/
+│       └── Manosaba.Plugin/ # BepInEx 插件工程
+├── UnityProject/            # Unity 6 重建工程
+├── tools/
+│   ├── content/             # 资源导入、同步、检查与构建
+│   └── unity-rebuild/       # Unity 工程重建与运行时恢复工具
+├── work/                    # 分析脚本、日志及验证记录
+├── build.ps1                # 独立构建入口
+├── launch_game.ps1          # 游戏启动脚本
+├── install_bepinex.ps1      # BepInEx 安装与卸载
+├── DEVELOPMENT.md           # 开发指南
+└── README.md
 ```
 
-> 文件名里带 `~1`、`~2` … 的是**同一容器路径下多个对象**的去重后缀
-> （例如一个字体的多个 Sprite、一个预制体里的多个组件），并非重复文件；
-> 具体含义查 `_index.csv` 的 `asset_path` / `name` 列。
+## 技术实现
 
----
+### IL2CPP 分析与代码恢复
 
-## 2. src 里有什么
+原版游戏使用 IL2CPP。托管程序集中的方法经过转换后，其实际实现位于原生二进制中。因此，DummyDll 和基于它生成的反编译代码主要用于恢复类型、字段、属性、方法签名等结构信息，不能直接视为完整的原始 C# 源码。
 
-| 文件 | 说明 |
-|---|---|
-| `src/il2cpp/dump.cs` | **58.7 万行**全量结构 dump：18,076 个类型、方法/属性/事件/特性、字段偏移、方法 RVA |
-| `src/il2cpp/DummyDll/*.dll` | 162 个骨架程序集（字段带 `[FieldOffset]`，方法带 `[Address]`） |
-| `src/decompiled/<Assembly>/*.cs` | ILSpy(ilspycmd 8.2) 反编译结果，一类型一文件、按命名空间分层，附 `.csproj` |
-| `src/il2cpp/script.json` (53 MB)、`il2cpp.h` (38 MB) | **IDA / Ghidra 脚本输入**（函数名、结构体、字符串表） |
-| `src/il2cpp/stringliterals.txt` | 17,231 条字符串常量（地址 + 内容），便于定位日志/报错/UI 文案 |
-| `src/type_index.csv` / `.md` | 类型导航（程序集 / 命名空间 / 类型名 / typedef 索引） |
+`src/il2cpp/` 保存了相关分析资料：
 
-游戏自身代码在 `Assembly-CSharp`（命名空间 `WitchTrials.Debugging / Models / Presenters / Views`），
-其余重点程序集：`Elringus.Naninovel.Runtime`（1,834 个类型）、`Naninovel.Common`、`GigaCreation.*`、`CustomInspector`。
+- `dump.cs`：类型、字段与方法信息。
+- `il2cpp.h`：原生结构及类型定义。
+- `script.json`：供反编译与分析工具使用的映射信息。
+- DummyDll：用于结构分析和 IDE 工程构建的程序集。
+- IDA / Ghidra 脚本：辅助定位原生函数和分析方法实现。
 
-`dump.cs` 片段形态：
+方法体的恢复需要结合原生代码分析、运行时行为和实际测试逐步完成。
 
-```csharp
-[Token(Token = "0x2000153")]
-public sealed class ClueData : WitchBookDataBase<ClueDataItem>
-{
-    [FieldOffset(Offset = "0x18")] [SerializeField]
-    private List<VersionedItem<ClueDataItem>> _items;                     // 0x18
+### Unity 工程重建
 
-    [Address(RVA = "0x33A4E0", Offset = "0x338EE0", VA = "0x18033A4E0", Slot = "4")]
-    public override IList<VersionedItem<ClueDataItem>> Items { get { return null; } }
-}
-```
+`UnityProject/` 与 `tools/unity-rebuild/` 是实际的工程重建与运行时开发入口，负责资源重新组织、场景及 Prefab 重建、Addressables 配置、Naninovel 集成和必要的运行时逻辑恢复。
 
-`return null;` 即“方法体缺失”的占位 —— 真正的逻辑在 `VA = 0x18033A4E0`。
+项目采用按实际运行链逐步恢复的方式：优先修复启动流程和可达功能，再根据运行结果继续处理尚未恢复的方法，而不是要求所有原生方法都完成还原后才尝试运行。
 
----
+### 资源工作流
 
-## 3. 复现 / 再加工
+原版资源通过 Addressables 容器及相关资源文件导入本地工作区。目前资源工作区约有 58,750 个文件，占用约 10.07 GiB；`src/` 约 175 MiB。
 
-```powershell
-# 1) IL2CPP dump
-E:\manosaba_re\tools\Il2CppDumper\Il2CppDumper.exe `
-  "<game>\GameAssembly.dll" `
-  "<game>\manosaba_Data\il2cpp_data\Metadata\global-metadata.dat" `
-  E:\manosaba_re\work\il2cpp_out
+资源系统包含 `catalog.bin`、169 个 AssetBundle 及相应的资源索引。常规开发以 `res/` 为工作区，通过同步工具将修改应用到重建工程。
 
-# 2) 反编译（需 .NET 8+；ilspycmd 需 DOTNET_ROLL_FORWARD=LatestMajor）
-python E:\manosaba_re\work\decompile_all.py --group all --workers 3
+## 已知限制
 
-# 3) 资源提取（依赖：pip install UnityPy soundfile pillow pyfmodex fmod_toolkit）
-python E:\manosaba_re\work\extract_res.py --stage core --workers 4   # 贴图/文本/字体/影片/数据
-python E:\manosaba_re\work\audio_worker.py                           # 音频（可多开，自动抢锁）
-python E:\manosaba_re\work\reorganize.py                             # 整理 _serialized + 建索引
-python E:\manosaba_re\work\finalize.py                               # 合并 manifest、重建 _index.csv
-```
+- **资源依赖：** 仓库不包含完整原版资源和原始发行二进制。仅克隆仓库无法直接得到完整游戏。
+- **反编译结果：** `src/decompiled/` 中仍有大量未恢复的方法体。它们不等于 Unity 重建工程中对应功能的最终实现状态。
+- **首次导入：** 现有完整资源树已完成全量同步，但完全空白环境下的首次导入尚未完成端到端验证。
+- **Unity 内置对象：** `globalgamemanagers.assets` 与 `sharedassets0.assets` 中约 735 个内置管理器 MonoBehaviour 缺少 typetree，无法按当前流程解析。
+- **字体与 Sprite：** 3 个字体 bundle 包含尺寸为 0×0 的占位 Font Texture，已跳过；另有 1 个 Sprite 的裁剪矩形越界，已跳过。
+- **序列化数据：** `*.asset.json` 是 Unity typetree 的 JSON 表示，不是可以直接反序列化为完整 Unity 类实例的数据。
+- **音频质量：** 当前音频流程会将 FSB5（Vorbis）音频解码后重新编码为 OGG，存在二次有损编码。若需要保留原始音频流，需要直接提取 FSB5 容器；当前流程尚未实现这一功能。
 
-脚本特性：按 bundle 记录 `work/done_*/<bundle>.done` 断点续跑；音频用 `.claim` 独占锁，可崩溃续跑、多进程并行。
+上述限制会随开发进展变化。涉及具体功能时，请优先参考最新提交、验证记录及实际运行结果。
 
-**IDA / Ghidra 还原方法体：**
+## 参与开发
 
-```
-Ghidra : Script Manager → ghidra_with_struct_py3.py（选 script.json + il2cpp.h）
-IDA    : File → Script file → ida_with_struct_py3.py
-```
+欢迎围绕工程重建、运行时恢复、资源工作流、文档和构建工具提交 Issue 或 Pull Request。
 
----
+开始修改前，建议先阅读：
 
-## 独立编译 / 源码包
+- [DEVELOPMENT.md](DEVELOPMENT.md)：环境配置、开发约定与排错。
+- [tools/content/README.md](tools/content/README.md)：资源导入、同步及构建流程。
+- [tools/content/VERIFICATION.md](tools/content/VERIFICATION.md)：验证记录与已知问题。
 
-只需要 **.NET SDK 8+**：不用 IDE、不用联网、不写 C 盘。
+提交涉及运行时恢复的改动时，尽量附上对应的构建结果、日志或 Player / Play Mode 验证记录，以便确认修改的实际效果。
 
-```powershell
-.\build.ps1              # 一键构建 -> dist\ 44 个 dll（可双击 build.cmd）
-.\build.ps1 -Clean       # 清 bin/obj 后全量重建
-.\build.ps1 -Pack        # 顺便导出源码包
-dotnet build project\Manosaba.sln      # 等价的手工命令
-```
+## 版权与使用范围
 
-### 源码包 `dist\Manosaba.Sources.zip`（约 18 MB）
+本项目是面向本地研究的工程重建工具，不是游戏本体的再发行版本。
 
-自带全部依赖、**不含绝对路径**，解压到任意机器/任意目录即可编译
-（已实测：解压到另一个盘符后 `dotnet build project\Manosaba.sln` = **0 error**）：
+- 请使用自己合法持有、能够正常访问的原版游戏资源。
+- 原版游戏的代码、图像、音频、剧本及其他版权素材不随本仓库分发。
+- 本项目的公开代码、工具与文档不代表原版游戏版权素材获得了额外授权。使用、修改或分发时，应分别遵守适用的许可证及原权利人的要求。
+- 请勿将原版游戏资源或原始发行文件重新打包上传、用于未经授权的商业用途，或利用本项目绕过 Steam 校验及 DRM。
 
-| 包内内容 | 规模 |
-|---|---|
-| `src\decompiled\` 43 个游戏程序集源码 | **1651 个 .cs** |
-| `src\il2cpp\DummyDll\` 参考程序集（编译必需） | 129 个 |
-| `src\il2cpp\` `dump.cs` / `script.json` / `il2cpp.h` | — |
-| `project\` 44 个 `.csproj` + `.sln`（含 BepInEx 插件工程） | — |
-| `build.ps1` / `build.cmd` / `build.sh` | — |
-
-构建产物就是 43 个游戏程序集：`Assembly-CSharp.dll`、`Elringus.Naninovel.Runtime.dll`、
-`GigaCreation.*.dll` …… 与原始托管程序集一一对应。
-
-> **“完整”的边界要说清楚**：`src/decompiled/` 的原始反编译产物完整的是 **类型系统** —— 43 个程序集、
-> 18076 个类型、字段偏移、方法签名、原生地址（RVA/VA）都在，而且可以作为分析 / 编译骨架使用。
-> IL2CPP 的原始方法体已经编译进原生代码，所以**单看这套原始骨架**仍会看到大量 `return null;` / `return default;`。
-> 但仓库当前已经在 `UnityProject/` 和重建流水线中恢复了大量实际运行逻辑，并已通过独立 Player 冒烟测试、标题流程
-> 与 New Game 开场实测。需要恢复剩余原版行为时，仍以 Ghidra/IDA + `script.json` + `il2cpp.h` 为证据来源。
-
-## 4. 已知边界 / 踩过的坑
-
-* **原始 IL2CPP 方法体不能从托管 DLL 直接取回**；`src/decompiled` 主要是结构级骨架，不能把其中仍存在的 stub 当成整个工程的运行状态。实际可运行重建位于 `UnityProject/` 与相关 runtime-reconstruction / unity-rebuild 流水线中。
-* `globalgamemanagers.assets` / `sharedassets0.assets` 中约 735 个 Unity **内置管理器 MonoBehaviour** 没有 typetree，无法解析（与游戏内容无关）。
-* 3 个字体 bundle 内含 0×0 占位 “Font Texture”，无像素数据，已跳过。
-* 1 个 Sprite（`naninovel-characters/characters/margo.bundle` → `ClippingMask_Facial_Normal02`）裁剪矩形越界，跳过。
-* `*.asset.json` 是 Unity typetree 的 1:1 JSON（`m_Script` 仍是 PPtr 引用），不是可直接反序列化的类实例。
-* 音频提取踩坑记录（供复现者参考）：
-  * `soundfile`/libsndfile 的 Vorbis 编码器在**长音频**上会把缓冲区放栈上 → `STATUS_STACK_OVERFLOW` 静默崩进程。
-    解法：**分块写**（64 KiB 帧/次）+ 在 64 MB 栈线程里执行 → BGM（6.7 分钟/首）稳定通过。
-  * `multiprocessing.Pool(maxtasksperchild=1)` 会丢任务并让池永久挂起 → 改用 `.claim` 文件的多进程模型。
-  * 音频源为 FSB5(Vorbis)，通过 pyfmodex 解码为 PCM 后重编码 OGG，属于**有损二次编码**；
-    若要无损原流，可直接抽 FSB5 容器（当前脚本未做）。
-
----
-
-## 5. 使用提醒
-
-产出的是**游戏版权素材与代码**，仅适合本地研究、汉化/Mod 学习与备份；
-请勿再分发资源本体或用于商业用途，也不要用于绕过 Steam 校验/DRM。
-
-
----
+《魔法少女的魔女审判》及其相关内容的版权归相应权利人所有。本项目与原游戏发行方不存在当然的官方关联或授权关系。
