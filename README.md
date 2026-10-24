@@ -1,6 +1,10 @@
 # manosaba (Re,AER) Unity VSCode Ready
 
+<img width="1150" height="241" alt="QQ20261024-181441" src="https://github.com/user-attachments/assets/94b2d8b9-6583-4646-822e-d2fa12f91b3b" />
+
 ## 逆向破解一个商业作品本身就是违反法律的犯罪行为，注意，是犯罪行为，无论你是否以直接销售为目的，之前已经有过惩罚先例，尤其是你现在还发视频网站列名单的，全是证据，望三思而后行。
+
+为什么不使用PhantomShield保护你的游戏工程呢？
 
 输入：用户自己能够正常读取的本地游戏资源（Steam 版，简体中文）。机器路径只放在本地配置或环境变量。
 
